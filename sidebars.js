@@ -19,7 +19,7 @@ const sidebars = {
 	tutorialSidebar: [
 		{
 			type: "doc",
-			id: "intro",
+			id: "home",
 			label: "Home",
 		},
 		{
@@ -85,102 +85,102 @@ const sidebars = {
 			items: [
 				{
 					type: "doc",
-					id: "identity/argentina",
+					id: "identity/legal-verification-for-argentinian-id",
 					label: "🇦🇷 Argentina",
 				},
 				{
 					type: "doc",
-					id: "identity/bolivia",
+					id: "identity/legal-verification-for-bolivian-id",
 					label: "🇧🇴 Bolivia",
 				},
 				{
 					type: "doc",
-					id: "identity/brazil",
+					id: "identity/legal-verification-for-brazilian-id",
 					label: "🇧🇷 Brazil",
 				},
 				{
 					type: "doc",
-					id: "identity/canada",
+					id: "identity/legal-verification-for-canadian-id",
 					label: "🇨🇦 Canada",
 				},
 				{
 					type: "doc",
-					id: "identity/chile",
+					id: "identity/legal-verification-for-chilean-id",
 					label: "🇨🇱 Chile",
 				},
 				{
 					type: "doc",
-					id: "identity/colombia",
+					id: "identity/legal-verification-for-colombian-id",
 					label: "🇨🇴 Colombia",
 				},
 				{
 					type: "doc",
-					id: "identity/costa-rica",
+					id: "identity/legal-verification-for-costa-rican-id",
 					label: "🇨🇷 Costa Rica",
 				},
 				{
 					type: "doc",
-					id: "identity/dominican-republic",
+					id: "identity/legal-verification-for-dominican-id",
 					label: "🇩🇴 Dominican Republic",
 				},
 				{
 					type: "doc",
-					id: "identity/ecuador",
+					id: "identity/legal-verification-for-ecuadorian-id",
 					label: "🇪🇨 Ecuador",
 				},
 				{
 					type: "doc",
-					id: "identity/el-salvador",
+					id: "identity/legal-verification-for-salvadoran-id",
 					label: "🇸🇻 El Salvador",
 				},
 				{
 					type: "doc",
-					id: "identity/guatemala",
+					id: "identity/legal-verification-for-guatemalan-id",
 					label: "🇬🇹 Guatemala",
 				},
 				{
 					type: "doc",
-					id: "identity/honduras",
+					id: "identity/legal-verification-for-honduran-id",
 					label: "🇭🇳 Honduras",
 				},
 				{
 					type: "doc",
-					id: "identity/mexico",
+					id: "identity/legal-verification-for-mexican-id",
 					label: "🇲🇽 Mexico",
 				},
 				{
 					type: "doc",
-					id: "identity/panama",
+					id: "identity/legal-verification-for-panamanian-id",
 					label: "🇵🇦 Panama",
 				},
 				{
 					type: "doc",
-					id: "identity/paraguay",
+					id: "identity/legal-verification-for-paraguayan-id",
 					label: "🇵🇾 Paraguay",
 				},
 				{
 					type: "doc",
-					id: "identity/peru",
+					id: "identity/legal-verification-for-peruvian-id",
 					label: "🇵🇪 Peru",
 				},
 				{
 					type: "doc",
-					id: "identity/spain-citizen",
+					id: "identity/legal-verification-for-spanish-id",
 					label: "🇪🇸 Spain Citizen",
 				},
 				{
 					type: "doc",
-					id: "identity/united-states",
+					id: "identity/legal-verification-for-us-id",
 					label: "🇺🇸 United States",
 				},
 				{
 					type: "doc",
-					id: "identity/uruguay",
+					id: "identity/legal-verification-for-uruguayan-id",
 					label: "🇺🇾 Uruguay",
 				},
 				{
 					type: "doc",
-					id: "identity/venezuela",
+					id: "identity/legal-verification-for-venezuelan-id",
 					label: "🇻🇪 Venezuela",
 				},
 			],

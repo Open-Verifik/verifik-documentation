@@ -28,7 +28,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Argentina citizen"
       description=""
       image="/img/smartcheck/argentina-citizen.png"
-      link="/identity/argentina"
+      link="/identity/legal-verification-for-argentinian-id"
     />
   </div>
   <div className="col col--4">
@@ -36,7 +36,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Bolivian citizen"
       description=""
       image="/img/smartcheck/bolivia-citizen.png"
-      link="/identity/bolivia"
+      link="/identity/legal-verification-for-bolivian-id"
     />
   </div>
   <div className="col col--4">
@@ -44,7 +44,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Brazilian citizen"
       description=""
       image="/img/smartcheck/brazil-citizen.png"
-      link="/identity/brazil"
+      link="/identity/legal-verification-for-brazilian-id"
     />
   </div>
 </div>
@@ -55,7 +55,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Chilean citizen"
       description=""
       image="/img/smartcheck/chile-citizen.png"
-      link="/identity/chile"
+      link="/identity/legal-verification-for-chilean-id"
     />
   </div>
   <div className="col col--4">
@@ -63,7 +63,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Colombian citizen"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="/identity/colombia"
+      link="/identity/legal-verification-for-colombian-id"
     />
   </div>
   <div className="col col--4">
@@ -71,7 +71,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Costa Rican citizen"
       description=""
       image="/img/smartcheck/costa-rica-citizen.png"
-      link="/identity/costa-rica"
+      link="/identity/legal-verification-for-costa-rican-id"
     />
   </div>
 </div>
@@ -82,7 +82,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Ecuadorian citizen"
       description=""
       image="/img/smartcheck/ecuador-citizen.png"
-      link="/identity/ecuador"
+      link="/identity/legal-verification-for-ecuadorian-id"
     />
   </div>
   <div className="col col--4">
@@ -90,7 +90,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="El Salvador citizen"
       description=""
       image="/img/smartcheck/el-salvador-citizen.png"
-      link="/identity/el-salvador"
+      link="/identity/legal-verification-for-salvadoran-id"
     />
   </div>
   <div className="col col--4">
@@ -98,7 +98,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Spanish citizen"
       description=""
       image="/img/smartcheck/spain-citizen.png"
-      link="/identity/spain-citizen"
+      link="/identity/legal-verification-for-spanish-id"
     />
   </div>
 </div>
@@ -109,7 +109,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="United States Citizen"
       description=""
       image="/img/smartcheck/us-citizen.png"
-      link="/identity/united-states"
+      link="/identity/legal-verification-for-us-id"
     />
   </div>
   <div className="col col--4">
@@ -117,7 +117,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Guatemalan citizen"
       description=""
       image="/img/smartcheck/guatemala-citizen.png"
-      link="/identity/guatemala"
+      link="/identity/legal-verification-for-guatemalan-id"
     />
   </div>
   <div className="col col--4">
@@ -125,7 +125,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Honduran citizen"
       description=""
       image="/img/smartcheck/honduras-citizen.png"
-      link="/identity/honduras"
+      link="/identity/legal-verification-for-honduran-id"
     />
   </div>
 </div>
@@ -136,7 +136,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Mexican citizen"
       description=""
       image="/img/smartcheck/mexico-citizen.png"
-      link="/identity/mexico"
+      link="/identity/legal-verification-for-mexican-id"
     />
   </div>
   <div className="col col--4">
@@ -144,7 +144,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Panamanian citizen"
       description=""
       image="/img/smartcheck/panama-citizen.png"
-      link="/identity/panama"
+      link="/identity/legal-verification-for-panamanian-id"
     />
   </div>
   <div className="col col--4">
@@ -152,7 +152,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Paraguayan citizen"
       description=""
       image="/img/smartcheck/paraguay-citizen.png"
-      link="/identity/paraguay"
+      link="/identity/legal-verification-for-paraguayan-id"
     />
   </div>
 </div>
@@ -163,7 +163,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Peruvian citizen"
       description=""
       image="/img/smartcheck/peru-citizen.png"
-      link="/identity/peru"
+      link="/identity/legal-verification-for-peruvian-id"
     />
   </div>
   <div className="col col--4">
@@ -171,7 +171,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Dominican Republic citizen"
       description=""
       image="/img/smartcheck/dominican-republic-citizen.png"
-      link="/identity/dominican-republic"
+      link="/identity/legal-verification-for-dominican-id"
     />
   </div>
   <div className="col col--4">
@@ -179,7 +179,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Uruguayan citizen"
       description=""
       image="/img/smartcheck/uruguay-citizen.png"
-      link="/identity/uruguay"
+      link="/identity/legal-verification-for-uruguayan-id"
     />
   </div>
 </div>
@@ -190,7 +190,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Venezuelan citizen"
       description=""
       image="/img/smartcheck/venezuela-citizen.png"
-      link="/identity/venezuela"
+      link="/identity/legal-verification-for-venezuelan-id"
     />
   </div>
 </div>

@@ -109,7 +109,7 @@ const config = {
 			{
 				id: "docs-es",
 				path: "docs-es",
-				routeBasePath: "docs-es",
+				routeBasePath: "", // Remove /docs-es prefix for Spanish
 				sidebarPath: "./sidebars-es.js",
 				editUrl: "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
 			},
@@ -134,12 +134,12 @@ const config = {
 						items: [
 							{
 								type: "doc",
-								docId: "intro",
+								docId: "home",
 								label: "English",
 							},
 							{
 								type: "doc",
-								docId: "intro",
+								docId: "inicio",
 								docsPluginId: "docs-es",
 								label: "Español",
 							},
