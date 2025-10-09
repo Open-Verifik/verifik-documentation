@@ -120,6 +120,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/colombia-foreigner-id",
+					label: "🇨🇴 Colombia - Foreigner ID",
+				},
+				{
+					type: "doc",
 					id: "identity/costa-rica",
 					label: "🇨🇷 Costa Rica",
 				},
@@ -167,6 +172,16 @@ const sidebars = {
 					type: "doc",
 					id: "identity/peru",
 					label: "🇵🇪 Peru",
+				},
+				{
+					type: "doc",
+					id: "identity/peru-foreigner-id",
+					label: "🇵🇪 Peru - Foreigner ID",
+				},
+				{
+					type: "doc",
+					id: "identity/peru-full-id",
+					label: "🇵🇪 Peru - Full ID",
 				},
 				{
 					type: "doc",
