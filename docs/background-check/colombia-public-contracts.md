@@ -166,12 +166,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-"code": "NotFound",
-"message": "Record not found.",
-"signature": {
-"dateTime": "August 31, 2022 3:24 PM",
-"message": "Certified by Verifik.co"
-}
+    "code": "NotFound",
+    "message": "Record not found."
 }
 ```
 

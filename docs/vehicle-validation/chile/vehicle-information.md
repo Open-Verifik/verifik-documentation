@@ -154,12 +154,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-  "code": "NotFound",
-  "message": "Placa no encontrada",
-  "signature": {
-    "dateTime": "December 6, 2022 4:29 PM",
-    "message": "Certified by Verifik.co"
-    }
+    "code": "NotFound",
+    "message": "Record not found."
 }
 ```
 
