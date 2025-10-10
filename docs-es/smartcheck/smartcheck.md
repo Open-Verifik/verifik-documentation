@@ -204,7 +204,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Verificación de antecedentes brasileña"
       description=""
       image="/img/smartcheck/brazil-background.png"
-      link="#"
+      link="/docs-es/verificacion-antecendentes/verificacion-antecendentes-brasil"
     />
   </div>
   <div className="col col--4">
@@ -212,7 +212,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Verificación de antecedentes colombiana"
       description=""
       image="/img/smartcheck/colombia-background.png"
-      link="#"
+      link="/docs-es/verificacion-antecendentes/verificacion-antecendentes-colombia-contratos-publicos"
     />
   </div>
   <div className="col col--4">
@@ -220,7 +220,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Verificación de antecedentes internacional"
       description=""
       image="/img/smartcheck/international-background.png"
-      link="#"
+      link="/docs-es/verificacion-antecendentes/verificacion-antecendentes-interpol"
     />
   </div>
 </div>
@@ -335,7 +335,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de licencia de conducir canadiense"
       description=""
       image="/img/smartcheck/canada-driver.png"
-      link="#"
+      link="/docs-es/validaciones-vehiculos/licencia-de-manejo-british-columbia"
     />
   </div>
   <div className="col col--4">
@@ -343,7 +343,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de licencia de conducir colombiana"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="#"
+      link="/docs-es/validaciones-conductores/chile-licencia-conducir"
     />
   </div>
   <div className="col col--4">
@@ -351,7 +351,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de licencia de conducir de Florida"
       description=""
       image="/img/smartcheck/us-citizen.png"
-      link="#"
+      link="/docs-es/validaciones-vehiculos/licencia-de-manejo-florida"
     />
   </div>
 </div>
@@ -362,7 +362,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de licencia de conducir de Kansas"
       description=""
       image="/img/smartcheck/us-citizen.png"
-      link="#"
+      link="/docs-es/validaciones-vehiculos/licencia-de-manejo-kansas"
     />
   </div>
   <div className="col col--4">
@@ -370,7 +370,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de licencia de conducir de Ontario"
       description=""
       image="/img/smartcheck/canada-citizen.png"
-      link="#"
+      link="/docs-es/validaciones-vehiculos/licencia-de-manejo-ontario"
     />
   </div>
 </div>
@@ -383,7 +383,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa argentina"
       description=""
       image="/img/smartcheck/argentina-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/argentina"
     />
   </div>
   <div className="col col--4">
@@ -391,7 +391,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa boliviana"
       description=""
       image="/img/smartcheck/bolivia-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/bolivia"
     />
   </div>
   <div className="col col--4">
@@ -399,7 +399,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa brasileña"
       description=""
       image="/img/smartcheck/brazil-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/brazil"
     />
   </div>
 </div>
@@ -410,7 +410,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa canadiense"
       description=""
       image="/img/smartcheck/canada-business.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/canada"
     />
   </div>
   <div className="col col--4">
@@ -418,7 +418,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa chilena"
       description=""
       image="/img/smartcheck/chile-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/chilean"
     />
   </div>
   <div className="col col--4">
@@ -426,7 +426,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa colombiana"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/colombia"
     />
   </div>
 </div>
@@ -437,7 +437,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa costarricense"
       description=""
       image="/img/smartcheck/costa-rica-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/costa-rica"
     />
   </div>
   <div className="col col--4">
@@ -445,7 +445,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa mexicana"
       description=""
       image="/img/smartcheck/mexico-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/mexico"
     />
   </div>
   <div className="col col--4">
@@ -453,7 +453,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa panameña"
       description=""
       image="/img/smartcheck/panama-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/panama"
     />
   </div>
 </div>
@@ -464,7 +464,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa paraguaya"
       description=""
       image="/img/smartcheck/paraguay-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/paraguay"
     />
   </div>
   <div className="col col--4">
@@ -472,7 +472,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa peruana"
       description=""
       image="/img/smartcheck/peru-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/peru"
     />
   </div>
   <div className="col col--4">
@@ -480,7 +480,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa española"
       description=""
       image="/img/smartcheck/spain-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/spain"
     />
   </div>
 </div>
@@ -491,7 +491,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa estadounidense"
       description=""
       image="/img/smartcheck/us-citizen.png"
-      link="#"
+      link="/docs-es/validacion-empresarial/united-states"
     />
   </div>
 </div>
@@ -504,7 +504,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Verificación de abogado colombiano"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="#"
+      link="/docs-es/legal/verificacion-abogados"
     />
   </div>
   <div className="col col--4">
@@ -512,7 +512,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Procesos legales colombianos"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="#"
+      link="/docs-es/legal/procesos-legales-colombianos"
     />
   </div>
   <div className="col col--4">
@@ -520,7 +520,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Detalles de proceso legal colombiano"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="#"
+      link="/docs-es/legal/recuperar-detalles-proceso-legal-por-numero"
     />
   </div>
 </div>
@@ -539,7 +539,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Certificados de validez para profesionales legales colombianos"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="#"
+      link="/docs-es/legal/certificado-vigencia-profesionales-legales"
     />
   </div>
 </div>

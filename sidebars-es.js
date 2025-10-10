@@ -457,6 +457,45 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "VOTACIÓN",
+			collapsible: false,
+			items: ["legal/votacion"],
+		},
+		{
+			type: "category",
+			label: "SALUD",
+			collapsible: false,
+			items: ["legal/salud"],
+		},
+		{
+			type: "category",
+			label: "VERIFICACIONES LEGALES",
+			collapsible: false,
+			items: [
+				{
+					type: "doc",
+					id: "legal/verificacion-abogados",
+					label: "🇨🇴 Verificación de Abogado Colombiano",
+				},
+				{
+					type: "doc",
+					id: "legal/procesos-legales-colombianos",
+					label: "🇨🇴 Procesos Legales Colombianos",
+				},
+				{
+					type: "doc",
+					id: "legal/recuperar-detalles-proceso-legal-por-numero",
+					label: "🇨🇴 Detalles de Proceso Legal Colombiano",
+				},
+				{
+					type: "doc",
+					id: "legal/certificado-vigencia-profesionales-legales",
+					label: "🇨🇴 Vigencia de Profesionales Legales Colombianos",
+				},
+			],
+		},
+		{
+			type: "category",
 			label: "RECURSOS",
 			collapsible: false,
 			items: [
@@ -595,24 +634,6 @@ const sidebars = {
 					],
 				},
 			],
-		},
-		{
-			type: "category",
-			label: "VOTACIÓN",
-			collapsible: false,
-			items: ["legal/votacion"],
-		},
-		{
-			type: "category",
-			label: "SALUD",
-			collapsible: false,
-			items: ["legal/salud"],
-		},
-		{
-			type: "category",
-			label: "VERIFICACIONES LEGALES",
-			collapsible: false,
-			items: ["legal/verificacion-abogados"],
 		},
 		{
 			type: "category",

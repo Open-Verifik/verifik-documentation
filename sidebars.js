@@ -567,6 +567,45 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "VOTING",
+			collapsible: false,
+			items: ["legal/voting"],
+		},
+		{
+			type: "category",
+			label: "HEALTH",
+			collapsible: false,
+			items: ["legal/health", "legal/verify-colombian-affiliations"],
+		},
+		{
+			type: "category",
+			label: "LEGAL VERIFICATIONS",
+			collapsible: false,
+			items: [
+				{
+					type: "doc",
+					id: "legal/lawyer-verification",
+					label: "🇨🇴 Colombian Lawyer Verification",
+				},
+				{
+					type: "doc",
+					id: "legal/colombian-legal-processes",
+					label: "🇨🇴 Colombian Legal Processes",
+				},
+				{
+					type: "doc",
+					id: "legal/retrieve-details-of-a-legal-process-by-number",
+					label: "🇨🇴 Colombian Legal Process Details",
+				},
+				{
+					type: "doc",
+					id: "legal/certificate-of-validity-for-legal-professionals",
+					label: "🇨🇴 Colombian Legal Professional Validity",
+				},
+			],
+		},
+		{
+			type: "category",
 			label: "RESOURCES",
 			collapsible: false,
 			items: [
@@ -717,24 +756,6 @@ const sidebars = {
 					items: ["resources/the-person-object", "resources/create-a-person", "resources/retrieve-a-person", "resources/list-all-persons"],
 				},
 			],
-		},
-		{
-			type: "category",
-			label: "VOTING",
-			collapsible: false,
-			items: ["legal/voting"],
-		},
-		{
-			type: "category",
-			label: "HEALTH",
-			collapsible: false,
-			items: ["legal/health", "legal/verify-colombian-affiliations"],
-		},
-		{
-			type: "category",
-			label: "LEGAL VERIFICATIONS",
-			collapsible: false,
-			items: ["legal/lawyer-verification"],
 		},
 		{
 			type: "category",
