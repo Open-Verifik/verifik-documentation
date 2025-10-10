@@ -140,7 +140,7 @@ La tecnología OCR se ha convertido en una herramienta esencial para digitalizar
       </div>
       <div className="card__body">
         <p>Prueba nuestra API <strong>Escaneo con Prompt</strong> con cualquier documento que tengas. Perfecto para extracción de texto flexible basada en prompts.</p>
-        <a href="/docs/ocr-engines/scan-prompt" className="button button--primary">Aprender Más</a>
+        <a href="/ocr-engines/scan-prompt" className="button button--primary">Aprender Más</a>
       </div>
     </div>
   </div>
@@ -151,7 +151,7 @@ La tecnología OCR se ha convertido en una herramienta esencial para digitalizar
       </div>
       <div className="card__body">
         <p>Prueba nuestra API Estudio de Escaneo con los modelos entrenados que tenemos. Ideal para procesamiento de documentos especializado de alta precisión.</p>
-        <a href="/docs/ocr-engines/scan-studio" className="button button--primary">Aprender Más</a>
+        <a href="/ocr-engines/scan-studio" className="button button--primary">Aprender Más</a>
       </div>
     </div>
   </div>

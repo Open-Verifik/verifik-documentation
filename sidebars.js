@@ -130,6 +130,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/colombia-ppt",
+					label: "🇨🇴 Colombia - PPT",
+				},
+				{
+					type: "doc",
 					id: "identity/costa-rica",
 					label: "🇨🇷 Costa Rica",
 				},

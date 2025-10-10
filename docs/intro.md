@@ -18,7 +18,7 @@ Verifik offers a set of solutions that work as no-code with an easy configuratio
       title="Database Screening"
       description="Data validation (customers, companies, vehicles) from multiple global sources. The ideal solution for KYC/KYB, AML and more, ensuring the integrity and authenticity of your end-user data."
       image="/img/services/database-screening.png"
-      link="/smartcheck/smartcheck"
+      link="/smartcheck"
     />
   </div>
   <div className="col col--6">
@@ -26,7 +26,7 @@ Verifik offers a set of solutions that work as no-code with an easy configuratio
       title="SmartAccess"
       description="A no-code solution to manage access to your platform securely and efficiently. By combining OTP codes and facial recognition with liveness detection, we offer a fast and hassle-free login experience."
       image="/img/services/smartaccess.png"
-      link="/smartaccess/smartaccess"
+      link="/smartaccess"
     />
   </div>
 </div>
@@ -37,7 +37,7 @@ Verifik offers a set of solutions that work as no-code with an easy configuratio
       title="Access"
       description="Everything that Smart Access has to offer but on the API level, giving the flexibility to code a custom solution based on your company needs."
       image="/img/services/access.png"
-      link="/access/access"
+      link="/access"
     />
   </div>
   <div className="col col--6">
@@ -45,7 +45,7 @@ Verifik offers a set of solutions that work as no-code with an easy configuratio
       title="SmartEnroll"
       description="Perform a complete user onboarding process with advanced identity verification technologies such as facial recognition, ID Validations & Background checks, ensuring secure and effective registration."
       image="/img/services/smartenroll.png"
-      link="/smartenroll/smartenroll"
+      link="/smartenroll"
     />
   </div>
 </div>
@@ -56,7 +56,7 @@ Verifik offers a set of solutions that work as no-code with an easy configuratio
       title="Enroll"
       description="This solution includes everything that SmartEnroll does but on the API level, giving the flexibility to code a custom solution based on your company needs."
       image="/img/services/enroll.png"
-      link="/enroll/enroll"
+      link="/enroll"
     />
   </div>
 </div>

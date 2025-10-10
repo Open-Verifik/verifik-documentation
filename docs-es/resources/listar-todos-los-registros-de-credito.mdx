@@ -1,0 +1,202 @@
+---
+id: listar-todos-los-registros-de-credito
+title: Listar Todos los Registros de Crédito
+description: Recuperar una lista de todos los registros de crédito con filtrado opcional y paginación
+slug: /resources/listar-todos-los-registros-de-credito
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Listar Todos los Registros de Crédito
+
+## Endpoint
+
+```
+https://api.verifik.co/v2/credits
+```
+
+Recuperar una lista de registros de Crédito en el sistema de Verifik. Este endpoint devuelve un array de objetos de crédito, cada uno conteniendo información detallada sobre transacciones de crédito, balances y cuentas de cliente asociadas.
+
+### Headers
+
+| Nombre         | Valor              |
+| -------------- | ------------------ |
+| Content-Type   | `application/json` |
+| Authorization  | `Bearer <token>`   |
+
+### Parámetros
+
+| Parámetro        | Tipo   | Requerido | Descripción                                                                                    |
+| ---------------- | ------ | --------- | ---------------------------------------------------------------------------------------------- |
+| `page`           | number | No        | Especifica el número de página para paginación, comenzando desde 1.                            |
+| `perPage`        | number | No        | Define el número de elementos por página para paginación.                                      |
+| `populates[]`    | string | No        | Puebla el campo especificado, transformando referencias ObjectId en objetos completos. Opciones disponibles: `client`, `superAdmin` |
+| `where_status`   | string | No        | Condición where para filtrar por estado. Opciones: `approved`, `pending`, `failed`, `postPaid` |
+| `where_category` | string | No        | Condición where para filtrar por categoría. Opciones: `purchase`, `usage` |
+| `where_client`   | string | No        | Filtrar por ID de cliente específico |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/credits',
+  params: {
+    page: 1,
+    perPage: 20,
+    "populates[]": ["client"],
+    where_status: "approved",
+    where_category: "purchase"
+  },
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'jwt <tu_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "JWT token"
+}
+
+conn.request("GET", "/v2/credits?page=1&perPage=20&populates[]=client&where_status=approved&where_category=purchase", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/credits?page=1&perPage=20&populates[]=client&where_status=approved&where_category=purchase', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'JWT token',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "JWT token"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/credits?page=1&perPage=20&populates[]=client&where_status=approved&where_category=purchase")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "credit_123456789",
+      "amount": 1000,
+      "status": "approved",
+      "category": "purchase",
+      "client": {
+        "_id": "client_123456789",
+        "name": "Cliente Ejemplo",
+        "email": "cliente@ejemplo.com"
+      },
+      "description": "Compra de créditos para uso de API",
+      "transactionId": "txn_123456789",
+      "paymentMethod": "credit_card",
+      "currency": "USD",
+      "exchangeRate": 1.0,
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "perPage": 20,
+    "total": 1,
+    "pages": 1
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "success": false,
+  "error": "Parámetros de consulta inválidos",
+  "code": "INVALID_PARAMETERS"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Features
+
+-   **Recuperación de Registros de Crédito**: Recuperar todos los registros de crédito con información detallada
+-   **Soporte de Paginación**: Navegar a través de grandes conjuntos de datos con paginación basada en páginas
+-   **Opciones de Filtrado**: Filtrar por estado, categoría y cliente
+-   **Soporte de Población**: Incluir información relacionada de cliente y administrador
+-   **Respuesta Estructurada**: Formato de datos organizado para fácil integración
+-   **Múltiples Lenguajes de Programación**: Soporte para JavaScript, Python, PHP y Swift
+-   **Manejo de Errores**: Respuestas de error comprensivas para varios escenarios

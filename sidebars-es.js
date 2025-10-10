@@ -85,6 +85,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 Colombia - ID Completo" },
 				{ type: "doc", id: "identity/colombia-foreigner-id", label: "🇨🇴 Colombia - Cédula de Extranjero" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 Colombia - ID PEP" },
+				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 Colombia - PPT" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Costa Rica" },
 				{ type: "doc", id: "identity/dominican-republic", label: "🇩🇴 República Dominicana" },
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 Ecuador" },
@@ -379,6 +380,73 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "VERIFICACIÓN DE ANTECEDENTES",
+			collapsible: false,
+			items: [
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-brasil",
+					label: "🇧🇷 Brasil - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-contratos-publicos",
+					label: "🇨🇴 Colombia - Contratos Públicos",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-policia",
+					label: "🇨🇴 Colombia - Antecedentes Policiales",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-cumplimiento-policial",
+					label: "🇨🇴 Colombia - Cumplimiento Policial",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-contraloria",
+					label: "🇨🇴 Colombia - Contraloría",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-procuraduria",
+					label: "🇨🇴 Colombia - Procuraduría",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-europol",
+					label: "🌐 Europol - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-dea",
+					label: "🌐 DEA - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-fbi",
+					label: "🌐 FBI - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-interpol",
+					label: "🌐 Interpol - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-ofac",
+					label: "🌐 OFAC - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-onu",
+					label: "🌐 ONU - Antecedentes",
+				},
+			],
+		},
+		{
+			type: "category",
 			label: "RECURSOS",
 			collapsible: false,
 			items: [
@@ -495,7 +563,40 @@ const sidebars = {
 						"resources/email-access-example",
 					],
 				},
+				{
+					type: "category",
+					label: "Créditos",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-credito",
+						"resources/listar-todos-los-registros-de-credito",
+						"resources/recuperar-un-registro-de-credito",
+					],
+				},
+				{
+					type: "category",
+					label: "Personas",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-persona",
+						"resources/crear-una-persona",
+						"resources/recuperar-una-persona",
+						"resources/listar-todas-las-personas",
+					],
+				},
 			],
+		},
+		{
+			type: "category",
+			label: "VOTACIÓN",
+			collapsible: false,
+			items: ["legal/votacion"],
+		},
+		{
+			type: "category",
+			label: "SALUD",
+			collapsible: false,
+			items: ["legal/salud"],
 		},
 		{
 			type: "category",
