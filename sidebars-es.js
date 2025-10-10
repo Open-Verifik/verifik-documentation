@@ -86,6 +86,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/colombia-foreigner-id", label: "🇨🇴 Colombia - Cédula de Extranjero" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 Colombia - ID PEP" },
 				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 Colombia - PPT" },
+				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 Colombia - CE" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Costa Rica" },
 				{ type: "doc", id: "identity/dominican-republic", label: "🇩🇴 República Dominicana" },
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 Ecuador" },

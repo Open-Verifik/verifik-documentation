@@ -135,6 +135,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/colombia-ce",
+					label: "🇨🇴 Colombia - CE",
+				},
+				{
+					type: "doc",
 					id: "identity/costa-rica",
 					label: "🇨🇷 Costa Rica",
 				},
