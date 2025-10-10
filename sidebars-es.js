@@ -573,6 +573,27 @@ const sidebars = {
 						"resources/email-access-example",
 					],
 				},
+				{
+					type: "category",
+					label: "Créditos",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-credito",
+						"resources/listar-todos-los-registros-de-credito",
+						"resources/recuperar-un-registro-de-credito",
+					],
+				},
+				{
+					type: "category",
+					label: "Personas",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-persona",
+						"resources/crear-una-persona",
+						"resources/recuperar-una-persona",
+						"resources/listar-todas-las-personas",
+					],
+				},
 			],
 		},
 		{
