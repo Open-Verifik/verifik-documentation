@@ -1,0 +1,213 @@
+---
+id: verificacion-antecendentes-dea
+title: Verificación de Antecedentes DEA
+description: El servicio de verificación de antecedentes de DEA permite a los desarrolladores verificar si una persona o entidad aparece en la lista de vigilancia de la Administración de Control de Drogas de Estados Unidos (DEA). Al proporcionar el tipo de documento y número de documento, o el nombre completo, los usuarios pueden determinar rápidamente si el individuo u organización ha sido marcado por la DEA.
+slug: /verificacion-antecendentes/verificacion-antecendentes-dea
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Verificación de Antecedentes DEA
+
+## Endpoint
+
+```
+https://api.verifik.co/v2/dea
+```
+
+El servicio de verificación de antecedentes de DEA permite a los desarrolladores verificar si una persona o entidad aparece en la lista de vigilancia de la Administración de Control de Drogas de Estados Unidos (DEA). Al proporcionar el tipo de documento y número de documento, o el nombre completo, los usuarios pueden determinar rápidamente si el individuo u organización ha sido marcado por la DEA.
+
+El servicio retorna un indicador booleano que muestra si existe una coincidencia y, si es aplicable, incluye una URL que enlaza al registro oficial de la DEA.
+
+Esta herramienta es esencial para el cumplimiento regulatorio y la mitigación de riesgos en industrias donde individuos o entidades pueden estar involucrados con sustancias controladas.
+
+### Casos de Uso
+
+- **Cumplimiento Regulatorio:** Asegurar que las operaciones comerciales cumplan con las regulaciones federales de Estados Unidos mediante la verificación de individuos o entidades por banderas relacionadas con la DEA.
+- **Prevención de Fraude:** Identificar riesgos potenciales asociados con individuos u organizaciones involucradas en sustancias controladas.
+- **Cumplimiento KYC y AML:** Esencial para industrias como salud, farmacéutica, logística y finanzas para cumplir con las regulaciones de Conoce a tu Cliente (KYC) y Anti-Lavado de Dinero (AML).
+
+### Headers
+
+| Nombre         | Valor              |
+| -------------- | ------------------ |
+| Content-Type   | `application/json` |
+| Authorization  | `Bearer <token>`   |
+
+### Parámetros
+
+#### Consulta por Documento
+
+| Nombre             | Tipo   | Requerido | Descripción                                                                 |
+| ------------------ | ------ | --------- | --------------------------------------------------------------------------- |
+| `documentType`     | string | No        | El tipo de documento que desea solicitar.                                   |
+| `documentNumber`   | string | No        | Número de documento a consultar, sin espacios ni puntos.                     |
+
+#### Consulta por Nombre Completo
+
+| Nombre       | Tipo   | Requerido | Descripción                                                                 |
+| ------------ | ------ | --------- | --------------------------------------------------------------------------- |
+| `fullName`   | string | No        | En lugar de documentType y documentNumber, puede pasar el nombre directamente de la persona/empresa. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/dea',
+  params: {documentType: 'CC', documentNumber: '80251972'},
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'jwt <tu_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "JWT token"
+}
+
+conn.request("GET", "/v2/dea?fullName=Mateo%20Verifik", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "JWT token"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/dea?fullName=Mateo%20Verifik")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/dea?fullName=Mateo Verifik', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'JWT token',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "123456789",
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": [
+      "MATEO",
+      "VERIFIK"
+    ],
+    "foundInDEA": true,
+    "urlDEA": "https://www.dea.gov/fugitives/ismael-zambada-garcia"
+  },
+  "signature": {
+    "dateTime": "June 28, 2022 11:41 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found.",
+  "signature": {
+    "dateTime": "August 31, 2022 3:24 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Características
+
+-   **Verificación de Base de Datos DEA**: Realizar verificaciones en tiempo real contra la lista de vigilancia de la Administración de Control de Drogas de Estados Unidos
+-   **Múltiples Métodos de Consulta**: Buscar por tipo de documento/número o nombre completo
+-   **Datos de Identidad Completos**: Retorna nombre completo, primer nombre, apellido e información del documento
+-   **Detección de Coincidencias**: Indica si la persona se encuentra en la base de datos de la DEA con referencia de URL directa
+-   **Respuesta Estructurada**: Formato de datos organizado para fácil integración
+-   **Múltiples Lenguajes de Programación**: Soporte para JavaScript, Python, PHP y Swift
+-   **Error Handling**: Respuestas de error comprensivas para varios escenarios

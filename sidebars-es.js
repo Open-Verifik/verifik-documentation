@@ -389,6 +389,43 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "VERIFICACIÓN DE ANTECEDENTES",
+			collapsible: false,
+			items: [
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-europol",
+					label: "🌐 Europol - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-dea",
+					label: "🌐 DEA - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-fbi",
+					label: "🌐 FBI - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-interpol",
+					label: "🌐 Interpol - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-ofac",
+					label: "🌐 OFAC - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-onu",
+					label: "🌐 ONU - Antecedentes",
+				},
+			],
+		},
+		{
+			type: "category",
 			label: "RECURSOS",
 			collapsible: false,
 			items: [
