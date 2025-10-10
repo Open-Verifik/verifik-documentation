@@ -137,16 +137,6 @@ const sidebars = {
 				},
 				{
 					type: "doc",
-					id: "validacion-empresarial/colombia-informacion-empresarial-rues",
-					label: "🇨🇴 Colombia - Información Empresarial RUES",
-				},
-				{
-					type: "doc",
-					id: "validacion-empresarial/colombia-registro-empresarial-rues",
-					label: "🇨🇴 Colombia - Registro Empresarial RUES",
-				},
-				{
-					type: "doc",
 					id: "validacion-empresarial/colombia-verificacion-dian",
 					label: "🇨🇴 Colombia - Verificación DIAN",
 				},

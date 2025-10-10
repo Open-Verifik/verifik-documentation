@@ -14,7 +14,7 @@ import { themes as prismThemes } from "prism-react-renderer";
 const config = {
 	title: "Verifik",
 	tagline: "Everything you need to verify & authenticate users faster and easier",
-	favicon: "img/favicon.ico",
+	favicon: "https://cdn.verifik.co/LogoNegroSolo.svg",
 
 	// Additional favicon links for better browser support
 	headTags: [
@@ -23,7 +23,7 @@ const config = {
 			attributes: {
 				rel: "icon",
 				type: "image/x-icon",
-				href: "/img/favicon.ico",
+				href: "https://cdn.verifik.co/LogoNegroSolo.svg",
 			},
 		},
 		{
@@ -31,7 +31,7 @@ const config = {
 			attributes: {
 				rel: "shortcut icon",
 				type: "image/x-icon",
-				href: "/img/favicon.ico",
+				href: "https://cdn.verifik.co/LogoNegroSolo.svg",
 			},
 		},
 		{
@@ -39,7 +39,7 @@ const config = {
 			attributes: {
 				rel: "apple-touch-icon",
 				sizes: "180x180",
-				href: "/img/favicon.ico",
+				href: "https://cdn.verifik.co/LogoNegroSolo.svg",
 			},
 		},
 	],
