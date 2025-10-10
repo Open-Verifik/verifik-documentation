@@ -394,6 +394,36 @@ const sidebars = {
 			items: [
 				{
 					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-brasil",
+					label: "🇧🇷 Brasil - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-contratos-publicos",
+					label: "🇨🇴 Colombia - Contratos Públicos",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-policia",
+					label: "🇨🇴 Colombia - Antecedentes Policiales",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-cumplimiento-policial",
+					label: "🇨🇴 Colombia - Cumplimiento Policial",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-contraloria",
+					label: "🇨🇴 Colombia - Contraloría",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-procuraduria",
+					label: "🇨🇴 Colombia - Procuraduría",
+				},
+				{
+					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-europol",
 					label: "🌐 Europol - Antecedentes",
 				},
