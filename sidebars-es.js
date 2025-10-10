@@ -577,6 +577,18 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "VOTACIÓN",
+			collapsible: false,
+			items: ["legal/votacion"],
+		},
+		{
+			type: "category",
+			label: "SALUD",
+			collapsible: false,
+			items: ["legal/salud"],
+		},
+		{
+			type: "category",
 			label: "VERIFIK LLC",
 			collapsible: false,
 			items: [
