@@ -610,6 +610,12 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "VERIFICACIONES LEGALES",
+			collapsible: false,
+			items: ["legal/verificacion-abogados"],
+		},
+		{
+			type: "category",
 			label: "VERIFIK LLC",
 			collapsible: false,
 			items: [
@@ -618,8 +624,6 @@ const sidebars = {
 				"legal/acuerdo-de-niveles-de-servicio",
 				"legal/verifik-for-enterprises-hub-esp",
 				"legal/smartcheck-terminos-y-condiciones-de-uso",
-				"legal/verificacion-abogados",
-				"legal/verificar-afiliaciones-colombianas",
 			],
 		},
 		// Secciones restantes se añadirán conforme se migren desde EN a ES

@@ -732,6 +732,12 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "LEGAL VERIFICATIONS",
+			collapsible: false,
+			items: ["legal/lawyer-verification"],
+		},
+		{
+			type: "category",
 			label: "VERIFIK LLC",
 			collapsible: false,
 			items: [
