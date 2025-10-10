@@ -1,34 +1,37 @@
 ---
 id: peru-vehicle-information
-title: Vehicle Information
-description: Peruvian vehicle information service
+title: Peru - Vehicle Information
+description: The Peruvian Vehicle Information service provides detailed data about registered vehicles in Peru based on their license plate number. The response includes key details such as the vehicle's make, model, year, engine and chassis serial numbers, seating capacity, and usage type.
+slug: /vehicle-validation/peru/vehicle-information
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Peru
+# Peru - Vehicle Information
 
-## Peruvian Vehicle Information
+## Endpoint
 
-<mark >`GET - https://api.verifik.co/v2/pe/vehiculo/placa`</mark>
+```
+https://api.verifik.co/v2/pe/vehiculo/placa
+```
 
 The Peruvian Vehicle Information service provides detailed data about registered vehicles in Peru based on their license plate number. The response includes key details such as the vehicle's make, model, year, engine and chassis serial numbers, seating capacity, and usage type.
 
-### Implementation
-
-**Headers**
+## Headers
 
 | Name          | Value              |
 | ------------- | ------------------ |
 | Content-Type  | `application/json` |
 | Authorization | `Bearer <token>`   |
 
-**Query Parameters**
+## Parameters
 
-<table><thead><tr><th width="107">Name</th><th width="78">Type</th><th width="111">Required?</th><th width="330">Description</th><th>Example</th></tr></thead><tbody><tr><td>plate</td><td>String</td><td><code>True</code></td><td>Plate number to consult, without spaces or points.</td><td><code>ABC123</code></td></tr></tbody></table>
+| Name           | Type    | Required | Description                                    |
+| -------------- | ------- | -------- | ---------------------------------------------- |
+| `plate`        | string  | Yes      | Plate number to consult, without spaces or points. |
 
-#### Request
+## Request
 
 <Tabs>
 <TabItem value="javascript" label="JavaScript">
@@ -117,7 +120,7 @@ catch(HTTP_Request2_Exception $e) {
 </TabItem>
 </Tabs>
 
-### **Response**
+## Response
 
 <Tabs>
 <TabItem value="200" label="200">
@@ -170,3 +173,21 @@ catch(HTTP_Request2_Exception $e) {
 
 </TabItem>
 </Tabs>
+
+## Use Cases
+
+- **Vehicle Verification**: Validate basic information of vehicles registered in Peru
+- **Insurance Services**: Verify vehicle data for insurance processes
+- **Traffic Agencies**: Consult official vehicle information
+- **Transportation Companies**: Validate commercial vehicle data
+- **Property Verification**: Confirm technical details of the vehicle
+
+## Features
+
+- ✅ Query by license plate number
+- ✅ Complete technical information (brand, model, year)
+- ✅ Engine and chassis serial numbers
+- ✅ Seating capacity
+- ✅ Vehicle usage type
+- ✅ License plate format validation
+- ✅ Certified response by Verifik.co

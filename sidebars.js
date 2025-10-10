@@ -385,22 +385,27 @@ const sidebars = {
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license",
-							label: "Driver's License",
+							label: "RUNT - Driver's License",
 						},
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate",
-							label: "Vehicle records by plate number",
+							label: "RUNT - Vehicle records by plate number",
 						},
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified",
-							label: "Vehicle records by plate number (simplified)",
+							label: "RUNT - Vehicle records by plate number (simplified)",
 						},
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin",
-							label: "Vehicle records by VIN",
+							label: "RUNT - Vehicle records by VIN",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-soat-rtm",
+							label: "RUNT - SOAT and RTM",
 						},
 						{
 							type: "doc",
@@ -455,9 +460,26 @@ const sidebars = {
 					label: "🇵🇾 Paraguay",
 				},
 				{
-					type: "doc",
-					id: "vehicle-validation/peru",
+					type: "category",
 					label: "🇵🇪 Peru",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "vehicle-validation/peru",
+							label: "Overview",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/peru/peru-vehicle-information",
+							label: "Vehicle Information",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/peru/peru-vehicle-insurance",
+							label: "Vehicle Insurance",
+						},
+					],
 				},
 				{
 					type: "doc",
@@ -484,7 +506,7 @@ const sidebars = {
 				{
 					type: "doc",
 					id: "driver-validation/florida-driver-license",
-					label: "🇺🇸 Florida -Driver License",
+					label: "🇺🇸 Florida - Driver License",
 				},
 				{
 					type: "doc",

@@ -204,13 +204,13 @@ const sidebars = {
 			items: [
 				{
 					type: "doc",
-					id: "validaciones-vehiculos/licencia-de-manejo-british-columbia",
-					label: "🇨🇦 British Columbia -Licencia de Manejo",
+					id: "validaciones-conductores/chile-licencia-conducir",
+					label: "🇨🇱 Chile - Licencia de Conducir",
 				},
 				{
 					type: "doc",
-					id: "validaciones-conductores/chile-licencia-conducir",
-					label: "🇨🇱 Chile - Licencia de Conducir",
+					id: "validaciones-conductores/licencia-conducir-british-columbia",
+					label: "🇨🇦 Canadá - Licencia de Conducir British Columbia",
 				},
 				{
 					type: "doc",
@@ -225,7 +225,7 @@ const sidebars = {
 				{
 					type: "doc",
 					id: "validaciones-vehiculos/licencia-de-manejo-ontario",
-					label: "🇨🇦 Ontario- Licencia de Manejo",
+					label: "🇨🇦 Ontario - Licencia de Manejo",
 				},
 			],
 		},
@@ -326,6 +326,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "validacion-vehiculos/colombia/colombia-runt-soat-rtm",
+							label: "RUNT - SOAT y RTM",
+						},
+						{
+							type: "doc",
 							id: "validacion-vehiculos/colombia/multas-simit",
 							label: "SIMIT - Multas",
 						},
@@ -377,9 +382,26 @@ const sidebars = {
 					label: "🇵🇾 Paraguay",
 				},
 				{
-					type: "doc",
-					id: "validacion-vehiculos/peru",
+					type: "category",
 					label: "🇵🇪 Perú",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "validacion-vehiculos/peru",
+							label: "Resumen",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/peru/peru-informacion-vehiculo",
+							label: "Información de Vehículo",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/peru/peru-seguro-vehiculo",
+							label: "Seguro de Vehículo",
+						},
+					],
 				},
 				{
 					type: "doc",
