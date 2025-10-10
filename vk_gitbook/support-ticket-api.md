@@ -712,12 +712,12 @@ try {
       "id": 123,
       "number": 456,
       "title": "API Integration Issue - Ticket #1001",
-      "html_url": "https://github.com/verifik/verifik-backend/issues/456",
+      "html_url": "https://github.com/Open-Verifik/verifik-backend/issues/456",
       "body": "Support ticket details...",
       "labels": ["support", "api"],
       "assignees": ["support-team"]
     },
-    "issueUrl": "https://github.com/verifik/verifik-backend/issues/456"
+    "issueUrl": "https://github.com/Open-Verifik/verifik-backend/issues/456"
   }
 }
 ```

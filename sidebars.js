@@ -633,30 +633,6 @@ const sidebars = {
 			items: [
 				{
 					type: "category",
-					label: "Projects",
-					collapsible: true,
-					items: [
-						"resources/the-project-object",
-						"resources/create-a-project",
-						"resources/retrieve-a-project",
-						"resources/list-all-projects",
-						"resources/update-a-project",
-					],
-				},
-				{
-					type: "category",
-					label: "Project Flows",
-					collapsible: true,
-					items: [
-						"resources/the-project-flow-object",
-						"resources/create-a-project-flow",
-						"resources/retrieve-a-project-flow",
-						"resources/list-all-project-flows",
-						"resources/update-a-project-flow",
-					],
-				},
-				{
-					type: "category",
 					label: "App Logins",
 					collapsible: true,
 					items: [
@@ -679,6 +655,35 @@ const sidebars = {
 						"resources/retrieve-an-app-registration",
 						"resources/list-all-app-registrations",
 					],
+				},
+				{
+					type: "category",
+					label: "Biometric Validations",
+					collapsible: true,
+					items: [
+						"resources/the-biometric-validation-object",
+						"resources/create-a-biometric-validation",
+						"resources/create-an-app-login-biometric-validation",
+						"resources/retrieve-a-biometric-validation",
+						"resources/list-all-biometric-validations",
+					],
+				},
+				{
+					type: "category",
+					label: "Collections",
+					collapsible: true,
+					items: [
+						"resources/the-collection-object",
+						"resources/create-a-collection",
+						"resources/list-all-collections",
+						"resources/retrieve-a-collection",
+					],
+				},
+				{
+					type: "category",
+					label: "Credits",
+					collapsible: true,
+					items: ["resources/the-credit-object", "resources/list-all-credit-records", "resources/retrieve-a-credit-record"],
 				},
 				{
 					type: "category",
@@ -719,6 +724,12 @@ const sidebars = {
 				},
 				{
 					type: "category",
+					label: "Persons",
+					collapsible: true,
+					items: ["resources/the-person-object", "resources/create-a-person", "resources/retrieve-a-person", "resources/list-all-persons"],
+				},
+				{
+					type: "category",
 					label: "Phone Validations",
 					collapsible: true,
 					items: [
@@ -731,14 +742,26 @@ const sidebars = {
 				},
 				{
 					type: "category",
-					label: "Biometric Validations",
+					label: "Projects",
 					collapsible: true,
 					items: [
-						"resources/the-biometric-validation-object",
-						"resources/create-a-biometric-validation",
-						"resources/create-an-app-login-biometric-validation",
-						"resources/retrieve-a-biometric-validation",
-						"resources/list-all-biometric-validations",
+						"resources/the-project-object",
+						"resources/create-a-project",
+						"resources/retrieve-a-project",
+						"resources/list-all-projects",
+						"resources/update-a-project",
+					],
+				},
+				{
+					type: "category",
+					label: "Project Flows",
+					collapsible: true,
+					items: [
+						"resources/the-project-flow-object",
+						"resources/create-a-project-flow",
+						"resources/retrieve-a-project-flow",
+						"resources/list-all-project-flows",
+						"resources/update-a-project-flow",
 					],
 				},
 				{
@@ -764,18 +787,6 @@ const sidebars = {
 						"resources/update-a-webhook",
 						"resources/delete-a-webhook",
 					],
-				},
-				{
-					type: "category",
-					label: "Credits",
-					collapsible: true,
-					items: ["resources/the-credit-object", "resources/list-all-credit-records", "resources/retrieve-a-credit-record"],
-				},
-				{
-					type: "category",
-					label: "Persons",
-					collapsible: true,
-					items: ["resources/the-person-object", "resources/create-a-person", "resources/retrieve-a-person", "resources/list-all-persons"],
 				},
 			],
 		},
