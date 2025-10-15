@@ -70,6 +70,18 @@ const sidebars = {
 					collapsible: true,
 					items: ["biometrics/search", "biometrics/search-live-face", "biometrics/search-active-user", "biometrics/search-crops"],
 				},
+				{
+					type: "category",
+					label: "Zero Knowledge Face Proofs",
+					collapsible: true,
+					items: [
+						"biometrics/zero-knowledge-face-proofs-overview",
+						"biometrics/zero-knowledge-face-proofs-encrypt",
+						"biometrics/zero-knowledge-face-proofs-encrypt-qr-code",
+						"biometrics/zero-knowledge-face-proofs-decrypt",
+						"biometrics/zero-knowledge-face-proofs-preview",
+					],
+				},
 			],
 		},
 		{

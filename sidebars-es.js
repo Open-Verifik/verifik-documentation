@@ -63,6 +63,18 @@ const sidebars = {
 					collapsible: true,
 					items: ["biometrics/buscar", "biometrics/buscar-cara-en-vivo", "biometrics/buscar-usuario-activo", "biometrics/buscar-recortes"],
 				},
+				{
+					type: "category",
+					label: "Pruebas Faciales de Conocimiento Cero",
+					collapsible: true,
+					items: [
+						"biometrics/pruebas-faciales-conocimiento-cero-resumen",
+						"biometrics/pruebas-faciales-conocimiento-cero-encriptar",
+						"biometrics/pruebas-faciales-conocimiento-cero-encriptar-codigo-qr",
+						"biometrics/pruebas-faciales-conocimiento-cero-desencriptar",
+						"biometrics/pruebas-faciales-conocimiento-cero-vista-previa",
+					],
+				},
 			],
 		},
 		{
