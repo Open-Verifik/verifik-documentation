@@ -2,7 +2,7 @@
 
 ## Verify Legal Invoicer in DIAN for Colombian Companies
 
-<mark style="color:green;">`GET - https://api.verifik.co/v2/co/company/dian/invoicer`</mark>
+<mark style="color:green;">`GET - https://api.verifik.cohttps://api.verifik.co/v2/co/company/dian/invoicer`</mark>
 
 This service allows you to verify if a company is registered with DIAN (Dirección de Impuestos y Aduanas Nacionales) as a legal invoicer. By querying the company's registration details, you can determine if it is officially recognized for issuing invoices. A successful response confirms the company's status as a registered invoicer.
 
@@ -29,7 +29,7 @@ import axios from 'axios';
 
 const options = {
   method: 'GET',
-  url: '<https://api.verifik.co/v2/co/company/dian/invoicer>',
+  url: '<https://api.verifik.cohttps://api.verifik.co/v2/co/company/dian/invoicer>',
   params: {documentType: 'NIT', documentNumber: '901331380'},
   headers: {
     Accept: 'application/json',
@@ -55,7 +55,7 @@ import http.client
 conn = http.client.HTTPSConnection("api.verifik.co")
 payload = ''
 headers = {}
-conn.request("GET", "/v2/co/company/dian/invoicer?documentType=NIT&documentNumber=", payload, headers)
+conn.request("GET", "https://api.verifik.co/v2/co/company/dian/invoicer?documentType=NIT&documentNumber=", payload, headers)
 res = conn.getresponse()
 data = res.read()
 print(data.decode("utf-8"))
@@ -66,7 +66,7 @@ print(data.decode("utf-8"))
 {% tab title="Swift" %}
 
 ```swift
-var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/co/company/dian/invoicer?documentType=NIT&documentNumber=")!,timeoutInterval: Double.infinity)
+var request = URLRequest(url: URL(string: "https://api.verifik.cohttps://api.verifik.co/v2/co/company/dian/invoicer?documentType=NIT&documentNumber=")!,timeoutInterval: Double.infinity)
 request.httpMethod = "GET"
 
 let task = URLSession.shared.dataTask(with: request) { data, response, error in 
@@ -89,7 +89,7 @@ task.resume()
 <?php
 require_once 'HTTP/Request2.php';
 $request = new HTTP_Request2();
-$request->setUrl('https://api.verifik.co/v2/co/company/dian/invoicer?documentType=NIT&documentNumber=');
+$request->setUrl('https://api.verifik.cohttps://api.verifik.co/v2/co/company/dian/invoicer?documentType=NIT&documentNumber=');
 $request->setMethod(HTTP_Request2::METHOD_GET);
 $request->setConfig(array(
   'follow_redirects' => TRUE
