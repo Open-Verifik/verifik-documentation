@@ -63,6 +63,18 @@ const sidebars = {
 					collapsible: true,
 					items: ["biometrics/buscar", "biometrics/buscar-cara-en-vivo", "biometrics/buscar-usuario-activo", "biometrics/buscar-recortes"],
 				},
+				{
+					type: "category",
+					label: "Pruebas Faciales de Conocimiento Cero",
+					collapsible: true,
+					items: [
+						"biometrics/pruebas-faciales-conocimiento-cero-resumen",
+						"biometrics/pruebas-faciales-conocimiento-cero-encriptar",
+						"biometrics/pruebas-faciales-conocimiento-cero-encriptar-codigo-qr",
+						"biometrics/pruebas-faciales-conocimiento-cero-desencriptar",
+						"biometrics/pruebas-faciales-conocimiento-cero-vista-previa",
+					],
+				},
 			],
 		},
 		{
@@ -86,6 +98,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/colombia-foreigner-id", label: "🇨🇴 Colombia - Cédula de Extranjero" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 Colombia - ID PEP" },
 				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 Colombia - PPT" },
+				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 Colombia - CE" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Costa Rica" },
 				{ type: "doc", id: "identity/dominican-republic", label: "🇩🇴 República Dominicana" },
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 Ecuador" },
@@ -194,13 +207,13 @@ const sidebars = {
 			items: [
 				{
 					type: "doc",
-					id: "validaciones-vehiculos/licencia-de-manejo-british-columbia",
-					label: "🇨🇦 British Columbia -Licencia de Manejo",
+					id: "validaciones-conductores/chile-licencia-conducir",
+					label: "🇨🇱 Chile - Licencia de Conducir",
 				},
 				{
 					type: "doc",
-					id: "validaciones-conductores/chile-licencia-conducir",
-					label: "🇨🇱 Chile - Licencia de Conducir",
+					id: "validaciones-conductores/licencia-conducir-british-columbia",
+					label: "🇨🇦 Canadá - Licencia de Conducir British Columbia",
 				},
 				{
 					type: "doc",
@@ -215,7 +228,7 @@ const sidebars = {
 				{
 					type: "doc",
 					id: "validaciones-vehiculos/licencia-de-manejo-ontario",
-					label: "🇨🇦 Ontario- Licencia de Manejo",
+					label: "🇨🇦 Ontario - Licencia de Manejo",
 				},
 			],
 		},
@@ -316,6 +329,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "validacion-vehiculos/colombia/colombia-runt-soat-rtm",
+							label: "RUNT - SOAT y RTM",
+						},
+						{
+							type: "doc",
 							id: "validacion-vehiculos/colombia/multas-simit",
 							label: "SIMIT - Multas",
 						},
@@ -367,9 +385,26 @@ const sidebars = {
 					label: "🇵🇾 Paraguay",
 				},
 				{
-					type: "doc",
-					id: "validacion-vehiculos/peru",
+					type: "category",
 					label: "🇵🇪 Perú",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "validacion-vehiculos/peru",
+							label: "Resumen",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/peru/peru-informacion-vehiculo",
+							label: "Información de Vehículo",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/peru/peru-seguro-vehiculo",
+							label: "Seguro de Vehículo",
+						},
+					],
 				},
 				{
 					type: "doc",
@@ -447,9 +482,106 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "VOTACIÓN",
+			collapsible: false,
+			items: ["legal/votacion"],
+		},
+		{
+			type: "category",
+			label: "SALUD",
+			collapsible: false,
+			items: ["legal/salud"],
+		},
+		{
+			type: "category",
+			label: "VERIFICACIONES LEGALES",
+			collapsible: false,
+			items: [
+				{
+					type: "doc",
+					id: "legal/verificacion-abogados",
+					label: "🇨🇴 Verificación de Abogado Colombiano",
+				},
+				{
+					type: "doc",
+					id: "legal/procesos-legales-colombianos",
+					label: "🇨🇴 Procesos Legales Colombianos",
+				},
+				{
+					type: "doc",
+					id: "legal/recuperar-detalles-proceso-legal-por-numero",
+					label: "🇨🇴 Detalles de Proceso Legal Colombiano",
+				},
+				{
+					type: "doc",
+					id: "legal/certificado-vigencia-profesionales-legales",
+					label: "🇨🇴 Vigencia de Profesionales Legales Colombianos",
+				},
+			],
+		},
+		{
+			type: "category",
 			label: "RECURSOS",
 			collapsible: false,
 			items: [
+				{
+					type: "category",
+					label: "Colecciones",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-coleccion",
+						"resources/crear-una-coleccion",
+						"resources/listar-todas-las-colecciones",
+						"resources/recuperar-una-coleccion",
+					],
+				},
+				{
+					type: "category",
+					label: "Créditos",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-credito",
+						"resources/listar-todos-los-registros-de-credito",
+						"resources/recuperar-un-registro-de-credito",
+					],
+				},
+				{
+					type: "category",
+					label: "Flujos de Proyecto",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-flujo-de-proyecto",
+						"resources/crear-un-flujo-de-proyecto",
+						"resources/listar-todos-los-flujos-de-proyecto",
+						"resources/recuperar-un-flujo-de-proyecto",
+						"resources/actualizar-un-flujo-de-proyecto",
+					],
+				},
+				{
+					type: "category",
+					label: "Inicios de Sesión de Aplicación",
+					collapsible: true,
+					items: [
+						"resources/the-app-login-object",
+						"resources/create-an-app-login",
+						"resources/retrieve-an-app-login",
+						"resources/list-all-app-logins",
+						"resources/create-an-app-login-biometric-validation",
+						"resources/validate-an-app-login-biometric-validation",
+						"resources/email-access-example",
+					],
+				},
+				{
+					type: "category",
+					label: "Personas",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-persona",
+						"resources/crear-una-persona",
+						"resources/recuperar-una-persona",
+						"resources/listar-todas-las-personas",
+					],
+				},
 				{
 					type: "category",
 					label: "Proyectos",
@@ -464,14 +596,39 @@ const sidebars = {
 				},
 				{
 					type: "category",
-					label: "Flujos de Proyecto",
+					label: "Validación de Vivacidad de Documentos",
 					collapsible: true,
 					items: [
-						"resources/el-objeto-flujo-de-proyecto",
-						"resources/crear-un-flujo-de-proyecto",
-						"resources/listar-todos-los-flujos-de-proyecto",
-						"resources/recuperar-un-flujo-de-proyecto",
-						"resources/actualizar-un-flujo-de-proyecto",
+						"resources/el-objeto-validacion-de-vivacidad-de-documento",
+						"resources/crear-una-validacion-de-vivacidad-de-documento",
+						"resources/listar-todas-las-validaciones-de-vivacidad-de-documentos",
+						"resources/recuperar-una-validacion-de-vivacidad-de-documento",
+					],
+				},
+				{
+					type: "category",
+					label: "Validaciones Biométricas",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-validacion-biometrica",
+						"resources/validaciones-biometricas",
+						"resources/crear-una-validacion-biometrica",
+						"resources/listar-todas-las-validaciones-biometricas",
+						"resources/recuperar-una-validacion-biometrica",
+					],
+				},
+				{
+					type: "category",
+					label: "Validaciones de Documentos",
+					collapsible: true,
+					items: [
+						"resources/validaciones-de-documentos",
+						"resources/el-objeto-validacion-de-documento",
+						"resources/crear-una-validacion-de-nombre",
+						"resources/listar-todas-las-validaciones-de-documentos",
+						"resources/recuperar-una-validacion-de-documento",
+						"resources/eliminar-una-validacion-de-documento",
+						"resources/actualizar-una-validacion-de-documento",
 					],
 				},
 				{
@@ -500,43 +657,6 @@ const sidebars = {
 				},
 				{
 					type: "category",
-					label: "Validación de Vivacidad de Documentos",
-					collapsible: true,
-					items: [
-						"resources/el-objeto-validacion-de-vivacidad-de-documento",
-						"resources/crear-una-validacion-de-vivacidad-de-documento",
-						"resources/listar-todas-las-validaciones-de-vivacidad-de-documentos",
-						"resources/recuperar-una-validacion-de-vivacidad-de-documento",
-					],
-				},
-				{
-					type: "category",
-					label: "Validaciones de Documentos",
-					collapsible: true,
-					items: [
-						"resources/validaciones-de-documentos",
-						"resources/el-objeto-validacion-de-documento",
-						"resources/crear-una-validacion-de-nombre",
-						"resources/listar-todas-las-validaciones-de-documentos",
-						"resources/recuperar-una-validacion-de-documento",
-						"resources/eliminar-una-validacion-de-documento",
-						"resources/actualizar-una-validacion-de-documento",
-					],
-				},
-				{
-					type: "category",
-					label: "Validaciones Biométricas",
-					collapsible: true,
-					items: [
-						"resources/el-objeto-validacion-biometrica",
-						"resources/validaciones-biometricas",
-						"resources/crear-una-validacion-biometrica",
-						"resources/listar-todas-las-validaciones-biometricas",
-						"resources/recuperar-una-validacion-biometrica",
-					],
-				},
-				{
-					type: "category",
 					label: "Webhooks",
 					collapsible: true,
 					items: [
@@ -549,54 +669,7 @@ const sidebars = {
 						"resources/integracion-de-webhook",
 					],
 				},
-				{
-					type: "category",
-					label: "Inicios de Sesión de Aplicación",
-					collapsible: true,
-					items: [
-						"resources/the-app-login-object",
-						"resources/create-an-app-login",
-						"resources/retrieve-an-app-login",
-						"resources/list-all-app-logins",
-						"resources/create-an-app-login-biometric-validation",
-						"resources/validate-an-app-login-biometric-validation",
-						"resources/email-access-example",
-					],
-				},
-				{
-					type: "category",
-					label: "Créditos",
-					collapsible: true,
-					items: [
-						"resources/el-objeto-credito",
-						"resources/listar-todos-los-registros-de-credito",
-						"resources/recuperar-un-registro-de-credito",
-					],
-				},
-				{
-					type: "category",
-					label: "Personas",
-					collapsible: true,
-					items: [
-						"resources/el-objeto-persona",
-						"resources/crear-una-persona",
-						"resources/recuperar-una-persona",
-						"resources/listar-todas-las-personas",
-					],
-				},
 			],
-		},
-		{
-			type: "category",
-			label: "VOTACIÓN",
-			collapsible: false,
-			items: ["legal/votacion"],
-		},
-		{
-			type: "category",
-			label: "SALUD",
-			collapsible: false,
-			items: ["legal/salud"],
 		},
 		{
 			type: "category",

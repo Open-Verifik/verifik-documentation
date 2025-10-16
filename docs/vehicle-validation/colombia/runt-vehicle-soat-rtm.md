@@ -1,47 +1,41 @@
 ---
 id: vehicle-validation-colombia-runt-vehicle-soat-rtm
-title: RUNT - Vehicle's SOAT and RTM
-description: Insurance and technical inspection information
-sidebar_label: Vehicle's SOAT and RTM
+title: Colombia - RUNT SOAT and RTM
+description: The Colombian Vehicle Information service provides real-time access to details about a registered vehicle in Colombia. By using this service, you can obtain information such as the owner's name and identification, vehicle color, make and model, registration status, and expiration dates for the SOAT (mandatory vehicle insurance) and technical review.
+slug: /vehicle-validation/colombia/runt-vehicle-soat-rtm
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# RUNT - Vehicle's SOAT and RTM
+# Colombia - RUNT SOAT and RTM
 
-## Colombian Vehicle Information Service
+## Endpoint
 
-<Tabs>
-<TabItem value="endpoint" label="Endpoint" default>
-
-`GET - https://api.verifik.co/v2/co/runt/vehiculo`
+```
+https://api.verifik.co/v2/co/runt/vehiculo
+```
 
 The Colombian Vehicle Information service provides real-time access to details about a registered vehicle in Colombia. By using this service, you can obtain information such as the owner's name and identification, vehicle color, make and model, registration status, and expiration dates for the SOAT (mandatory vehicle insurance) and technical review.
 
 This service is ideal for businesses in the automotive industry, insurance companies, and government agencies that need to verify vehicle information and ensure compliance with regulations.
 
-</TabItem>
-</Tabs>
-
-### Implementation
-
-**Headers**
+## Headers
 
 | Name          | Value              |
 | ------------- | ------------------ |
 | Content-Type  | `application/json` |
 | Authorization | `Bearer <token>`   |
 
-**Query Parameters**
+## Parameters
 
-| Name | Type | Required? | Description | Example |
-|------|------|-----------|-------------|---------|
-| documentType | String | `True` | Document type. Allowed values are: CC, CE, PA, RC, NIT. | `CC` |
-| documentNumber | String | `True` | Document number of the owner of the vehicle, without spaces or periods. | `123456789` |
-| plate | String | `True` | Vehicle plate to consult. | `ABC123` |
+| Name           | Type    | Required | Description                                    |
+| -------------- | ------- | -------- | ---------------------------------------------- |
+| `documentType` | string  | Yes      | Document type. Allowed values are: CC, CE, PA, RC, NIT. |
+| `documentNumber` | string | Yes      | Document number of the owner of the vehicle, without spaces or periods. |
+| `plate` | string | Yes      | Vehicle plate to consult. |
 
-**Request**
+## Request
 
 <Tabs>
 <TabItem value="javascript" label="JavaScript" default>
@@ -145,7 +139,7 @@ catch(HTTP_Request2_Exception $e) {
 </TabItem>
 </Tabs>
 
-### **Response**
+## Response
 
 <Tabs>
 <TabItem value="200" label="200" default>
@@ -193,12 +187,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-"code": "NotFound",
-"message": "Record not found.",
-"signature": {
-"dateTime": "August 31, 2022 3:24 PM",
-"message": "Certified by Verifik.co"
-}
+    "code": "NotFound",
+    "message": "Record not found."
 }
 ```
 
@@ -226,3 +216,24 @@ catch(HTTP_Request2_Exception $e) {
 
 </TabItem>
 </Tabs>
+
+## Use Cases
+
+- **Vehicle Verification**: Validate complete information of vehicles registered in Colombia
+- **Insurance Services**: Verify SOAT status and expiration dates
+- **Technical Review**: Validate technical inspection status
+- **Traffic Control**: Verify compliance with vehicle regulations
+- **Transportation Companies**: Validate vehicle fleets and their documents
+- **Property Verification**: Confirm owner and vehicle details
+
+## Features
+
+- ✅ Query by document type, number and plate
+- ✅ Complete vehicle information (brand, model, color, status)
+- ✅ Owner data (document type and number)
+- ✅ SOAT status with expedition and expiration dates
+- ✅ Technical review status with number and dates
+- ✅ Vehicle enrollment date
+- ✅ Registration status (ACTIVE/INACTIVE)
+- ✅ Support for multiple document types (CC, CE, PA, RC, NIT)
+- ✅ Certified response by Verifik.co

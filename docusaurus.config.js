@@ -150,7 +150,7 @@ const config = {
 						position: "right",
 					},
 					{
-						to: "https://github.com/verifik/verifik-documentation",
+						to: "https://github.com/Open-Verifik/verifik-documentation",
 						label: "GitHub",
 						position: "right",
 					},

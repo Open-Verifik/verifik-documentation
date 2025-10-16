@@ -1,0 +1,297 @@
+---
+id: pruebas-faciales-conocimiento-cero-encriptar
+title: Encriptar Prueba Facial
+description: Crear una prueba facial de conocimiento cero con datos faciales encriptados
+slug: /biometrics/pruebas-faciales-conocimiento-cero-encriptar
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/zelf-proof/encrypt
+```
+
+Crea una prueba facial de conocimiento cero encriptando datos faciales y almacenándolos en IPFS. La prueba puede ser verificada posteriormente sin exponer los datos biométricos originales.
+
+### Encabezados
+
+| Nombre | Valor |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Descripción |
+| --- | --- | --- | --- |
+| `faceBase64` | string | Sí | Imagen facial codificada en Base64 |
+| `requireLiveness` | boolean | Sí | Si requiere detección de vitalidad |
+| `livenessLevel` | string | Sí | Nivel de detección de vitalidad (`REGULAR`, `SOFT`, `HARDENED`) |
+| `os` | string | Sí | Sistema operativo (`DESKTOP`, `ANDROID`, `IOS`) |
+| `identifier` | string | Sí | Identificador único (solo alfanumérico, sin espacios ni caracteres especiales) |
+| `publicData` | object | Sí | Datos públicos a almacenar con la prueba (pares clave-valor de string) |
+| `metadata` | object | Sí | Metadatos privados (pares clave-valor de string) |
+| `password` | string | No | Contraseña opcional para seguridad adicional |
+| `referenceFaceBase64` | string | No | Cara de referencia para comparación |
+| `tolerance` | string | No | Nivel de tolerancia (`REGULAR`, `SOFT`, `HARDENED`) |
+| `verifierKey` | string | No | Clave de verificador para validación adicional |
+| `livenessDetectionPriorCreation` | boolean | No | Habilitar detección de vitalidad antes de la creación de la prueba |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch("https://api.verifik.co/v2/zelf-proof/encrypt", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      faceBase64: "<base64_image>",
+      requireLiveness: false,
+      livenessLevel: "REGULAR",
+      password: "1234",
+      os: "DESKTOP",
+      identifier: "randomid",
+      publicData: {
+        "a": "1",
+        "b": "2",
+        "vida": "true"
+      },
+      metadata: {
+        "secretA": "3",
+        "secretB": "4"
+      }
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/zelf-proof/encrypt");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "faceBase64" => "<base64_image>",
+    "requireLiveness" => false,
+    "livenessLevel" => "REGULAR",
+    "password" => "1234",
+    "os" => "DESKTOP",
+    "identifier" => "randomid",
+    "publicData" => [
+        "a" => "1",
+        "b" => "2",
+        "vida" => "true"
+    ],
+    "metadata" => [
+        "secretA" => "3",
+        "secretB" => "4"
+    ]
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/zelf-proof/encrypt"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "faceBase64": "<base64_image>",
+    "requireLiveness": False,
+    "livenessLevel": "REGULAR",
+    "password": "1234",
+    "os": "DESKTOP",
+    "identifier": "randomid",
+    "publicData": {
+        "a": "1",
+        "b": "2",
+        "vida": "true"
+    },
+    "metadata": {
+        "secretA": "3",
+        "secretB": "4"
+    }
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    payload := map[string]interface{}{
+        "faceBase64": "<base64_image>",
+        "requireLiveness": false,
+        "livenessLevel": "REGULAR",
+        "password": "1234",
+        "os": "DESKTOP",
+        "identifier": "randomid",
+        "publicData": map[string]string{
+            "a": "1",
+            "b": "2",
+            "vida": "true",
+        },
+        "metadata": map[string]string{
+            "secretA": "3",
+            "secretB": "4",
+        },
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/zelf-proof/encrypt", bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "zelfProof": "A39T6XGv2ld+/lwCeB11tcXKFUE2+4LkYwr2BfVwko8OvAqFCavD2S5o62IsxIH8QuQ6K9z1yJ6qhedWojVAhlMoufcpZLlhSknJTUMsql+FXXECoZ0elw3ZCKm1DHrrn3QoRtv3Pfc1EPB2fSoXan2RjFEnkolmrNA/FvRaEOgPeFLUlOFAVzYRVVsoFfe9N6pNZ9q5uCRti7vUwPz5LnObB5uVxFyNZFxZJKrJmqkEHWI+elEqQR/7KnGtwgyN4TNnVGdbyRUUZ8eTztGal5VHIDwYdKxIbjDb1x+xz/elCShcHr4K2QhG+cefp1hj6GFg8BSLF83Wk5U20Cm5V6G0F3Vjk4yNDc7IQB6OfvEDsD8OEov4xBG51D7pw6ukFrw/FrlHBbR+KV6We8t7pJ5/vzFll1tZKcki4PoOXcu/DzmhEVVb0DoVRcB53sbxpU0G5aT0hRH2rhs1jI0yitSzISqFOTNCb7wm3CQoA2ZGndx4+DLaoKjOb/9RFlRyk2FWpM1QGAPGMbJbDeW1JrZmBTsWQ6vTr6U+JdCZA2ZxEXIsugpzbkbMMnisW8m+ddoYJm2TJTvYI8XX6bLtC6T6dEM0oFPbJkjcYdW6bemsaMm0+evZUdREs7E435jDXEoJEP0LOufTluGYcstrTqcwKtSwM5OKK9qH27WNaWcybYrKw8tA0RBUf1jDc8ChHiKXRtiUQ3JxKzK2qLnlpBYLo/0Kyy0tYP7xK1lhxaJvMks8igH/jOuyjqLL0MmOs9EnCGZayJD/UQcu84XgDQKmVxk2zFUVhol7HlcRgpMisVaSawWhpnZtPFAeV+rpJgYAR8g4NjhZ7d9QGuHTdrxmGhHZcEyTqblMx4Kx4UVdWKzvHgaFjFFYag2w",
+    "ipfs": {
+      "url": "https://blush-selective-earwig-920.mypinata.cloud/ipfs/bafkreibu6ouy66tv7mmqbf4rxjd2tywdhfad2vri2sk562bltuz663imwu",
+      "IpfsHash": "bafkreibu6ouy66tv7mmqbf4rxjd2tywdhfad2vri2sk562bltuz663imwu",
+      "PinSize": 965,
+      "Timestamp": "2025-10-15T15:22:00.333Z",
+      "ID": "8e4dd38b-580d-4bf7-a71d-5c6d4e7dc008",
+      "Name": "613375a1eab2fe08527f81e2_zk_randomid_93558.json",
+      "NumberOfFiles": 1,
+      "MimeType": "application/json",
+      "GroupId": "861b93d7-9795-461d-b479-31f751d6869e",
+      "pinned": true,
+      "web3": true,
+      "name": "613375a1eab2fe08527f81e2_zk_randomid_93558.json",
+      "metadata": [
+        "a",
+        "b",
+        "vida"
+      ]
+    }
+  },
+  "credits": {
+    "amount": -0.84,
+    "status": "approved",
+    "category": "usage",
+    "client": "613375a1eab2fe08527f81e2",
+    "superAdmin": null,
+    "expensesGroup": "613375a1eab2fe08527f81e2_zk_randomid_93558",
+    "group": "Zelf",
+    "product": "other",
+    "code": "zelf-proofs",
+    "transaction": null,
+    "expiresAt": null,
+    "isExpired": false,
+    "referenceCredit": null,
+    "_id": "68efbc187fb658e0366a3019",
+    "updatedAt": "2025-10-15T15:22:00.907Z",
+    "createdAt": "2025-10-15T15:22:00.907Z",
+    "__v": 0
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access Forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"faceBase64\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "internal_error",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- El token `zelfProof` contiene la prueba facial encriptada y debe almacenarse de forma segura
+- Los datos IPFS incluyen metadatos sobre la prueba almacenada y claves de datos públicos
+- Se deducen créditos por la creación de la prueba (típicamente 0.84 créditos)
+- El `identifier` debe ser solo alfanumérico (sin espacios ni caracteres especiales)
+- `publicData` y `metadata` deben contener solo pares clave-valor de string
+- La detección de vitalidad puede habilitarse para seguridad adicional
+- La protección con contraseña añade una capa extra de seguridad a la prueba

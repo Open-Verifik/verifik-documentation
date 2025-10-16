@@ -70,6 +70,18 @@ const sidebars = {
 					collapsible: true,
 					items: ["biometrics/search", "biometrics/search-live-face", "biometrics/search-active-user", "biometrics/search-crops"],
 				},
+				{
+					type: "category",
+					label: "Zero Knowledge Face Proofs",
+					collapsible: true,
+					items: [
+						"biometrics/zero-knowledge-face-proofs-overview",
+						"biometrics/zero-knowledge-face-proofs-encrypt",
+						"biometrics/zero-knowledge-face-proofs-encrypt-qr-code",
+						"biometrics/zero-knowledge-face-proofs-decrypt",
+						"biometrics/zero-knowledge-face-proofs-preview",
+					],
+				},
 			],
 		},
 		{
@@ -132,6 +144,11 @@ const sidebars = {
 					type: "doc",
 					id: "identity/colombia-ppt",
 					label: "🇨🇴 Colombia - PPT",
+				},
+				{
+					type: "doc",
+					id: "identity/colombia-ce",
+					label: "🇨🇴 Colombia - CE",
 				},
 				{
 					type: "doc",
@@ -385,22 +402,27 @@ const sidebars = {
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license",
-							label: "Driver's License",
+							label: "RUNT - Driver's License",
 						},
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate",
-							label: "Vehicle records by plate number",
+							label: "RUNT - Vehicle records by plate number",
 						},
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified",
-							label: "Vehicle records by plate number (simplified)",
+							label: "RUNT - Vehicle records by plate number (simplified)",
 						},
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin",
-							label: "Vehicle records by VIN",
+							label: "RUNT - Vehicle records by VIN",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-soat-rtm",
+							label: "RUNT - SOAT and RTM",
 						},
 						{
 							type: "doc",
@@ -455,9 +477,26 @@ const sidebars = {
 					label: "🇵🇾 Paraguay",
 				},
 				{
-					type: "doc",
-					id: "vehicle-validation/peru",
+					type: "category",
 					label: "🇵🇪 Peru",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "vehicle-validation/peru",
+							label: "Overview",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/peru/peru-vehicle-information",
+							label: "Vehicle Information",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/peru/peru-vehicle-insurance",
+							label: "Vehicle Insurance",
+						},
+					],
 				},
 				{
 					type: "doc",
@@ -484,7 +523,7 @@ const sidebars = {
 				{
 					type: "doc",
 					id: "driver-validation/florida-driver-license",
-					label: "🇺🇸 Florida -Driver License",
+					label: "🇺🇸 Florida - Driver License",
 				},
 				{
 					type: "doc",
@@ -567,33 +606,48 @@ const sidebars = {
 		},
 		{
 			type: "category",
-			label: "RESOURCES",
+			label: "VOTING",
+			collapsible: false,
+			items: ["legal/voting"],
+		},
+		{
+			type: "category",
+			label: "HEALTH",
+			collapsible: false,
+			items: ["legal/health", "legal/verify-colombian-affiliations"],
+		},
+		{
+			type: "category",
+			label: "LEGAL VERIFICATIONS",
 			collapsible: false,
 			items: [
 				{
-					type: "category",
-					label: "Projects",
-					collapsible: true,
-					items: [
-						"resources/the-project-object",
-						"resources/create-a-project",
-						"resources/retrieve-a-project",
-						"resources/list-all-projects",
-						"resources/update-a-project",
-					],
+					type: "doc",
+					id: "legal/lawyer-verification",
+					label: "🇨🇴 Colombian Lawyer Verification",
 				},
 				{
-					type: "category",
-					label: "Project Flows",
-					collapsible: true,
-					items: [
-						"resources/the-project-flow-object",
-						"resources/create-a-project-flow",
-						"resources/retrieve-a-project-flow",
-						"resources/list-all-project-flows",
-						"resources/update-a-project-flow",
-					],
+					type: "doc",
+					id: "legal/colombian-legal-processes",
+					label: "🇨🇴 Colombian Legal Processes",
 				},
+				{
+					type: "doc",
+					id: "legal/retrieve-details-of-a-legal-process-by-number",
+					label: "🇨🇴 Colombian Legal Process Details",
+				},
+				{
+					type: "doc",
+					id: "legal/certificate-of-validity-for-legal-professionals",
+					label: "🇨🇴 Colombian Legal Professional Validity",
+				},
+			],
+		},
+		{
+			type: "category",
+			label: "RESOURCES",
+			collapsible: false,
+			items: [
 				{
 					type: "category",
 					label: "App Logins",
@@ -618,6 +672,35 @@ const sidebars = {
 						"resources/retrieve-an-app-registration",
 						"resources/list-all-app-registrations",
 					],
+				},
+				{
+					type: "category",
+					label: "Biometric Validations",
+					collapsible: true,
+					items: [
+						"resources/the-biometric-validation-object",
+						"resources/create-a-biometric-validation",
+						"resources/create-an-app-login-biometric-validation",
+						"resources/retrieve-a-biometric-validation",
+						"resources/list-all-biometric-validations",
+					],
+				},
+				{
+					type: "category",
+					label: "Collections",
+					collapsible: true,
+					items: [
+						"resources/the-collection-object",
+						"resources/create-a-collection",
+						"resources/list-all-collections",
+						"resources/retrieve-a-collection",
+					],
+				},
+				{
+					type: "category",
+					label: "Credits",
+					collapsible: true,
+					items: ["resources/the-credit-object", "resources/list-all-credit-records", "resources/retrieve-a-credit-record"],
 				},
 				{
 					type: "category",
@@ -658,6 +741,12 @@ const sidebars = {
 				},
 				{
 					type: "category",
+					label: "Persons",
+					collapsible: true,
+					items: ["resources/the-person-object", "resources/create-a-person", "resources/retrieve-a-person", "resources/list-all-persons"],
+				},
+				{
+					type: "category",
 					label: "Phone Validations",
 					collapsible: true,
 					items: [
@@ -670,14 +759,26 @@ const sidebars = {
 				},
 				{
 					type: "category",
-					label: "Biometric Validations",
+					label: "Projects",
 					collapsible: true,
 					items: [
-						"resources/the-biometric-validation-object",
-						"resources/create-a-biometric-validation",
-						"resources/create-an-app-login-biometric-validation",
-						"resources/retrieve-a-biometric-validation",
-						"resources/list-all-biometric-validations",
+						"resources/the-project-object",
+						"resources/create-a-project",
+						"resources/retrieve-a-project",
+						"resources/list-all-projects",
+						"resources/update-a-project",
+					],
+				},
+				{
+					type: "category",
+					label: "Project Flows",
+					collapsible: true,
+					items: [
+						"resources/the-project-flow-object",
+						"resources/create-a-project-flow",
+						"resources/retrieve-a-project-flow",
+						"resources/list-all-project-flows",
+						"resources/update-a-project-flow",
 					],
 				},
 				{
@@ -704,31 +805,7 @@ const sidebars = {
 						"resources/delete-a-webhook",
 					],
 				},
-				{
-					type: "category",
-					label: "Credits",
-					collapsible: true,
-					items: ["resources/the-credit-object", "resources/list-all-credit-records", "resources/retrieve-a-credit-record"],
-				},
-				{
-					type: "category",
-					label: "Persons",
-					collapsible: true,
-					items: ["resources/the-person-object", "resources/create-a-person", "resources/retrieve-a-person", "resources/list-all-persons"],
-				},
 			],
-		},
-		{
-			type: "category",
-			label: "VOTING",
-			collapsible: false,
-			items: ["legal/voting"],
-		},
-		{
-			type: "category",
-			label: "HEALTH",
-			collapsible: false,
-			items: ["legal/health", "legal/verify-colombian-affiliations"],
 		},
 		{
 			type: "category",
