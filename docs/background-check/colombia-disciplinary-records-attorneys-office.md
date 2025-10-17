@@ -240,3 +240,12 @@ catch(HTTP_Request2_Exception $e) {
 
 </TabItem>
 </Tabs>
+
+### Features
+
+-   **Disciplinary Records**: Verify disciplinary records in the Attorney General's Office
+-   **Detailed Information**: Details about sanctions, instances, crimes and ineligibilities
+-   **Official Certification**: Certificates issued by the Attorney General of the Nation
+-   **Structured Response**: Organized data format for easy integration
+-   **Multiple Programming Languages**: Support for JavaScript, Python, PHP and Swift
+-   **Error Handling**: Comprehensive error responses for various scenarios
