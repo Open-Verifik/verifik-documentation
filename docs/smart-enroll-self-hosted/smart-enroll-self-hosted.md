@@ -18,8 +18,8 @@ The SmartEnroll API enables you to create and manage KYC projects programmatical
 
 ## Key Features
 
-<div className="row">
-  <div className="col col--4">
+<div className="features-grid">
+  <div className="feature-card">
     <div className="card">
       <div className="card__header">
         <h3><ClipboardList size={20} style={{display: 'inline', marginRight: '8px'}} />Project Management</h3>
@@ -29,7 +29,7 @@ The SmartEnroll API enables you to create and manage KYC projects programmatical
       </div>
     </div>
   </div>
-  <div className="col col--4">
+  <div className="feature-card">
     <div className="card">
       <div className="card__header">
         <h3><Workflow size={20} style={{display: 'inline', marginRight: '8px'}} />Project Flows</h3>
@@ -39,7 +39,7 @@ The SmartEnroll API enables you to create and manage KYC projects programmatical
       </div>
     </div>
   </div>
-  <div className="col col--4">
+  <div className="feature-card">
     <div className="card">
       <div className="card__header">
         <h3><Palette size={20} style={{display: 'inline', marginRight: '8px'}} />Custom Branding</h3>
@@ -49,10 +49,7 @@ The SmartEnroll API enables you to create and manage KYC projects programmatical
       </div>
     </div>
   </div>
-</div>
-
-<div className="row">
-  <div className="col col--4">
+  <div className="feature-card">
     <div className="card">
       <div className="card__header">
         <h3><Link size={20} style={{display: 'inline', marginRight: '8px'}} />API Integration</h3>
@@ -62,7 +59,7 @@ The SmartEnroll API enables you to create and manage KYC projects programmatical
       </div>
     </div>
   </div>
-  <div className="col col--4">
+  <div className="feature-card">
     <div className="card">
       <div className="card__header">
         <h3><BarChart3 size={20} style={{display: 'inline', marginRight: '8px'}} />Real-time Updates</h3>
@@ -72,7 +69,7 @@ The SmartEnroll API enables you to create and manage KYC projects programmatical
       </div>
     </div>
   </div>
-  <div className="col col--4">
+  <div className="feature-card">
     <div className="card">
       <div className="card__header">
         <h3><Shield size={20} style={{display: 'inline', marginRight: '8px'}} />Security First</h3>
@@ -150,13 +147,13 @@ All API responses follow a consistent format:
 
 ```json
 {
-    "data": {
-        // Response data
-    },
-    "total": 0,
-    "limit": 0,
-    "page": 0,
-    "pages": 0
+	"data": {
+		// Response data
+	},
+	"total": 0,
+	"limit": 0,
+	"page": 0,
+	"pages": 0
 }
 ```
 
@@ -164,8 +161,8 @@ All API responses follow a consistent format:
 
 ```json
 {
-    "message": "Error description",
-    "code": "ERROR_CODE"
+	"message": "Error description",
+	"code": "ERROR_CODE"
 }
 ```
 
