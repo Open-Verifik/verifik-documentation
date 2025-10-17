@@ -203,3 +203,12 @@ catch(HTTP_Request2_Exception $e) {
 
 </TabItem>
 </Tabs>
+
+### Features
+
+-   **Corrective Measures Verification**: Check for pending corrective measures in Colombia
+-   **Compliance Tracking**: Helps ensure individuals comply with corrective measures
+-   **Detailed Records**: Information about corrective measures including status, type and attribution
+-   **Structured Response**: Organized data format for easy integration
+-   **Multiple Programming Languages**: Support for JavaScript, Python, PHP and Swift
+-   **Error Handling**: Comprehensive error responses for various scenarios
