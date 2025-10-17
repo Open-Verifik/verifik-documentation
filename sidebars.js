@@ -267,16 +267,7 @@ const sidebars = {
 					id: "business-validation/chilean",
 					label: "🇨🇱 Chilean",
 				},
-				{
-					type: "doc",
-					id: "business-validation/colombia-rues-business-information",
-					label: "🇨🇴 Colombia - RUES Business Information",
-				},
-				{
-					type: "doc",
-					id: "business-validation/colombia-rues-business-registry",
-					label: "🇨🇴 Colombia - RUES Business Registry",
-				},
+				// RUES business-information and business-registry removed
 				{
 					type: "doc",
 					id: "business-validation/colombia-dian-verification",
