@@ -180,3 +180,13 @@ catch(HTTP_Request2_Exception $e) {
 
 </TabItem>
 </Tabs>
+
+### Features
+
+-   **FBI Database Verification**: Perform real-time checks against the FBI database
+-   **Multiple Query Methods**: Search by document type/number or full name
+-   **Complete Identity Data**: Returns full name, first name, last name and document information
+-   **Match Detection**: Indicates if the person is found in the FBI database with direct URL reference
+-   **Structured Response**: Organized data format for easy integration
+-   **Multiple Programming Languages**: Support for JavaScript, Python, PHP and Swift
+-   **Error Handling**: Comprehensive error responses for various scenarios

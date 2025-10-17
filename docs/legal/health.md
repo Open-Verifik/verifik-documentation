@@ -32,6 +32,12 @@ This service allows you to verify the authenticity of a Colombian ID (Cédula) a
 
 ### Request
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
 ```javascript
 import axios from 'axios';
 
@@ -56,7 +62,82 @@ try {
 }
 ```
 
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "Bearer <token>"
+}
+
+conn.request("GET", "/v2/co/cedula/rethus?documentType=CC&documentNumber=123456789", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "Bearer <token>"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/co/cedula/rethus?documentType=CC&documentNumber=123456789")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/co/cedula/rethus?documentType=CC&documentNumber=123456789', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'Bearer <token>',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+</Tabs>
+
 ### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
 
 ```json
 {
@@ -86,7 +167,8 @@ try {
 }
 ```
 
-### Error Responses
+  </TabItem>
+  <TabItem value="404" label="404">
 
 ```json
 {
@@ -96,54 +178,29 @@ try {
 }
 ```
 
-## Verify Colombian Affiliations
-
-### Endpoint
-
-```
-https://api.verifik.co/v2/co/cedula/afiliaciones
-```
-
-This service allows you to verify Colombian health affiliations and social security status.
-
-### Request
-
-```javascript
-const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/co/cedula/afiliaciones',
-  params: {
-    documentType: 'CC',
-    documentNumber: '123456789'
-  },
-  headers: {
-    Accept: 'application/json',
-    Authorization: 'Bearer <your_token>'
-  }
-};
-```
-
-### Response
+  </TabItem>
+  <TabItem value="409" label="409">
 
 ```json
 {
-  "success": true,
-  "data": {
-    "documentNumber": "123456789",
-    "firstName": "Carlos",
-    "lastName": "Mendoza",
-    "affiliations": [
-      {
-        "entity": "EPS Sanitas",
-        "status": "active",
-        "affiliationDate": "01/01/2020",
-        "benefits": "Completo"
-      }
-    ],
-    "socialSecurityStatus": "active"
-  }
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
 }
 ```
+
+  </TabItem>
+</Tabs>
+
+### Features
+
+-   **Healthcare Verification**: Verify healthcare professional credentials
+-   **Medical Licensing**: Confirm medical licenses and specializations
+-   **RETHUS Database**: Access national registry of health professionals
+-   **Academic Information**: Review professional degrees and institutions
+-   **Social Security Data**: Check affiliation status and benefits
+-   **Structured Response**: Organized data format for easy integration
+-   **Multiple Programming Languages**: Support for JavaScript, Python, PHP and Swift
+-   **Error Handling**: Comprehensive error responses for various scenarios
 
 ## Use Cases
 
