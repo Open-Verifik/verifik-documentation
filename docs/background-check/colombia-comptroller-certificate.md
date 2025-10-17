@@ -170,3 +170,12 @@ catch(HTTP_Request2_Exception $e) {
 
 </TabItem>
 </Tabs>
+
+### Features
+
+-   **Comptroller Certificate Verification**: Verify certificates of good standing from Colombian Comptroller's Office
+-   **PDF Certificate**: Receive base64-encoded PDF certificate for official documentation
+-   **Good Standing Status**: Confirm the good standing status of companies or individuals
+-   **Structured Response**: Organized data format for easy integration
+-   **Multiple Programming Languages**: Support for JavaScript, Python, PHP and Swift
+-   **Error Handling**: Comprehensive error responses for various scenarios
