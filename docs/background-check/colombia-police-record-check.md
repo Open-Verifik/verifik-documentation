@@ -178,3 +178,12 @@ catch(HTTP_Request2_Exception $e) {
 
 </TabItem>
 </Tabs>
+
+### Features
+
+-   **Police Record Verification**: Query criminal background records associated with individuals in Colombia
+-   **Detailed Information**: Returns complete background check details including full name, legal status and judicial matters
+-   **Transparency**: Promotes transparency in background verification processes
+-   **Structured Response**: Organized data format for easy integration
+-   **Multiple Programming Languages**: Support for JavaScript, Python, PHP and Swift
+-   **Error Handling**: Comprehensive error responses for various scenarios
