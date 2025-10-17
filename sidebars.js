@@ -48,8 +48,33 @@ const sidebars = {
 				"smartaccess/smartaccess",
 				"access/access",
 				"smartenroll/smartenroll",
-				"enroll/enroll",
+				"smart-enroll-self-hosted/smart-enroll-self-hosted",
 				"smart-scan/smart-scan",
+			],
+		},
+		{
+			type: "category",
+			label: "API's",
+			collapsible: true,
+			items: [
+				{
+					type: "category",
+					label: "Projects",
+					collapsible: true,
+					items: [
+						"api/projects/projects-list",
+						"api/projects/projects-show",
+						"api/projects/projects-create",
+						"api/projects/projects-update",
+						"api/projects/projects-delete",
+					],
+				},
+				{
+					type: "category",
+					label: "Project Flows",
+					collapsible: true,
+					items: ["api/project-flows/project-flows-update", "api/project-flows/project-flows-delete"],
+				},
 			],
 		},
 		{

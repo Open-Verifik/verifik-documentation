@@ -42,11 +42,11 @@ const options = {
   method: 'GET',
   url: 'https://api.verifik.co/v2/co/policia/rnmc',
   params: {
-		  documentType: 'CC', 
-		  documentNumber: '123456789', 
-		  date: '10/10/2020'
-				  },  
-	headers: {
+      documentType: 'CC', 
+      documentNumber: '123456789', 
+      date: '10/10/2020'
+          },  
+  headers: {
     Accept: 'application/json',
     Authorization: 'jwt <tu_token>'
   }
