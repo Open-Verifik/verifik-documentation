@@ -237,3 +237,24 @@ catch(HTTP_Request2_Exception $e) {
 
 </TabItem>
 </Tabs>
+
+## Features
+
+-   **Affiliation Verification**: Verify affiliations with EPS, ARL, AP, compensation funds, and severance funds
+-   **Personal Information**: Access personal information of the individual
+-   **Affiliation Status**: Verify the current status of all affiliations
+-   **Employment Information**: Access information about employers and work activities
+-   **Health Information**: Verify EPS affiliation and health regime
+-   **Pension Information**: Verify affiliation to pension funds
+-   **Risk Information**: Verify ARL affiliation and work activities
+-   **Structured Response**: Organized data format for easy integration
+-   **Multiple Programming Languages**: Support for JavaScript, Python, PHP, and Swift
+-   **Error Handling**: Comprehensive error responses for various scenarios
+
+## Use Cases
+
+- **Employment Verification**: Verify employment affiliations for hiring processes
+- **Benefits Eligibility**: Verify affiliations to determine benefits eligibility
+- **Due Diligence**: Verify affiliations for due diligence processes
+- **Regulatory Compliance**: Comply with regulatory requirements for affiliation verification
+- **Identity Verification**: Verify personal information and affiliations of the individual
