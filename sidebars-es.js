@@ -533,6 +533,7 @@ const sidebars = {
 						"resources/crear-una-coleccion",
 						"resources/listar-todas-las-colecciones",
 						"resources/recuperar-una-coleccion",
+						"resources/crear-validacion-biometrica-inicio-sesion-aplicacion",
 					],
 				},
 				{
