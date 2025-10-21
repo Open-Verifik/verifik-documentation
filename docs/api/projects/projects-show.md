@@ -52,7 +52,8 @@ params={{
 
 ## Response Format
 
-### Success Response (200 OK)
+<Tabs>
+<TabItem value="200" label="200 Success">
 
 ```json
 {
@@ -176,6 +177,49 @@ params={{
 }
 ```
 
+</TabItem>
+<TabItem value="400" label="400 Bad Request">
+
+```json
+{
+    "message": "Invalid project ID format",
+    "code": "InvalidParameter"
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 Unauthorized">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+</TabItem>
+<TabItem value="403" label="403 Forbidden">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 Not Found">
+
+```json
+{
+    "message": "Project not found",
+    "code": "NotFound"
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## Response Fields
 
 ### Project Object
@@ -286,51 +330,6 @@ params={{
 | `apiUrl`       | string | API endpoint URL                           |
 | `apiTestType`  | string | API test type (`email`, `phone`)           |
 | `apiTestValue` | string | API test value                             |
-
-## Error Responses
-
-<Tabs>
-<TabItem value="400" label="400 Bad Request">
-
-```json
-{
-    "message": "Invalid project ID format",
-    "code": "InvalidParameter"
-}
-```
-
-</TabItem>
-<TabItem value="401" label="401 Unauthorized">
-
-```json
-{
-    "message": "Access forbidden",
-    "code": "Forbidden"
-}
-```
-
-</TabItem>
-<TabItem value="403" label="403 Forbidden">
-
-```json
-{
-    "message": "Access forbidden",
-    "code": "Forbidden"
-}
-```
-
-</TabItem>
-<TabItem value="404" label="404 Not Found">
-
-```json
-{
-    "message": "Project not found",
-    "code": "NotFound"
-}
-```
-
-</TabItem>
-</Tabs>
 
 ## Examples
 

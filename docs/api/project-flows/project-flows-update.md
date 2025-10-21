@@ -46,30 +46,30 @@ Update the configuration of an existing project flow. This endpoint supports par
 
 ```json
 {
-	"documents": {
-		"attemptLimit": 5,
-		"criminalHistoryVerification": true,
-		"informationVerification": true,
-		"screening": true,
-		"verificationMethods": ["SCAN_PROMPT", "SCAN_STUDIO"],
-		"documentTypes": [
-			{
-				"country": "United States",
-				"configurations": [
-					{
-						"active": true,
-						"documentCategory": "government_id",
-						"documentTemplates": []
-					},
-					{
-						"active": true,
-						"documentCategory": "passport",
-						"documentTemplates": []
-					}
-				]
-			}
-		]
-	}
+    "documents": {
+        "attemptLimit": 5,
+        "criminalHistoryVerification": true,
+        "informationVerification": true,
+        "screening": true,
+        "verificationMethods": ["SCAN_PROMPT", "SCAN_STUDIO"],
+        "documentTypes": [
+            {
+                "country": "United States",
+                "configurations": [
+                    {
+                        "active": true,
+                        "documentCategory": "government_id",
+                        "documentTemplates": []
+                    },
+                    {
+                        "active": true,
+                        "documentCategory": "passport",
+                        "documentTemplates": []
+                    }
+                ]
+            }
+        ]
+    }
 }
 ```
 
@@ -77,12 +77,12 @@ Update the configuration of an existing project flow. This endpoint supports par
 
 ```json
 {
-	"liveness": {
-		"attemptLimit": 3,
-		"minScore": 0.7,
-		"searchMinScore": 0.85,
-		"searchMode": "ACCURATE"
-	}
+    "liveness": {
+        "attemptLimit": 3,
+        "minScore": 0.7,
+        "searchMinScore": 0.85,
+        "searchMode": "ACCURATE"
+    }
 }
 ```
 
@@ -90,25 +90,25 @@ Update the configuration of an existing project flow. This endpoint supports par
 
 ```json
 {
-	"signUpForm": {
-		"fullName": true,
-		"fullNameStyle": "separate",
-		"email": true,
-		"emailGateway": "mailgun",
-		"phone": true,
-		"phoneGateway": "whatsapp",
-		"showTermsAndConditions": true,
-		"showPrivacyNotice": true,
-		"additionalFields": [
-			{
-				"name": "company",
-				"label": "Company Name",
-				"type": "text",
-				"required": false
-			}
-		],
-		"allowAdditionalFields": true
-	}
+    "signUpForm": {
+        "fullName": true,
+        "fullNameStyle": "separate",
+        "email": true,
+        "emailGateway": "mailgun",
+        "phone": true,
+        "phoneGateway": "whatsapp",
+        "showTermsAndConditions": true,
+        "showPrivacyNotice": true,
+        "additionalFields": [
+            {
+                "name": "company",
+                "label": "Company Name",
+                "type": "text",
+                "required": false
+            }
+        ],
+        "allowAdditionalFields": true
+    }
 }
 ```
 
@@ -116,10 +116,10 @@ Update the configuration of an existing project flow. This endpoint supports par
 
 ```json
 {
-	"steps": {
-		"document": "mandatory",
-		"liveness": "mandatory"
-	}
+    "steps": {
+        "document": "mandatory",
+        "liveness": "mandatory"
+    }
 }
 ```
 
@@ -127,15 +127,15 @@ Update the configuration of an existing project flow. This endpoint supports par
 
 ```json
 {
-	"integrations": {
-		"redirectUrl": "https://example.com/success",
-		"webhook": "64a1b2c3d4e5f6789012347",
-		"source": "API",
-		"strategy": "blacklist",
-		"apiUrl": "https://api.example.com/check",
-		"apiTestType": "email",
-		"apiTestValue": "test@example.com"
-	}
+    "integrations": {
+        "redirectUrl": "https://example.com/success",
+        "webhook": "64a1b2c3d4e5f6789012347",
+        "source": "API",
+        "strategy": "blacklist",
+        "apiUrl": "https://api.example.com/check",
+        "apiTestType": "email",
+        "apiTestValue": "test@example.com"
+    }
 }
 ```
 
@@ -143,51 +143,51 @@ Update the configuration of an existing project flow. This endpoint supports par
 
 ```json
 {
-	"status": "active",
-	"signUpForm": {
-		"fullName": true,
-		"fullNameStyle": "separate",
-		"email": true,
-		"emailGateway": "mailgun",
-		"phone": true,
-		"phoneGateway": "whatsapp",
-		"showTermsAndConditions": true,
-		"showPrivacyNotice": true
-	},
-	"documents": {
-		"attemptLimit": 3,
-		"criminalHistoryVerification": true,
-		"informationVerification": true,
-		"screening": true,
-		"verificationMethods": ["SCAN_PROMPT"],
-		"documentTypes": [
-			{
-				"country": "United States",
-				"configurations": [
-					{
-						"active": true,
-						"documentCategory": "government_id",
-						"documentTemplates": []
-					}
-				]
-			}
-		]
-	},
-	"liveness": {
-		"attemptLimit": 3,
-		"minScore": 0.65,
-		"searchMinScore": 0.8,
-		"searchMode": "FAST"
-	},
-	"steps": {
-		"document": "mandatory",
-		"liveness": "mandatory"
-	},
-	"integrations": {
-		"redirectUrl": "https://example.com/success",
-		"source": "NONE",
-		"strategy": "none"
-	}
+    "status": "active",
+    "signUpForm": {
+        "fullName": true,
+        "fullNameStyle": "separate",
+        "email": true,
+        "emailGateway": "mailgun",
+        "phone": true,
+        "phoneGateway": "whatsapp",
+        "showTermsAndConditions": true,
+        "showPrivacyNotice": true
+    },
+    "documents": {
+        "attemptLimit": 3,
+        "criminalHistoryVerification": true,
+        "informationVerification": true,
+        "screening": true,
+        "verificationMethods": ["SCAN_PROMPT"],
+        "documentTypes": [
+            {
+                "country": "United States",
+                "configurations": [
+                    {
+                        "active": true,
+                        "documentCategory": "government_id",
+                        "documentTemplates": []
+                    }
+                ]
+            }
+        ]
+    },
+    "liveness": {
+        "attemptLimit": 3,
+        "minScore": 0.65,
+        "searchMinScore": 0.8,
+        "searchMode": "FAST"
+    },
+    "steps": {
+        "document": "mandatory",
+        "liveness": "mandatory"
+    },
+    "integrations": {
+        "redirectUrl": "https://example.com/success",
+        "source": "NONE",
+        "strategy": "none"
+    }
 }
 ```
 
@@ -337,85 +337,84 @@ body={{
 
 ## Response Format
 
-### Success Response (200 OK)
+<Tabs>
+<TabItem value="200" label="200 Success">
 
 ```json
 {
-	"data": {
-		"_id": "64a1b2c3d4e5f6789012346",
-		"type": "onboarding",
-		"target": "personal",
-		"status": "active",
-		"version": 3,
-		"redirectUrl": "https://example.com/success",
-		"webhookUrl": "https://example.com/webhook",
-		"signUpForm": {
-			"fullName": true,
-			"fullNameStyle": "separate",
-			"email": true,
-			"emailGateway": "mailgun",
-			"phone": true,
-			"phoneGateway": "whatsapp",
-			"showTermsAndConditions": true,
-			"showPrivacyNotice": true,
-			"additionalFields": [],
-			"allowAdditionalFields": false
-		},
-		"documents": {
-			"attemptLimit": 5,
-			"criminalHistoryVerification": true,
-			"informationVerification": true,
-			"screening": true,
-			"verificationMethods": ["SCAN_PROMPT"],
-			"documentTypes": [
-				{
-					"country": "United States",
-					"configurations": [
-						{
-							"active": true,
-							"documentCategory": "government_id",
-							"documentTemplates": []
-						}
-					]
-				}
-			]
-		},
-		"liveness": {
-			"attemptLimit": 3,
-			"minScore": 0.7,
-			"searchMinScore": 0.85,
-			"searchMode": "ACCURATE"
-		},
-		"steps": {
-			"document": "mandatory",
-			"liveness": "mandatory"
-		},
-		"integrations": {
-			"redirectUrl": "https://example.com/success",
-			"webhook": "64a1b2c3d4e5f6789012347",
-			"source": "API",
-			"strategy": "blacklist",
-			"apiUrl": "https://api.example.com/check",
-			"apiTestType": "email",
-			"apiTestValue": "test@example.com"
-		},
-		"createdAt": "2023-07-01T10:00:00.000Z",
-		"updatedAt": "2023-07-01T16:45:00.000Z"
-	}
+    "data": {
+        "_id": "64a1b2c3d4e5f6789012346",
+        "type": "onboarding",
+        "target": "personal",
+        "status": "active",
+        "version": 3,
+        "redirectUrl": "https://example.com/success",
+        "webhookUrl": "https://example.com/webhook",
+        "signUpForm": {
+            "fullName": true,
+            "fullNameStyle": "separate",
+            "email": true,
+            "emailGateway": "mailgun",
+            "phone": true,
+            "phoneGateway": "whatsapp",
+            "showTermsAndConditions": true,
+            "showPrivacyNotice": true,
+            "additionalFields": [],
+            "allowAdditionalFields": false
+        },
+        "documents": {
+            "attemptLimit": 5,
+            "criminalHistoryVerification": true,
+            "informationVerification": true,
+            "screening": true,
+            "verificationMethods": ["SCAN_PROMPT"],
+            "documentTypes": [
+                {
+                    "country": "United States",
+                    "configurations": [
+                        {
+                            "active": true,
+                            "documentCategory": "government_id",
+                            "documentTemplates": []
+                        }
+                    ]
+                }
+            ]
+        },
+        "liveness": {
+            "attemptLimit": 3,
+            "minScore": 0.7,
+            "searchMinScore": 0.85,
+            "searchMode": "ACCURATE"
+        },
+        "steps": {
+            "document": "mandatory",
+            "liveness": "mandatory"
+        },
+        "integrations": {
+            "redirectUrl": "https://example.com/success",
+            "webhook": "64a1b2c3d4e5f6789012347",
+            "source": "API",
+            "strategy": "blacklist",
+            "apiUrl": "https://api.example.com/check",
+            "apiTestType": "email",
+            "apiTestValue": "test@example.com"
+        },
+        "createdAt": "2023-07-01T10:00:00.000Z",
+        "updatedAt": "2023-07-01T16:45:00.000Z"
+    }
 }
 ```
 
-## Error Responses
-
-<Tabs>
+</TabItem>
 <TabItem value="400" label="400 Bad Request">
 
 ```json
 {
-	"message": "Invalid project flow ID format",
-	"code": "BadRequest",
-	"status": 400,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Invalid project flow ID format",
+    "code": "BadRequest",
+    "status": 400,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -430,10 +429,10 @@ body={{
 
 ```json
 {
-	"message": "Access forbidden",
-	"code": "Forbidden",
-	"status": 401,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 401,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -447,10 +446,10 @@ body={{
 
 ```json
 {
-	"message": "Access forbidden",
-	"code": "Forbidden",
-	"status": 403,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 403,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -464,10 +463,10 @@ body={{
 
 ```json
 {
-	"message": "Project flow not found",
-	"code": "NotFound",
-	"status": 404,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Project flow not found",
+    "code": "NotFound",
+    "status": 404,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -482,10 +481,10 @@ body={{
 
 ```json
 {
-	"message": "Cannot update project flow with active users",
-	"code": "Conflict",
-	"status": 409,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Cannot update project flow with active users",
+    "code": "Conflict",
+    "status": 409,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -500,16 +499,16 @@ body={{
 
 ```json
 {
-	"message": "Project flow validation failed",
-	"code": "UnprocessableEntity",
-	"status": 422,
-	"timestamp": "2023-07-01T10:00:00.000Z",
-	"details": [
-		{
-			"field": "documents.verificationMethods",
-			"message": "verificationMethods is required when documents step is not skipped"
-		}
-	]
+    "message": "Project flow validation failed",
+    "code": "UnprocessableEntity",
+    "status": 422,
+    "timestamp": "2023-07-01T10:00:00.000Z",
+    "details": [
+        {
+            "field": "documents.verificationMethods",
+            "message": "verificationMethods is required when documents step is not skipped"
+        }
+    ]
 }
 ```
 
