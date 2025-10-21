@@ -490,7 +490,7 @@ const sidebars = {
 			type: "category",
 			label: "SALUD",
 			collapsible: false,
-			items: ["legal/salud"],
+			items: ["legal/salud", "legal/verificar-afiliaciones-colombianas"],
 		},
 		{
 			type: "category",
