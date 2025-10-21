@@ -4,49 +4,133 @@ title: Retrieve a Project Flow
 description: Retrieve a specific project flow using its unique identifier
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Retrieve a Project Flow
 
-**GET** `https://api.verifik.co/v2/project-flows/{id}`
+## Endpoint
+
+```
+GET https://api.verifik.co/v2/project-flows/{id}
+```
 
 This endpoint allows you to retrieve a specific project flow by its unique identifier, including all its configuration details and steps.
 
-## Headers
+### Headers
 
 | Name          | Value              |
 | ------------- | ------------------ |
 | Content-Type  | `application/json` |
 | Authorization | `Bearer <token>`   |
 
-## Path Parameters
+### Path Parameters
 
 | Name | Type   | Required | Description                                                      |
 | ---- | ------ | -------- | ---------------------------------------------------------------- |
 | `id` | string | **Yes**  | The unique identifier of the project flow to retrieve.         |
 
-## Request Example
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-const axios = require("axios");
+import axios from 'axios';
 
-const config = {
-  method: "get",
-  url: "https://api.verifik.co/v2/project-flows/project_flow_123456789",
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/project-flows/project_flow_123456789',
   headers: {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
   }
 };
 
-axios.request(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
-## Response Example
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+}
+
+conn.request("GET", "/v2/project-flows/project_flow_123456789", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/project-flows/project_flow_123456789', [
+  'headers' => [
+    'Content-Type' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <your_token>"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/project-flows/project_flow_123456789")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
 
 ```json
 {
@@ -105,11 +189,16 @@ axios.request(config)
     "client": "client_123456789",
     "createdAt": "2024-01-15T10:30:00Z",
     "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  "signature": {
+    "dateTime": "April 11, 2023 12:25 PM",
+    "message": "Certified by Verifik.co"
   }
 }
 ```
 
-## Error Responses
+  </TabItem>
+  <TabItem value="404" label="404">
 
 ```json
 {
@@ -117,3 +206,15 @@ axios.request(config)
   "message": "PROJECT_FLOW_NOT_FOUND"
 }
 ```
+
+  </TabItem>
+</Tabs>
+
+### Features
+
+- **Retrieve by ID**: Get a specific project flow using its unique ID
+- **Complete Information**: Includes all flow details including configuration and steps
+- **Detailed Configuration**: Full information on email, phone, and biometric verification
+- **Flow Steps**: Complete step sequence with specific configurations
+- **Multiple Languages**: Support for JavaScript, Python, PHP, and Swift
+- **Error Handling**: Detailed error responses for different scenarios
