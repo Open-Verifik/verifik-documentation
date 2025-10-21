@@ -127,3 +127,16 @@ Timestamp when the validation was completed successfully.
   "completedAt": "2024-01-15T10:32:00Z"
 }
 ```
+
+### Features
+
+- **Unique Identification**: Each validation has a unique ID for reference
+- **Multiple States**: Support for different validation process states
+- **Anti-Spoofing Validations**: Four types of attack detection
+- **Calibration Configuration**: SOFT, REGULAR, and HARD levels
+- **Validation Flags**: Settings to ignore cropping and lack of color
+- **Detailed Scores**: Confidence scores for each validation
+- **Image Storage**: Option to save images to CDN
+- **Risk Assessment**: Overall document risk score
+- **Complete Timestamps**: Record of creation, update, and completion
+- **Context Information**: Client and application registration data
