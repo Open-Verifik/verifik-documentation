@@ -56,12 +56,12 @@ params={{
 
 ```json
 {
-	"data": {
-		"_id": "64a1b2c3d4e5f6789012346",
-		"type": "onboarding",
-		"target": "personal",
-		"status": "deleted"
-	}
+    "data": {
+        "_id": "64a1b2c3d4e5f6789012346",
+        "type": "onboarding",
+        "target": "personal",
+        "status": "deleted"
+    }
 }
 ```
 
@@ -85,15 +85,30 @@ When a project flow is deleted, the following associated resources are also remo
 Project flow deletion is permanent and cannot be undone. All associated configuration data will be permanently removed from the system.
 :::
 
-## Error Responses
-
 <Tabs>
+<TabItem value="200" label="200 Success">
+
+```json
+{
+    "message": "Invalid project flow ID format",
+    "code": "BadRequest"
+}
+```
+
+**Common causes:**
+
+-   Invalid project flow ID format
+-   Missing project flow ID parameter
+
+</TabItem>
 <TabItem value="400" label="400 Bad Request">
 
 ```json
 {
-	"message": "Invalid project flow ID format",
-	"code": "BadRequest"
+    "message": "Invalid project flow ID format",
+    "code": "BadRequest",
+    "status": 400,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -107,8 +122,10 @@ Project flow deletion is permanent and cannot be undone. All associated configur
 
 ```json
 {
-	"message": "Access forbidden",
-	"code": "Forbidden"
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 401,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -122,8 +139,10 @@ Project flow deletion is permanent and cannot be undone. All associated configur
 
 ```json
 {
-	"message": "Access forbidden",
-	"code": "Forbidden"
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 403,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -137,8 +156,10 @@ Project flow deletion is permanent and cannot be undone. All associated configur
 
 ```json
 {
-	"message": "Project flow not found",
-	"code": "NotFound"
+    "message": "Project flow not found",
+    "code": "NotFound",
+    "status": 404,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -153,8 +174,10 @@ Project flow deletion is permanent and cannot be undone. All associated configur
 
 ```json
 {
-	"message": "Cannot delete project flow with active users",
-	"code": "Conflict"
+    "message": "Cannot delete project flow with active users",
+    "code": "Conflict",
+    "status": 409,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 

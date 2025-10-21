@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CodeBlock from "@theme/CodeBlock";
 import { useLanguage } from "@site/src/contexts/CodeLanguageContext";
 
-const CodeExamples = ({ url, method = "GET", headers = {}, body = null, params = {}, query = {}, baseUrl = "https://api.verifik.co/v3" }) => {
+const CodeExamples = ({ url, method = "GET", headers = {}, body = null, params = {}, query = {}, baseUrl = "https://api.verifik.co" }) => {
 	const { selectedLanguage, updateLanguage, isInitialized } = useLanguage();
 	const [forceUpdate, setForceUpdate] = useState(0);
 

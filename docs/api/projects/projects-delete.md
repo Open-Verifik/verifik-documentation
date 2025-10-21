@@ -46,23 +46,11 @@ Permanently delete a project and all its associated project flows. This action c
 url="/v3/projects/64a1b2c3d4e5f6789012345"
 method="DELETE"
 params={{
-    id: "64a1b2c3d4e5f6789012345"
-  }}
+        id: "64a1b2c3d4e5f6789012345"
+    }}
 />
 
 ## Response Format
-
-### Success Response (200 OK)
-
-```json
-{
-	"data": {
-		"_id": "64a1b2c3d4e5f6789012345",
-		"name": "Deleted Project",
-		"status": "deleted"
-	}
-}
-```
 
 ## Cascade Deletion
 
@@ -84,10 +72,23 @@ Project deletion is permanent and cannot be undone. All associated data will be 
 
 ```json
 {
-	"message": "Invalid project ID format",
-	"code": "BadRequest",
-	"status": 400,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "data": {
+        "_id": "64a1b2c3d4e5f6789012345",
+        "name": "Deleted Project",
+        "status": "deleted"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="400" label="400 Bad Request">
+
+```json
+{
+    "message": "Invalid project ID format",
+    "code": "BadRequest",
+    "status": 400,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -101,10 +102,10 @@ Project deletion is permanent and cannot be undone. All associated data will be 
 
 ```json
 {
-	"message": "Access forbidden",
-	"code": "Forbidden",
-	"status": 401,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 401,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -118,8 +119,10 @@ Project deletion is permanent and cannot be undone. All associated data will be 
 
 ```json
 {
-	"message": "Access forbidden",
-	"code": "Forbidden"
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 403,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -133,8 +136,10 @@ Project deletion is permanent and cannot be undone. All associated data will be 
 
 ```json
 {
-	"message": "Project not found",
-	"code": "NotFound"
+    "message": "Project not found",
+    "code": "NotFound",
+    "status": 404,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -149,8 +154,10 @@ Project deletion is permanent and cannot be undone. All associated data will be 
 
 ```json
 {
-	"message": "Cannot delete project with active flows",
-	"code": "Conflict"
+    "message": "Cannot delete project with active flows",
+    "code": "Conflict",
+    "status": 403,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -171,8 +178,8 @@ Project deletion is permanent and cannot be undone. All associated data will be 
 url="/v3/projects/64a1b2c3d4e5f6789012345"
 method="DELETE"
 params={{
-    id: "64a1b2c3d4e5f6789012345"
-  }}
+        id: "64a1b2c3d4e5f6789012345"
+    }}
 />
 
 ### Delete Project with Confirmation
@@ -183,8 +190,8 @@ First, check if project exists:
 url="/v3/projects/64a1b2c3d4e5f6789012345"
 method="GET"
 params={{
-    id: "64a1b2c3d4e5f6789012345"
-  }}
+        id: "64a1b2c3d4e5f6789012345"
+    }}
 />
 
 Then proceed with deletion:
@@ -193,8 +200,8 @@ Then proceed with deletion:
 url="/v3/projects/64a1b2c3d4e5f6789012345"
 method="DELETE"
 params={{
-    id: "64a1b2c3d4e5f6789012345"
-  }}
+        id: "64a1b2c3d4e5f6789012345"
+    }}
 />
 
 ## Pre-deletion Checks

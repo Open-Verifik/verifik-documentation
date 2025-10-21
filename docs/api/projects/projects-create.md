@@ -460,7 +460,8 @@ body={{
 
 ## <CheckCircle size={20} style={{display: 'inline', marginRight: '8px'}} />Response Format
 
-### <CheckCircle size={18} style={{display: 'inline', marginRight: '6px'}} />Success Response (201 Created)
+<Tabs>
+<TabItem value="201" label="201 Success">
 
 ```json
 {
@@ -509,9 +510,7 @@ body={{
 }
 ```
 
-## Error Responses
-
-<Tabs>
+</TabItem>
 <TabItem value="400" label="400 Bad Request">
 
 ```json

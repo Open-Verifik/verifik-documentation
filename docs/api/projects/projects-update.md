@@ -17,21 +17,22 @@ Update project configuration using a step-by-step approach that matches the Smar
 
 <div className="endpoint-card">
   <div className="endpoint-method put">PUT</div>
+
   <div className="endpoint-url">/v3/projects/&#123;id&#125;</div>
 </div>
 
 ## <Lock size={20} style={{display: 'inline', marginRight: '8px'}} />Authentication
 
 <div className="auth-card">
-  <div className="auth-header">
-    <h4><Lock size={16} style={{display: 'inline', marginRight: '6px'}} />JWT Token Required</h4>
-  </div>
-  <div className="auth-body">
-    <p>Include your JWT token in the Authorization header for all requests:</p>
-    <div className="code-block">
-      <code>Authorization: Bearer &lt;your_jwt_token&gt;</code>
+    <div className="auth-header">
+        <h4><Lock size={16} style={{display: 'inline', marginRight: '6px'}} />JWT Token Required</h4>
     </div>
-  </div>
+    <div className="auth-body">
+        <p>Include your JWT token in the Authorization header for all requests:</p>
+        <div className="code-block">
+            <code>Authorization: Bearer &lt;your_jwt_token&gt;</code>
+        </div>
+    </div>
 </div>
 
 ## Path Parameters
@@ -51,15 +52,15 @@ Update data protection officer information:
 
 ```json
 {
-	"dataProtection": {
-		"name": "Updated DPO Name",
-		"email": "updated-dpo@example.com",
-		"address": "456 New Address St",
-		"address2": "Suite 200",
-		"city": "San Francisco",
-		"country": "United States",
-		"postalCode": "94105"
-	}
+    "dataProtection": {
+        "name": "Updated DPO Name",
+        "email": "updated-dpo@example.com",
+        "address": "456 New Address St",
+        "address2": "Suite 200",
+        "city": "San Francisco",
+        "country": "United States",
+        "postalCode": "94105"
+    }
 }
 ```
 
@@ -70,27 +71,27 @@ Configure user data collection:
 
 ```json
 {
-	"projectFlow": {
-		"signUpForm": {
-			"fullName": true,
-			"fullNameStyle": "separate",
-			"email": true,
-			"emailGateway": "mailgun",
-			"phone": true,
-			"phoneGateway": "whatsapp",
-			"showTermsAndConditions": true,
-			"showPrivacyNotice": true,
-			"additionalFields": [
-				{
-					"name": "company",
-					"label": "Company Name",
-					"type": "text",
-					"required": false
-				}
-			],
-			"allowAdditionalFields": true
-		}
-	}
+    "projectFlow": {
+        "signUpForm": {
+            "fullName": true,
+            "fullNameStyle": "separate",
+            "email": true,
+            "emailGateway": "mailgun",
+            "phone": true,
+            "phoneGateway": "whatsapp",
+            "showTermsAndConditions": true,
+            "showPrivacyNotice": true,
+            "additionalFields": [
+                {
+                    "name": "company",
+                    "label": "Company Name",
+                    "type": "text",
+                    "required": false
+                }
+            ],
+            "allowAdditionalFields": true
+        }
+    }
 }
 ```
 
@@ -101,45 +102,45 @@ Configure document verification for personal targets:
 
 ```json
 {
-	"projectFlow": {
-		"documents": {
-			"attemptLimit": 5,
-			"criminalHistoryVerification": true,
-			"informationVerification": true,
-			"screening": true,
-			"verificationMethods": ["SCAN_PROMPT", "SCAN_STUDIO"],
-			"documentTypes": [
-				{
-					"country": "United States",
-					"configurations": [
-						{
-							"active": true,
-							"documentCategory": "government_id",
-							"documentTemplates": []
-						},
-						{
-							"active": true,
-							"documentCategory": "passport",
-							"documentTemplates": []
-						}
-					]
-				},
-				{
-					"country": "Canada",
-					"configurations": [
-						{
-							"active": true,
-							"documentCategory": "government_id",
-							"documentTemplates": []
-						}
-					]
-				}
-			]
-		},
-		"steps": {
-			"document": "mandatory"
-		}
-	}
+    "projectFlow": {
+        "documents": {
+            "attemptLimit": 5,
+            "criminalHistoryVerification": true,
+            "informationVerification": true,
+            "screening": true,
+            "verificationMethods": ["SCAN_PROMPT", "SCAN_STUDIO"],
+            "documentTypes": [
+                {
+                    "country": "United States",
+                    "configurations": [
+                        {
+                            "active": true,
+                            "documentCategory": "government_id",
+                            "documentTemplates": []
+                        },
+                        {
+                            "active": true,
+                            "documentCategory": "passport",
+                            "documentTemplates": []
+                        }
+                    ]
+                },
+                {
+                    "country": "Canada",
+                    "configurations": [
+                        {
+                            "active": true,
+                            "documentCategory": "government_id",
+                            "documentTemplates": []
+                        }
+                    ]
+                }
+            ]
+        },
+        "steps": {
+            "document": "mandatory"
+        }
+    }
 }
 ```
 
@@ -150,17 +151,17 @@ Configure liveness detection:
 
 ```json
 {
-	"projectFlow": {
-		"liveness": {
-			"attemptLimit": 3,
-			"minScore": 0.7,
-			"searchMinScore": 0.85,
-			"searchMode": "ACCURATE"
-		},
-		"steps": {
-			"liveness": "mandatory"
-		}
-	}
+    "projectFlow": {
+        "liveness": {
+            "attemptLimit": 3,
+            "minScore": 0.7,
+            "searchMinScore": 0.85,
+            "searchMode": "ACCURATE"
+        },
+        "steps": {
+            "liveness": "mandatory"
+        }
+    }
 }
 ```
 
@@ -171,17 +172,17 @@ Configure webhooks and redirects:
 
 ```json
 {
-	"projectFlow": {
-		"integrations": {
-			"redirectUrl": "https://example.com/success",
-			"webhook": "64a1b2c3d4e5f6789012347",
-			"source": "API",
-			"strategy": "blacklist",
-			"apiUrl": "https://api.example.com/check",
-			"apiTestType": "email",
-			"apiTestValue": "test@example.com"
-		}
-	}
+    "projectFlow": {
+        "integrations": {
+            "redirectUrl": "https://example.com/success",
+            "webhook": "64a1b2c3d4e5f6789012347",
+            "source": "API",
+            "strategy": "blacklist",
+            "apiUrl": "https://api.example.com/check",
+            "apiTestType": "email",
+            "apiTestValue": "test@example.com"
+        }
+    }
 }
 ```
 
@@ -192,21 +193,21 @@ Apply custom branding:
 
 ```json
 {
-	"branding": {
-		"bgColor": "#1a365d",
-		"tabColor": "#2d3748",
-		"borderColor": "#e2e8f0",
-		"buttonColor": "#3182ce",
-		"buttonTxtColor": "#ffffff",
-		"secondaryButtonColor": "#edf2f7",
-		"secondaryButtonTextColor": "#2d3748",
-		"txtColor": "#4a5568",
-		"titleColor": "#1a202c",
-		"logo": "https://example.com/logo.png",
-		"rightImage": "https://example.com/hero-image.png",
-		"rightImagePosition": "center center",
-		"rightBackgroundColor": "#f7fafc"
-	}
+    "branding": {
+        "bgColor": "#1a365d",
+        "tabColor": "#2d3748",
+        "borderColor": "#e2e8f0",
+        "buttonColor": "#3182ce",
+        "buttonTxtColor": "#ffffff",
+        "secondaryButtonColor": "#edf2f7",
+        "secondaryButtonTextColor": "#2d3748",
+        "txtColor": "#4a5568",
+        "titleColor": "#1a202c",
+        "logo": "https://example.com/logo.png",
+        "rightImage": "https://example.com/hero-image.png",
+        "rightImagePosition": "center center",
+        "rightBackgroundColor": "#f7fafc"
+    }
 }
 ```
 
@@ -219,59 +220,59 @@ You can also update multiple sections in a single request:
 
 ```json
 {
-	"name": "Updated Project Name",
-	"allowedCountries": ["United States", "Canada", "Mexico"],
-	"contactEmail": "new-admin@example.com",
-	"dataProtection": {
-		"name": "Updated DPO",
-		"email": "updated-dpo@example.com",
-		"address": "789 New St",
-		"city": "Toronto",
-		"country": "Canada",
-		"postalCode": "M5H 2N2"
-	},
-	"projectFlow": {
-		"signUpForm": {
-			"fullName": true,
-			"email": true,
-			"phone": true,
-			"showTermsAndConditions": true
-		},
-		"documents": {
-			"attemptLimit": 3,
-			"verificationMethods": ["SCAN_PROMPT"],
-			"documentTypes": [
-				{
-					"country": "United States",
-					"configurations": [
-						{
-							"active": true,
-							"documentCategory": "government_id"
-						}
-					]
-				}
-			]
-		},
-		"liveness": {
-			"attemptLimit": 3,
-			"minScore": 0.65,
-			"searchMode": "FAST"
-		},
-		"steps": {
-			"document": "mandatory",
-			"liveness": "mandatory"
-		},
-		"integrations": {
-			"redirectUrl": "https://example.com/success",
-			"source": "NONE",
-			"strategy": "none"
-		}
-	},
-	"branding": {
-		"bgColor": "#1a365d",
-		"buttonColor": "#3182ce",
-		"logo": "https://example.com/logo.png"
-	}
+    "name": "Updated Project Name",
+    "allowedCountries": ["United States", "Canada", "Mexico"],
+    "contactEmail": "new-admin@example.com",
+    "dataProtection": {
+        "name": "Updated DPO",
+        "email": "updated-dpo@example.com",
+        "address": "789 New St",
+        "city": "Toronto",
+        "country": "Canada",
+        "postalCode": "M5H 2N2"
+    },
+    "projectFlow": {
+        "signUpForm": {
+            "fullName": true,
+            "email": true,
+            "phone": true,
+            "showTermsAndConditions": true
+        },
+        "documents": {
+            "attemptLimit": 3,
+            "verificationMethods": ["SCAN_PROMPT"],
+            "documentTypes": [
+                {
+                    "country": "United States",
+                    "configurations": [
+                        {
+                            "active": true,
+                            "documentCategory": "government_id"
+                        }
+                    ]
+                }
+            ]
+        },
+        "liveness": {
+            "attemptLimit": 3,
+            "minScore": 0.65,
+            "searchMode": "FAST"
+        },
+        "steps": {
+            "document": "mandatory",
+            "liveness": "mandatory"
+        },
+        "integrations": {
+            "redirectUrl": "https://example.com/success",
+            "source": "NONE",
+            "strategy": "none"
+        }
+    },
+    "branding": {
+        "bgColor": "#1a365d",
+        "buttonColor": "#3182ce",
+        "logo": "https://example.com/logo.png"
+    }
 }
 ```
 
@@ -321,7 +322,7 @@ To enable demo mode on an existing project:
 
 ```json
 {
-	"demoMode": true
+    "demoMode": true
 }
 ```
 
@@ -333,8 +334,8 @@ To set a specific demo OTP:
 
 ```json
 {
-	"demoMode": true,
-	"demoOTP": "123456"
+    "demoMode": true,
+    "demoOTP": "123456"
 }
 ```
 
@@ -344,7 +345,7 @@ To disable demo mode:
 
 ```json
 {
-	"demoMode": false
+    "demoMode": false
 }
 ```
 
@@ -427,67 +428,66 @@ body={{
 
 ## Response Format
 
-### Success Response (200 OK)
+<Tabs>
+<TabItem value="200" label="200 Success">
 
 ```json
 {
-	"data": {
-		"_id": "64a1b2c3d4e5f6789012345",
-		"name": "Updated Project Name",
-		"identifier": null,
-		"contactEmail": "new-admin@example.com",
-		"privacyUrl": "https://example.com/privacy",
-		"termsAndConditionsUrl": "https://example.com/terms",
-		"status": "draft",
-		"currentStep": 6,
-		"lastStep": 6,
-		"demoMode": false,
-		"demoOTP": null,
-		"allowedCountries": ["United States", "Canada", "Mexico"],
-		"dataProtection": {
-			"name": "Updated DPO",
-			"email": "updated-dpo@example.com",
-			"address": "789 New St",
-			"address2": "",
-			"city": "Toronto",
-			"country": "Canada",
-			"postalCode": "M5H 2N2"
-		},
-		"branding": {
-			"bgColor": "#1a365d",
-			"tabColor": "#01236D",
-			"borderColor": "#B2BDD3",
-			"buttonColor": "#3182ce",
-			"buttonTxtColor": "#ffffff",
-			"secondaryButtonColor": "#B2BDD3",
-			"secondaryButtonTextColor": "#FFFFFF",
-			"txtColor": "#8091B6",
-			"titleColor": "#1a202c",
-			"logo": "https://example.com/logo.png",
-			"rightImage": null,
-			"rightImagePosition": "center center",
-			"rightBackgroundColor": "white"
-		},
-		"projectFlows": "64a1b2c3d4e5f6789012346",
-		"version": 2,
-		"createdAt": "2023-07-01T10:00:00.000Z",
-		"updatedAt": "2023-07-01T16:45:00.000Z"
-	},
-	"status": "completed"
+    "data": {
+        "_id": "64a1b2c3d4e5f6789012345",
+        "name": "Updated Project Name",
+        "identifier": null,
+        "contactEmail": "new-admin@example.com",
+        "privacyUrl": "https://example.com/privacy",
+        "termsAndConditionsUrl": "https://example.com/terms",
+        "status": "draft",
+        "currentStep": 6,
+        "lastStep": 6,
+        "demoMode": false,
+        "demoOTP": null,
+        "allowedCountries": ["United States", "Canada", "Mexico"],
+        "dataProtection": {
+            "name": "Updated DPO",
+            "email": "updated-dpo@example.com",
+            "address": "789 New St",
+            "address2": "",
+            "city": "Toronto",
+            "country": "Canada",
+            "postalCode": "M5H 2N2"
+        },
+        "branding": {
+            "bgColor": "#1a365d",
+            "tabColor": "#01236D",
+            "borderColor": "#B2BDD3",
+            "buttonColor": "#3182ce",
+            "buttonTxtColor": "#ffffff",
+            "secondaryButtonColor": "#B2BDD3",
+            "secondaryButtonTextColor": "#FFFFFF",
+            "txtColor": "#8091B6",
+            "titleColor": "#1a202c",
+            "logo": "https://example.com/logo.png",
+            "rightImage": null,
+            "rightImagePosition": "center center",
+            "rightBackgroundColor": "white"
+        },
+        "projectFlows": "64a1b2c3d4e5f6789012346",
+        "version": 2,
+        "createdAt": "2023-07-01T10:00:00.000Z",
+        "updatedAt": "2023-07-01T16:45:00.000Z"
+    },
+    "status": "completed"
 }
 ```
 
-## Error Responses
-
-<Tabs>
+</TabItem>
 <TabItem value="400" label="400 Bad Request">
 
 ```json
 {
-	"message": "Invalid project ID format",
-	"code": "BadRequest",
-	"status": 400,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Invalid project ID format",
+    "code": "BadRequest",
+    "status": 400,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -502,10 +502,10 @@ body={{
 
 ```json
 {
-	"message": "Access forbidden",
-	"code": "Forbidden",
-	"status": 401,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 401,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -519,10 +519,10 @@ body={{
 
 ```json
 {
-	"message": "Access forbidden",
-	"code": "Forbidden",
-	"status": 403,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 403,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -536,10 +536,10 @@ body={{
 
 ```json
 {
-	"message": "Project not found",
-	"code": "NotFound",
-	"status": 404,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Project not found",
+    "code": "NotFound",
+    "status": 404,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -554,10 +554,10 @@ body={{
 
 ```json
 {
-	"message": "Country not supported. contact support to help you include your country to our list.",
-	"code": "MissingParameter",
-	"status": 409,
-	"timestamp": "2023-07-01T10:00:00.000Z"
+    "message": "Country not supported. contact support to help you include your country to our list.",
+    "code": "MissingParameter",
+    "status": 409,
+    "timestamp": "2023-07-01T10:00:00.000Z"
 }
 ```
 
@@ -572,16 +572,16 @@ body={{
 
 ```json
 {
-	"message": "Project flow validation failed",
-	"code": "UnprocessableEntity",
-	"status": 422,
-	"timestamp": "2023-07-01T10:00:00.000Z",
-	"details": [
-		{
-			"field": "projectFlow.documents.verificationMethods",
-			"message": "verificationMethods is required when documents step is not skipped"
-		}
-	]
+    "message": "Project flow validation failed",
+    "code": "UnprocessableEntity",
+    "status": 422,
+    "timestamp": "2023-07-01T10:00:00.000Z",
+    "details": [
+        {
+            "field": "projectFlow.documents.verificationMethods",
+            "message": "verificationMethods is required when documents step is not skipped"
+        }
+    ]
 }
 ```
 
