@@ -531,6 +531,7 @@ const sidebars = {
 					items: [
 						"resources/el-objeto-coleccion",
 						"resources/crear-una-coleccion",
+						"resources/recuperar-un-inicio-de-sesion-de-aplicacion",
 						"resources/listar-todas-las-colecciones",
 						"resources/recuperar-una-coleccion",
 						"resources/crear-validacion-biometrica-inicio-sesion-aplicacion",
