@@ -95,7 +95,16 @@ const config = {
 					// Remove this to remove the "edit this page" links.
 					editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
 				},
-				blog: false, // Disable blog
+				blog: {
+					showReadingTime: true,
+					feedOptions: {
+						type: "all",
+						title: "Verifik Blog",
+						description: "Zero Knowledge Face Proofs and Digital Identity Blog",
+						copyright: `Copyright © ${new Date().getFullYear()} Verifik.`,
+						language: "en",
+					},
+				},
 				theme: {
 					customCss: "./src/css/custom.css",
 				},
@@ -144,6 +153,17 @@ const config = {
 								label: "Español",
 							},
 						],
+					},
+					{
+						type: "doc",
+						docId: "intro",
+						label: "Docs",
+						position: "left",
+					},
+					{
+						to: "/blog",
+						label: "Blog",
+						position: "left",
 					},
 					{
 						type: "search",
