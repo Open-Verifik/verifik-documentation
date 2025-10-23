@@ -114,3 +114,12 @@ The following countries are supported for `allowedCountries`:
   "updatedAt": "2024-01-15T10:30:00Z"
 }
 ```
+
+## Features
+
+- **Complete Identity**: Complete company information and configuration
+- **Allowed Countries**: Complete list of supported countries for OTP
+- **Branding Information**: Logo, colors and custom domain configuration
+- **Advanced Settings**: Language, timezone and webhooks
+- **Project States**: Project state control (active, inactive, pending)
+- **References**: Linking with the project owner client
