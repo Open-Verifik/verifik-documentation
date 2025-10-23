@@ -659,6 +659,17 @@ const sidebars = {
 				},
 				{
 					type: "category",
+					label: "Tickets de Soporte",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-ticket-de-soporte",
+						"resources/crear-un-ticket-de-soporte",
+						"resources/recuperar-un-ticket-de-soporte",
+						"resources/listar-todos-los-tickets-de-soporte",
+					],
+				},
+				{
+					type: "category",
 					label: "Webhooks",
 					collapsible: true,
 					items: [
