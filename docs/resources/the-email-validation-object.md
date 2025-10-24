@@ -125,3 +125,13 @@ Timestamp when the email validation was completed successfully.
   "validatedAt": "2024-01-15T10:32:00Z"
 }
 ```
+
+### Characteristics
+
+- **Unique Identification**: Each validation has a unique ID for reference
+- **Multiple States**: Support for different states in the validation process
+- **Validation Methods**: OTP codes and single-use links
+- **Flexible Configuration**: Redirect URLs, webhooks and security configurations
+- **Attempt Control**: Attempt limits and tracking of attempts made
+- **Complete Timestamps**: Recording of creation, update and validation
+- **Context Information**: Client, project and project flow data
