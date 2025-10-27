@@ -632,6 +632,16 @@ const sidebars = {
 					id: "legal/certificate-of-validity-for-legal-professionals",
 					label: "🇨🇴 Colombian Legal Professional Validity",
 				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-number",
+					label: "🇨🇴 Colombia - Public Servant Query by Number (SIGEP)",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-name",
+					label: "🇨🇴 Colombia - Public Servant Query by Name (SIGEP)",
+				},
 			],
 		},
 		{

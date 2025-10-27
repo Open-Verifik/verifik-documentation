@@ -517,6 +517,16 @@ const sidebars = {
 					id: "legal/certificado-vigencia-profesionales-legales",
 					label: "🇨🇴 Vigencia de Profesionales Legales Colombianos",
 				},
+				{
+					type: "doc",
+					id: "legal/sigep-servidor-publico-por-numero",
+					label: "🇨🇴 Colombia - Consulta de Servidor Público por Número (SIGEP)",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-servidor-publico-por-nombre",
+					label: "🇨🇴 Colombia - Consulta de Servidor Público por Nombre (SIGEP)",
+				},
 			],
 		},
 		{
