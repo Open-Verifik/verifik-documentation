@@ -4,6 +4,9 @@ title: Account Information
 description: Retrieve client information including credits, subscription plan and settings
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Account Information
 
 ## Endpoint
@@ -12,7 +15,7 @@ description: Retrieve client information including credits, subscription plan an
 https://api.verifik.co/v2/clients/me
 ```
 
-With this service, you can bring your client information along with more information about your credits, subscription plan and the settings.
+With this service, you can obtain your client information along with more information about your credits, subscription plan and settings.
 
 ### Headers
 
@@ -25,9 +28,12 @@ With this service, you can bring your client information along with more informa
 
 | Param         | Value                                                                                                                                                                                                                    | Description                                                                                          |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| populates[]=  | `clientSubscriptionPlan`, `clientSubscriptionPlan.subscriptionPlan`, `clientSettings` | With this option you could include populates to know more information linked to your client account. |
+| populates[]=  | `clientSubscriptionPlan`, `clientSubscriptionPlan.subscriptionPlan`, `clientSettings` | With this option you can include populates to know more information linked to your client account. |
 
 ### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js" default>
 
 ```javascript
 const axios = require('axios');
@@ -51,7 +57,95 @@ axios.request(config)
 });
 ```
 
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/clients/me?populates[]=clientSubscriptionPlan.subscriptionPlan"
+
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer eyJhbGciOiJ9.eyJjbGllbnRJZCI6Ij...plt4Cw'
+}
+
+response = requests.get(url, headers=headers)
+
+if response.status_code == 200:
+    print(response.json())
+else:
+    print(f"Error: {response.status_code}")
+    print(response.text)
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "io"
+    "net/http"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/clients/me?populates[]=clientSubscriptionPlan.subscriptionPlan"
+    
+    req, _ := http.NewRequest("GET", url, nil)
+    
+    req.Header.Add("Content-Type", "application/json")
+    req.Header.Add("Authorization", "Bearer eyJhbGciOiJ9.eyJjbGllbnRJZCI6Ij...plt4Cw")
+    
+    res, _ := http.DefaultClient.Do(req)
+    
+    defer res.Body.Close()
+    body, _ := io.ReadAll(res.Body)
+    
+    fmt.Println(res)
+    fmt.Println(string(body))
+}
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => 'https://api.verifik.co/v2/clients/me?populates[]=clientSubscriptionPlan.subscriptionPlan',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'GET',
+  CURLOPT_HTTPHEADER => array(
+    'Content-Type: application/json',
+    'Authorization: Bearer eyJhbGciOiJ9.eyJjbGllbnRJZCI6Ij...plt4Cw'
+  ),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+echo $response;
+?>
+```
+
+  </TabItem>
+</Tabs>
+
 ### Response
+
+<Tabs>
+  <TabItem value="200" label="200 OK" default>
 
 ```json
 {
@@ -140,6 +234,27 @@ axios.request(config)
     }
 }
 ```
+
+  </TabItem>
+  <TabItem value="401" label="401 Unauthorized">
+
+```json
+{
+    "error": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403 Forbidden">
+
+```json
+{
+    "error": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
 
 ## Response Fields
 
