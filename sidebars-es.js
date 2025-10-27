@@ -450,6 +450,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-inpec",
+					label: "🇨🇴 Colombia - INPEC",
+				},
+				{
+					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-europol",
 					label: "🌐 Europol - Antecedentes",
 				},

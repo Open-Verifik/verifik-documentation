@@ -565,6 +565,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/colombia-inpec",
+					label: "🇨🇴 Colombia - INPEC Prison Records",
+				},
+				{
+					type: "doc",
 					id: "background-check/dea-background-check",
 					label: "🌐 DEA Background Check",
 				},
