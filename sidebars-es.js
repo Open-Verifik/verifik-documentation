@@ -642,10 +642,11 @@ const sidebars = {
 						"resources/validaciones-de-documentos",
 						"resources/el-objeto-validacion-de-documento",
 						"resources/crear-una-validacion-de-nombre",
-						"resources/listar-todas-las-validaciones-de-documentos",
 						"resources/recuperar-una-validacion-de-documento",
-						"resources/eliminar-una-validacion-de-documento",
+						"resources/listar-todas-las-validaciones-de-documentos",
 						"resources/actualizar-una-validacion-de-documento",
+						"resources/validar-una-validacion-biometrica-inicio-sesion-aplicacion",
+						"resources/eliminar-una-validacion-de-documento",
 					],
 				},
 				{
