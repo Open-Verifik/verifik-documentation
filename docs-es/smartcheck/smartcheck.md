@@ -367,9 +367,9 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
   </div>
   <div className="col col--4">
     <Card
-      title="Validación de licencia de conducir de Ontario"
+      title="🇨🇦 Validación de licencia de conducir de Ontario"
       description=""
-      image="/img/smartcheck/canada-citizen.png"
+      image="/img/smartcheck/canada-driver.png"
       link="/docs-es/validaciones-vehiculos/licencia-de-manejo-ontario"
     />
   </div>
