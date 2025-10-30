@@ -167,3 +167,16 @@ Timestamp when the document validation was completed successfully.
   "completedAt": "2024-01-15T10:32:00Z"
 }
 ```
+
+### Features
+
+- **Unique Identification**: Each validation has a unique ID for reference
+- **Multiple States**: Support for different validation process states
+- **Document Types**: Support for IDs, passports, driver's licenses, and others
+- **Extracted Data**: Complete information extracted from the document
+- **OCR Processing**: Optical character recognition results
+- **Validation Results**: Authenticity and consistency verification
+- **Images**: Front, back, and selfie images in base64
+- **Risk Assessment**: Risk score for the validation
+- **Complete Timestamps**: Record of creation, update, and completion
+- **Context Information**: Client, project, and project flow data

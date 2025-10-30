@@ -450,6 +450,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-inpec",
+					label: "🇨🇴 Colombia - INPEC",
+				},
+				{
+					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-europol",
 					label: "🌐 Europol - Antecedentes",
 				},
@@ -516,6 +521,16 @@ const sidebars = {
 					type: "doc",
 					id: "legal/certificado-vigencia-profesionales-legales",
 					label: "🇨🇴 Vigencia de Profesionales Legales Colombianos",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-servidor-publico-por-numero",
+					label: "🇨🇴 Colombia - Consulta de Servidor Público por Número (SIGEP)",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-servidor-publico-por-nombre",
+					label: "🇨🇴 Colombia - Consulta de Servidor Público por Nombre (SIGEP)",
 				},
 			],
 		},
@@ -627,10 +642,11 @@ const sidebars = {
 						"resources/validaciones-de-documentos",
 						"resources/el-objeto-validacion-de-documento",
 						"resources/crear-una-validacion-de-nombre",
-						"resources/listar-todas-las-validaciones-de-documentos",
 						"resources/recuperar-una-validacion-de-documento",
-						"resources/eliminar-una-validacion-de-documento",
+						"resources/listar-todas-las-validaciones-de-documentos",
 						"resources/actualizar-una-validacion-de-documento",
+						"resources/validar-una-validacion-biometrica-inicio-sesion-aplicacion",
+						"resources/eliminar-una-validacion-de-documento",
 					],
 				},
 				{
@@ -655,6 +671,17 @@ const sidebars = {
 						"resources/listar-todas-las-validaciones-de-telefono",
 						"resources/recuperar-una-validacion-de-telefono",
 						"resources/validar-una-validacion-de-telefono",
+					],
+				},
+				{
+					type: "category",
+					label: "Tickets de Soporte",
+					collapsible: true,
+					items: [
+						"resources/el-objeto-ticket-de-soporte",
+						"resources/crear-un-ticket-de-soporte",
+						"resources/recuperar-un-ticket-de-soporte",
+						"resources/listar-todos-los-tickets-de-soporte",
 					],
 				},
 				{
