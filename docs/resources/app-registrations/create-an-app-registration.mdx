@@ -1,0 +1,255 @@
+---
+id: create-an-app-registration
+title: Create an App Registration
+description: Create a new app registration for user authentication and validation
+slug: /resources/create-an-app-registration
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+**POST** `https://api.verifik.co/v2/app-registrations`
+
+An App Registration is an instance within Verifik's system that allows a user to initiate the authentication and validation process using specified project flows, email, and/or phone details. This process ensures the identity of the user and provides secure validation through various verification steps.
+
+:::warning
+When creating an App Registration, a `token` is returned in the request. You must use this token to create [document validations](create-an-app-registration-document-validation), [email validations](create-an-app-registration-email-validation), [phone validations](create-an-app-registration-phone-validation) and [biometric validations](create-an-app-registration-biometric-validation) **for App Registrations**. This ensures the validations are related to the app registrant.
+
+The `token` can be recreated by entering the same information (`phone`/`email`), however, any `phone` or `email` validations previously completed will be deleted. We recommend you have your users complete the `email` and `phone` validations again to re-validate they are the original owner of the data.
+:::
+
+### Headers
+
+#### Content-Type
+Type: String  
+Required: Yes
+
+`application/json`
+
+### Parameters
+
+#### `project`
+Type: String  
+Required: Yes
+
+The unique ID of the project associated with this registration.
+
+#### `projectFlow`
+Type: String  
+Required: Yes
+
+The unique ID of the project flow that defines the registration and validation process.
+
+#### `email`
+Type: String  
+Required: No
+
+The email address for the user to be registered. (Either `email` or `phone` is required).
+
+#### `phone`
+Type: String  
+Required: No
+
+The phone number for the user to be registered. (Either `email` or `phone` is required).
+
+#### `countryCode`
+Type: String  
+Required: No
+
+The country code associated with the phone number. Required if `phone` is provided. Format: `+123`
+
+#### `fullName`
+Type: String  
+Required: Yes
+
+The full name of the person being registered.
+
+#### `language`
+Type: String  
+Required: No
+
+The preferred language for communication during the registration process. Default: `"en"`.
+
+### Request
+### Request
+
+<Tabs groupId="language">
+<TabItem value="nodejs" label="Node.js">
+
+```javascript
+const axios = require("axios");
+
+const config = {
+  method: "post",
+  url: "https://api.verifik.co/v2/app-registrations",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  },
+  data: {
+    project: "project_123456789",
+    projectFlow: "flow_123456789",
+    email: "user@example.com",
+    phone: "1234567890",
+    countryCode: "+1",
+    fullName: "John Doe",
+    language: "en"
+  }
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+import json
+
+url = "https://api.verifik.co/v2/app-registrations"
+
+payload = json.dumps({
+  "project": "project_123456789",
+  "projectFlow": "flow_123456789",
+  "email": "user@example.com",
+  "phone": "1234567890",
+  "countryCode": "+1",
+  "fullName": "John Doe",
+  "language": "en"
+})
+
+headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => 'https://api.verifik.co/v2/app-registrations',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_CUSTOMREQUEST => 'POST',
+  CURLOPT_POSTFIELDS =>'{
+    "project": "project_123456789",
+    "projectFlow": "flow_123456789",
+    "email": "user@example.com",
+    "phone": "1234567890",
+    "countryCode": "+1",
+    "fullName": "John Doe",
+    "language": "en"
+  }',
+  CURLOPT_HTTPHEADER => array(
+    'Content-Type: application/json',
+    'Authorization: Bearer YOUR_ACCESS_TOKEN'
+  ),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+echo $response;
+?>
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+  "fmt"
+  "strings"
+  "net/http"
+  "io/ioutil"
+)
+
+func main() {
+  url := "https://api.verifik.co/v2/app-registrations"
+  
+  payload := strings.NewReader(`{
+    "project": "project_123456789",
+    "projectFlow": "flow_123456789",
+    "email": "user@example.com",
+    "phone": "1234567890",
+    "countryCode": "+1",
+    "fullName": "John Doe",
+    "language": "en"
+  }`)
+
+  req, _ := http.NewRequest("POST", url, payload)
+
+  req.Header.Add("Content-Type", "application/json")
+  req.Header.Add("Authorization", "Bearer YOUR_ACCESS_TOKEN")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+
+  fmt.Println(string(body))
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "app_registration_123456789",
+    "client": "client_123456789",
+    "project": "project_123456789",
+    "projectFlow": "flow_123456789",
+    "status": "new",
+    "email": "user@example.com",
+    "phone": "1234567890",
+    "countryCode": "+1",
+    "fullName": "John Doe",
+    "language": "en",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "ipAddress": "192.168.1.1",
+    "userAgent": "Mozilla/5.0...",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+### Error Responses
+
+```json
+{
+  "error": "Either email or phone is required",
+  "message": "MISSING_CONTACT_INFO"
+}
+```
+
+```json
+{
+  "error": "Invalid project flow",
+  "message": "INVALID_PROJECT_FLOW"
+}
+```

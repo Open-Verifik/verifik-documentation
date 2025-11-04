@@ -1,0 +1,222 @@
+---
+id: list-all-credit-records
+title: List All Credit Records
+description: Retrieve a list of all credit records with optional filtering and pagination
+slug: /resources/list-all-credit-records
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+**GET** `https://api.verifik.co/v2/credits`
+
+Retrieve a list of Credit records in Verifik's system. This endpoint returns an array of credit objects, each containing detailed information about credit transactions, balances, and associated client accounts.
+
+### Headers
+
+#### Content-Type
+Type: String  
+Required: Yes
+
+`application/json`
+
+#### Authorization
+Type: String  
+Required: Yes
+
+`Bearer <token>`
+
+### Parameters
+
+#### `page`
+Type: Number  
+Required: No
+
+Specifies the page number for pagination, starting from 1.
+
+#### `perPage`
+Type: Number  
+Required: No
+
+Defines the number of items per page for pagination.
+
+#### `populates[]`
+Type: String  
+Required: No
+
+Populates the specified field, transforming ObjectId references into full objects. Available options: `client`, `superAdmin`
+
+#### `where_status`
+Type: String  
+Required: No
+
+Where condition to filter by status. Options: `approved`, `pending`, `failed`, `postPaid`
+
+#### `where_category`
+Type: String  
+Required: No
+
+Where condition to filter by category. Options: `purchase`, `usage`
+
+#### `where_client`
+Type: String  
+Required: No
+
+Filter by specific client ID
+
+### Request
+
+<Tabs groupId="language">
+<TabItem value="nodejs" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/credits',
+  params: {
+    page: 1,
+    perPage: 20,
+    "populates[]": ["client"],
+    where_status: "approved",
+    where_category: "purchase"
+  },
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'jwt <tu_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "JWT token"
+}
+
+conn.request("GET", "/v2/credits?page=1&perPage=20&populates[]=client&where_status=approved&where_category=purchase", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/credits?page=1&perPage=20&populates[]=client&where_status=approved&where_category=purchase', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'JWT token',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+  "fmt"
+  "net/http"
+  "io/ioutil"
+)
+
+func main() {
+  url := "https://api.verifik.co/v2/credits?page=1&perPage=20&populates[]=client&where_status=approved&where_category=purchase"
+
+  req, _ := http.NewRequest("GET", url, nil)
+
+  req.Header.Add("Accept", "application/json")
+  req.Header.Add("Authorization", "JWT token")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+
+  fmt.Println(string(body))
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "credit_123456789",
+      "amount": 1000,
+      "status": "approved",
+      "category": "purchase",
+      "client": {
+        "_id": "client_123456789",
+        "name": "Example Client",
+        "email": "client@example.com"
+      },
+      "description": "Credit purchase for API usage",
+      "transactionId": "txn_123456789",
+      "paymentMethod": "credit_card",
+      "currency": "USD",
+      "exchangeRate": 1.0,
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "perPage": 20,
+    "total": 1,
+    "pages": 1
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "success": false,
+  "error": "Invalid query parameters",
+  "code": "INVALID_PARAMETERS"
+}
+```
+
+</TabItem>
+</Tabs>
+
