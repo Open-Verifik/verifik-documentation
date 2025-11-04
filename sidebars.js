@@ -60,6 +60,7 @@ const sidebars = {
 				{
 					type: "category",
 					label: "Projects",
+					key: "api-projects",
 					collapsible: true,
 					items: [
 						"api/projects/projects-list",
@@ -72,6 +73,7 @@ const sidebars = {
 				{
 					type: "category",
 					label: "Project Flows",
+					key: "api-project-flows",
 					collapsible: true,
 					items: ["api/project-flows/project-flows-update", "api/project-flows/project-flows-delete"],
 				},
@@ -124,26 +126,31 @@ const sidebars = {
 					type: "doc",
 					id: "identity/argentina",
 					label: "🇦🇷 Argentina",
+					key: "identity-argentina",
 				},
 				{
 					type: "doc",
 					id: "identity/bolivia",
 					label: "🇧🇴 Bolivia",
+					key: "identity-bolivia",
 				},
 				{
 					type: "doc",
 					id: "identity/brazil",
 					label: "🇧🇷 Brazil",
+					key: "identity-brazil",
 				},
 				{
 					type: "doc",
 					id: "identity/canada",
 					label: "🇨🇦 Canada",
+					key: "identity-canada",
 				},
 				{
 					type: "doc",
 					id: "identity/chile",
 					label: "🇨🇱 Chile",
+					key: "identity-chile",
 				},
 				{
 					type: "doc",
@@ -179,16 +186,19 @@ const sidebars = {
 					type: "doc",
 					id: "identity/costa-rica",
 					label: "🇨🇷 Costa Rica",
+					key: "identity-costa-rica",
 				},
 				{
 					type: "doc",
 					id: "identity/dominican-republic",
 					label: "🇩🇴 Dominican Republic",
+					key: "identity-dominican-republic",
 				},
 				{
 					type: "doc",
 					id: "identity/ecuador",
 					label: "🇪🇨 Ecuador",
+					key: "identity-ecuador",
 				},
 				{
 					type: "doc",
@@ -209,21 +219,25 @@ const sidebars = {
 					type: "doc",
 					id: "identity/mexico",
 					label: "🇲🇽 Mexico",
+					key: "identity-mexico",
 				},
 				{
 					type: "doc",
 					id: "identity/panama",
 					label: "🇵🇦 Panama",
+					key: "identity-panama",
 				},
 				{
 					type: "doc",
 					id: "identity/paraguay",
 					label: "🇵🇾 Paraguay",
+					key: "identity-paraguay",
 				},
 				{
 					type: "doc",
 					id: "identity/peru",
 					label: "🇵🇪 Peru",
+					key: "identity-peru",
 				},
 				{
 					type: "doc",
@@ -244,6 +258,7 @@ const sidebars = {
 					type: "doc",
 					id: "identity/united-states",
 					label: "🇺🇸 United States",
+					key: "identity-united-states",
 				},
 				{
 					type: "doc",
@@ -271,21 +286,25 @@ const sidebars = {
 					type: "doc",
 					id: "business-validation/argentina",
 					label: "🇦🇷 Argentina",
+					key: "business-argentina",
 				},
 				{
 					type: "doc",
 					id: "business-validation/bolivia",
 					label: "🇧🇴 Bolivia",
+					key: "business-bolivia",
 				},
 				{
 					type: "doc",
 					id: "business-validation/brazil",
 					label: "🇧🇷 Brazil",
+					key: "business-brazil",
 				},
 				{
 					type: "doc",
 					id: "business-validation/canada",
 					label: "🇨🇦 Canada",
+					key: "business-canada",
 				},
 				{
 					type: "doc",
@@ -312,26 +331,31 @@ const sidebars = {
 					type: "doc",
 					id: "business-validation/costa-rica",
 					label: "🇨🇷 Costa Rica",
+					key: "business-costa-rica",
 				},
 				{
 					type: "doc",
 					id: "business-validation/mexico",
 					label: "🇲🇽 Mexico",
+					key: "business-mexico",
 				},
 				{
 					type: "doc",
 					id: "business-validation/panama",
 					label: "🇵🇦 Panama",
+					key: "business-panama",
 				},
 				{
 					type: "doc",
 					id: "business-validation/paraguay",
 					label: "🇵🇾 Paraguay",
+					key: "business-paraguay",
 				},
 				{
 					type: "doc",
 					id: "business-validation/peru",
 					label: "🇵🇪 Peru",
+					key: "business-peru",
 				},
 				{
 					type: "doc",
@@ -342,6 +366,7 @@ const sidebars = {
 					type: "doc",
 					id: "business-validation/united-states",
 					label: "🇺🇸 United States",
+					key: "business-united-states",
 				},
 			],
 		},
@@ -354,21 +379,25 @@ const sidebars = {
 					type: "doc",
 					id: "vehicle-validation/argentina",
 					label: "🇦🇷 Argentina",
+					key: "vehicle-argentina",
 				},
 				{
 					type: "doc",
 					id: "vehicle-validation/bolivia",
 					label: "🇧🇴 Bolivia",
+					key: "vehicle-bolivia",
 				},
 				{
 					type: "doc",
 					id: "vehicle-validation/brazil",
 					label: "🇧🇷 Brazil",
+					key: "vehicle-brazil",
 				},
 				{
 					type: "doc",
 					id: "vehicle-validation/chile",
 					label: "🇨🇱 Chile",
+					key: "vehicle-chile",
 				},
 				{
 					type: "category",
@@ -379,6 +408,7 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia",
 							label: "Overview",
+							key: "vehicle-colombia-overview",
 						},
 						{
 							type: "doc",
@@ -476,21 +506,25 @@ const sidebars = {
 					type: "doc",
 					id: "vehicle-validation/costa-rica",
 					label: "🇨🇷 Costa Rica",
+					key: "vehicle-costa-rica",
 				},
 				{
 					type: "doc",
 					id: "vehicle-validation/ecuador",
 					label: "🇪🇨 Ecuador",
+					key: "vehicle-ecuador",
 				},
 				{
 					type: "doc",
 					id: "vehicle-validation/mexico",
 					label: "🇲🇽 Mexico",
+					key: "vehicle-mexico",
 				},
 				{
 					type: "doc",
 					id: "vehicle-validation/paraguay",
 					label: "🇵🇾 Paraguay",
+					key: "vehicle-paraguay",
 				},
 				{
 					type: "category",
@@ -501,6 +535,7 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/peru",
 							label: "Overview",
+							key: "vehicle-peru-overview",
 						},
 						{
 							type: "doc",
@@ -518,6 +553,7 @@ const sidebars = {
 					type: "doc",
 					id: "vehicle-validation/united-states",
 					label: "🇺🇸 United States",
+					key: "vehicle-united-states",
 				},
 			],
 		},
@@ -562,6 +598,7 @@ const sidebars = {
 					type: "doc",
 					id: "background-check/brazil",
 					label: "🇧🇷 Brazil",
+					key: "background-check-brazil",
 				},
 				{
 					type: "doc",
@@ -791,6 +828,7 @@ const sidebars = {
 				{
 					type: "category",
 					label: "Projects",
+					key: "resources-projects",
 					collapsible: true,
 					items: [
 						"resources/the-project-object",
@@ -803,6 +841,7 @@ const sidebars = {
 				{
 					type: "category",
 					label: "Project Flows",
+					key: "resources-project-flows",
 					collapsible: true,
 					items: [
 						"resources/the-project-flow-object",

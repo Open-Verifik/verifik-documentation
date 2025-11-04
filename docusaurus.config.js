@@ -178,25 +178,9 @@ const config = {
 
 	onBrokenLinks: "warn",
 
-	// Internationalization configuration
-	i18n: {
-		defaultLocale: "en",
-		locales: ["en", "es"],
-		localeConfigs: {
-			en: {
-				label: "English",
-				direction: "ltr",
-				htmlLang: "en-US",
-				calendar: "gregory",
-			},
-			es: {
-				label: "Español",
-				direction: "ltr",
-				htmlLang: "es-ES",
-				calendar: "gregory",
-			},
-		},
-	},
+	// Internationalization configuration REMOVED
+	// i18n removed to prevent /es prefix on Spanish routes
+	// Spanish docs will be at /docs-es/ instead of /es/docs-es/
 
 	presets: [
 		[
