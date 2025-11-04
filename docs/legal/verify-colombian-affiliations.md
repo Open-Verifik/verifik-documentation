@@ -44,10 +44,10 @@ const options = {
   method: 'GET',
   url: 'https://api.verifik.co/v2/co/afiliaciones',
   params: {
-		  documentType: 'CC', 
-		  documentNumber: '123456789', 
-		  date: '05/05/2022'
-				  },
+      documentType: 'CC', 
+      documentNumber: '123456789', 
+      date: '05/05/2022'
+          },
   headers: {
     Accept: 'application/json',
     Authorization: 'jwt <tu_token>'
