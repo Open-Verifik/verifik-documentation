@@ -131,4 +131,4 @@ Let us know if you need any additional details from our side and we are happy to
 
 ### Now we are ready to create the webhook object in Verifik
 
-[Create a Webhook](/resources/webhooks/create-a-webhook)
+[Create a Webhook](/resources/create-a-webhook)
