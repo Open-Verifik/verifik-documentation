@@ -13,7 +13,6 @@ keywords:
   - verificación sin código
   - cumplimiento AML
   - API de validación de identidad
-slug: /docs-es
 ---
 
 import { Card } from '@site/src/components/Card';

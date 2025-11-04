@@ -13,7 +13,7 @@ keywords:
   - no-code verification
   - AML compliance
   - identity validation API
-slug: /
+slug: /intro
 ---
 
 import { Card } from '@site/src/components/Card';

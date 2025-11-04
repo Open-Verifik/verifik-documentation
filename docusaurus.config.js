@@ -121,6 +121,42 @@ const config = {
 				content: "@verifik",
 			},
 		},
+		// Social Card Image (always English - simplified)
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:image",
+				content: "https://docs.verifik.co/img/verifik-social-card-en.jpg",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:image:type",
+				content: "image/jpeg",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:image:width",
+				content: "1200",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:image:height",
+				content: "630",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				name: "twitter:image",
+				content: "https://docs.verifik.co/img/verifik-social-card-en.jpg",
+			},
+		},
 	],
 
 	// Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
