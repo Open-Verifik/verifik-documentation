@@ -14,15 +14,15 @@ You cannot create an instance of an `AppLogin` directly. This is a product of in
 
 * **Email Validation**
 
-[email-access-example](https://docs.verifik.co/services/verifik-access-code-solution-via-api/email-access-example)
+[Email Access Example](/resources/email-access-example)
 
 * **Phone Validation**
 
-[phone-access-example](https://docs.verifik.co/services/verifik-access-code-solution-via-api/phone-access-example)
+[Phone Access Example](/access#phone-access-example)
 
 * **Biometric Validation**
 
-[biometric-access-example](https://docs.verifik.co/services/verifik-access-code-solution-via-api/biometric-access-example)
+[Biometric Access Example](/access#biometric-access-example)
 
 The AppLogin is tied to the respective validation method used during the login process. Refer to the examples below for the different login methods and how they interact with the AppLogin object.
 
@@ -34,7 +34,7 @@ This example illustrates how an AppLogin is created when the user logs in using 
 
 * **Steps**:
   1. User receives an OTP (One-Time Password) via email.
-  2. User enters the OTP on the login page or validate it via another [API](https://docs.verifik.co/resources/email-validations/validate-an-email-validation).
+  2. User enters the OTP on the login page or validate it via another [API](/resources/validate-an-email-validation).
   3. Once verified, an AppLogin object is created with `type:` `**`email`**`.
 
 ***
@@ -45,7 +45,7 @@ This example demonstrates how an AppLogin is generated when the user logs in usi
 
 * **Steps**:
   1. User receives an OTP via SMS.
-  2. User inputs the OTP to log in or validate it via another [API](https://docs.verifik.co/resources/phone-validations/validate-a-phone-validation).
+  2. User inputs the OTP to log in or validate it via another [API](/resources/validate-a-phone-validation).
   3. Once the OTP is validated, an AppLogin object is created with `type: phone`.
 
 ***
@@ -56,7 +56,7 @@ This example shows how an AppLogin is created when a user logs in through biomet
 
 * **Steps**:
   1. User provides biometric data (e.g., facial recognition, fingerprint).
-  2. The biometric data is validated using a liveness detection in our web app or it can also be done via another [API](https://docs.verifik.co/resources/biometric-validations/validate-an-app-login-biometric-validation).
+  2. The biometric data is validated using a liveness detection in our web app or it can also be done via another [API](/resources/validate-an-app-login-biometric-validation).
   3. Upon successful validation, an AppLogin object is generated with `type:` `faceLiveness`
 
 ***
@@ -69,9 +69,9 @@ Since AppLogins are automatically created during the interaction process with th
 
 #### **Related Documentation**:
 
-| Access via **Email** example | | | [email-access-example](../../services/verifik-access-code-solution-via-api/email-access-example) |
-| Access via **Phone** example | | | [phone-access-example](../../services/verifik-access-code-solution-via-api/phone-access-example) |
-| Access via **Biometrics** example | | | [biometric-access-example](../../services/verifik-access-code-solution-via-api/biometric-access-example) |
+| Access via **Email** example | | | [Email Access Example](/resources/email-access-example) |
+| Access via **Phone** example | | | [Phone Access Example](/access#phone-access-example) |
+| Access via **Biometrics** example | | | [Biometric Access Example](/access#biometric-access-example) |
 
 ### Features
 

@@ -67,7 +67,7 @@ Verifik ofrece un conjunto de soluciones que funcionan como no-code con una conf
       title="Enroll"
       description="Esta solución incluye todo lo que SmartEnroll hace pero a nivel de API, dando la flexibilidad de codificar una solución personalizada basada en las necesidades de tu empresa."
       image="/img/services/enroll.png"
-      link="/docs-es/inscripcion"
+      link="/docs-es/smart-enroll-alojado"
     />
   </div>
 </div>

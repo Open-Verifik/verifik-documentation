@@ -170,13 +170,10 @@ Todas las respuestas de error incluyen información detallada:
 
 ## Próximos Pasos
 
--   [Crear tu primer proyecto](/docs/api/proyectos/crear-proyecto)
--   [Configurar flujos de verificación](/docs/api/flujos-proyecto/actualizar-flujo-proyecto)
--   [Integrar con tu aplicación](/docs/smart-enroll-alojado/smart-enroll-alojado)
+-   [Crear tu primer proyecto](/docs-es/api/proyectos/crear-proyecto)
+-   [Configurar flujos de verificación](/docs-es/api/flujos-proyecto/actualizar-flujo-proyecto)
 
 ## Recursos Adicionales
 
--   [Documentación de la API de Proyectos](/docs/api/proyectos)
--   [Documentación de la API de Flujos de Proyecto](/docs/api/flujos-proyecto)
--   [Guías de integración](/docs/empezar)
+-   [Guías de integración](/docs-es/empezar/como-funciona)
 -   [Soporte técnico](https://verifik.co/support)

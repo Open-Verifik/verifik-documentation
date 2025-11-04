@@ -122,10 +122,25 @@ const config = {
 			},
 		},
 		// Social Card Image (always English - simplified)
+		// Using absolute URL to ensure proper social card display
 		{
 			tagName: "meta",
 			attributes: {
 				property: "og:image",
+				content: "https://docs.verifik.co/img/verifik-social-card-en.jpg",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:image:url",
+				content: "https://docs.verifik.co/img/verifik-social-card-en.jpg",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:image:secure_url",
 				content: "https://docs.verifik.co/img/verifik-social-card-en.jpg",
 			},
 		},
@@ -153,8 +168,22 @@ const config = {
 		{
 			tagName: "meta",
 			attributes: {
+				property: "og:image:alt",
+				content: "Verifik - Identity Verification & KYC Solutions",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
 				name: "twitter:image",
 				content: "https://docs.verifik.co/img/verifik-social-card-en.jpg",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				name: "twitter:image:alt",
+				content: "Verifik - Identity Verification & KYC Solutions",
 			},
 		},
 	],
@@ -223,14 +252,14 @@ const config = {
 			},
 		],
 		// Plugin to generate sitemap_index.xml for SEO requirements
-		require.resolve('./src/plugins/sitemap-index.js'),
+		require.resolve("./src/plugins/sitemap-index.js"),
 	],
 
 	themeConfig:
 		/** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 		({
-			// SEO: Social card image for Open Graph and Twitter Cards
-			image: "img/docusaurus-social-card.jpg",
+			// SEO: Social card image removed - using headTags instead to avoid duplicate cards
+			// image: "img/docusaurus-social-card.jpg", // Removed - using custom Verifik card in headTags
 			navbar: {
 				logo: {
 					alt: "Verifik Logo",

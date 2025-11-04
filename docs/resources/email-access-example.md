@@ -24,8 +24,8 @@ Before starting, ensure you have:
 
 If you haven't created a project and a projectFlow with the property `type = "login"`, follow these guides:
 
-- [Create a Project](/resources/projects/create-a-project)
-- [Create a Project Flow](/resources/project-flows/create-a-project-flow)
+- [Create a Project](/resources/create-a-project)
+- [Create a Project Flow](/resources/create-a-project-flow)
 
 ## Implementation Flow
 
@@ -486,10 +486,10 @@ dataTask.resume()
 
 ## Related Documentation
 
-- [Create an Email Validation](/resources/email-validations/create-an-email-validation)
-- [Validate an Email Validation](/resources/email-validations/validate-an-email-validation)
-- [Retrieve an App Login](/resources/app-logins/retrieve-an-app-login)
-- [Create an App Login](/resources/app-logins/create-an-app-login)
+- [Create an Email Validation](/resources/create-an-email-validation)
+- [Validate an Email Validation](/resources/validate-an-email-validation)
+- [Retrieve an App Login](/resources/retrieve-an-app-login)
+- [Create an App Login](/resources/create-an-app-login)
 
 ## Video Tutorial
 
