@@ -30,27 +30,33 @@ A Document Liveness is the result of all the validations performed on the docume
 
 ### **Response**
 
+**Key Features:**
+- **Individual Pipeline Results**: Each validation type (screen replay, printed copy, portrait substitution, digital manipulation) returns its own score, probability, and warnings
+- **Aggregate Results**: Overall `aggregatedScore`, `isLive` status, and `aggregateWarnings` across all validations
+- **`rawResponse`**: Complete raw response from the internal API containing detailed pipeline results with `liveness_probability`, `is_live` boolean, and `image_quality_warnings` for each pipeline
+- **`chargesCount`**: Number of pipelines processed (cost indicator)
+
 {% tabs %}
 {% tab title="200" %}
 
 ```json
 {
     "data": {
-        "client": "613375a1eab2fe08527f81e2",
+        "client": "68f18d25aafc7dbd2a0bd416",
         "imageSaved": true,
-        "imageUrl": "https://cdn.verifik.co/document-liveness/document-liveness-1755887332482",
+        "imageUrl": "https://cdn.verifik.co/document-liveness/document-liveness-1761614605009",
         "validateScreenReplay": true,
         "validatePrintedCopy": true,
-        "validatePortraitSubstitution": true,
-        "validateDigitalManipulation": true,
-        "sreenReplayScore": 0.4201007,
-        "printedCopyScore": 2.7406464,
-        "portraitSubstitutionScore": 10.7250834,
-        "digitalManipulationScore": -0.124236,
-        "screenReplayProbability": 0.0019733,
-        "printedCopyProbability": 0.000001,
-        "portraitSubstitutionProbability": 0.948844,
-        "digitalManipulationProbability": 0.3582724,
+        "validatePortraitSubstitution": false,
+        "validateDigitalManipulation": false,
+        "sreenReplayScore": 0.20818532,
+        "printedCopyScore": 2.725058,
+        "portraitSubstitutionScore": 0,
+        "digitalManipulationScore": 0,
+        "screenReplayProbability": 0.0008,
+        "printedCopyProbability": 0.0001,
+        "portraitSubstitutionProbability": 0,
+        "digitalManipulationProbability": 0,
         "sreenReplayCalibration": "REGULAR",
         "printedCopyCalibration": "REGULAR",
         "portraitSubstitutionCalibration": "REGULAR",
@@ -58,33 +64,75 @@ A Document Liveness is the result of all the validations performed on the docume
         "ignoreDocumentCroppedValidation": false,
         "ignoreColourLessValidation": false,
         "screenReplayWarnings": [
-            "GLARE_ON_IMAGE"
+            "GLARE_ON_IMAGE",
+            "IMAGE_IS_TOO_COMPRESSED",
+            "IMAGE_TOO_BLURRY"
         ],
         "printedCopyWarnings": [
-            "GLARE_ON_IMAGE"
+            "GLARE_ON_IMAGE",
+            "IMAGE_IS_TOO_COMPRESSED",
+            "IMAGE_TOO_BLURRY"
         ],
-        "portraitSubstitutionWarnings": [
-            "GLARE_ON_IMAGE"
-        ],
-        "digitalManipulationWarnings": [
-            "GLARE_ON_IMAGE"
-        ],
+        "portraitSubstitutionWarnings": [],
+        "digitalManipulationWarnings": [],
         "screenReplayErrors": [],
         "printedCopyErrors": [],
         "portraitSubstitutionErrors": [],
         "digitalManipulationErrors": [],
-        "aggregatedScore": 0.000001,
-        "_id": "68a8b6e4d8207d5f3357b630",
-        "updatedAt": "2025-08-22T18:28:57.736Z",
-        "createdAt": "2025-08-22T18:28:57.736Z",
+        "aggregatedScore": 0.0004,
+        "isLive": false,
+        "aggregateWarnings": [
+            "GLARE_ON_IMAGE",
+            "IMAGE_IS_TOO_COMPRESSED",
+            "IMAGE_TOO_BLURRY"
+        ],
+        "_id": "69001b0d3440483cbaae2d68",
+        "updatedAt": "2025-10-28T01:23:59.928Z",
+        "createdAt": "2025-10-28T01:23:59.928Z",
         "__v": 0,
-        "chargesCount": 4
+        "chargesCount": 2,
+        "rawResponse": {
+            "pipeline_results": [
+                {
+                    "pipeline_name": "screen-replay_2024-09",
+                    "liveness_score": 0.20818532,
+                    "liveness_probability": "0.0008",
+                    "is_live": false,
+                    "image_quality_warnings": [
+                        "GLARE_ON_IMAGE",
+                        "IMAGE_IS_TOO_COMPRESSED",
+                        "IMAGE_TOO_BLURRY"
+                    ],
+                    "status": "success"
+                },
+                {
+                    "pipeline_name": "printed-copy_2024-09",
+                    "liveness_score": 2.725058,
+                    "liveness_probability": "0.0001",
+                    "is_live": false,
+                    "image_quality_warnings": [
+                        "GLARE_ON_IMAGE",
+                        "IMAGE_IS_TOO_COMPRESSED",
+                        "IMAGE_TOO_BLURRY"
+                    ],
+                    "status": "success"
+                }
+            ],
+            "charges_count": 2,
+            "aggregate_liveness_probability": "0.0004",
+            "aggregate_is_live": false,
+            "aggregate_image_quality_warnings": [
+                "GLARE_ON_IMAGE",
+                "IMAGE_IS_TOO_COMPRESSED",
+                "IMAGE_TOO_BLURRY"
+            ]
+        }
     },
     "signature": {
-        "dateTime": "August 22, 2025 6:28 PM",
+        "dateTime": "October 28, 2025 1:24 AM",
         "message": "Certified by Verifik.co"
     },
-    "id": "A73ZL"
+    "id": "8YISP"
 }
 ```
 

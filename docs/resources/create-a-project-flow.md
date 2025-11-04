@@ -4,20 +4,27 @@ title: Create a Project Flow
 description: Create a new project flow configuration
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Create a Project Flow
 
-**POST** `https://api.verifik.co/v2/project-flows`
+## Endpoint
+
+```
+POST https://api.verifik.co/v2/project-flows
+```
 
 Project Flows define configurations for a Project in Verifik. In this context, we will define various data points that Verifik will use to perform validations using passwordless and liveness detection technologies.
 
-## Headers
+### Headers
 
 | Name          | Value                        |
 | ------------- | ---------------------------- |
 | Content-Type  | `application/json`           |
 | Authorization | `Bearer {YOUR_ACCESS_TOKEN}` |
 
-## Body
+### Body Parameters
 
 | Name            | Type   | Required | Description                                                                                    |
 | --------------- | ------ | -------- | ---------------------------------------------------------------------------------------------- |
@@ -28,7 +35,10 @@ Project Flows define configurations for a Project in Verifik. In this context, w
 | `configuration` | object | **Yes**  | Configuration object containing flow-specific settings.                                      |
 | `steps`         | array  | **Yes**  | Array of steps that define the flow sequence.                                                 |
 
-## Request Example
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
 
 ```javascript
 const axios = require("axios");
@@ -100,7 +110,13 @@ axios.request(config)
 });
 ```
 
-## Response Example
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
 
 ```json
 {
@@ -159,11 +175,16 @@ axios.request(config)
     "client": "client_123456789",
     "createdAt": "2024-01-15T10:30:00Z",
     "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  "signature": {
+    "dateTime": "April 11, 2023 12:25 PM",
+    "message": "Certified by Verifik.co"
   }
 }
 ```
 
-## Error Responses
+  </TabItem>
+  <TabItem value="400" label="400">
 
 ```json
 {
@@ -172,9 +193,25 @@ axios.request(config)
 }
 ```
 
+  </TabItem>
+  <TabItem value="409" label="409">
+
 ```json
 {
   "error": "Invalid flow type",
   "message": "INVALID_FLOW_TYPE"
 }
 ```
+
+  </TabItem>
+</Tabs>
+
+### Features
+
+- **Flow Creation**: Create new project flows with complete configuration
+- **Flow Types**: Support for onboarding and login
+- **Flexible Configuration**: Define custom verification steps
+- **Multi-factor Verification**: Email, phone, and biometric
+- **Liveness Detection**: Configuration for liveness detection
+- **Multiple Languages**: Support for JavaScript, Python, PHP, and Swift
+- **Error Handling**: Detailed error responses for different scenarios

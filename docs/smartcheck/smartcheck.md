@@ -366,9 +366,9 @@ SmartCheck offers a vast range of APIs that cater to different verification need
   </div>
   <div className="col col--4">
     <Card
-      title="Ontario Driver License validation"
+      title="🇨🇦 Ontario Driver License validation"
       description=""
-      image="/img/smartcheck/canada-citizen.png"
+      image="/img/smartcheck/canada-driver.png"
       link="/driver-validation/ontario-driver-license"
     />
   </div>

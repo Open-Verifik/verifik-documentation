@@ -1,61 +1,152 @@
 ---
 id: list-all-document-liveness
-title: List All Document Liveness
+title: List All Document Liveness Validations
 description: Retrieve a list of all document liveness validations with optional filtering and pagination
+slug: /resources/list-all-document-liveness
 ---
 
-# List All Document Liveness
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-**GET** `https://api.verifik.co/v2/document-liveness`
+# List All Document Liveness Validations
 
-With this service, you can bring all document liveness validations that you have processed.
+## Endpoint
 
-## Headers
+```
+GET https://api.verifik.co/v2/document-liveness
+```
+
+With this service, you can retrieve all document liveness validations that you have processed.
+
+### Headers
 
 | Name          | Value              |
 | ------------- | ------------------ |
 | Content-Type  | `application/json` |
 | Authorization | `Bearer <token>`   |
 
-## Query Parameters
+### Query Parameters
 
 | Name          | Type    | Description                                                                                    |
 | ------------- | ------- | ---------------------------------------------------------------------------------------------- |
 | `page`        | number  | Page number for pagination (default: 1)                                                       |
-| `limit`       | number  | Number of records per page (default: 10, max: 100)                                            |
+| `limit`       | number  | Number of records per page (default: 10, maximum: 100)                                            |
 | `status`      | string  | Filter by status: `new`, `processing`, `completed`, `failed`                                  |
 | `populates[]` | string  | Optional array of related data to include. Available options: `client`, `appRegistration`.    |
 
-## Request Example
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-const axios = require("axios");
+import axios from 'axios';
 
-const config = {
-  method: "get",
-  url: "https://api.verifik.co/v2/document-liveness",
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
-  },
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/document-liveness',
   params: {
     page: 1,
     limit: 10,
-    status: "completed",
-    "populates[]": ["client", "appRegistration"]
+    status: 'completed',
+    'populates[]': ['client', 'appRegistration']
+  },
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
   }
 };
 
-axios.request(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
-## Response Example
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+}
+
+conn.request("GET", "/v2/document-liveness?page=1&limit=10&status=completed&populates[]=client&populates[]=appRegistration", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/document-liveness', [
+  'headers' => [
+    'Content-Type' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+  'query' => [
+    'page' => 1,
+    'limit' => 10,
+    'status' => 'completed',
+    'populates[]' => ['client', 'appRegistration']
+  ]
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <your_token>"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/document-liveness?page=1&limit=10&status=completed&populates[]=client&populates[]=appRegistration")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
 
 ```json
 {
@@ -107,11 +198,16 @@ axios.request(config)
     "limit": 10,
     "total": 1,
     "pages": 1
+  },
+  "signature": {
+    "dateTime": "April 11, 2023 12:25 PM",
+    "message": "Certified by Verifik.co"
   }
 }
 ```
 
-## Error Responses
+  </TabItem>
+  <TabItem value="400" label="400">
 
 ```json
 {
@@ -120,3 +216,18 @@ axios.request(config)
   "code": "INVALID_PARAMETERS"
 }
 ```
+
+  </TabItem>
+</Tabs>
+
+### Features
+
+- **Complete Listing**: Retrieve all processed document liveness validations
+- **Pagination**: Control page and record limit per page
+- **Status Filtering**: Filter by status (new, processing, completed, failed)
+- **Data Population**: Include client and application registration information
+- **Validation Results**: Details of all anti-spoofing validations
+- **Confidence Scores**: Detailed scores for each validation type
+- **Image Storage**: Information about images saved to CDN
+- **Multiple Languages**: Support for JavaScript, Python, PHP, and Swift
+- **Detailed Information**: Includes timestamps, risk scores, and configuration

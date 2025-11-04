@@ -95,6 +95,18 @@ const sidebars = {
 					collapsible: true,
 					items: ["biometrics/search", "biometrics/search-live-face", "biometrics/search-active-user", "biometrics/search-crops"],
 				},
+				{
+					type: "category",
+					label: "Zero Knowledge Face Proofs",
+					collapsible: true,
+					items: [
+						"biometrics/zero-knowledge-face-proofs-overview",
+						"biometrics/zero-knowledge-face-proofs-encrypt",
+						"biometrics/zero-knowledge-face-proofs-encrypt-qr-code",
+						"biometrics/zero-knowledge-face-proofs-decrypt",
+						"biometrics/zero-knowledge-face-proofs-preview",
+					],
+				},
 			],
 		},
 		{
@@ -157,6 +169,11 @@ const sidebars = {
 					type: "doc",
 					id: "identity/colombia-ppt",
 					label: "🇨🇴 Colombia - PPT",
+				},
+				{
+					type: "doc",
+					id: "identity/colombia-ce",
+					label: "🇨🇴 Colombia - CE",
 				},
 				{
 					type: "doc",
@@ -275,16 +292,7 @@ const sidebars = {
 					id: "business-validation/chilean",
 					label: "🇨🇱 Chilean",
 				},
-				{
-					type: "doc",
-					id: "business-validation/colombia-rues-business-information",
-					label: "🇨🇴 Colombia - RUES Business Information",
-				},
-				{
-					type: "doc",
-					id: "business-validation/colombia-rues-business-registry",
-					label: "🇨🇴 Colombia - RUES Business Registry",
-				},
+				// RUES business-information and business-registry removed
 				{
 					type: "doc",
 					id: "business-validation/colombia-dian-verification",
@@ -582,6 +590,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/colombia-inpec",
+					label: "🇨🇴 Colombia - INPEC Prison Records",
+				},
+				{
+					type: "doc",
 					id: "background-check/dea-background-check",
 					label: "🌐 DEA Background Check",
 				},
@@ -648,6 +661,16 @@ const sidebars = {
 					type: "doc",
 					id: "legal/certificate-of-validity-for-legal-professionals",
 					label: "🇨🇴 Colombian Legal Professional Validity",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-number",
+					label: "🇨🇴 Colombia - Public Servant Query by Number (SIGEP)",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-name",
+					label: "🇨🇴 Colombia - Public Servant Query by Name (SIGEP)",
 				},
 			],
 		},
