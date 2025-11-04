@@ -1,7 +1,19 @@
 ---
 id: intro
-title: Inicio
-description: Verifik ofrece un conjunto de soluciones que funcionan como no-code con una configuración fácil, proporcionando la UI/UX para el usuario final, ahorrando el esfuerzo de construir toda la solución o consumir todo vía API
+title: Inicio | Verifik - Soluciones de Verificación de Identidad y KYC
+description: Verifik ofrece soluciones de verificación de identidad sin código con KYC/KYB, autenticación biométrica, reconocimiento facial y verificación de bases de datos. Onboarding de usuarios rápido y seguro con opciones de API y UI.
+keywords:
+  - verificación de identidad
+  - KYC
+  - KYB
+  - autenticación biométrica
+  - reconocimiento facial
+  - verificación de bases de datos
+  - onboarding de usuarios
+  - verificación sin código
+  - cumplimiento AML
+  - API de validación de identidad
+slug: /docs-es
 ---
 
 import { Card } from '@site/src/components/Card';

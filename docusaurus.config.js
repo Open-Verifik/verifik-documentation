@@ -16,7 +16,7 @@ const config = {
 	tagline: "Everything you need to verify & authenticate users faster and easier",
 	favicon: "https://cdn.verifik.co/LogoNegroSolo.svg",
 
-	// Additional favicon links for better browser support
+	// Additional favicon links and SEO metadata
 	headTags: [
 		{
 			tagName: "link",
@@ -42,6 +42,85 @@ const config = {
 				href: "https://cdn.verifik.co/LogoNegroSolo.svg",
 			},
 		},
+		// SEO Meta Tags
+		{
+			tagName: "meta",
+			attributes: {
+				name: "keywords",
+				content:
+					"identity verification, KYC, KYB, biometric authentication, facial recognition, database screening, user onboarding, no-code verification, AML compliance, identity validation API, Verifik",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				name: "author",
+				content: "Verifik",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				name: "robots",
+				content: "index, follow",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				name: "googlebot",
+				content: "index, follow",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:site_name",
+				content: "Verifik Documentation",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:type",
+				content: "website",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:locale",
+				content: "en_US",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:locale:alternate",
+				content: "es_ES",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				name: "twitter:card",
+				content: "summary_large_image",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				name: "twitter:site",
+				content: "@verifik",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				name: "twitter:creator",
+				content: "@verifik",
+			},
+		},
 	],
 
 	// Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -50,7 +129,7 @@ const config = {
 	},
 
 	// Set the production url of your site here
-	url: "https://documentation.verifik.co",
+	url: "https://docs.verifik.co",
 	// Set the /<baseUrl>/ pathname under which your site is served
 	// For GitHub pages deployment, it is often '/<projectName>/'
 	baseUrl: "/",
@@ -123,12 +202,14 @@ const config = {
 				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
 			},
 		],
+		// Plugin to generate sitemap_index.xml for SEO requirements
+		require.resolve('./src/plugins/sitemap-index.js'),
 	],
 
 	themeConfig:
 		/** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 		({
-			// Replace with your project's social card
+			// SEO: Social card image for Open Graph and Twitter Cards
 			image: "img/docusaurus-social-card.jpg",
 			navbar: {
 				logo: {
