@@ -1,0 +1,225 @@
+---
+title: Actualizar un flujo de proyecto
+description: Actualiza la configuración de un flujo de proyecto existente
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v3/project-flows/{id}
+```
+
+Actualiza la configuración de un flujo de proyecto. Soporta actualizaciones parciales.
+
+### Encabezados
+
+| Nombre | Valor |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Descripción |
+| --- | --- | --- | --- |
+| `id` | string | Sí | ID del flujo de proyecto a actualizar |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const flowId = "64a1b2c3d4e5f6789012346";
+  const res = await fetch(`https://api.verifik.co/v3/project-flows/${flowId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      documents: {
+        attemptLimit: 5,
+        verificationMethods: ["SCAN_PROMPT"],
+      },
+      liveness: {
+        attemptLimit: 3,
+        minScore: 0.7
+      },
+      steps: { document: "mandatory", liveness: "mandatory" }
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$flowId = "64a1b2c3d4e5f6789012346";
+$ch = curl_init("https://api.verifik.co/v3/project-flows/" . $flowId);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "documents" => [
+        "attemptLimit" => 5,
+        "verificationMethods" => ["SCAN_PROMPT"],
+    ],
+    "liveness" => [
+        "attemptLimit" => 3,
+        "minScore" => 0.7
+    ],
+    "steps" => ["document" => "mandatory", "liveness" => "mandatory"]
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+flow_id = "64a1b2c3d4e5f6789012346"
+url = f"https://api.verifik.co/v3/project-flows/{flow_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "documents": {
+        "attemptLimit": 5,
+        "verificationMethods": ["SCAN_PROMPT"],
+    },
+    "liveness": {"attemptLimit": 3, "minScore": 0.7},
+    "steps": {"document": "mandatory", "liveness": "mandatory"}
+}
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    flowId := "64a1b2c3d4e5f6789012346"
+    payload := map[string]interface{}{
+        "documents": map[string]interface{}{
+            "attemptLimit": 5,
+            "verificationMethods": []string{"SCAN_PROMPT"},
+        },
+        "liveness": map[string]interface{}{
+            "attemptLimit": 3,
+            "minScore": 0.7,
+        },
+        "steps": map[string]interface{}{
+            "document": "mandatory",
+            "liveness": "mandatory",
+        },
+    }
+    b, _ := json.Marshal(payload)
+    url := fmt.Sprintf("https://api.verifik.co/v3/project-flows/%s", flowId)
+    req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "_id": "64a1b2c3d4e5f6789012346",
+    "status": "active",
+    "version": 3
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{ "message": "Invalid project flow ID format", "code": "BadRequest" }
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{ "message": "Access forbidden", "code": "Forbidden" }
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{ "message": "Project flow not found", "code": "NotFound" }
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{ "message": "Cannot update project flow with active users", "code": "Conflict" }
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "Project flow validation failed",
+  "code": "UnprocessableEntity",
+  "details": []
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Solo se actualizan los campos enviados; los demás permanecen sin cambios.
+- Valida rangos de `minScore` y límites de intentos según tu política de riesgo.
+- Considera pausar el flujo antes de cambios que afecten a usuarios activos.

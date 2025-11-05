@@ -1,0 +1,229 @@
+---
+id: validate-an-app-login-biometric-validation
+title: Validar una Validación Biométrica de Inicio de Sesión de Aplicación
+description: Procesa datos biométricos enviados por usuarios para verificar su identidad y completar el proceso de validación
+slug: /resources/validate-an-app-login-biometric-validation
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/biometric-validations/validate
+```
+
+### Descripción General
+
+Una Validación Biométrica es una instancia dentro del sistema de Verifik que te permite procesar y validar identidades de usuarios mediante reconocimiento facial y detección de vida. Este endpoint procesa los datos biométricos enviados por los usuarios para verificar su identidad y completar el proceso de validación. Esto se utiliza típicamente después de que un usuario ha completado su sesión de detección de vida.
+
+### Encabezados
+
+| Nombre        | Valor                        |
+| ------------- | ---------------------------- |
+| Content-Type  | `application/json`           |
+| Authorization | `Bearer {YOUR_ACCESS_TOKEN}` |
+
+:::warning
+El Token JWT que debes usar al validar validaciones biométricas debe contener un token de `livenessSession` válido que fue proporcionado durante la creación de la validación biométrica.
+
+El token proporcionado en esta respuesta es el token que puedes pasar a tu propia aplicación para iniciar sesión en tu aplicación. En la solución sin código, este token se agrega al `redirectUrl` de tu `projectFlow`.
+
+Por ejemplo, `https://verifik.co?token={token}`
+:::
+
+### Parámetros
+
+| Nombre  | Tipo   | Requerido | Descripción                                                                |
+| ------- | ------ | --------- | -------------------------------------------------------------------------- |
+| `image` | string | Sí        | Imagen codificada en Base64 del rostro del usuario para validación biométrica. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'POST',
+  url: 'https://api.verifik.co/v2/biometric-validations/validate',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+  },
+  data: {
+    image: 'base64_encoded_image_data'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+payload = json.dumps({
+  "image": "base64_encoded_image_data"
+})
+
+headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer <your_token>'
+}
+
+conn.request("POST", "/v2/biometric-validations/validate", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://api.verifik.co/v2/biometric-validations/validate', [
+  'headers' => [
+    'Content-Type' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+  'json' => [
+    'image' => 'base64_encoded_image_data'
+  ]
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <your_token>"
+]
+
+let parameters = [
+  "image": "base64_encoded_image_data"
+] as [String : Any]
+
+let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/biometric-validations/validate")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "POST"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "biometric_validation_123456789",
+    "status": "completed",
+    "verificationResults": {
+      "livenessDetection": "passed",
+      "identityMatch": "passed",
+      "qualityScore": 0.95,
+      "antiSpoofing": "passed"
+    },
+    "biometricData": {
+      "faceImage": "base64_encoded_image",
+      "template": "biometric_template_data",
+      "quality": "good",
+      "livenessScore": 0.95
+    },
+    "riskScore": 0.05,
+    "completedAt": "2024-01-15T10:32:00Z",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "error": "Datos biométricos inválidos",
+  "message": "INVALID_BIOMETRIC_DATA"
+}
+```
+
+  </TabItem>
+  <TabItem value="400-2" label="400 (Detección de Vida Fallida)">
+
+```json
+{
+  "error": "Detección de vida fallida",
+  "message": "LIVENESS_DETECTION_FAILED"
+}
+```
+
+  </TabItem>
+  <TabItem value="400-3" label="400 (Verificación de Identidad Fallida)">
+
+```json
+{
+  "error": "Verificación de identidad fallida",
+  "message": "IDENTITY_VERIFICATION_FAILED"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Características
+
+- **Verificación Biométrica**: Procesa reconocimiento facial y detección de vida
+- **Evaluación de Calidad**: Analiza la calidad de imagen y la calidad de plantilla biométrica
+- **Protección Anti-Suplantación**: Seguridad avanzada contra intentos biométricos falsos
+- **Puntuación de Riesgo**: Calcula puntuaciones de riesgo para decisiones de autenticación
+- **Token de Autenticación**: Genera tokens seguros para acceso a la aplicación
+- **Múltiples Lenguajes de Programación**: Soporte para JavaScript, Python, PHP y Swift
+- **Resultados Completos**: Resultados de verificación detallados y datos biométricos
+- **Características de Seguridad**: Validación de sesión de vida y generación de tokens seguros
