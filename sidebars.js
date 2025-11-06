@@ -565,6 +565,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/colombia-inpec",
+					label: "🇨🇴 Colombia - INPEC Prison Records",
+				},
+				{
+					type: "doc",
 					id: "background-check/dea-background-check",
 					label: "🌐 DEA Background Check",
 				},
@@ -631,6 +636,16 @@ const sidebars = {
 					type: "doc",
 					id: "legal/certificate-of-validity-for-legal-professionals",
 					label: "🇨🇴 Colombian Legal Professional Validity",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-number",
+					label: "🇨🇴 Colombia - Public Servant Query by Number (SIGEP)",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-name",
+					label: "🇨🇴 Colombia - Public Servant Query by Name (SIGEP)",
 				},
 			],
 		},
