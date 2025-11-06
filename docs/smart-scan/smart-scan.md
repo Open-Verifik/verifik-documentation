@@ -425,5 +425,5 @@ For technical support and API documentation, contact our support team or visit o
 ---
 
 :::tip Getting Started
-Ready to start using Smart Scan? Check out our [API documentation](/api) and [integration guides](/integrations) to get started quickly.
+Ready to start using Smart Scan? Check out our [Scan Prompt API](/ocr-engines/scan-prompt) and [Scan Studio API](/ocr-engines/scan-studio) documentation to get started quickly.
 :::

@@ -1,7 +1,18 @@
 ---
 id: intro
-title: Inicio
-description: Verifik ofrece un conjunto de soluciones que funcionan como no-code con una configuración fácil, proporcionando la UI/UX para el usuario final, ahorrando el esfuerzo de construir toda la solución o consumir todo vía API
+title: Inicio | Verifik - Soluciones de Verificación de Identidad y KYC
+description: Verifik ofrece soluciones de verificación de identidad sin código con KYC/KYB, autenticación biométrica, reconocimiento facial y verificación de bases de datos. Onboarding de usuarios rápido y seguro con opciones de API y UI.
+keywords:
+  - verificación de identidad
+  - KYC
+  - KYB
+  - autenticación biométrica
+  - reconocimiento facial
+  - verificación de bases de datos
+  - onboarding de usuarios
+  - verificación sin código
+  - cumplimiento AML
+  - API de validación de identidad
 ---
 
 import { Card } from '@site/src/components/Card';
@@ -56,7 +67,7 @@ Verifik ofrece un conjunto de soluciones que funcionan como no-code con una conf
       title="Enroll"
       description="Esta solución incluye todo lo que SmartEnroll hace pero a nivel de API, dando la flexibilidad de codificar una solución personalizada basada en las necesidades de tu empresa."
       image="/img/services/enroll.png"
-      link="/docs-es/inscripcion"
+      link="/docs-es/smart-enroll-alojado"
     />
   </div>
 </div>

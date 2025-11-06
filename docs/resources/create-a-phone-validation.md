@@ -4,6 +4,9 @@ title: Create a Phone Validation
 description: Create a new phone validation request
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Create a Phone Validation
 
 **POST** `https://api.verifik.co/v2/phone-validations`
@@ -82,7 +85,10 @@ axios.request(config)
 });
 ```
 
-## Response Example
+## Response
+
+<Tabs>
+  <TabItem value="200" label="200">
 
 ```json
 {
@@ -107,11 +113,16 @@ axios.request(config)
     "maxAttempts": 3,
     "createdAt": "2024-01-15T10:30:00Z",
     "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  "signature": {
+    "dateTime": "April 11, 2023 12:25 PM",
+    "message": "Certified by Verifik.co"
   }
 }
 ```
 
-## Error Responses
+  </TabItem>
+  <TabItem value="400" label="400">
 
 ```json
 {
@@ -120,3 +131,17 @@ axios.request(config)
   "code": "INVALID_PHONE"
 }
 ```
+
+  </TabItem>
+</Tabs>
+
+## Features
+
+- **Validation Creation**: Creates new phone validations with complete configuration
+- **Multiple Methods**: Support for verification codes and manual verification
+- **Validation Types**: Standard validation, login, onboarding and unique links
+- **Country Codes**: Support for international country codes
+- **Advanced Configuration**: Redirect URLs, webhooks and two-factor authentication
+- **Security**: Attempt control, expiration and abuse prevention
+- **Multiple Languages**: Support for JavaScript, Python, PHP and Swift
+- **Error Handling**: Detailed error responses for different scenarios

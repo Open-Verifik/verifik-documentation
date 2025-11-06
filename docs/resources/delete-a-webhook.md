@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 DELETE https://api.verifik.co/v2/webhooks/{id}
 ```
 
-To delete a specific webhook, make a DELETE request to the endpoint where {id} should be replaced with the unique identifier of the webhook you want to delete.
+To delete a specific webhook, make a DELETE request to the endpoint where `{id}` should be replaced with the unique identifier of the webhook you want to delete.
 
 ### Headers
 

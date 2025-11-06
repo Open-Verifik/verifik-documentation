@@ -211,7 +211,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Colombian background check"
       description=""
       image="/img/smartcheck/colombia-background.png"
-      link="/background-check/colombia"
+      link="/background-check/colombia-police-record-check"
     />
   </div>
   <div className="col col--4">
@@ -219,7 +219,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="International background check"
       description=""
       image="/img/smartcheck/international-background.png"
-      link="/background-check/international"
+      link="/background-check/interpol-background-check"
     />
   </div>
 </div>
@@ -342,7 +342,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Colombian Driver License validation"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="/driver-validation/colombia-runt-drivers-license"
+      link="/vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license"
     />
   </div>
   <div className="col col--4">
@@ -425,7 +425,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Colombian company validation"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="/business-validation/colombia"
+      link="/business-validation/rues-complete-v3"
     />
   </div>
 </div>
@@ -530,7 +530,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Colombian Court cases records"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="/legal/court-case-records-lookup"
+      link="/legal/colombian-legal-processes"
     />
   </div>
   <div className="col col--4">
@@ -599,3 +599,6 @@ In the SmartCheck dashboard, you can monitor your API usage, track the number of
 ## Support and Maintenance
 
 SmartCheck comes with full support and regular updates. The Verifik support team is available to assist with any issues or questions you may have. Additionally, the platform is continuously updated to ensure compliance with the latest legal requirements and to add new verification services as they come available.
+
+
+
