@@ -3,6 +3,7 @@ id: soat-rtm-vehiculo-runt
 title: RUNT - SOAT y RTM del Vehículo
 description: Información de seguros e inspección técnica
 sidebar_label: SOAT y RTM del Vehículo
+slug: /validacion-vehiculos/colombia/soat-rtm-vehiculo-runt
 ---
 
 import Tabs from '@theme/Tabs';
