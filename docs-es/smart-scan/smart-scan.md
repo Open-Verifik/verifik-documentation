@@ -140,7 +140,7 @@ La tecnología OCR se ha convertido en una herramienta esencial para digitalizar
       </div>
       <div className="card__body">
         <p>Prueba nuestra API <strong>Escaneo con Prompt</strong> con cualquier documento que tengas. Perfecto para extracción de texto flexible basada en prompts.</p>
-        <a href="/ocr-engines/scan-prompt" className="button button--primary">Aprender Más</a>
+        <a href="/ocr-engines/escaneo-prompt" className="button button--primary">Aprender Más</a>
       </div>
     </div>
   </div>
@@ -151,7 +151,7 @@ La tecnología OCR se ha convertido en una herramienta esencial para digitalizar
       </div>
       <div className="card__body">
         <p>Prueba nuestra API Estudio de Escaneo con los modelos entrenados que tenemos. Ideal para procesamiento de documentos especializado de alta precisión.</p>
-        <a href="/ocr-engines/scan-studio" className="button button--primary">Aprender Más</a>
+        <a href="/ocr-engines/escaneo-estudio" className="button button--primary">Aprender Más</a>
       </div>
     </div>
   </div>
@@ -289,9 +289,10 @@ Authorization: Bearer <your_jwt_token>
 ```
 
 **Casos de Uso:**
-- Extracción de texto flexible con prompts personalizados
-- Configuración rápida para tipos de documentos diversos
-- Extracción de campos dinámicos basada en prompts
+
+-   Extracción de texto flexible con prompts personalizados
+-   Configuración rápida para tipos de documentos diversos
+-   Extracción de campos dinámicos basada en prompts
 
 ### Estudio de Escaneo
 
@@ -310,9 +311,10 @@ Authorization: Bearer <your_jwt_token>
 ```
 
 **Casos de Uso:**
-- Extracción de alta precisión para tipos de documentos específicos
-- Resultados consistentes para documentos estandarizados
-- Aplicaciones listas para producción que requieren confiabilidad
+
+-   Extracción de alta precisión para tipos de documentos específicos
+-   Resultados consistentes para documentos estandarizados
+-   Aplicaciones listas para producción que requieren confiabilidad
 
 ---
 
@@ -324,19 +326,19 @@ Todas las respuestas de API siguen un formato consistente:
 
 ```json
 {
-  "success": true,
-  "data": {
-    "extractedText": "Contenido de texto extraído completo",
-    "confidence": 0.95,
-    "fields": {
-      "name": "Juan Pérez",
-      "date": "2024-01-15",
-      "amount": "$1,250.00"
+    "success": true,
+    "data": {
+        "extractedText": "Contenido de texto extraído completo",
+        "confidence": 0.95,
+        "fields": {
+            "name": "Juan Pérez",
+            "date": "2024-01-15",
+            "amount": "$1,250.00"
+        },
+        "processing_time": "2.3s",
+        "model_used": "scan-prompt-v1"
     },
-    "processing_time": "2.3s",
-    "model_used": "scan-prompt-v1"
-  },
-  "message": "Extracción de texto completada exitosamente"
+    "message": "Extracción de texto completada exitosamente"
 }
 ```
 
@@ -344,12 +346,12 @@ Todas las respuestas de API siguen un formato consistente:
 
 ```json
 {
-  "success": false,
-  "error": "Formato de documento inválido",
-  "code": "INVALID_DOCUMENT",
-  "details": {
-    "supported_formats": ["jpg", "png", "pdf"]
-  }
+    "success": false,
+    "error": "Formato de documento inválido",
+    "code": "INVALID_DOCUMENT",
+    "details": {
+        "supported_formats": ["jpg", "png", "pdf"]
+    }
 }
 ```
 
@@ -382,8 +384,8 @@ Todas las respuestas de API siguen un formato consistente:
 
 ## Límites de Velocidad
 
-- **Escaneo con Prompt**: 50 solicitudes por minuto
-- **Estudio de Escaneo**: 30 solicitudes por minuto
+-   **Escaneo con Prompt**: 50 solicitudes por minuto
+-   **Estudio de Escaneo**: 30 solicitudes por minuto
 
 :::tip Consejo Pro
 Comienza con Escaneo con Prompt para pruebas rápidas y prototipado, luego muévete a Estudio de Escaneo para aplicaciones de producción que requieren alta precisión.
@@ -404,24 +406,28 @@ Para soporte técnico y documentación de API, contacta a nuestro equipo de sopo
 ## Casos de Uso
 
 ### Servicios Financieros
-- **Procesamiento de Facturas**: Extrae datos de facturas para contabilidad automatizada
-- **Análisis de Estados Bancarios**: Procesa estados bancarios para análisis financiero
-- **Digitalización de Recibos**: Convierte recibos en papel a registros digitales
+
+-   **Procesamiento de Facturas**: Extrae datos de facturas para contabilidad automatizada
+-   **Análisis de Estados Bancarios**: Procesa estados bancarios para análisis financiero
+-   **Digitalización de Recibos**: Convierte recibos en papel a registros digitales
 
 ### Salud
-- **Registros Médicos**: Digitaliza registros de pacientes y formularios
-- **Reclamos de Seguros**: Procesa documentos de reclamos de seguros
-- **Procesamiento de Recetas**: Extrae información de formularios de recetas
+
+-   **Registros Médicos**: Digitaliza registros de pacientes y formularios
+-   **Reclamos de Seguros**: Procesa documentos de reclamos de seguros
+-   **Procesamiento de Recetas**: Extrae información de formularios de recetas
 
 ### Legal
-- **Análisis de Contratos**: Extrae términos clave y fechas de documentos legales
-- **Documentos Judiciales**: Procesa archivos legales y registros judiciales
-- **Formularios de Cumplimiento**: Digitaliza documentos de cumplimiento regulatorio
+
+-   **Análisis de Contratos**: Extrae términos clave y fechas de documentos legales
+-   **Documentos Judiciales**: Procesa archivos legales y registros judiciales
+-   **Formularios de Cumplimiento**: Digitaliza documentos de cumplimiento regulatorio
 
 ### Administrativo
-- **Procesamiento de Formularios**: Extrae datos de varios formularios administrativos
-- **Archivo de Documentos**: Convierte documentos en papel a archivos digitales buscables
-- **Automatización de Entrada de Datos**: Reduce entrada manual de datos con extracción automatizada
+
+-   **Procesamiento de Formularios**: Extrae datos de varios formularios administrativos
+-   **Archivo de Documentos**: Convierte documentos en papel a archivos digitales buscables
+-   **Automatización de Entrada de Datos**: Reduce entrada manual de datos con extracción automatizada
 
 ---
 

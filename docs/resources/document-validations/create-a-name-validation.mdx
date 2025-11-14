@@ -1,0 +1,253 @@
+---
+id: create-a-name-validation
+title: Create a Name Validation
+description: Perform name validation by comparing names extracted from documents with official government records
+slug: /resources/create-a-name-validation
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+**PUT** `https://api.verifik.co/v2/document-validations/{id}/validate`
+
+This endpoint performs name validation by comparing the names extracted from a user's document with official government records. It validates that the user's provided names match their official identity records through government API integrations.
+
+### Headers
+
+#### Content-Type
+Type: String  
+Required: Yes
+
+`application/json`
+
+#### Authorization
+Type: String  
+Required: Yes
+
+`Bearer {YOUR_ACCESS_TOKEN}`
+
+:::warning
+**Prerequisites**: Users must complete both the `signUpForm` step and the `document` step before name validation can be performed.
+:::
+
+:::warning
+**Additional Feature**: Name Validations are an additional feature and are subject to charges. Each validation request will incur a fee based on your plan.
+:::
+
+### Path Parameters
+
+#### `id`
+Type: string  
+Required: Yes
+
+The unique identifier of the document validation record to validate.
+
+### Query Parameters
+
+#### `force`
+Type: boolean  
+Required: No
+
+Force re-validation even if already validated. Example: `force=true`
+
+### Body Parameters
+
+This endpoint does not require a request body. All necessary information is automatically retrieved from the document validation record.
+
+### Supported Regions and Document Types
+
+Name validation is currently supported for the following regions and document types:
+
+| Region       | Document Type | Description                  |
+| ------------ | ------------- | ---------------------------- |
+| **Panama**   | `CCPA`        | Panama National ID Card      |
+| **Colombia** | `CC`          | Colombian National ID Card   |
+| **Colombia** | `DRCC`        | Colombian Diplomatic ID Card |
+| **Chile**    | `CL`          | Chilean National ID Card     |
+
+:::info
+**Note**: Support for additional regions and document types may be available. Contact your account manager for the most up-to-date list of supported countries and document types.
+:::
+
+### Request
+
+<Tabs groupId="language">
+<TabItem value="nodejs" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'PUT',
+  url: 'https://api.verifik.co/v2/document-validations/document_validation_123456789/validate',
+  params: {
+    force: false
+  },
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+}
+
+conn.request("PUT", "/v2/document-validations/document_validation_123456789/validate?force=false", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('PUT', 'https://api.verifik.co/v2/document-validations/document_validation_123456789/validate', [
+  'headers' => [
+    'Content-Type' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+  'query' => [
+    'force' => false
+  ]
+]);
+
+echo $response->getBody();
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+  "fmt"
+  "net/http"
+  "io/ioutil"
+)
+
+func main() {
+  url := "https://api.verifik.co/v2/document-validations/document_validation_123456789/validate?force=false"
+
+  req, _ := http.NewRequest("PUT", url, nil)
+
+  req.Header.Add("Content-Type", "application/json")
+  req.Header.Add("Authorization", "Bearer <your_token>")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+
+  fmt.Println(string(body))
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs groupId="status">
+<TabItem value="200" label="200">
+
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "document_validation_123456789",
+    "status": "ACTIVE",
+    "nameValidation": {
+      "firstName": {
+        "provided": "John",
+        "official": "John",
+        "match": true,
+        "confidence": 0.95
+      },
+      "lastName": {
+        "provided": "Doe",
+        "official": "Doe",
+        "match": true,
+        "confidence": 0.95
+      },
+      "overallMatch": true,
+      "validationDate": "2024-01-15T10:32:00Z"
+    },
+    "updatedAt": "2024-01-15T10:32:00Z"
+  },
+  "signature": {
+    "dateTime": "April 11, 2023 12:25 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```
+
+</TabItem>
+<TabItem value="400" label="400">
+
+```json
+{
+  "error": "Name validation not supported for this document type",
+  "message": "UNSUPPORTED_DOCUMENT_TYPE"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "error": "Prerequisites not met",
+  "message": "MISSING_PREREQUISITES"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Features
+
+- **Government Validation**: Compares names with official government records
+- **Multiple Countries**: Support for Panama, Colombia, and Chile
+- **Document Types**: National and diplomatic ID cards
+- **Automatic Validation**: Automatically retrieves information from document
+- **Re-validation**: Option to force re-validation with `force` parameter
+- **Confidence Scores**: Detailed scores for each name
+- **Prerequisites**: Requires completion of registration form and document
+- **Premium Feature**: Additional service with per-validation charges
+- **Multiple Languages**: Support for JavaScript, Python, PHP, and Swift
+- **Error Handling**: Detailed error responses for different scenarios
+
