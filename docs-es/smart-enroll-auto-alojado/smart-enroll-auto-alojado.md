@@ -2,6 +2,7 @@
 id: smart-enroll-self-hosted
 title: "SmartEnroll: Auto-alojado"
 description: Acceso programático a la funcionalidad de SmartEnroll para flujos personalizados de KYC e incorporación
+slug: /smart-enroll-auto-alojado
 ---
 
 import { ClipboardList, Workflow, Palette, Link as LinkIcon, BarChart3, Shield } from 'lucide-react';
@@ -142,18 +143,18 @@ La API de SmartEnroll proporciona dos recursos principales:
 
 Gestiona tus proyectos KYC con control completo sobre configuración, marca y ajustes de verificación.
 
--   **[Listar Proyectos](../resources/proyectos/listar-todos-los-proyectos)** - Recupera todos los proyectos
--   **[Obtener Proyecto](../resources/proyectos/recuperar-un-proyecto)** - Obtiene detalles del proyecto
--   **[Crear Proyecto](../resources/proyectos/crear-un-proyecto)** - Crea nuevos proyectos
--   **[Actualizar Proyecto](../resources/proyectos/actualizar-un-proyecto)** - Actualiza la configuración del proyecto
--   **[Eliminar Proyecto](../resources/proyectos/eliminar-un-proyecto)** - Elimina proyectos
+-   **[Listar Proyectos](/docs-es/resources/proyectos/listar-todos-los-proyectos)** - Recupera todos los proyectos
+-   **[Obtener Proyecto](/docs-es/resources/proyectos/recuperar-un-proyecto)** - Obtiene detalles del proyecto
+-   **[Crear Proyecto](/docs-es/resources/proyectos/crear-un-proyecto)** - Crea nuevos proyectos
+-   **[Actualizar Proyecto](/docs-es/resources/proyectos/actualizar-un-proyecto)** - Actualiza la configuración del proyecto
+-   **[Eliminar Proyecto](/docs-es/resources/proyectos/eliminar-un-proyecto)** - Elimina proyectos
 
 #### Flujos de Proyecto
 
 Configura flujos de verificación y gestiona ajustes específicos del proyecto.
 
--   **[Actualizar Flujo de Proyecto](../resources/flujos-de-proyecto/actualizar-un-flujo-de-proyecto)** - Actualiza la configuración del flujo de verificación
--   **[Eliminar Flujo de Proyecto](../resources/flujos-de-proyecto/eliminar-un-flujo-de-proyecto)** - Elimina flujos de proyecto
+-   **[Actualizar Flujo de Proyecto](/docs-es/resources/flujos-de-proyecto/actualizar-un-flujo-de-proyecto)** - Actualiza la configuración del flujo de verificación
+-   **[Eliminar Flujo de Proyecto](/docs-es/resources/flujos-de-proyecto/eliminar-un-flujo-de-proyecto)** - Elimina flujos de proyecto
 
 ---
 

@@ -39,9 +39,9 @@ Authorization: Bearer YOUR_ACCESS_TOKEN
 
 | Step | Action | Documentation | Endpoint |
 |------|--------|--------------|----------|
-| 1 | **Create a Project** | [Create a Project](/resources/create-a-project) | `POST /projects` |
-| 2 | **Create a Project Flow** | [Create a Project Flow](/resources/create-a-project-flow) | `POST /project-flows` |
-| 3 | **Configure App Registrations** | [Create an App Registration](/resources/create-an-app-registration) | `POST /app-registrations` |
+| 1 | **Create a Project** | [Create a Project](/resources/projects/projects-create) | `POST /projects` |
+| 2 | **Create a Project Flow** | [Create a Project Flow](/resources/project-flows/project-flows-update) | `POST /project-flows` |
+| 3 | **Configure App Registrations** | [Create an App Registration](/resources/app-registrations/create-an-app-registration) | `POST /app-registrations` |
 | 4 | **Set up Webhooks** | [Create a Webhook](/resources/create-a-webhook) | `POST /webhooks` |
 | 5 | **Configure App Logins** | [Create an App Login](/resources/create-an-app-login) | Auto-generated |
 
@@ -79,12 +79,12 @@ Follow these steps to integrate Verifik's enrollment system:
 
 ### 1. Project Setup
 Create your project and configure the basic settings:
-- [Create a Project](/resources/create-a-project) - Set up your project with basic information
-- [Create a Project Flow](/resources/create-a-project-flow) - Define your validation workflow
+- [Create a Project](/resources/projects/projects-create) - Set up your project with basic information
+- [Create a Project Flow](/resources/project-flows/project-flows-update) - Define your validation workflow
 
 ### 2. User Registration
 Handle user registration and validation:
-- [Create an App Registration](/resources/create-an-app-registration) - Register users in your system
+- [Create an App Registration](/resources/app-registrations/create-an-app-registration) - Register users in your system
 - [Create an App Login](/resources/create-an-app-login) - Manage user authentication
 
 ### 3. Validation Methods

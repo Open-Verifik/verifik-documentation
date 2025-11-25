@@ -126,11 +126,11 @@ The SmartEnroll API provides two main resources:
 
 Manage your KYC projects with complete control over configuration, branding, and verification settings.
 
--   **[List Projects](../resources/projects/list-projects)** - Retrieve all projects
--   **[Get Project](../resources/projects/projects-show)** - Get project details
--   **[Create Project](../resources/projects/project-create)** - Create new projects
--   **[Update Project](../resources/projects/projects-update)** - Update project configuration
--   **[Delete Project](../resources/projects/project-delete)** - Remove projects
+-   **[List Projects](/resources/projects/projects-list)** - Retrieve all projects
+-   **[Get Project](/resources/projects/projects-show)** - Get project details
+-   **[Create Project](/resources/projects/projects-create)** - Create new projects
+-   **[Update Project](/resources/projects/projects-update)** - Update project configuration
+-   **[Delete Project](/resources/projects/projects-delete)** - Remove projects
 
 #### Project Flows
 

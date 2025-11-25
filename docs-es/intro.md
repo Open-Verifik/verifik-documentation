@@ -56,7 +56,7 @@ Verifik ofrece un conjunto de soluciones que funcionan como no-code con una conf
       title="SmartEnroll"
       description="Realiza un proceso completo de incorporación de usuarios con tecnologías avanzadas de verificación de identidad como reconocimiento facial, validaciones de ID y verificaciones de antecedentes, asegurando un registro seguro y efectivo."
       image="/img/services/smartenroll.png"
-      link="/docs-es/inscripcion-inteligente"
+      link="/docs-es/smartenroll"
     />
   </div>
 </div>
@@ -67,7 +67,7 @@ Verifik ofrece un conjunto de soluciones que funcionan como no-code con una conf
       title="Enroll"
       description="Esta solución incluye todo lo que SmartEnroll hace pero a nivel de API, dando la flexibilidad de codificar una solución personalizada basada en las necesidades de tu empresa."
       image="/img/services/enroll.png"
-      link="/docs-es/smart-enroll-alojado"
+      link="/docs-es/smart-enroll-auto-alojado"
     />
   </div>
 </div>
