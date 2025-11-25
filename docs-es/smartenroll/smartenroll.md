@@ -4,6 +4,8 @@ title: SmartEnroll
 description: Una solución sin código diseñada para proporcionar incorporaciones seguras y fluidas para los usuarios
 ---
 
+import { Mail, Phone, ScanFace, FileText, Database, Palette } from 'lucide-react';
+
 # SmartEnroll
 
 **SmartEnroll** es una solución sin código diseñada para proporcionar incorporaciones seguras y fluidas para los usuarios. Esta plataforma permite a las empresas ofrecer diversas verificaciones de incorporación, incluyendo verificación de correo electrónico, teléfono y biométrica, validaciones de documentos, verificaciones AML, verificaciones de manipulación y más. Todas estas características están integradas en nuestro proyecto asegurando una experiencia fácil de usar y segura. Con SmartEnroll, las empresas pueden integrar fácilmente estas soluciones KYC sin la necesidad de codificación compleja o desarrollo de infraestructura.
@@ -18,7 +20,7 @@ SmartEnroll proporciona una solución KYC (Know Your Customer) integral que agil
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>📧 Verificación de Correo Electrónico</h3>
+        <h3><Mail size={20} style={{display: 'inline', marginRight: '8px'}} />Verificación de Correo Electrónico</h3>
       </div>
       <div className="card__body">
         <p>Valida direcciones de correo electrónico con verificación OTP para asegurar un registro de usuario auténtico.</p>
@@ -28,7 +30,7 @@ SmartEnroll proporciona una solución KYC (Know Your Customer) integral que agil
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>📱 Verificación de Teléfono</h3>
+        <h3><Phone size={20} style={{display: 'inline', marginRight: '8px'}} />Verificación de Teléfono</h3>
       </div>
       <div className="card__body">
         <p>Verifica números de teléfono vía SMS y WhatsApp para autenticación segura de usuarios.</p>
@@ -38,7 +40,7 @@ SmartEnroll proporciona una solución KYC (Know Your Customer) integral que agil
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>👤 Verificación Biométrica</h3>
+        <h3><ScanFace size={20} style={{display: 'inline', marginRight: '8px'}} />Verificación Biométrica</h3>
       </div>
       <div className="card__body">
         <p>Reconocimiento facial avanzado y detección de vivacidad para verificación de identidad segura.</p>
@@ -51,7 +53,7 @@ SmartEnroll proporciona una solución KYC (Know Your Customer) integral que agil
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>📄 Escaneo de Documentos</h3>
+        <h3><FileText size={20} style={{display: 'inline', marginRight: '8px'}} />Escaneo de Documentos</h3>
       </div>
       <div className="card__body">
         <p>Escanea y verifica documentos emitidos por el gobierno con detección de manipulación.</p>
@@ -61,7 +63,7 @@ SmartEnroll proporciona una solución KYC (Know Your Customer) integral que agil
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>🔍 Screening de Bases de Datos</h3>
+        <h3><Database size={20} style={{display: 'inline', marginRight: '8px'}} />Screening de Bases de Datos</h3>
       </div>
       <div className="card__body">
         <p>Verificaciones exhaustivas de antecedentes contra bases de datos gubernamentales y listas negras.</p>
@@ -71,7 +73,7 @@ SmartEnroll proporciona una solución KYC (Know Your Customer) integral que agil
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>🎨 Personalización de Marca</h3>
+        <h3><Palette size={20} style={{display: 'inline', marginRight: '8px'}} />Personalización de Marca</h3>
       </div>
       <div className="card__body">
         <p>Interfaz completamente personalizable para que coincida con la identidad y requisitos de tu marca.</p>
@@ -150,7 +152,7 @@ En este paso, el usuario puede configurar la verificación de documentos para va
     -   Licencia de Conducir
 -   **Establecer un Límite de Intentos**: Esto permite a los usuarios definir cuántos escaneos de documentos fallidos se permiten antes de que el proceso se bloquee. El rango es personalizable, desde 3 hasta 10 intentos. Esto es crítico para controlar potenciales intentos fraudulentos y asegurar un uso eficiente de recursos.
 
-<img src="/img/smartenroll/smart-enroll-document-verification-methods.png" alt="Métodos de Verificación de Documentos" />
+<img src="/img/smartenroll/smart-enroll-documents-verification-methods.png" alt="Métodos de Verificación de Documentos" />
 
 -   **Métodos de Verificación de ID**:
     -   **Opción 1**: Cargar una copia digital de un documento de identidad.

@@ -4,6 +4,8 @@ title: SmartEnroll
 description: A no-code solution designed to provide secure and seamless onboardings for users
 ---
 
+import { Mail, Phone, ScanFace, FileText, Database, Palette } from 'lucide-react';
+
 # SmartEnroll
 
 **SmartEnroll** is a no-code solution designed to provide secure and seamless onboardings for users. This platform enables businesses to offer various onboarding checks, including email, phone, and biometric verification, document validations, AML checks, tempering checks and more. All those features are integrated into our project ensuring a user-friendly and secure experience. With SmartEnroll, companies can easily integrate these KYC solutions without the need for complex coding or infrastructure development.
@@ -18,7 +20,7 @@ SmartEnroll provides a comprehensive KYC (Know Your Customer) solution that stre
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>📧 Email Verification</h3>
+        <h3><Mail size={20} style={{display: 'inline', marginRight: '8px'}} />Email Verification</h3>
       </div>
       <div className="card__body">
         <p>Validate email addresses with OTP verification to ensure authentic user registration.</p>
@@ -28,7 +30,7 @@ SmartEnroll provides a comprehensive KYC (Know Your Customer) solution that stre
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>📱 Phone Verification</h3>
+        <h3><Phone size={20} style={{display: 'inline', marginRight: '8px'}} />Phone Verification</h3>
       </div>
       <div className="card__body">
         <p>Verify phone numbers via SMS and WhatsApp for secure user authentication.</p>
@@ -38,7 +40,7 @@ SmartEnroll provides a comprehensive KYC (Know Your Customer) solution that stre
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>👤 Biometric Verification</h3>
+        <h3><ScanFace size={20} style={{display: 'inline', marginRight: '8px'}} />Biometric Verification</h3>
       </div>
       <div className="card__body">
         <p>Advanced facial recognition and liveness detection for secure identity verification.</p>
@@ -51,7 +53,7 @@ SmartEnroll provides a comprehensive KYC (Know Your Customer) solution that stre
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>📄 Document Scanning</h3>
+        <h3><FileText size={20} style={{display: 'inline', marginRight: '8px'}} />Document Scanning</h3>
       </div>
       <div className="card__body">
         <p>Scan and verify government-issued documents with tampering detection.</p>
@@ -61,7 +63,7 @@ SmartEnroll provides a comprehensive KYC (Know Your Customer) solution that stre
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>🔍 Database Screening</h3>
+        <h3><Database size={20} style={{display: 'inline', marginRight: '8px'}} />Database Screening</h3>
       </div>
       <div className="card__body">
         <p>Comprehensive background checks against government databases and blacklists.</p>
@@ -71,7 +73,7 @@ SmartEnroll provides a comprehensive KYC (Know Your Customer) solution that stre
   <div className="col col--4">
     <div className="card">
       <div className="card__header">
-        <h3>🎨 Custom Branding</h3>
+        <h3><Palette size={20} style={{display: 'inline', marginRight: '8px'}} />Custom Branding</h3>
       </div>
       <div className="card__body">
         <p>Fully customizable interface to match your brand identity and requirements.</p>
@@ -150,7 +152,7 @@ In this step, the user can configure document verification for identity validati
     -   Driving License
 -   **Set an Attempt Limit**: This allows users to define how many failed document scans are permitted before the process is locked. The range is customizable, from 3 up to 10 attempts. This is critical for controlling potential fraudulent attempts and ensuring efficient resource use.
 
-<img src="/img/smartenroll/smart-enroll-document-verification-methods.png" alt="Document Verification Methods" />
+<img src="/img/smartenroll/smart-enroll-documents-verification-methods.png" alt="Document Verification Methods" />
 
 -   **ID Verification Methods**:
     -   **Option 1**: Upload a digital copy of an ID document.

@@ -740,6 +740,13 @@ const sidebars = {
                         "resources/app-registrations/create-an-app-registration",
                         "resources/app-registrations/retrieve-an-app-registration",
                         "resources/app-registrations/list-all-app-registrations",
+                        "resources/app-registrations/create-an-app-registration-biometric-validation",
+                        "resources/app-registrations/create-an-app-registration-document-validation",
+                        "resources/app-registrations/create-an-app-registration-email-validation",
+                        "resources/app-registrations/create-an-app-registration-phone-validation",
+                        "resources/app-registrations/validate-an-app-registration-email-validation",
+                        "resources/app-registrations/validate-an-app-registration-phone-validation",
+                        "resources/app-registrations/sync-app-registration-status",
                     ],
                 },
                 {

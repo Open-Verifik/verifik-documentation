@@ -1,0 +1,217 @@
+---
+id: create-an-app-registration-biometric-validation
+title: Create an App Registration Biometric Validation
+description: Create a biometric validation for an app registration using facial recognition and liveness detection
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/biometric-validations/app-registration
+```
+
+A Biometric Validation is an instance within Verifik's system that allows you to process and validate user identities through facial recognition and liveness detection during the onboarding process. This process ensures the authenticity of users by verifying their unique biometric characteristics through advanced security technology. This endpoint is specifically designed for users who are in the middle of an app registration flow.
+
+:::warning
+The JWT Token you should use when creating `App Registration Biometric Validations` is provided from the `App Registration` in creation. You must use the token returned when creating an [App Registration](create-an-app-registration) to authenticate this request.
+:::
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `image` | string | Yes | Base64 encoded facial image that will be used for biometric validation and liveness detection. The image should be in data URI format (e.g., `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...`) |
+| `os` | string | Yes | Operating system of the device. Valid values: `DESKTOP`, `IOS`, `ANDROID` |
+| `force` | boolean | No | Optional flag to force creation even if a person already exists. Defaults to `false`. When set to `true`, this will override existing person records if needed |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch("https://api.verifik.co/v2/biometric-validations/app-registration", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+      os: "DESKTOP"
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/biometric-validations/app-registration");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "image" => "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+    "os" => "DESKTOP"
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/biometric-validations/app-registration"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+    "os": "DESKTOP"
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    payload := map[string]interface{}{
+        "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+        "os": "DESKTOP",
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/biometric-validations/app-registration", bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "674de8df21c72be3cc42b8a7",
+        "client": "507f1f77bcf86cd799439013",
+        "project": "507f1f77bcf86cd799439011",
+        "projectFlow": "507f1f77bcf86cd799439015",
+        "status": "STARTED",
+        "email": "user@example.com",
+        "countryCode": "+1",
+        "phone": "5551234567",
+        "biometricValidation": "674de8df21c72be3cc42b8a8",
+        "person": "674de8df21c72be3cc42b8a9",
+        "informationValidation": "674de8df21c72be3cc42b8a10",
+        "assignedCollection": "507f1f77bcf86cd799439016",
+        "createdAt": "2024-12-02T17:05:36.788Z",
+        "updatedAt": "2024-12-02T17:05:36.788Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="409-person" label="409 (Person Already Set)">
+
+```json
+{
+    "code": "person_already_set",
+    "message": "409:person_already_set"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-liveness" label="409 (Liveness Failed)">
+
+```json
+{
+    "code": "liveness_failed",
+    "message": "409:liveness_failed@0.45"
+}
+```
+
+The message includes the liveness score that failed the threshold.
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "appRegistration_not_found",
+    "message": "404:appRegistration_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-collection" label="409 (Collection Not Set)">
+
+```json
+{
+    "code": "collection_not_set",
+    "message": "409:collection_not_set"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **App Registration Required**: This endpoint requires an active app registration session with status "STARTED" or "ONGOING".
+- **Liveness Detection**: Advanced anti-spoofing technology ensures the person being verified is physically present.
+- **Collection Integration**: The project must have an assigned collection for biometric data storage.
+- **Person Creation**: A person record is automatically created and linked to the app registration.
+- **Credit Charging**: This endpoint automatically charges credits from your SmartEnroll plan.
+- **Image Processing**: Facial images are processed for both biometric matching and liveness detection.
+- **Force Flag**: Use the force flag to override existing person records if needed.
+- **Liveness Configuration**: The system uses default liveness settings from the project flow (minimum score: 0.6, search mode: ACCURATE, search minimum score: 0.9). These can be customized in your project flow configuration.
