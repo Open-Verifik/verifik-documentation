@@ -41,7 +41,7 @@ const sidebars = {
                 "smartaccess/acceso-inteligente",
                 "access/acceso",
                 "smartenroll/smartenroll",
-                "smart-enroll-auto-alojado/smart-enroll-auto-alojado",
+                "smart-enroll-auto-alojado/smart-enroll-self-hosted",
                 "smart-scan/escaneo-inteligente",
             ],
         },
@@ -568,9 +568,9 @@ const sidebars = {
                     collapsible: true,
                     items: [
                         "resources/proyectos/el-objeto-proyecto",
-                        "resources/proyectos/crear-un-proyecto",
-                        "resources/proyectos/recuperar-un-proyecto",
                         "resources/proyectos/listar-todos-los-proyectos",
+                        "resources/proyectos/recuperar-un-proyecto",
+                        "resources/proyectos/crear-un-proyecto",
                         "resources/proyectos/actualizar-un-proyecto",
                         "resources/proyectos/eliminar-un-proyecto",
                     ],
@@ -656,7 +656,7 @@ const sidebars = {
                         "resources/vivacidad-documentos/el-objeto-vivacidad-documento",
                         "resources/vivacidad-documentos/crear-una-vivacidad-documento",
                         "resources/vivacidad-documentos/recuperar-una-vivacidad-documento",
-                        "resources/vivacidad-documentos/listar-todas-las-vivacidad-documentos",
+                        "resources/vivacidad-documentos/listar-todas-las-vivacidades-documentos",
                     ],
                 },
                 {
@@ -743,78 +743,6 @@ const sidebars = {
         },
         {
             type: "category",
-            label: "API",
-            collapsible: false,
-            items: [
-                {
-                    type: "category",
-                    label: "SmartEnroll Auto Alojado",
-                    collapsible: true,
-                    items: ["smart-enroll-auto-alojado/smart-enroll-auto-alojado"],
-                },
-                {
-                    type: "category",
-                    label: "Proyectos",
-                    key: "api-proyectos",
-                    collapsible: true,
-                    items: [
-                        "api/proyectos/listar-proyectos",
-                        "api/proyectos/obtener-proyecto",
-                        "api/proyectos/crear-proyecto",
-                        "api/proyectos/actualizar-proyecto",
-                        "api/proyectos/eliminar-proyecto",
-                    ],
-                },
-                {
-                    type: "category",
-                    label: "Flujos de Proyecto",
-                    key: "api-flujos-de-proyecto",
-                    collapsible: true,
-                    items: ["api/flujos-proyecto/actualizar-flujo-proyecto", "api/flujos-proyecto/eliminar-flujo-proyecto"],
-                },
-                {
-                    type: "category",
-                    label: "Cuentas",
-                    collapsible: true,
-                    items: [
-                        "api/cuentas/autenticar",
-                        "api/cuentas/crear-cuenta",
-                        "api/cuentas/actualizar-cuenta",
-                        "api/cuentas/verificar-cuenta",
-                        "api/cuentas/cambiar-contrasena",
-                        "api/cuentas/eliminar-cuenta",
-                    ],
-                },
-                {
-                    type: "category",
-                    label: "Etiquetas",
-                    collapsible: true,
-                    items: [
-                        "api/etiquetas/buscar-etiqueta",
-                        "api/etiquetas/buscar-etiqueta-por-dominio",
-                        "api/etiquetas/alquilar-etiqueta",
-                        "api/etiquetas/alquiler-etiqueta-offline",
-                        "api/etiquetas/recuperar-etiqueta",
-                        "api/etiquetas/vista-previa-etiqueta",
-                        "api/etiquetas/vista-previa-zelfproof",
-                        "api/etiquetas/descifrar-etiqueta",
-                    ],
-                },
-                {
-                    type: "category",
-                    label: "Licencias",
-                    collapsible: true,
-                    items: [
-                        "api/licencias/obtener-licencias",
-                        "api/licencias/obtener-mi-licencia",
-                        "api/licencias/crear-licencia",
-                        "api/licencias/eliminar-licencia",
-                    ],
-                },
-            ],
-        },
-        {
-            type: "category",
             label: "VERIFIK LLC",
             collapsible: false,
             items: [
@@ -825,7 +753,6 @@ const sidebars = {
                 "legal/smartcheck-terminos-y-condiciones-de-uso",
             ],
         },
-        // Secciones restantes se añadirán conforme se migren desde EN a ES
     ],
 };
 
