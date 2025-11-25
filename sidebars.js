@@ -823,6 +823,7 @@ const sidebars = {
 						"resources/retrieve-a-phone-validation",
 						"resources/list-all-phone-validations",
 						"resources/validate-a-phone-validation",
+						"phone-validations/sms-and-whatsapp-prices",
 					],
 				},
 				{

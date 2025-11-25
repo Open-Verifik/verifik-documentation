@@ -694,6 +694,7 @@ const sidebars = {
 						"resources/listar-todas-las-validaciones-de-telefono",
 						"resources/recuperar-una-validacion-de-telefono",
 						"resources/validar-una-validacion-de-telefono",
+						"phone-validations/sms-and-whatsapp-prices",
 					],
 				},
 				{
