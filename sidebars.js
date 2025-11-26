@@ -138,8 +138,8 @@ const sidebars = {
 				},
 				{
 					type: "doc",
-					id: "identity/colombia-foreigner-id",
-					label: "🇨🇴 Colombia - Foreigner ID",
+					id: "identity/colombia-ce",
+					label: "🇨🇴 Colombia - CE",
 				},
 				{
 					type: "doc",
@@ -150,11 +150,6 @@ const sidebars = {
 					type: "doc",
 					id: "identity/colombia-ppt",
 					label: "🇨🇴 Colombia - PPT",
-				},
-				{
-					type: "doc",
-					id: "identity/colombia-ce",
-					label: "🇨🇴 Colombia - CE",
 				},
 				{
 					type: "doc",
