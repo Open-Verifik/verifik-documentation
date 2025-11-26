@@ -1,20 +1,31 @@
 ---
 id: vehicle-validation-colombia-runt-vehicle-soat-rtm
-title: SOAT and RTM Validation in RUNT | Verifik API Colombia
+title: SOAT and RTM Validation in RUNT
 description: Verify the status of mandatory insurance (SOAT) and technical review (RTM) for vehicles in Colombia. Real-time API for traffic compliance.
 slug: /vehicle-validation/colombia/runt-vehicle-soat-rtm
 ---
 
+export const structuredData = {
+"@context": "https://schema.org",
+"@type": "TechArticle",
+"headline": "SOAT and RTM Validation in RUNT | Verifik API Colombia",
+"description": "Verify the status of mandatory insurance (SOAT) and technical review (RTM) for vehicles in Colombia. Real-time API for traffic compliance.",
+"articleSection": "API Documentation",
+"keywords": "SOAT Colombia, RTM Colombia, RUNT API, vehicle validation, mandatory insurance"
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-### 🧠 SOAT and RTM Validation in RUNT (Colombia)
+# SOAT and RTM Validation in RUNT
 
 Verifik’s SOAT and RTM Validation API provides real-time access to the status of mandatory documents for vehicles registered in Colombia: the Mandatory Traffic Accident Insurance (SOAT) and the Mechanical Technical Review (RTM).
 
 This service is critical for ensuring that vehicles comply with Colombian traffic regulations, helping to prevent fines and legal issues.
 
-### ⚙️ What information does the API return?
+## What information does the API return?
 
 When a query is made using the license plate and owner's document, the API returns:
 
@@ -23,55 +34,22 @@ When a query is made using the license plate and owner's document, the API retur
 -   **Vehicle Details**: Make, line, model, color, and registration status.
 -   **Owner Verification**: Confirmation of the document number associated with the vehicle.
 
-### 🚗 Business use cases
+## API Reference
 
-The RUNT SOAT and RTM query API is widely used for:
-
--   **Insurance Companies**: To verify current coverage before issuing new policies or processing claims.
--   **Fleet Management**: To automatically monitor expiration dates and schedule renewals.
--   **Ride-Hailing Apps**: To ensure that drivers' vehicles are legally compliant to operate.
--   **Traffic Authorities**: To automate compliance checks and enforcement.
-
-### 🔐 Compliance, availability, and accuracy
-
-The API connects directly to official sources such as RUNT, ensuring:
-
--   Verified and up-to-date information.
--   High availability and optimal response times.
--   Regulatory compliance with traffic laws.
-
-### 🧱 Additional technical information
-
--   **Method**: GET
--   **Response format**: JSON
--   **Update frequency**: Real-time
--   **Official source**: RUNT Colombia
--   **Coverage**: Nationwide
-
-### 📘 About Verifik
-
-Verifik is an identity verification and compliance platform that connects companies with official data sources across Latin America.
-
-# Colombia - RUNT SOAT and RTM
-
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/co/runt/vehiculo
 ```
 
-The Colombian Vehicle Information service provides real-time access to details about a registered vehicle in Colombia. By using this service, you can obtain information such as the owner's name and identification, vehicle color, make and model, registration status, and expiration dates for the SOAT (mandatory vehicle insurance) and technical review.
-
-This service is ideal for businesses in the automotive industry, insurance companies, and government agencies that need to verify vehicle information and ensure compliance with regulations.
-
-## Headers
+### Headers
 
 | Name          | Value              |
 | ------------- | ------------------ |
 | Content-Type  | `application/json` |
 | Authorization | `Bearer <token>`   |
 
-## Parameters
+### Parameters
 
 | Name             | Type   | Required | Description                                                             |
 | ---------------- | ------ | -------- | ----------------------------------------------------------------------- |
@@ -79,7 +57,7 @@ This service is ideal for businesses in the automotive industry, insurance compa
 | `documentNumber` | string | Yes      | Document number of the owner of the vehicle, without spaces or periods. |
 | `plate`          | string | Yes      | Vehicle plate to consult.                                               |
 
-## Request
+### Request
 
 <Tabs>
 <TabItem value="javascript" label="JavaScript" default>
@@ -183,7 +161,7 @@ catch(HTTP_Request2_Exception $e) {
 </TabItem>
 </Tabs>
 
-## Response
+### Response
 
 <Tabs>
 <TabItem value="200" label="200" default>
@@ -261,23 +239,35 @@ catch(HTTP_Request2_Exception $e) {
 </TabItem>
 </Tabs>
 
-## Use Cases
+---
 
--   **Vehicle Verification**: Validate complete information of vehicles registered in Colombia
--   **Insurance Services**: Verify SOAT status and expiration dates
--   **Technical Review**: Validate technical inspection status
--   **Traffic Control**: Verify compliance with vehicle regulations
--   **Transportation Companies**: Validate vehicle fleets and their documents
--   **Property Verification**: Confirm owner and vehicle details
+## Business Use Cases
 
-## Features
+The RUNT SOAT and RTM query API is widely used for:
 
--   ✅ Query by document type, number and plate
--   ✅ Complete vehicle information (brand, model, color, status)
--   ✅ Owner data (document type and number)
--   ✅ SOAT status with expedition and expiration dates
--   ✅ Technical review status with number and dates
--   ✅ Vehicle enrollment date
--   ✅ Registration status (ACTIVE/INACTIVE)
--   ✅ Support for multiple document types (CC, CE, PA, RC, NIT)
--   ✅ Certified response by Verifik.co
+-   **Insurance Companies**: To verify current coverage before issuing new policies or processing claims.
+-   **Fleet Management**: To automatically monitor expiration dates and schedule renewals.
+-   **Ride-Hailing Apps**: To ensure that drivers' vehicles are legally compliant to operate.
+-   **Traffic Authorities**: To automate compliance checks and enforcement.
+
+## Compliance & Data Quality
+
+### Compliance, availability, and accuracy
+
+The API connects directly to official sources such as RUNT, ensuring:
+
+-   Verified and up-to-date information.
+-   High availability and optimal response times.
+-   Regulatory compliance with traffic laws.
+
+### Additional technical information
+
+-   **Method**: GET
+-   **Response format**: JSON
+-   **Update frequency**: Real-time
+-   **Official source**: RUNT Colombia
+-   **Coverage**: Nationwide
+
+## About Verifik
+
+Verifik is an identity verification and compliance platform that connects companies with official data sources across Latin America.
