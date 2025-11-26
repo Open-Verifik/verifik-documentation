@@ -19,9 +19,9 @@ Comprehensive Colombian vehicle validation services providing access to multiple
 
 ### 🚗 **Fasecolda Services**
 
--   **[Vehicle Values by Plate](/vehicle-validation/colombia/vehicle-validation-colombia-fasecolda-values-by-plate)** - Get current market values and appraisal data
--   **[Vehicle by Code](/vehicle-validation/colombia/vehicle-validation-colombia-fasecolda-vehicle-by-code)** - Retrieve detailed vehicle information using unique codes
--   **[Sinister Verification](/vehicle-validation/colombia/vehicle-validation-colombia-fasecolda-sinister-verification)** - Verify accident reports and insurance claims
+-   **[Vehicle Values by Plate](/vehicle-validation/colombia-fasecolda-values-by-plate)** - Get current market values and appraisal data
+-   **[Vehicle by Code](/vehicle-validation/colombia-fasecolda-vehicle-by-code)** - Retrieve detailed vehicle information using unique codes
+-   **[Claims Verification](/vehicle-validation/colombia-fasecolda-claims-verification)** - Verify accident reports and insurance claims
 
 ### 🚙 **RUNT (National Traffic Registry)**
 
