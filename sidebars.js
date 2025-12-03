@@ -97,6 +97,11 @@ const sidebars = {
 			items: [
 				{
 					type: "doc",
+					id: "identity/identity-verification",
+					label: "Identity Verification",
+				},
+				{
+					type: "doc",
 					id: "identity/argentina",
 					label: "🇦🇷 Argentina",
 				},

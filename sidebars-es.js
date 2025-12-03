@@ -88,6 +88,11 @@ const sidebars = {
 			label: "VERIFICACIÓN DE IDENTIDAD",
 			collapsible: false,
 			items: [
+				{
+					type: "doc",
+					id: "identity/verificacion-identidad",
+					label: "Verificación de Identidad",
+				},
 				{ type: "doc", id: "identity/argentina", label: "🇦🇷 Argentina" },
 				{ type: "doc", id: "identity/bolivia", label: "🇧🇴 Bolivia" },
 				{ type: "doc", id: "identity/brazil", label: "🇧🇷 Brasil" },
