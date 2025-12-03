@@ -85,7 +85,7 @@ const sidebars = {
 		},
 		{
 			type: "category",
-			label: "VALIDACIÓN DE IDENTIDAD",
+			label: "VERIFICACIÓN DE IDENTIDAD",
 			collapsible: false,
 			items: [
 				{ type: "doc", id: "identity/argentina", label: "🇦🇷 Argentina" },
@@ -120,7 +120,7 @@ const sidebars = {
 		},
 		{
 			type: "category",
-			label: "VALIDACIÓN EMPRESARIAL",
+			label: "VERIFICACIÓN EMPRESARIAL",
 			collapsible: false,
 			items: [
 				{
@@ -234,7 +234,7 @@ const sidebars = {
 		},
 		{
 			type: "category",
-			label: "VALIDACIÓN DE VEHÍCULOS",
+			label: "VERIFICACIÓN DE VEHÍCULOS",
 			collapsible: false,
 			items: [
 				{
