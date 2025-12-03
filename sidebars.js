@@ -244,6 +244,11 @@ const sidebars = {
 			items: [
 				{
 					type: "doc",
+					id: "business-validation/business-verification",
+					label: "Business Verification",
+				},
+				{
+					type: "doc",
 					id: "business-validation/argentina",
 					label: "🇦🇷 Argentina",
 				},

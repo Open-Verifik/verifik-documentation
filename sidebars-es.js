@@ -125,6 +125,11 @@ const sidebars = {
 			items: [
 				{
 					type: "doc",
+					id: "validacion-empresarial/verificacion-empresarial",
+					label: "Verificación Empresarial",
+				},
+				{
+					type: "doc",
 					id: "validacion-empresarial/argentina",
 					label: "🇦🇷 Argentina",
 				},
