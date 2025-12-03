@@ -239,6 +239,11 @@ const sidebars = {
 			items: [
 				{
 					type: "doc",
+					id: "validacion-vehiculos/verificacion-vehiculos",
+					label: "Verificación de Vehículos",
+				},
+				{
+					type: "doc",
 					id: "validacion-vehiculos/argentina",
 					label: "🇦🇷 Argentina",
 				},
