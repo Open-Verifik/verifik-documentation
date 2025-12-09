@@ -120,13 +120,12 @@ const sidebars = {
 		{
 			type: "category",
 			label: "VALIDACIÓN EMPRESARIAL",
+			link: {
+				type: "doc",
+				id: "validacion-empresarial/verificacion-empresarial",
+			},
 			collapsible: false,
 			items: [
-				{
-					type: "doc",
-					id: "validacion-empresarial/verificacion-empresarial",
-					label: "Verificación Empresarial",
-				},
 				{
 					type: "doc",
 					id: "validacion-empresarial/argentina",

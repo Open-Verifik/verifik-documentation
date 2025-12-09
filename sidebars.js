@@ -249,13 +249,12 @@ const sidebars = {
 		{
 			type: "category",
 			label: "BUSINESS VERIFICATION",
+			link: {
+				type: "doc",
+				id: "business-validation/business-verification",
+			},
 			collapsible: false,
 			items: [
-				{
-					type: "doc",
-					id: "business-validation/business-verification",
-					label: "Business Verification",
-				},
 				{
 					type: "doc",
 					id: "business-validation/argentina",
