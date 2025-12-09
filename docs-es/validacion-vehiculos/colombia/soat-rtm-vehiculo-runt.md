@@ -3,6 +3,7 @@ id: soat-rtm-vehiculo-runt
 title: RUNT - SOAT y RTM del Vehículo
 description: Información de seguros e inspección técnica
 sidebar_label: SOAT y RTM del Vehículo
+slug: /validacion-vehiculos/colombia/soat-rtm-vehiculo-runt
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,96 +11,91 @@ import TabItem from '@theme/TabItem';
 
 # RUNT - SOAT y RTM del Vehículo
 
-## Servicio de Información de Vehículos Colombianos
+La API de Validación de SOAT y RTM de Verifik proporciona acceso en tiempo real al estado de los documentos obligatorios para vehículos registrados en Colombia: el Seguro Obligatorio de Accidentes de Tránsito (SOAT) y la Revisión Técnico-Mecánica (RTM).
 
-<Tabs>
-<TabItem value="endpoint" label="Endpoint" default>
+Este servicio es crítico para asegurar que los vehículos cumplan con la normativa de tránsito colombiana, ayudando a prevenir multas y problemas legales.
 
-`GET - https://api.verifik.co/v2/co/runt/vehiculo`
+## ¿Qué información devuelve la API?
 
-El servicio de información de vehículos colombianos proporciona acceso en tiempo real a detalles sobre un vehículo registrado en Colombia. Usando este servicio, puedes obtener información como el nombre e identificación del propietario, color del vehículo, marca y modelo, estado de registro y fechas de vencimiento para el SOAT (seguro obligatorio de vehículos) y revisión técnica.
+Al realizar una consulta utilizando la placa y el documento del propietario, la API retorna:
 
-Este servicio es ideal para empresas de la industria automotriz, compañías de seguros y agencias gubernamentales que necesitan verificar información de vehículos y asegurar el cumplimiento de regulaciones.
+-   **Estado del SOAT**: Vigencia, número de póliza, aseguradora, fechas de expedición y vencimiento.
+-   **Estado de la RTM**: Vigencia, número de certificado, centro de diagnóstico, fechas de expedición y vencimiento.
+-   **Detalles del Vehículo**: Marca, línea, modelo, color y estado del registro.
+-   **Verificación del Propietario**: Confirmación del número de documento asociado al vehículo.
 
-</TabItem>
-</Tabs>
+## Referencia de API
 
-### Implementación
+### Endpoint
 
-**Headers**
+```
+https://api.verifik.co/v2/co/runt/vehiculo
+```
 
-| Name          | Value              |
+### Headers
+
+| Nombre        | Valor              |
 | ------------- | ------------------ |
 | Content-Type  | `application/json` |
 | Authorization | `Bearer <token>`   |
 
-**Parámetros de Consulta**
+### Parámetros
 
-| Name | Type | Required? | Description | Example |
-|------|------|-----------|-------------|---------|
-| documentType | String | `True` | Tipo de documento. Valores permitidos son: CC, CE, PA, RC, NIT. | `CC` |
-| documentNumber | String | `True` | Número de documento del propietario del vehículo, sin espacios ni puntos. | `123456789` |
-| plate | String | `True` | Placa del vehículo a consultar. | `ABC123` |
+| Nombre           | Tipo   | Requerido | Descripción                                                               |
+| ---------------- | ------ | --------- | ------------------------------------------------------------------------- |
+| `documentType`   | string | Sí        | Tipo de documento. Valores permitidos son: CC, CE, PA, RC, NIT.           |
+| `documentNumber` | string | Sí        | Número de documento del propietario del vehículo, sin espacios ni puntos. |
+| `plate`          | string | Sí        | Placa del vehículo a consultar.                                           |
 
-**Solicitud**
+### Solicitud
 
 <Tabs>
-<TabItem value="javascript" label="JavaScript" default>
+<TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/co/runt/vehiculo',
-  params: {documentType: 'CC', documentNumber: '123456789', plate: 'ABC123'},
-  headers: {
-    Accept: 'application/json',
-    Authorization: 'jwt <tu_token>'
-  }
+	method: "GET",
+	url: "https://api.verifik.co/v2/co/runt/vehiculo",
+	params: { documentType: "CC", documentNumber: "123456789", plate: "ABC123" },
+	headers: {
+		Accept: "application/json",
+		Authorization: "jwt <tu_token>",
+	},
 };
 
 try {
-  const { data } = await axios.request(options);
-  console.log(data);
+	const { data } = await axios.request(options);
+	console.log(data);
 } catch (error) {
-  console.error(error);
+	console.error(error);
 }
 ```
 
 </TabItem>
-
 <TabItem value="python" label="Python">
 
 ```python
 import http.client
 
 conn = http.client.HTTPSConnection("api.verifik.co")
-payload = "https://api.verifik.co/v2/co/runt/consultarVehiculo?documentType=CC&documentNumber=98622259&plate=KBU003"
-headers = {
-  'Content-Type': 'text/plain'
-}
-conn.request("GET", "/v2/co/runt/vehiculo?documentType=CC&documentNumber=&plate=", payload, headers)
+payload = ''
+headers = {}
+conn.request("GET", "/v2/co/runt/vehiculo?documentType=CC&documentNumber=123456789&plate=ABC123", payload, headers)
 res = conn.getresponse()
 data = res.read()
 print(data.decode("utf-8"))
 ```
 
 </TabItem>
-
 <TabItem value="swift" label="Swift">
 
 ```swift
-let parameters = "https://api.verifik.co/v2/co/runt/consultarVehiculo?documentType=CC&documentNumber=98622259&plate=KBU003"
-let postData = parameters.data(using: .utf8)
-
-var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/co/runt/vehiculo?documentType=CC&documentNumber=&plate=")!,timeoutInterval: Double.infinity)
-request.addValue("text/plain", forHTTPHeaderField: "Content-Type")
-
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/co/runt/vehiculo?documentType=CC&documentNumber=123456789&plate=ABC123")!,timeoutInterval: Double.infinity)
 request.httpMethod = "GET"
-request.httpBody = postData
 
-let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
   guard let data = data else {
     print(String(describing: error))
     return
@@ -111,22 +107,17 @@ task.resume()
 ```
 
 </TabItem>
-
 <TabItem value="php" label="PHP">
 
 ```php
 <?php
 require_once 'HTTP/Request2.php';
 $request = new HTTP_Request2();
-$request->setUrl('https://api.verifik.co/v2/co/runt/vehiculo?documentType=CC&documentNumber=&plate=');
+$request->setUrl('https://api.verifik.co/v2/co/runt/vehiculo?documentType=CC&documentNumber=123456789&plate=ABC123');
 $request->setMethod(HTTP_Request2::METHOD_GET);
 $request->setConfig(array(
   'follow_redirects' => TRUE
 ));
-$request->setHeader(array(
-  'Content-Type' => 'text/plain'
-));
-$request->setBody('https://api.verifik.co/v2/co/runt/consultarVehiculo?documentType=CC&documentNumber=98622259&plate=KBU003');
 try {
   $response = $request->send();
   if ($response->getStatus() == 200) {
@@ -140,85 +131,118 @@ try {
 catch(HTTP_Request2_Exception $e) {
   echo 'Error: ' . $e->getMessage();
 }
+?>
 ```
 
 </TabItem>
 </Tabs>
 
-### **Respuesta**
+### Respuesta
 
 <Tabs>
-<TabItem value="200" label="200" default>
+<TabItem value="200" label="200">
 
 ```json
 {
-  "data": {
-    "documentType": "CC",
-    "documentNumber": "123456789",
-    "plate": "XXXXX",
-    "vehicleInformation": {
-      "color": "PLATEADO",
-      "brand": "CHERY",
-      "line": "QQ3 SQR7080 S116",
-      "status": "ACTIVO",
-      "enrollmentDate": "07/10/2010",
-      "plate": "XXXXX"
-    },
-    "soat": {
-      "valid": true,
-      "expeditionDate": "10/09/2021",
-      "dueDate": "11/09/2022",
-      "coverageStartDate": "12/09/2021",
-      "soatNumber": "XXXXXX"
-    },
-    "techReview": {
-      "valid": true,
-      "reviewNumber": "XXXXX",
-      "expeditionDate": "12/09/2021",
-      "dueDate": "12/09/2022",
-      "requireTechReview": true
-    },
-    "consultationDateTime": "2022-03-03T17:10:00.568Z"
-  },
-  "signature": {
-    "dateTime": "March 3, 2022 12:10 PM",
-    "message": "Certified by Verifik.co"
-  }
+	"data": {
+		"documentType": "CC",
+		"documentNumber": "123456789",
+		"plate": "XXXXX",
+		"vehicleInformation": {
+			"color": "PLATEADO",
+			"brand": "CHERY",
+			"line": "QQ3 SQR7080 S116",
+			"status": "ACTIVO",
+			"enrollmentDate": "07/10/2010",
+			"plate": "XXXXX"
+		},
+		"soat": {
+			"valid": true,
+			"expeditionDate": "10/09/2021",
+			"dueDate": "11/09/2022",
+			"coverageStartDate": "12/09/2021",
+			"soatNumber": "XXXXXX"
+		},
+		"techReview": {
+			"valid": true,
+			"reviewNumber": "XXXXX",
+			"expeditionDate": "12/09/2021",
+			"dueDate": "12/09/2022",
+			"requireTechReview": true
+		},
+		"consultationDateTime": "2022-03-03T17:10:00.568Z"
+	},
+	"signature": {
+		"dateTime": "March 3, 2022 12:10 PM",
+		"message": "Certified by Verifik.co"
+	}
 }
 ```
 
 </TabItem>
-
 <TabItem value="404" label="404">
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+	"code": "NotFound",
+	"message": "Record not found."
 }
 ```
 
 </TabItem>
-
 <TabItem value="409" label="409">
 
 ```json
 {
-"code": "MissingParameter",
-"message": "missing documentType\n. missing documentNumber\n. missing plate\n"
+	"code": "MissingParameter",
+	"message": "missing documentType\n. missing documentNumber\n. missing plate\n"
 }
 ```
 
 </TabItem>
-
 <TabItem value="409b" label="409 - Tipo de Documento Inválido">
 
 ```json
 {
-"code": "MissingParameter",
-"message": "documentType must be one of: [CC]"
+	"code": "MissingParameter",
+	"message": "documentType must be one of: [CC]"
 }
 ```
 
 </TabItem>
 </Tabs>
+
+---
+
+## Casos de Uso Empresariales
+
+La API de consulta de SOAT y RTM en RUNT es utilizada por múltiples sectores:
+
+-   **Verificación de Vehículos**: Validar información completa de vehículos registrados en Colombia
+-   **Servicios de Seguros**: Verificar estado del SOAT y fechas de vencimiento
+-   **Revisión Técnica**: Validar estado de la revisión técnica vehicular
+-   **Control de Tránsito**: Verificar cumplimiento de regulaciones vehiculares
+-   **Empresas de Transporte**: Validar flotas vehiculares y sus documentos
+-   **Verificación de Propiedad**: Confirmar datos del propietario y del vehículo
+
+## Cumplimiento y Calidad de Datos
+
+### Cumplimiento, disponibilidad y precisión
+
+La API se conecta directamente con fuentes oficiales como el RUNT, garantizando:
+
+-   Información verificada y actualizada.
+-   Alta disponibilidad y tiempos de respuesta óptimos.
+-   Cumplimiento normativo con leyes de tránsito.
+
+### Información técnica adicional
+
+-   **Método**: GET
+-   **Formato de respuesta**: JSON
+-   **Frecuencia de actualización**: Tiempo real
+-   **Fuente oficial**: RUNT Colombia
+-   **Cobertura**: Nacional
+
+## Sobre Verifik
+
+Verifik es una plataforma de verificación de identidad y cumplimiento que conecta empresas con fuentes oficiales en toda América Latina.

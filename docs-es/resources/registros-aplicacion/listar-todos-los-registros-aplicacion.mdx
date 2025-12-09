@@ -1,0 +1,178 @@
+---
+id: listar-todos-los-registros-aplicacion
+title: Listar Registros de Aplicación
+description: Recupera todos los registros de aplicación con filtrado opcional y paginación
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/app-registrations
+```
+
+Recupera una lista paginada de todos los registros de aplicación asociados con el usuario autenticado. Puedes filtrar por estado, proyecto y otros criterios.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Params
+
+| Name                | Type    | Required | Description                                                                                                                                                                              |
+| ------------------- | ------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `page`              | integer | No       | Número de página (por defecto: 1)                                                                                                                                                        |
+| `limit`             | integer | No       | Número de elementos por página (por defecto: 10, máximo: 100)                                                                                                                            |
+| `where_status`      | string  | No       | Filtrar por estado (`STARTED`, `ONGOING`, `COMPLETED`, `COMPLETED_WITHOUT_KYC`, `FAILED`, `NEEDS_MANUAL_VERIFICATION`, `EXPIRED`)                                                        |
+| `where_project`     | string  | No       | Filtrar por ID de proyecto                                                                                                                                                               |
+| `where_projectFlow` | string  | No       | Filtrar por ID de flujo de proyecto                                                                                                                                                      |
+| `in_status`         | array   | No       | Filtrar por múltiples estados (`["ONGOING", "COMPLETED"]`)                                                                                                                               |
+| `populates[]`       | array   | No       | Poblar objetos relacionados. Disponibles: `project`, `projectFlow`, `emailValidation`, `phoneValidation`, `biometricValidation`, `documentValidation`, `informationValidation`, `person` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/app-registrations?page=1&limit=10&where_status=ONGOING", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/app-registrations?page=1&limit=10&where_status=ONGOING");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/app-registrations"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+params = {"page": 1, "limit": 10, "where_status": "ONGOING"}
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/app-registrations?page=1&limit=10&where_status=ONGOING", nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": [
+        {
+            "_id": "674de8df21c72be3cc42b8a7",
+            "client": "507f1f77bcf86cd799439013",
+            "project": "507f1f77bcf86cd799439011",
+            "projectFlow": "507f1f77bcf86cd799439015",
+            "status": "ONGOING",
+            "email": "user@example.com",
+            "phone": "1234567890",
+            "countryCode": "+1",
+            "currentStep": "1",
+            "language": "en",
+            "createdAt": "2024-12-02T17:05:36.788Z",
+            "updatedAt": "2024-12-02T17:05:36.788Z"
+        }
+    ],
+    "total": 1,
+    "limit": 10,
+    "page": 1,
+    "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "Invalid parameter: limit must be between 1 and 100",
+    "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+-   **Paginación**: Usa los parámetros `page` y `limit` para navegar por los resultados. El límite por defecto es 10 elementos por página, el máximo es 100.
+-   **Filtrado**: Combina múltiples parámetros de consulta para filtrar resultados. Ejemplo: `?where_status=ONGOING&where_project=507f1f77bcf86cd799439011`
+-   **Múltiples Estados**: Usa `in_status` como un array para filtrar por múltiples estados: `?in_status[]=ONGOING&in_status[]=COMPLETED`
+-   **Metadatos de Respuesta**: La respuesta incluye `total` (conteo total), `limit`, `page`, y `pages` para control de paginación.
+-   **Populates**: Usa `populates[]` para incluir objetos relacionados en la respuesta, reduciendo la necesidad de llamadas API adicionales.
