@@ -110,12 +110,12 @@ Zelf ha establecido asociaciones con empresas líderes y organizaciones para pro
 ## Directorio de Socios
 
 ### Por Categoría
-- [Redes Blockchain](#blockchain-networks)
-- [Proveedores de Nube](#cloud-providers)
-- [Socios de Seguridad](#security-partners)
-- [Servicios Financieros](#financial-services)
-- [Proveedores de Identidad](#identity-providers)
-- [Empresas de Tecnología](#technology-companies)
+- [Redes Blockchain](#redes-blockchain)
+- [Proveedores de Nube](#proveedores-de-nube)
+- [Socios de Seguridad](#socios-de-seguridad)
+- [Servicios Financieros](#servicios-financieros)
+- [Proveedores de Identidad](#proveedores-de-identidad)
+- [Empresas de Tecnología](#empresas-de-tecnología)
 
 ### Por Región
 - **América del Norte**: Estados Unidos, Canadá, México

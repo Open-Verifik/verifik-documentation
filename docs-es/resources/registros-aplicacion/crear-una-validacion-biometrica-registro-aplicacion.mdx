@@ -1,0 +1,217 @@
+---
+id: crear-una-validacion-biometrica-registro-aplicacion
+title: Crear una Validación Biométrica de Registro de Aplicación
+description: Crea una validación biométrica para un registro de aplicación usando reconocimiento facial y detección de vida
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/biometric-validations/app-registration
+```
+
+Una Validación Biométrica es una instancia dentro del sistema de Verifik que te permite procesar y validar identidades de usuarios a través de reconocimiento facial y detección de vida durante el proceso de incorporación. Este proceso asegura la autenticidad de los usuarios verificando sus características biométricas únicas a través de tecnología de seguridad avanzada. Este endpoint está específicamente diseñado para usuarios que están en medio de un flujo de registro de aplicación.
+
+:::warning
+El Token JWT que debes usar al crear `Validaciones Biométricas de Registro de Aplicación` se proporciona desde el `Registro de Aplicación` en creación. Debes usar el token devuelto al crear un [Registro de Aplicación](crear-un-registro-aplicacion) para autenticar esta solicitud.
+:::
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Params
+
+| Name    | Type    | Required | Description                                                                                                                                                                                            |
+| ------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `image` | string  | Yes      | Imagen facial codificada en Base64 que se usará para validación biométrica y detección de vida. La imagen debe estar en formato data URI (ej: `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...`)      |
+| `os`    | string  | Yes      | Sistema operativo del dispositivo. Valores válidos: `DESKTOP`, `IOS`, `ANDROID`                                                                                                                        |
+| `force` | boolean | No       | Bandera opcional para forzar la creación incluso si ya existe una persona. Por defecto: `false`. Cuando se establece en `true`, esto sobrescribirá los registros de persona existentes si es necesario |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/biometric-validations/app-registration", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+        body: JSON.stringify({
+            image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+            os: "DESKTOP",
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/biometric-validations/app-registration");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "image" => "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+    "os" => "DESKTOP"
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/biometric-validations/app-registration"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+    "os": "DESKTOP"
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    payload := map[string]interface{}{
+        "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+        "os": "DESKTOP",
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/biometric-validations/app-registration", bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "674de8df21c72be3cc42b8a7",
+        "client": "507f1f77bcf86cd799439013",
+        "project": "507f1f77bcf86cd799439011",
+        "projectFlow": "507f1f77bcf86cd799439015",
+        "status": "STARTED",
+        "email": "user@example.com",
+        "countryCode": "+1",
+        "phone": "5551234567",
+        "biometricValidation": "674de8df21c72be3cc42b8a8",
+        "person": "674de8df21c72be3cc42b8a9",
+        "informationValidation": "674de8df21c72be3cc42b8a10",
+        "assignedCollection": "507f1f77bcf86cd799439016",
+        "createdAt": "2024-12-02T17:05:36.788Z",
+        "updatedAt": "2024-12-02T17:05:36.788Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="409-person" label="409 (Persona Ya Establecida)">
+
+```json
+{
+    "code": "person_already_set",
+    "message": "409:person_already_set"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-liveness" label="409 (Detección de Vida Fallida)">
+
+```json
+{
+    "code": "liveness_failed",
+    "message": "409:liveness_failed@0.45"
+}
+```
+
+El mensaje incluye la puntuación de vida que falló el umbral.
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "appRegistration_not_found",
+    "message": "404:appRegistration_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-collection" label="409 (Colección No Establecida)">
+
+```json
+{
+    "code": "collection_not_set",
+    "message": "409:collection_not_set"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+-   **Registro de Aplicación Requerido**: Este endpoint requiere una sesión de registro de aplicación activa con estado "STARTED" o "ONGOING".
+-   **Detección de Vida**: La tecnología avanzada anti-spoofing asegura que la persona siendo verificada esté físicamente presente.
+-   **Integración de Colección**: El proyecto debe tener una colección asignada para el almacenamiento de datos biométricos.
+-   **Creación de Persona**: Un registro de persona se crea automáticamente y se vincula al registro de aplicación.
+-   **Carga de Créditos**: Este endpoint carga automáticamente créditos de tu plan SmartEnroll.
+-   **Procesamiento de Imágenes**: Las imágenes faciales se procesan tanto para coincidencia biométrica como para detección de vida.
+-   **Bandera Force**: Usa la bandera force para sobrescribir registros de persona existentes si es necesario.
+-   **Configuración de Vida**: El sistema usa configuraciones de vida por defecto del flujo de proyecto (puntuación mínima: 0.6, modo de búsqueda: ACCURATE, puntuación mínima de búsqueda: 0.9). Estas se pueden personalizar en la configuración de tu flujo de proyecto.

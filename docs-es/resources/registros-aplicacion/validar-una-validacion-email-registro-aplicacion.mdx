@@ -1,0 +1,212 @@
+---
+id: validar-una-validacion-email-registro-aplicacion
+title: Validar una Validación de Email de Registro de Aplicación
+description: Valida un OTP enviado a la dirección de email de un usuario durante el proceso de registro de aplicación
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v2/email-validations/{id}
+```
+
+Este endpoint valida una contraseña de un solo uso (OTP) enviada a la dirección de email de un usuario durante el proceso de incorporación (registro de aplicación). Asegura que el OTP proporcionado por el usuario sea correcto y actualiza el estado de verificación en consecuencia. Esta ruta está específicamente diseñada para usuarios que están en medio de un flujo de registro de aplicación.
+
+:::warning
+El Token JWT que debes usar al validar `Validaciones de Email de Incorporación` se proporciona desde el `Registro de Aplicación` en creación. Debes usar el token devuelto al crear un [Registro de Aplicación](crear-un-registro-aplicacion) para autenticar esta solicitud.
+:::
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | Yes | El identificador único de la Validación de Email que deseas validar. Este es el `_id` devuelto al crear la validación de email |
+| `email` | string | Yes | La dirección de email que se usó para crear la validación de email. Los espacios se eliminarán automáticamente y se convertirá a minúsculas |
+| `otp` | number | Yes | La contraseña de un solo uso (OTP) que se envió a la dirección de email del usuario |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const emailValidationId = "674de8df21c72be3cc42b8a7";
+  const res = await fetch(`https://api.verifik.co/v2/email-validations/${emailValidationId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      email: "user@example.com",
+      otp: 123456
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$emailValidationId = "674de8df21c72be3cc42b8a7";
+$ch = curl_init("https://api.verifik.co/v2/email-validations/" . $emailValidationId);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "email" => "user@example.com",
+    "otp" => 123456
+]);
+curl_setopt($ch, CURLOPT_PUT, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+email_validation_id = "674de8df21c72be3cc42b8a7"
+url = f"https://api.verifik.co/v2/email-validations/{email_validation_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "email": "user@example.com",
+    "otp": 123456
+}
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    emailValidationId := "674de8df21c72be3cc42b8a7"
+    url := fmt.Sprintf("https://api.verifik.co/v2/email-validations/%s", emailValidationId)
+    payload := map[string]interface{}{
+        "email": "user@example.com",
+        "otp": 123456,
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "674de8df21c72be3cc42b8a7",
+        "status": "validated",
+        "email": "user@example.com",
+        "type": "onboarding",
+        "showFaceLivenessRecommendation": false
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "code": "otp_does_not_match",
+    "message": "403:otp_does_not_match"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "email_validation_not_found",
+    "message": "404:email_validation_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "code": "MissingParameter",
+    "message": "missing_email_and_otp"
+}
+```
+
+  </TabItem>
+  <TabItem value="412" label="412">
+
+```json
+{
+    "code": "emailValidation_has_expired",
+    "message": "412:emailValidation_has_expired"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **Flujo de Incorporación**: Este endpoint está específicamente diseñado para usuarios en el proceso de registro de aplicación, donde la validación de email es parte del viaje de incorporación.
+- **Expiración de OTP**: Los OTPs tienen una vida útil limitada (típicamente 10 minutos) y expirarán después del tiempo predefinido. Los OTPs expirados no pueden ser validados.
+- **Actualizaciones de Estado**: La validación exitosa actualiza automáticamente el estado de la validación de email a "validated" y puede activar pasos adicionales de incorporación.
+- **Eventos de Webhook**: Los eventos de validación activan notificaciones de webhook para seguimiento y propósitos de integración.
+- **Vinculación de Registro de Aplicación**: Cuando se valida a través de este endpoint, la validación de email se vincula automáticamente al registro de registro de aplicación del usuario.
+- **Formato de Email**: Las direcciones de email se convierten automáticamente a minúsculas y se eliminan los espacios durante el procesamiento.
+- **Modo Demo**: Si el proyecto está en modo demo, se pueden aceptar OTPs de demo especiales para propósitos de prueba.
+

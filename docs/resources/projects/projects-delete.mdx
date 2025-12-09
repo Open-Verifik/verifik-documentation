@@ -1,0 +1,196 @@
+---
+id: projects-delete
+title: Delete Project
+description: Remove a project and its associated project flows
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+DELETE https://api.verifik.co/v3/projects/{id}
+```
+
+Permanently delete a project and all its associated project flows. This action cannot be undone.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | Yes | The unique identifier of the project to delete |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const projectId = "64a1b2c3d4e5f6789012345";
+  const res = await fetch(`https://api.verifik.co/v3/projects/${projectId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$projectId = "64a1b2c3d4e5f6789012345";
+$ch = curl_init("https://api.verifik.co/v3/projects/" . $projectId);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+project_id = "64a1b2c3d4e5f6789012345"
+url = f"https://api.verifik.co/v3/projects/{project_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+r = requests.delete(url, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    projectId := "64a1b2c3d4e5f6789012345"
+    url := fmt.Sprintf("https://api.verifik.co/v3/projects/%s", projectId)
+    req, _ := http.NewRequest("DELETE", url, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "64a1b2c3d4e5f6789012345",
+        "name": "Deleted Project",
+        "status": "deleted"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+    "message": "Invalid project ID format",
+    "code": "BadRequest",
+    "status": 400,
+    "timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 401,
+    "timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+or
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "Project not found",
+    "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "Cannot delete project with active flows",
+    "code": "Conflict"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **Irreversible Action**: Project deletion is permanent and cannot be undone. All associated data will be permanently removed from the system.
+- **Cascade Deletion**: When a project is deleted, the following associated resources are also removed: Project Flows, Webhooks, Project Members, and Configuration Data.
+- **Pre-deletion Checks**: Before deleting, ensure no users are currently going through the KYC process, export any necessary data, check for external system dependencies, and ensure deletion complies with data retention requirements.
+- **Project Status**: Only projects with status `draft` or `paused` can be deleted. Active projects must be paused first.
+- **Safe Deletion**: Consider setting the project status to "paused" first to prevent new users from starting the process while you prepare for deletion.
+- **Data Retention**: Ensure you have exported any necessary data before deletion, as this action permanently removes all project data.

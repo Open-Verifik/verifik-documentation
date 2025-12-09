@@ -1,0 +1,242 @@
+---
+id: create-an-app-registration
+title: Create an App Registration
+description: Create a new app registration for user authentication and validation
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/app-registrations
+```
+
+An App Registration is an instance within Verifik's system that allows a user to initiate the authentication and validation process using specified project flows, email, and/or phone details. This process ensures the identity of the user and provides secure validation through various verification steps.
+
+:::warning
+When creating an App Registration, a `token` is returned in the request. You must use this token to create [document validations](create-an-app-registration-document-validation), [email validations](create-an-app-registration-email-validation), [phone validations](create-an-app-registration-phone-validation) and [biometric validations](create-an-app-registration-biometric-validation) **for App Registrations**. This ensures the validations are related to the app registrant.
+
+The `token` can be recreated by entering the same information (`phone`/`email`), however, any `phone` or `email` validations previously completed will be deleted. We recommend you have your users complete the `email` and `phone` validations again to re-validate they are the original owner of the data.
+:::
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `project` | string | Yes | The unique ID of the project associated with this registration |
+| `projectFlow` | string | Yes | The unique ID of the project flow that defines the registration and validation process |
+| `email` | string | No | The email address for the user to be registered. Either `email` or `phone` is required |
+| `phone` | string | No | The phone number for the user to be registered (digits only, no spaces). Either `email` or `phone` is required |
+| `countryCode` | string | No | The country code associated with the phone number. Required if `phone` is provided. Format: `+123` |
+| `fullName` | string | No | The full name of the person being registered |
+| `firstName` | string | No | The first name of the person being registered |
+| `lastName` | string | No | The last name of the person being registered |
+| `language` | string | No | The preferred language for communication during the registration process. Default: `"en"` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch("https://api.verifik.co/v2/app-registrations", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      project: "507f1f77bcf86cd799439011",
+      projectFlow: "507f1f77bcf86cd799439015",
+      email: "user@example.com",
+      phone: "1234567890",
+      countryCode: "+1",
+      fullName: "John Doe",
+      language: "en"
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/app-registrations");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "project" => "507f1f77bcf86cd799439011",
+    "projectFlow" => "507f1f77bcf86cd799439015",
+    "email" => "user@example.com",
+    "phone" => "1234567890",
+    "countryCode" => "+1",
+    "fullName" => "John Doe",
+    "language" => "en"
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/app-registrations"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "project": "507f1f77bcf86cd799439011",
+    "projectFlow": "507f1f77bcf86cd799439015",
+    "email": "user@example.com",
+    "phone": "1234567890",
+    "countryCode": "+1",
+    "fullName": "John Doe",
+    "language": "en"
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    payload := map[string]interface{}{
+        "project": "507f1f77bcf86cd799439011",
+        "projectFlow": "507f1f77bcf86cd799439015",
+        "email": "user@example.com",
+        "phone": "1234567890",
+        "countryCode": "+1",
+        "fullName": "John Doe",
+        "language": "en",
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/app-registrations", bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "appRegistration": {
+            "_id": "674de8df21c72be3cc42b8a7",
+            "client": "507f1f77bcf86cd799439013",
+            "project": "507f1f77bcf86cd799439011",
+            "projectFlow": "507f1f77bcf86cd799439015",
+            "status": "STARTED",
+            "email": "user@example.com",
+            "phone": "1234567890",
+            "countryCode": "+1",
+            "currentStep": "1",
+            "language": "en",
+            "createdAt": "2024-12-02T17:05:36.788Z",
+            "updatedAt": "2024-12-02T17:05:36.788Z"
+        },
+        "informationValidation": {
+            "_id": "674de8df21c72be3cc42b8a8",
+            "fullName": "John Doe",
+            "firstName": "John",
+            "lastName": "Doe"
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "Needs an email or a phone at least",
+    "code": "MissingParameter",
+    "status": 409
+}
+```
+
+  </TabItem>
+  <TabItem value="409-email" label="409 (Email Domain)">
+
+```json
+{
+    "message": "email domain not allowed",
+    "code": "PreconditionFailed",
+    "status": 409
+}
+```
+
+  </TabItem>
+  <TabItem value="409-countrycode" label="409 (Country Code)">
+
+```json
+{
+    "message": "missing countryCode",
+    "code": "MissingParameter",
+    "status": 409
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **Token Generation**: A JWT token is returned in the response that must be used for subsequent validation requests (email, phone, document, biometric).
+- **Contact Information**: Either `email` or `phone` (with `countryCode`) must be provided. Both can be provided.
+- **Name Fields**: You can use either `fullName` or `firstName`/`lastName` combination.
+- **Phone Format**: Phone numbers should contain only digits (no spaces, dashes, or other characters).
+- **Country Code**: Must be in format `+XXX` where X are digits (1-3 digits maximum).
+- **Status**: New app registrations start with status `STARTED`.
+- **Language**: Defaults to `"en"` if not provided.
