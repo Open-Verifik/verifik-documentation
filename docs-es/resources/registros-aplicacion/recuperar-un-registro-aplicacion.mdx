@@ -1,0 +1,199 @@
+---
+id: recuperar-un-registro-aplicacion
+title: Obtener Registro de Aplicación
+description: Recupera un registro de aplicación específico por ID
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/app-registrations/{id}
+```
+
+Recupera información detallada sobre un registro de aplicación específico por su ID. Puedes poblar objetos relacionados como validaciones, proyecto y flujo de proyecto.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Params
+
+| Name          | Type   | Required | Description                                                                                                                                                                                                                                                                                                        |
+| ------------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`          | string | Yes      | El identificador único del registro de aplicación                                                                                                                                                                                                                                                                  |
+| `populates[]` | array  | No       | Poblar objetos relacionados. Disponibles: `project`, `projectFlow`, `emailValidation`, `phoneValidation`, `biometricValidation`, `documentValidation`, `informationValidation`, `person`, `face`, `documentFace`, `compareFaceVerification`, `cryptoValidation`, `formSubmittion`, `signature`, `accessControlLog` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const appRegistrationId = "674de8df21c72be3cc42b8a7";
+    const res = await fetch(
+        `https://api.verifik.co/v2/app-registrations/${appRegistrationId}?populates[]=project&populates[]=projectFlow&populates[]=emailValidation`,
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+            },
+        }
+    );
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$appRegistrationId = "674de8df21c72be3cc42b8a7";
+$ch = curl_init("https://api.verifik.co/v2/app-registrations/" . $appRegistrationId . "?populates[]=project&populates[]=projectFlow");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+app_registration_id = "674de8df21c72be3cc42b8a7"
+url = f"https://api.verifik.co/v2/app-registrations/{app_registration_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+params = {"populates[]": ["project", "projectFlow", "emailValidation"]}
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    appRegistrationId := "674de8df21c72be3cc42b8a7"
+    url := fmt.Sprintf("https://api.verifik.co/v2/app-registrations/%s?populates[]=project&populates[]=projectFlow", appRegistrationId)
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "674de8df21c72be3cc42b8a7",
+        "client": "507f1f77bcf86cd799439013",
+        "project": {
+            "_id": "507f1f77bcf86cd799439011",
+            "name": "Example Project"
+        },
+        "projectFlow": {
+            "_id": "507f1f77bcf86cd799439015",
+            "type": "onboarding",
+            "target": "personal"
+        },
+        "status": "ONGOING",
+        "email": "user@example.com",
+        "phone": "1234567890",
+        "countryCode": "+1",
+        "currentStep": "1",
+        "language": "en",
+        "emailValidation": {
+            "_id": "674de8df21c72be3cc42b8a8",
+            "email": "user@example.com",
+            "status": "validated"
+        },
+        "phoneValidation": {
+            "_id": "674de8df21c72be3cc42b8a9",
+            "phone": "1234567890",
+            "status": "validated"
+        },
+        "biometricValidation": null,
+        "documentValidation": null,
+        "informationValidation": {
+            "_id": "674de8df21c72be3cc42b8a10",
+            "fullName": "John Doe",
+            "firstName": "John",
+            "lastName": "Doe"
+        },
+        "createdAt": "2024-12-02T17:05:36.788Z",
+        "updatedAt": "2024-12-02T17:05:36.788Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "AppRegistration_not_found",
+    "code": "NotFound"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+-   **Populates**: Usa el parámetro de consulta `populates[]` para incluir objetos relacionados en la respuesta. Esto reduce la necesidad de llamadas API adicionales.
+-   **Acceso con Token**: Cuando uses un token de registro de aplicación, puedes acceder a tu propio registro usando el endpoint `/me` o omitiendo el ID.
+-   **Valores de Estado**: El estado puede ser `STARTED`, `ONGOING`, `COMPLETED`, `COMPLETED_WITHOUT_KYC`, `FAILED`, `NEEDS_MANUAL_VERIFICATION`, o `EXPIRED`.
+-   **Objetos Relacionados**: Los objetos poblados incluyen detalles completos en lugar de solo referencias ObjectId.

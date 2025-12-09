@@ -26,7 +26,7 @@ Let's start by saying that the **optimal** path is: Set everything up in our [we
       </div>
       <div className="card__body">
         <p>Start by creating a new project in the Verifik platform to organize your authentication flows.</p>
-        <a href="/resources/projects/create-a-project" className="button button--primary">Create Project</a>
+        <a href="/resources/projects/projects-create" className="button button--primary">Create Project</a>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@ Let's start by saying that the **optimal** path is: Set everything up in our [we
       </div>
       <div className="card__body">
         <p>Define the authentication flow with type = "login" for your project.</p>
-        <a href="/resources/project-flows/create-a-project-flow" className="button button--primary">Create Flow</a>
+        <a href="/resources/project-flows/project-flows-update" className="button button--primary">Create Flow</a>
       </div>
     </div>
   </div>
@@ -146,8 +146,8 @@ https://api.verifik.co/v2/access
 
 If you haven't created a project and a projectFlow with the property type = **login**, then here are the links for that:
 
-- [Create a Project](/resources/projects/create-a-project)
-- [Create a Project Flow](/resources/project-flows/create-a-project-flow)
+- [Create a Project](/resources/projects/projects-create)
+- [Create a Project Flow](/resources/project-flows/project-flows-update)
 
 ### Let's Get Started
 
@@ -196,8 +196,8 @@ Authorization: Bearer <your_jwt_token>
 
 ### API Endpoints
 
-- [Create an Email Validation](/resources/email-validations/create-an-email-validation)
-- [Validate an Email Validation](/resources/email-validations/validate-an-email-validation)
+- [Create an Email Validation](/resources/create-an-email-validation)
+- [Validate an Email Validation](/resources/validate-an-email-validation)
 
 ---
 
@@ -207,8 +207,8 @@ Authorization: Bearer <your_jwt_token>
 
 If you haven't created a project and a projectFlow with the property type = **login**, then here are the links for that:
 
-- [Create a Project](/resources/projects/create-a-project)
-- [Create a Project Flow](/resources/project-flows/create-a-project-flow)
+- [Create a Project](/resources/projects/projects-create)
+- [Create a Project Flow](/resources/project-flows/project-flows-update)
 
 ### Let's Get Started
 
@@ -270,8 +270,8 @@ Authorization: Bearer <your_jwt_token>
 
 ### API Endpoints
 
-- [Create an App Registration Phone Validation](/resources/phone-validations/create-an-app-registration-phone-validation)
-- [Validate a Phone Validation](/resources/phone-validations/validate-a-phone-validation)
+- [Create a Phone Validation](/resources/create-a-phone-validation)
+- [Validate a Phone Validation](/resources/validate-a-phone-validation)
 
 ---
 
@@ -281,8 +281,8 @@ Authorization: Bearer <your_jwt_token>
 
 If you haven't created a project and a projectFlow with the property type = **login**, then here are the links for that:
 
-- [Create a Project](/resources/projects/create-a-project)
-- [Create a Project Flow](/resources/project-flows/create-a-project-flow)
+- [Create a Project](/resources/projects/projects-create)
+- [Create a Project Flow](/resources/project-flows/project-flows-update)
 
 ### Let's Get Started
 
@@ -345,8 +345,8 @@ Authorization: Bearer <your_jwt_token>
 
 ### API Endpoints
 
-- [Create a Biometric Validation](/resources/biometric-validations/create-a-biometric-validation)
-- [Validate an App Login Biometric Validation](/resources/biometric-validations/validate-an-app-login-biometric-validation)
+- [Create a Biometric Validation](/resources/create-a-biometric-validation)
+- [Validate an App Login Biometric Validation](/resources/validate-an-app-login-biometric-validation)
 
 ---
 
