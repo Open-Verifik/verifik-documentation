@@ -1,0 +1,251 @@
+---
+id: crear-una-validacion-nombre
+title: Crear una Validación de Nombre
+description: Realiza la validación de nombre comparando los nombres extraídos de documentos con los registros oficiales del gobierno
+slug: /resources/crear-una-validacion-nombre
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### Endpoint
+
+**PUT** `https://api.verifik.co/v2/document-validations/{id}/validate`
+
+Este endpoint realiza la validación de nombre comparando los nombres extraídos del documento de un usuario con los registros oficiales del gobierno. Valida que los nombres proporcionados por el usuario coincidan con sus registros oficiales de identidad mediante integraciones con APIs gubernamentales.
+
+### Encabezados
+
+#### Content-Type
+
+Tipo: String  
+Requerido: Sí
+
+`application/json`
+
+#### Authorization
+
+Tipo: String  
+Requerido: Sí
+
+`Bearer {YOUR_ACCESS_TOKEN}`
+
+:::warning
+**Requisitos previos**: Los usuarios deben completar tanto el paso `signUpForm` como el paso `document` antes de poder realizar la validación de nombre.
+:::
+
+:::warning
+**Funcionalidad adicional**: Las Validaciones de Nombre son una característica adicional y están sujetas a cargos. Cada solicitud de validación generará un costo según tu plan.
+:::
+
+### Parámetros de Ruta
+
+#### `id`
+
+Tipo: string  
+Requerido: Sí
+
+El identificador único del registro de validación de documento a validar.
+
+### Parámetros de Consulta
+
+#### `force`
+
+Tipo: boolean  
+Requerido: No
+
+Forzar la revalidación incluso si ya fue validada. Ejemplo: `force=true`
+
+### Parámetros del Cuerpo
+
+Este endpoint no requiere cuerpo en la solicitud. Toda la información necesaria se recupera automáticamente del registro de validación de documento.
+
+### Regiones y tipos de documento compatibles
+
+Actualmente, la validación de nombre es compatible con las siguientes regiones y tipos de documento:
+
+| Región       | Tipo de documento | Descripción                     |
+| ------------ | ----------------- | ------------------------------- |
+| **Panamá**   | `CCPA`            | Cédula de identidad de Panamá   |
+| **Colombia** | `CC`              | Cédula de ciudadanía colombiana |
+| **Colombia** | `DRCC`            | Cédula diplomática colombiana   |
+| **Chile**    | `CL`              | Cédula de identidad chilena     |
+
+:::info
+**Nota**: Puede haber soporte para regiones y tipos de documento adicionales. Contacta a tu ejecutivo de cuenta para obtener la lista más actualizada de países y tipos de documentos compatibles.
+:::
+
+### Solicitud
+
+<Tabs groupId="language">
+<TabItem value="nodejs" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'PUT',
+<TabItem value="python" label="Python">
+  params: {
+    force: false
+  },
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+}
+
+conn.request("PUT", "/v2/document-validations/document_validation_123456789/validate?force=false", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('PUT', 'https://api.verifik.co/v2/document-validations/document_validation_123456789/validate', [
+  'headers' => [
+    'Content-Type' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+  'query' => [
+    'force' => false
+  ]
+]);
+
+echo $response->getBody();
+```
+
+</TabItem>
+<TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+  "fmt"
+  "net/http"
+  "io/ioutil"
+)
+
+func main() {
+  url := "https://api.verifik.co/v2/document-validations/document_validation_123456789/validate?force=false"
+
+  req, _ := http.NewRequest("PUT", url, nil)
+
+  req.Header.Add("Content-Type", "application/json")
+  req.Header.Add("Authorization", "Bearer <your_token>")
+
+  res, _ := http.DefaultClient.Do(req)
+
+  defer res.Body.Close()
+  body, _ := ioutil.ReadAll(res.Body)
+
+  fmt.Println(string(body))
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs groupId="status">
+<TabItem value="200" label="200">
+
+```json
+{
+    "success": true,
+    "data": {
+        "_id": "document_validation_123456789",
+        "status": "ACTIVE",
+        "nameValidation": {
+            "firstName": {
+                "provided": "John",
+                "official": "John",
+                "match": true,
+                "confidence": 0.95
+            },
+            "lastName": {
+                "provided": "Doe",
+                "official": "Doe",
+                "match": true,
+                "confidence": 0.95
+            },
+            "overallMatch": true,
+            "validationDate": "2024-01-15T10:32:00Z"
+        },
+        "updatedAt": "2024-01-15T10:32:00Z"
+    },
+    "signature": {
+        "dateTime": "April 11, 2023 12:25 PM",
+        "message": "Certified by Verifik.co"
+    }
+}
+```
+
+  </TabItem>
+<TabItem value="400" label="400">
+
+```json
+{
+    "error": "Name validation not supported for this document type",
+    "message": "UNSUPPORTED_DOCUMENT_TYPE"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+    "error": "Prerequisites not met",
+    "message": "MISSING_PREREQUISITES"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Características
+
+-   **Validación gubernamental**: Compara nombres con registros oficiales del gobierno
+-   **Múltiples países**: Compatible con Panamá, Colombia y Chile
+-   **Tipos de documento**: Cédulas nacionales y diplomáticas
+-   **Validación automática**: Recupera automáticamente la información del documento
+-   **Revalidación**: Opción para forzar la revalidación con el parámetro `force`
+-   **Puntajes de confianza**: Puntajes detallados para cada nombre
+-   **Requisitos previos**: Requiere completar el formulario de registro y el documento
+-   **Funcionalidad premium**: Servicio adicional con cargos por validación
+-   **Múltiples lenguajes**: Soporte para JavaScript, Python, PHP y Go
+-   **Manejo de errores**: Respuestas de error detalladas para distintos escenarios

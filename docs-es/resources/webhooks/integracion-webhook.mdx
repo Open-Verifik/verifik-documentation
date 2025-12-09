@@ -1,0 +1,127 @@
+---
+id: integracion-webhook
+title: Integración de Webhooks
+description: Guía para configurar webhooks para recibir eventos desde Verifik
+slug: /resources/integracion-webhook
+---
+
+### Descripción
+
+Esta guía explica cómo configurar un webhook simple usando Node.js para recibir eventos desde Verifik en tiempo real.
+
+### Guía de Configuración de Webhooks
+
+#### 1. Prerrequisitos
+
+Antes de comenzar, asegúrate de tener:
+
+* **Node.js** instalado en tu sistema.
+* **npm** (Node Package Manager) instalado (generalmente viene con Node.js).
+
+#### 2. Instalar Paquetes Requeridos
+
+Para comenzar, inicializa un proyecto de Node.js e instala las dependencias necesarias.
+
+```bash
+mkdir webhook-example
+cd webhook-example
+npm init -y
+npm install express body-parser
+```
+
+* **express**: Un framework web para Node.js para manejar solicitudes HTTP.
+* **body-parser**: Middleware para analizar cuerpos de solicitudes entrantes (especialmente JSON).
+
+#### 3. Crear el Servidor de Webhook
+
+Crea un archivo llamado `webhook.js` y agrega el siguiente código:
+
+```javascript
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+const PORT = 3000;
+
+// Middleware to parse JSON requests
+app.use(bodyParser.json());
+
+// Endpoint to receive webhook events
+app.post('/webhook', (req, res) => {
+  const event = req.body;
+
+  // Log the received event
+  console.log('Received event:', event);
+
+  // Respond with a success message
+  res.status(200).send('Webhook received successfully');
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Webhook server is running on port ${PORT}`);
+});
+```
+
+#### 4. Ejecutar el Servidor de Webhook
+
+Para iniciar el servidor de webhook, ejecuta el siguiente comando:
+
+```bash
+node webhook.js
+```
+
+Tu servidor de webhook estará ejecutándose localmente en `http://localhost:3000/webhook`.
+
+#### 5. Exponer tu Servidor de Webhook
+
+Si quieres que Verifik envíe eventos a tu webhook, necesitas exponerlo a internet. Esto se puede hacer usando herramientas como **ngrok**. Instala ngrok si aún no lo has hecho:
+
+```bash
+npm install -g ngrok
+```
+
+Luego, expone tu servidor local:
+
+```bash
+ngrok http 3000
+```
+
+Recibirás una URL pública, como `https://<random-id>.ngrok.io`, que puede ser usada por Verifik para enviar eventos de webhook.
+
+#### 6. Configurar la URL del Webhook con Verifik
+
+Una vez que tu webhook esté públicamente accesible, puedes proporcionar la URL a Verifik. Así es cómo configurar tu webhook:
+
+1. **Establece tu URL de Webhook**: Proporciona la URL pública de ngrok al equipo de integración de Verifik.
+   * Ejemplo: `https://<random-id>.ngrok.io/webhook`
+2. **Suscripción de Eventos**: Indica qué eventos te gustaría recibir de Verifik (p. ej., registro de usuario, transacción completada).
+
+#### 7. Prueba de Webhooks
+
+Puedes probar tu webhook localmente enviando una solicitud `POST` usando una herramienta como `curl` o Postman.
+
+Ejemplo con `curl`:
+
+```bash
+curl -X POST http://localhost:3000/webhook -H "Content-Type: application/json" -d '{"event":"user_signup", "data": {"user_id": "12345"}}'
+```
+
+Esto debería imprimir el evento en tu consola y devolver un mensaje de éxito.
+
+#### 8. Consideraciones de Seguridad
+
+* **Verificación de Firma**: Para uso en producción, es importante verificar la firma de las solicitudes de webhook entrantes para asegurar que provienen de Verifik. Esto se puede hacer usando secretos compartidos o claves API, que Verifik proporcionará.
+* **HTTPS**: Asegúrate de que tu URL de webhook use HTTPS cuando esté en producción.
+
+#### Conclusión
+
+Ahora has configurado un webhook básico en Node.js que puede recibir eventos desde **Verifik**. Puedes usar este webhook para diversos propósitos como escuchar registros de usuarios, transacciones u otros eventos en tiempo real.
+
+***
+
+Déjanos saber si necesitas detalles adicionales de nuestra parte y estaremos felices de ayudar.
+
+### Ahora estamos listos para crear el objeto webhook en Verifik
+
+[Crear un Webhook](/docs-es/resources/crear-un-webhook)
