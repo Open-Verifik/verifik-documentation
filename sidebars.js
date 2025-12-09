@@ -93,7 +93,7 @@ const sidebars = {
 		},
 		{
 			type: "category",
-			label: "IDENTITY VALIDATION",
+			label: "IDENTITY VERIFICATION",
 			collapsible: false,
 			items: [
 				{
@@ -248,7 +248,7 @@ const sidebars = {
 		},
 		{
 			type: "category",
-			label: "BUSINESS VALIDATION",
+			label: "BUSINESS VERIFICATION",
 			collapsible: false,
 			items: [
 				{
@@ -341,7 +341,7 @@ const sidebars = {
 		},
 		{
 			type: "category",
-			label: "VEHICLE VALIDATION",
+			label: "VEHICLE VERIFICATION",
 			collapsible: false,
 			items: [
 				{
