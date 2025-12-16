@@ -22,6 +22,19 @@ const sidebars = {
 			id: "intro",
 			label: "Home",
 		},
+		// {
+		// 	type: "category",
+		// 	label: "PROPUESTA COMPENSAR",
+		// 	collapsible: true,
+		// 	items: [
+		// 		"compensar/COMPENSAR_README",
+		// 		"compensar/COMPENSAR_EXECUTIVE_SUMMARY",
+		// 		"compensar/COMPENSAR_PROPOSAL",
+		// 		"compensar/COMPENSAR_COMPLIANCE_MATRIX",
+		// 		"compensar/COMPENSAR_API_REFERENCE",
+		// 		"compensar/COMPENSAR_FLOW_DIAGRAMS",
+		// 	],
+		// },
 		{
 			type: "category",
 			label: "AUTHENTICATION",
