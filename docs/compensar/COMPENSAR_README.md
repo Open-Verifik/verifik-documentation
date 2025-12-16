@@ -5,7 +5,6 @@ sidebar_label: 📚 Índice
 sidebar_position: 1
 ---
 
-
 ## 📄 Documentos Principales
 
 ### 1. [COMPENSAR_EXECUTIVE_SUMMARY.md](./COMPENSAR_EXECUTIVE_SUMMARY.md)
@@ -141,7 +140,7 @@ sidebar_position: 1
 
 ---
 
-### 6. [compensar.pdf](./compensar.pdf)
+### 6. [compensar.pdf](/compensar.pdf)
 
 **Documento Original de COMPENSAR** - RFI (Request for Information)
 
