@@ -45,10 +45,10 @@ sidebar_position: 2
 -   **Omnicanalidad:** Experiencia fluida en web, móvil y puntos físicos (kioscos/torniquetes).
 -   Anti-spoofing integrado
 
-### 2. Validación de Identidad en Créditos ✅
+### 2. Validación de Identidad en Créditos/Prestamos ✅
 
-**Solución Actual:** BPO con reconocimiento facial  
-**Solución Verifik:** Automatización completa sin BPO
+**Solución Actual:** BPO (Tercerización de Procesos con intervención humana) para validación facial.
+**Solución Verifik:** Automatización 100% con IA (Sin intervención humana, eliminando costos de BPO).
 
 -   Reducción de costos: >70%
 -   Tiempo de validación: &lt;30 segundos
