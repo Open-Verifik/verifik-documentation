@@ -60,9 +60,9 @@ La Plataforma estará disponible al menos:
 
 | **Producto** | **Disponibilidad**                                                                          | **Notas**                                                       |
 | ------------ | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| SmartCHECK   | 90.0% > Data API                                                                            | Data API, depende de las conexiones con Fuentes Gubernamentales |
-| smartACCESS  | 99.0% > Email/Tel<br/>98.0% > Biometrics                                          |                                                                 |
-| smartENROLL  | 99.0% > Email/Tel<br/>98.0% > Biometrics<br/>98.0% > Scaneo de Docs<br/>90.0% > Data API | Data API, depende de las conexiones con Fuentes Gubernamentales |
+| SmartCHECK   | 90.0% > Data API                                                                            | Base de datos, depende de las conexiones con Fuentes Gubernamentales |
+| smartACCESS  | 99.9% > Email/Tel<br/>99.9% > Biometrics                                          |                                                                 |
+| smartENROLL  | 99.9% > Email/Tel<br/>99.9% > Biometrics<br/>99.9% > Scaneo de Docs<br/>90.0% > Data API | Base de datos, depende de las conexiones con Fuentes Gubernamentales |
 
 #### **VI. Compensación por Tiempos de Inactividad**
 
@@ -70,10 +70,10 @@ La Compensación en Crédito adjudicado para el mes afectado se proporcionará e
 
 | **Disponibilidad de Servicio**                                                           | **Compensación en Crédito**               | **Producto**                      |
 | ---------------------------------------------------------------------------------------- | ----------------------------------------- | --------------------------------- |
-| **Data API (Consulta de Datos)**<br/>90.00% o mayor<br/>89.99% o Menos | No Credito<br/>Compensación | smartCHECK                        |
-| **Email/Tel**<br/>99.00% o mayor<br/>98.99% o Menos                    | No Credito<br/>Compensación     | smartACCESS<br/>smartENROLL |
-| **Biometrics**<br/>98.00% o mayor<br/>97.99% o Menos                  | No Credito<br/>Compensación    | smartACCESS<br/>smartENROLL |
-| **Escaneo de Documentos**<br/>98.00% o mayor<br/>97.99% o Menos        | No Credito<br/>Compensación | smartENROLL<br/>smartACCESS |
+| **Base de datos (Consulta de Datos)**<br/>90.00% o mayor<br/>89.99% o Menos | No Credito<br/>Compensación | smartCHECK                        |
+| **Email/Tel**<br/>99.9% o Mayor<br/>99.8% o Menos                    | No Credito<br/>Compensación     | smartACCESS<br/>smartENROLL |
+| **Biometrics**<br/>99.9% o Mayor<br/>99.8% o Menos                  | No Credito<br/>Compensación    | smartACCESS<br/>smartENROLL |
+| **Escaneo de Documentos**<br/>99.9% o Mayor<br/>99.8% o Menos        | No Credito<br/>Compensación | smartENROLL<br/>smartACCESS |
 
 **Problemas Internos** del servicio de Data API (Consulta de Datos) excluye problemas considerados por Fuerza Mayor (Casos Fortuitos) ya sea por migración, desconexión, o intervención externa de los gobiernos que custodian las bases de datos. Verifik es un intermediario, por lo tanto, NO posee la potestad y control de las bases de datos consultadas.
 
