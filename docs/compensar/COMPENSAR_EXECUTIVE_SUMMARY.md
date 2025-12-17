@@ -175,12 +175,6 @@ Validation Validation      Lookup
 | OTP WhatsApp            | $0.01 - $0.03   |
 | Consulta DB oficial     | $0.20 - $0.30   |
 
-**Paquetes Mensuales:**
-
--   Starter: 1,000 tx/mes - $200
--   Professional: 10,000 tx/mes - $1,500
--   Enterprise: 100,000+ tx/mes - Cotización
-
 ---
 
 ## 🧪 Plan de Implementación
