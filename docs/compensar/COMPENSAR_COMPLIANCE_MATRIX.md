@@ -5,11 +5,11 @@ sidebar_label: ✅ Matriz de Cumplimiento
 sidebar_position: 4
 ---
 
-| **Validación de Documentos**    | 100% ✅         | Todos los tipos soportados            |
-| **Biometría**                   | 100% ✅         | Facial + liveness implementado        |
-| **Bases de Datos Oficiales**    | 100% ✅         | Colombia + 17 países                  |
-| **Cumplimiento Normativo**      | 100% ✅         | Ley 1581, GDPR, LGPD                  |
-| **Infraestructura**             | 100% ✅         | Cloud, escalable, 99.9% SLA           |
+| **Validación de Documentos** | 100% ✅ | Todos los tipos soportados |
+| **Biometría** | 100% ✅ | Facial + liveness implementado |
+| **Bases de Datos Oficiales** | 100% ✅ | Colombia + 17 países |
+| **Cumplimiento Normativo** | 100% ✅ | Ley 1581, GDPR, LGPD |
+| **Infraestructura** | 100% ✅ | Cloud, escalable, 99.9% SLA |
 
 **Cumplimiento Global: 85% Inmediato + 15% Roadmap 2025**
 
@@ -276,7 +276,7 @@ sidebar_position: 4
 
 ---
 
-### 🔄 EN ROADMAP 2025 (Planificados)
+### 🔄 EN ROADMAP - Q1 2026 (Planificados)
 
 #### 5. Verificación Basada en Comportamiento
 
@@ -284,7 +284,7 @@ sidebar_position: 4
 
 > Analiza patrones de comportamiento como la forma de escribir, mover el mouse o usar el dispositivo para identificar al usuario.
 
-**Estado:** 🔄 En desarrollo - Q3 2025
+**Estado:** 🔄 En desarrollo - Q1 2026
 
 **Capacidades Planificadas:**
 
@@ -307,7 +307,7 @@ sidebar_position: 4
 
 > Aplicaciones como Google Authenticator o Authy generan códigos temporales que el usuario debe ingresar para autenticarse.
 
-**Estado:** 🔄 Planificado - Q2 2025
+**Estado:** 🔄 Planificado - Q1 2026
 
 **Capacidades Planificadas:**
 
@@ -330,7 +330,7 @@ sidebar_position: 4
 
 > Dispositivos físicos o software que permiten autenticación sin contraseña, usando criptografía de clave pública. Son altamente seguros.
 
-**Estado:** 🔄 Roadmap - Q3 2025
+**Estado:** 🔄 Roadmap - Q1 2026
 
 **Capacidades Planificadas:**
 
@@ -353,7 +353,7 @@ sidebar_position: 4
 
 > Credenciales criptográficas guardadas en servicios en la nube, que permiten autenticación sin contraseña desde múltiples dispositivos.
 
-**Estado:** 🔄 En evaluación - Q4 2025
+**Estado:** 🔄 En evaluación - Q1 2026
 
 **Capacidades Planificadas:**
 
@@ -370,7 +370,7 @@ sidebar_position: 4
 
 > Las claves se guardan en el hardware del dispositivo (como el Trusted Platform Module), lo que mejora la seguridad al evitar el acceso remoto.
 
-**Estado:** 🔄 En evaluación - Q4 2025
+**Estado:** 🔄 En evaluación - Q1 2026
 
 **Capacidades Planificadas:**
 
@@ -387,7 +387,7 @@ sidebar_position: 4
 
 > El servidor envía un desafío que el dispositivo móvil firma con una clave privada, confirmando la identidad del usuario sin compartir la clave.
 
-**Estado:** 🔄 Roadmap - Q4 2025
+**Estado:** 🔄 Roadmap - Q1 2026
 
 **Capacidades Planificadas:**
 
@@ -404,7 +404,7 @@ sidebar_position: 4
 
 > Combina biometría con claves criptográficas para autenticación segura, sin compartir datos biométricos con el servidor.
 
-**Estado:** 🔄 Planificado - Q3 2025
+**Estado:** 🔄 Planificado - Q1 2026
 
 **Capacidades Planificadas:**
 
@@ -422,7 +422,7 @@ sidebar_position: 4
 | Métrica                        | Requerimiento COMPENSAR | Capacidad Verifik             | Cumplimiento |
 | ------------------------------ | ----------------------- | ----------------------------- | ------------ |
 | **Precisión facial**           | Alta                    | >99%                          | ✅           |
-| **Velocidad de procesamiento** | Rápida                  | &lt;2 segundos                   | ✅           |
+| **Velocidad de procesamiento** | Rápida                  | &lt;2 segundos                | ✅           |
 | **Tolerancia ambiental**       | Buena                   | Iluminación variable, ángulos | ✅           |
 | **Interoperabilidad**          | Sistemas existentes     | APIs REST, SDKs               | ✅           |
 
@@ -453,7 +453,7 @@ sidebar_position: 4
 | Aspecto           | Solución Actual COMPENSAR | Solución Verifik      | Mejora             |
 | ----------------- | ------------------------- | --------------------- | ------------------ |
 | **Tecnología**    | Huella dactilar           | Reconocimiento facial | Sin contacto       |
-| **Velocidad**     | 3-5 segundos              | &lt;2 segundos           | -60% tiempo        |
+| **Velocidad**     | 3-5 segundos              | &lt;2 segundos        | -60% tiempo        |
 | **Higiene**       | Contacto físico           | Sin contacto          | +100% higiene      |
 | **Hardware**      | Lectores de huella        | Cámara estándar       | -Costo hardware    |
 | **Mantenimiento** | Limpieza constante        | Mínimo                | -80% mantenimiento |
@@ -465,7 +465,7 @@ sidebar_position: 4
 | ------------------ | ------------------------- | ----------------- | ------------- |
 | **Método**         | BPO manual                | Automatización IA | -70% costo    |
 | **Disponibilidad** | Horario laboral           | 24/7/365          | +Cobertura    |
-| **Tiempo**         | 2-5 minutos               | &lt;30 segundos      | -90% tiempo   |
+| **Tiempo**         | 2-5 minutos               | &lt;30 segundos   | -90% tiempo   |
 | **Precisión**      | Variable (humana)         | >95% (IA)         | +Consistencia |
 | **Escalabilidad**  | Limitada                  | Ilimitada         | +Volumen      |
 | **Trazabilidad**   | Manual                    | Automática        | +Auditoría    |
@@ -506,7 +506,7 @@ sidebar_position: 4
 -   Disponibilidad 24/7
 -   Trazabilidad completa
 
-### Fase 2: Mejoras (Q2 2025)
+### Fase 2: Mejoras (Q1 2026)
 
 **Implementar:**
 
@@ -520,7 +520,7 @@ sidebar_position: 4
 -   Apps móviles nativas
 -   Monitoreo y reportería avanzada
 
-### Fase 3: Innovación (Q3-Q4 2025)
+### Fase 3: Innovación (Q1 2026)
 
 **Implementar:**
 
@@ -549,7 +549,7 @@ sidebar_position: 4
 -   ✅ Magic link
 -   ✅ Biometría de dispositivo
 
-**Roadmap 2025 (25%):**
+**Roadmap 2026 (25%):**
 
 -   🔄 TOTP
 -   🔄 FIDO2/WebAuthn

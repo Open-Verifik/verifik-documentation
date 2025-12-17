@@ -5,7 +5,6 @@ sidebar_label: 📋 Propuesta Completa
 sidebar_position: 3
 ---
 
-
 ## 🎯 Alineación con Objetivos de COMPENSAR
 
 ### Objetivo Principal
@@ -158,7 +157,7 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 
 ### 5. Verificación Basada en Comportamiento ⚠️
 
-**Estado:** En desarrollo  
+**Estado:** En desarrollo - Q1 2026  
 **Capacidades Planificadas:**
 
 -   Análisis de patrones de escritura
@@ -216,7 +215,7 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 
 ### 8. OTP por Aplicaciones (TOTP) ⚠️
 
-**Estado:** Planificado para Q2 2025  
+**Estado:** Planificado para Q1 2026  
 **Integración:** Google Authenticator, Authy compatible
 
 ---
@@ -240,7 +239,7 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 
 ### 10. Tokens FIDO2/WebAuthn ⚠️
 
-**Estado:** En roadmap para 2025  
+**Estado:** En roadmap para Q1 2026  
 **Capacidades Planificadas:**
 
 -   Autenticación sin contraseña
@@ -251,7 +250,7 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 
 ### 11. Passkeys (Cloud y Hardware) ⚠️
 
-**Estado:** En evaluación  
+**Estado:** En evaluación - Q1 2026  
 **Integración Planificada:**
 
 -   iCloud Keychain
@@ -262,7 +261,7 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 
 ### 12. Autenticación Móvil con Desafío Criptográfico ⚠️
 
-**Estado:** En roadmap  
+**Estado:** En roadmap - Q1 2026  
 **Tecnología:** Firma digital con claves privadas
 
 ---
@@ -287,7 +286,7 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 
 ### 14. Biometría con Respaldo Criptográfico (WebAuthn, FIDO2) ⚠️
 
-**Estado:** Planificado para Q3 2025  
+**Estado:** Planificado para Q1 2026  
 **Estándar:** FIDO2 Alliance compliant
 
 ---
@@ -524,6 +523,91 @@ Migrar gradualmente de huella a facial, manteniendo huella como backup durante t
 -   SDK móvil (iOS/Android)
 -   API REST para backend
 -   Webhooks para notificaciones
+
+## 🏗️ Arquitectura de Solución: Tradicional vs. Privacidad Mejorada (ZelfProof)
+
+Verifik ofrece dos enfoques arquitectónicos para la gestión de identidades, permitiendo a COMPENSAR elegir el balance ideal entre control centralizado y privacidad del usuario (Zero Knowledge).
+
+### 1. SmartEnroll: Onboarding de Usuarios
+
+El proceso de registro captura y valida la identidad del usuario para crear una credencial digital.
+
+#### Opción A: SmartEnroll Tradicional (Centralizada)
+
+Flujo estándar donde los datos biométricos se almacenan en una base de datos segura para búsquedas 1:N.
+
+1.  **Registro de Datos**: Se capturan datos básicos (Nombre, Email, Teléfono).
+2.  **Validaciones de Contacto**: Envío de OTP a Email y Teléfono para verificar propiedad.
+3.  **Validación Documental**:
+    -   Captura de documento (Frentes/Reverso).
+    -   **OCR + IA**: Extracción de datos con templates flexibles (GPT).
+    -   **Validación de Autenticidad**: Detección de alteraciones y consulta a bases oficiales (Registraduría).
+4.  **Prueba de Vida (Liveness)**: Captura de selfie para asegurar presencia real del usuario.
+5.  **Biometría**: Comparación facial (1:1) entre selfie y foto del documento.
+6.  **Almacenamiento**: Creación de perfil en Base de Datos para futuros accesos.
+
+#### Opción B: SmartEnroll con ZelfProof (Zero Knowledge)
+
+Enfoque centrado en la privacidad donde Verifik **NO** almacena la biometría del usuario centralmente para búsquedas.
+
+1.  **Pasos 1-5 (Tradicional)**: Se realizan las mismas validaciones de identidad y documento.
+2.  **Generación de ZelfProof**:
+    -   Se crea un "fan" (prueba) criptográfica que contiene la identidad validada.
+    -   Esta prueba se cifra **usando la biometría del usuario** como llave.
+    -   Se genera un **QR Code** (ZelfProof) que el usuario porta.
+3.  **Almacenamiento Descentralizado (IPFS)**:
+    -   La prueba cifrada se almacena en IPFS.
+    -   Solo es recuperable y descifrable con el rostro vivo del usuario.
+    -   **Privacidad**: No hay una "base de datos de caras" centralizada vulnerable.
+
+---
+
+### 2. SmartAccess: Control de Acceso
+
+El proceso de verificación diaria para ingresar a sedes o gimnasios.
+
+#### Opción A: SmartAccess Tradicional (1:N)
+
+Ideal para experiencia "manos libres" total, pero requiere base de datos biométrica central.
+
+1.  **Captura**: Usuario se acerca al kiosco/torniquete.
+2.  **Búsqueda 1:N**: La cámara captura el rostro y busca en TODA la base de datos de usuarios (>200k).
+3.  **Validación**:
+    -   Verificación de Liveness.
+    -   Matching > 85%.
+4.  **Acceso**: Si hay match y la suscripción está activa -> Acceso Concedido.
+
+#### Opción B: SmartAccess con ZelfProof (1:1 / ZK Login)
+
+Mayor seguridad y privacidad. Elimina la necesidad de búsqueda en base de datos masiva, reduciendo latencia y falsos positivos.
+
+1.  **Identificación**: Usuario presenta su identificador (Cédula, QR, Email o NFC).
+2.  **Recuperación**: El sistema busca el ZelfProof cifrado en IPFS asociado a ese ID.
+3.  **Validación Biométrica (1:1)**:
+    -   Cámara captura el rostro del usuario.
+    -   **Desencriptación**: El sistema intenta descifrar el ZelfProof usando el rostro capturado.
+4.  **Acceso**:
+    -   Si el rostro es el correcto -> El ZelfProof se descifra -> Identidad validada -> Acceso Concedido.
+    -   **Ventaja**: Funciona como una llave biométrica privada. La validación es criptográfica, no probabilística 1:N contra todos.
+
+---
+
+## 🛡️ Capacidades Avanzadas de Detección
+
+Verifik implementa capas de seguridad de grado bancario para prevenir fraudes sofisticados.
+
+### Validación de "Document Liveness"
+
+No solo validamos los datos, sino la presencia física real del documento.
+
+-   **Screen Replay Detection**: Detecta si la cámara está viendo una pantalla (monitor, celular) en lugar de un documento físico.
+-   **Printed Copy Detection**: Identifica si se está presentando una fotocopia a color o impresión del documento.
+-   **Portrait Substitution**: Detecta si la foto del documento ha sido pegada o manipulada digitalmente.
+
+### OCR Inteligente y Flexible
+
+-   **Prompt Templates**: Uso de LLMs (GPT) para adaptar la lectura a CUALQUIER tipo de documento (recibos públicos, carnés antiguos, documentos extranjeros) sin desarrollo adicional.
+-   **Cross-Validation**: Cruce automático de datos extraídos contra bases gubernamentales y listas restrictivas.
 
 ---
 
@@ -997,33 +1081,39 @@ _Nota: Precios sujetos a negociación según volumen y alcance del proyecto_
 
 ## 🚀 Roadmap de Implementación
 
-### Q1 2025 (Actual)
+### 2025 (Actual)
 
 -   ✅ Validación de documentos (18+ países)
 -   ✅ Biometría facial + liveness
--   ✅ OTP (SMS, Email, WhatsApp)
+-   ✅ OTP (SMS, Email, WhatsApp, Google Authenticator TOTP)
 -   ✅ Validación con fuentes oficiales
+-   ✅ SDK móvil nativo (iOS/Android)
+-   ✅ Dashboard de administración
+-   ✅ Reportería avanzada
+-   ✅ Integración con blockchain pública
+-   ✅ **Verificación Offline (Edge AI)**: Validaciones biométricas y documentales sin conexión a internet.
 
-### Q2 2025
-
--   🔄 TOTP (Google Authenticator, Authy)
--   🔄 SDK móvil nativo (iOS/Android)
--   🔄 Dashboard de administración mejorado
--   🔄 Reportería avanzada
-
-### Q3 2025
+### Q1 2026
 
 -   📅 FIDO2/WebAuthn
 -   📅 Passkeys (iCloud, Google)
 -   📅 Análisis comportamental
 -   📅 Detección de fraude con ML
-
-### Q4 2025
-
--   📅 Biometría de voz
 -   📅 Verificación de documentos con NFC
--   📅 Integración con blockchain pública
 -   📅 API GraphQL
+
+### Q2 2026
+
+-   📅 **Biometría de Voz Pasiva**: Autenticación vocal para canales telefónicos y asistentes virtuales.
+-   📅 **Wallet de Identidad Soberana (SSI)**: Billetera digital compatible con estándares W3C/DIF.
+-   📅 **Agentes de IA para Soporte**: Resolución automática de casos de validación en tiempo real.
+
+### Q3 2026
+
+-   📅 **Criptografía Post-Cuántica**: Actualización de algoritmos de cifrado para seguridad futura.
+-   📅 **Federación de Identidad Global**: Interoperabilidad con redes de identidad europeas (eIDAS) y asiáticas.
+-   📅 **Reputación Descentralizada**: Scoring de confianza on-chain basado en historial de validaciones validado por ZK.
+-   📅 **Identidad para Metaverso**: Verificación certificada para avatares y propiedad digital.
 
 ---
 

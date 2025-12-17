@@ -5,7 +5,6 @@ sidebar_label: 📊 Resumen Ejecutivo
 sidebar_position: 2
 ---
 
-
 ## ✅ Cumplimiento de Requerimientos COMPENSAR
 
 ### Mecanismos de Autenticación Solicitados
@@ -16,13 +15,13 @@ sidebar_position: 2
 | **Verificación basada en conocimientos (KBA)**   | ✅ Implementado  | Validación con bases de datos gubernamentales |
 | **Autenticación biométrica**                     | ✅ Implementado  | Facial + liveness, >99% precisión             |
 | **Verificación de bases de datos**               | ✅ Implementado  | Registraduría, RUNT, Migración, etc.          |
-| **Verificación basada en comportamiento**        | ⚠️ En desarrollo | Q3 2025                                       |
+| **Verificación basada en comportamiento**        | ⚠️ En desarrollo | Q1 2026                                       |
 | **PIN**                                          | ✅ Implementado  | Códigos numéricos con expiración              |
 | **OTP por SMS**                                  | ✅ Implementado  | Twilio, alta confiabilidad                    |
 | **OTP por correo**                               | ✅ Implementado  | Mailgun, templates personalizables            |
 | **OTP por aplicaciones**                         | ✅ Implementado  | Implementado                                  |
 | **Magic link**                                   | ✅ Implementado  | Enlaces únicos de un solo uso                 |
-| **Tokens FIDO2/WebAuthn**                        | ⚠️ Roadmap       | Q3 2025                                       |
+| **Tokens FIDO2/WebAuthn**                        | ⚠️ Roadmap       | Q1 2026                                       |
 | **Passkeys (iCloud/TPM)**                        | ⚠️ Evaluación    | Q1 2026                                       |
 | **Autenticación móvil criptográfica**            | ⚠️ Roadmap       | Q1 2026                                       |
 | **Biometría en dispositivos (Face ID/Touch ID)** | ✅ Implementado  | iOS y Android                                 |
@@ -42,6 +41,8 @@ sidebar_position: 2
 -   Tiempo de acceso: &lt;2 segundos
 -   Sin necesidad de carnet físico
 -   Registro automático de asistencia
+-   **Privacidad por Diseño (Opcional):** Arquitectura **Zero Knowledge (ZelfProof)** donde la biometría del usuario es su llave privada, eliminando bases de datos centrales de rostros y garantizando máxima privacidad.
+-   **Omnicanalidad:** Experiencia fluida en web, móvil y puntos físicos (kioscos/torniquetes).
 -   Anti-spoofing integrado
 
 ### 2. Validación de Identidad en Créditos ✅
@@ -51,6 +52,8 @@ sidebar_position: 2
 
 -   Reducción de costos: >70%
 -   Tiempo de validación: &lt;30 segundos
+-   **Privacidad:** Opción de arquitectura descentralizada que cumple con los más altos estándares de protección de datos (GDPR/Habeas Data).
+-   **Eficiencia:** Reducción de tiempos de validación de minutos a milisegundos.
 -   Disponibilidad 24/7
 -   Trazabilidad completa
 
@@ -132,7 +135,7 @@ Validation Validation      Lookup
 | Métrica                 | Valor              |
 | ----------------------- | ------------------ |
 | **Precisión facial**    | >99%               |
-| **Tiempo de respuesta** | &lt;2 segundos        |
+| **Tiempo de respuesta** | &lt;2 segundos     |
 | **Disponibilidad**      | 99.9%              |
 | **Liveness detection**  | >95% anti-spoofing |
 | **OCR precisión**       | >95%               |
@@ -322,7 +325,7 @@ Validation Validation      Lookup
 | --------------------- | --------------- | ------------------- | -------------------- |
 | **Gimnasios**         | Huella dactilar | Facial sin contacto | +Higiene, +Velocidad |
 | **Créditos**          | BPO manual      | Automatización IA   | -70% costo, 24/7     |
-| **Tiempo validación** | 2-5 minutos     | &lt;30 segundos        | -90% tiempo          |
+| **Tiempo validación** | 2-5 minutos     | &lt;30 segundos     | -90% tiempo          |
 | **Disponibilidad**    | Horario laboral | 24/7/365            | +Cobertura           |
 | **Escalabilidad**     | Limitada        | Ilimitada           | +Crecimiento         |
 | **Trazabilidad**      | Manual          | Automática          | +Auditoría           |

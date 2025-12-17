@@ -45,7 +45,7 @@ sequenceDiagram
 
 **Diagrama Renderizado:**
 
-![Flujo de Registro Inicial - Gimnasio](/img/compensar/gym_registration_flow_1765922181146.png)
+![alt text](image.png)
 
 ### Flujo de Acceso Diario
 
@@ -84,9 +84,7 @@ sequenceDiagram
 
 **Diagrama Renderizado:**
 
-![Flujo de Acceso Diario - Gimnasio](/img/compensar/gym_daily_access_flow_1765922202412.png)
-
----
+## ![alt text](image-1.png)
 
 ## 💳 Caso 2: Validación de Identidad en Créditos
 
@@ -144,7 +142,7 @@ sequenceDiagram
 
 **Diagrama Renderizado:**
 
-![Flujo Completo de Validación - Créditos](/img/compensar/credit_validation_flow_1765922230297.png)
+![alt text](image-2.png)
 
 ### Comparación: BPO Actual vs Verifik Automatizado
 
@@ -182,6 +180,12 @@ graph TB
     style B9 fill:#ccffcc
     style B10 fill:#ccffcc
 ```
+
+![alt text](<Alice and Bob Communication-2025-12-17-184042.png>)
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
 
 ---
 
@@ -226,7 +230,7 @@ flowchart TD
 
 **Diagrama Renderizado:**
 
-![Flujo de Registro de Empleado](/img/compensar/employee_registration_flow_1765922249997.png)
+![alt text](<Alice and Bob Communication-2025-12-17-183936.png>)
 
 ### Flujo de Acceso Diario a Sede
 
@@ -268,7 +272,7 @@ sequenceDiagram
 
 **Diagrama Renderizado:**
 
-![Flujo de Acceso Diario a Sede](/img/compensar/employee_daily_access_flow_1765922267739.png)
+![alt text](<Alice and Bob Communication-2025-12-17-184141.png>)
 
 ---
 
@@ -326,7 +330,78 @@ flowchart LR
 
 **Diagrama Renderizado:**
 
-![Flujo de Trámites Digitales](/img/compensar/digital_procedures_flow_1765922290016.png)
+![alt text](<Alice and Bob Communication-2025-12-17-184314.png>)
+
+---
+
+## 🔒 Flujos de Privacidad Mejorada (ZelfProof)
+
+### SmartEnroll: Creación de Identidad Zero Knowledge
+
+Este flujo muestra cómo se crea una identidad digital segura donde la biometría cifra los datos, sin necesidad de almacenarla centralmente.
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant A as App COMPENSAR
+    participant V as Verifik API
+    participant Z as ZelfProof Service
+    participant I as IPFS Storage
+
+    Note over U,V: Pasos previos: Validación Documental y Liveness (Tradicional)
+
+    A->>V: POST /zelf-proof/encrypt-qr-code
+    Note right of A: Payload: Datos de Identidad + Template Facial
+
+    V->>Z: Cifra datos usando Biometría como Llave
+    Z-->>V: Retorna ZelfProof (Encrypted Blob)
+
+    V->>I: Almacena ZelfProof
+    I-->>V: Retorna Hash IPFS (CID)
+
+    V-->>A: Retorna QR Code (contiene CID + metadata)
+    A->>U: Guarda QR en Billetera Digital
+    Note over U: El usuario es el único dueño de su identidad
+```
+
+![alt text](<Alice and Bob Communication-2025-12-17-185438.png>)
+
+### SmartAccess: Login Privado (Sin Búsqueda 1:N)
+
+Acceso seguro validando criptográficamente que el usuario es quien dice ser, sin buscar en una base de datos masiva.
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant K as Kiosco/Torniquete
+    participant V as Verifik API
+    participant I as IPFS Storage
+    participant Z as ZelfProof Service
+
+    U->>K: Presenta Identificador (QR/Cédula)
+    K->>V: POST /zelf-proof/decrypt
+
+    V->>I: Busca ZelfProof por Identificador
+    I-->>V: Retorna ZelfProof Cifrado
+
+    K->>U: Solicita Biometría Facial
+    U->>K: Captura Rostro
+    K->>V: Envía Datos + Rostro Capturado
+
+    V->>Z: Intenta Descifrar ZelfProof con Rostro
+
+    alt Decripción Exitosa
+        Z-->>V: ✅ Proof Válido (Identidad Recuperada)
+        V-->>K: ✅ Acceso Concedido (Token)
+        K->>U: Abre Torniquete
+    else Fallo de Decripción
+        Z-->>V: ❌ Llave Biométrica Incorrecta
+        V-->>K: ❌ Acceso Denegado
+        K->>U: Intente de nuevo
+    end
+```
+
+![alt text](<Alice and Bob Communication-2025-12-17-185511.png>)
 
 ---
 
@@ -404,6 +479,8 @@ graph TB
     style RUES fill:#e8f5e9
 ```
 
+![alt text](<Alice and Bob Communication-2025-12-17-185547.png>)
+
 ### Flujo de Datos - Validación de Documento
 
 ```mermaid
@@ -429,6 +506,8 @@ graph LR
     style H fill:#f3e5f5
     style I fill:#ffe0b2
 ```
+
+![alt text](<Alice and Bob Communication-2025-12-17-185623.png>)
 
 ---
 
@@ -463,6 +542,8 @@ sequenceDiagram
         V-->>C: 429 Too Many Requests
     end
 ```
+
+![alt text](<Alice and Bob Communication-2025-12-17-185645.png>)
 
 ---
 
@@ -505,6 +586,8 @@ sequenceDiagram
     end
 ```
 
+![alt text](<Alice and Bob Communication-2025-12-17-185710.png>)
+
 ---
 
 ## 🎯 Decisiones de Validación
@@ -539,6 +622,8 @@ graph TD
     style Success fill:#ccffcc
 ```
 
+![alt text](<Alice and Bob Communication-2025-12-17-185745.png>)
+
 ### Árbol de Decisión - Validación Biométrica
 
 ```mermaid
@@ -568,6 +653,8 @@ graph TD
     style Retry fill:#fff4cc
     style Success fill:#ccffcc
 ```
+
+![alt text](<Alice and Bob Communication-2025-12-17-185808.png>)
 
 ---
 
@@ -621,6 +708,50 @@ graph TB
     style A3 fill:#ffcccc
 ```
 
+graph TB
+subgraph "Métricas de Rendimiento"
+M1[Tiempo de Respuesta<br/>&lt;2 segundos]
+M2[Disponibilidad<br/>99.9%]
+M3[Tasa de Éxito<br/>>95%]
+end
+
+    subgraph "Métricas de Uso"
+        U1[Validaciones/día]
+        U2[Usuarios activos]
+        U3[Picos de uso]
+    end
+
+    subgraph "Métricas de Calidad"
+        Q1[Precisión facial<br/>>99%]
+        Q2[Liveness detection<br/>>95%]
+        Q3[OCR accuracy<br/>>95%]
+    end
+
+    subgraph "Alertas"
+        A1[Tasa de error &gt;1%]
+        A2[Tiempo respuesta >3s]
+        A3[Disponibilidad &lt;99%]
+    end
+
+    M1 --> Dashboard[Dashboard COMPENSAR]
+    M2 --> Dashboard
+    M3 --> Dashboard
+    U1 --> Dashboard
+    U2 --> Dashboard
+    U3 --> Dashboard
+    Q1 --> Dashboard
+    Q2 --> Dashboard
+    Q3 --> Dashboard
+
+    Dashboard --> A1
+    Dashboard --> A2
+    Dashboard --> A3
+
+    style Dashboard fill:#e1f5ff
+    style A1 fill:#ffcccc
+    style A2 fill:#ffcccc
+    style A3 fill:#ffcccc
+
 ---
 
 ## 🔄 Plan de Implementación
@@ -657,5 +788,3 @@ gantt
 
 _Diagramas preparados por Verifik - Diciembre 2024_  
 _Versión 1.0_
-
-**Nota:** Estos diagramas están en formato Mermaid y se renderizan automáticamente en GitHub, GitLab, y la mayoría de visores de Markdown modernos.

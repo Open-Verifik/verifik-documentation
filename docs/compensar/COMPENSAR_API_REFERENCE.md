@@ -5,7 +5,6 @@ sidebar_label: 🔌 APIs
 sidebar_position: 5
 ---
 
-
 ---
 
 ## 🔑 Autenticación
@@ -1133,7 +1132,7 @@ def send_sms_otp(phone):
 
 ### cURL
 
-```bash
+````bash
 # Ejemplo 1: Validar documento
 curl -X POST https://verifik.co/v2/document-validations \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -1164,11 +1163,118 @@ curl -X POST https://verifik.co/v2/biometric-validations/validate \
     "searchMinScore": 0.85,
     "searchMode": "ACCURATE"
   }'
+
+---
+
+## 🔐 ZelfProof (Zero Knowledge) API
+
+Endpoints para la gestión de pruebas de identidad cifradas y privadas.
+
+### Encriptar Identidad (Enrollment)
+
+Crea una prueba ZK cifrada usando la biometría facial del usuario como llave.
+
+`POST /zelf-proof/encrypt-qr-code`
+
+**Request Body:**
+
+```json
+{
+  "documentData": {
+    "documentType": "CC",
+    "documentNumber": "1234567890",
+    "fullName": "JUAN PEREZ"
+  },
+  "faceImage": "data:image/jpeg;base64,/9j/4AAQSkZJRg...",
+  "projectFlow": "flow_123"
+}
+````
+
+**Response:**
+
+```json
+{
+	"status": "success",
+	"data": {
+		"qrCode": "data:image/png;base64,iVBORw0KGgo...",
+		"ipfsHash": "QmXyZ...",
+		"encryptionMetadata": {
+			"algorithm": "AES-256-GCM",
+			"keyDerivedFrom": "face_template"
+		}
+	}
+}
+```
+
+### Desencriptar Identidad (Login)
+
+Intenta descifrar un ZelfProof usando una captura facial reciente. No requiere base de datos central.
+
+`POST /zelf-proof/decrypt`
+
+**Request Body:**
+
+```json
+{
+	"ipfsHash": "QmXyZ...",
+	"faceImage": "data:image/jpeg;base64,/9j/4AAQSkZJRg..."
+}
+```
+
+**Response:**
+
+```json
+{
+	"status": "success",
+	"data": {
+		"decrypted": true,
+		"identity": {
+			"documentNumber": "1234567890",
+			"fullName": "JUAN PEREZ"
+		},
+		"matchScore": 0.92
+	}
+}
 ```
 
 ---
 
-## 🚨 Manejo de Errores
+## 🛡️ Document Liveness API
+
+Validación de presencia física del documento para prevenir ataques de presentación.
+
+### Detectar Ataques (Screen/Print/Fake)
+
+`POST /document-liveness`
+
+**Request Body:**
+
+```json
+{
+	"image": "data:image/jpeg;base64,/9j/4AAQSkZJRg...",
+	"checkType": "FULL_CHECK" // SCREEN_REPLAY, PRINTED_COPY, etc.
+}
+```
+
+**Response:**
+
+```json
+{
+	"status": "success",
+	"data": {
+		"isLive": true,
+		"checks": {
+			"screenReplay": { "passed": true, "score": 0.05 }, // Score bajo es bueno (baja prob de ataque)
+			"printedCopy": { "passed": true, "score": 0.1 },
+			"portraitSubstitution": { "passed": true, "score": 0.02 }
+		}
+	}
+}
+```
+
+---
+
+## 🔢 Common Error Codes
 
 ### Códigos de Estado HTTP
 
