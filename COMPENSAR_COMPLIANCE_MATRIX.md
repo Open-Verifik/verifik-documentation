@@ -580,5 +580,5 @@
 
 ---
 
-_Documento preparado por Verifik - Diciembre 2024_  
+_Documento preparado por Verifik - Diciembre 2025_  
 _Para más detalles, ver: COMPENSAR_PROPOSAL.md y COMPENSAR_EXECUTIVE_SUMMARY.md_

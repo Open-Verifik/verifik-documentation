@@ -21,13 +21,13 @@ sidebar_position: 2
 | **OTP por correo**                               | ✅ Implementado  | Mailgun, templates personalizables            |
 | **OTP por aplicaciones**                         | ✅ Implementado  | Implementado                                  |
 | **Magic link**                                   | ✅ Implementado  | Enlaces únicos de un solo uso                 |
-| **Tokens FIDO2/WebAuthn**                        | ⚠️ Roadmap       | Q1 2026                                       |
-| **Passkeys (iCloud/TPM)**                        | ⚠️ Evaluación    | Q1 2026                                       |
-| **Autenticación móvil criptográfica**            | ⚠️ Roadmap       | Q1 2026                                       |
+| **Tokens FIDO2/WebAuthn**                        | ✅ Implementado  | Disponible Inmediatamente                     |
+| **Passkeys (iCloud/TPM)**                        | ✅ Implementado  | Disponible Inmediatamente                     |
+| **Autenticación móvil criptográfica**            | ✅ Implementado  | Con ZelfProofs (Zero Knowledge)               |
 | **Biometría en dispositivos (Face ID/Touch ID)** | ✅ Implementado  | iOS y Android                                 |
 | **Biometría con respaldo criptográfico**         | ✅ Implementado  | Con Zero Knowledge Face Proofs                |
 
-**Cobertura Actual: 60% Implementado | 40% En Roadmap 2026**
+**Cobertura Actual: 95% Implementado | 5% En Roadmap 2026**
 
 ---
 
@@ -242,6 +242,15 @@ Validation Validation      Lookup
 ✅ **Seguridad** con cifrado end-to-end  
 ✅ **Derechos del titular** (acceso, corrección, eliminación)
 
+### Zero Knowledge Face Proofs (Privacidad Superior)
+
+Elevemos el estándar de seguridad con nuestra tecnología única:
+
+-   **Privacidad Total:** Verificación de identidad sin almacenar ni transmitir datos biométricos crudos.
+-   **Cero Conocimiento:** Pruebas criptográficas que validan la identidad sin revelar la información subyacente.
+-   **Almacenamiento Descentralizado:** Uso de IPFS para eliminar puntos únicos de falla.
+-   **Inmutabilidad:** Integridad garantizada criptográficamente contra falsificaciones.
+
 ### Controles de Seguridad
 
 -   Cifrado AES-256 en reposo
@@ -315,15 +324,15 @@ Validation Validation      Lookup
 
 ## 📊 Comparativa con Solución Actual
 
-| Aspecto               | Solución Actual | Solución Verifik    | Mejora               |
-| --------------------- | --------------- | ------------------- | -------------------- |
-| **Gimnasios**         | Huella dactilar | Facial sin contacto | +Higiene, +Velocidad |
-| **Créditos**          | BPO manual      | Automatización IA   | -70% costo, 24/7     |
-| **Tiempo validación** | 2-5 minutos     | &lt;30 segundos     | -90% tiempo          |
-| **Disponibilidad**    | Horario laboral | 24/7/365            | +Cobertura           |
-| **Escalabilidad**     | Limitada        | Ilimitada           | +Crecimiento         |
-| **Trazabilidad**      | Manual          | Automática          | +Auditoría           |
-| **Cumplimiento**      | Parcial         | 100% Ley 1581       | +Seguridad           |
+| Aspecto                | Solución Actual | Solución Verifik    | Mejora               |
+| ---------------------- | --------------- | ------------------- | -------------------- |
+| **Gimnasios**          | Huella dactilar | Facial sin contacto | +Higiene, +Velocidad |
+| **Créditos/Prestamos** | BPO manual      | Automatización IA   | -70% costo, 24/7     |
+| **Tiempo validación**  | 2-5 minutos     | &lt;30 segundos     | -90% tiempo          |
+| **Disponibilidad**     | Horario laboral | 24/7/365            | +Cobertura           |
+| **Escalabilidad**      | Limitada        | Ilimitada           | +Crecimiento         |
+| **Trazabilidad**       | Manual          | Automática          | +Auditoría           |
+| **Cumplimiento**       | Parcial         | 100% Ley 1581       | +Seguridad           |
 
 ---
 
@@ -356,8 +365,8 @@ Validation Validation      Lookup
 
 Verifik ofrece una **solución integral, probada y escalable** que:
 
-✅ Cumple con **60% de requerimientos inmediatos** de COMPENSAR  
-✅ Roadmap claro para **40% restante en 2025**  
+✅ Cumple con **95% de requerimientos inmediatos** de COMPENSAR  
+✅ Roadmap claro para **5% restante en 2026**  
 ✅ **30M+ validaciones** en producción demuestran confiabilidad  
 ✅ **Reducción de costos >30%** vs soluciones actuales  
 ✅ **Cumplimiento 100%** Ley 1581 y normativas internacionales  
@@ -379,5 +388,5 @@ Verifik ofrece una **solución integral, probada y escalable** que:
 
 ---
 
-_Documento preparado por Verifik - Diciembre 2024_  
+_Documento preparado por Verifik - Diciembre 2025_  
 _Para más detalles, ver: COMPENSAR_PROPOSAL.md_

@@ -1167,5 +1167,5 @@ Verifik ofrece una **solución integral, probada y escalable** que cumple con to
 
 ---
 
-_Documento preparado por Verifik - Diciembre 2024_  
+_Documento preparado por Verifik - Diciembre 2025_  
 _Versión 1.0_

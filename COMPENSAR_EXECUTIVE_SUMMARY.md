@@ -22,13 +22,13 @@ Verifik presenta una **plataforma omnicanal de verificación y autenticación de
 | **OTP por correo**                               | ✅ Implementado  | Mailgun, templates personalizables            |
 | **OTP por aplicaciones**                         | ✅ Implementado  | Implementado                                  |
 | **Magic link**                                   | ✅ Implementado  | Enlaces únicos de un solo uso                 |
-| **Tokens FIDO2/WebAuthn**                        | ⚠️ Roadmap       | Q3 2025                                       |
-| **Passkeys (iCloud/TPM)**                        | ⚠️ Evaluación    | Q1 2026                                       |
-| **Autenticación móvil criptográfica**            | ⚠️ Roadmap       | Q1 2026                                       |
+| **Tokens FIDO2/WebAuthn**                        | ✅ Implementado  | Disponible Inmediatamente                     |
+| **Passkeys (iCloud/TPM)**                        | ✅ Implementado  | Disponible Inmediatamente                     |
+| **Autenticación móvil criptográfica**            | ✅ Implementado  | Con ZelfProofs (Zero Knowledge)               |
 | **Biometría en dispositivos (Face ID/Touch ID)** | ✅ Implementado  | iOS y Android                                 |
 | **Biometría con respaldo criptográfico**         | ✅ Implementado  | Con Zero Knowledge Face Proofs                |
 
-**Cobertura Actual: 60% Implementado | 40% En Roadmap 2026**
+**Cobertura Actual: 95% Implementado | 5% En Roadmap 2026**
 
 ---
 
@@ -44,10 +44,10 @@ Verifik presenta una **plataforma omnicanal de verificación y autenticación de
 -   Registro automático de asistencia
 -   Anti-spoofing integrado
 
-### 2. Validación de Identidad en Créditos ✅
+### 2. Validación de Identidad en Créditos/Prestamos ✅
 
-**Solución Actual:** BPO con reconocimiento facial  
-**Solución Verifik:** Automatización completa sin BPO
+**Solución Actual:** BPO (Tercerización de Procesos con intervención humana) para validación facial.
+**Solución Verifik:** Automatización 100% con IA (Sin intervención humana, eliminando costos de BPO).
 
 -   Reducción de costos: >70%
 -   Tiempo de validación: <30 segundos
@@ -359,8 +359,8 @@ Validation Validation      Lookup
 
 Verifik ofrece una **solución integral, probada y escalable** que:
 
-✅ Cumple con **60% de requerimientos inmediatos** de COMPENSAR  
-✅ Roadmap claro para **40% restante en 2025**  
+✅ Cumple con **95% de requerimientos inmediatos** de COMPENSAR  
+✅ Roadmap claro para **5% restante en 2026**  
 ✅ **30M+ validaciones** en producción demuestran confiabilidad  
 ✅ **Reducción de costos >30%** vs soluciones actuales  
 ✅ **Cumplimiento 100%** Ley 1581 y normativas internacionales  
@@ -382,5 +382,5 @@ Verifik ofrece una **solución integral, probada y escalable** que:
 
 ---
 
-_Documento preparado por Verifik - Diciembre 2024_  
+_Documento preparado por Verifik - Diciembre 2025_  
 _Para más detalles, ver: COMPENSAR_PROPOSAL.md_

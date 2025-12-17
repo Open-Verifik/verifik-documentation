@@ -11,7 +11,7 @@ sidebar_position: 4
 | **Cumplimiento Normativo** | 100% ✅ | Ley 1581, GDPR, LGPD |
 | **Infraestructura** | 100% ✅ | Cloud, escalable, 99.9% SLA |
 
-**Cumplimiento Global: 85% Inmediato + 15% Roadmap 2025**
+**Cumplimiento Global: 95% Inmediato + 5% Roadmap 2026**
 
 ---
 
@@ -104,7 +104,7 @@ sidebar_position: 4
 **Casos de Uso COMPENSAR:**
 
 -   ✅ Acceso a gimnasios (implementado actualmente con huella)
--   ✅ Validación de identidad en créditos (BPO actual)
+-   ✅ Validación de identidad para prestamos/créditos (BPO actual)
 -   Control de acceso a sedes corporativas
 -   Autenticación en portales digitales
 
@@ -307,14 +307,15 @@ sidebar_position: 4
 
 > Aplicaciones como Google Authenticator o Authy generan códigos temporales que el usuario debe ingresar para autenticarse.
 
-**Estado:** 🔄 Planificado - Q1 2026
+**Estado:** ✅ Disponible Inmediatamente
 
-**Capacidades Planificadas:**
+**Capacidades Implementadas:**
 
 -   TOTP (Time-based OTP) estándar
--   Compatible con Google Authenticator, Authy, etc.
+-   Compatible con Google Authenticator, Authy, Microsoft Authenticator
 -   QR code para registro
 -   Backup codes
+-   Soporte completo integrado
 
 **Casos de Uso COMPENSAR:**
 
@@ -330,88 +331,62 @@ sidebar_position: 4
 
 > Dispositivos físicos o software que permiten autenticación sin contraseña, usando criptografía de clave pública. Son altamente seguros.
 
-**Estado:** 🔄 Roadmap - Q1 2026
+**Estado:** ✅ Disponible Inmediatamente
 
-**Capacidades Planificadas:**
+**Capacidades:**
 
 -   Soporte para llaves de seguridad físicas (YubiKey, etc.)
 -   WebAuthn estándar
 -   Autenticación sin contraseña
 -   Resistente a phishing
 
-**Casos de Uso COMPENSAR:**
-
--   Acceso a sistemas críticos
--   Autenticación de administradores
--   Cumplimiento de seguridad avanzada
-
 ---
 
-#### 11. Passkeys Almacenadas en Nube (iCloud Keychain)
+#### 11. Passkeys (Cloud y TPM)
 
 **Requerimiento COMPENSAR:**
 
-> Credenciales criptográficas guardadas en servicios en la nube, que permiten autenticación sin contraseña desde múltiples dispositivos.
+> Credenciales criptográficas guardadas en servicios en la nube (iCloud/Google) o hardware (TPM), que permiten autenticación sin contraseña.
 
-**Estado:** 🔄 En evaluación - Q1 2026
+**Estado:** ✅ Disponible Inmediatamente
 
-**Capacidades Planificadas:**
+**Capacidades:**
 
--   Integración con iCloud Keychain
--   Integración con Google Password Manager
--   Sincronización multi-dispositivo
--   Autenticación sin contraseña
-
----
-
-#### 11. Passkeys Almacenadas en Hardware Local (TPM)
-
-**Requerimiento COMPENSAR:**
-
-> Las claves se guardan en el hardware del dispositivo (como el Trusted Platform Module), lo que mejora la seguridad al evitar el acceso remoto.
-
-**Estado:** 🔄 En evaluación - Q1 2026
-
-**Capacidades Planificadas:**
-
--   Integración con TPM
--   Almacenamiento seguro en hardware
--   Resistente a extracción de claves
--   Cumplimiento de estándares de seguridad
+-   Integración con iCloud Keychain / Google Password Manager
+-   Soporte de TPM (Trusted Platform Module)
+-   Autenticación sin contraseña sincronizada
 
 ---
 
-#### 12. Autenticación Móvil con Desafío Criptográfico
+#### 12. Autenticación Móvil con Desafío Criptográfico (ZelfProofs)
 
 **Requerimiento COMPENSAR:**
 
 > El servidor envía un desafío que el dispositivo móvil firma con una clave privada, confirmando la identidad del usuario sin compartir la clave.
 
-**Estado:** 🔄 Roadmap - Q1 2026
+**Estado:** ✅ Disponible Inmediatamente (Vía ZelfProofs)
 
-**Capacidades Planificadas:**
+**Solución Verifik (ZelfProofs):**
 
--   Firma digital con claves privadas
--   Desafío-respuesta criptográfico
--   Integración con PKI
--   Resistente a replay attacks
+-   **Zero Knowledge Face Proofs**: Su rostro es la llave privada.
+-   Firma digital descentralizada.
+-   Privacidad absoluta: Sin base de datos biométrica central.
 
 ---
 
-#### 14. Biometría con Respaldo Criptográfico (WebAuthn, FIDO2)
+#### 14. Biometría con Respaldo Criptográfico
 
 **Requerimiento COMPENSAR:**
 
 > Combina biometría con claves criptográficas para autenticación segura, sin compartir datos biométricos con el servidor.
 
-**Estado:** 🔄 Planificado - Q1 2026
+**Estado:** ✅ Disponible Inmediatamente (ZelfProofs)
 
-**Capacidades Planificadas:**
+**Capacidades:**
 
--   Biometría + FIDO2
--   Datos biométricos nunca salen del dispositivo
--   Claves criptográficas para autenticación
--   Cumplimiento de privacidad máxima
+-   Biometría Zero Knowledge.
+-   Los datos biométricos nunca salen del dispositivo (se usan para desencriptar la prueba localmente).
+-   Máxima privacidad y seguridad.
 
 ---
 
@@ -459,7 +434,7 @@ sidebar_position: 4
 | **Mantenimiento** | Limpieza constante        | Mínimo                | -80% mantenimiento |
 | **Escalabilidad** | Limitada                  | Ilimitada             | +Crecimiento       |
 
-### Caso 2: Validación de Identidad en Créditos
+### Caso 2: Validación de Identidad para Prestamos / Créditos
 
 | Aspecto            | Solución Actual COMPENSAR | Solución Verifik  | Mejora        |
 | ------------------ | ------------------------- | ----------------- | ------------- |
@@ -538,9 +513,9 @@ sidebar_position: 4
 
 ## 💡 Conclusión y Recomendación
 
-### Cumplimiento Actual: 85%
+### Cumplimiento Actual: 95%
 
-**Implementado (60%):**
+**Implementado (95%):**
 
 -   ✅ Validación de documentos
 -   ✅ Biometría facial + liveness
@@ -548,16 +523,14 @@ sidebar_position: 4
 -   ✅ OTP (SMS, Email, WhatsApp)
 -   ✅ Magic link
 -   ✅ Biometría de dispositivo
+-   ✅ TOTP
+-   ✅ FIDO2/WebAuthn
+-   ✅ Passkeys
+-   ✅ Autenticación criptográfica (ZelfProofs)
 
-**Roadmap 2026 (25%):**
+**Roadmap 2026 (5%):**
 
--   🔄 TOTP
--   🔄 FIDO2/WebAuthn
--   🔄 Passkeys
 -   🔄 Análisis comportamental
--   🔄 Autenticación criptográfica
-
-**No Aplicable (15%):**
 
 -   Funcionalidades muy específicas o en evaluación de mercado
 
@@ -580,5 +553,5 @@ sidebar_position: 4
 
 ---
 
-_Documento preparado por Verifik - Diciembre 2024_  
+_Documento preparado por Verifik - Diciembre 2025_  
 _Para más detalles, ver: COMPENSAR_PROPOSAL.md y COMPENSAR_EXECUTIVE_SUMMARY.md_

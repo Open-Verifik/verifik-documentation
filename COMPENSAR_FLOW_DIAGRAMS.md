@@ -632,7 +632,7 @@ gantt
 
 ---
 
-_Diagramas preparados por Verifik - Diciembre 2024_  
+_Diagramas preparados por Verifik - Diciembre 2025_  
 _Versión 1.0_
 
 **Nota:** Estos diagramas están en formato Mermaid y se renderizan automáticamente en GitHub, GitLab, y la mayoría de visores de Markdown modernos.

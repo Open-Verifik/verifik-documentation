@@ -304,7 +304,7 @@ sidebar_position: 1
 
 | Versión | Fecha          | Cambios                         |
 | ------- | -------------- | ------------------------------- |
-| 1.0     | Diciembre 2024 | Versión inicial de la propuesta |
+| 1.0     | Diciembre 2025 | Versión inicial de la propuesta |
 
 ---
 
@@ -316,4 +316,4 @@ Este documento y todos los documentos relacionados son **confidenciales** y de p
 
 ---
 
-_Documentos preparados por Verifik - Diciembre 2024_
+_Documentos preparados por Verifik - Diciembre 2025_

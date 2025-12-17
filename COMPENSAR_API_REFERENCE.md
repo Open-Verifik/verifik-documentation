@@ -1265,5 +1265,5 @@ X-RateLimit-Reset: 1702742400
 
 ---
 
-_Documento preparado por Verifik - Diciembre 2024_  
+_Documento preparado por Verifik - Diciembre 2025_  
 _Versión 1.0_

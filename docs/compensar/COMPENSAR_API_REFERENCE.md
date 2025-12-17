@@ -37,12 +37,12 @@ Contactar a: soporte@verifik.co
 
 #### APIs Necesarias
 
-| API                      | Endpoint                               | Uso                                          |
-| ------------------------ | -------------------------------------- | -------------------------------------------- |
-| **Document Validation**  | `POST /document-validations`           | Registro inicial - validar documento         |
-| **Citizen Lookup**       | `POST /colombian-citizens`             | Registro inicial - validar con Registraduría |
-| **Biometric Validation** | `POST /biometric-validations`          | Registro inicial - crear sesión liveness     |
-| **Biometric Validation** | `POST /biometric-validations/validate` | Acceso diario - reconocimiento facial        |
+| API                      | Endpoint                                  | Uso                                          |
+| ------------------------ | ----------------------------------------- | -------------------------------------------- |
+| **Document Validation**  | `POST /v2/document-validations`           | Registro inicial - validar documento         |
+| **Citizen Lookup**       | `POST /v2/colombian-citizens`             | Registro inicial - validar con Registraduría |
+| **Biometric Validation** | `POST /v2/biometric-validations`          | Registro inicial - crear sesión liveness     |
+| **Biometric Validation** | `POST /v2/biometric-validations/validate` | Acceso diario - reconocimiento facial        |
 
 ---
 
@@ -59,12 +59,12 @@ Contactar a: soporte@verifik.co
 
 #### APIs Necesarias
 
-| API                      | Endpoint                      | Uso                          |
-| ------------------------ | ----------------------------- | ---------------------------- |
-| **Document Validation**  | `POST /document-validations`  | OCR + extracción de datos    |
-| **Citizen Lookup**       | `POST /colombian-citizens`    | Validación con Registraduría |
-| **Biometric Validation** | `POST /biometric-validations` | Liveness + facial match      |
-| **Webhooks**             | `POST /webhooks`              | Configurar notificaciones    |
+| API                      | Endpoint                         | Uso                          |
+| ------------------------ | -------------------------------- | ---------------------------- |
+| **Document Validation**  | `POST /v2/document-validations`  | OCR + extracción de datos    |
+| **Citizen Lookup**       | `POST /v2/colombian-citizens`    | Validación con Registraduría |
+| **Biometric Validation** | `POST /v2/biometric-validations` | Liveness + facial match      |
+| **Webhooks**             | `POST /v2/webhooks`              | Configurar notificaciones    |
 
 ---
 
@@ -80,12 +80,12 @@ Contactar a: soporte@verifik.co
 
 #### APIs Necesarias
 
-| API                      | Endpoint                      | Uso                           |
-| ------------------------ | ----------------------------- | ----------------------------- |
-| **Document Validation**  | `POST /document-validations`  | Validar documento de empleado |
-| **Biometric Validation** | `POST /biometric-validations` | Registro facial + acceso      |
-| **Email Validation**     | `POST /email-validations`     | Validar email corporativo     |
-| **Phone Validation**     | `POST /phone-validations`     | Validar teléfono              |
+| API                      | Endpoint                         | Uso                           |
+| ------------------------ | -------------------------------- | ----------------------------- |
+| **Document Validation**  | `POST /v2/document-validations`  | Validar documento de empleado |
+| **Biometric Validation** | `POST /v2/biometric-validations` | Registro facial + acceso      |
+| **Email Validation**     | `POST /v2/email-validations`     | Validar email corporativo     |
+| **Phone Validation**     | `POST /v2/phone-validations`     | Validar teléfono              |
 
 ---
 
@@ -102,13 +102,13 @@ Contactar a: soporte@verifik.co
 
 #### APIs Necesarias
 
-| API                      | Endpoint                      | Uso                            |
-| ------------------------ | ----------------------------- | ------------------------------ |
-| **Document Validation**  | `POST /document-validations`  | Validar documento              |
-| **Email Validation**     | `POST /email-validations`     | Enviar y validar OTP por email |
-| **Phone Validation**     | `POST /phone-validations`     | Enviar y validar OTP por SMS   |
-| **WhatsApp Validation**  | `POST /whatsapp/send-otp`     | Enviar OTP por WhatsApp        |
-| **Biometric Validation** | `POST /biometric-validations` | Validación facial              |
+| API                      | Endpoint                         | Uso                            |
+| ------------------------ | -------------------------------- | ------------------------------ |
+| **Document Validation**  | `POST /v2/document-validations`  | Validar documento              |
+| **Email Validation**     | `POST /v2/email-validations`     | Enviar y validar OTP por email |
+| **Phone Validation**     | `POST /v2/phone-validations`     | Enviar y validar OTP por SMS   |
+| **WhatsApp Validation**  | `POST /v2/whatsapp/send-otp`     | Enviar OTP por WhatsApp        |
+| **Biometric Validation** | `POST /v2/biometric-validations` | Validación facial              |
 
 ---
 
@@ -116,7 +116,7 @@ Contactar a: soporte@verifik.co
 
 ### 1. Document Validation (OCR + Validación)
 
-**Endpoint:** `POST /document-validations`  
+**Endpoint:** `POST /v2/document-validations`  
 **Documentación:** https://docs.verifik.co/api/document-validations
 
 **Descripción:**  
@@ -175,7 +175,7 @@ Extrae datos de documentos de identidad usando OCR con IA (Google Gemini) y vali
 
 ### 2. Document Validation - Name Validation
 
-**Endpoint:** `POST /document-validations/:id/name-validation`  
+**Endpoint:** `POST /v2/document-validations/:id/name-validation`  
 **Documentación:** https://docs.verifik.co/api/document-validations/name-validation
 
 **Descripción:**  
@@ -223,7 +223,7 @@ Valida los datos extraídos del documento contra fuentes oficiales (Registradur�
 
 ### 3. Colombian Citizens (Registraduría)
 
-**Endpoint:** `POST /colombian-citizens`  
+**Endpoint:** `POST /v2/colombian-citizens`  
 **Documentación:** https://docs.verifik.co/api/colombian-citizens
 
 **Descripción:**  
@@ -267,9 +267,9 @@ Consulta la base de datos de la Registraduría Nacional de Colombia para validar
 
 **Endpoints:**
 
--   `POST /colombian-citizens/ce` - Cédula de Extranjería
--   `POST /colombian-citizens/pep` - Permiso Especial de Permanencia
--   `POST /colombian-citizens/ppt` - Permiso por Protección Temporal
+-   `POST /v2/colombian-citizens/ce` - Cédula de Extranjería
+-   `POST /v2/colombian-citizens/pep` - Permiso Especial de Permanencia
+-   `POST /v2/colombian-citizens/ppt` - Permiso por Protección Temporal
 
 **Documentación:** https://docs.verifik.co/api/colombian-citizens/foreigners
 
@@ -305,13 +305,13 @@ Consulta la base de datos de la Registraduría Nacional de Colombia para validar
 
 **Endpoints:**
 
--   `POST /brazil-citizens` - Brasil (CPF)
--   `POST /peruvian-citizens` - Perú (DNI)
--   `POST /chilean-citizens` - Chile (RUN)
--   `POST /argentina-citizens` - Argentina (DNI)
--   `POST /mexican-citizens` - México (CURP)
--   `POST /ecuadorian-citizens` - Ecuador (CC)
--   `POST /panama-citizens` - Panamá (CC)
+-   `POST /v2/brazil-citizens` - Brasil (CPF)
+-   `POST /v2/peruvian-citizens` - Perú (DNI)
+-   `POST /v2/chilean-citizens` - Chile (RUN)
+-   `POST /v2/argentina-citizens` - Argentina (DNI)
+-   `POST /v2/mexican-citizens` - México (CURP)
+-   `POST /v2/ecuadorian-citizens` - Ecuador (CC)
+-   `POST /v2/panama-citizens` - Panamá (CC)
 -   Y 11+ países más
 
 **Documentación:** https://docs.verifik.co/api/citizen-lookups
@@ -332,7 +332,7 @@ Consulta la base de datos de la Registraduría Nacional de Colombia para validar
 
 ### 6. Biometric Validation - Create Session
 
-**Endpoint:** `POST /biometric-validations`  
+**Endpoint:** `POST /v2/biometric-validations`  
 **Documentación:** https://docs.verifik.co/api/biometric-validations
 
 **Descripción:**  
@@ -380,7 +380,7 @@ Crea una sesión de validación biométrica con liveness detection.
 
 ### 7. Biometric Validation - Validate
 
-**Endpoint:** `POST /biometric-validations/validate`  
+**Endpoint:** `POST /v2/biometric-validations/validate`  
 **Documentación:** https://docs.verifik.co/api/biometric-validations/validate
 
 **Descripción:**  
@@ -434,7 +434,7 @@ Valida una imagen facial contra una colección (1:1 o 1:N) con liveness detectio
 
 ### 8. Face Verification (1:1)
 
-**Endpoint:** `POST /face-verification`  
+**Endpoint:** `POST /v2/face-verification`  
 **Documentación:** https://docs.verifik.co/api/face-verification
 
 **Descripción:**  
@@ -476,7 +476,7 @@ Compara dos imágenes faciales para verificar si pertenecen a la misma persona.
 
 ### 9. Email Validation - Send OTP
 
-**Endpoint:** `POST /email-validations`  
+**Endpoint:** `POST /v2/email-validations`  
 **Documentación:** https://docs.verifik.co/api/email-validations
 
 **Descripción:**  
@@ -515,7 +515,7 @@ Envía un código OTP al email del usuario para validación.
 
 ### 10. Email Validation - Verify OTP
 
-**Endpoint:** `POST /email-validations/:id/verify`  
+**Endpoint:** `POST /v2/email-validations/:id/verify`  
 **Documentación:** https://docs.verifik.co/api/email-validations/verify
 
 **Request:**
@@ -544,7 +544,7 @@ Envía un código OTP al email del usuario para validación.
 
 ### 11. Phone Validation - Send OTP (SMS)
 
-**Endpoint:** `POST /phone-validations`  
+**Endpoint:** `POST /v2/phone-validations`  
 **Documentación:** https://docs.verifik.co/api/phone-validations
 
 **Descripción:**  
@@ -584,7 +584,7 @@ Envía un código OTP por SMS al teléfono del usuario.
 
 ### 12. Phone Validation - Verify OTP
 
-**Endpoint:** `POST /phone-validations/:id/verify`  
+**Endpoint:** `POST /v2/phone-validations/:id/verify`  
 **Documentación:** https://docs.verifik.co/api/phone-validations/verify
 
 **Request:**
@@ -611,7 +611,7 @@ Envía un código OTP por SMS al teléfono del usuario.
 
 ### 13. WhatsApp Validation - Send OTP
 
-**Endpoint:** `POST /whatsapp/send-otp`  
+**Endpoint:** `POST /v2/whatsapp/send-otp`  
 **Documentación:** https://docs.verifik.co/api/whatsapp
 
 **Descripción:**  
@@ -653,7 +653,7 @@ Envía un código OTP por WhatsApp Business API.
 
 ### 14. RUNT - Vehicle Lookup
 
-**Endpoint:** `POST /runt`  
+**Endpoint:** `POST /v2/runt`  
 **Documentación:** https://docs.verifik.co/api/runt
 
 **Descripción:**  
@@ -690,7 +690,7 @@ Consulta información de vehículos en el RUNT (Registro Único Nacional de Trá
 
 ### 15. Fasecolda - Stolen Vehicles
 
-**Endpoint:** `POST /fasecolda`  
+**Endpoint:** `POST /v2/fasecolda`  
 **Documentación:** https://docs.verifik.co/api/fasecolda
 
 **Descripción:**  
@@ -721,7 +721,7 @@ Consulta si un vehículo está reportado como robado en Fasecolda.
 
 ### 16. RUES - Company Lookup
 
-**Endpoint:** `POST /rues`  
+**Endpoint:** `POST /v2/rues`  
 **Documentación:** https://docs.verifik.co/api/rues
 
 **Descripción:**  
@@ -755,7 +755,7 @@ Consulta información de empresas en el RUES (Registro Único Empresarial y Soci
 
 ### 17. Contraloría - Fiscal Background
 
-**Endpoint:** `POST /contraloria`  
+**Endpoint:** `POST /v2/contraloria`  
 **Documentación:** https://docs.verifik.co/api/contraloria
 
 **Request:**
@@ -782,7 +782,7 @@ Consulta información de empresas en el RUES (Registro Único Empresarial y Soci
 
 ### 18. INPEC - Criminal Background
 
-**Endpoint:** `POST /inpec`  
+**Endpoint:** `POST /v2/inpec`  
 **Documentación:** https://docs.verifik.co/api/inpec
 
 **Request:**
@@ -809,7 +809,7 @@ Consulta información de empresas en el RUES (Registro Único Empresarial y Soci
 
 ### 19. Procuraduría - Disciplinary Background
 
-**Endpoint:** `POST /procuraduria`  
+**Endpoint:** `POST /v2/procuraduria`  
 **Documentación:** https://docs.verifik.co/api/procuraduria
 
 **Request:**
@@ -838,7 +838,7 @@ Consulta información de empresas en el RUES (Registro Único Empresarial y Soci
 
 ### 20. Configure Webhook
 
-**Endpoint:** `POST /webhooks`  
+**Endpoint:** `POST /v2/webhooks`  
 **Documentación:** https://docs.verifik.co/api/webhooks
 
 **Descripción:**  
@@ -898,59 +898,59 @@ Configura webhooks para recibir notificaciones de eventos.
 
 ### Validación de Documentos (2 APIs)
 
-1. ✅ `POST /document-validations` - OCR + extracción
-2. ✅ `POST /document-validations/:id/name-validation` - Validación oficial
+1. ✅ `POST /v2/document-validations` - OCR + extracción
+2. ✅ `POST /v2/document-validations/:id/name-validation` - Validación oficial
 
 ### Validación de Identidad - Colombia (4 APIs)
 
-3. ✅ `POST /colombian-citizens` - Registraduría (CC)
-4. ✅ `POST /colombian-citizens/ce` - Migración (CE)
-5. ✅ `POST /colombian-citizens/pep` - Migración (PEP)
-6. ✅ `POST /colombian-citizens/ppt` - Migración (PPT)
+3. ✅ `POST /v2/colombian-citizens` - Registraduría (CC)
+4. ✅ `POST /v2/colombian-citizens/ce` - Migración (CE)
+5. ✅ `POST /v2/colombian-citizens/pep` - Migración (PEP)
+6. ✅ `POST /v2/colombian-citizens/ppt` - Migración (PPT)
 
 ### Validación de Identidad - Internacional (15+ APIs)
 
--   ✅ `POST /brazil-citizens` - Brasil
--   ✅ `POST /peruvian-citizens` - Perú
--   ✅ `POST /chilean-citizens` - Chile
--   ✅ `POST /argentina-citizens` - Argentina
+-   ✅ `POST /v2/brazil-citizens` - Brasil
+-   ✅ `POST /v2/peruvian-citizens` - Perú
+-   ✅ `POST /v2/chilean-citizens` - Chile
+-   ✅ `POST /v2/argentina-citizens` - Argentina
 -   ✅ Y 11+ países más
 
 ### Validación Biométrica (3 APIs)
 
-7. ✅ `POST /biometric-validations` - Crear sesión
-8. ✅ `POST /biometric-validations/validate` - Validar facial
-9. ✅ `POST /face-verification` - Comparación 1:1
+7. ✅ `POST /v2/biometric-validations` - Crear sesión
+8. ✅ `POST /v2/biometric-validations/validate` - Validar facial
+9. ✅ `POST /v2/face-verification` - Comparación 1:1
 
 ### Validación de Email (2 APIs)
 
-10. ✅ `POST /email-validations` - Enviar OTP
-11. ✅ `POST /email-validations/:id/verify` - Verificar OTP
+10. ✅ `POST /v2/email-validations` - Enviar OTP
+11. ✅ `POST /v2/email-validations/:id/verify` - Verificar OTP
 
 ### Validación de Teléfono (3 APIs)
 
-12. ✅ `POST /phone-validations` - Enviar OTP (SMS)
-13. ✅ `POST /phone-validations/:id/verify` - Verificar OTP
-14. ✅ `POST /whatsapp/send-otp` - Enviar OTP (WhatsApp)
+12. ✅ `POST /v2/phone-validations` - Enviar OTP (SMS)
+13. ✅ `POST /v2/phone-validations/:id/verify` - Verificar OTP
+14. ✅ `POST /v2/whatsapp/send-otp` - Enviar OTP (WhatsApp)
 
 ### Validación de Vehículos - Colombia (2 APIs)
 
-15. ✅ `POST /runt` - Consulta RUNT
-16. ✅ `POST /fasecolda` - Vehículos robados
+15. ✅ `POST /v2/runt` - Consulta RUNT
+16. ✅ `POST /v2/fasecolda` - Vehículos robados
 
 ### Validación de Empresas - Colombia (1 API)
 
-17. ✅ `POST /rues` - Consulta RUES
+17. ✅ `POST /v2/rues` - Consulta RUES
 
 ### Antecedentes - Colombia (3 APIs)
 
-18. ✅ `POST /contraloria` - Antecedentes fiscales
-19. ✅ `POST /inpec` - Antecedentes penales
-20. ✅ `POST /procuraduria` - Antecedentes disciplinarios
+18. ✅ `POST /v2/contraloria` - Antecedentes fiscales
+19. ✅ `POST /v2/inpec` - Antecedentes penales
+20. ✅ `POST /v2/procuraduria` - Antecedentes disciplinarios
 
 ### Webhooks (1 API)
 
-21. ✅ `POST /webhooks` - Configurar webhooks
+21. ✅ `POST /v2/webhooks` - Configurar webhooks
 
 **Total: 35+ APIs disponibles**
 
@@ -1174,7 +1174,7 @@ Endpoints para la gestión de pruebas de identidad cifradas y privadas.
 
 Crea una prueba ZK cifrada usando la biometría facial del usuario como llave.
 
-`POST /zelf-proof/encrypt-qr-code`
+`POST /v2/zelf-proof/encrypt-qr-code`
 
 **Request Body:**
 
@@ -1210,7 +1210,7 @@ Crea una prueba ZK cifrada usando la biometría facial del usuario como llave.
 
 Intenta descifrar un ZelfProof usando una captura facial reciente. No requiere base de datos central.
 
-`POST /zelf-proof/decrypt`
+`POST /v2/zelf-proof/decrypt`
 
 **Request Body:**
 
@@ -1245,7 +1245,7 @@ Validación de presencia física del documento para prevenir ataques de presenta
 
 ### Detectar Ataques (Screen/Print/Fake)
 
-`POST /document-liveness`
+`POST /v2/document-liveness`
 
 **Request Body:**
 
@@ -1371,5 +1371,5 @@ X-RateLimit-Reset: 1702742400
 
 ---
 
-_Documento preparado por Verifik - Diciembre 2024_  
+_Documento preparado por Verifik - Diciembre 2025_  
 _Versión 1.0_

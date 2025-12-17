@@ -93,9 +93,9 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 
 **Tipos de Liveness:**
 
--   **Liveness Básico**: Detección de fotografías y videos
--   **Liveness Pro**: Detección avanzada de máscaras 3D y deepfakes
--   **Liveness Activo**: Requiere movimientos específicos del usuario
+-   **Passive Liveness**: Detección avanzada de intentos de suplantación sin requerir interacción del usuario. Analiza micro-gestos y texturas para diferenciar un rostro real de una presentación falsa (fotos, videos, máscaras).
+-   **Active Liveness**: Requiere movimientos específicos del usuario (parpadear, sonreír, girar) para validar la prueba de vida.
+-   **Passive Liveness + Zelf Proofs**: Combina la detección pasiva con **(ZK Face Proofs)**. Esta tecnología genera una prueba criptográfica de la identidad facial que se valida sin revelar ni almacenar los datos biométricos crudos, garantizando máxima privacidad y seguridad mediante pruebas de conocimiento cero.
 
 **Configuración:**
 
@@ -118,13 +118,6 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 -   Validación de datos personales contra fuentes oficiales
 -   Preguntas dinámicas basadas en información histórica
 -   Integración con bases de datos gubernamentales
-
-**Fuentes de Datos:**
-
--   Registraduría Nacional (Colombia)
--   RENIEC (Perú)
--   Registro Civil (múltiples países)
--   Bases de datos de vehículos (RUNT, etc.)
 
 ---
 
@@ -237,36 +230,36 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 
 ---
 
-### 10. Tokens FIDO2/WebAuthn ⚠️
+### 10. Tokens FIDO2/WebAuthn ✅
 
-**Estado:** En roadmap para Q1 2026  
-**Capacidades Planificadas:**
+**Estado:** Disponible
 
--   Autenticación sin contraseña
--   Soporte para llaves de seguridad físicas
--   Biometría de dispositivo
+**Análisis:**
+Soportamos el estándar FIDO2 para autenticación segura basada en hardware. Sin embargo, recomendamos la implementación de **ZelfProofs** para evitar dependencias de hardware específico (dongles).
 
 ---
 
-### 11. Passkeys (Cloud y Hardware) ⚠️
+### 11. Passkeys (Cloud y Hardware) ✳️
 
-**Estado:** En evaluación - Q1 2026  
-**Integración Planificada:**
+**Estado:** Disponible
 
--   iCloud Keychain
--   Google Password Manager
--   TPM (Trusted Platform Module)
+**Comparativa con ZelfProofs:**
+Aunque Verifik soporta Passkeys, recomendamos nuestra tecnología **Zero Knowledge Face Proofs (ZelfProofs)** por su superioridad en privacidad y arquitectura:
 
----
+-   **Passkeys (Centralizado):** Dependen de ecosistemas cerrados (Google, Apple, Microsoft) y sincronización en nubes de terceros.
+-   **ZelfProofs (Descentralizado):** Utilizan criptografía de Conocimiento Cero y almacenamiento descentralizado en IPFS. Su rostro es su llave privada, sin intermediarios tecnológicos.
 
-### 12. Autenticación Móvil con Desafío Criptográfico ⚠️
-
-**Estado:** En roadmap - Q1 2026  
-**Tecnología:** Firma digital con claves privadas
+👉 [Conocer más sobre ZK Face Proofs](https://verifik.co/zk-face-proof/)  
+📚 [Documentación Técnica](https://docs.verifik.co/docs-es/biometrics/pruebas-faciales-conocimiento-cero-resumen)
 
 ---
 
-### 13. Biometría en Dispositivos Personales ✅
+### 12. Autenticación Móvil con Desafío Criptográfico ✳️
+
+**Estado:** Disponible (Integrado en solución ZelfProofs)
+**Tecnología:** Firma digital descentralizada usando biometría como llave.
+
+### 13. Biometría en Dispositivos Personales ✳️
 
 **Integración Actual:**
 
@@ -281,13 +274,6 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 -   Validación local sin envío de datos biométricos
 
 **Endpoint:** `/v2/biometric-validations` (con parámetro de dispositivo)
-
----
-
-### 14. Biometría con Respaldo Criptográfico (WebAuthn, FIDO2) ⚠️
-
-**Estado:** Planificado para Q1 2026  
-**Estándar:** FIDO2 Alliance compliant
 
 ---
 
@@ -837,37 +823,6 @@ No solo validamos los datos, sino la presencia física real del documento.
 -   Soporte dedicado 24/7
 -   Personalización de funcionalidades
 
-### Precios Estimados (USD)
-
-**Validación de Documentos:**
-
--   OCR + Extracción: $0.10 - $0.15 / transacción
--   Validación con fuente oficial: $0.20 - $0.30 / transacción
--   Paquete completo: $0.25 - $0.40 / transacción
-
-**Biometría:**
-
--   Liveness básico: $0.05 - $0.10 / validación
--   Liveness pro: $0.10 - $0.15 / validación
--   Reconocimiento facial 1:1: $0.05 - $0.10 / comparación
--   Búsqueda 1:N: $0.10 - $0.20 / búsqueda
-
-**OTP:**
-
--   SMS: $0.02 - $0.05 / mensaje
--   WhatsApp: $0.01 - $0.03 / mensaje
--   Email: $0.001 - $0.005 / mensaje
-
-**Paquetes Mensuales (Ejemplo):**
-
--   **Starter**: 1,000 transacciones/mes - $200/mes
--   **Professional**: 10,000 transacciones/mes - $1,500/mes
--   **Enterprise**: 100,000+ transacciones/mes - Cotización personalizada
-
-_Nota: Precios sujetos a negociación según volumen y alcance del proyecto_
-
----
-
 ## 🛠️ Soporte Técnico y Administración
 
 ### Niveles de Soporte
@@ -1257,5 +1212,5 @@ Verifik ofrece una **solución integral, probada y escalable** que cumple con to
 
 ---
 
-_Documento preparado por Verifik - Diciembre 2024_  
+_Documento preparado por Verifik - Diciembre 2025_  
 _Versión 1.0_

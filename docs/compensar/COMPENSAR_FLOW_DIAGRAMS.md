@@ -786,5 +786,5 @@ gantt
 
 ---
 
-_Diagramas preparados por Verifik - Diciembre 2024_  
+_Diagramas preparados por Verifik - Diciembre 2025_  
 _Versión 1.0_
