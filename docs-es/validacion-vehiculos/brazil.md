@@ -2,6 +2,7 @@
 id: brazil
 title: Brasil
 description: Verificar información de vehículos brasileños usando placa de matrícula
+slug: /validacion-vehiculos/brazil
 ---
 
 # Brasil
@@ -25,9 +26,9 @@ Este servicio es útil para concesionarios de autos, compañías de seguros y cu
 
 ### Parámetros de Consulta
 
-| Name   | Type   | Required? | Description                                    | Example      |
-| ------ | ------ | --------- | ---------------------------------------------- | ------------ |
-| plate  | String | True      | Placa a consultar, sin espacios ni puntos.  | `ABC0123`    |
+| Name  | Type   | Required? | Description                                | Example   |
+| ----- | ------ | --------- | ------------------------------------------ | --------- |
+| plate | String | True      | Placa a consultar, sin espacios ni puntos. | `ABC0123` |
 
 ### Solicitud
 
@@ -38,23 +39,23 @@ import TabItem from '@theme/TabItem';
   <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/br/vehicle',
-  params: {plate: 'ITU7764'},
-  headers: {
-    Accept: 'application/json',
-    Authorization: 'Bearer <your_token>'
-  }
+	method: "GET",
+	url: "https://api.verifik.co/v2/br/vehicle",
+	params: { plate: "ITU7764" },
+	headers: {
+		Accept: "application/json",
+		Authorization: "Bearer <your_token>",
+	},
 };
 
 try {
-  const { data } = await axios.request(options);
-  console.log(data);
+	const { data } = await axios.request(options);
+	console.log(data);
 } catch (error) {
-  console.error(error);
+	console.error(error);
 }
 ```
 
@@ -101,36 +102,34 @@ print(r.json())
 
 ```json
 {
-  "data": {
-    "bodyType": "Sedan",
-    "brand": "FIAT",
-    "chassis": "9BD197134D3048111",
-    "color": "VERMELHA",
-    "country": "Brasil",
-    "denatranWarning": "",
-    "doors": "4",
-    "engine": "1.4",
-    "factory": "Betim - MG",
-    "fipeCodes": [
-      "001381-1"
-    ],
-    "fuelType": "Flexivel Alcool/Gasolina/GNV",
-    "irregularitiesCount": 0,
-    "irregularityCode": "",
-    "manufacturer": "FIAT",
-    "model": "Grand Siena TetraFuel 1.4 Flex GNV 4P",
-    "modelYear": "2013",
-    "plate": "ITU7764",
-    "transmission": "Manual",
-    "vehicle": "Grand Siena",
-    "version": "TetraFuel",
-    "yearOfManufacture": "2012"
-  },
-  "signature": {
-    "dateTime": "October 10, 2025 6:57 PM",
-    "message": "Certified by Verifik.co"
-  },
-  "id": "7ZNJG"
+	"data": {
+		"bodyType": "Sedan",
+		"brand": "FIAT",
+		"chassis": "9BD197134D3048111",
+		"color": "VERMELHA",
+		"country": "Brasil",
+		"denatranWarning": "",
+		"doors": "4",
+		"engine": "1.4",
+		"factory": "Betim - MG",
+		"fipeCodes": ["001381-1"],
+		"fuelType": "Flexivel Alcool/Gasolina/GNV",
+		"irregularitiesCount": 0,
+		"irregularityCode": "",
+		"manufacturer": "FIAT",
+		"model": "Grand Siena TetraFuel 1.4 Flex GNV 4P",
+		"modelYear": "2013",
+		"plate": "ITU7764",
+		"transmission": "Manual",
+		"vehicle": "Grand Siena",
+		"version": "TetraFuel",
+		"yearOfManufacture": "2012"
+	},
+	"signature": {
+		"dateTime": "October 10, 2025 6:57 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "7ZNJG"
 }
 ```
 
@@ -139,8 +138,8 @@ print(r.json())
 
 ```json
 {
-  "code": "NotFound",
-  "message": "Record not found."
+	"code": "NotFound",
+	"message": "Record not found."
 }
 ```
 
@@ -149,8 +148,8 @@ print(r.json())
 
 ```json
 {
-  "code": "MissingParameter",
-  "message": "missing plate\n"
+	"code": "MissingParameter",
+	"message": "missing plate\n"
 }
 ```
 
@@ -159,19 +158,18 @@ print(r.json())
 
 ```json
 {
-  "code": "InternalServerError",
-  "message": "Server error."
+	"code": "InternalServerError",
+	"message": "Server error."
 }
 ```
 
   </TabItem>
 </Tabs>
 
-
 ## Casos de Uso
 
-- **Verificación de Seguros**: Verificar detalles del vehículo para fines de seguros
-- **Concesionarios de Autos**: Validar información del vehículo antes de la compra
-- **Gestión de Flotas**: Rastrear información de vehículos de la empresa
-- **Aplicación de la Ley**: Verificar registro y propiedad del vehículo
-- **Debida Diligencia**: Verificar información del vehículo para transacciones
+-   **Verificación de Seguros**: Verificar detalles del vehículo para fines de seguros
+-   **Concesionarios de Autos**: Validar información del vehículo antes de la compra
+-   **Gestión de Flotas**: Rastrear información de vehículos de la empresa
+-   **Aplicación de la Ley**: Verificar registro y propiedad del vehículo
+-   **Debida Diligencia**: Verificar información del vehículo para transacciones

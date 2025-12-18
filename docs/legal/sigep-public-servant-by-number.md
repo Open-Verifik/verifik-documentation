@@ -2,6 +2,7 @@
 id: sigep-public-servant-by-number
 title: Colombia - Public Servant Query by Number (SIGEP)
 description: Query public servant information by document number from SIGEP
+slug: /legal/sigep-public-servant-by-number
 ---
 
 # Public Servant Query by Number (SIGEP)
@@ -34,23 +35,23 @@ import TabItem from '@theme/TabItem';
 <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/co/sigep/number',
-  params: {documentType: 'CC', documentNumber: '34503110'},
-  headers: {
-    Accept: 'application/json',
-    Authorization: 'Bearer <tu_token>'
-  }
+	method: "GET",
+	url: "https://api.verifik.co/v2/co/sigep/number",
+	params: { documentType: "CC", documentNumber: "34503110" },
+	headers: {
+		Accept: "application/json",
+		Authorization: "Bearer <tu_token>",
+	},
 };
 
 try {
-  const { data } = await axios.request(options);
-  console.log(data);
+	const { data } = await axios.request(options);
+	console.log(data);
 } catch (error) {
-  console.error(error);
+	console.error(error);
 }
 ```
 
@@ -76,7 +77,7 @@ print(data.decode("utf-8"))
 var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/co/sigep/number?documentType=CC&documentNumber=34503110")!,timeoutInterval: Double.infinity)
 request.httpMethod = "GET"
 
-let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
   guard let data = data else {
     print(String(describing: error))
     return
@@ -125,36 +126,31 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "data": {
-        "arrayName": [
-            "FRANCIA",
-            "ELENA",
-            "MARQUEZ",
-            "MINA"
-        ],
-        "documentNumber": "34503110",
-        "documentType": "CC",
-        "firstName": "FRANCIA ELENA",
-        "fullName": "FRANCIA ELENA MARQUEZ MINA",
-        "lastName": "MARQUEZ MINA",
-        "legend": "",
-        "records": [
-            {
-                "name": "FRANCIA ELENA MARQUEZ MINA",
-                "linkProfile": "https://www.funcionpublica.gov.co/dafpIndexerBHV/hvSigep/detallarHV/S4588442-0018-4",
-                "position": "Servidor Público",
-                "entity": "DEPARTAMENTO ADMINISTRATIVO DE LA PRESIDENCIA DE LA REPUBLICA",
-                "email": "juliethrincon@presidencia.gov.co",
-                "phone": "3822800",
-                "location": "BOGOTÁ. D.C. - BOGOTÁ. D.C."
-            }
-        ]
-    },
-    "signature": {
-        "dateTime": "October 27, 2025 8:49 AM",
-        "message": "Certified by Verifik.co"
-    },
-    "id": "VMH0I"
+	"data": {
+		"arrayName": ["FRANCIA", "ELENA", "MARQUEZ", "MINA"],
+		"documentNumber": "34503110",
+		"documentType": "CC",
+		"firstName": "FRANCIA ELENA",
+		"fullName": "FRANCIA ELENA MARQUEZ MINA",
+		"lastName": "MARQUEZ MINA",
+		"legend": "",
+		"records": [
+			{
+				"name": "FRANCIA ELENA MARQUEZ MINA",
+				"linkProfile": "https://www.funcionpublica.gov.co/dafpIndexerBHV/hvSigep/detallarHV/S4588442-0018-4",
+				"position": "Servidor Público",
+				"entity": "DEPARTAMENTO ADMINISTRATIVO DE LA PRESIDENCIA DE LA REPUBLICA",
+				"email": "juliethrincon@presidencia.gov.co",
+				"phone": "3822800",
+				"location": "BOGOTÁ. D.C. - BOGOTÁ. D.C."
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "October 27, 2025 8:49 AM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "VMH0I"
 }
 ```
 
@@ -163,8 +159,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+	"code": "NotFound",
+	"message": "Record not found."
 }
 ```
 
@@ -173,8 +169,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-"code": "MissingParameter",
-"message": "missing documentType\n. missing documentNumber\n"
+	"code": "MissingParameter",
+	"message": "missing documentType\n. missing documentNumber\n"
 }
 ```
 
@@ -183,8 +179,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-"code": "MissingParameter",
-"message": "documentType must be one of: [CC,NIT]"
+	"code": "MissingParameter",
+	"message": "documentType must be one of: [CC,NIT]"
 }
 ```
 
@@ -193,9 +189,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ## Use Cases
 
-- **Government Transparency**: Verify public servant information for transparency purposes
-- **Background Checks**: Conduct background checks for employment or business purposes
-- **Due Diligence**: Perform due diligence for partnerships with government entities
-- **Compliance**: Verify compliance with government employment regulations
-- **Data Verification**: Validate public servant data for official records
-
+-   **Government Transparency**: Verify public servant information for transparency purposes
+-   **Background Checks**: Conduct background checks for employment or business purposes
+-   **Due Diligence**: Perform due diligence for partnerships with government entities
+-   **Compliance**: Verify compliance with government employment regulations
+-   **Data Verification**: Validate public servant data for official records

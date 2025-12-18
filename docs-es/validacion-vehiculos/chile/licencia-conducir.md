@@ -2,6 +2,7 @@
 id: licencia-conducir-chile
 title: Licencia de Conducir
 description: Servicio de licencia de conducir chilena
+slug: /validacion-vehiculos/chile/licencia-conducir
 ---
 
 import Tabs from '@theme/Tabs';
@@ -34,24 +35,24 @@ Este servicio te permite recuperar información detallada sobre una licencia de 
 <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const options = {
-  method: 'GET',
-  url: '<https://api.verifik.co/v2/cl/driver-license>',
-  params: {documentNumber: '12345678'},
+	method: "GET",
+	url: "<https://api.verifik.co/v2/cl/driver-license>",
+	params: { documentNumber: "12345678" },
 
-  headers: {
-    Accept: 'application/json',
-    Authorization: 'jwt <tu_token>'
-  }
+	headers: {
+		Accept: "application/json",
+		Authorization: "jwt <tu_token>",
+	},
 };
 
 try {
-  const { data } = await axios.request(options);
-  console.log(data);
+	const { data } = await axios.request(options);
+	console.log(data);
 } catch (error) {
-  console.error(error);
+	console.error(error);
 }
 ```
 
@@ -77,7 +78,7 @@ print(data.decode("utf-8"))
 var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/cl/driver-license?documentNumber=")!,timeoutInterval: Double.infinity)
 request.httpMethod = "GET"
 
-let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
   guard let data = data else {
     print(String(describing: error))
     return
@@ -125,25 +126,25 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-  "data": {
-    "RUT": "12.345.678-9",
-    "address": "PEDRO LEON UGALDE 1825",
-    "class": "B",
-    "controlDate": "23/08/2009",
-    "documentNumber": "012345678",
-    "lastControlDate": "15/07/2003",
-    "lastName": "VERIFIK",
-    "license": "CA-12345678",
-    "municipality": "SANTIAGO",
-    "names": "MATEO",
-    "procedure": "DUPLICADO",
-    "restrictions": ".USAR LENTES O DE CONTACTO. "
-  },
-  "signature": {
-    "dateTime": "November 2, 2023 3:12 PM",
-    "message": "Certified by Verifik.co"
-  },
-  "id": "1tm6q"
+	"data": {
+		"RUT": "12.345.678-9",
+		"address": "PEDRO LEON UGALDE 1825",
+		"class": "B",
+		"controlDate": "23/08/2009",
+		"documentNumber": "012345678",
+		"lastControlDate": "15/07/2003",
+		"lastName": "VERIFIK",
+		"license": "CA-12345678",
+		"municipality": "SANTIAGO",
+		"names": "MATEO",
+		"procedure": "DUPLICADO",
+		"restrictions": ".USAR LENTES O DE CONTACTO. "
+	},
+	"signature": {
+		"dateTime": "November 2, 2023 3:12 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "1tm6q"
 }
 ```
 
@@ -152,8 +153,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+	"code": "NotFound",
+	"message": "Record not found."
 }
 ```
 
@@ -162,8 +163,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-"code": "MissingParameter",
-"message": "missing documentNumber\n"
+	"code": "MissingParameter",
+	"message": "missing documentNumber\n"
 }
 ```
 
