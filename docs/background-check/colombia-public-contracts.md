@@ -27,6 +27,12 @@ This service promotes transparency and facilitates the monitoring of public cont
 
 <table><thead><tr><th width="185">Name</th><th width="85">Type</th><th width="112">Required?</th><th width="227">Description</th><th>Example</th></tr></thead><tbody><tr><td>documentType</td><td>String</td><td><code>True</code></td><td>Document Type. Allowed Parameters: CC, NIT.</td><td><code>CC</code></td></tr><tr><td>documentNumber</td><td>String</td><td><code>True</code></td><td>Document Number to request</td><td><code>123456789</code></td></tr></tbody></table>
 
+### Parameters
+
+:::info
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+:::
+
 **Request**
 
 import Tabs from '@theme/Tabs';

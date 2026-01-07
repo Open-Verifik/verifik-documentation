@@ -25,6 +25,12 @@ The service to check disciplinary records of individuals in Colombia (attorney's
 
 <table><thead><tr><th width="183">Name</th><th width="84">Type</th><th width="108">Required?</th><th width="245">Description</th><th>Example</th></tr></thead><tbody><tr><td>documentType</td><td>String</td><td><code>True</code></td><td>Document type. Allowable parameter: CC, PEP, CE.</td><td><code>CC</code></td></tr><tr><td>documentNumber</td><td>String</td><td><code>True</code></td><td>Document number of the person to consult, without spaces or points.</td><td><code>123456789</code></td></tr></tbody></table>
 
+### Parameters
+
+:::info
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+:::
+
 #### Request
 
 import Tabs from '@theme/Tabs';

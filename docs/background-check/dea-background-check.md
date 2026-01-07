@@ -16,13 +16,15 @@ This API allows businesses and organizations to verify whether a person or entit
 
 The service returns a boolean indicator showing whether a match exists and, if applicable, includes a URL linking to the official DEA record.
 
+**Note:** Dates (date of birth or expedition date) must be in dd/mm/yyyy format.
+
 This tool is essential for regulatory compliance and risk mitigation in industries where individuals or entities may be involved with controlled substances.
 
 ### **Use Cases**
 
-* **Regulatory Compliance:** Ensure that your business operations comply with U.S. federal regulations by screening individuals or entities for DEA-related flags.
-* **Fraud Prevention:** Identify potential risks associated with individuals or organizations involved in controlled substances.
-* **KYC & AML Compliance:** Essential for industries such as healthcare, pharmaceuticals, logistics, and finance to comply with Know Your Customer (KYC) and Anti-Money Laundering (AML) regulations.
+- **Regulatory Compliance:** Ensure that your business operations comply with U.S. federal regulations by screening individuals or entities for DEA-related flags.
+- **Fraud Prevention:** Identify potential risks associated with individuals or organizations involved in controlled substances.
+- **KYC & AML Compliance:** Essential for industries such as healthcare, pharmaceuticals, logistics, and finance to comply with Know Your Customer (KYC) and Anti-Money Laundering (AML) regulations.
 
 ### **Headers**
 
@@ -39,6 +41,12 @@ This tool is essential for regulatory compliance and risk mitigation in industri
 
 <table><thead><tr><th width="198">Name</th><th width="83">Type</th><th width="107">Required</th><th width="363">Description</th></tr></thead><tbody><tr><td>fullName</td><td>String</td><td><code>False</code></td><td>Instead of documentType and documentNumber, you can pass the name directly of the person/business.</td></tr></tbody></table>
 
+### Parameters
+
+:::info
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/background-check/document-types) guide.
+:::
+
 ### Request
 
 import Tabs from '@theme/Tabs';
@@ -48,16 +56,16 @@ import TabItem from '@theme/TabItem';
 <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/dea',
-  params: {documentType: 'CC', documentNumber: '80251972'},
+  method: "GET",
+  url: "https://api.verifik.co/v2/dea",
+  params: { documentType: "CC", documentNumber: "80251972" },
   headers: {
-    Accept: 'application/json',
-    Authorization: 'jwt <tu_token>'
-  }
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
 };
 
 try {
@@ -90,7 +98,7 @@ print(data.decode("utf-8"))
 var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/dea?fullName=")!,timeoutInterval: Double.infinity)
 request.httpMethod = "GET"
 
-let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
   guard let data = data else {
     print(String(describing: error))
     return
@@ -140,23 +148,20 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "data": {
-        "documentType": "CC",
-        "documentNumber": "123456789",
-        "fullName": "MATEO VERIFIK",
-        "firstName": "MATEO",
-        "lastName": "VERIFIK",
-        "arrayName": [
-        "MATEO",
-        "VERIFIK"
-        ],
-        "foundInDEA": true,
-        "urlDEA": "https://www.dea.gov/fugitives/ismael-zambada-garcia"
-    },
-    "signature": {
-        "dateTime": "June 28, 2022 11:41 AM",
-        "message": "Certified by Verifik.co"
-    }
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "123456789",
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": ["MATEO", "VERIFIK"],
+    "foundInDEA": true,
+    "urlDEA": "https://www.dea.gov/fugitives/ismael-zambada-garcia"
+  },
+  "signature": {
+    "dateTime": "June 28, 2022 11:41 AM",
+    "message": "Certified by Verifik.co"
+  }
 }
 ```
 
@@ -165,8 +170,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+  "code": "NotFound",
+  "message": "Record not found."
 }
 ```
 
@@ -175,8 +180,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-"code": "MissingParameter",
-"message": "missing documentType\n. missing documentNumber\n"
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
 }
 ```
 
