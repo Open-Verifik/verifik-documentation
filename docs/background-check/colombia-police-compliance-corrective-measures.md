@@ -27,6 +27,12 @@ This service helps ensure that individuals comply with corrective measures and s
 
 <table><thead><tr><th width="194">Name</th><th width="98">Type</th><th width="109">Required?</th><th width="205">Description</th><th>Example</th></tr></thead><tbody><tr><td>documentType</td><td>String</td><td><code>True</code></td><td>Document type. Valid parameters: CC, CE.</td><td><code>CC</code></td></tr><tr><td>documentNumber</td><td>String</td><td><code>True</code></td><td>Document number of the person to consult, without spaces or points.</td><td><code>123456789</code></td></tr><tr><td>date</td><td>String</td><td><code>True</code></td><td>Expedition date of the document. Valid format: DD/MM/YYYY.</td><td><code>10/10/2020</code></td></tr></tbody></table>
 
+### Parameters
+
+:::info
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+:::
+
 #### Request
 
 import Tabs from '@theme/Tabs';

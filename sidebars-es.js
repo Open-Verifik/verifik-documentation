@@ -451,6 +451,7 @@ const sidebars = {
 			label: "VERIFICACIÓN DE ANTECEDENTES",
 			collapsible: false,
 			items: [
+				"verificacion-antecendentes/tipos-documento",
 				{
 					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-brasil",

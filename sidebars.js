@@ -589,6 +589,7 @@ const sidebars = {
 			label: "BACKGROUND CHECK",
 			collapsible: false,
 			items: [
+				"background-check/document-types",
 				{
 					type: "doc",
 					id: "background-check/brazil",

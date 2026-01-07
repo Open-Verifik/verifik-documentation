@@ -35,6 +35,12 @@ This service provides a simple way to check if a person or entity appears on the
 
 <table><thead><tr><th width="198">Name</th><th width="83">Type</th><th width="107">Required</th><th width="363">Description</th></tr></thead><tbody><tr><td>fullName</td><td>String</td><td><code>False</code></td><td>Instead of documentType and documentNumber, you can pass the name directly of the person/business.</td></tr></tbody></table>
 
+### Parameters
+
+:::info
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+:::
+
 ### Request
 
 import Tabs from '@theme/Tabs';
@@ -227,6 +233,8 @@ catch(HTTP_Request2_Exception $e) {
 ```
 
 </TabItem>
+
+
 <TabItem value="409-1" label="409 (Missing Parameters)">
 
 ```json

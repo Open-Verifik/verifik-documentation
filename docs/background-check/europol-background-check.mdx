@@ -35,6 +35,10 @@ This service is ideal for companies looking to enhance their identity verificati
 
 ### Parameters
 
+:::info
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+:::
+
 #### Query via Document
 
 | Name             | Type   | Required | Description                                                                 |
