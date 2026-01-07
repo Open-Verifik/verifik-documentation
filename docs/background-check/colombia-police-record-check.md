@@ -25,6 +25,12 @@ The Colombian Police Record Check service allows users to verify the criminal hi
 
 <table><thead><tr><th width="186">Name</th><th width="82">Type</th><th width="109">Required?</th><th width="236">Description</th><th>Example</th></tr></thead><tbody><tr><td>documentType</td><td>String</td><td><code>True</code></td><td>Document type. Valid parameters: CC, CE.</td><td><code>CC</code></td></tr><tr><td>documentNumber</td><td>String</td><td><code>True</code></td><td>Document number of the person to consult, without spaces or points.</td><td><code>123456789</code></td></tr></tbody></table>
 
+### Parameters
+
+:::info
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+:::
+
 #### Request
 
 import Tabs from '@theme/Tabs';
@@ -34,16 +40,16 @@ import TabItem from '@theme/TabItem';
 <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/co/policia/consultar',
-  params: {documentType: 'CC', documentNumber: '123456789'},
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/policia/consultar",
+  params: { documentType: "CC", documentNumber: "123456789" },
   headers: {
-    Accept: 'application/json',
-    Authorization: 'jwt <tu_token>'
-  }
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
 };
 
 try {
@@ -76,7 +82,7 @@ print(data.decode("utf-8"))
 var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/co/policia/consultar?documentType=CC&documentNumber=123456789")!,timeoutInterval: Double.infinity)
 request.httpMethod = "GET"
 
-let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
   guard let data = data else {
     print(String(describing: error))
     return
@@ -151,8 +157,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+  "code": "NotFound",
+  "message": "Record not found."
 }
 ```
 
@@ -161,8 +167,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-"code": "MissingParameter",
-"message": "missing documentType\n. missing documentNumber\n"
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
 }
 ```
 
@@ -171,8 +177,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-"code": "MissingParameter",
-"message": "documentType must be one of: [CC,CE]"
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [CC,CE]"
 }
 ```
 

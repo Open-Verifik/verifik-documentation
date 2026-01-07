@@ -29,6 +29,10 @@ This information can be used for a variety of purposes, such as employment scree
 
 ### Parameters
 
+:::info
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+:::
+
 | Name           | Type    | Required | Description                                    |
 | -------------- | ------- | -------- | ---------------------------------------------- |
 | `documentType` | string  | Yes      | Document type. Allowed parameter: CPF. |
