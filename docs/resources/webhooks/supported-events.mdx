@@ -1,0 +1,205 @@
+---
+id: supported-events
+title: Supported Events
+description: A comprehensive list of webhook events triggered by the Verifik platform.
+slug: /resources/supported-events
+---
+
+### Overview
+
+Webhooks allow your application to receive real-time notifications when specific events occur within your Verifik projects. Below is a detailed list of supported events, categorized by module, along with their triggers and payloads.
+
+### Biometric Validation
+
+Events related to liveness checks, person creation, and biometric status updates.
+
+#### `biometric_validation_{status}`
+Triggered when the status of a biometric validation changes.
+- **Statuses**: `new`, `validated`, `failed`
+- **Payload**: The complete `biometricValidation` object.
+
+#### `biometric_validation_created_person`
+Triggered when a new person entity is successfully created from a biometric validation.
+- **Payload**: The `biometricValidation` object associated with the person.
+
+#### `biometric_validation_liveness_failed`
+Triggered when a liveness check explicitly fails.
+- **Payload**: The `biometricValidation` object.
+
+#### `biometrics_liveness_score_not_acceptable`
+Triggered when the calculated liveness score is below the required threshold defined in your project settings.
+- **Payload**:
+  ```json
+  {
+    ...biometricValidation,
+    "projectFlow": { ... }
+  }
+  ```
+
+---
+
+### App Registration
+
+Events tracking the lifecycle of user registrations within your application flows.
+
+#### `app_registration_created`
+Triggered when a new application registration is initialized.
+- **Payload**:
+  ```json
+  {
+    ...appRegistration,
+    "projectFlow": { ... }
+  }
+  ```
+
+#### `app_registration_{status}`
+Triggered when the registration status updates (e.g., to `ongoing` or `completed`).
+- **Payload**:
+  ```json
+  {
+    ...appRegistration,
+    "webhook": "https://your-webhook-url.com"
+  }
+  ```
+
+#### `app_registration_person_already_set`
+Triggered when an attempt is made to link a person to a registration that already has one.
+- **Payload**:
+  ```json
+  {
+    "error": true,
+    "statusCode": "409",
+    "message": "person_already_set",
+    ...appRegistration,
+    "projectFlow": { ... }
+  }
+  ```
+
+---
+
+### Document Validation
+
+Events related to document scanning, OCR, and validation against external data sources.
+
+#### `document_validation_created`
+Triggered when a new document validation process is started.
+- **Payload**:
+  ```json
+  {
+    ...documentValidation,
+    "appRegistration": "id",
+    "email": "user@example.com",
+    "phone": "1234567890"
+  }
+  ```
+
+#### `document_validation_source_lookup`
+Triggered after a document's data is verified against an external government or data source.
+- **Payload**:
+  ```json
+  {
+    ...documentValidation,
+    "webhook": "https://your-webhook-url.com"
+  }
+  ```
+
+#### `document_validation_data_source_error`
+Triggered when validation fails because the external data source returned an invalid or empty response (e.g., name mismatch or service error).
+- **Payload**:
+  ```json
+  {
+    "isSupported": false,
+    "infoValidationSupportedReason": "invalid_name_response_from_api",
+    "notSupportedData": {
+      "documentType": "CC",
+      "documentNumber": "123456789"
+    },
+    ...documentValidation
+  }
+  ```
+
+---
+
+### Email Validation
+
+Events for tracking email verification flows, including OTP status and expiration.
+
+#### `email_validation_created`
+Triggered when an email validation request is created.
+- **Payload**: The `emailValidation` object.
+
+#### `email_validation_{status}`
+Triggered when the email status changes (e.g., to `validated` or `failed`).
+- **Payload**: The `emailValidation` object.
+
+#### `email_validation_otp_incorect`
+Triggered when a user submits an incorrect OTP.
+- **Payload**: The `emailValidation` object.
+
+#### `email_validation_resend`
+Triggered when a user requests a new OTP.
+- **Payload**: The `emailValidation` object.
+
+#### `email_validation_expired`
+Triggered when the validation session expires (usually after 10 minutes).
+- **Payload**: The expired `emailValidation` object.
+
+---
+
+### Phone Validation
+
+Events for tracking SMS/WhatsApp verification flows.
+
+#### `phone_validation_created`
+Triggered when a phone validation request is created.
+- **Payload**: The `phoneValidation` object.
+
+#### `phone_validation_{status}`
+Triggered when the phone status changes (e.g., to `validated` or `failed`).
+- **Payload**: The `phoneValidation` object.
+
+#### `phone_validation_otp_incorect`
+Triggered when a user submits an incorrect OTP.
+- **Payload**: The `phoneValidation` object.
+
+#### `phone_validation_resend`
+Triggered when a user requests a new OTP.
+- **Payload**: The `phoneValidation` object.
+
+#### `phone_validation_expired`
+Triggered when the validation session expires.
+- **Payload**: The expired `phoneValidation` object.
+
+---
+
+### Information Validation
+
+Events related to background checks and data syncing.
+
+#### `information_validation_background_check`
+Triggered after a background check (criminal records, PEP lists, etc.) is completed.
+- **Payload**:
+  ```json
+  {
+    ...informationValidation,
+    "webhook": "https://your-webhook-url.com"
+  }
+  ```
+
+#### `information_validation_updated`
+Triggered when information validation data is updated or synced from a document source.
+- **Payload**: The `informationValidation` object.
+
+---
+
+### Face Verification
+
+#### `face_verification_compare`
+Triggered after a face verification comparison is completed (e.g., selfie vs. document photo).
+- **Payload**:
+  ```json
+  {
+    ...appRegistration,
+    "compareResult": { ... }
+  }
+  ```
