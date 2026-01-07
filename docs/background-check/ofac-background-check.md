@@ -14,11 +14,13 @@ https://api.verifik.co/v2/ofac
 
 This service provides a simple way to check if a person or entity appears on the U.S. Department of the Treasury's Office of Foreign Assets Control (OFAC) Specially Designated Nationals (SDN) and Blocked Persons List. By using this service, you can verify whether the individual or entity is subject to sanctions or restrictions enforced by OFAC.
 
+**Note:** Dates (date of birth or expedition date) must be in dd/mm/yyyy format.
+
 ### **Use Cases:**
 
-* **Sanctions Compliance:** Essential for financial institutions, exporters, and multinational corporations to ensure they are not dealing with sanctioned individuals or entities.
-* **Risk Mitigation:** Helps businesses avoid penalties by ensuring compliance with U.S. and international trade regulations.
-* **KYC & AML:** A critical tool for Know Your Customer (KYC) and Anti-Money Laundering (AML) processes in industries such as banking, insurance, and real estate.
+- **Sanctions Compliance:** Essential for financial institutions, exporters, and multinational corporations to ensure they are not dealing with sanctioned individuals or entities.
+- **Risk Mitigation:** Helps businesses avoid penalties by ensuring compliance with U.S. and international trade regulations.
+- **KYC & AML:** A critical tool for Know Your Customer (KYC) and Anti-Money Laundering (AML) processes in industries such as banking, insurance, and real estate.
 
 ### **Headers**
 
@@ -50,16 +52,16 @@ import TabItem from '@theme/TabItem';
 <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/ofac',
-  params: {documentType: 'CC', documentNumber: '80251972'},
+  method: "GET",
+  url: "https://api.verifik.co/v2/ofac",
+  params: { documentType: "CC", documentNumber: "80251972" },
   headers: {
-    Accept: 'application/json',
-    Authorization: 'jwt <tu_token>'
-  }
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
 };
 
 try {
@@ -92,7 +94,7 @@ print(data.decode("utf-8"))
 var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/ofac?fullName=Mateo%20Verifik")!,timeoutInterval: Double.infinity)
 request.httpMethod = "GET"
 
-let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
   guard let data = data else {
     print(String(describing: error))
     return
@@ -141,25 +143,21 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "data": {
-        "documentType": "CC",
-        "documentNumber": "80927603",
-        "fullName": "MATEO ANDRES VERIFIK",
-        "firstName": "MATEO ANDRES",
-        "lastName": "VERIFIK",
-        "arrayName": [
-            "MATEO",
-            "ANDRES",
-            "VERIFIK"
-        ],
-        "foundInOFAC": false,
-        "details": {}
-    },
-    "signature": {
-        "dateTime": "June 27, 2025 4:33 PM",
-        "message": "Certified by Verifik.co"
-    },
-    "id": "U4RBQ"
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "80927603",
+    "fullName": "MATEO ANDRES VERIFIK",
+    "firstName": "MATEO ANDRES",
+    "lastName": "VERIFIK",
+    "arrayName": ["MATEO", "ANDRES", "VERIFIK"],
+    "foundInOFAC": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "June 27, 2025 4:33 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "U4RBQ"
 }
 ```
 
@@ -168,57 +166,52 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "data": {
-        "documentType": "CURP",
-        "documentNumber": "VILJ580411HSLLRN09",
-        "fullName": "JUAN CARLOS VILLEGAS LOERA",
-        "firstName": "JUAN CARLOS",
-        "lastName": "VILLEGAS LOERA",
-        "arrayName": [
-            "JUAN",
-            "CARLOS",
-            "VILLEGAS",
-            "LOERA"
-        ],
-        "foundInOFAC": true,
-        "details": {
-            "fullLink": "https://sanctionssearch.ofac.treas.gov/Details.aspx?id=15785",
-            "type": "Individual",
-            "list": "SDN",
-            "lastName": "VILLEGAS LOERA",
-            "program": "SDNTK",
-            "firstName": "Juan Carlos",
-            "nationality": "",
-            "title": "",
-            "citizenship": "",
-            "dateOfBirth": "11 Apr 1958",
-            "placeOfBirth": "Culiacan, Sinaloa, Mexico",
-            "remarks": "(Linked To: BUENOS AIRES SERVICIOS, S.A. DE C.V.; Linked To: ESTACIONES DE SERVICIOS CANARIAS, S.A. DE C.V.; Linked To: GASODIESEL Y SERVICIOS ANCONA, S.A. DE C.V.; Linked To: GASOLINERA ALAMOS COUNTRY, S.A. DE C.V.; Linked To: GASOLINERA Y SERVICIOS VILLABONITA, S.A. DE C.V.; Linked To: PETROBARRANCOS, S.A. DE C.V.; Linked To: SERVICIOS CHULAVISTA, S.A. DE C.V.)",
-            "identifications": [
-                {
-                    "type": "C.U.R.P.",
-                    "idNumber": "VILJ580411HSLLRN09",
-                    "country": "Mexico",
-                    "issueDate": null,
-                    "expireDate": null
-                }
-            ],
-            "addresses": [
-                {
-                    "address": "Calle Golfo de California No. 1635",
-                    "city": "Culiacan",
-                    "stateOrProvince": "Sinaloa",
-                    "postalCode": "",
-                    "country": "Mexico"
-                }
-            ]
+  "data": {
+    "documentType": "CURP",
+    "documentNumber": "VILJ580411HSLLRN09",
+    "fullName": "JUAN CARLOS VILLEGAS LOERA",
+    "firstName": "JUAN CARLOS",
+    "lastName": "VILLEGAS LOERA",
+    "arrayName": ["JUAN", "CARLOS", "VILLEGAS", "LOERA"],
+    "foundInOFAC": true,
+    "details": {
+      "fullLink": "https://sanctionssearch.ofac.treas.gov/Details.aspx?id=15785",
+      "type": "Individual",
+      "list": "SDN",
+      "lastName": "VILLEGAS LOERA",
+      "program": "SDNTK",
+      "firstName": "Juan Carlos",
+      "nationality": "",
+      "title": "",
+      "citizenship": "",
+      "dateOfBirth": "11 Apr 1958",
+      "placeOfBirth": "Culiacan, Sinaloa, Mexico",
+      "remarks": "(Linked To: BUENOS AIRES SERVICIOS, S.A. DE C.V.; Linked To: ESTACIONES DE SERVICIOS CANARIAS, S.A. DE C.V.; Linked To: GASODIESEL Y SERVICIOS ANCONA, S.A. DE C.V.; Linked To: GASOLINERA ALAMOS COUNTRY, S.A. DE C.V.; Linked To: GASOLINERA Y SERVICIOS VILLABONITA, S.A. DE C.V.; Linked To: PETROBARRANCOS, S.A. DE C.V.; Linked To: SERVICIOS CHULAVISTA, S.A. DE C.V.)",
+      "identifications": [
+        {
+          "type": "C.U.R.P.",
+          "idNumber": "VILJ580411HSLLRN09",
+          "country": "Mexico",
+          "issueDate": null,
+          "expireDate": null
         }
-    },
-    "signature": {
-        "dateTime": "June 27, 2025 4:48 PM",
-        "message": "Certified by Verifik.co"
-    },
-    "id": "1LMO7"
+      ],
+      "addresses": [
+        {
+          "address": "Calle Golfo de California No. 1635",
+          "city": "Culiacan",
+          "stateOrProvince": "Sinaloa",
+          "postalCode": "",
+          "country": "Mexico"
+        }
+      ]
+    }
+  },
+  "signature": {
+    "dateTime": "June 27, 2025 4:48 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "1LMO7"
 }
 ```
 
@@ -227,20 +220,19 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+  "code": "NotFound",
+  "message": "Record not found."
 }
 ```
 
 </TabItem>
 
-
 <TabItem value="409-1" label="409 (Missing Parameters)">
 
 ```json
 {
-    "code": "MissingParameter",
-    "message": "missing documentType\n. missing documentNumber\n"
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
 }
 ```
 
@@ -249,8 +241,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "code": "MissingParameter",
-    "message": "documentType must be one of: [DNIAR]"
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [DNIAR]"
 }
 ```
 
