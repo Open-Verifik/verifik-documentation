@@ -44,7 +44,7 @@ This tool is essential for regulatory compliance and risk mitigation in industri
 ### Parameters
 
 :::info
-For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/background-check/document-types) guide.
 :::
 
 ### Request

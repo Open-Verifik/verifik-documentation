@@ -40,7 +40,7 @@ This service provides a simple way to check if a person or entity appears on the
 ### Parameters
 
 :::info
-For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/background-check/document-types) guide.
 :::
 
 ### Request
