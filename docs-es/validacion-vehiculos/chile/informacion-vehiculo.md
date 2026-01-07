@@ -2,6 +2,7 @@
 id: informacion-vehiculo-chile
 title: Información de Vehículo
 description: Servicio de información de vehículos chilenos
+slug: /validacion-vehiculos/chile/informacion-vehiculo
 ---
 
 import Tabs from '@theme/Tabs';
@@ -32,23 +33,23 @@ Este endpoint de API te permite verificar la información de un vehículo regist
 <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const options = {
-  method: 'GET',
-  url: '<https://api.verifik.co/v2/cl/vehicle>',
-  params: {plate: 'BB985'},
-    headers: {
-    Accept: 'application/json',
-    Authorization: 'jwt <tu_token>'
-  }
+	method: "GET",
+	url: "<https://api.verifik.co/v2/cl/vehicle>",
+	params: { plate: "BB985" },
+	headers: {
+		Accept: "application/json",
+		Authorization: "jwt <tu_token>",
+	},
 };
 
 try {
-  const { data } = await axios.request(options);
-  console.log(data);
+	const { data } = await axios.request(options);
+	console.log(data);
 } catch (error) {
-  console.error(error);
+	console.error(error);
 }
 ```
 
@@ -74,7 +75,7 @@ print(data.decode("utf-8"))
 var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/cl/vehicle?plate=")!,timeoutInterval: Double.infinity)
 request.httpMethod = "GET"
 
-let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
   guard let data = data else {
     print(String(describing: error))
     return
@@ -123,29 +124,29 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-  "data": {
-    "chasisNumber": "ME1KG0447E2066723",
-    "color": "NEGRO",
-    "engineNumber": "1ES3032465",
-    "fines": "NO POSEE MULTAS",
-    "manufacturer": "NO DISPONIBLE",
-    "mark": "YAMAHA",
-    "model": "FZ 16",
-    "orderTheft": "NO DISPONIBLE",
-    "origin": "NO DISPONIBLE",
-    "owner": "",
-    "plate": "BB985",
-    "publicTrans": "NO DISPONIBLE",
-    "revision": "NO DISPONIBLE",
-    "rut": "26043542-6",
-    "type": "MOTO",
-    "typeTransPub": "NO DISPONIBLE",
-    "year": "2014"
-  },
-  "signature": {
-    "dateTime": "April 21, 2023 8:32 PM",
-    "message": "Certified by Verifik.co"
-  }
+	"data": {
+		"chasisNumber": "ME1KG0447E2066723",
+		"color": "NEGRO",
+		"engineNumber": "1ES3032465",
+		"fines": "NO POSEE MULTAS",
+		"manufacturer": "NO DISPONIBLE",
+		"mark": "YAMAHA",
+		"model": "FZ 16",
+		"orderTheft": "NO DISPONIBLE",
+		"origin": "NO DISPONIBLE",
+		"owner": "",
+		"plate": "BB985",
+		"publicTrans": "NO DISPONIBLE",
+		"revision": "NO DISPONIBLE",
+		"rut": "26043542-6",
+		"type": "MOTO",
+		"typeTransPub": "NO DISPONIBLE",
+		"year": "2014"
+	},
+	"signature": {
+		"dateTime": "April 21, 2023 8:32 PM",
+		"message": "Certified by Verifik.co"
+	}
 }
 ```
 
@@ -154,8 +155,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+	"code": "NotFound",
+	"message": "Record not found."
 }
 ```
 
@@ -164,8 +165,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-"code": "MissingParameter",
-"message": "missing plate\n"
+	"code": "MissingParameter",
+	"message": "missing plate\n"
 }
 ```
 

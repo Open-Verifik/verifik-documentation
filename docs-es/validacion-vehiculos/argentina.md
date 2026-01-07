@@ -2,6 +2,7 @@
 id: argentina
 title: Argentina
 description: Verificar información de vehículos argentinos usando placa de matrícula
+slug: /validacion-vehiculos/argentina
 ---
 
 # Argentina
@@ -23,9 +24,9 @@ El servicio de información de vehículos argentinos proporciona información de
 
 ### Parámetros
 
-| Name   | Type   | Required? | Description                                    | Example      |
-| ------ | ------ | --------- | ---------------------------------------------- | ------------ |
-| plate  | String | True      | Placa de matrícula a consultar, sin espacios ni puntos. | `ABC123`     |
+| Name  | Type   | Required? | Description                                             | Example  |
+| ----- | ------ | --------- | ------------------------------------------------------- | -------- |
+| plate | String | True      | Placa de matrícula a consultar, sin espacios ni puntos. | `ABC123` |
 
 ### Solicitud
 
@@ -36,23 +37,23 @@ import TabItem from '@theme/TabItem';
   <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/ar/vehicle',
-  params: {plate: 'AE834AM'},
-  headers: {
-    Accept: 'application/json',
-    Authorization: 'Bearer <your_token>'
-  }
+	method: "GET",
+	url: "https://api.verifik.co/v2/ar/vehicle",
+	params: { plate: "AE834AM" },
+	headers: {
+		Accept: "application/json",
+		Authorization: "Bearer <your_token>",
+	},
 };
 
 try {
-  const { data } = await axios.request(options);
-  console.log(data);
+	const { data } = await axios.request(options);
+	console.log(data);
 } catch (error) {
-  console.error(error);
+	console.error(error);
 }
 ```
 
@@ -99,25 +100,25 @@ print(r.json())
 
 ```json
 {
-  "data": {
-    "brand": "HERMANN",
-    "codeRegistrySectional": "2097",
-    "isPlateMercosur": "true",
-    "model": "FURGON",
-    "plate": "AE834AM",
-    "recordAddress": "AV. CORRIENTES 2063  PISO: 1 DPTO: 35",
-    "registrationDenomination": "CAPITAL FEDERAL N° 097",
-    "registrationLocality": "CABA",
-    "registrationProvince": "",
-    "type": "MOTOVEHICULO",
-    "version": "S.FP.3E.98 2+1",
-    "year": "2021"
-  },
-  "signature": {
-    "dateTime": "October 10, 2025 6:21 PM",
-    "message": "Certified by Verifik.co"
-  },
-  "id": "2SJOD"
+	"data": {
+		"brand": "HERMANN",
+		"codeRegistrySectional": "2097",
+		"isPlateMercosur": "true",
+		"model": "FURGON",
+		"plate": "AE834AM",
+		"recordAddress": "AV. CORRIENTES 2063  PISO: 1 DPTO: 35",
+		"registrationDenomination": "CAPITAL FEDERAL N° 097",
+		"registrationLocality": "CABA",
+		"registrationProvince": "",
+		"type": "MOTOVEHICULO",
+		"version": "S.FP.3E.98 2+1",
+		"year": "2021"
+	},
+	"signature": {
+		"dateTime": "October 10, 2025 6:21 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "2SJOD"
 }
 ```
 
@@ -126,8 +127,8 @@ print(r.json())
 
 ```json
 {
-  "code": "NotFound",
-  "message": "Record not found."
+	"code": "NotFound",
+	"message": "Record not found."
 }
 ```
 
@@ -136,8 +137,8 @@ print(r.json())
 
 ```json
 {
-  "code": "MissingParameter",
-  "message": "missing plate\n"
+	"code": "MissingParameter",
+	"message": "missing plate\n"
 }
 ```
 
@@ -146,19 +147,18 @@ print(r.json())
 
 ```json
 {
-  "code": "InternalServerError",
-  "message": "Server error."
+	"code": "InternalServerError",
+	"message": "Server error."
 }
 ```
 
   </TabItem>
 </Tabs>
 
-
 ## Casos de Uso
 
-- **Verificación de Seguros**: Verificar detalles del vehículo para fines de seguros
-- **Concesionarios de Autos**: Validar información del vehículo antes de la compra
-- **Gestión de Flotas**: Rastrear información de vehículos de la empresa
-- **Aplicación de la Ley**: Verificar registro y propiedad del vehículo
-- **Debida Diligencia**: Verificar información del vehículo para transacciones
+-   **Verificación de Seguros**: Verificar detalles del vehículo para fines de seguros
+-   **Concesionarios de Autos**: Validar información del vehículo antes de la compra
+-   **Gestión de Flotas**: Rastrear información de vehículos de la empresa
+-   **Aplicación de la Ley**: Verificar registro y propiedad del vehículo
+-   **Debida Diligencia**: Verificar información del vehículo para transacciones
