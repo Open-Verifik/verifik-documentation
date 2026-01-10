@@ -771,6 +771,12 @@ const sidebars = {
 				"legal/smartcheck-terminos-y-condiciones-de-uso",
 			],
 		},
+		{
+			type: "category",
+			label: "HOJA DE RUTA",
+			collapsible: false,
+			items: ["hoja-ruta/roadmap-2026"],
+		},
 	],
 };
 

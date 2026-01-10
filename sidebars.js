@@ -910,6 +910,12 @@ const sidebars = {
 				"legal/smartcheck-terms-and-conditions-of-use",
 			],
 		},
+		{
+			type: "category",
+			label: "ROADMAP",
+			collapsible: false,
+			items: ["roadmap/roadmap-2026"],
+		},
 	],
 };
 
