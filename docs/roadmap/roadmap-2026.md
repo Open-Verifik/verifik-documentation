@@ -16,7 +16,7 @@ Executing our vision for a decentralized, agent-driven economy.
 - **Data Tools:** PDF Export via Webhooks & Bulk processing (Excel/CSV/JSON).
 - **Expansion:** 5+ new validation endpoints for LATAM.
 
-## Q2 2026 - Scale & Integration
+## Q2 2026 - Compliance & Risk Management
 
 - **Migration:** Full customer transition to $ZNS token payment model.
 - **SmartBackgroundCheck Premium Launch:** Continuous background check monitoring across multiple databases (FBI, Interpol, OFAC, DEA, Europol, country-specific). Real-time alerts for new records, risk scoring, and compliance reporting. Tiered pricing structure.
@@ -28,7 +28,7 @@ Executing our vision for a decentralized, agent-driven economy.
 - **T-REX Protocol:** On-chain identity layer integration with Zelf technology.
 - **Security Audits:** Comprehensive external audits of all token contracts.
 
-## Q3 2026 - Rewards & Ecosystem
+## Q3 2026 - Partnerships & Ecosystem Growth
 
 - **White-Label & Reseller Program:** Enable partners to resell Verifik services with competitive margins, white-label API & UI, co-branding options, and partner dashboard.
 - **Professional Services:** Implementation and consulting services including custom integration development, compliance consulting, training & onboarding, and custom feature development.
@@ -39,7 +39,7 @@ Executing our vision for a decentralized, agent-driven economy.
 - **DeFi Partnerships:** Integration with lending protocols for reputation-based access.
 - **Data Marketplace:** Protocol for users to monetize specific data points privately.
 
-## Q4 2026 - Decentralization & AI
+## Q4 2026 - Advanced Tools & Global Expansion
 
 - **Unified Compliance Dashboard:** Single platform integrating KYC, KYB, AML screening, and transaction monitoring. Comprehensive case management system with risk overview dashboard for compliance teams.
 - **Reusable KYC / KYC Sharing:** Enable verified identity data sharing between platforms with user consent. Reduces redundant verification steps, accelerates onboarding, and improves user experience while maintaining full compliance.

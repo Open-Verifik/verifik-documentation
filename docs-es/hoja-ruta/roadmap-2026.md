@@ -16,7 +16,7 @@ Ejecutando nuestra visión para una economía descentralizada e impulsada por ag
 - **Herramientas de Datos:** Exportación PDF vía Webhooks y procesamiento masivo (Excel/CSV/JSON).
 - **Expansión:** 5+ nuevos endpoints de validación para LATAM.
 
-## Q2 2026 - Escala e Integración
+## Q2 2026 - Cumplimiento y Gestión de Riesgos
 
 - **Migración:** Transición completa de clientes al modelo de pago con token $ZNS.
 - **Lanzamiento de SmartBackgroundCheck Premium:** Monitoreo continuo de verificaciones de antecedentes en múltiples bases de datos (FBI, Interpol, OFAC, DEA, Europol, específicas por país). Alertas en tiempo real para nuevos registros, puntuación de riesgo e informes de cumplimiento. Estructura de precios escalonados.
@@ -28,7 +28,7 @@ Ejecutando nuestra visión para una economía descentralizada e impulsada por ag
 - **Protocolo T-REX:** Integración de capa de identidad on-chain con tecnología Zelf.
 - **Auditorías de Seguridad:** Auditorías externas integrales de todos los contratos de tokens.
 
-## Q3 2026 - Recompensas y Ecosistema
+## Q3 2026 - Asociaciones y Crecimiento del Ecosistema
 
 - **Programa de Marca Blanca y Revendedores:** Permite a los socios revender servicios de Verifik con márgenes competitivos, API y UI de marca blanca, opciones de co-marca y panel de socios.
 - **Servicios Profesionales:** Servicios de implementación y consultoría que incluyen desarrollo de integración personalizada, consultoría de cumplimiento, capacitación e incorporación, y desarrollo de funciones personalizadas.
@@ -39,7 +39,7 @@ Ejecutando nuestra visión para una economía descentralizada e impulsada por ag
 - **Asociaciones DeFi:** Integración con protocolos de préstamo para acceso basado en reputación.
 - **Mercado de Datos:** Protocolo para que los usuarios monetizen puntos de datos específicos de forma privada.
 
-## Q4 2026 - Descentralización e IA
+## Q4 2026 - Herramientas Avanzadas y Expansión Global
 
 - **Panel Unificado de Cumplimiento:** Plataforma única que integra KYC, KYB, verificación AML y monitoreo de transacciones. Sistema completo de gestión de casos con panel de resumen de riesgos para equipos de cumplimiento.
 - **KYC Reutilizable / Compartir KYC:** Permite compartir datos de identidad verificados entre plataformas con consentimiento del usuario. Reduce pasos de verificación redundantes, acelera la incorporación y mejora la experiencia del usuario mientras mantiene el cumplimiento total.
