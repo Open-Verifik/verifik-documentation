@@ -199,6 +199,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/guatemala-extra",
+					label: "🇬🇹 Guatemala - Extra",
+				},
+				{
+					type: "doc",
 					id: "identity/honduras",
 					label: "🇭🇳 Honduras",
 				},
