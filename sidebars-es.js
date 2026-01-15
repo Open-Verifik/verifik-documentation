@@ -107,6 +107,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 Ecuador", key: "identity-ecuador" },
 				{ type: "doc", id: "identity/el-salvador", label: "🇸🇻 El Salvador" },
 				{ type: "doc", id: "identity/guatemala", label: "🇬🇹 Guatemala" },
+				{ type: "doc", id: "identity/guatemala-extra", label: "🇬🇹 Guatemala Extra" },
 				{ type: "doc", id: "identity/honduras", label: "🇭🇳 Honduras" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 México", key: "identity-mexico" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Panamá", key: "identity-panama" },
