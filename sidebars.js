@@ -63,6 +63,7 @@ const sidebars = {
 				"access/access",
 				"smartenroll/smartenroll",
 				"smartenroll/smartenroll-kyc-flow",
+				"smartenroll/smartenroll-admin-kyc-review",
 				"smart-enroll-self-hosted/smart-enroll-self-hosted",
 				"smart-scan/smart-scan",
 			],

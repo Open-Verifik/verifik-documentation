@@ -42,6 +42,7 @@ const sidebars = {
 				"access/acceso",
 				"smartenroll/smartenroll",
 				"smartenroll/smartenroll-flujo-kyc",
+				"smartenroll/smartenroll-admin-revision-kyc",
 				"smart-enroll-auto-alojado/smart-enroll-self-hosted",
 				"smart-scan/escaneo-inteligente",
 			],
