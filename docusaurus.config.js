@@ -209,7 +209,7 @@ const config = {
 
 	// Internationalization configuration REMOVED
 	// i18n removed to prevent /es prefix on Spanish routes
-	// Spanish docs will be at /docs-es/ instead of /es/docs-es/
+	// Spanish docs will be at /verifik-es/ instead of /es/docs-es/
 
 	presets: [
 		[
@@ -246,7 +246,7 @@ const config = {
 			{
 				id: "docs-es",
 				path: "docs-es",
-				routeBasePath: "docs-es",
+				routeBasePath: "verifik-es",
 				sidebarPath: "./sidebars-es.js",
 				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
 			},

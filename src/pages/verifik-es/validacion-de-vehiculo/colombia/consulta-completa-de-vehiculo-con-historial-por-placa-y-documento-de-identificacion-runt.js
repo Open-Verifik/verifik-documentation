@@ -5,7 +5,7 @@ import { useHistory } from '@docusaurus/router';
 export default function OldGitBookRedirect() {
 	const [countdown, setCountdown] = useState(5);
 	const history = useHistory();
-	const redirectUrl = '/docs-es/validacion-vehiculos/colombia/registros-vehiculos-por-placa-runt';
+	const redirectUrl = '/verifik-es/validacion-vehiculos/colombia/registros-vehiculos-por-placa-runt';
 
 	useEffect(() => {
 		const timer = setInterval(() => {

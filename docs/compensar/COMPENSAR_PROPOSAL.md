@@ -250,7 +250,7 @@ Aunque Verifik soporta Passkeys, recomendamos nuestra tecnología **Zero Knowled
 -   **ZelfProofs (Descentralizado):** Utilizan criptografía de Conocimiento Cero y almacenamiento descentralizado en IPFS. Su rostro es su llave privada, sin intermediarios tecnológicos.
 
 👉 [Conocer más sobre ZK Face Proofs](https://verifik.co/zk-face-proof/)  
-📚 [Documentación Técnica](https://docs.verifik.co/docs-es/biometrics/pruebas-faciales-conocimiento-cero-resumen)
+📚 [Documentación Técnica](https://docs.verifik.co/verifik-es/biometrics/pruebas-faciales-conocimiento-cero-resumen)
 
 ---
 

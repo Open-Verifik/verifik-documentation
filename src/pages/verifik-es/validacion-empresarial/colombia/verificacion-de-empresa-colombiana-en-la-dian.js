@@ -8,7 +8,7 @@ import Head from "@docusaurus/Head";
 export default function OldGitBookRedirect() {
 	const [countdown, setCountdown] = useState(60);
 	const history = useHistory();
-	const redirectUrl = "/docs-es/validacion-empresarial/colombia-verificacion-dian";
+	const redirectUrl = "/verifik-es/validacion-empresarial/colombia-verificacion-dian";
 	const pageTitle = "Verificación de Empresa Colombiana en la DIAN";
 	const pageDescription =
 		"Verifica el estado DIAN (autoridad tributaria de Colombia) de una empresa. Valida si una empresa colombiana está activa y tiene vigentes sus responsabilidades fiscales ante la DIAN mediante la API de Verifik.";

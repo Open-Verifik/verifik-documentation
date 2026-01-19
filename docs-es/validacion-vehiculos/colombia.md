@@ -12,35 +12,35 @@ Servicios integrales de validación de vehículos colombianos que proporcionan a
 
 ### 🏛️ **Servicios Municipales de Bogotá**
 
--   **[Impuestos en Bogotá](/docs-es/validacion-vehiculos/colombia/impuestos-bogota)** - Verificar estado de impuestos del vehículo e historial de pagos en Bogotá
--   **[Verificación de Multas de Vehículos](/docs-es/validacion-vehiculos/colombia/multas-vehiculos-bogota)** - Consultar multas de tráfico pendientes y violaciones
--   **[Accidentalidad de Vehículos](/docs-es/validacion-vehiculos/colombia/accidentalidad-vehiculos-bogota)** - Acceder al historial de accidentes y registros
--   **[Pico y Placa](/docs-es/validacion-vehiculos/colombia/pico-y-placa-bogota)** - Verificar restricciones de vehículos y horarios de circulación
+-   **[Impuestos en Bogotá](/verifik-es/validacion-vehiculos/colombia/impuestos-bogota)** - Verificar estado de impuestos del vehículo e historial de pagos en Bogotá
+-   **[Verificación de Multas de Vehículos](/verifik-es/validacion-vehiculos/colombia/multas-vehiculos-bogota)** - Consultar multas de tráfico pendientes y violaciones
+-   **[Accidentalidad de Vehículos](/verifik-es/validacion-vehiculos/colombia/accidentalidad-vehiculos-bogota)** - Acceder al historial de accidentes y registros
+-   **[Pico y Placa](/verifik-es/validacion-vehiculos/colombia/pico-y-placa-bogota)** - Verificar restricciones de vehículos y horarios de circulación
 
 ### 🚗 **Servicios Fasecolda**
 
--   **[Valores de Vehículos por Placa](/docs-es/validacion-vehiculos/colombia/valores-vehiculos-por-placa-fasecolda)** - Obtener valores de mercado actuales y datos de tasación
--   **[Vehículo por Código](/docs-es/validacion-vehiculos/colombia/vehiculo-por-codigo-fasecolda)** - Recuperar información detallada del vehículo usando códigos únicos
--   **[Verificación de Siniestros](/docs-es/validacion-vehiculos/colombia/verificacion-siniestros-fasecolda)** - Verificar reportes de accidentes y reclamos de seguros
+-   **[Valores de Vehículos por Placa](/verifik-es/validacion-vehiculos/colombia/valores-vehiculos-por-placa-fasecolda)** - Obtener valores de mercado actuales y datos de tasación
+-   **[Vehículo por Código](/verifik-es/validacion-vehiculos/colombia/vehiculo-por-codigo-fasecolda)** - Recuperar información detallada del vehículo usando códigos únicos
+-   **[Verificación de Siniestros](/verifik-es/validacion-vehiculos/colombia/verificacion-siniestros-fasecolda)** - Verificar reportes de accidentes y reclamos de seguros
 
 ### 🚙 **RUNT (Registro Nacional de Tránsito)**
 
--   **[Licencia de Conducir](/docs-es/validacion-vehiculos/colombia/licencia-conducir-runt)** - Validar información de licencia de conducir colombiana
--   **[Registros de vehículos por número de placa](/docs-es/validacion-vehiculos/colombia/registros-vehiculos-por-placa-runt)** - Datos completos de registro de vehículos
--   **[Registros de vehículos por número de placa (simplificado)](/docs-es/validacion-vehiculos/colombia/registros-vehiculos-por-placa-simplificado-runt)** - Información esencial del vehículo
--   **[Registros de vehículos por VIN](/docs-es/validacion-vehiculos/colombia/registros-vehiculos-por-vin-runt)** - Identificación de vehículos usando números VIN
+-   **[Licencia de Conducir](/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt)** - Validar información de licencia de conducir colombiana
+-   **[Registros de vehículos por número de placa](/verifik-es/validacion-vehiculos/colombia/registros-vehiculos-por-placa-runt)** - Datos completos de registro de vehículos
+-   **[Registros de vehículos por número de placa (simplificado)](/verifik-es/validacion-vehiculos/colombia/registros-vehiculos-por-placa-simplificado-runt)** - Información esencial del vehículo
+-   **[Registros de vehículos por VIN](/verifik-es/validacion-vehiculos/colombia/registros-vehiculos-por-vin-runt)** - Identificación de vehículos usando números VIN
 
 ### ⚖️ **SIMIT (Sistema de Infracciones de Tránsito)**
 
--   **[SIMIT - Multas](/docs-es/validacion-vehiculos/colombia/multas-simit)** - Consultar multas de tráfico y penalizaciones
--   **[SIMIT - Acuerdos](/docs-es/validacion-vehiculos/colombia/acuerdos-simit)** - Verificar acuerdos de pago y liquidaciones
--   **[SIMIT - Resoluciones](/docs-es/validacion-vehiculos/colombia/resoluciones-simit)** - Acceder a resoluciones administrativas
--   **[Consulta general por documento de identificación](/docs-es/validacion-vehiculos/colombia/consulta-general-por-documento-simit)** - Buscar por número de cédula del conductor
--   **[Consulta general por número de placa](/docs-es/validacion-vehiculos/colombia/consulta-general-por-placa-simit)** - Buscar por número de placa del vehículo
+-   **[SIMIT - Multas](/verifik-es/validacion-vehiculos/colombia/multas-simit)** - Consultar multas de tráfico y penalizaciones
+-   **[SIMIT - Acuerdos](/verifik-es/validacion-vehiculos/colombia/acuerdos-simit)** - Verificar acuerdos de pago y liquidaciones
+-   **[SIMIT - Resoluciones](/verifik-es/validacion-vehiculos/colombia/resoluciones-simit)** - Acceder a resoluciones administrativas
+-   **[Consulta general por documento de identificación](/verifik-es/validacion-vehiculos/colombia/consulta-general-por-documento-simit)** - Buscar por número de cédula del conductor
+-   **[Consulta general por número de placa](/verifik-es/validacion-vehiculos/colombia/consulta-general-por-placa-simit)** - Buscar por número de placa del vehículo
 
 ### 🎓 **Registros de Entrenamiento SISCONMP**
 
--   **[Registros de Entrenamiento SISCONMP](/docs-es/validacion-vehiculos/colombia/registros-entrenamiento-sisconmp)** - Acceder a certificaciones de entrenamiento de conductores profesionales
+-   **[Registros de Entrenamiento SISCONMP](/verifik-es/validacion-vehiculos/colombia/registros-entrenamiento-sisconmp)** - Acceder a certificaciones de entrenamiento de conductores profesionales
 
 ## Categorías de Servicios
 

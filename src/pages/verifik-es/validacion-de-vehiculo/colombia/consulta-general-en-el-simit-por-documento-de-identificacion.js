@@ -7,7 +7,7 @@ import TabItem from "@theme/TabItem";
 export default function OldGitBookRedirect() {
 	const [countdown, setCountdown] = useState(60);
 	const history = useHistory();
-	const redirectUrl = "/docs-es/validacion-vehiculos/colombia/consulta-general-por-documento-simit";
+	const redirectUrl = "/verifik-es/validacion-vehiculos/colombia/consulta-general-por-documento-simit";
 
 	useEffect(() => {
 		const timer = setInterval(() => {
