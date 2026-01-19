@@ -15,6 +15,7 @@ const config = {
 	title: "Verifik",
 	tagline: "Everything you need to verify & authenticate users faster and easier",
 	favicon: "https://cdn.verifik.co/LogoNegroSolo.svg",
+	onDuplicateRoutes: "ignore", // Ignore duplicate routes - we intentionally create duplicate pages for SEO (same content, different URLs)
 
 	// Additional favicon links and SEO metadata
 	headTags: [

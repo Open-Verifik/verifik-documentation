@@ -2,7 +2,7 @@
 id: brazil
 title: Brasil
 description: Verificar información de vehículos brasileños usando placa de matrícula
-slug: /validacion-vehiculos/brazil
+slug: /validacion-de-vehiculo/brasil
 ---
 
 # Brasil

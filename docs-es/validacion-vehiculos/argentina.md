@@ -2,7 +2,7 @@
 id: argentina
 title: Argentina
 description: Verificar información de vehículos argentinos usando placa de matrícula
-slug: /validacion-vehiculos/argentina
+slug: /validacion-de-vehiculo/argentina
 ---
 
 # Argentina

@@ -233,7 +233,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de vehículo argentino"
       description=""
       image="/img/smartcheck/argentina-vehicle.png"
-      link="/verifik-es/validacion-vehiculos/argentina"
+      link="/verifik-es/validacion-de-vehiculo/argentina"
     />
   </div>
   <div className="col col--4">
@@ -249,7 +249,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de vehículo brasileño"
       description=""
       image="/img/smartcheck/brazil-vehicle.png"
-      link="/verifik-es/validacion-vehiculos/brazil"
+      link="/verifik-es/validacion-de-vehiculo/brasil"
     />
   </div>
 </div>
@@ -287,7 +287,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de vehículo ecuatoriano"
       description=""
       image="/img/smartcheck/ecuador-vehicle.png"
-      link="/verifik-es/validacion-vehiculos/ecuador"
+      link="/verifik-es/validacion-de-vehiculo/ecuador/consulta-de-informacion-de-vehiculo"
     />
   </div>
   <div className="col col--4">
@@ -512,7 +512,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Procesos legales colombianos"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="/verifik-es/legal/procesos-legales-colombianos"
+      link="/verifik-es/legal/procesos-judiciales-colombianos"
     />
   </div>
   <div className="col col--4">

@@ -2,7 +2,7 @@
 id: licencia-conducir-chile
 title: Licencia de Conducir
 description: Servicio de licencia de conducir chilena
-slug: /validacion-vehiculos/chile/licencia-conducir
+slug: /validacion-de-vehiculo/chile/licencia-de-conducir
 ---
 
 import Tabs from '@theme/Tabs';

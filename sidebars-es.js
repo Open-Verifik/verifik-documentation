@@ -516,7 +516,7 @@ const sidebars = {
 				},
 				{
 					type: "doc",
-					id: "verificacion-antecendentes/verificacion-antecendentes-onu",
+					id: "verificacion-de-antecedentes/internacional/verificacion-antecedentes-onu",
 					label: "🌐 ONU - Antecedentes",
 				},
 			],
