@@ -1,7 +1,7 @@
 ---
-id: colombia
 title: Colombia
 description: Colombian vehicle validation service
+slug: /vehicle-validation/colombia
 ---
 
 # Colombia

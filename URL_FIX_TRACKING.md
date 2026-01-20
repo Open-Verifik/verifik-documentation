@@ -182,6 +182,28 @@ This file tracks all URLs that need to be fixed and their completion status.
 | https://docs.verifik.co/recursos/listar-todas-las-validaciones-de-vivacidad-de-documentos | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/listar-todas-las-validaciones-de-vivacidad-de-documentos` - hidden from sidebar |
 | https://docs.verifik.co/recursos/crear-una-validacion-de-vivacidad-de-documento | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/crear-una-validacion-de-vivacidad-de-documento` - hidden from sidebar |
 
+### 9. Additional docs.verifik.co URLs (From Analytics/403 Errors)
+
+| URL | Status | Notes |
+|-----|--------|-------|
+| https://docs.verifik.co/verifik-es/validaciones-de-identidad/venezuela | ✅ | Duplicate file created from `/identidad/venezuela` with slug `/validaciones-de-identidad/venezuela` |
+| https://docs.verifik.co/background-check/colombia | ✅ | File exists with slug `/background-check/colombia` |
+| https://docs.verifik.co/verifik-biometrics-apis/liveness?fallback=true | ✅ | Duplicate file created with slug `/verifik-biometrics-apis/liveness` (query param handled automatically) |
+| https://docs.verifik.co/docs-es/validacion-vehiculos/colombia | ✅ | Already handled in `docs-es-old/` |
+| https://docs.verifik.co/background-check | ✅ | File exists with slug `/background-check` |
+| https://docs.verifik.co/vehicle-validation/colombia | ✅ | Slug added: `/vehicle-validation/colombia` |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia | ✅ | File created with slug `/validacion-de-vehiculo/colombia` |
+| https://docs.verifik.co/identity-validation/united-states | ✅ | File exists with slug `/identity-validation/united-states` |
+| https://docs.verifik.co/services/verifik-enroll-code-solution-via-api | ✅ | File exists in Spanish docs with slug `/services/verifik-enroll-code-solution-via-api` |
+| https://docs.verifik.co/accounts/authentication | ✅ | File exists with slug `/accounts/authentication` |
+| https://docs.verifik.co/verifik-es | ✅ | Intro page - should exist |
+| https://docs.verifik.co/identity-validation/venezuela | ✅ | Duplicate file created with slug `/identity-validation/venezuela` |
+| https://docs.verifik.co/identity-validation/canada | ✅ | File exists with slug `/identity-validation/canada` |
+| https://docs.verifik.co/identity-validation/colombia | ✅ | File exists with slug `/identity-validation/colombia` |
+| https://docs.verifik.co/identity-validation/colombia?fallback=true | ✅ | Query param handled automatically |
+| https://docs.verifik.co/accounts/authentication?fallback=true | ✅ | Query param handled automatically |
+| https://docs.verifik.co/vehicle-validation/colombia?fallback=true | ✅ | Slug added, query param handled automatically |
+
 ### 10. Root Level Paths (English) - May be intentional but need verification
 
 **Note:** Vehicle-validation URLs and Resources URLs have been addressed by creating duplicate files with the correct slugs. These duplicate files are hidden from the sidebar (not listed in `sidebars.js`) to serve as redirects for old URLs without cluttering navigation.
