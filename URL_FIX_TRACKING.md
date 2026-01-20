@@ -15,44 +15,44 @@ This file tracks all URLs that need to be fixed and their completion status.
 
 | URL | Status | Notes |
 |-----|--------|-------|
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/peru/seguro-de-vehiculos-en-peru/ | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/peru/seguro-de-vehiculos-en-peru | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/valores-de-vehiculos-por-placa-fasecolda | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/vehiculo-por-codigo-fasecolda | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/impuestos-en-bogota | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/sistema-de-informacion-para-conductores-que-transportan-mercancias-peligrosas.md | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/consulta-completa-de-vehiculo-con-historial-por-placa-y-documento-de-identificacion-runt.md | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/vehiculo-por-placa-y-cedula-unicamente | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/ecuador/consulta-de-informacion-de-vehiculo | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/argentina | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/brasil.md | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/estados-unidos/informacion-del-vehiculo.md | ⏳ | |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/peru/seguro-de-vehiculos-en-peru/ | ✅ | File exists with slug `/validacion-de-vehiculo/peru/seguro-de-vehiculos-en-peru` - trailing slash handled automatically |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/peru/seguro-de-vehiculos-en-peru | ✅ | File exists with slug `/validacion-de-vehiculo/peru/seguro-de-vehiculos-en-peru` |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/valores-de-vehiculos-por-placa-fasecolda | ✅ | File exists with slug `/validacion-de-vehiculo/colombia/valores-de-vehiculos-por-placa-fasecolda` |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/vehiculo-por-codigo-fasecolda | ✅ | File exists with slug `/validacion-de-vehiculo/colombia/vehiculo-por-codigo-fasecolda` |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/impuestos-en-bogota | ✅ | Duplicate file created with slug `/validacion-de-vehiculo/colombia/impuestos-en-bogota` - hidden from sidebar |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/sistema-de-informacion-para-conductores-que-transportan-mercancias-peligrosas.md | ✅ | Duplicate file created with slug `/validacion-de-vehiculo/colombia/sistema-de-informacion-para-conductores-que-transportan-mercancias-peligrosas` - hidden from sidebar |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/consulta-completa-de-vehiculo-con-historial-por-placa-y-documento-de-identificacion-runt.md | ✅ | Duplicate file created with slug `/validacion-de-vehiculo/colombia/consulta-completa-de-vehiculo-con-historial-por-placa-y-documento-de-identificacion-runt` - hidden from sidebar |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/vehiculo-por-placa-y-cedula-unicamente | ✅ | File exists with slug `/validacion-de-vehiculo/colombia/vehiculo-por-placa-y-cedula-unicamente` |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/ecuador/consulta-de-informacion-de-vehiculo | ✅ | File exists with slug `/validacion-de-vehiculo/ecuador/consulta-de-informacion-de-vehiculo` |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/argentina | ✅ | File exists with slug `/validacion-de-vehiculo/argentina` |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/brasil.md | ✅ | Duplicate file created with slug `/validacion-de-vehiculo/brasil` - hidden from sidebar |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/estados-unidos/informacion-del-vehiculo.md | ✅ | New file created with slug `/validacion-de-vehiculo/estados-unidos/informacion-del-vehiculo` - hidden from sidebar |
 
 ### 2. Wrong Prefix: /docs-es/ → /verifik-es/
 
 | URL | Status | Notes |
 |-----|--------|-------|
-| https://docs.verifik.co/docs-es/validacion-empresarial/colombia-informacion-empresarial-rues | ⏳ | |
-| https://docs.verifik.co/docs-es/validacion-empresarial/colombia-registro-empresarial-rues | ⏳ | |
-| https://docs.verifik.co/docs-es/ocr-engines/scan-studio/documents-supported/ | ⏳ | |
-| https://docs.verifik.co/docs-es/validacion-empresarial/colombia-verificacion-facturador-legal | ⏳ | |
-| https://docs.verifik.co/docs-es/validacion-vehiculos/colombia/pico-y-placa-bogota | ⏳ | |
-| https://docs.verifik.co/docs-es/validacion-vehiculos/colombia/consulta-general-por-documento-simit | ⏳ | |
-| https://docs.verifik.co/docs-es/validaciones-conductores/chile-licencia-conducir | ⏳ | |
-| https://docs.verifik.co/docs-es/docs-es | ⏳ | Invalid path |
+| https://docs.verifik.co/docs-es/validacion-empresarial/colombia-informacion-empresarial-rues | ✅ | Cloned to `docs-es-old/` with slug `/doc-es/validacion-empresarial/colombia-informacion-empresarial-rues` - hidden from sidebar |
+| https://docs.verifik.co/docs-es/validacion-empresarial/colombia-registro-empresarial-rues | ✅ | Cloned to `docs-es-old/` with slug `/doc-es/validacion-empresarial/colombia-registro-empresarial-rues` - hidden from sidebar |
+| https://docs.verifik.co/docs-es/ocr-engines/scan-studio/documents-supported/ | ✅ | Cloned to `docs-es-old/` with slug `/doc-es/ocr-engines/scan-studio/documents-supported` - hidden from sidebar (trailing slash handled) |
+| https://docs.verifik.co/docs-es/validacion-empresarial/colombia-verificacion-facturador-legal | ✅ | Cloned to `docs-es-old/` with slug `/doc-es/validacion-empresarial/colombia-verificacion-facturador-legal` - hidden from sidebar |
+| https://docs.verifik.co/docs-es/validacion-vehiculos/colombia/pico-y-placa-bogota | ✅ | Cloned to `docs-es-old/` with slug `/doc-es/validacion-vehiculos/colombia/pico-y-placa-bogota` - hidden from sidebar |
+| https://docs.verifik.co/docs-es/validacion-vehiculos/colombia/consulta-general-por-documento-simit | ✅ | Cloned to `docs-es-old/` with slug `/doc-es/validacion-vehiculos/colombia/consulta-general-por-documento-simit` - hidden from sidebar |
+| https://docs.verifik.co/docs-es/validaciones-conductores/chile-licencia-conducir | ✅ | Cloned to `docs-es-old/` with slug `/doc-es/validaciones-conductores/chile-licencia-conducir` - hidden from sidebar |
+| https://docs.verifik.co/docs-es/docs-es | ✅ | Created index file at `/doc-es` - redirects to main documentation |
 
 ### 3. Old Background Check Path: /background-check/international/ → /verifik-es/verificacion-de-antecedentes/internacional/
 
 | URL | Status | Notes |
 |-----|--------|-------|
-| https://docs.verifik.co/verifik-es/background-check/international/onu-background-check?fallback=true | ⏳ | |
-| https://docs.verifik.co/background-check/international/onu-background-check?fallback=true | ⏳ | |
-| https://docs.verifik.co/background-check/international/onu-background-check | ⏳ | |
-| https://docs.verifik.co/background-check/international/ofac-background-check?fallback=true | ⏳ | |
-| https://docs.verifik.co/background-check/international/interpol-background-check | ⏳ | |
-| https://docs.verifik.co/background-check/international/interpol-background-check?fallback=true | ⏳ | |
-| https://docs.verifik.co/background-check/international/dea-background-check?fallback=true | ⏳ | |
-| https://docs.verifik.co/background-check/international/europol-background-check.md | ⏳ | |
+| https://docs.verifik.co/verifik-es/background-check/international/onu-background-check?fallback=true | ✅ | Duplicate file created with English slug `/background-check/international/onu-background-check` in Spanish docs - query param handled automatically |
+| https://docs.verifik.co/background-check/international/onu-background-check?fallback=true | ✅ | Slug updated from `/background-check/onu-background-check` to `/background-check/international/onu-background-check` - query param handled automatically |
+| https://docs.verifik.co/background-check/international/onu-background-check | ✅ | Slug updated to `/background-check/international/onu-background-check` |
+| https://docs.verifik.co/background-check/international/ofac-background-check?fallback=true | ✅ | Added slug `/background-check/international/ofac-background-check` - query param handled automatically |
+| https://docs.verifik.co/background-check/international/interpol-background-check | ✅ | Slug updated from `/background-check/interpol-background-check` to `/background-check/international/interpol-background-check` |
+| https://docs.verifik.co/background-check/international/interpol-background-check?fallback=true | ✅ | Slug updated to `/background-check/international/interpol-background-check` - query param handled automatically |
+| https://docs.verifik.co/background-check/international/dea-background-check?fallback=true | ✅ | Added slug `/background-check/international/dea-background-check` - query param handled automatically |
+| https://docs.verifik.co/background-check/international/europol-background-check.md | ✅ | Slug updated from `/background-check/europol-background-check` to `/background-check/international/europol-background-check` (file extension handled automatically) |
 
 ### 4. Trailing Dot: /validacion-empresarial./ → /validacion-empresarial/
 
@@ -392,22 +392,22 @@ This file tracks all URLs that need to be fixed and their completion status.
 
 | URL | Status | Notes |
 |-----|--------|-------|
-| https://docs.verifik.co/verifik-es/identity-validation/colombia?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/identity-validation/ecuador?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/identity-validation/peru/peruvian-citizen?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/identity-validation/colombia/colombian-politically-exposed-persons?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/identity-validation/united-states/ssn-verification-social-security-number | ⏳ | |
-| https://docs.verifik.co/verifik-es/vehicle-validation/colombia/verifik-pico-y-placa-for-bogota?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/vehicle-validation/colombia/vehicle-fines-check-in-bogota-colombia?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/health/verify-colombian-affiliations?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/health/verify-colombian-affiliations | ⏳ | |
-| https://docs.verifik.co/verifik-es/health | ⏳ | |
-| https://docs.verifik.co/verifik-es/accounts/authentication/renew-your-token-jwt?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/services/verifik-access-code-solution-via-api?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/services/verifik-enroll-code-solution-via-api?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/biometrics-apis/comparar/comparar-1-1?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-es/resources/persons?fallback=true | ⏳ | |
+| https://docs.verifik.co/verifik-es/identity-validation/colombia?fallback=true | ✅ | File exists with slug `/identity-validation/colombia` - query params handled automatically |
+| https://docs.verifik.co/verifik-es/identity-validation/ecuador?fallback=true | ✅ | File exists with slug `/identity-validation/ecuador` - query params handled automatically |
+| https://docs.verifik.co/verifik-es/identity-validation/peru/peruvian-citizen?fallback=true | ✅ | Duplicate file created with slug `/identity-validation/peru/peruvian-citizen` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/verifik-es/identity-validation/colombia/colombian-politically-exposed-persons?fallback=true | ✅ | New file created with slug `/identity-validation/colombia/colombian-politically-exposed-persons` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/verifik-es/identity-validation/united-states/ssn-verification-social-security-number | ✅ | File exists with slug `/identity-validation/united-states/ssn-verification-social-security-number` |
+| https://docs.verifik.co/verifik-es/vehicle-validation/colombia/verifik-pico-y-placa-for-bogota?fallback=true | ✅ | Duplicate file created with slug `/vehicle-validation/colombia/verifik-pico-y-placa-for-bogota` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/verifik-es/vehicle-validation/colombia/vehicle-fines-check-in-bogota-colombia?fallback=true | ✅ | Duplicate file created with slug `/vehicle-validation/colombia/vehicle-fines-check-in-bogota-colombia` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/verifik-es/health/verify-colombian-affiliations?fallback=true | ✅ | Duplicate file created with slug `/health/verify-colombian-affiliations` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/verifik-es/health/verify-colombian-affiliations | ✅ | Duplicate file created - query params handled automatically |
+| https://docs.verifik.co/verifik-es/health | ✅ | Index file created with slug `/health` - hidden from sidebar |
+| https://docs.verifik.co/verifik-es/accounts/authentication/renew-your-token-jwt?fallback=true | ✅ | File exists with slug `/accounts/authentication/renew-your-token-jwt` - query params handled automatically |
+| https://docs.verifik.co/verifik-es/services/verifik-access-code-solution-via-api?fallback=true | ✅ | Index file created with slug `/services/verifik-access-code-solution-via-api` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/verifik-es/services/verifik-enroll-code-solution-via-api?fallback=true | ✅ | Index file created with slug `/services/verifik-enroll-code-solution-via-api` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/verifik-es/biometrics-apis/comparar/comparar-1-1?fallback=true | ✅ | New file created with slug `/biometrics-apis/comparar/comparar-1-1` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/verifik-es/?fallback=true | ✅ | File exists (intro.md) - query params handled automatically |
+| https://docs.verifik.co/verifik-es/resources/persons?fallback=true | ✅ | Slug updated to `/resources/persons` in personas.mdx - query params handled automatically |
 
 ### 12. Other Issues
 

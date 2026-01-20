@@ -2,6 +2,7 @@
 id: dea-background-check
 title: DEA Background Check
 description: DEA background check service
+slug: /background-check/international/dea-background-check
 ---
 
 # DEA Background Check

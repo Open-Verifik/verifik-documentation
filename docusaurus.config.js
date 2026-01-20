@@ -252,6 +252,16 @@ const config = {
 				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
 			},
 		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "docs-es-old",
+				path: "docs-es-old",
+				routeBasePath: "docs-es",
+				sidebarPath: "./sidebars-es-old.js",
+				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
+			},
+		],
 		// Plugin to generate sitemap_index.xml for SEO requirements
 		require.resolve("./src/plugins/sitemap-index.js"),
 	],

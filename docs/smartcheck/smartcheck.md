@@ -219,7 +219,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="International background check"
       description=""
       image="/img/smartcheck/international-background.png"
-      link="/background-check/interpol-background-check"
+      link="/background-check/international/interpol-background-check"
     />
   </div>
 </div>

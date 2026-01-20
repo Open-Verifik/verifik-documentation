@@ -1,0 +1,133 @@
+---
+id: validacion-de-vehiculo-colombia-impuestos-en-bogota
+title: Impuestos en Bogotá
+description: Servicio de impuestos de vehículos de Bogotá
+sidebar_label: Bogotá - Impuestos
+slug: /validacion-de-vehiculo/colombia/impuestos-en-bogota
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/co/bogota/vehicle/tax
+```
+
+Este servicio proporciona información sobre las obligaciones tributarias de un vehículo registrado en Bogotá. Necesitas proporcionar el tipo y número de documento del propietario, junto con la placa de matrícula del vehículo. La respuesta incluye detalles del vehículo y el estado de las obligaciones tributarias para años fiscales específicos.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `plate` | string | Yes | Placa a consultar, sin espacios ni puntos. |
+| `documentNumber` | string | Yes | Número de documento a consultar, sin espacios ni puntos. |
+| `documentType` | string | Yes | Tipo de documento. Permitidos: `CC`, `NIT`. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/bogota/vehicle/tax", {
+  params: { 
+    plate: "ABC123", 
+    documentType: "CC", 
+    documentNumber: "123456789" 
+  },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/bogota/vehicle/tax"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC123", "documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "details": "",
+    "documentNumber": "123456789",
+    "documentType": "CC",
+    "obligation": {
+      "vehicle": [
+        {
+          "brand": "MAZDA",
+          "form": "2020003010100010240",
+          "linea": "050365",
+          "model": "2021",
+          "obligation": "1.080.000",
+          "obligationStatus": "Moroso",
+          "plate": "ABC123",
+          "reference": "0000020034588543",
+          "taxableYear": "2020",
+          "totalToPay": "1.080.000"
+        }
+      ]
+    },
+    "plate": "ABC123"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "July 3, 2024 3:59 PM"},
+  "id": "5P20N"
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Usa `CC` para cédula de ciudadanía colombiana o `NIT` para número de identificación tributaria.
+- Si `obligationStatus` es "Moroso", hay impuestos pendientes que necesitan ser pagados.
