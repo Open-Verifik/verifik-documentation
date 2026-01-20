@@ -58,8 +58,8 @@ This file tracks all URLs that need to be fixed and their completion status.
 
 | URL | Status | Notes |
 |-----|--------|-------|
-| https://docs.verifik.co/verifik-es/validacion-empresarial./colombia | ⏳ | |
-| https://docs.verifik.co/verifik-es/validacion-empresarial./panama | ⏳ | |
+| https://docs.verifik.co/verifik-es/validacion-empresarial./colombia | ✅ | Duplicate file created with slug `/validacion-empresarial./colombia` - hidden from sidebar |
+| https://docs.verifik.co/verifik-es/validacion-empresarial./panama | ✅ | Duplicate file created with slug `/validacion-empresarial./panama` - hidden from sidebar |
 
 ### 5. GitBook References: /~gitbook/ (Old GitBook paths - may need redirects)
 
@@ -137,39 +137,50 @@ This file tracks all URLs that need to be fixed and their completion status.
 | https://docs.verifik.co/es/resources/collections/create-a-collection | ⏳ | |
 | https://docs.verifik.co/es/vehicle-validation/peru/peruvian-vehicle | ⏳ | |
 
-### 8. Wrong Prefix: /doc-es/ → /verifik-es/
+### 8. Additional URLs to Fix (From Analytics/404s)
 
 | URL | Status | Notes |
 |-----|--------|-------|
-| https://docs.verifik.co/doc-es/recursos/validar-una-validacion-de-email | ⏳ | |
-| https://docs.verifik.co/doc-es/recursos/eliminar-un-webhook | ⏳ | |
-| https://docs.verifik.co/doc-es/recursos/proyectos/crear-un-proyecto | ⏳ | |
-| https://docs.verifik.co/doc-es/recursos/ejemplo-de-acceso-por-telefono | ⏳ | |
-| https://docs.verifik.co/doc-es/recursos/flujos-de-proyecto/crear-un-flujo-de-proyecto | ⏳ | |
-| https://docs.verifik.co/doc-es/recursos/crear-una-validacion-de-email | ⏳ | |
-| https://docs.verifik.co/doc-es/recursos/recuperar-un-inicio-de-sesion-de-aplicacion | ⏳ | |
-| https://docs.verifik.co/doc-es/recursos/ejemplo-de-acceso-por-email | ⏳ | |
-| https://docs.verifik.co/doc-es/recursos/ejemplo-de-acceso-biometrico | ⏳ | |
-| https://docs.verifik.co/doc-es/recursos/crear-un-inicio-de-sesion-de-aplicacion | ⏳ | |
+| https://docs.verifik.co/identity-validation/venezuela/venezuelan-citizen-information | ✅ | Duplicate file created with slug `/identity-validation/venezuela/venezuelan-citizen-information` - hidden from sidebar |
+| https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/consulta-general-de-simit-por-numero-de-placa | ✅ | Duplicate file created with slug `/validacion-de-vehiculo/colombia/consulta-general-de-simit-por-numero-de-placa` - hidden from sidebar |
+| https://docs.verifik.co/docs-es/identidad/guatemala-extra | ✅ | Duplicate file created in `docs-es-old/` with slug `/identidad/guatemala-extra` - hidden from sidebar |
+| https://verifik.co/en/blogs-eng | ❌ | External domain (verifik.co, not docs.verifik.co) - cannot fix |
+| https://docs.verifik.co/identity-validation/colombia/colombian-citizen | ✅ | File exists with correct slug `/identity-validation/colombia/colombian-citizen` - OK |
+| https://docs.verifik.co/identity/guatemala-extra | ✅ | File exists with correct slug `/identity/guatemala-extra` - OK |
 
-### 9. Root Level /recursos/ → /verifik-es/resources/ or /verifik-es/recursos/
+### 9. Wrong Prefix: /doc-es/ → /verifik-es/
 
 | URL | Status | Notes |
 |-----|--------|-------|
-| https://docs.verifik.co/recursos/webhooks/crear-un-webhook | ⏳ | |
-| https://docs.verifik.co/recursos/eliminar-una-validacion-de-documento | ⏳ | |
-| https://docs.verifik.co/recursos/actualizar-una-validacion-de-documento | ⏳ | |
-| https://docs.verifik.co/recursos/listar-todas-las-validaciones-biometricas | ⏳ | |
-| https://docs.verifik.co/recursos/recuperar-una-validacion-biometrica | ⏳ | |
-| https://docs.verifik.co/recursos/crear-una-validacion-biometrica | ⏳ | |
-| https://docs.verifik.co/recursos/el-objeto-validacion-de-documento | ⏳ | |
-| https://docs.verifik.co/recursos/el-objeto-validacion-biometrica | ⏳ | |
-| https://docs.verifik.co/recursos/recuperar-una-validacion-de-documento | ⏳ | |
-| https://docs.verifik.co/recursos/listar-todas-las-validaciones-de-documentos | ⏳ | |
-| https://docs.verifik.co/recursos/recuperar-una-validacion-de-vivacidad-de-documento | ⏳ | |
-| https://docs.verifik.co/recursos/el-objeto-validacion-de-vivacidad-de-documento | ⏳ | |
-| https://docs.verifik.co/recursos/listar-todas-las-validaciones-de-vivacidad-de-documentos | ⏳ | |
-| https://docs.verifik.co/recursos/crear-una-validacion-de-vivacidad-de-documento | ⏳ | |
+| https://docs.verifik.co/doc-es/recursos/validar-una-validacion-de-email | ✅ | Duplicate file created in `docs-es-old-single/` with slug `/recursos/validar-una-validacion-de-email` - hidden from sidebar |
+| https://docs.verifik.co/doc-es/recursos/eliminar-un-webhook | ✅ | Duplicate file created in `docs-es-old-single/` with slug `/recursos/eliminar-un-webhook` - hidden from sidebar |
+| https://docs.verifik.co/doc-es/recursos/proyectos/crear-un-proyecto | ✅ | Duplicate file created in `docs-es-old-single/` with slug `/recursos/proyectos/crear-un-proyecto` - hidden from sidebar |
+| https://docs.verifik.co/doc-es/recursos/ejemplo-de-acceso-por-telefono | ✅ | Duplicate file created in `docs-es-old-single/` with slug `/recursos/ejemplo-de-acceso-por-telefono` - hidden from sidebar |
+| https://docs.verifik.co/doc-es/recursos/flujos-de-proyecto/crear-un-flujo-de-proyecto | ✅ | Duplicate file created in `docs-es-old-single/` with slug `/recursos/flujos-de-proyecto/crear-un-flujo-de-proyecto` - hidden from sidebar |
+| https://docs.verifik.co/doc-es/recursos/crear-una-validacion-de-email | ✅ | Duplicate file created in `docs-es-old-single/` with slug `/recursos/crear-una-validacion-de-email` - hidden from sidebar |
+| https://docs.verifik.co/doc-es/recursos/recuperar-un-inicio-de-sesion-de-aplicacion | ✅ | Duplicate file created in `docs-es-old-single/` with slug `/recursos/recuperar-un-inicio-de-sesion-de-aplicacion` - hidden from sidebar |
+| https://docs.verifik.co/doc-es/recursos/ejemplo-de-acceso-por-email | ✅ | Duplicate file created in `docs-es-old-single/` with slug `/recursos/ejemplo-de-acceso-por-email` - hidden from sidebar |
+| https://docs.verifik.co/doc-es/recursos/ejemplo-de-acceso-biometrico | ✅ | Duplicate file created in `docs-es-old-single/` with slug `/recursos/ejemplo-de-acceso-biometrico` - hidden from sidebar |
+| https://docs.verifik.co/doc-es/recursos/crear-un-inicio-de-sesion-de-aplicacion | ✅ | Duplicate file created in `docs-es-old-single/` with slug `/recursos/crear-un-inicio-de-sesion-de-aplicacion` - hidden from sidebar |
+
+### 10. Root Level /recursos/ → /verifik-es/resources/ or /verifik-es/recursos/
+
+| URL | Status | Notes |
+|-----|--------|-------|
+| https://docs.verifik.co/recursos/webhooks/crear-un-webhook | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/webhooks/crear-un-webhook` - hidden from sidebar |
+| https://docs.verifik.co/recursos/eliminar-una-validacion-de-documento | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/eliminar-una-validacion-de-documento` - hidden from sidebar |
+| https://docs.verifik.co/recursos/actualizar-una-validacion-de-documento | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/actualizar-una-validacion-de-documento` - hidden from sidebar |
+| https://docs.verifik.co/recursos/listar-todas-las-validaciones-biometricas | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/listar-todas-las-validaciones-biometricas` - hidden from sidebar |
+| https://docs.verifik.co/recursos/recuperar-una-validacion-biometrica | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/recuperar-una-validacion-biometrica` - hidden from sidebar |
+| https://docs.verifik.co/recursos/crear-una-validacion-biometrica | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/crear-una-validacion-biometrica` - hidden from sidebar |
+| https://docs.verifik.co/recursos/el-objeto-validacion-de-documento | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/el-objeto-validacion-de-documento` - hidden from sidebar |
+| https://docs.verifik.co/recursos/el-objeto-validacion-biometrica | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/el-objeto-validacion-biometrica` - hidden from sidebar |
+| https://docs.verifik.co/recursos/recuperar-una-validacion-de-documento | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/recuperar-una-validacion-de-documento` - hidden from sidebar |
+| https://docs.verifik.co/recursos/listar-todas-las-validaciones-de-documentos | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/listar-todas-las-validaciones-de-documentos` - hidden from sidebar |
+| https://docs.verifik.co/recursos/recuperar-una-validacion-de-vivacidad-de-documento | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/recuperar-una-validacion-de-vivacidad-de-documento` - hidden from sidebar |
+| https://docs.verifik.co/recursos/el-objeto-validacion-de-vivacidad-de-documento | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/el-objeto-validacion-de-vivacidad-de-documento` - hidden from sidebar |
+| https://docs.verifik.co/recursos/listar-todas-las-validaciones-de-vivacidad-de-documentos | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/listar-todas-las-validaciones-de-vivacidad-de-documentos` - hidden from sidebar |
+| https://docs.verifik.co/recursos/crear-una-validacion-de-vivacidad-de-documento | ✅ | Duplicate file created in `docs-old-recursos/` with slug `/crear-una-validacion-de-vivacidad-de-documento` - hidden from sidebar |
 
 ### 10. Root Level Paths (English) - May be intentional but need verification
 
