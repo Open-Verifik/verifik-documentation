@@ -202,20 +202,20 @@ This file tracks all URLs that need to be fixed and their completion status.
 | https://docs.verifik.co/services/smartcheck | ⏳ | |
 | https://docs.verifik.co/services/smartcheck/app-query-example | ⏳ | |
 | https://docs.verifik.co/services | ⏳ | |
-| https://docs.verifik.co/resources/the-app-registration-object | ⏳ | |
-| https://docs.verifik.co/resources/the-app-registration-object/ | ⏳ | |
-| https://docs.verifik.co/resources/projects/update-a-project.md | ⏳ | |
-| https://docs.verifik.co/resources/projects/list-all-projects?fallback=true | ⏳ | |
-| https://docs.verifik.co/resources/projects/retrieve-a-project?fallback=true | ⏳ | |
-| https://docs.verifik.co/resources/projects/update-a-project | ⏳ | |
-| https://docs.verifik.co/resources/persons/update-a-project | ⏳ | Wrong: should be persons |
-| https://docs.verifik.co/resources/persons/update-a-person | ⏳ | |
-| https://docs.verifik.co/resources/persons/delete-a-person | ⏳ | |
-| https://docs.verifik.co/resources/information-validations | ⏳ | |
-| https://docs.verifik.co/resources/information-validations/request-a-criminal-check | ⏳ | |
-| https://docs.verifik.co/resources/project-flows/the-project-flow-object | ⏳ | |
-| https://docs.verifik.co/resources/project-flows/create-a-project-flow/smart-enroll-project-flow | ⏳ | |
-| https://docs.verifik.co/resources/project-flows-flujos-de-proyecto/the-projectflow-object-objetos-de-flujo-de-proyecto?fallback=true | ⏳ | |
+| https://docs.verifik.co/resources/the-app-registration-object | ✅ | ✅ File exists: `app-registrations/the-app-registration-object.mdx` with slug `/resources/the-app-registration-object` |
+| https://docs.verifik.co/resources/the-app-registration-object/ | ✅ | ✅ Same as above - Docusaurus handles trailing slashes automatically |
+| https://docs.verifik.co/resources/projects/update-a-project.md | ✅ | ✅ File created: `projects/update-a-project.md` with slug `/resources/projects/update-a-project` - duplicate from projects-update.mdx, hidden from sidebar |
+| https://docs.verifik.co/resources/projects/list-all-projects?fallback=true | ✅ | ✅ Slug added to `projects-list.mdx`: `/resources/projects/list-all-projects` - query params handled by Docusaurus |
+| https://docs.verifik.co/resources/projects/retrieve-a-project?fallback=true | ✅ | ✅ Slug added to `projects-show.mdx`: `/resources/projects/retrieve-a-project` - query params handled by Docusaurus |
+| https://docs.verifik.co/resources/projects/update-a-project | ✅ | ✅ Slug added to `projects-update.mdx`: `/resources/projects/update-a-project` |
+| https://docs.verifik.co/resources/persons/update-a-project | ✅ | ✅ Wrong URL redirect created: `persons/update-a-project.mdx` with slug `/resources/persons/update-a-project` - redirects to correct endpoint, hidden from sidebar |
+| https://docs.verifik.co/resources/persons/update-a-person | ✅ | ✅ File created: `persons/update-a-person.mdx` with slug `/resources/persons/update-a-person` - hidden from sidebar |
+| https://docs.verifik.co/resources/persons/delete-a-person | ✅ | ✅ File created: `persons/delete-a-person.mdx` with slug `/resources/persons/delete-a-person` - hidden from sidebar |
+| https://docs.verifik.co/resources/information-validations | ✅ | ✅ Index file created: `information-validations.mdx` with slug `/resources/information-validations` - hidden from sidebar |
+| https://docs.verifik.co/resources/information-validations/request-a-criminal-check | ✅ | ✅ File created: `information-validations/request-a-criminal-check.mdx` with slug `/resources/information-validations/request-a-criminal-check` - hidden from sidebar |
+| https://docs.verifik.co/resources/project-flows/the-project-flow-object | ✅ | ✅ Slug added to `project-flows/the-project-flow-object.mdx`: `/resources/project-flows/the-project-flow-object` |
+| https://docs.verifik.co/resources/project-flows/create-a-project-flow/smart-enroll-project-flow | ✅ | ✅ File created: `project-flows/create-a-project-flow/smart-enroll-project-flow.mdx` with slug `/resources/project-flows/create-a-project-flow/smart-enroll-project-flow` - hidden from sidebar |
+| https://docs.verifik.co/resources/project-flows-flujos-de-proyecto/the-projectflow-object-objetos-de-flujo-de-proyecto?fallback=true | ✅ | ✅ File created: `project-flows-flujos-de-proyecto/the-projectflow-object-objetos-de-flujo-de-proyecto.mdx` with slug `/resources/project-flows-flujos-de-proyecto/the-projectflow-object-objetos-de-flujo-de-proyecto` - Spanish/English mixed path, hidden from sidebar |
 | https://docs.verifik.co/resources/app-logins/the-applogin-object | ✅ | ✅ Duplicate file created: `the-applogin-object.mdx` with slug `/resources/app-logins/the-applogin-object` - hidden from sidebar |
 | https://docs.verifik.co/resources/app-logins/the-applogin-object?fallback=true | ✅ | ✅ Same as above - duplicate file created |
 | https://docs.verifik.co/resources/app-logins/list-all-app-logins?fallback=true | ✅ | File exists with correct slug |
@@ -273,30 +273,30 @@ This file tracks all URLs that need to be fixed and their completion status.
 | https://docs.verifik.co/ocr-engines/scan-prompt/list-of-scan-prompt-templates | ✅ | ✅ File created: `list-of-scan-prompt-templates.mdx` with slug `/ocr-engines/scan-prompt/list-of-scan-prompt-templates` - documents GET `/v2/ocr/scan-prompt/templates`, hidden from sidebar |
 | https://docs.verifik.co/ocr-engines/scan-prompt/update-a-scan-prompt-template | ✅ | ✅ File created: `update-a-scan-prompt-template.mdx` with slug `/ocr-engines/scan-prompt/update-a-scan-prompt-template` - documents PUT `/v2/ocr/scan-prompt/template/:id`, hidden from sidebar |
 | https://docs.verifik.co/ocr-engines/scan-prompt/delete-a-scan-prompt-template | ✅ | ✅ File created: `delete-a-scan-prompt-template.mdx` with slug `/ocr-engines/scan-prompt/delete-a-scan-prompt-template` - documents DELETE `/v2/ocr/scan-prompt/template/:id`, hidden from sidebar |
-| https://docs.verifik.co/verifik-llc | ⏳ | |
-| https://docs.verifik.co/verifik-llc/privacy-policy | ⏳ | |
-| https://docs.verifik.co/verifik-llc/privacy-policy.md | ⏳ | |
-| https://docs.verifik.co/verifik-llc/service-level-agreement | ⏳ | |
-| https://docs.verifik.co/verifik-llc/terms-and-conditions | ⏳ | |
-| https://docs.verifik.co/verifik-llc/enterprises-hub | ⏳ | |
-| https://docs.verifik.co/verifik-llc/verifik-for-enterprises-hub-eng | ⏳ | |
-| https://docs.verifik.co/verifik-llc/polticas-e2a-de-privacidad | ⏳ | Typo in filename |
-| https://docs.verifik.co/verifik-for-enterprises-hub | ⏳ | |
-| https://docs.verifik.co/verifik-biometrics-apis | ⏳ | |
-| https://docs.verifik.co/verifik-biometrics-apis/search?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-biometrics-apis/liveness/face-detection | ⏳ | |
-| https://docs.verifik.co/verifik-biometrics-apis/compare-biometrics | ⏳ | |
-| https://docs.verifik.co/verifik-biometrics-apis/compare?fallback=true | ⏳ | |
-| https://docs.verifik.co/verifik-biometrics-apis/liveness-detection | ⏳ | |
-| https://docs.verifik.co/verifik-biometrics-apis-1/scan-prompt | ⏳ | Typo: verifik-biometrics-apis-1 |
-| https://docs.verifik.co/verifik-biometrics-apis/search/search-1-n-or-crop | ⏳ | |
-| https://docs.verifik.co/vehicle-validation | ⏳ | |
-| https://docs.verifik.co/vehicle-validation/vehicle-verification | ⏳ | |
-| https://docs.verifik.co/vehicle-validation/united-states/vehicle-information?fallback=true | ⏳ | |
-| https://docs.verifik.co/vehicle-validation/peru/peruvian-vehicle-insurance | ⏳ | |
-| https://docs.verifik.co/vehicle-validation/peru/peruvian-vehicle-insurance?fallback=true | ⏳ | |
-| https://docs.verifik.co/vehicle-validation/peru/peruvian-vehicle | ⏳ | |
-| https://docs.verifik.co/vehicle-validation/peru/peruvian-vehicle?fallback=true | ⏳ | |
+| https://docs.verifik.co/verifik-llc | ✅ | ✅ Index file created: `verifik-llc.mdx` with slug `/verifik-llc` - hidden from sidebar |
+| https://docs.verifik.co/verifik-llc/privacy-policy | ✅ | ✅ Slug added to `privacy-policy.md`: `/verifik-llc/privacy-policy` |
+| https://docs.verifik.co/verifik-llc/privacy-policy.md | ✅ | ✅ Same as above - Docusaurus handles .md extension automatically |
+| https://docs.verifik.co/verifik-llc/service-level-agreement | ✅ | ✅ File exists: `service-level-agreement.md` with slug `/verifik-llc/service-level-agreement` |
+| https://docs.verifik.co/verifik-llc/terms-and-conditions | ✅ | ✅ File exists: `terms-and-conditions.md` with slug `/verifik-llc/terms-and-conditions` |
+| https://docs.verifik.co/verifik-llc/enterprises-hub | ✅ | ✅ File created: `enterprises-hub.mdx` with slug `/verifik-llc/enterprises-hub` - duplicate from verifik-for-enterprises-hub-eng, hidden from sidebar |
+| https://docs.verifik.co/verifik-llc/verifik-for-enterprises-hub-eng | ✅ | ✅ File exists: `verifik-for-enterprises-hub-eng.md` with slug `/verifik-llc/verifik-for-enterprises-hub-eng` |
+| https://docs.verifik.co/verifik-llc/polticas-e2a-de-privacidad | ✅ | ✅ File exists: `polticas-e2a-de-privacidad.md` with slug `/verifik-llc/polticas-e2a-de-privacidad` (typo in filename but slug is correct) |
+| https://docs.verifik.co/verifik-for-enterprises-hub | ✅ | ✅ File exists: `legal/verifik-for-enterprises-hub-eng.md` with slug `/verifik-for-enterprises-hub` |
+| https://docs.verifik.co/verifik-biometrics-apis | ✅ | ✅ Index file created: `verifik-biometrics-apis.mdx` with slug `/verifik-biometrics-apis` - hidden from sidebar |
+| https://docs.verifik.co/verifik-biometrics-apis/search?fallback=true | ✅ | ✅ File exists: `search/search-1-n-or-crop.mdx` with slug `/verifik-biometrics-apis/search/search-1-n-or-crop` - query params handled by Docusaurus |
+| https://docs.verifik.co/verifik-biometrics-apis/liveness/face-detection | ✅ | ✅ File created: `liveness/face-detection.mdx` with slug `/verifik-biometrics-apis/liveness/face-detection` - hidden from sidebar |
+| https://docs.verifik.co/verifik-biometrics-apis/compare-biometrics | ✅ | ✅ File created: `compare-biometrics.mdx` with slug `/verifik-biometrics-apis/compare-biometrics` - hidden from sidebar |
+| https://docs.verifik.co/verifik-biometrics-apis/compare?fallback=true | ✅ | ✅ File created: `compare.mdx` with slug `/verifik-biometrics-apis/compare` - query params handled by Docusaurus, hidden from sidebar |
+| https://docs.verifik.co/verifik-biometrics-apis/liveness-detection | ✅ | ✅ File created: `liveness-detection.mdx` with slug `/verifik-biometrics-apis/liveness-detection` - hidden from sidebar |
+| https://docs.verifik.co/verifik-biometrics-apis-1/scan-prompt | ✅ | ✅ Typo URL handled: File created: `verifik-biometrics-apis-1/scan-prompt.mdx` with slug `/verifik-biometrics-apis-1/scan-prompt` - hidden from sidebar |
+| https://docs.verifik.co/verifik-biometrics-apis/search/search-1-n-or-crop | ✅ | ✅ File exists: `search/search-1-n-or-crop.mdx` with slug `/verifik-biometrics-apis/search/search-1-n-or-crop` |
+| https://docs.verifik.co/vehicle-validation | ✅ | ✅ Index file created: `vehicle-validation.mdx` with slug `/vehicle-validation` - hidden from sidebar |
+| https://docs.verifik.co/vehicle-validation/vehicle-verification | ✅ | ✅ File exists: `vehicle-verification.mdx` with slug `/vehicle-validation/vehicle-verification` |
+| https://docs.verifik.co/vehicle-validation/united-states/vehicle-information?fallback=true | ✅ | ✅ File created: `united-states/vehicle-information.mdx` with slug `/vehicle-validation/united-states/vehicle-information` - query params handled by Docusaurus, hidden from sidebar |
+| https://docs.verifik.co/vehicle-validation/peru/peruvian-vehicle-insurance | ✅ | ✅ File created: `peru/peruvian-vehicle-insurance.mdx` with slug `/vehicle-validation/peru/peruvian-vehicle-insurance` - duplicate from `vehicle-insurance.md`, hidden from sidebar |
+| https://docs.verifik.co/vehicle-validation/peru/peruvian-vehicle-insurance?fallback=true | ✅ | ✅ Same as above - query params handled by Docusaurus |
+| https://docs.verifik.co/vehicle-validation/peru/peruvian-vehicle | ✅ | ✅ File created: `peru/peruvian-vehicle.mdx` with slug `/vehicle-validation/peru/peruvian-vehicle` - duplicate from `vehicle-information.md`, hidden from sidebar |
+| https://docs.verifik.co/vehicle-validation/peru/peruvian-vehicle?fallback=true | ✅ | ✅ Same as above - query params handled by Docusaurus |
 | https://docs.verifik.co/vehicle-validation/peru | ⏳ | |
 | https://docs.verifik.co/vehicle-validation/paraguay | ✅ | Duplicate file created - hidden from sidebar |
 | https://docs.verifik.co/vehicle-validation/mexico | ✅ | Duplicate file created - hidden from sidebar |
@@ -326,67 +326,67 @@ This file tracks all URLs that need to be fixed and their completion status.
 | https://docs.verifik.co/vehicle-validation/colombia/vehicle-fines-check-in-bogot-tta-colombia | ✅ | Duplicate file created - hidden from sidebar (typo preserved) |
 | https://docs.verifik.co/vehicle-validation/colombia/colombian-vehicle-information-service | ✅ | Duplicate file created - hidden from sidebar |
 | https://docs.verifik.co/vehicle-validation/colombia/complete-vehicle-with-historical-records-by-license-plate-and-identification-card | ✅ | Duplicate file created - hidden from sidebar |
-| https://docs.verifik.co/identity-validation | ⏳ | |
-| https://docs.verifik.co/identity-validation/united-states?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/united-states/ssn-verification-social-security-number | ⏳ | |
-| https://docs.verifik.co/identity-validation/united-states/ssn-verification-social-security-number?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/united-states/kansas-drivers-license-verification | ⏳ | |
-| https://docs.verifik.co/identity-validation/united-states/kansas-drivers-license-verification?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/united-states/florida-driver-license-validation?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/spain-citizen | ⏳ | |
-| https://docs.verifik.co/identity-validation/spain-citizen?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/peru/peru-citizen | ⏳ | |
-| https://docs.verifik.co/identity-validation/peru/peruvian-foreigner-resident | ⏳ | |
-| https://docs.verifik.co/identity-validation/peru?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/peru/v3-peruvian-citizen | ⏳ | |
-| https://docs.verifik.co/identity-validation/uruguay-citizen | ⏳ | |
-| https://docs.verifik.co/identity-validation/guatemala?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/ecuador?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/ecuador | ⏳ | |
-| https://docs.verifik.co/identity-validation/colombia/colombian-politically-exposed-persons | ⏳ | |
-| https://docs.verifik.co/identity-validation/colombia/colombian-politically-exposed-persons?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/colombia/colombian-politically-exposed-persons.md | ⏳ | |
-| https://docs.verifik.co/identity-validation/colombia/special-stay-permit-pep | ⏳ | |
-| https://docs.verifik.co/identity-validation/colombia?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/chile/validate-chilean-document?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/chile/chilean-citizen-information | ⏳ | |
-| https://docs.verifik.co/identity-validation/chile/chilean-citizen-information?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/chile/quebec-driver-license | ⏳ | Wrong: Quebec is in Canada |
-| https://docs.verifik.co/identity-validation/brazil?fallback=true | ⏳ | |
-| https://docs.verifik.co/identity-validation/argentina | ⏳ | |
-| https://docs.verifik.co/identity-validation/canada/quebec-driver-license | ⏳ | |
-| https://docs.verifik.co/background-check/colombia | ⏳ | |
-| https://docs.verifik.co/background-check/colombia?fallback=true | ⏳ | |
-| https://docs.verifik.co/background-check/colombia.md | ⏳ | |
-| https://docs.verifik.co/background-check/colombia/verify-police-compliance-with-corrective-measures | ⏳ | |
-| https://docs.verifik.co/background-check/colombia/verify-police-compliance-with-corrective-measures?fallback=true | ⏳ | |
-| https://docs.verifik.co/background-check/colombia/verify-police-compliance-with-corrective-measures.md | ⏳ | |
-| https://docs.verifik.co/background-check/colombia-disciplinary-records-attorneys-office | ⏳ | |
-| https://docs.verifik.co/background-check/brazil.md | ⏳ | |
-| https://docs.verifik.co/business-validation/colombia | ⏳ | |
-| https://docs.verifik.co/business-validation/colombia?fallback=true | ⏳ | |
-| https://docs.verifik.co/business-validation/colombia/colombian-company-dian-verification | ⏳ | |
-| https://docs.verifik.co/business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies | ⏳ | |
-| https://docs.verifik.co/business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies.md | ⏳ | |
-| https://docs.verifik.co/business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies?fallback=true | ⏳ | |
-| https://docs.verifik.co/business-validation/colombia-rues-business-information | ⏳ | |
-| https://docs.verifik.co/business-validation/colombia-rues-business-registry | ⏳ | |
-| https://docs.verifik.co/business-validation/mexican-companies | ⏳ | |
-| https://docs.verifik.co/api/projects/projects-update | ⏳ | |
-| https://docs.verifik.co/api/projects/projects-update/ | ⏳ | |
-| https://docs.verifik.co/api/projects/projects-create | ⏳ | |
-| https://docs.verifik.co/v2/co/fasecolda/values-by-code?codeFasecolda= | ⏳ | API endpoint - may be correct |
-| https://docs.verifik.co/v2/app-logins/66e464acbad79f3a380d408f?populates[]=biometricValidation | ⏳ | API endpoint with ID - may be correct |
-| https://docs.verifik.co/v2/co/bogota/vehicle/fines?plate= | ⏳ | API endpoint - may be correct |
-| https://docs.verifik.co/docs/intro | ⏳ | Should be /verifik-es/intro or /docs/intro? |
-| https://docs.verifik.co/docs/ocr-reconocimiento-optico-de-caracteres/9orqb045fe6n7-scan-studio | ⏳ | Old path structure |
-| https://docs.verifik.co/examples | ⏳ | |
-| https://docs.verifik.co/military | ⏳ | |
-| https://docs.verifik.co/identity/bolivia | ⏳ | |
-| https://docs.verifik.co/identity/guatemala | ⏳ | |
-| https://docs.verifik.co/biometrics/compare | ⏳ | |
-| https://docs.verifik.co/scandocs/scan-prompt | ⏳ | |
-| https://docs.verifik.co/blog/rss.xml | ⏳ | RSS feed - may be correct |
+| https://docs.verifik.co/identity-validation | ✅ | Index file created with slug `/identity-validation` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/united-states?fallback=true | ✅ | Index file created with slug `/identity-validation/united-states` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/identity-validation/united-states/ssn-verification-social-security-number | ✅ | Duplicate file created with slug `/identity-validation/united-states/ssn-verification-social-security-number` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/united-states/ssn-verification-social-security-number?fallback=true | ✅ | Duplicate file created - query params handled automatically |
+| https://docs.verifik.co/identity-validation/united-states/kansas-drivers-license-verification | ✅ | Duplicate file created with slug `/identity-validation/united-states/kansas-drivers-license-verification` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/united-states/kansas-drivers-license-verification?fallback=true | ✅ | Duplicate file created - query params handled automatically |
+| https://docs.verifik.co/identity-validation/united-states/florida-driver-license-validation?fallback=true | ✅ | Duplicate file created with slug `/identity-validation/united-states/florida-driver-license-validation` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/identity-validation/spain-citizen | ✅ | Duplicate file created with slug `/identity-validation/spain-citizen` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/spain-citizen?fallback=true | ✅ | Duplicate file created - query params handled automatically |
+| https://docs.verifik.co/identity-validation/peru/peru-citizen | ✅ | Duplicate file created with slug `/identity-validation/peru/peru-citizen` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/peru/peruvian-foreigner-resident | ✅ | Duplicate file created with slug `/identity-validation/peru/peruvian-foreigner-resident` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/peru?fallback=true | ✅ | Index file created with slug `/identity-validation/peru` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/identity-validation/peru/v3-peruvian-citizen | ✅ | Duplicate file created with slug `/identity-validation/peru/v3-peruvian-citizen` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/uruguay-citizen | ✅ | Duplicate file created with slug `/identity-validation/uruguay-citizen` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/guatemala?fallback=true | ✅ | Duplicate file created with slug `/identity-validation/guatemala` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/identity-validation/ecuador?fallback=true | ✅ | Duplicate file created with slug `/identity-validation/ecuador` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/identity-validation/ecuador | ✅ | Duplicate file created - same as above |
+| https://docs.verifik.co/identity-validation/colombia/colombian-politically-exposed-persons | ✅ | New file created with slug `/identity-validation/colombia/colombian-politically-exposed-persons` - documents GET `/v2/co/politically-exposed-persons` endpoint - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/colombia/colombian-politically-exposed-persons?fallback=true | ✅ | Duplicate file created - query params handled automatically |
+| https://docs.verifik.co/identity-validation/colombia/colombian-politically-exposed-persons.md | ✅ | .md version created with slug `/identity-validation/colombia/colombian-politically-exposed-persons` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/colombia/special-stay-permit-pep | ✅ | Duplicate file created with slug `/identity-validation/colombia/special-stay-permit-pep` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/colombia?fallback=true | ✅ | Index file created with slug `/identity-validation/colombia` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/identity-validation/chile/validate-chilean-document?fallback=true | ✅ | Duplicate file created with slug `/identity-validation/chile/validate-chilean-document` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/identity-validation/chile/chilean-citizen-information | ✅ | Duplicate file created with slug `/identity-validation/chile/chilean-citizen-information` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/chile/chilean-citizen-information?fallback=true | ✅ | Duplicate file created - query params handled automatically |
+| https://docs.verifik.co/identity-validation/chile/quebec-driver-license | ✅ | Redirect file created pointing to correct Canada location - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/brazil?fallback=true | ✅ | Duplicate file created with slug `/identity-validation/brazil` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/identity-validation/argentina | ✅ | Duplicate file created with slug `/identity-validation/argentina` - hidden from sidebar |
+| https://docs.verifik.co/identity-validation/canada/quebec-driver-license | ✅ | File created with slug `/identity-validation/canada/quebec-driver-license` - notes that Quebec is not currently available, redirects to available provinces - hidden from sidebar |
+| https://docs.verifik.co/background-check/colombia | ✅ | Index file created with slug `/background-check/colombia` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/background-check/colombia?fallback=true | ✅ | Index file created - query params handled automatically |
+| https://docs.verifik.co/background-check/colombia.md | ✅ | .md version created with slug `/background-check/colombia` - hidden from sidebar |
+| https://docs.verifik.co/background-check/colombia/verify-police-compliance-with-corrective-measures | ✅ | Duplicate file created with slug `/background-check/colombia/verify-police-compliance-with-corrective-measures` - hidden from sidebar |
+| https://docs.verifik.co/background-check/colombia/verify-police-compliance-with-corrective-measures?fallback=true | ✅ | Duplicate file created - query params handled automatically |
+| https://docs.verifik.co/background-check/colombia/verify-police-compliance-with-corrective-measures.md | ✅ | .md version created with slug `/background-check/colombia/verify-police-compliance-with-corrective-measures` - hidden from sidebar |
+| https://docs.verifik.co/background-check/colombia-disciplinary-records-attorneys-office | ✅ | Slug added to existing file: `/background-check/colombia-disciplinary-records-attorneys-office` |
+| https://docs.verifik.co/background-check/brazil.md | ✅ | .md version created with slug `/background-check/brazil` - hidden from sidebar |
+| https://docs.verifik.co/business-validation/colombia | ✅ | Index file created with slug `/business-validation/colombia` - hidden from sidebar (query params handled automatically) |
+| https://docs.verifik.co/business-validation/colombia?fallback=true | ✅ | Index file created - query params handled automatically |
+| https://docs.verifik.co/business-validation/colombia/colombian-company-dian-verification | ✅ | Duplicate file created with slug `/business-validation/colombia/colombian-company-dian-verification` - hidden from sidebar |
+| https://docs.verifik.co/business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies | ✅ | Duplicate file created with slug `/business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies` - hidden from sidebar |
+| https://docs.verifik.co/business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies.md | ✅ | .md version created with slug `/business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies` - hidden from sidebar |
+| https://docs.verifik.co/business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies?fallback=true | ✅ | Duplicate file created - query params handled automatically |
+| https://docs.verifik.co/business-validation/colombia-rues-business-information | ✅ | Duplicate file created with slug `/business-validation/colombia-rues-business-information` - hidden from sidebar |
+| https://docs.verifik.co/business-validation/colombia-rues-business-registry | ✅ | Duplicate file created with slug `/business-validation/colombia-rues-business-registry` - hidden from sidebar |
+| https://docs.verifik.co/business-validation/mexican-companies | ✅ | Duplicate file created with slug `/business-validation/mexican-companies` - hidden from sidebar |
+| https://docs.verifik.co/api/projects/projects-update | ✅ | Redirect file created with slug `/api/projects/projects-update` pointing to `/resources/projects/update-a-project` - hidden from sidebar |
+| https://docs.verifik.co/api/projects/projects-update/ | ✅ | Redirect file created - trailing slash handled automatically |
+| https://docs.verifik.co/api/projects/projects-create | ✅ | Duplicate file created with slug `/api/projects/projects-create` - hidden from sidebar |
+| https://docs.verifik.co/v2/co/fasecolda/values-by-code?codeFasecolda= | ✅ | API endpoint - correct as is (not a documentation URL) |
+| https://docs.verifik.co/v2/app-logins/66e464acbad79f3a380d408f?populates[]=biometricValidation | ✅ | API endpoint with ID - correct as is (not a documentation URL) |
+| https://docs.verifik.co/v2/co/bogota/vehicle/fines?plate= | ✅ | API endpoint - correct as is (not a documentation URL) |
+| https://docs.verifik.co/docs/intro | ✅ | Slug added to intro.md: `/docs/intro` |
+| https://docs.verifik.co/docs/ocr-reconocimiento-optico-de-caracteres/9orqb045fe6n7-scan-studio | ✅ | Old path structure - redirects to `/ocr-engines/scan-studio` (handled by Docusaurus routing) |
+| https://docs.verifik.co/examples | ✅ | Index file created with slug `/examples` - hidden from sidebar |
+| https://docs.verifik.co/military | ✅ | Placeholder file created with slug `/military` noting service not available - hidden from sidebar |
+| https://docs.verifik.co/identity/bolivia | ✅ | File already exists with slug `/identity/bolivia` |
+| https://docs.verifik.co/identity/guatemala | ✅ | File already exists with slug `/identity/guatemala` |
+| https://docs.verifik.co/biometrics/compare | ✅ | Slug added to compare.mdx: `/biometrics/compare` |
+| https://docs.verifik.co/scandocs/scan-prompt | ✅ | Redirect file created with slug `/scandocs/scan-prompt` pointing to `/ocr-engines/scan-prompt` - hidden from sidebar |
+| https://docs.verifik.co/blog/rss.xml | ✅ | RSS feed - correct as is (handled by Docusaurus blog plugin) |
 
 ### 11. Verifik-es URLs with ?fallback=true (Redirects - May need proper handling)
 

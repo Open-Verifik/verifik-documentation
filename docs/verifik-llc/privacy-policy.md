@@ -2,6 +2,7 @@
 id: privacy-policy
 title: Privacy Policy
 description: Verifik's privacy policy and data protection practices
+slug: /verifik-llc/privacy-policy
 ---
 
 # Privacy Policy

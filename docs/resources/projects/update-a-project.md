@@ -1,0 +1,311 @@
+---
+id: projects-update-md
+title: Update Project
+description: Update project configuration with step-by-step approach matching the frontend wizard
+slug: /resources/projects/update-a-project
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v3/projects/{id}
+```
+
+Update project configuration using a step-by-step approach that matches the SmartEnroll frontend wizard. This endpoint supports partial updates, allowing you to modify specific sections without affecting others.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | Yes | The unique identifier of the project |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const projectId = "64a1b2c3d4e5f6789012345";
+  const res = await fetch(`https://api.verifik.co/v3/projects/${projectId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      name: "Updated Project Name",
+      allowedCountries: ["United States", "Canada"],
+      dataProtection: {
+        name: "Updated DPO",
+        email: "updated-dpo@example.com",
+        address: "789 New St",
+        city: "Toronto",
+        country: "Canada",
+        postalCode: "M5H 2N2"
+      }
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$projectId = "64a1b2c3d4e5f6789012345";
+$ch = curl_init("https://api.verifik.co/v3/projects/" . $projectId);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "name" => "Updated Project Name",
+    "allowedCountries" => ["United States", "Canada"],
+    "dataProtection" => [
+        "name" => "Updated DPO",
+        "email" => "updated-dpo@example.com",
+        "address" => "789 New St",
+        "city" => "Toronto",
+        "country" => "Canada",
+        "postalCode" => "M5H 2N2"
+    ]
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+project_id = "64a1b2c3d4e5f6789012345"
+url = f"https://api.verifik.co/v3/projects/{project_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "name": "Updated Project Name",
+    "allowedCountries": ["United States", "Canada"],
+    "dataProtection": {
+        "name": "Updated DPO",
+        "email": "updated-dpo@example.com",
+        "address": "789 New St",
+        "city": "Toronto",
+        "country": "Canada",
+        "postalCode": "M5H 2N2"
+    }
+}
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    projectId := "64a1b2c3d4e5f6789012345"
+    payload := map[string]interface{}{
+        "name": "Updated Project Name",
+        "allowedCountries": []string{"United States", "Canada"},
+        "dataProtection": map[string]string{
+            "name": "Updated DPO",
+            "email": "updated-dpo@example.com",
+            "address": "789 New St",
+            "city": "Toronto",
+            "country": "Canada",
+            "postalCode": "M5H 2N2",
+        },
+    }
+    b, _ := json.Marshal(payload)
+    url := fmt.Sprintf("https://api.verifik.co/v3/projects/%s", projectId)
+    req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "64a1b2c3d4e5f6789012345",
+        "name": "Updated Project Name",
+        "identifier": null,
+        "contactEmail": "new-admin@example.com",
+        "privacyUrl": "https://example.com/privacy",
+        "termsAndConditionsUrl": "https://example.com/terms",
+        "status": "draft",
+        "currentStep": 6,
+        "lastStep": 6,
+        "demoMode": false,
+        "demoOTP": null,
+        "allowedCountries": ["United States", "Canada", "Mexico"],
+        "dataProtection": {
+            "name": "Updated DPO",
+            "email": "updated-dpo@example.com",
+            "address": "789 New St",
+            "address2": "",
+            "city": "Toronto",
+            "country": "Canada",
+            "postalCode": "M5H 2N2"
+        },
+        "branding": {
+            "bgColor": "#1a365d",
+            "tabColor": "#01236D",
+            "borderColor": "#B2BDD3",
+            "buttonColor": "#3182ce",
+            "buttonTxtColor": "#ffffff",
+            "secondaryButtonColor": "#B2BDD3",
+            "secondaryButtonTextColor": "#FFFFFF",
+            "txtColor": "#8091B6",
+            "titleColor": "#1a202c",
+            "logo": "https://example.com/logo.png",
+            "rightImage": null,
+            "rightImagePosition": "center center",
+            "rightBackgroundColor": "white"
+        },
+        "projectFlows": "64a1b2c3d4e5f6789012346",
+        "version": 2,
+        "createdAt": "2023-07-01T10:00:00.000Z",
+        "updatedAt": "2023-07-01T16:45:00.000Z"
+    },
+    "status": "completed"
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+    "message": "Invalid project ID format",
+    "code": "BadRequest",
+    "status": 400,
+    "timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 401,
+    "timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+or
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden",
+    "status": 403,
+    "timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "Project not found",
+    "code": "NotFound",
+    "status": 404,
+    "timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "Country not supported. contact support to help you include your country to our list.",
+    "code": "MissingParameter",
+    "status": 409,
+    "timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+    "message": "Project flow validation failed",
+    "code": "UnprocessableEntity",
+    "status": 422,
+    "timestamp": "2023-07-01T10:00:00.000Z",
+    "details": [
+        {
+            "field": "projectFlow.documents.verificationMethods",
+            "message": "verificationMethods is required when documents step is not skipped"
+        }
+    ]
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **Step-by-Step Updates**: The endpoint supports the same 6-step configuration process used in the SmartEnroll frontend wizard (Data Protection, Sign-up Form, Documents, Liveness, Integration, Branding).
+- **Partial Updates**: You can update any combination of fields. Only the fields you specify will be updated; others remain unchanged.
+- **Project Flow Creation**: If you update `projectFlow` fields on a project that doesn't have a projectFlow, a new one will be created automatically.
+- **Demo Mode**: Can be enabled/updated with `demoMode: true`. The system will auto-generate a 6-digit OTP if not provided, or you can set a custom `demoOTP`.
+- **Validation**: When updating a project with projectFlow configuration, all fields are validated against the complete configuration to ensure consistency.
+- **Step Values**: `steps.document` and `steps.liveness` can be `mandatory`, `optional`, or `skip`.
+- **Verification Methods**: Required when `steps.document` is not "skip". Options: `SCAN_ZERO`, `SCAN_PROMPT`, `SCAN_STUDIO`.

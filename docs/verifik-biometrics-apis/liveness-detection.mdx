@@ -1,0 +1,208 @@
+---
+id: verifik-biometrics-apis-liveness-detection
+title: Liveness Detection
+description: Detect if a face is live or from a static image/video
+slug: /verifik-biometrics-apis/liveness-detection
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Liveness Detection
+
+Detects whether a submitted face image comes from a live person or a spoof (photo, screen replay, printed copy). Returns a liveness score and a pass/fail outcome based on a minimum score threshold.
+
+## Endpoint
+
+```
+POST https://api.verifik.co/v2/face-recognition/liveness
+```
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `os` | string | Yes | Origin of capture. Suggested: `DESKTOP`, `IOS`, `ANDROID`. |
+| `image` | string | Yes | Base64 image data (data URI or raw base64). If an `https` URL is provided, it will be downloaded and converted internally. |
+| `collection_id` | string | No | Optional collection to associate with the liveness attempt. |
+| `liveness_min_score` | number | No | Threshold for pass/fail. Default: `0.6`. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch("https://api.verifik.co/v2/face-recognition/liveness", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      os: "DESKTOP",
+      image: "<base64 or https url>",
+      liveness_min_score: 0.6,
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/liveness");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "os" => "DESKTOP",
+    "image" => "<base64 or https url>",
+    "liveness_min_score" => 0.6
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/face-recognition/liveness"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "os": "DESKTOP",
+    "image": "<base64 or https url>",
+    "liveness_min_score": 0.6
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    payload := map[string]interface{}{
+        "os": "DESKTOP",
+        "image": "<base64 or https url>",
+        "liveness_min_score": 0.6,
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/face-recognition/liveness", bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "id": "JQ4RM",
+  "data": {
+    "passed": true,
+    "min_score": 0.6,
+    "liveness_score": 0.98
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "January 16, 2024 3:44 PM"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+or
+
+```json
+{
+  "message": "token_expired",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"os\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "internal_error",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Ensure `Authorization: Bearer <token>` is present; otherwise you will receive 401/403.
+- `image` may be base64 or an `https` URL. If URL, the service fetches and converts it internally.
+- Pass/fail is determined by `liveness_score > min_score` (default `min_score` is 0.6, configurable via `liveness_min_score`).
+- Optional `collection_id` is validated for the authenticated client.
