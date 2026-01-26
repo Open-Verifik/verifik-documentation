@@ -2,6 +2,7 @@
 id: smartenroll
 title: SmartEnroll
 description: A no-code solution designed to provide secure and seamless onboardings for users
+slug: /smartenroll/smartenroll
 ---
 
 import { Mail, Phone, ScanFace, FileText, Database, Palette } from 'lucide-react';

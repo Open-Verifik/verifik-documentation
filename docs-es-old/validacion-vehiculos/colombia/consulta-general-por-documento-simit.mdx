@@ -1,0 +1,171 @@
+---
+id: doc-es-consulta-general-por-documento-simit
+title: SIMIT - Consulta General por Documento de Identificación
+description: Servicio de datos completos SIMIT por documento
+sidebar_label: SIMIT - Consulta General por Documento de Identificación
+slug: /validacion-vehiculos/colombia/consulta-general-por-documento-simit
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/co/simit/consultar
+```
+
+El Servicio de Comparendos y Multas permite a los usuarios acceder a información detallada sobre comparendos y multas asociados con un número de documento específico en Colombia. La respuesta incluye detalles completos sobre cada comparendo, como el tipo de violación, el monto de la multa y el estado actual del comparendo.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Yes | Tipo de documento. Parámetros válidos: `CC`, `PA`, `CE`, `TI`, `RC`, `NIT`. |
+| `documentNumber` | string | Yes | Número de documento a ser consultado, sin espacios ni puntos. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/consultar", {
+  params: { 
+    documentType: "CC", 
+    documentNumber: "123456789" 
+  },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/consultar"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "value": {
+    "value": {
+      "data": {
+        "multas": [
+          {
+            "infractor": {
+              "tipoDocumento": "Cédula",
+              "numeroDocumento": "123456789",
+              "nombre": "C**",
+              "apellido": "B**",
+              "idTipoDocumento": 1
+            },
+            "valor": 344730,
+            "placa": "RDL805",
+            "infracciones": [
+              {
+                "codigoInfraccion": "C35",
+                "descripcionInfraccion": "No realizar la revisión técnico-mecánica en el plazo legal establecido o cuando el vehiculo no se encuentre en adecuadas condiciones técnico-mecánicas o de emisión de gases, aun cuando porte los certificados correspondientes.",
+                "valorInfraccion": 344730
+              }
+            ],
+            "valorPagar": 344730,
+            "departamento": "Cundinamarca",
+            "organismoTransito": "Ricaurte",
+            "fechaComparendo": "23/02/2016 00:00:00",
+            "fechaResolucion": "12/12/2022",
+            "numeroComparendo": "25612001000012662173",
+            "estadoComparendo": "Pendiente"
+          }
+        ],
+        "cursos": [
+          {
+            "numeroMulta": "00001234",
+            "fechaCurso": "21/12/2011",
+            "numeroCurso": "60462",
+            "ciudadRealizacion": "Medellin",
+            "centroInstruccion": "CIA AL INFRACTOR DE TRANSITO",
+            "estado": "No aplicado",
+            "certificado": "60462"
+          }
+        ],
+        "acuerdosPago": [
+          {
+            "resolucion": "324",
+            "fechaResolucion": "16/02/2018",
+            "estado": "Acuerdo de pago",
+            "valorAcuerdo": 837716,
+            "pendiente": 837716,
+            "totalPagar": 837716,
+            "secretaria": "Jamundi",
+            "departamento": "Valle del Cauca"
+          }
+        ],
+        "totalMultasPagar": 31,
+        "cantMultasPagar": 0,
+        "totalAcuerdosPagar": 11,
+        "cantAcuerdosPagar": 0
+      },
+      "signature": {"message": "Certified by Verifik.co", "dateTime": "August 31, 2022 4:16 PM"}
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Este servicio completo proporciona todos los datos SIMIT para una persona incluyendo multas, cursos y acuerdos de pago.
+- "Multas" contiene detalles de violaciones de tráfico con códigos y descripciones de infracciones.
+- "Cursos" muestra cursos de educación vial tomados por la persona.
+- "AcuerdosPago" muestra acuerdos de pago para multas pendientes.
+- Los montos se proporcionan en Pesos Colombianos (COP).

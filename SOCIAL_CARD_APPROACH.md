@@ -47,7 +47,7 @@ image: /img/verifik-social-card-en.jpg
 
 1. **Default behavior** (no frontmatter needed):
    - Component automatically detects language from URL path
-   - `/docs-es/*` → Spanish card
+   - `/verifik-es/*` → Spanish card
    - Everything else → English card
    - Works for ALL pages automatically
 

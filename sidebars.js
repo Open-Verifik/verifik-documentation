@@ -22,6 +22,20 @@ const sidebars = {
 			id: "intro",
 			label: "Home",
 		},
+		// COMPENSAR - Hidden from sidebar, accessible only via direct URL
+		// {
+		// 	type: "category",
+		// 	label: "PROPUESTA COMPENSAR",
+		// 	collapsible: true,
+		// 	items: [
+		// 		"compensar/COMPENSAR_README",
+		// 		"compensar/COMPENSAR_EXECUTIVE_SUMMARY",
+		// 		"compensar/COMPENSAR_PROPOSAL",
+		// 		"compensar/COMPENSAR_COMPLIANCE_MATRIX",
+		// 		"compensar/COMPENSAR_API_REFERENCE",
+		// 		"compensar/COMPENSAR_FLOW_DIAGRAMS",
+		// 	],
+		// },
 		{
 			type: "category",
 			label: "AUTHENTICATION",
@@ -48,6 +62,8 @@ const sidebars = {
 				"smartaccess/smartaccess",
 				"access/access",
 				"smartenroll/smartenroll",
+				"smartenroll/smartenroll-kyc-flow",
+				"smartenroll/smartenroll-admin-kyc-review",
 				"smart-enroll-self-hosted/smart-enroll-self-hosted",
 				"smart-scan/smart-scan",
 			],
@@ -182,6 +198,11 @@ const sidebars = {
 					type: "doc",
 					id: "identity/guatemala",
 					label: "🇬🇹 Guatemala",
+				},
+				{
+					type: "doc",
+					id: "identity/guatemala-extra",
+					label: "🇬🇹 Guatemala - Extra",
 				},
 				{
 					type: "doc",
@@ -895,6 +916,12 @@ const sidebars = {
 				"legal/verifik-for-enterprises-hub-eng",
 				"legal/smartcheck-terms-and-conditions-of-use",
 			],
+		},
+		{
+			type: "category",
+			label: "ROADMAP",
+			collapsible: false,
+			items: ["roadmap/roadmap-2026"],
 		},
 	],
 };

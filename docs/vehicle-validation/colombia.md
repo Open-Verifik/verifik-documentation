@@ -1,7 +1,7 @@
 ---
-id: colombia
 title: Colombia
 description: Colombian vehicle validation service
+slug: /vehicle-validation/colombia
 ---
 
 # Colombia
@@ -32,11 +32,11 @@ Comprehensive Colombian vehicle validation services providing access to multiple
 
 ### ⚖️ **SIMIT (Traffic Infractions System)**
 
--   **[SIMIT - Fines](/vehicle-validation/colombia/vehicle-validation-colombia-simit-fines)** - Query traffic fines and penalties
--   **[SIMIT - Agreements](/vehicle-validation/colombia/vehicle-validation-colombia-simit-agreements)** - Check payment agreements and settlements
--   **[SIMIT - Resolutions](/vehicle-validation/colombia/vehicle-validation-colombia-simit-resolutions)** - Access administrative resolutions
--   **[General query by identification document](/vehicle-validation/colombia/vehicle-validation-colombia-simit-general-query-by-document)** - Search by driver's ID number
--   **[General query by plate number](/vehicle-validation/colombia/vehicle-validation-colombia-simit-general-query-by-plate)** - Search by vehicle plate number
+-   **[SIMIT - Fines](/vehicle-validation/colombia/simit-fines)** - Query traffic fines and penalties
+-   **[SIMIT - Agreements](/vehicle-validation/colombia/simit-agreements)** - Check payment agreements and settlements
+-   **[SIMIT - Resolutions](/vehicle-validation/colombia/simit-resolutions)** - Access administrative resolutions
+-   **[General query by identification document](/vehicle-validation/colombia/simit-general-query-by-document)** - Search by driver's ID number
+-   **[General query by plate number](/vehicle-validation/colombia/simit-general-query-by-plate)** - Search by vehicle plate number
 
 ### 🎓 **SISCONMP Training Records**
 

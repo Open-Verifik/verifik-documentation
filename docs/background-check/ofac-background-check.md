@@ -2,6 +2,7 @@
 id: ofac-background-check
 title: OFAC Background Check
 description: OFAC background check service
+slug: /background-check/international/ofac-background-check
 ---
 
 # OFAC Background Check

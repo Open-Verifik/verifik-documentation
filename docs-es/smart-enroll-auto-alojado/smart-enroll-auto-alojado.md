@@ -143,18 +143,18 @@ La API de SmartEnroll proporciona dos recursos principales:
 
 Gestiona tus proyectos KYC con control completo sobre configuración, marca y ajustes de verificación.
 
--   **[Listar Proyectos](/docs-es/resources/proyectos/listar-todos-los-proyectos)** - Recupera todos los proyectos
--   **[Obtener Proyecto](/docs-es/resources/proyectos/recuperar-un-proyecto)** - Obtiene detalles del proyecto
--   **[Crear Proyecto](/docs-es/resources/proyectos/crear-un-proyecto)** - Crea nuevos proyectos
--   **[Actualizar Proyecto](/docs-es/resources/proyectos/actualizar-un-proyecto)** - Actualiza la configuración del proyecto
--   **[Eliminar Proyecto](/docs-es/resources/proyectos/eliminar-un-proyecto)** - Elimina proyectos
+-   **[Listar Proyectos](/verifik-es/resources/proyectos/listar-todos-los-proyectos)** - Recupera todos los proyectos
+-   **[Obtener Proyecto](/verifik-es/resources/proyectos/recuperar-un-proyecto)** - Obtiene detalles del proyecto
+-   **[Crear Proyecto](/verifik-es/resources/proyectos/crear-un-proyecto)** - Crea nuevos proyectos
+-   **[Actualizar Proyecto](/verifik-es/resources/proyectos/actualizar-un-proyecto)** - Actualiza la configuración del proyecto
+-   **[Eliminar Proyecto](/verifik-es/resources/proyectos/eliminar-un-proyecto)** - Elimina proyectos
 
 #### Flujos de Proyecto
 
 Configura flujos de verificación y gestiona ajustes específicos del proyecto.
 
--   **[Actualizar Flujo de Proyecto](/docs-es/resources/flujos-de-proyecto/actualizar-un-flujo-de-proyecto)** - Actualiza la configuración del flujo de verificación
--   **[Eliminar Flujo de Proyecto](/docs-es/resources/flujos-de-proyecto/eliminar-un-flujo-de-proyecto)** - Elimina flujos de proyecto
+-   **[Actualizar Flujo de Proyecto](/verifik-es/resources/flujos-de-proyecto/actualizar-un-flujo-de-proyecto)** - Actualiza la configuración del flujo de verificación
+-   **[Eliminar Flujo de Proyecto](/verifik-es/resources/flujos-de-proyecto/eliminar-un-flujo-de-proyecto)** - Elimina flujos de proyecto
 
 ---
 

@@ -2,6 +2,7 @@
 id: smartaccess
 title: SmartAccess
 description: A no-code solution to manage access to your platform securely and efficiently
+slug: /smartaccess/smartaccess
 ---
 
 # SmartAccess
