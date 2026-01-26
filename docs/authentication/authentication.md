@@ -2,6 +2,7 @@
 id: authentication
 title: Authentication
 description: Verifik offers solutions via API's that are accessible with a token using JWT
+slug: /authentication/authentication
 ---
 
 # Authentication

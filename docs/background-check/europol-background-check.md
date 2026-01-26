@@ -1,0 +1,197 @@
+---
+id: europol-background-check
+title: Europol Background Check
+description: The Europol background check service allows developers to perform real-time checks against Europol's criminal records database. By providing a person's document type and document number, or full name, users can verify whether the information matches any entry in Europol's system.
+slug: /background-check/international/europol-background-check
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Europol Background Check
+
+## Endpoint
+
+```
+https://api.verifik.co/v2/europol
+```
+
+The Europol background check service allows developers to perform real-time checks against Europol's criminal records database. By providing a person's document type and document number, or full name, users can verify whether the information matches any entry in Europol's system.
+
+This service is ideal for companies looking to enhance their identity verification processes, prevent fraud, and ensure compliance with security regulations.
+
+### Use Cases
+
+- **Fraud Prevention:** Identify individuals flagged in Europol's criminal database before proceeding with sensitive transactions.
+- **Identity Verification:** Ensure that personal information provided by users is accurate and legitimate.
+- **Compliance:** Meet regulatory requirements for KYC (Know Your Customer) and AML (Anti-Money Laundering) checks in industries such as banking, finance, and real estate.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parameters
+
+#### Query via Document
+
+| Name             | Type   | Required | Description                                                                 |
+| ---------------- | ------ | -------- | --------------------------------------------------------------------------- |
+| `documentType`   | string | No       | The document type that you want to request.                                 |
+| `documentNumber` | string | No       | Document number to consult, without spaces or points.                       |
+
+#### Query via Full Name
+
+| Name       | Type   | Required | Description                                                                 |
+| ---------- | ------ | -------- | --------------------------------------------------------------------------- |
+| `fullName` | string | No       | Instead of documentType and documentNumber, you can pass the name directly of the person/business. |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/europol',
+  params: {documentType: 'CC', documentNumber: '80251972'},
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'jwt <tu_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "JWT token"
+}
+
+conn.request("GET", "/v2/europol?fullName=Mateo%20Verifik", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/europol?fullName=Mateo Verifik', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'JWT token',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "JWT token"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/europol?fullName=Mateo%20Verifik")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "123456789",
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": [
+      "MATEO",
+      "VERIFIK"
+    ],
+    "foundInEuropol": true,
+    "urlEuropol": "https://eumostwanted.eu/es#/es/node/162"
+  },
+  "signature": {
+    "dateTime": "June 28, 2022 12:40 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Features
+
+-   **Europol Database Check**: Perform real-time checks against Europol's criminal records database
+-   **Multiple Query Methods**: Search by document type/number or full name
+-   **Complete Identity Data**: Returns full name, first name, last name, and document information
+-   **Match Detection**: Indicates if the person is found in Europol's database with direct URL reference
+-   **Structured Response**: Organized data format for easy integration
+-   **Multiple Programming Languages**: Support for JavaScript, Python, PHP, and Swift
+-   **Error Handling**: Comprehensive error responses for various scenarios

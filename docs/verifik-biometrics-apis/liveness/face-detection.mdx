@@ -1,0 +1,184 @@
+---
+id: verifik-biometrics-apis-liveness-face-detection
+title: Face Detection
+description: Detect and extract faces from images
+slug: /verifik-biometrics-apis/liveness/face-detection
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Face Detection
+
+Detects and extracts faces from images. This endpoint can be used to identify and locate faces in images before performing liveness detection or face comparison.
+
+## Endpoint
+
+```
+POST https://api.verifik.co/v2/face-recognition/detect
+```
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `image` | string | Yes | Base64 image data (data URI or raw base64). If an `https` URL is provided, it will be downloaded and converted internally. |
+| `return_landmarks` | boolean | No | Whether to return facial landmarks. Default: `false`. |
+| `return_attributes` | boolean | No | Whether to return face attributes (age, gender, etc.). Default: `false`. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch("https://api.verifik.co/v2/face-recognition/detect", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      image: "<base64 or https url>",
+      return_landmarks: true,
+      return_attributes: true
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/detect");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "image" => "<base64 or https url>",
+    "return_landmarks" => true,
+    "return_attributes" => true
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/face-recognition/detect"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "image": "<base64 or https url>",
+    "return_landmarks": True,
+    "return_attributes": True
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "id": "DETECT123",
+  "data": {
+    "faces": [
+      {
+        "bounding_box": {
+          "x": 100,
+          "y": 150,
+          "width": 200,
+          "height": 250
+        },
+        "confidence": 0.99,
+        "landmarks": {
+          "left_eye": {"x": 150, "y": 200},
+          "right_eye": {"x": 250, "y": 200},
+          "nose": {"x": 200, "y": 250},
+          "mouth": {"x": 200, "y": 300}
+        },
+        "attributes": {
+          "age": 30,
+          "gender": "male"
+        }
+      }
+    ],
+    "face_count": 1
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "January 16, 2024 3:44 PM"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"image\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "internal_error",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `image` may be base64 or an `https` URL. If URL, the service fetches and converts it internally.
+- `return_landmarks` and `return_attributes` are optional and default to `false` for faster processing.
+- The response includes bounding boxes for all detected faces in the image.

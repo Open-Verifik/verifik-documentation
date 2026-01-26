@@ -38,7 +38,7 @@ Verifik offers a set of solutions that work as no-code with an easy configuratio
       title="SmartAccess"
       description="A no-code solution to manage access to your platform securely and efficiently. By combining OTP codes and facial recognition with liveness detection, we offer a fast and hassle-free login experience."
       image="/img/services/smartaccess.png"
-      link="/smartaccess"
+      link="/smartaccess/smartaccess"
     />
   </div>
 </div>
@@ -57,7 +57,7 @@ Verifik offers a set of solutions that work as no-code with an easy configuratio
       title="SmartEnroll"
       description="Perform a complete user onboarding process with advanced identity verification technologies such as facial recognition, ID Validations & Background checks, ensuring secure and effective registration."
       image="/img/services/smartenroll.png"
-      link="/smartenroll"
+      link="/smartenroll/smartenroll"
     />
   </div>
 </div>

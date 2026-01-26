@@ -15,6 +15,7 @@ const config = {
 	title: "Verifik",
 	tagline: "Everything you need to verify & authenticate users faster and easier",
 	favicon: "https://cdn.verifik.co/LogoNegroSolo.svg",
+	onDuplicateRoutes: "ignore", // Ignore duplicate routes - we intentionally create duplicate pages for SEO (same content, different URLs)
 
 	// Additional favicon links and SEO metadata
 	headTags: [
@@ -198,7 +199,7 @@ const config = {
 	// Set the /<baseUrl>/ pathname under which your site is served
 	// For GitHub pages deployment, it is often '/<projectName>/'
 	baseUrl: "/",
-	trailingSlash: false,
+	trailingSlash: true,
 
 	// GitHub pages deployment config.
 	// If you aren't using GitHub pages, you don't need these.
@@ -209,7 +210,7 @@ const config = {
 
 	// Internationalization configuration REMOVED
 	// i18n removed to prevent /es prefix on Spanish routes
-	// Spanish docs will be at /docs-es/ instead of /es/docs-es/
+	// Spanish docs will be at /verifik-es/ instead of /es/docs-es/
 
 	presets: [
 		[
@@ -246,8 +247,38 @@ const config = {
 			{
 				id: "docs-es",
 				path: "docs-es",
-				routeBasePath: "docs-es",
+				routeBasePath: "verifik-es",
 				sidebarPath: "./sidebars-es.js",
+				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
+			},
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "docs-es-old",
+				path: "docs-es-old",
+				routeBasePath: "docs-es",
+				sidebarPath: "./sidebars-es-old.js",
+				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
+			},
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "docs-es-old-single",
+				path: "docs-es-old-single",
+				routeBasePath: "doc-es",
+				sidebarPath: "./sidebars-es-old-single.js",
+				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
+			},
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "docs-old-recursos",
+				path: "docs-old-recursos",
+				routeBasePath: "recursos",
+				sidebarPath: "./sidebars-old-recursos.js",
 				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
 			},
 		],

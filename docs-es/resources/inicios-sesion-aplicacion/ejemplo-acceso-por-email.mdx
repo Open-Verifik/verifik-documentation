@@ -1,0 +1,505 @@
+---
+id: ejemplo-acceso-por-email
+title: Ejemplo de Acceso por Email
+description: Tutorial completo para implementar autenticación de inicio de sesión de aplicación basada en correo electrónico
+slug: /resources/ejemplo-acceso-por-email
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Descripción General
+
+Este tutorial demuestra cómo implementar autenticación basada en correo electrónico para flujos de inicio de sesión de aplicación utilizando el sistema de validación de correo electrónico de Verifik.
+
+### Requisitos Previos
+
+Antes de comenzar, asegúrate de tener:
+
+- Un **Proyecto** con configuración de inicio de sesión
+- Un **ProjectFlow** con `type = "login"`
+- Validación de correo electrónico habilitada en tu flujo de proyecto
+
+### Configuración Inicial
+
+Si no has creado un proyecto y un projectFlow con la propiedad `type = "login"`, sigue estas guías:
+
+- [Crear un Proyecto](/verifik-es/resources/proyectos/crear-un-proyecto)
+- [Crear un Flujo de Proyecto](/verifik-es/resources/flujos-de-proyecto/actualizar-un-flujo-de-proyecto)
+
+## Flujo de Implementación
+
+El flujo de acceso por correo electrónico consta de dos pasos principales:
+
+1. **Crear Validación de Correo Electrónico** - Generar un OTP y enviarlo al correo electrónico del usuario
+2. **Validar Validación de Correo Electrónico** - Verificar el OTP ingresado por el usuario
+
+### Paso 1: Crear Validación de Correo Electrónico
+
+Primero, crea una validación de correo electrónico para enviar un OTP a la dirección de correo electrónico del usuario.
+
+**Endpoint:**
+```
+POST https://api.verifik.co/v2/email-validations
+```
+
+**Ejemplo de Solicitud:**
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'POST',
+  url: 'https://api.verifik.co/v2/email-validations',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+  },
+  data: {
+    project: 'your_project_id',
+    projectFlow: 'your_project_flow_id',
+    email: 'user@example.com',
+    type: 'login',
+    redirectUrl: 'https://yourapp.com/success'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log('Email validation created:', data);
+} catch (error) {
+  console.error('Error creating email validation:', error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+payload = json.dumps({
+  "project": "your_project_id",
+  "projectFlow": "your_project_flow_id",
+  "email": "user@example.com",
+  "type": "login",
+  "redirectUrl": "https://yourapp.com/success"
+})
+
+headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer <your_token>'
+}
+
+conn.request("POST", "/v2/email-validations", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://api.verifik.co/v2/email-validations', [
+  'headers' => [
+    'Content-Type' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+  'json' => [
+    'project' => 'your_project_id',
+    'projectFlow' => 'your_project_flow_id',
+    'email' => 'user@example.com',
+    'type' => 'login',
+    'redirectUrl' => 'https://yourapp.com/success'
+  ]
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <your_token>"
+]
+
+let parameters = [
+  "project": "your_project_id",
+  "projectFlow": "your_project_flow_id",
+  "email": "user@example.com",
+  "type": "login",
+  "redirectUrl": "https://yourapp.com/success"
+] as [String : Any]
+
+let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/email-validations")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "POST"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+**Respuesta:**
+```json
+{
+  "data": {
+    "_id": "email_validation_id",
+    "email": "user@example.com",
+    "status": "pending",
+    "otp": "123456",
+    "expiresAt": "2024-01-15T11:30:00Z",
+    "createdAt": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+### Paso 2: Validar Validación de Correo Electrónico
+
+Después de que el usuario recibe el OTP por correo electrónico, valídalo para completar el proceso de inicio de sesión.
+
+**Endpoint:**
+```
+POST https://api.verifik.co/v2/email-validations/validate
+```
+
+**Ejemplo de Solicitud:**
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'POST',
+  url: 'https://api.verifik.co/v2/email-validations/validate',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+  },
+  data: {
+    emailValidationId: 'email_validation_id',
+    otp: '123456'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log('Email validation successful:', data);
+} catch (error) {
+  console.error('Error validating email:', error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+payload = json.dumps({
+  "emailValidationId": "email_validation_id",
+  "otp": "123456"
+})
+
+headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer <your_token>'
+}
+
+conn.request("POST", "/v2/email-validations/validate", payload, headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://api.verifik.co/v2/email-validations/validate', [
+  'headers' => [
+    'Content-Type' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+  'json' => [
+    'emailValidationId' => 'email_validation_id',
+    'otp' => '123456'
+  ]
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <your_token>"
+]
+
+let parameters = [
+  "emailValidationId": "email_validation_id",
+  "otp": "123456"
+] as [String : Any]
+
+let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/email-validations/validate")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "POST"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+**Respuesta:**
+```json
+{
+  "success": true,
+  "data": {
+    "status": "validated",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "appLogin": {
+      "_id": "app_login_id",
+      "type": "email",
+      "status": "completed",
+      "emailValidation": "email_validation_id"
+    }
+  }
+}
+```
+
+### Paso 3: Recuperar Objeto de Inicio de Sesión de Aplicación
+
+Después de una validación de correo electrónico exitosa, usa el token para recuperar el objeto AppLogin completo con todos sus detalles.
+
+**Endpoint:**
+```
+GET https://api.verifik.co/v2/app-logins/{appLoginId}
+```
+
+**Ejemplo de Solicitud:**
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/app-logins/app_login_id',
+  params: {
+    'populates[]': ['emailValidation']
+  },
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log('App Login retrieved:', data);
+} catch (error) {
+  console.error('Error retrieving app login:', error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer <your_token>'
+}
+
+conn.request("GET", "/v2/app-logins/app_login_id?populates[]=emailValidation", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/app-logins/app_login_id?populates[]=emailValidation', [
+  'headers' => [
+    'Content-Type' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Content-Type": "application/json",
+  "Authorization": "Bearer <your_token>"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/app-logins/app_login_id?populates[]=emailValidation")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+**Respuesta:**
+```json
+{
+  "data": {
+    "_id": "app_login_id",
+    "client": "client_id",
+    "name": "User Login Session",
+    "status": "completed",
+    "project": "project_id",
+    "projectFlow": "project_flow_id",
+    "type": "email",
+    "emailValidation": {
+      "_id": "email_validation_id",
+      "email": "user@example.com",
+      "status": "validated",
+      "validationMethod": "verificationCode",
+      "otp": "$2a$10$encrypted_otp",
+      "expiresAt": "2024-01-15T11:30:00Z",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-15T10:32:00Z"
+    },
+    "phoneValidation": null,
+    "biometricValidation": null,
+    "face": null,
+    "accessControlLog": "access_control_log_id",
+    "updatedAt": "2024-01-15T10:32:00Z",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "__v": 0
+  }
+}
+```
+
+## Resumen del Flujo Completo
+
+1. **El usuario inicia sesión** con su dirección de correo electrónico
+2. **El sistema crea validación de correo electrónico** y envía OTP al correo electrónico del usuario
+3. **El usuario recibe OTP** por correo electrónico
+4. **El usuario ingresa OTP** en tu aplicación
+5. **El sistema valida OTP** y crea registro de AppLogin
+6. **El sistema recupera objeto AppLogin** con detalles completos de validación
+7. **El usuario obtiene acceso** con token de autenticación y datos completos de inicio de sesión
+
+## Documentación Relacionada
+
+- [Crear una Validación de Correo Electrónico](/verifik-es/resources/crear-una-validacion-email)
+- [Validar una Validación de Correo Electrónico](/verifik-es/resources/validar-una-validacion-email)
+- [Recuperar un Inicio de Sesión de Aplicación](/verifik-es/resources/recuperar-un-inicio-sesion-aplicacion)
+- [Crear un Inicio de Sesión de Aplicación](/verifik-es/resources/app-logins/create-an-app-login-crear-inicio-de-sesion-en-la-app)
+
+## Tutorial en Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wYJcFnMhtKg" title="Tutorial de Ejemplo de Acceso por Email" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+### Características
+
+- **Autenticación Basada en Correo Electrónico**: Inicio de sesión seguro mediante verificación OTP por correo electrónico
+- **Creación Automática de AppLogin**: Los registros de AppLogin se crean automáticamente tras una validación exitosa
+- **OTP con Límite de Tiempo**: Los códigos OTP expiran por seguridad
+- **Múltiples Lenguajes de Programación**: Soporte para JavaScript, Python, PHP y Swift
+- **Integración Completa**: Tutorial de principio a fin para flujos de autenticación por correo electrónico
+- **Acceso Basado en Token**: Tokens de autenticación seguros para acceso a la aplicación

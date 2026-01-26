@@ -1,0 +1,339 @@
+---
+title: Crear un proyecto
+description: Crea un nuevo proyecto KYC con configuración opcional de flujo
+slug: /resources/proyectos/crear-un-proyecto
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v3/projects
+```
+
+Crea un nuevo proyecto KYC con configuración completa. Puedes crear un proyecto básico con campos mínimos o incluir una configuración de flujo completa en una sola solicitud.
+
+### Encabezados
+
+| Nombre | Valor |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Descripción |
+| --- | --- | --- | --- |
+| `name` | string | Sí | Nombre del proyecto (máx. 60 caracteres) |
+| `allowedCountries` | array | Sí | Lista de países permitidos |
+| `contactEmail` | string | Sí | Correo de contacto (formato válido) |
+| `privacyUrl` | string | Sí | URL de política de privacidad |
+| `termsAndConditionsUrl` | string | Sí | URL de términos y condiciones |
+| `dataProtection` | object | Sí | Información del responsable de protección de datos |
+| `identifier` | string | No | Identificador del proyecto |
+| `currentStep` | number | No | Paso actual de configuración |
+| `lastStep` | number | No | Último paso completado |
+| `demoMode` | boolean | No | Activa modo demo para pruebas |
+| `demoOTP` | string | No | OTP demo (6 dígitos) - se genera si no se envía |
+| `branding` | object | No | Configuración de marca |
+| `projectFlow` | object | No | Configuración del flujo del proyecto |
+| `projectFlowType` | string | No | Tipo de flujo (requerido si envías projectFlow) |
+
+#### Objeto Data Protection
+
+| Nombre | Tipo | Requerido | Descripción |
+| --- | --- | --- | --- |
+| `name` | string | Sí | Nombre |
+| `email` | string | Sí | Email (formato válido) |
+| `address` | string | Sí | Dirección principal |
+| `address2` | string | No | Dirección secundaria |
+| `city` | string | Sí | Ciudad |
+| `country` | string | Sí | País |
+| `postalCode` | string | Sí | Código postal (3-12 caracteres) |
+
+#### Objeto Project Flow
+
+| Nombre | Tipo | Requerido | Descripción |
+| --- | --- | --- | --- |
+| `target` | string | Sí | Audiencia (`personal`) |
+| `type` | string | Sí | Tipo de flujo (`onboarding`) |
+| `signUpForm` | object | No | Configuración del formulario de registro |
+| `documents` | object | No | Ajustes de verificación de documentos |
+| `liveness` | object | No | Ajustes de verificación biométrica |
+| `steps` | object | No | Configuración de pasos |
+| `integrations` | object | No | Ajustes de integraciones |
+
+### Solicitud
+
+<Tabs>
+	<TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+	const res = await fetch("https://api.verifik.co/v3/projects", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+		body: JSON.stringify({
+			name: "My KYC Project",
+			allowedCountries: ["United States"],
+			contactEmail: "admin@example.com",
+			privacyUrl: "https://example.com/privacy",
+			termsAndConditionsUrl: "https://example.com/terms",
+			dataProtection: {
+				name: "John Doe",
+				email: "dpo@example.com",
+				address: "123 Main St",
+				city: "New York",
+				country: "United States",
+				postalCode: "10001"
+			}
+		}),
+	});
+	console.log(await res.json());
+}
+
+run();
+```
+
+	</TabItem>
+	<TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v3/projects");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+		"Content-Type: application/json",
+		"Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+		"name" => "My KYC Project",
+		"allowedCountries" => ["United States"],
+		"contactEmail" => "admin@example.com",
+		"privacyUrl" => "https://example.com/privacy",
+		"termsAndConditionsUrl" => "https://example.com/terms",
+		"dataProtection" => [
+				"name" => "John Doe",
+				"email" => "dpo@example.com",
+				"address" => "123 Main St",
+				"city" => "New York",
+				"country" => "United States",
+				"postalCode" => "10001"
+		]
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+	</TabItem>
+	<TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/projects"
+headers = {
+		"Content-Type": "application/json",
+		"Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+		"name": "My KYC Project",
+		"allowedCountries": ["United States"],
+		"contactEmail": "admin@example.com",
+		"privacyUrl": "https://example.com/privacy",
+		"termsAndConditionsUrl": "https://example.com/terms",
+		"dataProtection": {
+				"name": "John Doe",
+				"email": "dpo@example.com",
+				"address": "123 Main St",
+				"city": "New York",
+				"country": "United States",
+				"postalCode": "10001"
+		}
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+	</TabItem>
+	<TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+		"bytes"
+		"encoding/json"
+		"fmt"
+		"net/http"
+		"os"
+)
+
+func main() {
+		payload := map[string]interface{}{
+				"name": "My KYC Project",
+				"allowedCountries": []string{"United States"},
+				"contactEmail": "admin@example.com",
+				"privacyUrl": "https://example.com/privacy",
+				"termsAndConditionsUrl": "https://example.com/terms",
+				"dataProtection": map[string]string{
+						"name": "John Doe",
+						"email": "dpo@example.com",
+						"address": "123 Main St",
+						"city": "New York",
+						"country": "United States",
+						"postalCode": "10001",
+				},
+		}
+		b, _ := json.Marshal(payload)
+		req, _ := http.NewRequest("POST", "https://api.verifik.co/v3/projects", bytes.NewBuffer(b))
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+		resp, _ := http.DefaultClient.Do(req)
+		defer resp.Body.Close()
+		var out map[string]interface{}
+		json.NewDecoder(resp.Body).Decode(&out)
+		fmt.Println(out)
+}
+```
+
+	</TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+	<TabItem value="201" label="201">
+
+```json
+{
+		"data": {
+				"_id": "64a1b2c3d4e5f6789012345",
+				"name": "My KYC Project",
+				"identifier": null,
+				"contactEmail": "admin@example.com",
+				"privacyUrl": "https://example.com/privacy",
+				"termsAndConditionsUrl": "https://example.com/terms",
+				"status": "draft",
+				"currentStep": 0,
+				"lastStep": 0,
+				"demoMode": false,
+				"demoOTP": null,
+				"allowedCountries": ["United States", "Canada"],
+				"dataProtection": {
+						"name": "John Doe",
+						"email": "dpo@example.com",
+						"address": "123 Main St",
+						"address2": "",
+						"city": "New York",
+						"country": "United States",
+						"postalCode": "10001"
+				},
+				"branding": {
+						"bgColor": "#01236D",
+						"tabColor": "#01236D",
+						"borderColor": "#B2BDD3",
+						"buttonColor": "#B2BDD3",
+						"buttonTxtColor": "#FFFFFF",
+						"secondaryButtonColor": "#B2BDD3",
+						"secondaryButtonTextColor": "#FFFFFF",
+						"txtColor": "#8091B6",
+						"titleColor": "#000000",
+						"logo": null,
+						"rightImage": null,
+						"rightImagePosition": "center center",
+						"rightBackgroundColor": "white"
+				},
+				"projectFlows": "64a1b2c3d4e5f6789012346",
+				"version": 2,
+				"createdAt": "2023-07-01T10:00:00.000Z",
+				"updatedAt": "2023-07-01T10:00:00.000Z"
+		}
+}
+```
+
+	</TabItem>
+	<TabItem value="400" label="400">
+
+```json
+{
+		"message": "Invalid request body",
+		"code": "BadRequest",
+		"status": 400,
+		"timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+	</TabItem>
+	<TabItem value="401-403" label="401/403">
+
+```json
+{
+		"message": "Access forbidden",
+		"code": "Forbidden",
+		"status": 401,
+		"timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+o
+
+```json
+{
+		"message": "Access forbidden",
+		"code": "Forbidden",
+		"status": 403,
+		"timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+	</TabItem>
+	<TabItem value="409" label="409">
+
+```json
+{
+		"message": "Country not supported. contact support to help you include your country to our list.",
+		"code": "MissingParameter",
+		"status": 409,
+		"timestamp": "2023-07-01T10:00:00.000Z"
+}
+```
+
+	</TabItem>
+	<TabItem value="422" label="422">
+
+```json
+{
+		"message": "Project flow validation failed",
+		"code": "UnprocessableEntity",
+		"status": 422,
+		"timestamp": "2023-07-01T10:00:00.000Z",
+		"details": [
+				{
+						"field": "projectFlow.documents.verificationMethods",
+						"message": "verificationMethods is required when documents step is not skipped"
+				}
+		]
+}
+```
+
+	</TabItem>
+</Tabs>
+
+### Notas
+
+- Modo demo: con `demoMode: true` y sin `demoOTP`, el sistema genera un OTP de 6 dígitos. En desarrollo, el modo demo se activa automáticamente.
+- Flujo del proyecto: en producción, crea proyectos completos con `projectFlow` para consistencia.
+- Validación: todos los campos se validan; errores retornan 4xx correspondientes.
+- Data Protection: `postalCode` entre 3–12 caracteres, alfanumérico, espacios y guiones permitidos.
+- Documentos: si `steps.document` no es "skip", `verificationMethods` y `documentTypes` son obligatorios.
+- Liveness: `minScore` 0.52–0.9; `searchMinScore` 0.7–0.95.

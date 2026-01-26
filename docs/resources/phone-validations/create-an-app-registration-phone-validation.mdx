@@ -1,0 +1,256 @@
+---
+id: resources-phone-validations-create-an-app-registration-phone-validation
+title: Create an App Registration Phone Validation
+description: Create a phone validation for an app registration to verify user phone numbers
+slug: /resources/phone-validations/create-an-app-registration-phone-validation
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/phone-validations/app-registration
+```
+
+A Phone Validation is an instance within Verifik's system that allows you to process and validate phone numbers during the app registration process. This process ensures the authenticity of user phone numbers and provides secure verification through SMS or WhatsApp delivery methods.
+
+:::warning
+The JWT Token you should use when creating `App Registration Phone Validations` is provided from the `App Registration` in creation. You must use the token returned when creating an [App Registration](/resources/app-registrations/create-an-app-registration) to authenticate this request.
+:::
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `project` | string | Yes | The unique identifier for the project where this phone validation will be used |
+| `validationMethod` | string | Yes | The validation method. Must be `verificationCode` |
+| `phone` | string | Yes | The phone number that will be validated. Spaces will be automatically removed during processing |
+| `countryCode` | string | Yes | The country code of the phone number in format `+XXX` (e.g., `+507` for Panama, `+1` for United States). Must match the format `+` followed by 1 to 3 digits |
+| `type` | string | Yes | Type of validation. Must be one of: `validation`, `login`, `onboarding`, or `oneTimeLink` |
+| `expiresAt` | string | No | Optional expiration date for the validation code. If not provided, a default expiration time will be set. Format: ISO 8601 (e.g., `2024-12-31T23:59:59.000Z`) |
+| `redirectUrl` | string | No | Optional URL for redirect after validation |
+| `webhookUrl` | string | No | Optional webhook URL for validation notifications |
+| `identityUrl` | string | No | Optional identity verification URL |
+| `requires2FA` | boolean | No | Optional flag indicating if two-factor authentication is required. Defaults to `false` |
+| `ipAddress` | string | No | Optional IP address of the user |
+
+#### Validation Method Values
+
+| Value | Description |
+| --- | --- |
+| `verificationCode` | Sends a one-time password (OTP) to the phone number for verification |
+
+#### Type Values
+
+| Value | Description |
+| --- | --- |
+| `onboarding` | Phone verification during user registration (recommended for app registrations) |
+| `validation` | General phone number validation |
+| `login` | Phone verification during user login |
+| `oneTimeLink` | One-time link validation |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch("https://api.verifik.co/v2/phone-validations/app-registration", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      project: "507f1f77bcf86cd799439011",
+      validationMethod: "verificationCode",
+      phone: "62647737",
+      countryCode: "+507",
+      type: "onboarding"
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/phone-validations/app-registration");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "project" => "507f1f77bcf86cd799439011",
+    "validationMethod" => "verificationCode",
+    "phone" => "62647737",
+    "countryCode" => "+507",
+    "type" => "onboarding"
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/phone-validations/app-registration"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "project": "507f1f77bcf86cd799439011",
+    "validationMethod": "verificationCode",
+    "phone": "62647737",
+    "countryCode": "+507",
+    "type": "onboarding"
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    payload := map[string]interface{}{
+        "project": "507f1f77bcf86cd799439011",
+        "validationMethod": "verificationCode",
+        "phone": "62647737",
+        "countryCode": "+507",
+        "type": "onboarding",
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/phone-validations/app-registration", bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "client": "507f1f77bcf86cd799439013",
+        "project": "507f1f77bcf86cd799439011",
+        "projectFlow": "507f1f77bcf86cd799439015",
+        "status": "sent",
+        "countryCode": "+507",
+        "phone": "62647737",
+        "phoneGateway": "whatsapp",
+        "otp": "$2a$10$/v55.1QmwlCdX6zD1jy51OF87POIDZzj30.UmTtp13pZv6uKm.a.m",
+        "expiresAt": "2024-12-02T17:15:35.000Z",
+        "phoneData": {},
+        "type": "validation",
+        "redirectUrl": "https://api.verifik.co",
+        "requires2FA": false,
+        "ipAddress": "172.17.0.1",
+        "language": "en",
+        "_id": "674de8df21c72be3cc42b8a7",
+        "updatedAt": "2024-12-02T17:05:36.788Z",
+        "createdAt": "2024-12-02T17:05:36.788Z",
+        "__v": 0,
+        "new": true
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "code": "MissingParameter",
+    "message": "missing project\n. missing validationMethod\n. missing phone\n. missing countryCode\n. missing type"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-countrycode" label="409 (Invalid Country Code Format)">
+
+```json
+{
+    "code": "MissingParameter",
+    "message": "Invalid countryCode format. CountryCode should be in the format + followed by 1 to 3 digits."
+}
+```
+
+  </TabItem>
+  <TabItem value="404-project" label="404 (Project Not Found)">
+
+```json
+{
+    "code": "project_not_found",
+    "message": "404:project_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-flow" label="404 (Project Flow Not Found)">
+
+```json
+{
+    "code": "projectFlow_not_found",
+    "message": "404:projectFlow_not_found"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **Country Code Format**: The `countryCode` must be in the format `+XXX` where X are digits (1-3 digits maximum). For example: `+1`, `+507`, `+52`.
+- **Phone Number**: Spaces in phone numbers are automatically removed during processing.
+- **OTP Security**: The OTP is encrypted using bcrypt before storage for security.
+- **Default Gateway**: Phone validations default to WhatsApp delivery method based on your project flow configuration.
+- **Automatic Linking**: When created through the app-registration endpoint, the phone validation is automatically linked to the user's app registration record.
+- **Credit Charging**: This endpoint automatically charges credits from your SmartEnroll plan.
+- **App Registration Required**: This endpoint requires an active app registration session. You must use the token returned from creating an App Registration.

@@ -26,7 +26,7 @@ Let's start by saying that the **optimal** path is: Set everything up in our [we
       </div>
       <div className="card__body">
         <p>Start by creating a new project in the Verifik platform to organize your authentication flows.</p>
-        <a href="/resources/create-a-project" className="button button--primary">Create Project</a>
+        <a href="/resources/projects/projects-create" className="button button--primary">Create Project</a>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@ Let's start by saying that the **optimal** path is: Set everything up in our [we
       </div>
       <div className="card__body">
         <p>Define the authentication flow with type = "login" for your project.</p>
-        <a href="/resources/create-a-project-flow" className="button button--primary">Create Flow</a>
+        <a href="/resources/project-flows/project-flows-update" className="button button--primary">Create Flow</a>
       </div>
     </div>
   </div>
@@ -146,8 +146,8 @@ https://api.verifik.co/v2/access
 
 If you haven't created a project and a projectFlow with the property type = **login**, then here are the links for that:
 
-- [Create a Project](/resources/create-a-project)
-- [Create a Project Flow](/resources/create-a-project-flow)
+- [Create a Project](/resources/projects/projects-create)
+- [Create a Project Flow](/resources/project-flows/project-flows-update)
 
 ### Let's Get Started
 
@@ -207,8 +207,8 @@ Authorization: Bearer <your_jwt_token>
 
 If you haven't created a project and a projectFlow with the property type = **login**, then here are the links for that:
 
-- [Create a Project](/resources/create-a-project)
-- [Create a Project Flow](/resources/create-a-project-flow)
+- [Create a Project](/resources/projects/projects-create)
+- [Create a Project Flow](/resources/project-flows/project-flows-update)
 
 ### Let's Get Started
 
@@ -281,8 +281,8 @@ Authorization: Bearer <your_jwt_token>
 
 If you haven't created a project and a projectFlow with the property type = **login**, then here are the links for that:
 
-- [Create a Project](/resources/create-a-project)
-- [Create a Project Flow](/resources/create-a-project-flow)
+- [Create a Project](/resources/projects/projects-create)
+- [Create a Project Flow](/resources/project-flows/project-flows-update)
 
 ### Let's Get Started
 

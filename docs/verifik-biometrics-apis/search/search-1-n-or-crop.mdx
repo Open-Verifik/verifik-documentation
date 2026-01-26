@@ -1,0 +1,218 @@
+---
+id: search-1-n-or-crop
+title: Face Search (1:N) or Crop
+description: Search for a face in a collection (1:N identification) or search using cropped images
+slug: /verifik-biometrics-apis/search/search-1-n-or-crop
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/face-recognition/search
+```
+
+Searches one or more images against a face collection and returns potential matches ranked by similarity. This endpoint supports both full images and cropped face images.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `images` | string[] | Yes | Array of base64 images (max suggested: 3) of the same person. Can be full images or cropped face images. |
+| `collection_id` | string | No | Restrict search to this collection. |
+| `max_results` | number | No | Maximum results to return. |
+| `min_score` | number | Yes | Match threshold (0.2–1.0). |
+| `search_mode` | string | Yes | One of `FAST` or `ACCURATE`. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch("https://api.verifik.co/v2/face-recognition/search", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      images: ["<base64>"],
+      collection_id: "<collection_id>",
+      min_score: 0.7,
+      search_mode: "FAST",
+      max_results: 10
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/search");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "images" => ["<base64>"],
+    "collection_id" => "<collection_id>",
+    "min_score" => 0.7,
+    "search_mode" => "ACCURATE",
+    "max_results" => 10
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/face-recognition/search"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "images": ["<base64>"],
+    "collection_id": "<collection_id>",
+    "min_score": 0.7,
+    "search_mode": "FAST",
+    "max_results": 10
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    payload := map[string]interface{}{
+        "images": []string{"<base64>"},
+        "collection_id": "<collection_id>",
+        "min_score": 0.7,
+        "search_mode": "ACCURATE",
+        "max_results": 10,
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/face-recognition/search", bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "id": "SRCH1",
+  "data": [
+    {
+      "id": "person_id",
+      "name": "John Doe",
+      "score": 0.93,
+      "thumbnails": [{ "id": "thumb_id", "thumbnail": "<base64>" }]
+    }
+  ],
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "January 16, 2024 3:44 PM"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "token_expired",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"min_score\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "internal_error",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Provide 1–3 images of the same person in `images` for better recall.
+- Use `ACCURATE` for higher precision at the cost of latency; use `FAST` for speed.
+- This endpoint supports both full images and cropped face images. When using cropped images, ensure they contain a clear view of the face.

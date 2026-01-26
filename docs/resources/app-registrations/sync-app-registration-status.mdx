@@ -1,0 +1,319 @@
+---
+id: sync-app-registration-status
+title: Sync App Registration Status
+description: Update the status and step of an app registration process
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v2/app-registrations/{id}/sync
+```
+
+The `App Registration Sync` endpoint updates the status and step of an app registration process. This endpoint is useful for syncing the registration status, especially when specific conditions or criteria have been met.
+
+:::warning
+The JWT Token you should use when running the `Sync` is provided from the `App Registration` in creation. You must use the token returned when creating an [App Registration](/resources/app-registrations/create-an-app-registration) to authenticate this request.
+:::
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | Yes | The unique identifier of the App Registration record you would like to sync. This is the `_id` returned when creating the app registration |
+| `step` | string | Yes | Specifies the step to update. Valid values: `skipKYC`, `instructions`, `signUpForm`, `basicInformation`, `document`, `liveness`, `form`, `end` |
+| `status` | string | Yes | The new status of the registration. Valid values depend on the step: For `skipKYC`: `COMPLETED_WITHOUT_KYC`. For `instructions`, `signUpForm`, `basicInformation`, `document`, `liveness`, `form`: `ONGOING`. For `end`: `COMPLETED`, `FAILED`, or `NEEDS_MANUAL_VERIFICATION` |
+
+### Step Options and Status Combinations
+
+#### `skipKYC` Step
+
+**Status:** `COMPLETED_WITHOUT_KYC`
+
+**Description:** Skip KYC verification
+
+**What Happens:**
+- Validates sign-up form requirements
+- Updates status to ONGOING if KYC steps are not mandatory
+- Sends data to HubSpot integration
+- Returns sign-up form response with token
+
+**Note:** This step only works if all mandatory KYC steps (basicInformation, document, form, liveness) are not set to "mandatory" in the project flow configuration.
+
+:::warning
+**IMPORTANT**: The `skipKYC` step is crucial for `onboarding` type flows as it provides the authentication token that users need to login to your system. This will provide your users with the token for accessing your application.
+:::
+
+#### `instructions` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continue with instructions
+
+**What Happens:**
+- Updates status to ONGOING
+- Moves to next step in the flow
+
+#### `signUpForm` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continue with sign-up form
+
+**What Happens:**
+- Validates sign-up form requirements
+- Updates status to ONGOING
+- Returns sign-up form response with token
+
+#### `basicInformation` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continue with basic information
+
+**What Happens:**
+- Updates status to ONGOING
+- Moves to next step in the flow
+
+#### `document` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continue with document verification
+
+**What Happens:**
+- Updates status to ONGOING
+- Returns sign-up form response with token
+
+#### `liveness` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continue with liveness verification
+
+**What Happens:**
+- Updates status to ONGOING
+- Returns liveness response with token
+
+#### `form` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continue with form completion
+
+**What Happens:**
+- Updates status to ONGOING
+- Moves to next step in the flow
+
+#### `end` Step ⭐ **CRUCIAL FOR ONBOARDING FLOWS**
+
+**Status:** `COMPLETED`, `FAILED`, or `NEEDS_MANUAL_VERIFICATION`
+
+**Description:** Complete registration successfully
+
+**What Happens:**
+- **Validates all required fields and verifications**
+- **Updates status to COMPLETED, FAILED, or NEEDS_MANUAL_VERIFICATION**
+- **Returns authentication token for user login**
+- Sends completion data to HubSpot integration
+- Triggers webhook events
+
+:::warning
+**IMPORTANT**: The `end` step is crucial for `onboarding` type flows as it provides the authentication token that users need to login to your system. Without completing this step, users cannot access their accounts.
+:::
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const appRegistrationId = "507f1f77bcf86cd799439011";
+  const res = await fetch(`https://api.verifik.co/v2/app-registrations/${appRegistrationId}/sync`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      step: "end",
+      status: "COMPLETED"
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$appRegistrationId = "507f1f77bcf86cd799439011";
+$ch = curl_init("https://api.verifik.co/v2/app-registrations/" . $appRegistrationId . "/sync");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "step" => "end",
+    "status" => "COMPLETED"
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+app_registration_id = "507f1f77bcf86cd799439011"
+url = f"https://api.verifik.co/v2/app-registrations/{app_registration_id}/sync"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "step": "end",
+    "status": "COMPLETED"
+}
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    appRegistrationId := "507f1f77bcf86cd799439011"
+    url := fmt.Sprintf("https://api.verifik.co/v2/app-registrations/%s/sync", appRegistrationId)
+    payload := map[string]interface{}{
+        "step": "end",
+        "status": "COMPLETED",
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "firstName": "John",
+        "lastName": "Doe",
+        "fullName": "John Doe",
+        "step": "signUpForm",
+        "steps": {
+            "signUpForm": "mandatory",
+            "basicInformation": "skip",
+            "document": "mandatory",
+            "liveness": "mandatory",
+            "form": "skip"
+        },
+        "appRegistrationId": "507f1f77bcf86cd799439011",
+        "status": "ONGOING"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "code": "Conflict",
+    "message": "signUpForm_validation_not_passed"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "AppRegistration_not_found",
+    "message": "404:AppRegistration_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "code": "step_not_supported",
+    "message": "500:step_not_supported"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **Token Generation**: The `end` step is the only step that guarantees token generation for user authentication
+- **Validation Requirements**: Each step may have specific validation requirements that must be met
+- **KYC Skip Logic**: Skipping KYC only works if no mandatory verification steps are configured
+- **Webhook Integration**: All status changes trigger webhook events if configured in the project flow
+- **Status Flow Control**: 
+  - `ONGOING` - Continues the registration process to the next step
+  - `COMPLETED` - Finalizes registration and provides full access
+  - `FAILED` - Marks registration as unsuccessful but still provides access token
+  - `NEEDS_MANUAL_VERIFICATION` - Requires human review before completion
+
+### Common Use Cases
+
+- **Complete Registration**: Use `end` step with `COMPLETED` status to finalize user registration
+- **Skip Verification**: Use `skipKYC` step to bypass verification requirements when appropriate
+- **Manual Review**: Use `end` step with `NEEDS_MANUAL_VERIFICATION` status for flagged registrations
+- **Step Progression**: Use intermediate steps to move users through the registration flow
+
+This endpoint provides comprehensive control over the app registration process, allowing you to manage user progression, handle edge cases, and ensure proper authentication token generation for onboarding flows.

@@ -1,0 +1,327 @@
+---
+id: sincronizar-estado-registro-aplicacion
+title: Sincronizar Estado de Registro de Aplicación
+description: Actualiza el estado y paso de un proceso de registro de aplicación
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v2/app-registrations/{id}/sync
+```
+
+El endpoint `Sincronización de Registro de Aplicación` actualiza el estado y paso de un proceso de registro de aplicación. Este endpoint es útil para sincronizar el estado del registro, especialmente cuando se han cumplido condiciones o criterios específicos.
+
+:::warning
+El Token JWT que debes usar al ejecutar la `Sincronización` se proporciona desde el `Registro de Aplicación` en creación. Debes usar el token devuelto al crear un [Registro de Aplicación](/verifik-es/resources/registros-aplicacion/crear-un-registro-aplicacion) para autenticar esta solicitud.
+:::
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Params
+
+| Name     | Type   | Required | Description                                                                                                                                                                                                                                                                      |
+| -------- | ------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`     | string | Yes      | El identificador único del registro de Registro de Aplicación que deseas sincronizar. Este es el `_id` devuelto al crear el registro de aplicación                                                                                                                               |
+| `step`   | string | Yes      | Especifica el paso a actualizar. Valores válidos: `skipKYC`, `instructions`, `signUpForm`, `basicInformation`, `document`, `liveness`, `form`, `end`                                                                                                                             |
+| `status` | string | Yes      | El nuevo estado del registro. Los valores válidos dependen del paso: Para `skipKYC`: `COMPLETED_WITHOUT_KYC`. Para `instructions`, `signUpForm`, `basicInformation`, `document`, `liveness`, `form`: `ONGOING`. Para `end`: `COMPLETED`, `FAILED`, o `NEEDS_MANUAL_VERIFICATION` |
+
+### Step Options and Status Combinations
+
+#### `skipKYC` Step
+
+**Status:** `COMPLETED_WITHOUT_KYC`
+
+**Description:** Omitir verificación KYC
+
+**What Happens:**
+
+-   Valida los requisitos del formulario de registro
+-   Actualiza el estado a ONGOING si los pasos KYC no son obligatorios
+-   Envía datos a la integración de HubSpot
+-   Devuelve respuesta del formulario de registro con token
+
+**Note:** Este paso solo funciona si todos los pasos KYC obligatorios (basicInformation, document, form, liveness) no están establecidos como "mandatory" en la configuración del flujo de proyecto.
+
+:::warning
+**IMPORTANTE**: El paso `skipKYC` es crucial para flujos de tipo `onboarding` ya que proporciona el token de autenticación que los usuarios necesitan para iniciar sesión en tu sistema. Esto proporcionará a tus usuarios el token para acceder a tu aplicación.
+:::
+
+#### `instructions` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continuar con instrucciones
+
+**What Happens:**
+
+-   Actualiza el estado a ONGOING
+-   Avanza al siguiente paso en el flujo
+
+#### `signUpForm` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continuar con formulario de registro
+
+**What Happens:**
+
+-   Valida los requisitos del formulario de registro
+-   Actualiza el estado a ONGOING
+-   Devuelve respuesta del formulario de registro con token
+
+#### `basicInformation` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continuar con información básica
+
+**What Happens:**
+
+-   Actualiza el estado a ONGOING
+-   Avanza al siguiente paso en el flujo
+
+#### `document` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continuar con verificación de documento
+
+**What Happens:**
+
+-   Actualiza el estado a ONGOING
+-   Devuelve respuesta del formulario de registro con token
+
+#### `liveness` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continuar con verificación de vida
+
+**What Happens:**
+
+-   Actualiza el estado a ONGOING
+-   Devuelve respuesta de vida con token
+
+#### `form` Step
+
+**Status:** `ONGOING`
+
+**Description:** Continuar con completar formulario
+
+**What Happens:**
+
+-   Actualiza el estado a ONGOING
+-   Avanza al siguiente paso en el flujo
+
+#### `end` Step ⭐ **CRUCIAL PARA FLUJOS DE INCORPORACIÓN**
+
+**Status:** `COMPLETED`, `FAILED`, o `NEEDS_MANUAL_VERIFICATION`
+
+**Description:** Completar registro exitosamente
+
+**What Happens:**
+
+-   **Valida todos los campos y verificaciones requeridos**
+-   **Actualiza el estado a COMPLETED, FAILED, o NEEDS_MANUAL_VERIFICATION**
+-   **Devuelve token de autenticación para inicio de sesión del usuario**
+-   Envía datos de finalización a la integración de HubSpot
+-   Activa eventos de webhook
+
+:::warning
+**IMPORTANTE**: El paso `end` es crucial para flujos de tipo `onboarding` ya que proporciona el token de autenticación que los usuarios necesitan para iniciar sesión en tu sistema. Sin completar este paso, los usuarios no pueden acceder a sus cuentas.
+:::
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+	const appRegistrationId = "507f1f77bcf86cd799439011";
+	const res = await fetch(`https://api.verifik.co/v2/app-registrations/${appRegistrationId}/sync`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+		body: JSON.stringify({
+			step: "end",
+			status: "COMPLETED",
+		}),
+	});
+	console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$appRegistrationId = "507f1f77bcf86cd799439011";
+$ch = curl_init("https://api.verifik.co/v2/app-registrations/" . $appRegistrationId . "/sync");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "step" => "end",
+    "status" => "COMPLETED"
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+app_registration_id = "507f1f77bcf86cd799439011"
+url = f"https://api.verifik.co/v2/app-registrations/{app_registration_id}/sync"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "step": "end",
+    "status": "COMPLETED"
+}
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    appRegistrationId := "507f1f77bcf86cd799439011"
+    url := fmt.Sprintf("https://api.verifik.co/v2/app-registrations/%s/sync", appRegistrationId)
+    payload := map[string]interface{}{
+        "step": "end",
+        "status": "COMPLETED",
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+		"firstName": "John",
+		"lastName": "Doe",
+		"fullName": "John Doe",
+		"step": "signUpForm",
+		"steps": {
+			"signUpForm": "mandatory",
+			"basicInformation": "skip",
+			"document": "mandatory",
+			"liveness": "mandatory",
+			"form": "skip"
+		},
+		"appRegistrationId": "507f1f77bcf86cd799439011",
+		"status": "ONGOING"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "Conflict",
+	"message": "signUpForm_validation_not_passed"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "AppRegistration_not_found",
+	"message": "404:AppRegistration_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+	"code": "step_not_supported",
+	"message": "500:step_not_supported"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+-   **Generación de Token**: El paso `end` es el único paso que garantiza la generación de token para autenticación de usuario
+-   **Requisitos de Validación**: Cada paso puede tener requisitos de validación específicos que deben cumplirse
+-   **Lógica de Omitir KYC**: Omitir KYC solo funciona si no se configuran pasos de verificación obligatorios
+-   **Integración de Webhook**: Todos los cambios de estado activan eventos de webhook si están configurados en el flujo de proyecto
+-   **Control de Flujo de Estado**:
+    -   `ONGOING` - Continúa el proceso de registro al siguiente paso
+    -   `COMPLETED` - Finaliza el registro y proporciona acceso completo
+    -   `FAILED` - Marca el registro como fallido pero aún proporciona token de acceso
+    -   `NEEDS_MANUAL_VERIFICATION` - Requiere revisión humana antes de la finalización
+
+### Common Use Cases
+
+-   **Completar Registro**: Usa el paso `end` con estado `COMPLETED` para finalizar el registro de usuario
+-   **Omitir Verificación**: Usa el paso `skipKYC` para omitir requisitos de verificación cuando sea apropiado
+-   **Revisión Manual**: Usa el paso `end` con estado `NEEDS_MANUAL_VERIFICATION` para registros marcados
+-   **Progresión de Pasos**: Usa pasos intermedios para mover usuarios a través del flujo de registro
+
+Este endpoint proporciona control integral sobre el proceso de registro de aplicación, permitiéndote gestionar la progresión del usuario, manejar casos límite y asegurar la generación adecuada de tokens de autenticación para flujos de incorporación.

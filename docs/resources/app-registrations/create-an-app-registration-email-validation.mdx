@@ -1,0 +1,267 @@
+---
+id: create-an-app-registration-email-validation
+title: Create an App Registration Email Validation
+description: Create an email validation for an app registration to verify user email addresses
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/email-validations/app-registration
+```
+
+This endpoint creates an email validation process specifically for users who are in the middle of an app registration flow. It automatically links the email validation to the user's app registration and handles credit charging for your SmartEnroll plan. A successful response (200) indicates that Verifik has sent an email with an OTP that will be used to complete the email verification process.
+
+:::warning
+The JWT Token you should use when creating `App Registration Email Validations` is provided from the `App Registration` in creation. You must use the token returned when creating an [App Registration](/resources/app-registrations/create-an-app-registration) to authenticate this request.
+:::
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `project` | string | Yes | The project ID where this email validation will be performed. This is the `_id` generated when creating a project |
+| `validationMethod` | string | Yes | Defines how the email will be validated. Must be either `manual` or `verificationCode` |
+| `email` | string | Yes | The email address that will be validated. This field is required and will be automatically converted to lowercase and whitespace removed |
+| `type` | string | Yes | The type of process this email validation is for. Must be one of: `validation`, `login`, `onboarding`, or `oneTimeLink` |
+| `expiresAt` | string | No | Optional timestamp when the OTP code expires. If not provided, a default expiration time will be set. Format: ISO 8601 (e.g., `2024-12-31T23:59:59.000Z`) |
+| `redirectUrl` | string | No | Optional URL where users will be redirected after completing the email validation process |
+| `webhookUrl` | string | No | Optional external webhook URL for receiving real-time notifications about validation status changes |
+| `requires2FA` | boolean | No | Optional boolean indicating whether two-factor authentication is required. Defaults to `false` |
+| `ipAddress` | string | No | Optional IP address of the user requesting the email validation |
+
+#### Validation Method Values
+
+| Value | Description |
+| --- | --- |
+| `verificationCode` | Send OTP code via email for user verification |
+| `manual` | Manual verification process without OTP |
+
+#### Type Values
+
+| Value | Description |
+| --- | --- |
+| `onboarding` | User registration process (recommended for app registrations) |
+| `validation` | General email validation process |
+| `login` | User authentication process |
+| `oneTimeLink` | One-time link validation |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch("https://api.verifik.co/v2/email-validations/app-registration", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      project: "6266193db77ccc8111730c90",
+      validationMethod: "verificationCode",
+      email: "user@example.com",
+      type: "onboarding"
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/email-validations/app-registration");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$body = json_encode([
+    "project" => "6266193db77ccc8111730c90",
+    "validationMethod" => "verificationCode",
+    "email" => "user@example.com",
+    "type" => "onboarding"
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/email-validations/app-registration"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "project": "6266193db77ccc8111730c90",
+    "validationMethod": "verificationCode",
+    "email": "user@example.com",
+    "type": "onboarding"
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    payload := map[string]interface{}{
+        "project": "6266193db77ccc8111730c90",
+        "validationMethod": "verificationCode",
+        "email": "user@example.com",
+        "type": "onboarding",
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/email-validations/app-registration", bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "status": "sent",
+        "validationMethod": "verificationCode",
+        "extraParams": [],
+        "type": "onboarding",
+        "requires2FA": false,
+        "deleted": false,
+        "_id": "65c28d66c3abd708cc9b12e2",
+        "email": "user@example.com",
+        "project": "6266193db77ccc8322530c90",
+        "projectFlow": "658ed28b02589f325134d7b78",
+        "ipAddress": "4.246.194.90",
+        "emailData": {
+            "firstName": "John",
+            "title": "Verifik Client App",
+            "projectName": "Verifik Client App",
+            "contactEmail": "support@verifik.co",
+            "logo": "https://cdn.verifik.co/access/verifikprojectlogo.png",
+            "authLink": "https://access.verifik.co/sign-up/6266193db77ccc8111730c90?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...&otp="
+        },
+        "otp": "$2a$10$MCdw130G.RbW4je9Uj2MvuSTzm7.raG23f0Zaasda0FKC1Gl98r0s4D1m",
+        "expiresAt": "2024-02-06T19:59:58.000Z",
+        "client": "613375a1eab2fe01237f81e2",
+        "updatedAt": "2024-02-06T19:49:59.397Z",
+        "createdAt": "2024-02-06T19:49:59.397Z",
+        "__v": 0,
+        "existing": false,
+        "sent": true
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "missing project\n. missing validationMethod\n. missing email\n. missing type",
+    "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-email" label="409 (Invalid Email Format)">
+
+```json
+{
+    "message": "Invalid email format",
+    "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-project" label="404 (Project Not Found)">
+
+```json
+{
+    "code": "project_not_found",
+    "message": "404:project_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-flow" label="404 (Project Flow Not Found)">
+
+```json
+{
+    "code": "projectFlow_not_found",
+    "message": "404:projectFlow_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-security" label="404 (Security Not Set)">
+
+```json
+{
+    "code": "security_not_set",
+    "message": "404:security_not_set"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **App Registration Linking**: This endpoint automatically links the email validation to the user's app registration using the `appRegistrationId` from the authentication token.
+- **Credit Charging**: Each email validation request consumes credits from your SmartEnroll plan (handled automatically).
+- **Enhanced Email Data**: The system automatically populates additional email data including the user's first name from their information validation if available.
+- **Auth Link Generation**: For onboarding flows, the system generates a secure JWT token and auth link for seamless user experience.
+- **Duplicate Prevention**: If an active email validation already exists for the same email, project flow, and type, the system will resend the existing OTP instead of creating a new one.
+- **Security Features**: The system validates email security policies and identity verification requirements based on your project flow configuration.
+- **Email Format**: The email address is automatically converted to lowercase and whitespace is removed.

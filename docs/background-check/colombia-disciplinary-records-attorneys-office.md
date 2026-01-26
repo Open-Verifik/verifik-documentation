@@ -2,6 +2,7 @@
 id: colombia-disciplinary-records-attorneys-office
 title: Colombia - Disciplinary Records in Colombia (attorney's office)
 description: Disciplinary records in Colombia attorney's office
+slug: /background-check/colombia-disciplinary-records-attorneys-office
 ---
 
 # Disciplinary Records in Colombia (attorney's office)
