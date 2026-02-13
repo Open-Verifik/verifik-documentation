@@ -97,9 +97,9 @@ Authorization: Bearer <your_jwt_token>
 
 ### Base URLs
 
--   **Production**: `https://api.verifik.co/v3`
--   **Staging**: `https://staging-api.verifik.co/v3`
--   **Development**: `https://dev-api.verifik.co/v3`
+-   **Production**: `https://api.verifik.co`
+-   **Staging**: `https://staging-api.verifik.co`
+-   **Development**: `https://dev-api.verifik.co`
 
 :::tip Environment Selection
 Use the appropriate base URL based on your environment. All examples in this documentation use the production URL.
@@ -110,7 +110,7 @@ Use the appropriate base URL based on your environment. All examples in this doc
 Here's a simple example of how to list all projects using the API:
 
 <CodeExamples
-url="/v3/projects"
+url="/projects"
 method="GET"
 query={{
   page: 1,
@@ -210,7 +210,7 @@ The first step establishes the foundation of your KYC project. This includes bas
 ### Example: Create a Basic Project
 
 <CodeExamples
-url="/v3/projects"
+url="/projects"
 method="POST"
 body={{
     name: "Customer Onboarding - North America",
@@ -254,7 +254,7 @@ Configure what information to collect from users when they begin the onboarding 
 ### Example: Configure Sign-Up Form
 
 <CodeExamples
-url="/v3/projects/{id}"
+url="/projects/{id}"
 method="PUT"
 params={{ id: "64a1b2c3d4e5f6789012345" }}
 body={{
@@ -311,7 +311,7 @@ For personal KYC, you can configure these document types:
 ### Example: Configure Document Verification
 
 <CodeExamples
-url="/v3/projects/{id}"
+url="/projects/{id}"
 method="PUT"
 params={{ id: "64a1b2c3d4e5f6789012345" }}
 body={{
@@ -387,7 +387,7 @@ Configure biometric verification to ensure users are physically present during o
 ### Example: Configure Liveness Detection
 
 <CodeExamples
-url="/v3/projects/{id}"
+url="/projects/{id}"
 method="PUT"
 params={{ id: "64a1b2c3d4e5f6789012345" }}
 body={{
@@ -437,7 +437,7 @@ Connect your KYC project to external systems, configure webhooks for real-time n
 ### Example: Configure Integrations
 
 <CodeExamples
-url="/v3/projects/{id}"
+url="/projects/{id}"
 method="PUT"
 params={{ id: "64a1b2c3d4e5f6789012345" }}
 body={{
@@ -493,7 +493,7 @@ Customize the visual appearance of your onboarding flow to match your brand iden
 ### Example: Configure Branding
 
 <CodeExamples
-url="/v3/projects/{id}"
+url="/projects/{id}"
 method="PUT"
 params={{ id: "64a1b2c3d4e5f6789012345" }}
 body={{
@@ -525,7 +525,7 @@ body={{
 Here's a complete example showing how to create a fully configured KYC project in a single request:
 
 <CodeExamples
-url="/v3/projects"
+url="/projects"
 method="POST"
 body={{
     name: "Customer Onboarding - North America",
@@ -621,7 +621,7 @@ body={{
 Once you've configured all steps, change the project status to make it live:
 
 <CodeExamples
-url="/v3/projects/{id}"
+url="/projects/{id}"
 method="PUT"
 params={{ id: "64a1b2c3d4e5f6789012345" }}
 body={{
