@@ -2,6 +2,7 @@
 id: smartcheck
 title: SmartCheck
 description: A comprehensive API solution designed to facilitate a wide range of verification processes
+slug: /smartcheck
 ---
 
 import { Card } from '@site/src/components/Card';

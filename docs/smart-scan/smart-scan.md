@@ -2,6 +2,7 @@
 id: smart-scan
 title: Smart Scan
 description: OCR technology for document scanning and text extraction
+slug: /smart-scan
 ---
 
 # Smart Scan

@@ -2,6 +2,7 @@
 id: access
 title: Access
 description: Everything that Smart Access has to offer but on the API level
+slug: /access
 ---
 
 # Access

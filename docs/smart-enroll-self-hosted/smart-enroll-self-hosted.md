@@ -2,6 +2,7 @@
 id: smart-enroll-self-hosted
 title: "SmartEnroll: Self Hosted"
 description: Programmatic access to SmartEnroll functionality for custom KYC and onboarding flows
+slug: /smart-enroll-self-hosted
 ---
 
 import { ClipboardList, Workflow, Palette, Link as LinkIcon, BarChart3, Shield } from 'lucide-react';
