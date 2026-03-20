@@ -89,7 +89,7 @@ const sidebars = {
 				},
 				{
 					type: "category",
-					label: "Zero Knowledge Face Proofs",
+					label: "HumanAuthn",
 					collapsible: true,
 					items: [
 						"biometrics/zero-knowledge-face-proofs-overview",
