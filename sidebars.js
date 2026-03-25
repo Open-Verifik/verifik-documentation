@@ -211,6 +211,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "legal/epic-eci",
+					label: "🇮🇳 India - EPIC (ECI)",
+				},
+				{
+					type: "doc",
 					id: "identity/mexico",
 					label: "🇲🇽 Mexico",
 					key: "identity-mexico",
@@ -668,7 +673,7 @@ const sidebars = {
 			type: "category",
 			label: "VOTING",
 			collapsible: false,
-			items: ["legal/voting"],
+			items: ["legal/voting", "legal/voting-eci-epic", "legal/epic-eci"],
 		},
 		{
 			type: "category",
