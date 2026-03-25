@@ -211,6 +211,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "legal/epic-eci",
+					label: "🇮🇳 India - EPIC (ECI)",
+				},
+				{
+					type: "doc",
 					id: "identity/mexico",
 					label: "🇲🇽 Mexico",
 					key: "identity-mexico",
@@ -431,6 +436,16 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-pico-y-placa",
 							label: "Pico y Placa",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-plate",
+							label: "Taxi Drivers by Plate",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-control-card",
+							label: "Taxi Drivers by Card",
 						},
 						{
 							type: "doc",
@@ -668,7 +683,7 @@ const sidebars = {
 			type: "category",
 			label: "VOTING",
 			collapsible: false,
-			items: ["legal/voting"],
+			items: ["legal/voting", "legal/voting-eci-epic", "legal/epic-eci"],
 		},
 		{
 			type: "category",
