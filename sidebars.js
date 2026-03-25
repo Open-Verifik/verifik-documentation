@@ -439,6 +439,16 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-plate",
+							label: "Taxi Drivers by Plate",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-control-card",
+							label: "Taxi Drivers by Card",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/colombia-fasecolda-values-by-plate",
 							label: "Vehicle Values by Plate",
 						},

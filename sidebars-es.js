@@ -320,6 +320,16 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "validacion-vehiculos/colombia/taxis-conductores-bogota-por-placa",
+							label: "Conductores de Taxi (por placa)",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/colombia/taxis-conductores-bogota-por-tarjeta",
+							label: "Conductores de Taxi (por tarjeta)",
+						},
+						{
+							type: "doc",
 							id: "validacion-vehiculos/colombia/valores-vehiculos-por-placa-fasecolda",
 							label: "Valores de Vehículos por Placa",
 						},
