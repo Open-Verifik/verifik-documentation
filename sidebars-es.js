@@ -67,7 +67,7 @@ const sidebars = {
 				},
 				{
 					type: "category",
-					label: "Pruebas Faciales de Conocimiento Cero",
+					label: "HumanAuthn",
 					collapsible: true,
 					items: [
 						"biometrics/pruebas-faciales-conocimiento-cero-resumen",
