@@ -111,6 +111,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/guatemala", label: "🇬🇹 Guatemala" },
 				{ type: "doc", id: "identity/guatemala-extra", label: "🇬🇹 Guatemala - Extra" },
 				{ type: "doc", id: "identity/honduras", label: "🇭🇳 Honduras" },
+				{ type: "doc", id: "legal/epic-eci", label: "🇮🇳 India - EPIC (ECI)" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 México", key: "identity-mexico" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Panamá", key: "identity-panama" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Paraguay", key: "identity-paraguay" },
@@ -316,6 +317,16 @@ const sidebars = {
 							type: "doc",
 							id: "validacion-vehiculos/colombia/pico-y-placa-bogota",
 							label: "Pico y Placa",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/colombia/taxis-conductores-bogota-por-placa",
+							label: "Conductores de Taxi (por placa)",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/colombia/taxis-conductores-bogota-por-tarjeta",
+							label: "Conductores de Taxi (por tarjeta)",
 						},
 						{
 							type: "doc",
@@ -525,7 +536,7 @@ const sidebars = {
 			type: "category",
 			label: "VOTACIÓN",
 			collapsible: false,
-			items: ["legal/votacion"],
+			items: ["legal/votacion", "legal/votacion-eci-epic", "legal/epic-eci"],
 		},
 		{
 			type: "category",
