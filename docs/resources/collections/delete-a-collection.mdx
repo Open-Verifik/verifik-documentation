@@ -1,0 +1,189 @@
+---
+id: delete-a-collection
+title: Delete a Collection
+description: Permanently delete a face recognition collection by its unique id. Removes the collection record and detaches it from related projects and persons.
+slug: /resources/delete-a-collection
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+DELETE https://api.verifik.co/v2/face-recognition/collections/{id}
+```
+
+Deletes a collection owned by your client. The `{id}` path parameter is the collection’s unique `_id`.
+
+The server removes the collection document and runs cleanup so it is no longer linked to projects or persons. This is a hard delete of the collection record (not a soft flag).
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string (path) | Yes | Unique identifier of the collection to delete (`_id` in responses) |
+
+There is no request body.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+const collectionId = "65b9592267cc4f096dbe743d";
+
+async function run() {
+  const res = await fetch(
+    `https://api.verifik.co/v2/face-recognition/collections/${collectionId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+      },
+    }
+  );
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$collectionId = "65b9592267cc4f096dbe743d";
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/collections/" . $collectionId);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+collection_id = "65b9592267cc4f096dbe743d"
+url = f"https://api.verifik.co/v2/face-recognition/collections/{collection_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+r = requests.delete(url, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    collectionId := "65b9592267cc4f096dbe743d"
+    url := fmt.Sprintf("https://api.verifik.co/v2/face-recognition/collections/%s", collectionId)
+    req, _ := http.NewRequest("DELETE", url, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+On success the API returns HTTP 200. The JSON body is `{ "data": <collection> }`, where `data` is the collection document that was just deleted (snapshot of the record, typically including `_id`, `code`, `name`, `client`, `description`, timestamps, and related fields—same shape as [retrieve a collection](/resources/retrieve-a-collection)). The document is no longer stored in the database after this response.
+
+```json
+{
+  "data": {
+    "_id": "65b9592267cc4f096dbe743d",
+    "deleted": false,
+    "name": "Ejemplo Ene 30",
+    "project": "65b955fe0577440932c77481",
+    "description": "default collection for project 65b955fe0577440932c77481",
+    "client": "6158e492dd0767a2b8b3f829",
+    "code": "d96db430-27d2-4f43-bcff-c4b239ac6d2e",
+    "updatedAt": "2024-01-30T20:16:34.841Z",
+    "createdAt": "2024-01-30T20:16:34.841Z",
+    "__v": 0
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+Returned when the collection does not exist or is not accessible for your client.
+
+```json
+{
+  "message": "invalid_collection",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "error": "Invalid request"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **Irreversible**: Deletion removes the collection record and unlinks it from projects and persons.
+- **No body**: Only the path `id` is required; do not send a JSON body.
+- **Response**: `data` contains the deleted collection object (for audit or UI confirmation). It is not persisted after deletion.

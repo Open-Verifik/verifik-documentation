@@ -1,0 +1,210 @@
+---
+id: update-a-collection
+title: Update a Collection
+description: Update an existing face recognition collection by its unique id. You can change the name, description, project, and optionally sync which people belong to the collection.
+slug: /resources/update-a-collection
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v2/face-recognition/collections/{id}
+```
+
+Updates a collection you own. The `{id}` path parameter is the collection’s unique `_id` (the same identifier used when [retrieving a collection](/resources/retrieve-a-collection)).
+
+When you include `people` in the body, the server reconciles membership: people not listed may be removed from the collection, and new ids may be added, subject to server rules.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string (path) | Yes | Unique identifier of the collection to update (`_id` in responses) |
+| `name` | string | Yes | Display name for the collection |
+| `description` | string | No | Optional description |
+| `project` | string | No | Optional project id to associate with the collection |
+| `people` | array | No | Optional list of person objects with `_id` or `id`; when sent, membership is reconciled |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+const collectionId = "65b9592267cc4f096dbe743d";
+
+async function run() {
+  const res = await fetch(
+    `https://api.verifik.co/v2/face-recognition/collections/${collectionId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+      },
+      body: JSON.stringify({
+        name: "Updated name",
+        description: "Updated description",
+      }),
+    }
+  );
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$collectionId = "65b9592267cc4f096dbe743d";
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/collections/" . $collectionId);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "Updated name",
+    "description" => "Updated description"
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+collection_id = "65b9592267cc4f096dbe743d"
+url = f"https://api.verifik.co/v2/face-recognition/collections/{collection_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {"name": "Updated name", "description": "Updated description"}
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    collectionId := "65b9592267cc4f096dbe743d"
+    url := fmt.Sprintf("https://api.verifik.co/v2/face-recognition/collections/%s", collectionId)
+    payload, _ := json.Marshal(map[string]string{
+        "name":        "Updated name",
+        "description": "Updated description",
+    })
+    req, _ := http.NewRequest("PUT", url, bytes.NewReader(payload))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "__v": 0,
+    "_id": "65b9592267cc4f096dbe743d",
+    "code": "d96db430-27d2-4f43-bcff-c4b239ac6d2e",
+    "name": "Updated name",
+    "client": "6158e492dd0767a2b8b3f829",
+    "deleted": false,
+    "createdAt": "2024-01-30T20:16:34.841Z",
+    "updatedAt": "2024-01-30T21:00:00.000Z",
+    "description": "Updated description"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "Validation message from server",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "invalid_collection",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "error": "Invalid request"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **`name`**: Required on every update request body.
+- **`people`**: When provided, the API may add or remove persons relative to the current collection membership.
+- **OpenCV**: The server also syncs metadata with the OpenCV service when name or description change.

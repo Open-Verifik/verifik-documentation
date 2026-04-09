@@ -1,7 +1,8 @@
 ---
 id: search-crops
 title: Face Search 1:N (Crops)
-description: 1:N search optimized for small face crops (max ~120x120)
+description: 1:N search optimized for small face crops (e.g. max ~120×120)
+slug: /biometrics/search-crops
 ---
 
 import Tabs from '@theme/Tabs';
@@ -13,7 +14,7 @@ import TabItem from '@theme/TabItem';
 POST https://api.verifik.co/v2/face-recognition/search/crops
 ```
 
-Performs 1:N search optimized for small face crops, ideal when you cannot upscale images.
+Performs **1:N face search** using **cropped face images** instead of full frames. Use this when you only have tight face crops (for example after detection or from a low-resolution pipeline). Validation requires a **higher minimum score** than the standard [Face Search](/biometrics/search) endpoint (`min_score` **0.5–1** here vs **0.2–1** on `/search`).
 
 ### Headers
 
@@ -26,10 +27,10 @@ Performs 1:N search optimized for small face crops, ideal when you cannot upscal
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| `images` | string[] | Yes | Array of small base64 face crops (e.g., ≤120x120). |
+| `images` | string[] | Yes | Base64 face crops and/or **HTTPS image URLs** (same subject; small crops work best). |
 | `collection_id` | string | No | Restrict search to this collection. |
 | `max_results` | number | No | Maximum results to return. |
-| `min_score` | number | Yes | Match threshold (0.5–1.0). |
+| `min_score` | number | Yes | Match threshold **0.5–1**. |
 | `search_mode` | string | Yes | One of `FAST` or `ACCURATE`. |
 
 ### Request
@@ -52,7 +53,7 @@ async function run() {
       collection_id: "<collection_id>",
       min_score: 0.7,
       search_mode: "FAST",
-      max_results: 10
+      max_results: 10,
     }),
   });
   console.log(await res.json());
@@ -123,11 +124,11 @@ import (
 
 func main() {
     payload := map[string]interface{}{
-        "images": []string{"<base64-small>"},
-        "collection_id": "<collection_id>",
-        "min_score": 0.7,
-        "search_mode": "ACCURATE",
-        "max_results": 10,
+        "images":          []string{"<base64-small>"},
+        "collection_id":   "<collection_id>",
+        "min_score":       0.7,
+        "search_mode":     "ACCURATE",
+        "max_results":     10,
     }
     b, _ := json.Marshal(payload)
     req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/face-recognition/search/crops", bytes.NewBuffer(b))
@@ -146,6 +147,8 @@ func main() {
 
 ### Response
 
+Shape matches [Face Search (1:N)](/biometrics/search): `data` is an array of candidate persons ranked by similarity.
+
 <Tabs>
   <TabItem value="200" label="200">
 
@@ -153,12 +156,37 @@ func main() {
 {
   "id": "SC01",
   "data": [
-    { "id": "person_id", "score": 0.91 }
+    {
+      "id": "person_id",
+      "name": "John Doe",
+      "score": 0.91,
+      "thumbnails": [{ "id": "thumb_id", "thumbnail": "<base64>" }]
+    }
   ],
   "signature": {
     "message": "Certified by Verifik.co",
     "dateTime": "January 16, 2024 3:44 PM"
   }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "token_expired",
+  "code": "FORBIDDEN"
 }
 ```
 
@@ -173,9 +201,29 @@ func main() {
 ```
 
   </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "internal_error",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
 </Tabs>
 
 ### Notes
 
-- Provide tightly cropped faces; oversized images are less effective here.
+- Prefer **tight face crops**; this path is tuned for small regions (often around **120×120** or similar). Very large full-frame images are a better fit for [`/v2/face-recognition/search`](/biometrics/search).
+- Each string in `images` may be raw base64 or an **HTTPS URL** to an image; URLs are fetched and converted server-side.
+- Use `ACCURATE` when you need higher precision; use `FAST` for lower latency.
 
+### Related documentation
+
+1. **[Face Search (1:N)](/biometrics/search)** — Standard gallery search with full face images; `min_score` allows **0.2–1**.
+2. **[Face Search 1:N (Live)](/biometrics/search-live-face)** — Liveness on the probe image, then 1:N search.
+3. **[Face Search 1:N (Active User)](/biometrics/search-active-user)** — 1:N search for active-session flows without liveness on the probe.
+4. **[Verify Face (1:1)](/biometrics/verify-face)** — Match crops or images against a **known** enrolled person id.
+5. **[Face Detection](/verifik-biometrics-apis/liveness/face-detection)** — Detect faces in an image to obtain crops before calling search.
+6. **[List all persons](/resources/list-all-persons)** — Inspect enrolled persons and metadata for your client.

@@ -10,151 +10,119 @@ import TabItem from '@theme/TabItem';
 
 ### Endpoint
 
-**GET** `https://api.verifik.co/v2/face-recognition/collections/{id}`
+```
+GET https://api.verifik.co/v2/face-recognition/collections/{id}
+```
 
-Fetch a collection generated using its specific _id, not to be confused with the code parameter.
+Fetch a collection using its unique `_id`. Do not confuse this with the collection `code` (UUID) used in some other APIs.
 
 ### Headers
 
-#### Content-Type
-Type: String  
-Required: Yes
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
 
-`application/json`
+### Params
 
-#### Authorization
-Type: String  
-Required: Yes
-
-`Bearer <token>`
-
-### Parameters
-
-#### `id`
-Type: String  
-Required: Yes
-
-ID of the collection that you want to bring the information.
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string (path) | Yes | Unique identifier of the collection (`_id` in responses) |
 
 ### Request
 
-<Tabs groupId="language">
-<TabItem value="nodejs" label="Node.js">
+<Tabs>
+  <TabItem value="node" label="Node.js">
 
 ```javascript
-import axios from 'axios';
+const fetch = require("node-fetch");
 
-const collectionId = '65b9592267cc4f096dbe743d';
+const collectionId = "65b9592267cc4f096dbe743d";
 
-const options = {
-  method: 'GET',
-  url: `https://api.verifik.co/v2/face-recognition/collections/${collectionId}`,
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer <your_token>'
-  }
-};
-
-try {
-  const { data } = await axios.request(options);
-  console.log(data);
-} catch (error) {
-  console.error(error);
+async function run() {
+  const res = await fetch(
+    `https://api.verifik.co/v2/face-recognition/collections/${collectionId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+      },
+    }
+  );
+  console.log(await res.json());
 }
+
+run();
 ```
 
-</TabItem>
-<TabItem value="python" label="Python">
-
-```python
-import http.client
-
-collection_id = '65b9592267cc4f096dbe743d'
-
-conn = http.client.HTTPSConnection("api.verifik.co")
-payload = ''
-headers = {
-  'Content-Type': 'application/json',
-  'Authorization': 'Bearer <your_token>'
-}
-conn.request("GET", f"/v2/face-recognition/collections/{collection_id}", payload, headers)
-res = conn.getresponse()
-data = res.read()
-print(data.decode("utf-8"))
-```
-
-</TabItem>
-<TabItem value="php" label="PHP">
+  </TabItem>
+  <TabItem value="php" label="PHP">
 
 ```php
 <?php
-require_once 'HTTP/Request2.php';
-
-$collectionId = '65b9592267cc4f096dbe743d';
-
-$request = new HTTP_Request2();
-$request->setUrl("https://api.verifik.co/v2/face-recognition/collections/{$collectionId}");
-$request->setMethod(HTTP_Request2::METHOD_GET);
-$request->setConfig(array(
-  'follow_redirects' => TRUE
-));
-$request->setHeader(array(
-  'Content-Type' => 'application/json',
-  'Authorization' => 'Bearer <your_token>'
-));
-try {
-  $response = $request->send();
-  if ($response->getStatus() == 200) {
-    echo $response->getBody();
-  }
-  else {
-    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
-    $response->getReasonPhrase();
-  }
-}
-catch(HTTP_Request2_Exception $e) {
-  echo 'Error: ' . $e->getMessage();
-}
-?>
+$collectionId = "65b9592267cc4f096dbe743d";
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/collections/" . $collectionId);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
 ```
 
-</TabItem>
-<TabItem value="go" label="Go">
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+collection_id = "65b9592267cc4f096dbe743d"
+url = f"https://api.verifik.co/v2/face-recognition/collections/{collection_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+r = requests.get(url, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
 
 ```go
 package main
 
 import (
-  "fmt"
-  "net/http"
-  "io/ioutil"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
 )
 
 func main() {
-  collectionId := "65b9592267cc4f096dbe743d"
-  url := fmt.Sprintf("https://api.verifik.co/v2/face-recognition/collections/%s", collectionId)
-
-  req, _ := http.NewRequest("GET", url, nil)
-
-  req.Header.Add("Content-Type", "application/json")
-  req.Header.Add("Authorization", "Bearer <your_token>")
-
-  res, _ := http.DefaultClient.Do(req)
-
-  defer res.Body.Close()
-  body, _ := ioutil.ReadAll(res.Body)
-
-  fmt.Println(string(body))
+    collectionId := "65b9592267cc4f096dbe743d"
+    url := fmt.Sprintf("https://api.verifik.co/v2/face-recognition/collections/%s", collectionId)
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
 }
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ### Response
 
 <Tabs>
-<TabItem value="200" label="200">
+  <TabItem value="200" label="200">
 
 ```json
 {
@@ -173,8 +141,28 @@ func main() {
 }
 ```
 
-</TabItem>
-<TabItem value="400" label="400">
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "invalid_collection",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
 
 ```json
 {
@@ -182,6 +170,10 @@ func main() {
 }
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
+### Notes
+
+- **`id` vs `code`**: This route uses the `_id` from the collection document, not the `code` field.
+- **Single object**: The response wraps one collection in `data`.

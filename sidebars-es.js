@@ -57,7 +57,7 @@ const sidebars = {
 					type: "category",
 					label: "Comparación Facial",
 					collapsible: true,
-					items: ["biometrics/comparar", "biometrics/comparar-en-vivo", "biometrics/comparar-con-deteccion-vitalidad"],
+					items: ["biometrics/comparar", "biometrics/comparar-en-vivo", "biometrics/comparar-con-deteccion-vitalidad", "biometrics/verificar-cara"],
 				},
 				{
 					type: "category",
@@ -726,6 +726,7 @@ const sidebars = {
 						"resources/personas/personas",
 						"resources/personas/el-objeto-persona",
 						"resources/personas/crear-una-persona",
+						"resources/personas/crear-una-persona-con-deteccion-de-vida",
 						"resources/personas/recuperar-una-persona",
 						"resources/personas/listar-todas-las-personas",
 					],

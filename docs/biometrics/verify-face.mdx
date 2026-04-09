@@ -1,0 +1,227 @@
+---
+id: verify-face
+title: Verify Face (1:1 vs enrolled person)
+description: Match probe face images against a specific enrolled person by ID
+slug: /biometrics/verify-face
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/face-recognition/verify
+```
+
+Verifies that one or more probe face images match a **specific enrolled person** identified by `id` (MongoDB person `_id`). Returns the enrolled profile and a **similarity score** when the match meets `min_score`. Use optional `collection_id` to scope the check.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | Yes | MongoDB `_id` of the enrolled person to verify against. |
+| `images` | string[] | Yes | Base64 face images (raw base64; same subject as the enrolled person). |
+| `min_score` | number | Yes | Match threshold between **0.5** and **1**. |
+| `search_mode` | string | Yes | `FAST` or `ACCURATE`. |
+| `collection_id` | string | No | Optional scope when the person belongs to multiple collections. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+const personId = "68defec6a9a7b4933d5652f3";
+
+async function run() {
+  const res = await fetch("https://api.verifik.co/v2/face-recognition/verify", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+    body: JSON.stringify({
+      id: personId,
+      images: ["<base64>", "<base64>"],
+      min_score: 0.75,
+      search_mode: "FAST",
+      collection_id: "<optional_collection_mongo_id>",
+    }),
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$personId = "68defec6a9a7b4933d5652f3";
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/verify");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "id" => $personId,
+    "images" => ["<base64>", "<base64>"],
+    "min_score" => 0.75,
+    "search_mode" => "FAST",
+    "collection_id" => "<optional_collection_mongo_id>",
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+person_id = "68defec6a9a7b4933d5652f3"
+url = "https://api.verifik.co/v2/face-recognition/verify"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+payload = {
+    "id": person_id,
+    "images": ["<base64>", "<base64>"],
+    "min_score": 0.75,
+    "search_mode": "FAST",
+    "collection_id": "<optional_collection_mongo_id>",
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    personId := "68defec6a9a7b4933d5652f3"
+    payload, _ := json.Marshal(map[string]interface{}{
+        "id":             personId,
+        "images":         []string{"<base64>", "<base64>"},
+        "min_score":      0.75,
+        "search_mode":    "FAST",
+        "collection_id":  "<optional_collection_mongo_id>",
+    })
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/face-recognition/verify", bytes.NewReader(payload))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "id": "9DVKW",
+  "data": {
+    "match": {
+      "id": "68defec6a9a7b4933d5652f3",
+      "name": "Jane Doe",
+      "score": 0.9132,
+      "gender": "F",
+      "date_of_birth": "1990-01-15",
+      "thumbnails": [
+        { "id": "thumb-uuid", "thumbnail": "<base64>" }
+      ],
+      "collections": []
+    }
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "April 9, 2026 12:12 AM"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "token_expired",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"min_score\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "internal_error",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **1:1 vs enrollment**: Unlike **Face Search (1:N)**, you already know **which person** to test; this endpoint scores probe images against that record.
+- **Images**: Use one or more captures of the same subject; raw base64 without a `data:` prefix unless your client adds it consistently.
+- **Related flows**: For comparing two arbitrary image sets without an enrolled `id`, use **Face Comparison**; for gallery search, use **Face Search**.
