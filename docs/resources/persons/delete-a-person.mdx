@@ -8,15 +8,13 @@ slug: /resources/persons/delete-a-person
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Delete a Person
-
-Delete a person record from the facial recognition system. This operation permanently removes the person and all associated data including face encodings.
-
-## Endpoint
+### Endpoint
 
 ```
 DELETE https://api.verifik.co/v2/face-recognition/persons/{id}
 ```
+
+Removes a person (and associated face data) from the system. With optional query **`collection`**, the API may remove the person from that collection only instead of deleting the entire record when other collections remain.
 
 ### Headers
 
@@ -25,58 +23,94 @@ DELETE https://api.verifik.co/v2/face-recognition/persons/{id}
 | Content-Type | `application/json` |
 | Authorization | `Bearer <token>` |
 
-### Parameters
+### Params
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| `id` | string | Yes | The unique identifier of the person to delete |
+| `id` | string | Yes | Person ID in the URL path (`/persons/{id}`). |
+| `collection` | string | No | If set, may detach the person from this collection only (behavior when other collections exist is server-defined). |
 
 ### Request
 
 <Tabs>
-  <TabItem value="nodejs" label="Node.js">
+  <TabItem value="node" label="Node.js">
 
 ```javascript
-import axios from 'axios';
+const fetch = require("node-fetch");
 
-const personId = "person_123456789";
-const options = {
-  method: 'DELETE',
-  url: `https://api.verifik.co/v2/face-recognition/persons/${personId}`,
-  headers: {
-    Accept: 'application/json',
-    Authorization: 'Bearer <your_token>'
-  }
-};
-
-try {
-  const { data } = await axios.request(options);
-  console.log(data);
-} catch (error) {
-  console.error(error);
+async function run() {
+  const id = "person_123456789";
+  const res = await fetch(`https://api.verifik.co/v2/face-recognition/persons/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  });
+  console.log(await res.json());
 }
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "person_123456789";
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/persons/" . rawurlencode($id));
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
 ```
 
   </TabItem>
   <TabItem value="python" label="Python">
 
 ```python
-import http.client
-
-conn = http.client.HTTPSConnection("api.verifik.co")
+import os, requests
 
 person_id = "person_123456789"
+url = f"https://api.verifik.co/v2/face-recognition/persons/{person_id}"
 headers = {
-    'Accept': "application/json",
-    'Authorization': "Bearer <your_token>"
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
 }
+r = requests.delete(url, headers=headers)
+print(r.json())
+```
 
-conn.request("DELETE", f"/v2/face-recognition/persons/{person_id}", headers=headers)
+  </TabItem>
+  <TabItem value="go" label="Go">
 
-res = conn.getresponse()
-data = res.read()
+```go
+package main
 
-print(data.decode("utf-8"))
+import (
+    "fmt"
+    "io"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "person_123456789"
+    url := "https://api.verifik.co/v2/face-recognition/persons/" + id
+    req, _ := http.NewRequest("DELETE", url, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    body, _ := io.ReadAll(resp.Body)
+    fmt.Println(string(body))
+}
 ```
 
   </TabItem>
@@ -89,11 +123,33 @@ print(data.decode("utf-8"))
 
 ```json
 {
-  "success": true,
-  "message": "Person deleted successfully",
+  "id": "…",
   "data": {
     "_id": "person_123456789"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "…"
   }
+}
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+or
+
+```json
+{
+  "message": "token_expired",
+  "code": "FORBIDDEN"
 }
 ```
 
@@ -108,29 +164,30 @@ print(data.decode("utf-8"))
 ```
 
   </TabItem>
-  <TabItem value="401" label="401">
+  <TabItem value="409" label="409">
 
 ```json
 {
-  "error": "Unauthorized",
-  "message": "UNAUTHORIZED"
+  "message": "Validation message",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "internal_error",
+  "code": "ERROR"
 }
 ```
 
   </TabItem>
 </Tabs>
 
-## Features
+### Notes
 
-- **Person Deletion**: Permanently delete person records
-- **Data Cleanup**: Removes all associated face encodings and data
-- **Collection Cleanup**: Automatically removes person from collections
-- **Structured Response**: Organized data format for easy integration
-- **Multiple Programming Languages**: Support for JavaScript, Python, PHP, and Swift
-- **Error Handling**: Comprehensive error responses for various scenarios
-
-## Notes
-
-- **Permanent Action**: This operation cannot be undone. All person data will be permanently deleted.
-- **Collection Impact**: The person will be automatically removed from all associated collections.
-- **Face Encodings**: All face encodings associated with this person will be deleted.
+- **Permanent deletion**: when the full person is removed, face encodings and related enrollment data are deleted; this cannot be undone.
+- **`collection` query**: use when you only need to remove membership from one collection; if the person still belongs to others, the record may remain.
+- **404** if `{id}` does not exist or is outside your client scope.

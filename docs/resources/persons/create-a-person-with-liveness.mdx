@@ -23,7 +23,7 @@ Creates or updates a person after **liveness** checks on the submitted face imag
 | Content-Type | `application/json` |
 | Authorization | `Bearer <token>` |
 
-### Params (JSON body)
+### Params
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -179,6 +179,7 @@ func main() {
 
 ```json
 {
+  "id": "…",
   "data": {
     "_id": "65175da13e81e4fabc12345",
     "name": "Jane Doe",
@@ -189,7 +190,10 @@ func main() {
     "createdAt": "2024-01-30T20:16:34.841Z",
     "updatedAt": "2024-01-30T20:16:34.841Z"
   },
-  "signature": "…"
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "…"
+  }
 }
 ```
 
@@ -198,8 +202,17 @@ func main() {
 
 ```json
 {
-  "message": "Access forbidden",
-  "code": "Forbidden"
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+or
+
+```json
+{
+  "message": "token_expired",
+  "code": "FORBIDDEN"
 }
 ```
 
@@ -213,12 +226,32 @@ func main() {
 }
 ```
 
-  </TabItem>
-  <TabItem value="400" label="400">
+or validation / liveness:
 
 ```json
 {
-  "error": "Invalid request"
+  "message": "liveness_failed (or other validation message)",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
+  <TabItem value="412" label="412">
+
+```json
+{
+  "message": "only_images_in_base64",
+  "code": "ERROR"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "internal_error",
+  "code": "ERROR"
 }
 ```
 
@@ -229,5 +262,6 @@ func main() {
 
 - **Not** `POST /v2/face-recognition/persons/liveness` — the correct route is **`search-live-face`** under **`persons`**.
 - **`collection_id`**: single collection `_id` (this flow does not accept a `collections` array in the request body).
-- **Liveness failure**: sub-scores may surface as `409` with a message containing `liveness_failed`.
-- **Signature**: Successful responses may include a `signature` field depending on middleware configuration.
+- **Liveness failure**: sub-scores may surface as **409** with a message containing `liveness_failed`.
+- **`liveness_min_score`** and **`min_score`** must stay between **0.5** and **1**; **`search_mode`** must be **`FAST`** or **`ACCURATE`**.
+- **`images`** must be raw base64 (no `data:` URL); undersized payloads may return **412** `only_images_in_base64`.

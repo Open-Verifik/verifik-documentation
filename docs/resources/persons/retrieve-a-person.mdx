@@ -11,78 +11,45 @@ import TabItem from '@theme/TabItem';
 ### Endpoint
 
 ```
-https://api.verifik.co/v2/face-recognition/persons/{id}
+GET https://api.verifik.co/v2/face-recognition/persons/{id}
 ```
 
-This endpoint allows you to query a person stored by the primary key.
+Returns one person by MongoDB `_id` (the `{id}` path segment).
 
-#### Headers
+### Headers
 
-#### `Content-Type`
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
 
-**Type:** String  
-**Required:** Required  
-**Value:** `application/json`
+### Params
 
-#### `Authorization`
-
-**Type:** String  
-**Required:** Required  
-**Value:** `Bearer <token>`
-
-#### Parameters
-
-#### `id`
-
-**Type:** String  
-**Required:** Yes
-
-ID of the person that you want to bring the information.
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | string | Yes | Person ID in the URL path (`/persons/{id}`). |
 
 ### Request
 
-<Tabs groupId="language">
-  <TabItem value="nodejs" label="Node.js">
+<Tabs>
+  <TabItem value="node" label="Node.js">
 
 ```javascript
-import axios from 'axios';
+const fetch = require("node-fetch");
 
-const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/face-recognition/persons/person_123456789',
-  headers: {
-    Accept: 'application/json',
-    Authorization: 'jwt <tu_token>'
-  }
-};
-
-try {
-  const { data } = await axios.request(options);
-  console.log(data);
-} catch (error) {
-  console.error(error);
-}
-```
-
-  </TabItem>
-  <TabItem value="python" label="Python">
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("api.verifik.co")
-
-headers = {
-    'Accept': "application/json",
-    'Authorization': "JWT token"
+async function run() {
+  const id = "person_123456789";
+  const res = await fetch(`https://api.verifik.co/v2/face-recognition/persons/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  });
+  console.log(await res.json());
 }
 
-conn.request("GET", "/v2/face-recognition/persons/person_123456789", headers=headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
+run();
 ```
 
   </TabItem>
@@ -90,17 +57,33 @@ print(data.decode("utf-8"))
 
 ```php
 <?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('GET', 'https://api.verifik.co/v2/face-recognition/persons/person_123456789', [
-  'headers' => [
-    'Accept' => 'application/json',
-    'Authorization' => 'JWT token',
-  ],
+$id = "person_123456789";
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/persons/" . rawurlencode($id));
+curl_setopt($ch, CURLOPT_HTTPGET, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN"),
 ]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
 
-echo $response->getBody();
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+person_id = "person_123456789"
+url = f"https://api.verifik.co/v2/face-recognition/persons/{person_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+r = requests.get(url, headers=headers)
+print(r.json())
 ```
 
   </TabItem>
@@ -110,24 +93,21 @@ echo $response->getBody();
 package main
 
 import (
-	"fmt"
-	"io"
-	"net/http"
+    "fmt"
+    "io"
+    "net/http"
+    "os"
 )
 
 func main() {
-	url := "https://api.verifik.co/v2/face-recognition/persons/person_123456789"
-
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Authorization", "JWT token")
-
-	client := &http.Client{}
-	res, _ := client.Do(req)
-	defer res.Body.Close()
-
-	body, _ := io.ReadAll(res.Body)
-	fmt.Println(string(body))
+    url := "https://api.verifik.co/v2/face-recognition/persons/person_123456789"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    body, _ := io.ReadAll(resp.Body)
+    fmt.Println(string(body))
 }
 ```
 
@@ -136,37 +116,50 @@ func main() {
 
 ### Response
 
-<Tabs groupId="status">
+<Tabs>
   <TabItem value="200" label="200">
 
 ```json
 {
-  "success": true,
+  "id": "…",
   "data": {
     "_id": "person_123456789",
     "name": "John Doe",
     "gender": "M",
-    "date_of_birth": {
-      "year": 1990,
-      "month": 1,
-      "day": 15
-    },
+    "date_of_birth": { "year": 1990, "month": 1, "day": 15 },
     "nationality": "US",
-    "images": [
-      "base64_encoded_image_1",
-      "base64_encoded_image_2"
-    ],
+    "images": ["<base64>", "<base64>"],
     "collections": ["collection_123456789"],
     "notes": "VIP customer",
     "client": "client_123456789",
     "status": "active",
-    "faceEncodings": [
-      "face_encoding_1",
-      "face_encoding_2"
-    ],
-    "createdAt": "2024-01-15T10:30:00Z",
-    "updatedAt": "2024-01-15T10:30:00Z"
+    "faceEncodings": ["…", "…"],
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "updatedAt": "2024-01-15T10:30:00.000Z"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "…"
   }
+}
+```
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+or
+
+```json
+{
+  "message": "token_expired",
+  "code": "FORBIDDEN"
 }
 ```
 
@@ -181,22 +174,30 @@ func main() {
 ```
 
   </TabItem>
-  <TabItem value="401" label="401">
+  <TabItem value="409" label="409">
 
 ```json
 {
-  "error": "Unauthorized",
-  "message": "UNAUTHORIZED"
+  "message": "Validation message or missing parameter",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "internal_error",
+  "code": "ERROR"
 }
 ```
 
   </TabItem>
 </Tabs>
 
-## Features
+### Notes
 
--   **Person Retrieval**: Retrieve specific person records by unique identifier
--   **Complete Information**: Full person details including images and encodings
--   **Structured Response**: Organized data format for easy integration
--   **Multiple Programming Languages**: Support for JavaScript, Python, PHP, and Swift
--   **Error Handling**: Comprehensive error responses for various scenarios
+- `{id}` is the person’s `_id` returned from create or list endpoints.
+- Successful payloads follow [The Person Object](/resources/the-person-object); `faceEncodings` and other fields depend on enrollment and API version.
+- **404** indicates no person exists for that ID (or it is outside your client scope).

@@ -11,112 +11,51 @@ import TabItem from '@theme/TabItem';
 ### Endpoint
 
 ```
-https://api.verifik.co/v2/face-recognition/persons
+GET https://api.verifik.co/v2/face-recognition/persons
 ```
 
-This endpoint allows you to bring all the people stored in Verifik for all the collections.
+Returns persons stored in Verifik for your project. Supports pagination, filters, and optional population of related **collections** or **client** data.
 
-#### Headers
+### Headers
 
-#### `Content-Type`
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
 
-**Type:** String  
-**Required:** Required  
-**Value:** `application/json`
+### Params
 
-#### `Authorization`
-
-**Type:** String  
-**Required:** Required  
-**Value:** `Bearer <token>`
-
-#### Query Parameters
-
-#### `page`
-
-**Type:** Number  
-**Required:** No
-
-Page number for pagination (default: 1).
-
-#### `limit`
-
-**Type:** Number  
-**Required:** No
-
-Number of records per page (default: 10, max: 100).
-
-#### `collection`
-
-**Type:** String  
-**Required:** No
-
-Filter by specific collection ID.
-
-#### `status`
-
-**Type:** String  
-**Required:** No
-
-Filter by status: `active`, `inactive`, `pending`.
-
-#### `populates[]`
-
-**Type:** String  
-**Required:** No
-
-Optional array of related data to include. Available options: `collections`, `client`.
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `page` | number | No | Page number (default: `1`). |
+| `limit` | number | No | Page size (default: `10`, max: `100`). |
+| `collection` | string | No | Filter by collection ID. |
+| `status` | string | No | One of `active`, `inactive`, `pending`. |
+| `populates[]` | string[] | No | Related data to include: `collections`, `client`. Repeat the query key or pass an array per your HTTP client. |
 
 ### Request
 
-<Tabs groupId="language">
-  <TabItem value="nodejs" label="Node.js">
+<Tabs>
+  <TabItem value="node" label="Node.js">
 
 ```javascript
-import axios from 'axios';
+const fetch = require("node-fetch");
 
-const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/face-recognition/persons',
-  params: {
-    page: 1,
-    limit: 10,
-    status: "active",
-    "populates[]": ["collections"]
-  },
-  headers: {
-    Accept: 'application/json',
-    Authorization: 'jwt <tu_token>'
-  }
-};
+async function run() {
+  const params = new URLSearchParams({ page: "1", limit: "10", status: "active" });
+  params.append("populates[]", "collections");
 
-try {
-  const { data } = await axios.request(options);
-  console.log(data);
-} catch (error) {
-  console.error(error);
-}
-```
-
-  </TabItem>
-  <TabItem value="python" label="Python">
-
-```python
-import http.client
-
-conn = http.client.HTTPSConnection("api.verifik.co")
-
-headers = {
-    'Accept': "application/json",
-    'Authorization': "JWT token"
+  const res = await fetch(`https://api.verifik.co/v2/face-recognition/persons?${params}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  });
+  console.log(await res.json());
 }
 
-conn.request("GET", "/v2/face-recognition/persons?page=1&limit=10&status=active&populates[]=collections", headers=headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
+run();
 ```
 
   </TabItem>
@@ -124,17 +63,38 @@ print(data.decode("utf-8"))
 
 ```php
 <?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('GET', 'https://api.verifik.co/v2/face-recognition/persons?page=1&limit=10&status=active&populates[]=collections', [
-  'headers' => [
-    'Accept' => 'application/json',
-    'Authorization' => 'JWT token',
-  ],
+$base = http_build_query([
+    "page" => 1,
+    "limit" => 10,
+    "status" => "active",
 ]);
+$url = "https://api.verifik.co/v2/face-recognition/persons?" . $base . "&populates[]=collections";
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_HTTPGET, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
 
-echo $response->getBody();
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/face-recognition/persons"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+params = {"page": 1, "limit": 10, "status": "active", "populates[]": "collections"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
 ```
 
   </TabItem>
@@ -144,24 +104,21 @@ echo $response->getBody();
 package main
 
 import (
-	"fmt"
-	"io"
-	"net/http"
+    "fmt"
+    "io"
+    "net/http"
+    "os"
 )
 
 func main() {
-	url := "https://api.verifik.co/v2/face-recognition/persons?page=1&limit=10&status=active&populates[]=collections"
-
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Authorization", "JWT token")
-
-	client := &http.Client{}
-	res, _ := client.Do(req)
-	defer res.Body.Close()
-
-	body, _ := io.ReadAll(res.Body)
-	fmt.Println(string(body))
+    url := "https://api.verifik.co/v2/face-recognition/persons?page=1&limit=10&status=active&populates[]=collections"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    body, _ := io.ReadAll(resp.Body)
+    fmt.Println(string(body))
 }
 ```
 
@@ -170,27 +127,20 @@ func main() {
 
 ### Response
 
-<Tabs groupId="status">
+<Tabs>
   <TabItem value="200" label="200">
 
 ```json
 {
-  "success": true,
+  "id": "…",
   "data": [
     {
       "_id": "person_123456789",
       "name": "John Doe",
       "gender": "M",
-      "date_of_birth": {
-        "year": 1990,
-        "month": 1,
-        "day": 15
-      },
+      "date_of_birth": { "year": 1990, "month": 1, "day": 15 },
       "nationality": "US",
-      "images": [
-        "base64_encoded_image_1",
-        "base64_encoded_image_2"
-      ],
+      "images": ["<base64>", "<base64>"],
       "collections": [
         {
           "_id": "collection_123456789",
@@ -201,8 +151,8 @@ func main() {
       "notes": "VIP customer",
       "client": "client_123456789",
       "status": "active",
-      "createdAt": "2024-01-15T10:30:00Z",
-      "updatedAt": "2024-01-15T10:30:00Z"
+      "createdAt": "2024-01-15T10:30:00.000Z",
+      "updatedAt": "2024-01-15T10:30:00.000Z"
     }
   ],
   "pagination": {
@@ -210,30 +160,59 @@ func main() {
     "limit": 10,
     "total": 1,
     "pages": 1
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "…"
   }
 }
 ```
 
   </TabItem>
-  <TabItem value="400" label="400">
+  <TabItem value="401-403" label="401/403">
 
 ```json
 {
-  "success": false,
-  "error": "Invalid query parameters",
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+or
+
+```json
+{
+  "message": "token_expired",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "Invalid query parameters",
   "code": "INVALID_PARAMETERS"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "internal_error",
+  "code": "ERROR"
 }
 ```
 
   </TabItem>
 </Tabs>
 
-## Features
+### Notes
 
--   **Person List Retrieval**: Retrieve all persons with detailed information
--   **Pagination Support**: Navigate through large datasets with page-based pagination
--   **Filtering Options**: Filter by collection, status, and other criteria
--   **Population Support**: Include related collection and client information
--   **Structured Response**: Organized data format for easy integration
--   **Multiple Programming Languages**: Support for JavaScript, Python, PHP, and Swift
--   **Error Handling**: Comprehensive error responses for various scenarios
+- Typical responses use the Verifik envelope (`id`, `data`, `signature`); list payloads may also include `pagination` at the top level—confirm the exact shape in your environment.
+- `limit` is capped at **100**; use `page` to walk large result sets.
+- Use `populates[]` when you need embedded **collections** or **client** instead of raw IDs only.
+- Each item in `data` follows [The Person Object](/resources/the-person-object) (fields may vary with population and API version).
