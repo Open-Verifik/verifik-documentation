@@ -62,20 +62,6 @@ const config = {
 		{
 			tagName: "meta",
 			attributes: {
-				name: "robots",
-				content: "index, follow",
-			},
-		},
-		{
-			tagName: "meta",
-			attributes: {
-				name: "googlebot",
-				content: "index, follow",
-			},
-		},
-		{
-			tagName: "meta",
-			attributes: {
 				property: "og:site_name",
 				content: "Verifik Documentation",
 			},
