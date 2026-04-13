@@ -28,7 +28,7 @@ The comptroller certificate service enables you to verify a certificate of good 
 ### Parameters
 
 :::info
-For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/background-check/document-types) guide.
 :::
 
 #### Request

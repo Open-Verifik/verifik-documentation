@@ -30,7 +30,7 @@ This service helps ensure that individuals comply with corrective measures and s
 ### Parameters
 
 :::info
-For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/background-check/document-types) guide.
 :::
 
 #### Request

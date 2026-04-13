@@ -28,7 +28,7 @@ The Colombian Police Record Check service allows users to verify the criminal hi
 ### Parameters
 
 :::info
-For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/docs/background-check/document-types) guide.
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/background-check/document-types) guide.
 :::
 
 #### Request
