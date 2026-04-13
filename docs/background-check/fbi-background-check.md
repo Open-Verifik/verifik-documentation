@@ -14,13 +14,15 @@ https://api.verifik.co/v2/fbi
 
 This API allows businesses and organizations to verify whether a person or a document appears in the FBI database. By providing a document type and document number, users can retrieve information about the individual, including their full name, first name, and last name, if a match is found.
 
+**Note:** Dates (date of birth or expedition date) must be in dd/mm/yyyy format.
+
 This service is ideal for verifying the authenticity of documents and conducting detailed identity checks as part of compliance, security, or regulatory processes.
 
 ### **Use Cases**
 
-* **Identity Verification:** Ensure that documents presented by individuals are valid and consistent with FBI records.
-* **Compliance:** Meet regulatory requirements by conducting thorough background checks on individuals involved in sensitive transactions.
-* **Fraud Prevention:** Protect your business by verifying individuals' identities before establishing relationships or processing critical operations.
+- **Identity Verification:** Ensure that documents presented by individuals are valid and consistent with FBI records.
+- **Compliance:** Meet regulatory requirements by conducting thorough background checks on individuals involved in sensitive transactions.
+- **Fraud Prevention:** Protect your business by verifying individuals' identities before establishing relationships or processing critical operations.
 
 ### **Headers**
 
@@ -37,6 +39,12 @@ This service is ideal for verifying the authenticity of documents and conducting
 
 <table><thead><tr><th width="198">Name</th><th width="83">Type</th><th width="107">Required</th><th width="363">Description</th></tr></thead><tbody><tr><td>fullName</td><td>String</td><td><code>False</code></td><td>Instead of documentType and documentNumber, you can pass the name directly of the person/business.</td></tr></tbody></table>
 
+### Parameters
+
+:::info
+For the complete list of supported **Document Types** and their specific mandatory parameters, please visit the [Document Types](/background-check/document-types) guide.
+:::
+
 ### Request
 
 import Tabs from '@theme/Tabs';
@@ -46,16 +54,16 @@ import TabItem from '@theme/TabItem';
 <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/fbi',
-  params: {documentType: 'CC', documentNumber: '80251972'},
+  method: "GET",
+  url: "https://api.verifik.co/v2/fbi",
+  params: { documentType: "CC", documentNumber: "80251972" },
   headers: {
-    Accept: 'application/json',
-    Authorization: 'jwt <tu_token>'
-  }
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
 };
 
 try {
@@ -88,7 +96,7 @@ print(data.decode("utf-8"))
 var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/fbi?fullName=")!,timeoutInterval: Double.infinity)
 request.httpMethod = "GET"
 
-let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
   guard let data = data else {
     print(String(describing: error))
     return
@@ -143,11 +151,7 @@ catch(HTTP_Request2_Exception $e) {
     "fullName": "WILVER VILLEGAS PALOMINO",
     "firstName": "WILVER",
     "lastName": "VILLEGAS PALOMINO",
-    "arrayName": [
-      "WILVER",
-      "VILLEGAS",
-      "PALOMINO"
-    ],
+    "arrayName": ["WILVER", "VILLEGAS", "PALOMINO"],
     "foundInFBI": true,
     "urlFBI": "https://www.fbi.gov/wanted/cei/wilver-villegas-palomino-"
   },
@@ -163,8 +167,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+  "code": "NotFound",
+  "message": "Record not found."
 }
 ```
 
@@ -173,8 +177,8 @@ catch(HTTP_Request2_Exception $e) {
 
 ```json
 {
-    "code": "MissingParameter",
-    "message": "missing documentType\n. missing documentNumber\n"
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
 }
 ```
 
