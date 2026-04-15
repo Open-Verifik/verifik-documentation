@@ -705,6 +705,8 @@ const sidebars = {
 					items: [
 						"resources/webhooks/webhooks",
 						"resources/webhooks/integracion-webhook",
+						"resources/webhooks/smart-enroll-kyc-webhooks",
+						"resources/webhooks/eventos-soportados",
 						"resources/webhooks/el-objeto-webhook",
 						"resources/webhooks/crear-un-webhook",
 						"resources/webhooks/recuperar-un-webhook",
