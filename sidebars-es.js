@@ -71,6 +71,7 @@ const sidebars = {
 					collapsible: true,
 					items: [
 						"biometrics/pruebas-faciales-conocimiento-cero-resumen",
+						"biometrics/humanauthn-vs-ur-codes",
 						"biometrics/pruebas-faciales-conocimiento-cero-encriptar",
 						"biometrics/pruebas-faciales-conocimiento-cero-encriptar-codigo-qr",
 						"biometrics/pruebas-faciales-conocimiento-cero-desencriptar",
@@ -454,7 +455,6 @@ const sidebars = {
 			label: "VERIFICACIÓN DE ANTECEDENTES",
 			collapsible: false,
 			items: [
-				"verificacion-antecendentes/tipos-documento",
 				{
 					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-brasil",
