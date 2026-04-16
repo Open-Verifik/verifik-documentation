@@ -57,7 +57,7 @@ const sidebars = {
 					type: "category",
 					label: "Comparación Facial",
 					collapsible: true,
-					items: ["biometrics/comparar", "biometrics/comparar-en-vivo", "biometrics/comparar-con-deteccion-vitalidad", "biometrics/verificar-cara"],
+					items: ["biometrics/comparar", "biometrics/comparar-en-vivo", "biometrics/comparar-con-deteccion-vitalidad"],
 				},
 				{
 					type: "category",
@@ -71,6 +71,7 @@ const sidebars = {
 					collapsible: true,
 					items: [
 						"biometrics/pruebas-faciales-conocimiento-cero-resumen",
+						"biometrics/humanauthn-vs-ur-codes",
 						"biometrics/pruebas-faciales-conocimiento-cero-encriptar",
 						"biometrics/pruebas-faciales-conocimiento-cero-encriptar-codigo-qr",
 						"biometrics/pruebas-faciales-conocimiento-cero-desencriptar",
@@ -111,7 +112,6 @@ const sidebars = {
 				{ type: "doc", id: "identity/guatemala", label: "🇬🇹 Guatemala" },
 				{ type: "doc", id: "identity/guatemala-extra", label: "🇬🇹 Guatemala - Extra" },
 				{ type: "doc", id: "identity/honduras", label: "🇭🇳 Honduras" },
-				{ type: "doc", id: "legal/epic-eci", label: "🇮🇳 India - EPIC (ECI)" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 México", key: "identity-mexico" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Panamá", key: "identity-panama" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Paraguay", key: "identity-paraguay" },
@@ -317,16 +317,6 @@ const sidebars = {
 							type: "doc",
 							id: "validacion-vehiculos/colombia/pico-y-placa-bogota",
 							label: "Pico y Placa",
-						},
-						{
-							type: "doc",
-							id: "validacion-vehiculos/colombia/taxis-conductores-bogota-por-placa",
-							label: "Conductores de Taxi (por placa)",
-						},
-						{
-							type: "doc",
-							id: "validacion-vehiculos/colombia/taxis-conductores-bogota-por-tarjeta",
-							label: "Conductores de Taxi (por tarjeta)",
 						},
 						{
 							type: "doc",
@@ -536,7 +526,7 @@ const sidebars = {
 			type: "category",
 			label: "VOTACIÓN",
 			collapsible: false,
-			items: ["legal/votacion", "legal/votacion-eci-epic", "legal/epic-eci"],
+			items: ["legal/votacion"],
 		},
 		{
 			type: "category",
@@ -602,32 +592,6 @@ const sidebars = {
 				},
 				{
 					type: "category",
-					label: "Flujos de Proyecto",
-					key: "resources-flujos-de-proyecto",
-					collapsible: true,
-					items: [
-						"resources/flujos-de-proyecto/el-objeto-flujo-de-proyecto",
-						"resources/flujos-de-proyecto/actualizar-un-flujo-de-proyecto",
-						"resources/flujos-de-proyecto/eliminar-un-flujo-de-proyecto",
-					],
-				},
-				{
-					type: "category",
-					label: "Inicios de Sesión de Aplicación",
-					collapsible: true,
-					items: [
-						"resources/inicios-sesion-aplicacion/inicios-sesion-aplicacion",
-						"resources/inicios-sesion-aplicacion/el-objeto-inicio-sesion-aplicacion",
-						"resources/inicios-sesion-aplicacion/crear-un-inicio-sesion-aplicacion",
-						"resources/inicios-sesion-aplicacion/recuperar-un-inicio-sesion-aplicacion",
-						"resources/inicios-sesion-aplicacion/listar-todos-los-inicios-sesion-aplicacion",
-						"resources/inicios-sesion-aplicacion/crear-una-validacion-biometrica-inicio-sesion-aplicacion",
-						"resources/inicios-sesion-aplicacion/validar-una-validacion-biometrica-inicio-sesion-aplicacion",
-						"resources/inicios-sesion-aplicacion/ejemplo-acceso-por-email",
-					],
-				},
-				{
-					type: "category",
 					label: "Registros de Aplicación",
 					collapsible: true,
 					items: [
@@ -655,28 +619,6 @@ const sidebars = {
 						"resources/validaciones-biometricas/crear-una-validacion-biometrica",
 						"resources/validaciones-biometricas/recuperar-una-validacion-biometrica",
 						"resources/validaciones-biometricas/listar-todas-las-validaciones-biometricas",
-					],
-				},
-				{
-					type: "category",
-					label: "Colecciones",
-					collapsible: true,
-					items: [
-						"resources/colecciones/el-objeto-coleccion",
-						"resources/colecciones/crear-una-coleccion",
-						"resources/colecciones/listar-todas-las-colecciones",
-						"resources/colecciones/recuperar-una-coleccion",
-					],
-				},
-				{
-					type: "category",
-					label: "Créditos",
-					collapsible: true,
-					items: [
-						"resources/creditos/creditos",
-						"resources/creditos/el-objeto-credito",
-						"resources/creditos/listar-todos-los-registros-credito",
-						"resources/creditos/recuperar-un-registro-credito",
 					],
 				},
 				{
@@ -726,7 +668,6 @@ const sidebars = {
 						"resources/personas/personas",
 						"resources/personas/el-objeto-persona",
 						"resources/personas/crear-una-persona",
-						"resources/personas/crear-una-persona-con-deteccion-de-vida",
 						"resources/personas/recuperar-una-persona",
 						"resources/personas/listar-todas-las-personas",
 					],
@@ -764,6 +705,8 @@ const sidebars = {
 					items: [
 						"resources/webhooks/webhooks",
 						"resources/webhooks/integracion-webhook",
+						"resources/webhooks/smart-enroll-kyc-webhooks",
+						"resources/webhooks/eventos-soportados",
 						"resources/webhooks/el-objeto-webhook",
 						"resources/webhooks/crear-un-webhook",
 						"resources/webhooks/recuperar-un-webhook",
@@ -795,4 +738,4 @@ const sidebars = {
 	],
 };
 
-export default sidebars;
+module.exports = sidebars;
