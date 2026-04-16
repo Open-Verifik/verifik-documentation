@@ -79,7 +79,7 @@ const sidebars = {
 					type: "category",
 					label: "Face Comparison",
 					collapsible: true,
-					items: ["biometrics/compare", "biometrics/compare-live", "biometrics/compare-with-liveness", "biometrics/verify-face"],
+					items: ["biometrics/compare", "biometrics/compare-live", "biometrics/compare-with-liveness"],
 				},
 				{
 					type: "category",
@@ -93,6 +93,7 @@ const sidebars = {
 					collapsible: true,
 					items: [
 						"biometrics/zero-knowledge-face-proofs-overview",
+						"biometrics/humanauthn-vs-ur-codes",
 						"biometrics/zero-knowledge-face-proofs-encrypt",
 						"biometrics/zero-knowledge-face-proofs-encrypt-qr-code",
 						"biometrics/zero-knowledge-face-proofs-decrypt",
@@ -208,11 +209,6 @@ const sidebars = {
 					type: "doc",
 					id: "identity/honduras",
 					label: "🇭🇳 Honduras",
-				},
-				{
-					type: "doc",
-					id: "legal/epic-eci",
-					label: "🇮🇳 India - EPIC (ECI)",
 				},
 				{
 					type: "doc",
@@ -439,16 +435,6 @@ const sidebars = {
 						},
 						{
 							type: "doc",
-							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-plate",
-							label: "Taxi Drivers by Plate",
-						},
-						{
-							type: "doc",
-							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-control-card",
-							label: "Taxi Drivers by Card",
-						},
-						{
-							type: "doc",
 							id: "vehicle-validation/colombia/colombia-fasecolda-values-by-plate",
 							label: "Vehicle Values by Plate",
 						},
@@ -611,7 +597,6 @@ const sidebars = {
 			label: "BACKGROUND CHECK",
 			collapsible: false,
 			items: [
-				"background-check/document-types",
 				{
 					type: "doc",
 					id: "background-check/brazil",
@@ -684,7 +669,7 @@ const sidebars = {
 			type: "category",
 			label: "VOTING",
 			collapsible: false,
-			items: ["legal/voting", "legal/voting-eci-epic", "legal/epic-eci"],
+			items: ["legal/voting"],
 		},
 		{
 			type: "category",
@@ -814,8 +799,6 @@ const sidebars = {
 						"resources/collections/create-a-collection",
 						"resources/collections/list-all-collections",
 						"resources/collections/retrieve-a-collection",
-						"resources/collections/update-a-collection",
-						"resources/collections/delete-a-collection",
 					],
 				},
 				{
@@ -876,11 +859,8 @@ const sidebars = {
 						"resources/persons/persons",
 						"resources/persons/the-person-object",
 						"resources/persons/create-a-person",
-						"resources/persons/create-a-person-with-liveness",
 						"resources/persons/retrieve-a-person",
 						"resources/persons/list-all-persons",
-						"resources/persons/update-a-person",
-						"resources/persons/delete-a-person",
 					],
 				},
 				{
