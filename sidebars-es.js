@@ -96,6 +96,7 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				{ type: "doc", id: "identity/argentina", label: "🇦🇷 Argentina", key: "identity-argentina" },
+				{ type: "doc", id: "identity/argentina-extra", label: "🇦🇷 Argentina - Extra" },
 				{ type: "doc", id: "identity/bolivia", label: "🇧🇴 Bolivia", key: "identity-bolivia" },
 				{ type: "doc", id: "identity/brazil", label: "🇧🇷 Brasil", key: "identity-brazil" },
 				{ type: "doc", id: "identity/canada", label: "🇨🇦 Canadá", key: "identity-canada" },
