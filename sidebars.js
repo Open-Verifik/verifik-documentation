@@ -124,6 +124,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/argentina-extra",
+					label: "🇦🇷 Argentina - Extra",
+				},
+				{
+					type: "doc",
 					id: "identity/bolivia",
 					label: "🇧🇴 Bolivia",
 					key: "identity-bolivia",
