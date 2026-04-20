@@ -1,0 +1,141 @@
+---
+id: chile-validate-documents
+title: 智利 — 身份证件有效性
+description: "校验智利 RUN/RUT 及实体证件序列号；返回有效期类状态，适用于高保证 KYC。"
+slug: /identity/chile-validate-documents
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "智利身份证件验证 | Verifik API",
+	description: "GET /v2/cl/validate/documents，需 serialNumber。",
+	articleSection: "API 文档",
+	keywords: "智利 RUN RUT, v2/cl/validate/documents",
+	about: {
+		"@type": "Thing",
+		name: "证件验证 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 智利身份证件有效性验证
+
+本接口在标识符之外，还使用实体证件上**印刷的序列号**，核验智利 **RUN** 或 **RUT** 的**有效性**。当您不仅要确认号码存在，还要确认**卡片本身有效**时—例如**高保证 KYC**或超出简单 **cédula** 查询的**合规**步骤—请使用本接口。
+
+若只需在民事登记处做**无序列号**的姓名核验，请使用 **[智利身份验证](/identity/chile)**（`v2/cl/cedula`）。
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/validate/documents
+```
+
+提交 **RUN** 或 **RUT**、**证件号码**与**印刷序列号**，从民事或税务验证来源获得**有效期类状态**；在必须确认实体证件而不仅是号码时使用。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Yes | `RUN`（民事）或 `RUT`（税务）。 |
+| `documentNumber` | string | Yes | 按集成指南无空格。 |
+| `serialNumber` | string | Yes | 证件印刷序列号（底层来源要求）。 |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/validate/documents", {
+  params: {
+    documentType: "RUN",
+    documentNumber: "18562530-3",
+    serialNumber: "A123456789",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/validate/documents"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {
+    "documentType": "RUN",
+    "documentNumber": "18562530-3",
+    "serialNumber": "A123456789",
+}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "RUN",
+    "documentNumber": "18.562.530-3",
+    "serialNumber": "A123456789",
+    "status": "Vigente"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 4:00 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "CLVAL1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [RUT, RUN]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `status` 的确切字符串取决于上游登记措辞；视为**有效期指标**，不可替代法律意见。
+- 请从实体证件采集 **`serialNumber`**；没有则无法完成民事 **Registro Civil** 流程。

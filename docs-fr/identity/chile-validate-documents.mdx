@@ -1,0 +1,143 @@
+---
+id: chile-validate-documents
+title: Chili — Validation de document d'identité
+description: "Validez RUN ou RUT avec le numéro de série du document physique ; statut de vigence pour KYC renforcé."
+slug: /identity/chile-validate-documents
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Validation documentaire Chili | Verifik API",
+	description: "GET /v2/cl/validate/documents avec serialNumber.",
+	articleSection: "API Documentation",
+	keywords: "Chili RUN RUT, vigence, v2/cl/validate/documents",
+	about: {
+		"@type": "Thing",
+		name: "Document validation API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Chili — Validation de document d'identité
+
+Cet endpoint contrôle la **vigence** du document pour un **RUN** ou **RUT** chilien en utilisant le **numéro de série** imprimé sur la pièce, en plus de l'identifiant. Servez-vous-en lorsque vous devez confirmer que la **carte** est **valide** (pas seulement que le numéro existe)—par exemple pour un **KYC à assurance élevée** ou des exigences de **conformité** au-delà d'une simple consultation de cédula.
+
+Pour une vérification nominale au registre civil **sans** série, utilisez la **[Vérification d'identité au Chili](/verifik-fr/identity/chile)** (`v2/cl/cedula`).
+
+## API Reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/validate/documents
+```
+
+Soumettez **RUN** ou **RUT**, **numéro de document** et **série imprimée** pour obtenir un **statut de vigence** depuis les sources civiles ou fiscales—à utiliser lorsque le document physique doit être confirmé, pas seulement le numéro.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Yes | `RUN` (flux civil) ou `RUT` (flux fiscal). |
+| `documentNumber` | string | Yes | Identifiant sans espaces, selon le guide d'intégration. |
+| `serialNumber` | string | Yes | Série imprimée ; requise par les sources sous-jacentes. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/validate/documents", {
+  params: {
+    documentType: "RUN",
+    documentNumber: "18562530-3",
+    serialNumber: "A123456789",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/validate/documents"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {
+    "documentType": "RUN",
+    "documentNumber": "18562530-3",
+    "serialNumber": "A123456789",
+}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "RUN",
+    "documentNumber": "18.562.530-3",
+    "serialNumber": "A123456789",
+    "status": "Vigente"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 4:00 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "CLVAL1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [RUT, RUN]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- La chaîne exacte de `status` dépend du registre amont ; traitez-la comme **indicateur de vigence**, pas comme conseil juridique.
+- Collectez **`serialNumber`** sur le document physique ; sans elle, la validation ne peut pas se compléter via le flux **Registro Civil**.

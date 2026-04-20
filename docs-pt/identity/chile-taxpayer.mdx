@@ -1,0 +1,133 @@
+---
+id: chile-taxpayer
+title: Chile — Contribuinte (RUT)
+description: "Consulta registros de contribuinte chileno por RUT: nomes estruturados com foco tributário para KYB, NF-e e fornecedores."
+slug: /identity/chile-taxpayer
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Contribuinte RUT (Chile) | Verifik API",
+	description: "GET /v2/cl/taxpayer com documentType RUT e documentNumber.",
+	articleSection: "Documentação da API",
+	keywords: "Chile RUT, contribuinte, v2/cl/taxpayer",
+	about: {
+		"@type": "Thing",
+		name: "Taxpayer lookup API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Chile — Contribuinte (RUT)
+
+Use este endpoint quando precisar de dados de identidade **orientados ao contribuinte** para um **RUT** chileno (não o fluxo civil da cédula). Ele complementa a **[Verificação de identidade no Chile](/identity/chile)** (`v2/cl/cedula`), voltada ao **RUN/registro civil**.
+
+## API Reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/taxpayer
+```
+
+Retorna campos de nome e identificadores alinhados ao **registro tributário**—indicado para **KYB**, onboarding de fornecedores e validação de notas fiscais em que o **RUT** deve bater com o **contribuinte** registrado.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Yes | Deve ser `RUT`. |
+| `documentNumber` | string | Yes | Identificador fiscal (dígitos; formatação normalizada pelo serviço). |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/taxpayer", {
+  params: { documentType: "RUT", documentNumber: "263007905" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/taxpayer"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "RUT", "documentNumber": "263007905"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "arrayName": ["RICHARD", "DANIEL", "BARBERA", "MARICHAL"],
+    "documentNumber": "263007905",
+    "documentType": "RUT",
+    "firstName": "RICHARD DANIEL",
+    "fullName": "RICHARD DANIEL BARBERA MARICHAL",
+    "lastName": "BARBERA MARICHAL"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 3:02 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "S40CG"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentNumber maximum length exceeded.\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Prefira **`v2/cl/cedula`** para correspondência de identidade **RUN** no registro civil; use **`v2/cl/taxpayer`** quando a fonte de verdade for o **contribuinte RUT**.

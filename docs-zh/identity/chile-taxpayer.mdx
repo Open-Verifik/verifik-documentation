@@ -1,0 +1,131 @@
+---
+id: chile-taxpayer
+title: 智利 — 纳税人（RUT）
+description: "查询智利纳税人 RUT 记录：面向税务的姓名字段，用于 KYB 与发票核对。"
+slug: /identity/chile-taxpayer
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "智利纳税人 RUT 查询 | Verifik API",
+	description: "GET /v2/cl/taxpayer，documentType RUT。",
+	articleSection: "API 文档",
+	keywords: "智利 RUT, v2/cl/taxpayer",
+	about: {
+		"@type": "Thing",
+		name: "纳税人查询 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 智利纳税人（RUT）查询
+
+当您需要智利 **RUT** 的**纳税人导向**身份数据（而非民事 **cédula** 流程）时使用本接口。它与 **[智利身份验证](/identity/chile)**（`v2/cl/cedula`）互补，后者面向 **RUN／民事** 查询。
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/taxpayer
+```
+
+返回与**税务登记**一致的姓名与标识字段，适用于 **KYB**、供应商入驻，以及需要 **RUT** 与**登记纳税人**一致的**发票**校验场景。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Yes | `RUT` |
+| `documentNumber` | string | Yes | 税务识别号（服务会规范化格式） |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/taxpayer", {
+  params: { documentType: "RUT", documentNumber: "263007905" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/taxpayer"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "RUT", "documentNumber": "263007905"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "arrayName": ["RICHARD", "DANIEL", "BARBERA", "MARICHAL"],
+    "documentNumber": "263007905",
+    "documentType": "RUT",
+    "firstName": "RICHARD DANIEL",
+    "fullName": "RICHARD DANIEL BARBERA MARICHAL",
+    "lastName": "BARBERA MARICHAL"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 3:02 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "S40CG"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentNumber maximum length exceeded.\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 民事登记 **RUN** 身份匹配请用 **`v2/cl/cedula`**；当以**纳税人 RUT 记录**为准时用 **`v2/cl/taxpayer`**。

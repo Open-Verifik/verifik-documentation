@@ -1,0 +1,155 @@
+---
+id: chile
+title: チリ — 車両（ナンバー）
+description: "ナンバーでチリ車両を照会：車両諸元、違反、所有者 RUT など。"
+slug: /vehicle-validation/chile
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "チリ車両照会 | Verifik API",
+	description: "GET /v2/cl/vehicle、plate。",
+	articleSection: "API ドキュメント",
+	keywords: "チリ 車両, v2/cl/vehicle",
+	about: {
+		"@type": "Thing",
+		name: "車両確認 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# チリ車両情報
+
+チリ登録車両の詳細情報を取得します。**フリート**、**保険**、**担保**、運用コンプライアンスに利用できます。
+
+## ナンバー照会
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/vehicle
+```
+
+**`plate`**（スペース・ドットなし）で照会します。通常 **メーカー**、**モデル**、**年式**、**車台/VIN**、**エンジン**、**色**、**車種**、**違反概要**、レジストリが公開すれば**所有者 RUT** などが返ります。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `plate` | string | Yes | ナンバー（スペース・ドットなし） |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle", {
+  params: { plate: "BB985" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/vehicle"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "BB985"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "chasisNumber": "ME1KG0447E2066723",
+    "color": "NEGRO",
+    "engineNumber": "1ES3032465",
+    "fines": "NO POSEE MULTAS",
+    "manufacturer": "NO DISPONIBLE",
+    "mark": "YAMAHA",
+    "model": "FZ 16",
+    "orderTheft": "NO DISPONIBLE",
+    "origin": "NO DISPONIBLE",
+    "owner": "",
+    "plate": "BB985",
+    "publicTrans": "NO DISPONIBLE",
+    "revision": "NO DISPONIBLE",
+    "rut": "26043542-6",
+    "type": "MOTO",
+    "typeTransPub": "NO DISPONIBLE",
+    "year": "2014"
+  },
+  "signature": {
+    "dateTime": "April 21, 2023 8:32 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 機能
+
+### 車両情報
+- **登録**：チリでの登録確認。
+- **諸元**：車台・エンジン・メーカー・モデル。
+- **詳細**：年式・色・タイプ。
+- **所有者**：RUT（取得可能な場合）。
+- **違反**：未処理の有無。
+- **盗難**：ソースが提供する場合。
+- **公共交通**：該当時の区分。
+
+### 一般
+- **Node.js・Python** サンプル。
+- **リアルタイム**のレジストリデータ。
+- 構造化された**エラー**応答。
+- **`signature`** 付き JSON。
