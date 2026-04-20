@@ -1,0 +1,213 @@
+---
+id: spain-citizen
+title: 스페인 국민
+description: Verifik KYC API로 스페인 개인 신원을 확인합니다(DNI/NIE).
+slug: /ko-docs/identity/spain-citizen
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "스페인 신원 확인 | Verifik KYC API",
+	description:
+		"Verifik KYC API로 스페인 개인 신원을 확인합니다. 공식 출처.",
+	articleSection: "API Documentation",
+	keywords: "신원 확인, KYC API, 스페인 DNI NIE, 공식 출처, 사기 방지",
+	about: {
+		"@type": "Thing",
+		name: "Identity Verification API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 스페인 신원 확인
+
+공식 출처 데이터로 스페인 국민 및 거주자를 인증합니다. KYC를 간소화하고 사기를 줄이며 규정 준수를 지원합니다.
+
+사용자·직원·고객의 신원을 빠르게 확인해야 하는 기업용입니다.
+
+## 이 API로 확인할 수 있는 것
+
+공식 레코드를 조회합니다:
+
+-   **성명 및 문서 번호**: DNI, NIE 지원.
+-   **일치 여부**: 제공한 이름이 문서 번호와 맞는지.
+-   **만료일**: 문서 만료일 검증.
+
+위조 및 사기 위험을 낮춥니다.
+
+## API 참조
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/es/cedula
+```
+
+GET 요청으로 `documentType`, `documentNumber`, 만료 `date`를 전달하여 스페인 신분증(DNI/NIE)을 검증합니다.
+
+### 헤더
+
+| 이름 | 값 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### 매개변수
+
+| 이름 | 유형 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| `documentType` | string | 예 | 문서 유형. 허용: `DNIES`, `NIE`. |
+| `documentNumber` | string | 예 | 공백 없는 문서 번호. |
+| `date` | string | 예 | 만료일 `DD/MM/YYYY`. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/es/cedula", {
+  params: { documentType: "DNIES", documentNumber: "123456789", date: "17/07/2024" },
+  headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/es/cedula"
+headers = {"Content-Type": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "DNIES", "documentNumber": "123456789", "date": "17/07/2024"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "DNIES",
+    "documentNumber": "123456789",
+    "fullName": "Juan Pérez",
+    "names": ["Juan", "Pérez"],
+    "status": "valid"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "January 16, 2024 3:44 PM"},
+  "id": "ES001"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"date\" is required",
+  "code": "MissingParameter"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [DNIES, NIE]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- `date`는 `DD/MM/YYYY` 형식이어야 합니다.
+
+---
+
+## 활용 사례
+
+-   **핀테크·은행**: 계좌 개설·대출 시 신원 확인
+-   **이커머스·배송**: 사용자·배송 기사 인증
+-   **채용**: 지원자 서류 검증
+-   **보험·의료**: 가입·혜택 전 신원 확인
+
+## 공식 출처 및 신뢰성
+
+스페인 정부 출처와 연결되어 검증된 정보를 제공합니다.
+
+## 주요 이점
+
+-   **자동 컴플라이언스**: KYC 간소화
+-   **즉시 결과**: 실시간 온보딩
+-   **신뢰 데이터**: 공식 기록
+-   **쉬운 연동**: REST API·SDK
+
+## 규정 준수 및 보안
+
+HTTPS/TLS 암호화와 엄격한 개인정보 관행을 적용합니다.
+
+## Verifik 소개
+
+라틴아메리카와 유럽에서 신원·규정 준수·사기 방지 API를 제공합니다.
+

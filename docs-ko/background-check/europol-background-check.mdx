@@ -1,0 +1,190 @@
+---
+id: europol-background-check
+title: 유로폴(Europol) 배경 조회
+description: documentType·documentNumber 또는 fullName으로 유로폴 형사 기록을 실시간 조회합니다.
+slug: /ko-docs/background-check/international/europol-background-check
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 유로폴(Europol) 배경 조회
+
+## API 참조
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/europol
+```
+
+`documentType`과 `documentNumber`, 또는 `fullName`으로 유로폴 형사 기록을 실시간 조회합니다. 일치 여부와 Europol 참조 URL이 반환될 수 있습니다.
+
+**참고:** 날짜는 `dd/mm/yyyy` 형식이어야 합니다.
+
+### 헤더
+
+| 이름 | 값 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### 매개변수
+
+:::info
+지원되는 **문서 유형** 및 필수 매개변수 전체 목록은 [문서 유형](/background-check/document-types) 가이드를 참조하세요.
+:::
+
+| 이름 | 유형 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| `documentType`   | string | No       | The document type that you want to request.                                                       |
+| `documentNumber` | string | No       | Document number to consult, without spaces or points.                                             |
+| `fullName`       | string | No       | Instead of documentType and documentNumber, you can pass the name directly of the person/business. |
+
+### 사용 사례
+
+- **사기 방지:** 민감 거래 전 플래그된 인물 식별.
+- **신원 확인:** 제출 정보의 정확성 검증.
+- **규정 준수:** 은행·금융·부동산 KYC/AML.
+
+
+### 요청
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/europol",
+  params: { documentType: "CC", documentNumber: "80251972" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "JWT token"
+}
+
+conn.request("GET", "/v2/europol?fullName=Mateo%20Verifik", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/europol?fullName=Mateo Verifik', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'JWT token',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "JWT token"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/europol?fullName=Mateo%20Verifik")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "123456789",
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": ["MATEO", "VERIFIK"],
+    "foundInEuropol": true,
+    "urlEuropol": "https://eumostwanted.eu/es#/es/node/162"
+  },
+  "signature": {
+    "dateTime": "June 28, 2022 12:40 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- **유로폴 DB 조회**(문서 또는 이름).
+- **일치 시 URL** 제공 가능.
+- **구조화된 응답** 및 위 예제.

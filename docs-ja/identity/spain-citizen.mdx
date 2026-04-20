@@ -1,0 +1,213 @@
+---
+id: spain-citizen
+title: スペイン国民
+description: Verifik KYC APIでスペイン個人の本人確認（DNI/NIE）。
+slug: /ja-docs/identity/spain-citizen
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "スペイン本人確認 | Verifik KYC API",
+	description:
+		"Verifik KYC APIでスペイン個人を確認。公式ソース。",
+	articleSection: "API Documentation",
+	keywords: "本人確認, KYC API, スペイン DNI NIE, 公式データ, 不正防止",
+	about: {
+		"@type": "Thing",
+		name: "Identity Verification API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# スペインの本人確認
+
+公的データソースでスペイン国民・居住者を認証します。KYCの効率化、不正防止、コンプライアンスに役立ちます。
+
+ユーザー・従業員・顧客の本人確認を迅速に行う企業向けです。
+
+## このAPIで検証できること
+
+公的記録に接続して確認します:
+
+-   **氏名と文書番号**: DNI / NIE に対応。
+-   **一致確認**: 提示した氏名が文書番号と一致するか。
+-   **有効期限**: 満了日の検証。
+
+なりすましや不正のリスクを下げます。
+
+## APIリファレンス
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/es/cedula
+```
+
+GET で `documentType`、`documentNumber`、有効期限の `date` を渡し、スペインの身分証（DNI/NIE）を検証します。
+
+### ヘッダー
+
+| 名前 | 値 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### パラメータ
+
+| 名前 | 種別 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `documentType` | string | はい | 文書種別。`DNIES` または `NIE`。 |
+| `documentNumber` | string | はい | スペースなしの文書番号。 |
+| `date` | string | はい | 有効期限 `DD/MM/YYYY`。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/es/cedula", {
+  params: { documentType: "DNIES", documentNumber: "123456789", date: "17/07/2024" },
+  headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/es/cedula"
+headers = {"Content-Type": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "DNIES", "documentNumber": "123456789", "date": "17/07/2024"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "DNIES",
+    "documentNumber": "123456789",
+    "fullName": "Juan Pérez",
+    "names": ["Juan", "Pérez"],
+    "status": "valid"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "January 16, 2024 3:44 PM"},
+  "id": "ES001"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"date\" is required",
+  "code": "MissingParameter"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [DNIES, NIE]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### メモ
+
+- `date` は `DD/MM/YYYY` 形式にしてください。
+
+---
+
+## 主なユースケース
+
+-   **フィンテック・銀行**: 口座開設・融資時の本人確認
+-   **EC・配送**: ユーザー・配達員の認証
+-   **採用**: 応募者書類の検証
+-   **保険・医療**: 契約・給付前の本人確認
+
+## 公式ソースと信頼性
+
+スペイン政府系ソースに接続し、検証済み情報を提供します。
+
+## 主なメリット
+
+-   **自動コンプライアンス**: KYC を効率化
+-   **即時結果**: リアルタイムオンボーディング
+-   **信頼できるデータ**: 公的記録
+-   **容易な連携**: REST API・SDK
+
+## コンプライアンスとセキュリティ
+
+HTTPS/TLS と厳格なプライバシー管理を採用しています。
+
+## Verifikについて
+
+ラテンアメリカとヨーロッパで本人確認・コンプライアンスAPIを提供します。
+

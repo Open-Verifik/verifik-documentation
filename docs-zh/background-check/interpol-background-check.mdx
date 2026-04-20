@@ -1,0 +1,245 @@
+---
+id: interpol-background-check
+title: 国际刑警（Interpol）背景核查
+description: 通过 documentType、documentNumber 或 fullName 查询与国际刑警相关的犯罪背景信息。
+slug: /zh-docs/background-check/international/interpol-background-check
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 国际刑警（Interpol）背景核查
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/interpol
+```
+
+使用 `documentType` 与 `documentNumber`，或仅使用 `fullName`，查询自然人或法人与国际刑警相关的犯罪背景信息。若存在记录则返回身份字段与匹配详情；本服务面向经授权的执法与安全场景。
+
+**说明：** 出生日期或签发日期等须使用 `dd/mm/yyyy` 格式。
+
+### 请求头
+
+| 名称 | 值 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### 参数
+
+:::info
+有关支持的**文档类型**及必填参数，请参阅[文档类型](/background-check/document-types)指南。
+:::
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `documentType`   | string | No       | Document type that you want to request                                                            |
+| `documentNumber` | string | No       | Document number to consult, without spaces or points                                              |
+| `fullName`       | string | No       | Instead of documentType and documentNumber, you can pass the name directly of the person/business |
+
+### 使用场景
+
+- **刑事背景核查：** 招聘、安全许可或含国际记录的合规场景。
+- **执法部门：** 经授权的机构对 Interpol 数据进行筛查。
+
+### 请求
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/interpol",
+  params: { documentType: "CC", documentNumber: "80251972" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "JWT token"
+}
+
+conn.request("GET", "/v2/interpol?fullName=IVAN%20LUCIANO%20MARQUEZ%20MARIN%20ARANGO", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "JWT token"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/interpol?fullName=IVAN%20LUCIANO%20MARQUEZ%20MARIN%20ARANGO")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/interpol?fullName=IVAN LUCIANO MARQUEZ MARIN ARANGO', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'JWT token',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200-found" label="200 (Found)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "19304877",
+    "firstName": "IVAN LUCIANO MARQUEZ",
+    "lastName": "MARIN ARANGO",
+    "fullName": "IVAN LUCIANO MARQUEZ MARIN ARANGO",
+    "arrayName": ["IVAN", "LUCIANO", "MARQUEZ", "MARIN", "ARANGO"],
+    "foundInInterpol": true,
+    "details": {
+      "totalCards": "2",
+      "cards": [
+        {
+          "arrestWarrants": [
+            {
+              "issuingCountryId": "CO",
+              "charge": "ARTICULO 162.  - RECLUTAMIENTO ILÍCITO \r\nARTICULO 135-6 - HOMICIDIO EN PERSONA PROTEGIDA \r\nARTICULO 165 y 166 causal 3 - DESAPARICIÓN FORZADA AGRAVADA POR LA MENOR EDAD DE LA VÍCTIMA"
+            }
+          ],
+          "weight": "0",
+          "languagesSpokenIds": ["SPA"],
+          "height": "1.75",
+          "sexId": "M",
+          "countryOfBirthId": "CO",
+          "distinguishingMarks": null,
+          "eyesColorsId": null,
+          "hairsId": null,
+          "placeOfBirth": "FLORENCIA - CAQUETA"
+        }
+      ]
+    }
+  },
+  "signature": {
+    "dateTime": "June 16, 2025 4:31 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "PHVXK"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-not-found" label="200 (Not Found)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "123456789",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "fullName": "MATEO VERIFIK",
+    "arrayName": ["MATEO", "VERIFIK"],
+    "foundInInterpol": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "June 16, 2025 4:32 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "FX5TI"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 说明
+
+- 仅授权执法与安全机构访问 Interpol 数据库。
+- 数据敏感，请遵守隐私与数据保护法规。
+- 关键决策请与官方渠道或当地主管机关核实。
+- **刑事背景检索**（Interpol 关联记录）。
+- **结构化响应**，示例见上文代码。

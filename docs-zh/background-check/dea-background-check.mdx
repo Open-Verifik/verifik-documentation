@@ -1,0 +1,191 @@
+---
+id: dea-background-check
+title: DEA 背景核查
+description: 筛查美国缉毒局（DEA）观察名单。
+slug: /zh-docs/background-check/international/dea-background-check
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# DEA 背景核查
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/dea
+```
+
+使用 `documentType` 与 `documentNumber`，或 `fullName` 对照 **DEA** 观察名单。返回是否命中及可能的官方记录链接。
+
+**说明：** 日期 `dd/mm/yyyy`。
+
+### 请求头
+
+| 名称 | 值 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### 参数
+
+:::info
+有关支持的**文档类型**及必填参数，请参阅[文档类型](/background-check/document-types)指南。
+:::
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `documentType`   | string | No       | The document type that you want to request.                                                       |
+| `documentNumber` | string | No       | Document number to consult, without spaces or points.                                             |
+| `fullName`       | string | No       | Instead of documentType and documentNumber, you can pass the name directly of the person/business. |
+
+### 使用场景
+
+- **监管合规**（涉毒执法）。
+- **风险防范。**
+- **医疗、物流、金融 KYC/AML。**
+
+
+### 请求
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/dea",
+  params: { documentType: "CC", documentNumber: "80251972" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {}
+conn.request("GET", "/v2/dea?fullName=", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/dea?fullName=")!,timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
+
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/dea?fullName=');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+$request->setBody('');
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "123456789",
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": ["MATEO", "VERIFIK"],
+    "foundInDEA": true,
+    "urlDEA": "https://www.dea.gov/fugitives/ismael-zambada-garcia"
+  },
+  "signature": {
+    "dateTime": "June 28, 2022 11:41 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 说明
+
+- 关注 `foundInDEA` 与 `urlDEA`。

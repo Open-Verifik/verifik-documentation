@@ -1,0 +1,125 @@
+---
+id: vehicle-validation-colombia-simit-agreements
+title: SIMIT - 분할 납부 합의
+description: SIMIT 교통 위반 분할 납부 합의 서비스
+slug: /vehicle-validation/colombia/simit-agreements
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### 엔드포인트
+
+```
+https://api.verifik.co/v2/co/simit/acuerdos
+```
+
+SIMIT 분할 납부 합의 서비스는 콜롬비아 SIMIT 시스템에서 교통 위반과 관련된 분할 납부 합의를 효율적으로 조회합니다. 적절한 매개변수로 합의, 위반자, 결의 번호, 미납 금액 정보를 얻을 수 있습니다.
+
+### 헤더
+
+| 이름 | 값 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| 이름 | 유형 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| `documentType` | string | 예 | 문서 유형. 유효 값: `CC`, `PA`, `CE`, `TI`, `RC`. |
+| `documentNumber` | string | 예 | 조회할 문서 번호(공백·마침표 없음). |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/acuerdos", {
+  params: { 
+    documentType: "CC", 
+    documentNumber: "123456789" 
+  },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/acuerdos"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "acuerdosPagos": [
+      {
+        "estadosResoluciones": "Acuerdo de pago",
+        "fechaComparendo": "1900/01/01",
+        "fechaResolucion": "2018/07/05",
+        "noComparendo": "NO REPORTADO",
+        "nombresInfractores": "PEPE SALGADO",
+        "permitePago": "N",
+        "resoluciones": "0003030",
+        "secretarias": "Barrancabermeja",
+        "total": "558864.0"
+      }
+    ]
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "March 3, 2022 12:11 PM"}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- SIMIT 합의를 통해 교통 과태료를 분할 납부할 수 있습니다.
+- 상태 « Acuerdo de pago »는 활성 분할 납부 합의를 의미합니다.
+- `permitePago: "N"`은 현재 결제가 허용되지 않음을 뜻합니다.
+- 금액 단위는 콜롬비아 페소(COP)입니다.
+- 결의 번호로 각 합의를 식별합니다.

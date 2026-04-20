@@ -149,6 +149,18 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/chile-taxpayer",
+					label: "🇨🇱 Chile — Taxpayer (RUT)",
+					key: "identity-chile-taxpayer",
+				},
+				{
+					type: "doc",
+					id: "identity/chile-validate-documents",
+					label: "🇨🇱 Chile — Document validation",
+					key: "identity-chile-validate-documents",
+				},
+				{
+					type: "doc",
 					id: "identity/colombia",
 					label: "🇨🇴 Colombia",
 				},
@@ -528,6 +540,12 @@ const sidebars = {
 					id: "vehicle-validation/paraguay",
 					label: "🇵🇾 Paraguay",
 					key: "vehicle-paraguay",
+				},
+				{
+					type: "doc",
+					id: "vehicle-validation/spain",
+					label: "🇪🇸 Spain",
+					key: "vehicle-spain",
 				},
 				{
 					type: "category",

@@ -1,0 +1,148 @@
+---
+title: 🇪🇸 España — Vehículo por matrícula
+description: Consulta de datos de vehículo en España por matrícula (endpoint v2/es/vehicle). Obtén marca, modelo, año, tipo de vehículo y metadatos asociados cuando la matrícula existe en la fuente. Útil para seguros, talleres, compraventa, logística y cualquier flujo donde necesites validar que el coche coincide con lo declarado sin depender solo de capturas o PDFs del usuario.
+slug: /validacion-vehiculos/espana
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "España — Consulta de vehículo por matrícula | API Verifik",
+	description:
+		"Consulta de vehículo en España (v2/es/vehicle): información por matrícula para seguros, antifraud y operaciones logísticas.",
+	articleSection: "Documentación API",
+	keywords: "matrícula España, API vehículo, verificación coche, placa España, datos vehículo",
+	about: {
+		"@type": "Thing",
+		name: "API de validación de vehículos",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇪🇸 España — Vehículo por matrícula
+
+Este servicio te permite **consultar información asociada a una matrícula española** (formato habitual de placas nacionales) y recibir datos estructurados cuando la consulta encuentra coincidencia en la fuente integrada por Verifik.
+
+**Qué obtienes:** normalmente datos útiles para identificar el vehículo en contexto de negocio: por ejemplo marca, modelo, año o tipo, según lo que devuelva la fuente en tu respuesta. La tabla de ejemplo en esta página ilustra la forma del payload; los campos concretos pueden variar según disponibilidad y versión del servicio.
+
+**Casos de uso habituales:** suscripción de seguros o renovaciones donde hay que contrastar vehículo declarado vs. registro; marketplaces de vehículos usados; flotas y logística para validar altas de conductores; o procesos de riesgo donde una matrícula incorrecta implica fraude o error de datos.
+
+**Qué no es:** no sustituye una inspección física ni un informe pericial; es una **consulta automatizada por matrícula**. Si la matrícula no existe, está mal formateada o no hay registro accesible, recibirás el error documentado (por ejemplo 404 o validación de parámetros). Normaliza siempre la matrícula (sin espacios, según las reglas de la API) antes de llamar.
+
+**Privacidad y uso:** utiliza este endpoint solo para finalidades legítimas acordes con tu política de privacidad y la normativa aplicable; el titular del proceso debe saber para qué se consultan datos del vehículo cuando así lo exija la ley.
+
+## Referencia de API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/es/vehicle
+```
+
+Consulta por **matrícula** (sin espacios) los datos del vehículo disponibles en la fuente: habitualmente marca, modelo, año, tipo de vehículo u otros campos según disponibilidad. Útil para **seguros**, compraventa, flotas y antifraud: contrastas lo que declara el usuario con un registro coherente. No sustituye inspección física ni peritaje. Si la matrícula no existe o el formato es incorrecto, recibirás el error documentado (404 o validación).
+
+### Encabezados
+
+| Nombre        | Valor              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parámetros
+
+| Nombre  | Tipo   | Requerido | Descripción                                |
+| ------- | ------ | --------- | ------------------------------------------ |
+| `plate` | string | Sí        | Matrícula a consultar (sin espacios).      |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/es/vehicle",
+  params: { plate: "5684CCD" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/es/vehicle?plate=5684CCD" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "5684CCD",
+    "brand": "MAKE",
+    "model": "MODEL",
+    "year": "2020",
+    "vehicleType": "SEDAN"
+  },
+  "signature": {
+    "dateTime": "April 8, 2026 11:00 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "VHCL1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "plate format invalid."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Casos de uso
+
+- **Seguros**: confirmar datos del vehículo a partir de la matrícula
+- **Marketplaces y logística**: validar vehículos dados de alta
+- **Cumplimiento**: apoyar revisiones sobre vehículos registrados en España

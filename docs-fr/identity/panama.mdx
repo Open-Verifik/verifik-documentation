@@ -1,0 +1,195 @@
+---
+id: panama
+title: Citoyen panaméen (CCPA)
+description: Vérifier l'identité des personnes au Panama avec l'API KYC Verifik (cédula CCPA).
+slug: /fr-docs/identity/panama
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Vérification d'identité au Panama | API KYC Verifik",
+	description:
+		"Vérifiez la cédula panaméenne (CCPA) : numéro de document, nom et date de naissance auprès du registre civil officiel pour KYC et conformité.",
+	articleSection: "API Documentation",
+	keywords: "vérification d'identité, API KYC, Panama CCPA, registre civil, lutte contre la fraude",
+	about: {
+		"@type": "Thing",
+		name: "Identity Verification API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Vérification d'identité au Panama
+
+L'API Verifik permet d'authentifier les titulaires de **cédula panaméenne** (*Cédula de Identidad Personal*, CCPA) à partir de sources officielles. Elle simplifie le **KYC**, réduit la fraude et aide à la conformité.
+
+## Que valide cette API ?
+
+Notre API interroge les registres officiels pour vérifier :
+
+-   **Identité et CCPA** : numéro de document normalisé, cohérence avec les données d'état civil.
+-   **Date de naissance** : doit correspondre au registre (`dateOfBirth` au format `DD/MM/YYYY`).
+
+## Référence API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/pa/cedula
+```
+
+Vérification de la **CCPA** panaméenne contre les registres civils officiels. Envoyez **`documentType`** (`CCPA`), un **`documentNumber`** normalisé et **`dateOfBirth`** au format **`DD/MM/YYYY`** ; la réponse confirme la cohérence des données pour le **KYC**, l'onboarding et la lutte contre la fraude.
+
+### En-têtes
+
+| Nom | Valeur |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Paramètres
+
+| Nom | Type | Obligatoire | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Oui | Type de document. Valeur autorisée : `CCPA`. |
+| `documentNumber` | string | Oui | Cédula complète après normalisation (voir la doc principale pour les formats). |
+| `dateOfBirth` | string | Oui | Date de naissance au format `DD/MM/YYYY`. |
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/pa/cedula", {
+  params: { documentType: "CCPA", documentNumber: "8-1251-1829", dateOfBirth: "02/03/1992" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/pa/cedula");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$query = http_build_query([
+    "documentType" => "CCPA",
+    "documentNumber" => "8-1251-1829",
+    "dateOfBirth" => "02/03/1992"
+]);
+curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/pa/cedula?".$query);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/pa/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CCPA", "documentNumber": "8-1251-1829", "dateOfBirth": "02/03/1992"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/pa/cedula?documentType=CCPA&documentNumber=8-1251-1829&dateOfBirth=02/03/1992"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Accept", "application/json")
+    req.Header.Set("Authorization", "Bearer "+getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    fmt.Println(resp.Status)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CCPA",
+    "documentNumber": "8-1251-1829",
+    "firstName": "Roberto",
+    "lastName": "Martínez",
+    "fullName": "Roberto Martínez",
+    "dateOfBirth": "1992-03-02",
+    "status": "valid"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "January 16, 2024 3:44 PM"},
+  "id": "PA001"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "code": "InternalServerError",
+    "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- La date de naissance est obligatoire et doit correspondre au titulaire.
+- Les formats de `documentNumber` suivent le validateur [cedula-panama](https://github.com/merlos/cedula-panama).

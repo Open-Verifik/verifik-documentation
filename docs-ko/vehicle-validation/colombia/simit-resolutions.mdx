@@ -1,0 +1,123 @@
+---
+id: vehicle-validation-colombia-simit-resolutions
+title: SIMIT - 결의
+description: SIMIT 교통 위반 결의 서비스
+slug: /vehicle-validation/colombia/simit-resolutions
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### 엔드포인트
+
+```
+https://api.verifik.co/v2/co/simit/resoluciones
+```
+
+SIMIT 결의 서비스는 콜롬비아에서 개인 또는 법인에 대한 교통 위반 결의에 대한 상세 정보(위반자 이름, 결의 상태, 날짜, 미납 금액)에 접근할 수 있게 합니다.
+
+### 헤더
+
+| 이름 | 값 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| 이름 | 유형 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| `documentType` | string | 예 | 문서 유형. 유효 값: `CC`, `PA`, `CE`, `TI`, `RC`. |
+| `documentNumber` | string | 예 | 조회할 문서 번호(공백·마침표 없음). |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/resoluciones", {
+  params: { 
+    documentType: "CC", 
+    documentNumber: "123456789" 
+  },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/resoluciones"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "resoluciones": [
+      {
+        "estadosResoluciones": "Pendiente de pago",
+        "fechaComparendo": "20190503",
+        "fechaResolucion": "20191001",
+        "nombresInfractores": "PEPE SALGADO",
+        "NúmeroComparendo": "99999999000000000936",
+        "resoluciones": "S709332197",
+        "secretarias": "Barrancabermeja",
+        "total": "146770.0"
+      }
+    ]
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "March 3, 2022 4:09 PM"}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- SIMIT 결의는 교통 위반에 대한 공식 행정 결정입니다.
+- 상태 « Pendiente de pago »는 결의 요금이 미납임을 나타냅니다.
+- 결의 번호로 각 행정 결정을 추적할 수 있습니다.
+- 금액 단위는 콜롬비아 페소(COP)입니다.

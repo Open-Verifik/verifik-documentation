@@ -1,0 +1,125 @@
+---
+id: vehicle-validation-colombia-simit-agreements
+title: SIMIT - 分期付款协议
+description: SIMIT 交通违章分期付款协议服务
+slug: /vehicle-validation/colombia/simit-agreements
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### 端点
+
+```
+https://api.verifik.co/v2/co/simit/acuerdos
+```
+
+SIMIT 分期付款协议服务可高效获取哥伦比亚 SIMIT 系统中与交通违章相关的分期协议。使用正确参数可获得协议、违章人、决议编号及应付金额等信息。
+
+### 请求头
+
+| 名称 | 值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `documentType` | string | 是 | 证件类型。有效值：`CC`、`PA`、`CE`、`TI`、`RC`。 |
+| `documentNumber` | string | 是 | 要查询的证件号码，不含空格或句号。 |
+
+### 请求
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/acuerdos", {
+  params: { 
+    documentType: "CC", 
+    documentNumber: "123456789" 
+  },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/acuerdos"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "acuerdosPagos": [
+      {
+        "estadosResoluciones": "Acuerdo de pago",
+        "fechaComparendo": "1900/01/01",
+        "fechaResolucion": "2018/07/05",
+        "noComparendo": "NO REPORTADO",
+        "nombresInfractores": "PEPE SALGADO",
+        "permitePago": "N",
+        "resoluciones": "0003030",
+        "secretarias": "Barrancabermeja",
+        "total": "558864.0"
+      }
+    ]
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "March 3, 2022 12:11 PM"}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 说明
+
+- SIMIT 协议允许对交通罚款分期缴纳。
+- 状态「Acuerdo de pago」表示存在有效的分期付款协议。
+- `permitePago: "N"` 表示当前不允许付款。
+- 金额单位为哥伦比亚比索（COP）。
+- 决议编号用于标识每笔协议。

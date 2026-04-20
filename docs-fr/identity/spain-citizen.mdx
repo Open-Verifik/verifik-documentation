@@ -1,0 +1,213 @@
+---
+id: spain-citizen
+title: Citoyen espagnol
+description: Vérifier l'identité des personnes en Espagne avec l'API KYC Verifik (DNI/NIE).
+slug: /fr-docs/identity/spain-citizen
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Vérification d'identité en Espagne | API KYC Verifik",
+	description:
+		"Vérifiez l'identité des personnes en Espagne avec l'API KYC Verifik. Sources officielles.",
+	articleSection: "API Documentation",
+	keywords: "vérification d'identité, API KYC, Espagne DNI NIE, source officielle, lutte contre la fraude",
+	about: {
+		"@type": "Thing",
+		name: "Identity Verification API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Vérification d'identité en Espagne
+
+L'API Verifik permet d'authentifier les citoyens et résidents espagnols à partir de sources officielles. Elle simplifie le KYC, réduit la fraude et aide à la conformité.
+
+Cette intégration s'adresse aux entreprises qui ont besoin de confirmer rapidement et en toute sécurité l'identité d'utilisateurs, salariés ou clients.
+
+## Que valide cette API ?
+
+Notre API interroge les registres officiels pour vérifier :
+
+-   **Nom complet et numéro de document** : *Documento Nacional de Identidad* (DNI) et *Número de Identidad de Extranjero* (NIE).
+-   **Cohérence identité** : le nom fourni correspond-il au numéro de document ?
+-   **Date d'expiration** : validation de la date d'expiration du document.
+
+Ces contrôles réduisent le risque d'usurpation et renforcent la confiance dans vos parcours d'inscription.
+
+## Référence API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/es/cedula
+```
+
+Ce point d'accès vérifie les documents d'identité espagnols (DNI/NIE) via une requête GET avec `documentType`, `documentNumber` et `date` (expiration).
+
+### En-têtes
+
+| Nom | Valeur |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Paramètres
+
+| Nom | Type | Obligatoire | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Oui | Type de document. Valeurs : `DNIES`, `NIE`. |
+| `documentNumber` | string | Oui | Numéro de document sans espaces. |
+| `date` | string | Oui | Date d'expiration au format `DD/MM/YYYY`. |
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/es/cedula", {
+  params: { documentType: "DNIES", documentNumber: "123456789", date: "17/07/2024" },
+  headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/es/cedula"
+headers = {"Content-Type": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "DNIES", "documentNumber": "123456789", "date": "17/07/2024"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "DNIES",
+    "documentNumber": "123456789",
+    "fullName": "Juan Pérez",
+    "names": ["Juan", "Pérez"],
+    "status": "valid"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "January 16, 2024 3:44 PM"},
+  "id": "ES001"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"date\" is required",
+  "code": "MissingParameter"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [DNIES, NIE]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Le champ `date` doit être au format `DD/MM/YYYY`.
+
+---
+
+## Cas d'usage courants
+
+-   **Fintech & banque** : vérifier les identités lors de l'ouverture de compte ou d'un crédit.
+-   **E-commerce & livraison** : authentifier utilisateurs et coursiers.
+-   **RH & recrutement** : valider les documents des candidats.
+-   **Assurance & santé** : confirmer l'identité avant une police ou des prestations.
+
+## Sources officielles et fiabilité
+
+Nous nous connectons à des sources gouvernementales espagnoles pour fournir des informations vérifiées et à jour.
+
+## Avantages clés
+
+-   **Conformité automatisée** : fluidifier le KYC sans friction.
+-   **Résultats instantanés** : idéal pour l'onboarding numérique.
+-   **Données fiables** : sources officielles.
+-   **Intégration simple** : API REST et SDK.
+
+## Conformité et sécurité
+
+Verifik utilise le chiffrement (HTTPS/TLS) et des pratiques strictes de confidentialité. Service supervisé pour la disponibilité.
+
+## À propos de Verifik
+
+Verifik propose des API de vérification d'identité, conformité et lutte contre la fraude en Amérique latine et en Europe.
+

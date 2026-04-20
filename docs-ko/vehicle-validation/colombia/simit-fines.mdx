@@ -1,0 +1,130 @@
+---
+id: vehicle-validation-colombia-simit-fines
+title: SIMIT - 과태료
+description: SIMIT 교통 과태료·단속 서비스
+slug: /vehicle-validation/colombia/simit-fines
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### 엔드포인트
+
+```
+https://api.verifik.co/v2/co/simit/comparendos
+```
+
+교통 단속 서비스는 콜롬비아에서 특정 차량과 연결된 단속 정보를 자세히 제공합니다. 차량 번호판을 입력하면 각 단속의 상태, 날짜, 장소, 위반 유형을 확인할 수 있습니다.
+
+### 헤더
+
+| 이름 | 값 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| 이름 | 유형 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| `documentType` | string | 예 | 문서 유형. 유효 값: `CC`, `PA`, `CE`, `TI`, `RC`. |
+| `documentNumber` | string | 예 | 조회할 문서 번호(공백·마침표 없음). |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/comparendos", {
+  params: { 
+    documentType: "CC", 
+    documentNumber: "123456789" 
+  },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/comparendos"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "comparendos": [
+      {
+        "tipovehiculo": "AUTOMOVIL",
+        "estadoComparendo": "Pendiente",
+        "fechaComparendo": "2016/02/23",
+        "fotodeteccion": false,
+        "NúmeroComparendo": "2561200100015264662173",
+        "placavehiculo": "AAA123",
+        "secretariaComparendo": "Ricaurte",
+        "total": 344730,
+        "idOrganismoTransito": "25612123",
+        "codigoInfraccion": "C35",
+        "descripcionInfraccion": "No realizar la revisión técnico-mecánica en el plazo legal establecido o cuando el vehiculo no se encuentre en adecuadas condiciones técnico-mecánicas o de emisión de gases, aun cuando porte los certificados correspondientes.",
+        "direccionComparendo": "CARRERA 9 CON CALLE 10 AGUA DE DIOS",
+        "infractorComparendo": "CAR BER",
+        "serviciovehiculo": "Particular"
+      }
+    ]
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "February 13, 2023 6:17 AM"}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- SIMIT는 콜롬비아의 통합 교통 위반 관리 시스템입니다.
+- « Comparendo »는 스페인어로 교통 단속을 뜻합니다.
+- 금액 단위는 콜롬비아 페소(COP)입니다.
+- 상태 « Pendiente »는 단속 요금이 미납임을 나타냅니다.
+- 사진 단속은 `fotodeteccion: true`로 표시됩니다.

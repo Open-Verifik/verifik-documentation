@@ -1,0 +1,124 @@
+---
+id: panama
+title: 파나마 국민 (CCPA)
+description: Verifik KYC API로 파나마 국민 신분증(CCPA)을 검증합니다.
+slug: /ko-docs/identity/panama
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "파나마 신원 확인 | Verifik KYC API",
+	description:
+		"파나마 CCPA 신분증 검증: 문서번호·이름·생년월일을 공식 호적과 대조. KYC·온보딩·사기 방지.",
+	articleSection: "API Documentation",
+	keywords: "신원 확인, KYC, 파나마 CCPA, 공식 출처",
+	about: {
+		"@type": "Thing",
+		name: "Identity Verification API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 파나마 신원 확인
+
+**CCPA**(*Cédula de Identidad Personal*) 보유자를 공식 출처로 인증합니다. **KYC**를 간소화하고 사기 위험을 줄입니다.
+
+## 이 API로 확인할 수 있는 것
+
+- **CCPA 및 일치 여부**: 정규화된 문서번호와 호적 정보.
+- **생년월일**: `dateOfBirth`는 `DD/MM/YYYY` 형식이어야 합니다.
+
+## API 참조
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/pa/cedula
+```
+
+파나마 **CCPA**를 공식 호적에 비교합니다. **`documentType`**(`CCPA`), 정규화된 **`documentNumber`**, **`dateOfBirth`**(`DD/MM/YYYY`)를 전달하면 **KYC**·온보딩·사기 방지에 활용할 수 있는 일관성 결과를 반환합니다.
+
+### 헤더
+
+| 이름 | 값 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| 이름 | 유형 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| `documentType` | string | 예 | 문서 유형. 허용: `CCPA`. |
+| `documentNumber` | string | 예 | 정규화된 전체 cédula 번호. |
+| `dateOfBirth` | string | 예 | 생년월일 `DD/MM/YYYY`. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/pa/cedula", {
+  params: { documentType: "CCPA", documentNumber: "8-1251-1829", dateOfBirth: "02/03/1992" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/pa/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CCPA", "documentNumber": "8-1251-1829", "dateOfBirth": "02/03/1992"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CCPA",
+    "documentNumber": "8-1251-1829",
+    "fullName": "Roberto Martínez",
+    "dateOfBirth": "1992-03-02",
+    "status": "valid"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "January 16, 2024 3:44 PM"},
+  "id": "PA001"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{"message": "Authentication required", "code": "UNAUTHORIZED"}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- 생년월일은 필수이며 등록 정보와 일치해야 합니다.
+- `documentNumber` 형식은 [cedula-panama](https://github.com/merlos/cedula-panama) 규칙을 따릅니다.

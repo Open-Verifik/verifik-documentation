@@ -100,6 +100,8 @@ const sidebars = {
 				{ type: "doc", id: "identity/brazil", label: "🇧🇷 Brasil", key: "identity-brazil" },
 				{ type: "doc", id: "identity/canada", label: "🇨🇦 Canadá", key: "identity-canada" },
 				{ type: "doc", id: "identity/chile", label: "🇨🇱 Chile", key: "identity-chile" },
+				{ type: "doc", id: "identity/chile-taxpayer", label: "🇨🇱 Chile — Contribuyente (RUT)", key: "identity-chile-taxpayer" },
+				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 Chile — Validación de documento", key: "identity-chile-validate-documents" },
 				{ type: "doc", id: "identity/colombia", label: "🇨🇴 Ciudadano Colombiano" },
 				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 Colombia - ID Completo" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 Colombia - CE" },
@@ -418,6 +420,12 @@ const sidebars = {
 					id: "validacion-vehiculos/paraguay",
 					label: "🇵🇾 Paraguay",
 					key: "vehiculos-paraguay",
+				},
+				{
+					type: "doc",
+					id: "validacion-vehiculos/spain",
+					label: "🇪🇸 España",
+					key: "vehiculos-espana",
 				},
 				{
 					type: "category",

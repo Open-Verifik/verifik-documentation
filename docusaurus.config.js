@@ -90,6 +90,41 @@ const config = {
 		{
 			tagName: "meta",
 			attributes: {
+				property: "og:locale:alternate",
+				content: "fr_FR",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:locale:alternate",
+				content: "pt_BR",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:locale:alternate",
+				content: "ko_KR",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:locale:alternate",
+				content: "ja_JP",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
+				property: "og:locale:alternate",
+				content: "zh_CN",
+			},
+		},
+		{
+			tagName: "meta",
+			attributes: {
 				name: "twitter:card",
 				content: "summary_large_image",
 			},
@@ -261,6 +296,56 @@ const config = {
 		[
 			"@docusaurus/plugin-content-docs",
 			{
+				id: "docs-fr",
+				path: "docs-fr",
+				routeBasePath: "verifik-fr",
+				sidebarPath: "./sidebars-fr.js",
+				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
+			},
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "docs-pt",
+				path: "docs-pt",
+				routeBasePath: "verifik-pt",
+				sidebarPath: "./sidebars-pt.js",
+				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
+			},
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "docs-ko",
+				path: "docs-ko",
+				routeBasePath: "verifik-ko",
+				sidebarPath: "./sidebars-ko.js",
+				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
+			},
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "docs-ja",
+				path: "docs-ja",
+				routeBasePath: "verifik-ja",
+				sidebarPath: "./sidebars-ja.js",
+				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
+			},
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "docs-zh",
+				path: "docs-zh",
+				routeBasePath: "verifik-zh",
+				sidebarPath: "./sidebars-zh.js",
+				editUrl: "https://github.com/Open-Verifik/verifik-documentation/tree/main/",
+			},
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
 				id: "docs-old-recursos",
 				path: "docs-old-recursos",
 				routeBasePath: "recursos",
@@ -298,6 +383,36 @@ const config = {
 								docId: "intro",
 								docsPluginId: "docs-es",
 								label: "Español",
+							},
+							{
+								type: "doc",
+								docId: "intro",
+								docsPluginId: "docs-fr",
+								label: "Français",
+							},
+							{
+								type: "doc",
+								docId: "intro",
+								docsPluginId: "docs-pt",
+								label: "Português",
+							},
+							{
+								type: "doc",
+								docId: "intro",
+								docsPluginId: "docs-ko",
+								label: "한국어",
+							},
+							{
+								type: "doc",
+								docId: "intro",
+								docsPluginId: "docs-ja",
+								label: "日本語",
+							},
+							{
+								type: "doc",
+								docId: "intro",
+								docsPluginId: "docs-zh",
+								label: "中文",
 							},
 						],
 					},
