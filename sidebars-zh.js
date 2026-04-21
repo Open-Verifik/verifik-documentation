@@ -17,6 +17,71 @@ const sidebars = {
 					items: [
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-plate",
+							label: "🇨🇴 波哥大 — 出租车（车牌）",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-vehicle-fines",
+							label: "🇨🇴 波哥大 — 车辆罚单",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxes",
+							label: "🇨🇴 波哥大 — 车辆税费",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-vehicle-accidentality",
+							label: "🇨🇴 波哥大 — 事故记录",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-pico-y-placa",
+							label: "🇨🇴 波哥大 — Pico y Placa",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/colombia-fasecolda-values-by-plate",
+							label: "🇨🇴 Fasecolda — 按车牌车辆价值",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/colombia-fasecolda-vehicle-by-code",
+							label: "🇨🇴 Fasecolda — 按代码车辆价值",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/colombia-fasecolda-claims-verification",
+							label: "🇨🇴 Fasecolda — 理赔记录",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license",
+							label: "🇨🇴 RUNT — 驾驶证",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate",
+							label: "🇨🇴 RUNT — 按车牌车辆(完整)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified",
+							label: "🇨🇴 RUNT — 按车牌车辆(简化)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo",
+							label: "🇨🇴 RUNT — 车辆(基本)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin",
+							label: "🇨🇴 RUNT — 车辆(VIN)",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-general-query-by-plate",
 							label: "🇨🇴 SIMIT - 按车牌综合查询",
 						},
@@ -44,6 +109,21 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-resolutions",
 							label: "🇨🇴 SIMIT - 决议",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-suspensiones",
+							label: "🇨🇴 SIMIT — 驾照停用",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-sisconmp-trainings",
+							label: "🇨🇴 SISCONMP — 运输培训核验",
+						},
+						{
+							type: "doc",
+							id: "identity/colombia-situacion-militar",
+							label: "🇨🇴 兵役状况",
 						},
 					],
 				},
@@ -88,6 +168,21 @@ const sidebars = {
 				{ type: "doc", id: "identity/identity-brazil", label: "🇧🇷 巴西公民（CPF）" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 巴拿马国民身份证（CCPA）" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 哥斯达黎加国民身份证（CCCR）" },
+				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 国民身份证（扩展）" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombian-cedula-premium",
+					label: "🇨🇴 国民身份证高级核验(CC)",
+				},
+				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 选举机构有效性证明" },
+				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 PEP（特别居留）" },
+				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 外国人 CE" },
+				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 PPT（临时保护）" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/identity-validation-colombia-colombian-politically-exposed-persons",
+					label: "🇨🇴 PEP 查询（AML）",
+				},
 				{ type: "doc", id: "identity/canada", label: "🇨🇦 加拿大 — 驾驶证（BC 与安大略）" },
 				{ type: "doc", id: "identity/peru", label: "🇵🇪 秘鲁公民（DNI）" },
 				{ type: "doc", id: "identity/peru-foreigner-id", label: "🇵🇪 秘鲁外国人 CE" },
@@ -123,6 +218,11 @@ const sidebars = {
 				},
 				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 西班牙企业（KYB）" },
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 智利 — 企业（RUT）" },
+				{
+					type: "doc",
+					id: "business-validation/rues-complete-v3",
+					label: "🇨🇴 哥伦比亚 — RUES 完整核验",
+				},
 			],
 		},
 		{
@@ -162,7 +262,43 @@ const sidebars = {
 				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 警方犯罪记录" },
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 审计署证明" },
 				{ type: "doc", id: "background-check/colombia-inpec", label: "🇨🇴 INPEC" },
+				{ type: "doc", id: "background-check/colombia-sisben-score", label: "🇨🇴 SISBEN 分数" },
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 RNMC 纠正措施" },
+				{
+					type: "doc",
+					id: "legal/lawyer-verification",
+					label: "🇨🇴 律师查询",
+				},
+				{
+					type: "doc",
+					id: "legal/colombian-legal-processes",
+					label: "🇨🇴 司法程序",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-judicial-records",
+					label: "🇨🇴 司法记录",
+				},
+				{
+					type: "doc",
+					id: "legal/retrieve-details-of-a-legal-process-by-number",
+					label: "🇨🇴 司法程序详情",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-number",
+					label: "🇨🇴 SIGEP（证件）",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-name",
+					label: "🇨🇴 SIGEP（姓名）",
+				},
+				{
+					type: "doc",
+					id: "legal/certificate-of-validity-for-legal-professionals",
+					label: "🇨🇴 律师资格证明",
+				},
 				{ type: "doc", id: "background-check/dea-background-check", label: "🌐 DEA" },
 				{ type: "doc", id: "background-check/europol-background-check", label: "🌐 Europol" },
 				{ type: "doc", id: "background-check/fbi-background-check", label: "🌐 FBI" },

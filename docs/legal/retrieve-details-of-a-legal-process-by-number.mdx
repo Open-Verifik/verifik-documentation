@@ -1,7 +1,7 @@
 ---
 id: retrieve-details-of-a-legal-process-by-number
 title: Retrieve Details of a Legal Process by Number
-description: Get comprehensive information about a specific legal process in Colombia using its process number
+description: Get comprehensive information about a specific legal process in Colombia using its process number (Rama Judicial).
 slug: /legal/retrieve-details-of-a-legal-process-by-number
 ---
 
@@ -13,25 +13,23 @@ import TabItem from '@theme/TabItem';
 ### Endpoint
 
 ```
-https://api.verifik.co/v2/co/rama/proceso/{processNumber}
+GET https://api.verifik.co/v2/co/rama/proceso
 ```
 
-The Legal Branch service allows users to retrieve detailed information about a specific legal process in Colombia by providing its number. The service returns a response that includes details such as the process type, class, subclass, involved parties, actions taken, and more.
-
-This service is valuable for legal professionals and individuals seeking comprehensive information about a particular legal case.
+Append the **`processNumber`** as the **final path segment** (for example `GET …/rama/proceso/11001400301220098008000`). The value is typically the **`llaveProceso`** returned by [Colombian Legal Processes](/legal/colombian-legal-processes). The response includes process metadata, parties (`subjects`), and procedural steps (`actions`).
 
 ### Headers
 
-| Name          | Value              |
-| ------------- | ------------------ |
-| Content-Type  | `application/json` |
-| Authorization | `Bearer <token>`   |
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
 
 ### Parameters
 
-| Name           | Type   | Required | Description                                    | Example      |
-| -------------- | ------ | -------- | ---------------------------------------------- | ------------ |
-| processNumber  | String | Yes      | Process ID delivered by the judicial process endpoint. | `123456789`  |
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `processNumber` | string | yes | Path parameter: judicial process id (min. 7 characters, no spaces). Often copied from `llaveProceso` on the list endpoint. |
 
 ### Request
 
@@ -39,44 +37,36 @@ This service is valuable for legal professionals and individuals seeking compreh
   <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
-const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/co/rama/proceso/18738473',
-  headers: {
-    Accept: 'application/json',
-    Authorization: 'jwt <tu_token>'
-  }
-};
+const processNumber = "18738473";
 
-try {
-  const { data } = await axios.request(options);
-  console.log(data);
-} catch (error) {
-  console.error(error);
-}
+const { data } = await axios.get(
+	`https://api.verifik.co/v2/co/rama/proceso/${processNumber}`,
+	{
+		headers: {
+			Accept: "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+	},
+);
+console.log(data);
 ```
 
   </TabItem>
   <TabItem value="python" label="Python">
 
 ```python
-import http.client
+import os, requests
 
-conn = http.client.HTTPSConnection("api.verifik.co")
-
+process_number = "18738473"
+url = f"https://api.verifik.co/v2/co/rama/proceso/{process_number}"
 headers = {
-    'Accept': "application/json",
-    'Authorization': "JWT token"
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
 }
-
-conn.request("GET", "/v2/co/rama/proceso/123456789", headers=headers)
-
-res = conn.getresponse()
-data = res.read()
-
-print(data.decode("utf-8"))
+r = requests.get(url, headers=headers)
+print(r.json())
 ```
 
   </TabItem>
@@ -85,14 +75,19 @@ print(data.decode("utf-8"))
 ```php
 <?php
 
+$processNumber = '123456789';
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.verifik.co/v2/co/rama/proceso/123456789', [
-  'headers' => [
-    'Accept' => 'application/json',
-    'Authorization' => 'JWT token',
+$response = $client->request(
+  'GET',
+  "https://api.verifik.co/v2/co/rama/proceso/{$processNumber}",
+  [
+    'headers' => [
+      'Accept' => 'application/json',
+      'Authorization' => 'Bearer ' . getenv('VERIFIK_TOKEN'),
+    ],
   ],
-]);
+);
 
 echo $response->getBody();
 ```
@@ -103,28 +98,17 @@ echo $response->getBody();
 ```swift
 import Foundation
 
-let headers = [
-  "Accept": "application/json",
-  "Authorization": "JWT token"
-]
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/co/rama/proceso/123456789")! as URL,
-                                        cachePolicy: .useProtocolCachePolicy,
-                                    timeoutInterval: 10.0)
+let processNumber = "123456789"
+let url = URL(string: "https://api.verifik.co/v2/co/rama/proceso/\(processNumber)")!
+var request = URLRequest(url: url)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
+request.setValue("application/json", forHTTPHeaderField: "Accept")
+request.setValue("Bearer \(ProcessInfo.processInfo.environment["VERIFIK_TOKEN"] ?? "")", forHTTPHeaderField: "Authorization")
 
-let session = URLSession.shared
-let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-  if (error != nil) {
-    print(error as Any)
-  } else {
-    let httpResponse = response as? HTTPURLResponse
-    print(httpResponse)
-  }
-})
-
-dataTask.resume()
+let task = URLSession.shared.dataTask(with: request) { data, _, _ in
+  if let data = data { print(String(data: data, encoding: .utf8) ?? "") }
+}
+task.resume()
 ```
 
   </TabItem>
@@ -138,62 +122,56 @@ dataTask.resume()
 ```json
 {
   "data": {
-    "details": {
-      "idRegProceso": 123456,
-      "llaveProceso": "12345678987654321",
-      "idConexion": 180,
-      "esPrivado": false,
-      "fechaProceso": "2013-11-28T00:00:00",
-      "despacho": "JUZGADO 005 CIVIL DEL CIRCUITO DE BOGOTÁ ",
-      "ponente": "XXXX XXXX XXX XXXX",
-      "tipoProceso": "Declarativo",
-      "claseProceso": "Divisorios",
-      "subclaseProceso": "Sin Subclase de Proceso",
-      "recurso": "Sin Tipo de Recurso",
-      "ubicacion": "Archivo",
-      "contenidoRadicacion": "ESCRITURA",
-      "fechaConsulta": "2021-12-17T15:53:20.15",
-      "ultimaActualizacion": "2021-12-16T18:27:25.95"
-    },
-    "subjects": [
-      {
-        "idRegSujeto": 15775331,
-        "tipoSujeto": "Demandante",
-        "esEmplazado": false,
-        "identificacion": "string",
-        "nombreRazonSocial": "XXXX XXXX XXXX XXXX",
-        "cant": 2
-      },
-      {
-        "idRegSujeto": 15775330,
-        "tipoSujeto": "Demandado",
-        "esEmplazado": false,
-        "identificacion": "string",
-        "nombreRazonSocial": "XXXXXX XXXX XXXX XXXX ",
-        "cant": 2
-      }
-    ],
     "actions": [
       {
-        "idRegActuacion": 12345678,
-        "llaveProceso": "11001310300520130078000",
-        "consActuacion": 8,
-        "fechaActuacion": "2014-02-10T00:00:00",
         "actuacion": "XXXXXX XXXXX",
         "anotacion": "ARCHIVO FEBRERO DE 2014.PAQUETE 285.",
-        "fechaInicial": "string",
-        "fechaFinal": "string",
-        "fechaRegistro": "2014-02-10T00:00:00",
+        "cant": "8",
         "codRegla": "00                              ",
+        "consActuacion": "8",
         "conDocumentos": false,
-        "cant": 8
+        "fechaActuacion": "2014-02-10T00:00:00",
+        "fechaFinal": "string",
+        "fechaInicial": "string",
+        "fechaRegistro": "2014-02-10T00:00:00",
+        "idRegActuacion": "12345678",
+        "llaveProceso": "11001310300520130078000"
       }
     ],
-    "signature": {
-      "dateTime": "August 30, 2022 1:26 PM",
-      "message": "Certified by Verifik.co"
-    }
-  }
+    "details": {
+      "claseProceso": "Divisorios",
+      "contenidoRadicacion": "ESCRITURA",
+      "despacho": "JUZGADO 005 CIVIL DEL CIRCUITO DE BOGOTÁ ",
+      "esPrivado": false,
+      "fechaConsulta": "2021-12-17T15:53:20.15",
+      "fechaProceso": "2013-11-28T00:00:00",
+      "idConexion": "180",
+      "idRegProceso": "123456",
+      "llaveProceso": "12345678987654321",
+      "ponente": "XXXX XXXX XXX XXXX",
+      "recurso": "Sin Tipo de Recurso",
+      "subclaseProceso": "Sin Subclase de Proceso",
+      "tipoProceso": "Declarativo",
+      "ubicacion": "Archivo",
+      "ultimaActualizacion": "2021-12-16T18:27:25.95"
+    },
+    "processNumber": "18738473",
+    "subjects": [
+      {
+        "cant": "2",
+        "esEmplazado": false,
+        "idRegSujeto": "15775331",
+        "identificacion": "string",
+        "nombreRazonSocial": "XXXX XXXX XXXX XXXX",
+        "tipoSujeto": "Demandante"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "August 30, 2022 1:26 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "ABC12"
 }
 ```
 
@@ -202,8 +180,8 @@ dataTask.resume()
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+  "code": "NotFound",
+  "message": "Record not found."
 }
 ```
 
@@ -213,7 +191,7 @@ dataTask.resume()
 ```json
 {
   "code": "MissingParameter",
-  "message": "missing processNumber\n"
+  "message": "\"processNumber\" length must be at least 7 characters long"
 }
 ```
 
@@ -222,20 +200,16 @@ dataTask.resume()
 
 ## Features
 
--   **Detailed Process Information**: Access comprehensive details about specific legal processes
--   **Subject Information**: View all parties involved in the legal process
--   **Action History**: Track all actions and proceedings in the case
--   **Process Classification**: Understand process type, class, and subclass
--   **Court Information**: Access details about the court handling the case
--   **Timeline Tracking**: View creation dates, last updates, and action dates
--   **Structured Response**: Organized data format for easy integration
--   **Multiple Programming Languages**: Support for JavaScript, Python, PHP, and Swift
--   **Error Handling**: Comprehensive error responses for various scenarios
+- **Case file detail**: Court, matter type, class, and timeline fields from Rama Judicial.
+- **Parties**: Demandantes, demandados, and related subjects when available.
+- **Actuaciones**: Chronological procedural steps with annotations.
 
 ## Use Cases
 
-- **Legal Case Analysis**: Deep dive into specific legal cases
-- **Process Tracking**: Monitor the progress of ongoing legal proceedings
-- **Legal Research**: Investigate specific legal processes for research purposes
-- **Due Diligence**: Verify details of legal cases during business transactions
-- **Court Documentation**: Access official court records and proceedings
+- **Case monitoring**: Follow a known `llaveProceso` after listing processes for a person or company.
+- **Due diligence**: Pull structured court data for a specific file number.
+
+### Notes
+
+- **`processNumber`** is a **path** segment, not a query parameter (some clients may label it `processNumber` in forms).
+- **409** responses usually mean a missing or invalid `processNumber` (including shorter than 7 characters).

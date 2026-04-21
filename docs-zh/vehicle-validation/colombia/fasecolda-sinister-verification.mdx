@@ -1,0 +1,126 @@
+---
+id: colombia-fasecolda-claims-verification
+title: Fasecolda — 理赔 / 事故记录
+description: 通过 Fasecolda 查询哥伦比亚车辆的保险事故与理赔历史。
+sidebar_label: Fasecolda — 理赔记录
+slug: /vehicle-validation/colombia/fasecolda-claims-verification
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/fasecolda/sinister
+```
+
+从 Fasecolda 官方数据查询车辆的保险**事故与理赔**历史。通过查询参数 **`plate`** 传入哥伦比亚车牌。
+
+### 请求头（Headers）
+
+| 名称 | 取值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数（Parameters）
+
+| 名称 | 类型 | 必填 | 描述 |
+| --- | --- | --- | --- |
+| `plate` | string | 是 | 待查询车牌，不含空格或圆点。 |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/fasecolda/sinister", {
+  params: { plate: "ABC123" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/fasecolda/sinister"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "KDK605",
+    "sinister": [
+      {
+        "id": "1",
+        "accidentDate": "20/01/2015",
+        "protection": "Pérdida Menor Cuantía"
+      },
+      {
+        "id": "2",
+        "accidentDate": "17/08/2012",
+        "protection": "Pérdida Menor Cuantía"
+      },
+      {
+        "id": "3",
+        "accidentDate": "16/01/2017",
+        "protection": "Pérdida Menor Cuantía"
+      }
+    ]
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "February 9, 2024 7:43 PM"},
+  "id": "PFDB2"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 说明
+
+- 路径中的 **sinister** 对应哥伦比亚保险语境下的理赔 / 事故记录。
+- **Pérdida Menor Cuantía** 表示小额损失类理赔（示例值）。
+- 每条记录可包含理赔编号、事故日期与保障类型等字段。

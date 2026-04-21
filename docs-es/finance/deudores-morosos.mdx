@@ -1,16 +1,24 @@
 ---
 id: deudores-morosos
-title: Deudores Morosos
-description: Consulta de información sobre deudores morosos y registros financieros
+title: Colombia — Deudores morosos (BDME)
+description: Consulta la BDME (Base de Datos de Morosos) de Colombia mediante GET /v2/co/deudoresmorosos.
 slug: /finance/deudores-morosos
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-# Deudores Morosos
+# Colombia — Deudores morosos (BDME)
 
-Este servicio te permite consultar información sobre deudores morosos y registros financieros.
+Verifik consulta la **BDME** (*Base de Datos de Morosos*), el boletín de **deudores morosos** de la **Contaduría General de la Nación**, usando **`documentType`** y **`documentNumber`**. La integración devuelve **estado** y campos de **reporte** cuando la fuente responde con coincidencia.
+
+## Qué devuelve la API
+
+- Eco de **`documentType`** / **`documentNumber`**
+- **`status`** y campos de entidad / ciudad / teléfono cuando existan
+- Respuesta **firmada** por Verifik
+
+## Referencia de API
 
 ### Endpoint
 
@@ -18,18 +26,21 @@ Este servicio te permite consultar información sobre deudores morosos y registr
 GET https://api.verifik.co/v2/co/deudoresmorosos
 ```
 
+Solo **GET** por query: **`documentType`** y **`documentNumber`**. No hay ruta **POST** en el backend actual.
+
 ### Headers
 
-| Name          | Value              |
-| ------------- | ------------------ |
-| Content-Type  | `application/json` |
-| Authorization | `Bearer <token>`   |
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
 
 ### Parámetros
 
-| Name | Type | Required | Description | Example |
-| ---- | ---- | -------- | ----------- | ------- |
-| `documentNumber` | string | **Sí** | Número de documento a consultar. | `123456789` |
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | sí | Tipo de documento. Usa **`CC`**, **`CE`**, **`PA`**, **`NIT`** o **`PPT`** (mapeo a tipos BDME en la integración). |
+| `documentNumber` | string | sí | Número **sin** espacios ni signos. |
 
 ### Solicitud
 
@@ -37,26 +48,32 @@ GET https://api.verifik.co/v2/co/deudoresmorosos
   <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
-const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/co/deudoresmorosos',
-  params: {
-    documentNumber: '123456789'
-  },
-  headers: {
-    'Accept': 'application/json',
-    'Authorization': 'Bearer <tu_token>'
-  }
-};
+const { data } = await axios.get("https://api.verifik.co/v2/co/deudoresmorosos", {
+	params: {
+		documentType: "NIT",
+		documentNumber: "800096561",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
 
-try {
-  const { data } = await axios.request(options);
-  console.log(data);
-} catch (error) {
-  console.error(error);
-}
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/deudoresmorosos"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "NIT", "documentNumber": "800096561"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
 ```
 
   </TabItem>
@@ -69,21 +86,58 @@ try {
 
 ```json
 {
-  "data": {
-    "documentNumber": "123456789",
-    "status": "clear",
-    "details": {}
-  },
-  "signature": {
-    "dateTime": "January 16, 2024 3:44 PM",
-    "message": "Certified by Verifik.co"
-  }
+	"data": {
+		"documentType": "NIT",
+		"documentNumber": "800096561",
+		"reportingEntity": "…",
+		"reportedName": "…",
+		"phone": "…",
+		"city": "…",
+		"status": "…"
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType\n. missing documentNumber\n"
 }
 ```
 
   </TabItem>
 </Tabs>
 
-## Recursos
+## Características
 
-- [Finanzas](/verifik-es/finanzas)
+- Personas naturales y **NIT** vía `documentType`
+- Solo **GET** con parámetros de consulta
+- Flujo con **captcha** en origen; fallos pueden aparecer como **5xx**
+
+## Casos de uso
+
+- **Crédito** y riesgo
+- **Proveedores** y **KYB**
+
+### Notas
+
+- **`documentType`** y **`documentNumber`** son **obligatorios** (409 si falta alguno).
+- La BDME es un boletín oficial; interpreta resultados según normativa y política interna.
+- **PPT** usa el mapeo de la integración; valida en tu entorno si es crítico.

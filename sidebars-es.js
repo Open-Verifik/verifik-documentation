@@ -104,9 +104,21 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 Chile — Validación de documento", key: "identity-chile-validate-documents" },
 				{ type: "doc", id: "identity/colombia", label: "🇨🇴 Ciudadano Colombiano" },
 				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 Colombia - ID Completo" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombian-cedula-premium",
+					label: "🇨🇴 Colombia — Cédula premium (CC)",
+				},
+				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 Colombia - Certificado Registraduría" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 Colombia - CE" },
-				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 Colombia - ID PEP" },
+				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 Colombia — PEP" },
 				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 Colombia - PPT" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/identity-validation-colombia-colombian-politically-exposed-persons",
+					label: "🇨🇴 Colombia — PEP (AML)",
+				},
+				{ type: "doc", id: "identity/colombia-situacion-militar", label: "🇨🇴 Colombia - Situación militar" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Costa Rica", key: "identity-costa-rica" },
 				{ type: "doc", id: "identity/dominican-republic", label: "🇩🇴 República Dominicana", key: "identity-dominican-republic" },
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 Ecuador", key: "identity-ecuador" },
@@ -169,17 +181,22 @@ const sidebars = {
 				{
 					type: "doc",
 					id: "validacion-empresarial/colombia-verificacion-dian",
-					label: "🇨🇴 Colombia - Verificación DIAN",
+					label: "🇨🇴 Colombia — Verificación DIAN (NIT)",
 				},
 				{
 					type: "doc",
 					id: "validacion-empresarial/colombia-verificacion-facturador-legal",
-					label: "🇨🇴 Colombia - Verificación Facturador Legal",
+					label: "🇨🇴 Colombia — Facturación electrónica DIAN",
+				},
+				{
+					type: "doc",
+					id: "validacion-empresarial/colombia-rues-v3",
+					label: "🇨🇴 Colombia — RUES (v3 básico)",
 				},
 				{
 					type: "doc",
 					id: "validacion-empresarial/colombia-validacion-empresarial-rues-completa-v3",
-					label: "🇨🇴 Validación Empresarial RUES",
+					label: "🇨🇴 Colombia — RUES expediente completo (v3)",
 				},
 				{
 					type: "doc",
@@ -352,6 +369,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "validacion-vehiculos/colombia/runt-vehiculo",
+							label: "RUNT - Vehículo (básico)",
+						},
+						{
+							type: "doc",
 							id: "validacion-vehiculos/colombia/registros-vehiculos-por-vin-runt",
 							label: "Registros de Vehículos por VIN",
 						},
@@ -379,6 +401,11 @@ const sidebars = {
 							type: "doc",
 							id: "validacion-vehiculos/colombia/resoluciones-simit",
 							label: "SIMIT - Resoluciones",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/colombia/suspensiones-licencia-simit",
+							label: "SIMIT - Suspensiones de licencia",
 						},
 						{
 							type: "doc",
@@ -517,6 +544,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-sisben",
+					label: "🇨🇴 Colombia - SISBEN",
+				},
+				{
+					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-europol",
 					label: "🌐 Europol - Antecedentes",
 				},
@@ -557,7 +589,7 @@ const sidebars = {
 			type: "category",
 			label: "SALUD",
 			collapsible: false,
-			items: ["legal/salud", "legal/verificar-afiliaciones-colombianas"],
+			items: ["legal/salud", "legal/colombia-rethus", "legal/verificar-afiliaciones-colombianas"],
 		},
 		{
 			type: "category",
@@ -573,6 +605,11 @@ const sidebars = {
 					type: "doc",
 					id: "legal/procesos-legales-colombianos",
 					label: "🇨🇴 Procesos Legales Colombianos",
+				},
+				{
+					type: "doc",
+					id: "legal/antecedentes-judiciales-colombia",
+					label: "🇨🇴 Colombia — Antecedentes Judiciales",
 				},
 				{
 					type: "doc",

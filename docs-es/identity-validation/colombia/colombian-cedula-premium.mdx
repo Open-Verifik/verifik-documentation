@@ -1,0 +1,121 @@
+---
+id: colombian-cedula-premium
+title: Colombia — Cédula nacional premium (CC)
+description: Verificación ampliada de CC colombiana vía GET o POST /v2/co/cedula/premium; fecha de expedición resuelta automáticamente y el mismo flujo enriquecido que cédula extra.
+slug: /validacion-identidad/colombia/cedula-premium-cc
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### Punto de acceso
+
+```
+GET https://api.verifik.co/v2/co/cedula/premium
+```
+
+Misma ruta: `GET https://verifik.app/v2/co/cedula/premium`. También **`POST`** con los mismos parámetros en JSON o formulario.
+
+### Cabeceras
+
+| Nombre | Valor |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Obligatorio | Descripción |
+| --- | --- | --- | --- |
+| `documentNumber` | string | Sí | Número de **CC**; el servidor deja solo dígitos. **Entre 5 y 10** caracteres (validación API). |
+
+### Notas
+
+- Solo **CC**: no se envía `documentType` ni `date`; el flujo resuelve la **fecha de expedición** de forma interna y luego aplica el mismo flujo ampliado que [**cédula extra**](../../identity/colombia-full-id.mdx).
+- Comparado con [**consulta básica de cédula**](./colombian-citizen.mdx) (`/v2/co/cedula`), devuelve el conjunto **extra** completo a mayor coste en créditos.
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="get" label="GET">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/cedula/premium", {
+	params: { documentNumber: "1234567890" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="post" label="POST">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+	"https://api.verifik.co/v2/co/cedula/premium",
+	{ documentNumber: "1234567890" },
+	{
+		headers: {
+			Accept: "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+	}
+);
+console.log(data);
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+Ejemplo genérico (placeholders, no personas reales):
+
+```json
+{
+	"data": {
+		"arrayName": ["NOMBRE1", "NOMBRE2", "APELLIDO1", "APELLIDO2"],
+		"dateOfBirth": "1990-05-20",
+		"documentNumber": "1234567890",
+		"documentType": "CC",
+		"expeditionDate": "2015-08-12",
+		"expeditionPlace": {
+			"municipio": "Municipio de ejemplo",
+			"departamento": "Departamento de ejemplo"
+		},
+		"firstName": "NOMBRE1 NOMBRE2",
+		"fullName": "NOMBRE1 NOMBRE2 APELLIDO1 APELLIDO2",
+		"gender": "HOMBRE",
+		"isAlive": true,
+		"lastName": "APELLIDO1 APELLIDO2"
+	},
+	"signature": {
+		"dateTime": "April 21, 2026 9:34 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "XXXXX"
+}
+```
+
+**404** — `Record not found.` cuando no hay datos suficientes aguas arriba.
+
+**409** — por ejemplo:
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentNumber maximum length: 10\n"
+}
+```
+
+### Relacionados
+
+- [Ciudadano colombiano (básico)](./colombian-citizen.mdx) — `GET/POST /v2/co/cedula`
+- Documentación canónica (EN): [National ID premium (CC)](https://docs.verifik.co/identity-validation/colombia/colombian-cedula-premium)

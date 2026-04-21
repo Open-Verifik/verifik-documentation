@@ -1,0 +1,168 @@
+---
+id: business-validation-colombia-rues-v3
+title: Colombia — RUES business lookup (v3)
+description: Query Colombia’s RUES registry by NIT with category-specific basic data via GET /v3/co/rues.
+slug: /business-validation/colombia-rues-v3
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombia RUES Business Lookup (v3) | Verifik KYB API",
+	description:
+		"Verify Colombian companies in RUES (NIT) with category RM, PROP, RNT, ESAL, and more; v3 basic endpoint returns a summary record per category.",
+	articleSection: "API Documentation",
+	keywords: "Colombia, RUES, NIT, KYB, Registro Mercantil, Verifik API",
+	about: {
+		"@type": "Thing",
+		name: "Business Verification API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — RUES business lookup (v3)
+
+Verifik queries **RUES** (*Registro Único Empresarial y Social*) for a Colombian legal entity using **`NIT`**, a **registry category**, and returns a **normalized basic record** for that category (commercial registry, RUP proponent, tourism, non-profits, etc.). This is the **lighter** **`/v3/co/rues`** integration; use **`/v3/co/rues-complete`** when you need the **full** dossier (extra detail endpoints, representatives, etc.—see existing RUES Complete doc).
+
+## What this API returns
+
+- **Category-specific** summary fields (e.g. for **RM**: business name, NIT with DV, chamber, matrícula state, organization type—see live responses)
+- Data mapped through the RUES response schema used in the integration
+- **Caching** may apply
+- A **signed** Verifik response
+
+## API reference
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v3/co/rues
+```
+
+**GET** with **query parameters** only on this route. For the **full** extract, use **`GET /v3/co/rues-complete`** (same parameters).
+
+Query: **`documentType`** (**`NIT`** only), **`documentNumber`**, optional **`category`**.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | Must be **`NIT`**. |
+| `documentNumber` | string | yes | Tax ID digits (punctuation is stripped server-side). |
+| `category` | string | no | RUES line to query. One of **`RM`**, **`PROP`**, **`RUNEOL`**, **`RNT`**, **`ESAL`**, **`ESOL`**, **`JUEGOS`**, **`EXTRANJERAS`**. Defaults to **`RM`** if omitted. |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/co/rues", {
+	params: {
+		documentType: "NIT",
+		documentNumber: "800096561",
+		category: "RM",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/rues"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "NIT", "documentNumber": "800096561", "category": "RM"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"businessName": "EXAMPLE SAS",
+		"documentNumber": "800096561",
+		"documentType": "NIT",
+		"fullNit": "800096561-7",
+		"location": "…",
+		"organizationType": "…",
+		"status": "ACTIVA",
+		"category": "RM",
+		"registration": "…",
+		"chamberCode": "…"
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be [NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Features
+
+- **NIT-only** validation at the API layer
+- **Category** selection for RM, PROP, tourism (RNT), ESAL, etc.
+- **v3** RUES elastic API integration (see module comments for behaviour per category)
+
+## Use cases
+
+- **KYB** and **vendor** screening
+- **Registry confirmation** before opening a full RUES Complete pull
+
+### Notes
+
+- **`category`** is optional in the handler (**defaults to `RM`**); include it explicitly when you are not querying **Registro Mercantil**.
+- Some category codes accepted by validation may follow a **legacy** code path inside the module; if results look unexpected, confirm the category with support or try **`RM`** / **`rues-complete`**.
+- **`/v2/co/rues`** exists for older integrations; prefer **v3** for new work.
+- RUES availability and captcha/rate behaviour can produce **404** / **409** / **5xx** errors depending on upstream state.

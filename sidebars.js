@@ -171,18 +171,38 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity-validation/colombia/colombian-cedula-premium",
+					label: "🇨🇴 Colombia — National ID premium (CC)",
+				},
+				{
+					type: "doc",
+					id: "identity/colombia-registraduria-certificate",
+					label: "🇨🇴 Colombia - Registraduría certificate",
+				},
+				{
+					type: "doc",
 					id: "identity/colombia-ce",
 					label: "🇨🇴 Colombia - CE",
 				},
 				{
 					type: "doc",
 					id: "identity/colombia-pep-id",
-					label: "🇨🇴 Colombia - PEP ID",
+					label: "🇨🇴 Colombia — PEP",
 				},
 				{
 					type: "doc",
 					id: "identity/colombia-ppt",
 					label: "🇨🇴 Colombia - PPT",
+				},
+				{
+					type: "doc",
+					id: "identity-validation/colombia/identity-validation-colombia-colombian-politically-exposed-persons",
+					label: "🇨🇴 Colombia — PEP lookup (AML)",
+				},
+				{
+					type: "doc",
+					id: "identity/colombia-situacion-militar",
+					label: "🇨🇴 Colombia - Military service status",
 				},
 				{
 					type: "doc",
@@ -335,6 +355,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "business-validation/business-validation-colombia-rues-v3",
+					label: "🇨🇴 Colombia — RUES (v3 basic)",
+				},
+				{
+					type: "doc",
 					id: "business-validation/rues-complete-v3",
 					label: "🇨🇴 RUES Business validation",
 				},
@@ -447,6 +472,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-plate",
+							label: "Bogotá - Taxi drivers by plate",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/colombia-fasecolda-values-by-plate",
 							label: "Vehicle Values by Plate",
 						},
@@ -477,6 +507,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo",
+							label: "RUNT - Vehicle by plate (basic)",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin",
 							label: "RUNT - Vehicle records by VIN",
 						},
@@ -499,6 +534,11 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-resolutions",
 							label: "SIMIT - Resolutions",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-suspensiones",
+							label: "SIMIT - License suspensions",
 						},
 						{
 							type: "doc",
@@ -675,6 +715,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/colombia-sisben-score",
+					label: "🇨🇴 Colombia - SISBEN score",
+				},
+				{
+					type: "doc",
 					id: "background-check/dea-background-check",
 					label: "🌐 DEA Background Check",
 				},
@@ -715,7 +760,7 @@ const sidebars = {
 			type: "category",
 			label: "HEALTH",
 			collapsible: false,
-			items: ["legal/health", "legal/verify-colombian-affiliations"],
+			items: ["legal/health", "legal/colombia-rethus", "legal/verify-colombian-affiliations"],
 		},
 		{
 			type: "category",
@@ -731,6 +776,11 @@ const sidebars = {
 					type: "doc",
 					id: "legal/colombian-legal-processes",
 					label: "🇨🇴 Colombian Legal Processes",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-judicial-records",
+					label: "🇨🇴 Colombia — Judicial Records",
 				},
 				{
 					type: "doc",

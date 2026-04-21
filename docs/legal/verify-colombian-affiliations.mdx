@@ -1,0 +1,209 @@
+---
+id: verify-colombian-affiliations
+title: Colombia — Health & social security affiliations
+description: Query Colombian EPS, ARL, pension (AP), compensation funds, and severance (cesantías) via GET /v2/co/afiliaciones.
+slug: /legal/verify-colombian-affiliations
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombia Health & Social Security Affiliations | Verifik API",
+	description:
+		"Verify EPS, ARL, pension, compensation fund, and unemployment fund affiliations for Colombian individuals using document type, number, and issue date.",
+	articleSection: "API Documentation",
+	keywords: "Colombia, EPS, ARL, afiliaciones, SISPRO, RUAF, social security",
+	about: {
+		"@type": "Thing",
+		name: "Health & Social Security API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Health & social security affiliations
+
+Verifik returns **affiliation and personal data** for a Colombian individual from official **health and social security** sources (including **RUAF / SISPRO** flows), using **document type**, **document number**, and **document issue date**. Typical blocks include **EPS** (health), **ARL** (occupational risk), **pension (AP)**, **caja de compensación**, and **cesantías**, plus **personal** fields when returned by the source.
+
+This endpoint is **GET-only** (query parameters). Use it for **employment**, **benefits**, and **compliance** checks where this data is allowed.
+
+## What this API returns
+
+- **Personal** summary (names, ID line, sex, cut-off date) when available
+- **EPS**: regime, affiliation date, status, municipality, etc.
+- **ARL**: risk entries with administrator, activity, municipality
+- **Pension (AP)**: pension regimes and administrators
+- **Caja de compensación** and **cesantías** blocks (may be empty arrays)
+- A **signed** Verifik response
+
+## API reference
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/afiliaciones
+```
+
+Query-only **GET**; pass **`documentType`**, **`documentNumber`**, and **`date`** (`DD/MM/YYYY`).
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | One of **`CC`**, **`CE`**, **`PA`**, **`PE`**. |
+| `documentNumber` | string | yes | Document number without spaces or punctuation (min. length enforced by API). |
+| `date` | string | yes | **Issue date** of the document in **`DD/MM/YYYY`**. |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/afiliaciones", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+		date: "05/05/2020",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/afiliaciones"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789", "date": "05/05/2020"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"informaciónPersonal": {
+			"fechaCorte": "2022-08-19",
+			"documentoIdentidad": "CC 123456789",
+			"primerNombre": "MATEO",
+			"segundoNombre": "",
+			"primerApellido": "VERIFIK",
+			"segundoApellido": "",
+			"sexo": "M"
+		},
+		"eps": {
+			"fechaCorte": "2022-08-19",
+			"eps": "FAMISANAR E.P.S. LTDA - CAFAM - COLSUBSIDIO -CM",
+			"regimen": "Subsidiado",
+			"fechaAfiliacion": "01/09/2020",
+			"estadoAfiliacion": "Activo",
+			"tipoAfiliado": "CABEZA DE FAMILIA",
+			"departamentoMunicipio": "BOGOTA D.C."
+		},
+		"ap": {
+			"fechaCorte": "2022-08-19",
+			"pensiones": [
+				{
+					"regimenPensional": "PENSIONES: AHORRO INDIVIDUAL",
+					"administradoraPensional": "SOCIEDAD ADMINISTRADORA DE FONDOS DE PENSIONES Y CESANTIAS PORVENIR SA",
+					"fechaAfiliacionPensional": "1996-03-01",
+					"estadoPensional": "Inactivo"
+				}
+			]
+		},
+		"arl": {
+			"fechaCorte": "2022-08-19",
+			"riesgos": [
+				{
+					"administradora": "POSITIVA COMPAÑIA DE SEGUROS",
+					"fecha": "2016-09-01",
+					"estado": "Activa",
+					"actividad": "…",
+					"municipioLaboral": "Bogotá, D.C.- BOGOTÁ"
+				}
+			]
+		},
+		"cajaCompensacion": {
+			"fechaCorte": "2022-08-19",
+			"cajas": []
+		},
+		"cesantias": {
+			"fechaCorte": "2022-08-19",
+			"cesantias": []
+		}
+	},
+	"signature": {
+		"dateTime": "August 30, 2022 2:49 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, CE, PA, PE]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Features
+
+- **Supported document types** at validation: **CC**, **CE**, **PA**, **PE**
+- **Issue date** must match **`DD/MM/YYYY`**
+
+## Use cases
+
+- **Employment** and **contractor** onboarding
+- **Benefits** and **payroll** eligibility checks
+
+### Notes
+
+- **`date`** is the **document issue date**, not the date of birth.
+- This route is exposed as **GET** with **query parameters** only (no **POST** in the current backend).
+- **`PE`** is **permiso especial de permanencia** (as used in the integration), not “PEP” in the sense of politically exposed persons.
+- Upstream (SISPRO/RUAF) outages or scraping issues may return **409** or other service errors.
+- Response fields can include **special-category personal data**; use only where permitted by law and policy.

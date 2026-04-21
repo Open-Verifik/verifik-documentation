@@ -1,28 +1,179 @@
 ---
-id: colombian-legal-processes
-title: Colombian Legal Processes
-description: Information about Colombian legal processes and court case records
-slug: /legal/colombian-legal-processes
+id: procesos-legales-colombianos
+title: Colombia — Procesos judiciales
+description: Lista procesos judiciales en Colombia por CC o NIT (Rama Judicial).
+slug: /legal/procesos-judiciales-colombianos
 ---
 
-# Colombian Legal Processes
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-This service provides access to Colombian legal processes and court case records.
+# Colombia — Procesos judiciales
 
-## Services Available
+Este endpoint devuelve un **listado de procesos judiciales** asociados a una persona (**CC**) o empresa (**NIT**). Incluye fechas, despacho, departamento, sujetos procesales y **paginación** cuando aplica.
 
-- [Recuperar Detalles de Proceso Legal por Número](/verifik-es/legal/recuperar-detalles-proceso-legal-por-numero)
-- [Court Case Records Lookup](/verifik-es/legal/court-case-records-lookup)
-- [Procesos Legales Colombianos](/verifik-es/legal/procesos-judiciales-colombianos)
+## Referencia de API
 
-## Features
+### Endpoint
 
-- **Case Number Lookup**: Retrieve legal process details by case number
-- **Real-time Data**: Access to current legal process information
-- **Official Sources**: Data from official Colombian legal databases
+```
+GET https://api.verifik.co/v2/co/rama/procesos
+```
 
-## Use Cases
+Envía **`documentType`** y **`documentNumber`** en la **query**.
 
-- **Legal Research**: Research legal processes and case records
-- **Compliance**: Verify legal status for business purposes
-- **Background Checks**: Include legal process information in background verification
+**Limitación:** la consulta en la Rama Judicial se basa en **coincidencia por nombre** vinculada al documento; no hay garantía del 100% de éxito en todos los casos.
+
+### Encabezados
+
+| Nombre        | Valor              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parámetros
+
+| Nombre             | Tipo   | Requerido | Descripción                                                                 |
+| ------------------ | ------ | --------- | --------------------------------------------------------------------------- |
+| `documentType`     | string | Sí        | `CC` o `NIT`.                                                               |
+| `documentNumber`   | string | Sí        | Número de documento o NIT.                                                    |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/rama/procesos", {
+	params: { documentType: "CC", documentNumber: "123456789" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/rama/procesos"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"consultedSubject": "MATEO VERIFIK",
+		"documentNumber": "123456789",
+		"documentType": "CC",
+		"list": [
+			{
+				"idProceso": "123456789",
+				"idConexion": "262",
+				"llaveProceso": "110014003XXXXXXXXX",
+				"fechaProceso": "2007-09-21T00:00:00",
+				"fechaUltimaActuacion": "2010-11-27T00:00:00",
+				"despacho": "JUZGADO XXX CIVIL MUNICIPAL DE BOGOTÁ ",
+				"departamento": "BOGOTÁ",
+				"sujetosProcesales": [
+					"Demandante: XXXXXX  XXXXX XXXX ",
+					"Demandado: XXXX XXXX XXXX XXXX "
+				],
+				"esPrivado": false
+			}
+		],
+		"pagination": {
+			"records": "21",
+			"recordsPerPage": "20",
+			"pages": "2",
+			"page": "1"
+		}
+	},
+	"signature": {
+		"dateTime": "March 3, 2022 3:55 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABC12"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-empty" label="200 (lista vacía)">
+
+```json
+{
+	"data": {
+		"consultedSubject": "MATEO VERIFIK",
+		"documentNumber": "123456789",
+		"documentType": "CC",
+		"list": [],
+		"pagination": {
+			"records": "0",
+			"recordsPerPage": "20",
+			"pages": "0",
+			"page": "1"
+		}
+	},
+	"signature": {
+		"dateTime": "August 31, 2022 3:31 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "XYZ99"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "Error de validación (parámetro faltante o documentType distinto de CC o NIT)."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Características
+
+- Listado de procesos con despacho, fechas y partes
+- Metadatos de paginación
+- Soporte **CC** y **NIT**
+
+## Casos de uso
+
+- Investigación legal y antecedentes judiciales
+- Debida diligencia en Colombia
+
+### Notas
+
+- Solo **`CC`** y **`NIT`** son válidos como **`documentType`**.
+- La fuente puede devolver **lista vacía** o no coincidencias pese a datos válidos.

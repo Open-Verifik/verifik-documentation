@@ -1,0 +1,158 @@
+---
+id: colombia-judicial-records
+title: Colombia — Judicial records (court files / expedientes)
+description: Query Colombian judicial court files (expedientes) by CC, city, and document number via Rama Judicial.
+sidebar_label: 🇨🇴 Colombia — Judicial Records
+slug: /legal/colombia-judicial-records
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Judicial records (court files)
+
+Verifik’s **Judicial records** endpoint returns **court file (expediente)** details from Colombia’s judicial system for a **cédula de ciudadanía (CC)** holder in a given **city** (circuit). Typical fields include court office (**EPMS**), receipt date, municipality, filing number, and party names when returned by the source.
+
+## API Reference
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/rama/juzgado/expedientes
+```
+
+Send **`documentType`**, **`documentNumber`**, and **`city`** as **query** parameters.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parameters
+
+| Name             | Type   | Required | Description |
+| ---------------- | ------ | -------- | ----------- |
+| `documentType`   | string | Yes      | Must be **`CC`** (cédula de ciudadanía). |
+| `documentNumber` | string | Yes      | ID number without formatting as required for lookup. |
+| `city`           | string | Yes      | Judicial circuit city code, e.g. **`BOGOTA`**, **`MEDELLIN`**, **`CALI`**, **`BARRANQUILLA`**, and others supported by the integration. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/rama/juzgado/expedientes", {
+	params: {
+		documentType: "CC",
+		documentNumber: "1234567890",
+		city: "BOGOTA",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/rama/juzgado/expedientes"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1234567890", "city": "BOGOTA"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/co/rama/juzgado/expedientes?documentType=CC&documentNumber=1234567890&city=BOGOTA" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN"
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"appeal": "S",
+		"city": "BOGOTA",
+		"codeRoom": "001",
+		"consOffice": "01",
+		"corporation": "EJEMPLO",
+		"court": "JUZGADO EJEMPLO",
+		"courtOfepms": "EPMS EXAMPLE",
+		"documentNumber": "1234567890",
+		"documentType": "CC",
+		"filingNumber": "2024-000123",
+		"municipality": "BOGOTÁ D.C.",
+		"name": "EXAMPLE USER",
+		"receiptDate": "2024-01-15",
+		"representative": "",
+		"year": "2024"
+	},
+	"signature": {
+		"dateTime": "April 20, 2026 10:00 AM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABC12"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "Validation error (e.g. missing query parameter or documentType not CC)."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Features
+
+- **Court file metadata** from the Rama Judicial integration (fields vary by source)
+- **City-scoped** lookup using supported circuit codes
+- **Signed** responses; repeat calls may be **cached**
+
+## Use Cases
+
+- **KYC and risk** workflows that need judicial file context in Colombia
+- **Legal and compliance** checks tied to a CC and jurisdiction (city)
+
+### Notes
+
+- **`documentType`** is restricted to **`CC`** at the API layer.
+- **`city`** must match a value accepted by the upstream service (see **Parameters**).
+- Availability and field completeness depend on the **underlying judicial registry**; empty or error outcomes are possible for valid inputs.

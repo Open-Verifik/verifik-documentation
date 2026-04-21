@@ -1,0 +1,136 @@
+---
+id: verificacion-antecendentes-colombia-sisben
+title: Colombia — Consulta puntaje SISBEN
+description: Verificar puntaje y grupo SISBEN (Sistema de Identificación de Potenciales Beneficiarios de Programas Sociales).
+slug: /verificacion-antecendentes/verificacion-antecendentes-colombia-sisben
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Consulta puntaje SISBEN
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/sisben
+```
+
+Devuelve información de **grupo / puntaje SISBEN** desde el portal público de consulta usando **`documentType`** y **`documentNumber`**. La integración utiliza **automatización de navegador**; la respuesta puede tardar más que un REST típico.
+
+### Encabezados
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | sí | **`CC`**, **`CE`**, **`PEP`**, **`PPT`**, **`PA`**. |
+| `documentNumber` | string | sí | Número sin espacios ni puntuación. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/sisben", {
+	params: { documentType: "CC", documentNumber: "1121329661" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/sisben"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1121329661"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["APELLIDO", "NOMBRE", "SEGUNDO"],
+		"city": "BOGOTÁ D.C.",
+		"currentSurvey": "…",
+		"department": "CUNDINAMARCA",
+		"detaliGroup": "…",
+		"documentNumber": "1121329661",
+		"documentType": "CC",
+		"file": "…",
+		"firstName": "NOMBRE SEGUNDO",
+		"fullName": "NOMBRE SEGUNDO APELLIDO",
+		"lastCitizenUpdate": "…",
+		"lastName": "APELLIDO",
+		"sisbenGroup": "A",
+		"validity": "…"
+	},
+	"signature": {
+		"dateTime": "April 8, 2026 11:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "IDNT1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of: [CC,CE,PEP,PPT,PA]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Características
+
+- **Grupo SISBEN** y textos asociados cuando el portal devuelve resultado.
+- **Ubicación**: Municipio y departamento cuando se parsean del informe.
+
+## Casos de uso
+
+- **Programas sociales**: Validación de clasificación SISBEN.
+- **Onboarding**: Apoyo a verificación de beneficiarios donde aplique la normativa.
+
+### Notas
+
+- La consulta puede tardar **varios segundos** (navegador automatizado).
+- **`PPT`** está permitido por validación; si el formulario oficial cambia, pueden aparecer errores **500** hasta actualizar la integración.

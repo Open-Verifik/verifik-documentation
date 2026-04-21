@@ -426,7 +426,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa colombiana"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="/verifik-es/validacion-empresarial/colombia-informacion-empresarial-rues"
+      link="/verifik-es/validacion-empresarial/colombia-registro-empresarial-rues"
     />
   </div>
 </div>

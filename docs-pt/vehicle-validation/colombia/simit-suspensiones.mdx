@@ -1,0 +1,124 @@
+---
+id: vehicle-validation-colombia-simit-suspensiones
+title: SIMIT — Suspensões de CNH
+description: Consulte no SIMIT Colômbia suspensões ou cancelamentos da carteira pelo documento do titular.
+sidebar_label: SIMIT — Suspensões
+slug: /vehicle-validation/colombia/simit-suspensiones
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/simit/suspensiones
+```
+
+Consulta no **SIMIT** informações sobre **suspensão ou cancelamento** da permissão para dirigir (e dados correlatos, quando a fonte retornar, como datas e resoluções). Identifique o titular com **`documentType`** e **`documentNumber`**.
+
+### Cabeçalhos
+
+| Nome | Valor |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parâmetros
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `documentType` | string | Sim | Tipo de documento do titular. Ex.: `CC`, `PA`, `CE`, `TI`, `RC`, `NIT`. |
+| `documentNumber` | string | Sim | Número sem espaços nem pontuação. Se exceder o limite permitido, pode retornar `409`. |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/suspensiones", {
+	params: { documentType: "CC", documentNumber: "123456789" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/suspensiones"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CC",
+		"documentNumber": "123456789",
+		"firstName": "JUAN CARLOS",
+		"lastName": "PEREZ LOPEZ",
+		"fullName": "JUAN CARLOS PEREZ LOPEZ",
+		"suspensiones": [
+			{
+				"numeroResolucion": "RES-2024-000123",
+				"fechaSuspension": "2024/03/15",
+				"estado": "VIGENTE",
+				"motivo": "Sanción por acumulación de puntos"
+			}
+		]
+	},
+	"signature": {
+		"message": "Certified by Verifik.co",
+		"dateTime": "April 8, 2026 11:00 PM"
+	},
+	"id": "IDNT1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Observações
+
+- O **SIMIT** é o sistema nacional de multas e sanções de trânsito da Colômbia.
+- Os campos em **`data`** seguem o retorno do **SIMIT** (o exemplo é ilustrativo).

@@ -17,6 +17,71 @@ const sidebars = {
 					items: [
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-plate",
+							label: "🇨🇴 Bogotá — táxi por placa",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-vehicle-fines",
+							label: "🇨🇴 Bogotá — multas de veículo",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxes",
+							label: "🇨🇴 Bogotá — imposto veículo",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-vehicle-accidentality",
+							label: "🇨🇴 Bogotá — acidentes",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-pico-y-placa",
+							label: "🇨🇴 Bogotá — Pico y Placa",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/colombia-fasecolda-values-by-plate",
+							label: "🇨🇴 Fasecolda — valores por placa",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/colombia-fasecolda-vehicle-by-code",
+							label: "🇨🇴 Fasecolda — valores por código",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/colombia-fasecolda-claims-verification",
+							label: "🇨🇴 Fasecolda — sinistros",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license",
+							label: "🇨🇴 RUNT — CNH",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate",
+							label: "🇨🇴 RUNT — veículo por placa (completo)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified",
+							label: "🇨🇴 RUNT — veículo por placa (simplificado)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo",
+							label: "🇨🇴 RUNT — veículo (básico)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin",
+							label: "🇨🇴 RUNT — por VIN",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-agreements",
 							label: "🇨🇴 SIMIT - Acordos de pagamento",
 						},
@@ -44,6 +109,21 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-resolutions",
 							label: "🇨🇴 SIMIT - Resoluções",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-suspensiones",
+							label: "🇨🇴 SIMIT — Suspensões",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-sisconmp-trainings",
+							label: "🇨🇴 SISCONMP — formação (transporte)",
+						},
+						{
+							type: "doc",
+							id: "identity/colombia-situacion-militar",
+							label: "🇨🇴 Situação militar",
 						},
 					],
 				},
@@ -98,6 +178,21 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile-taxpayer", label: "🇨🇱 Chile — Contribuinte (RUT)" },
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 Chile — Validação de documento de identidade" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Cidadão costa-riquenho (CCCR)" },
+				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 Colômbia — RG estendido" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombian-cedula-premium",
+					label: "🇨🇴 Colômbia — Cédula premium (CC)",
+				},
+				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 Colômbia — Certificado Registraduría" },
+				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 Colômbia — PEP" },
+				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 Colômbia — CE" },
+				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 Colômbia — PPT" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/identity-validation-colombia-colombian-politically-exposed-persons",
+					label: "🇨🇴 Colômbia — PEP (AML)",
+				},
 				{ type: "doc", id: "identity/spain-citizen", label: "🇪🇸 Cidadão espanhol" },
 				{ type: "doc", id: "identity/united-states", label: "🇺🇸 EUA — SSN (Social Security Number)" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 Cidadão mexicano" },
@@ -117,6 +212,11 @@ const sidebars = {
 			items: [
 				{ type: "doc", id: "business-validation/canada", label: "🇨🇦 Verificação de empresas no Canadá" },
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 Chile — Empresa (RUT)" },
+				{
+					type: "doc",
+					id: "business-validation/rues-complete-v3",
+					label: "🇨🇴 Colômbia — RUES empresa completa",
+				},
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 Empresa na Costa Rica (NITE)" },
 				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 Empresa espanhola (KYB)" },
 				{ type: "doc", id: "business-validation/united-states", label: "🇺🇸 EUA — Empresa (SEC EDGAR)" },
@@ -183,7 +283,43 @@ const sidebars = {
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 Contratos públicos" },
 				{ type: "doc", id: "background-check/colombia-disciplinary-records-attorneys-office", label: "🇨🇴 Disciplinares (Procuradoria)" },
 				{ type: "doc", id: "background-check/colombia-inpec", label: "🇨🇴 INPEC" },
+				{ type: "doc", id: "background-check/colombia-sisben-score", label: "🇨🇴 SISBEN" },
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 RNMC / medidas corretivas" },
+				{
+					type: "doc",
+					id: "legal/lawyer-verification",
+					label: "🇨🇴 Consulta de advogados",
+				},
+				{
+					type: "doc",
+					id: "legal/colombian-legal-processes",
+					label: "🇨🇴 Processos judiciais",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-judicial-records",
+					label: "🇨🇴 Antecedentes judiciais",
+				},
+				{
+					type: "doc",
+					id: "legal/retrieve-details-of-a-legal-process-by-number",
+					label: "🇨🇴 Detalhe do processo",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-number",
+					label: "🇨🇴 SIGEP (doc)",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-name",
+					label: "🇨🇴 SIGEP (nome)",
+				},
+				{
+					type: "doc",
+					id: "legal/certificate-of-validity-for-legal-professionals",
+					label: "🇨🇴 Certificado de advogado (validade)",
+				},
 				{ type: "doc", id: "background-check/dea-background-check", label: "🌐 DEA" },
 				{ type: "doc", id: "background-check/europol-background-check", label: "🌐 Europol" },
 				{ type: "doc", id: "background-check/fbi-background-check", label: "🌐 FBI" },

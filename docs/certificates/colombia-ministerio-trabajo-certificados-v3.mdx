@@ -1,0 +1,158 @@
+---
+id: certificates-colombia-ministerio-trabajo-v3
+title: Colombia — Ministry of Labor certificates (v3)
+description: Labor and height-safety (“curso de alturas”) certificate data from Colombia’s Ministry of Labor via GET /v3/co/ministerio-de-trabajo/certificados.
+slug: /certificates/colombia-ministerio-trabajo-certificados-v3
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombia Ministry of Labor Certificates API (v3) | Verifik",
+	description:
+		"Query Colombian Ministry of Labor certificate records using document type and number; v3 returns structured records from the Bogotá microservice.",
+	articleSection: "API Documentation",
+	keywords: "Colombia, Ministerio de Trabajo, certificados, curso de alturas, Verifik API",
+	about: {
+		"@type": "Thing",
+		name: "Certificates API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Ministry of Labor certificates (v3)
+
+This endpoint returns **Ministry of Labor** certificate information for a Colombian individual, including data associated with **height / occupational safety** training (*curso de alturas*), sourced from Verifik’s **Bogotá microservice**. The **v3** handler returns the **full microservice payload** and exposes certificate rows under **`records`** (mapped from the upstream `constances` field).
+
+Use it for **employment compliance**, **contractor onboarding**, and **workplace safety** checks where this registry is allowed.
+
+## What this API returns
+
+- **`records`** — list of certificate / constance rows returned by the integration (renamed from upstream `constances`)
+- Any **additional fields** returned by the microservice on `data` (structure may evolve with the source)
+- A **signed** Verifik response
+
+## API reference
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados
+```
+
+**GET** with **query parameters** only for this route (**no** `POST` on the v3 router). The legacy **`v2`** path uses the same parameter names with a different response shape; see Notes.
+
+Query summary: **`documentType`**, **`documentNumber`**.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | One of **`CC`**, **`CE`**, **`PPT`**, **`PA`**. |
+| `documentNumber` | string | yes | Document number **without** spaces or punctuation. |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"records": []
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, CE, PPT, PA]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Features
+
+- **Document types**: **CC**, **CE**, **PPT**, **PA**
+- **v3** response maps **`constances` → `records`** on the payload returned to the client
+- **GET** query parameters
+
+## Use cases
+
+- **Height-work** and **safety training** verification
+- **Employer** due diligence and **contractor** compliance
+
+### Notes
+
+- Upstream errors when the person has **no** height-course information may surface as **404** with a message such as *“No registra información en Curso de Alturas.”*
+- The **`v2`** endpoint **`/v2/co/ministerio-de-trabajo/certificados`** uses the same microservice but returns a **narrower** payload (certificate array only in some paths); prefer **v3** when you need the **full** object plus **`records`**.
+- Microservice **token** and **availability** are environment-dependent; outages may return **5xx** errors.
+- Treat results as **personal / labor** data under Colombian law and your policies.

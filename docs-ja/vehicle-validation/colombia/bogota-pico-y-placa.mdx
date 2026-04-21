@@ -1,0 +1,130 @@
+---
+id: vehicle-validation-colombia-bogota-pico-y-placa
+title: ボゴタ — ピコ・イ・プラカ
+description: コロンビア・ボゴタ登録車両のピコ・イ・プラカ（交通規制）情報を照会します。
+sidebar_label: ボゴタ — ピコ・イ・プラカ
+slug: /vehicle-validation/colombia/vehicle-validation-colombia-bogota-pico-y-placa
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/vehiculo/pico-y-placa
+```
+
+**ボゴタ**に登録された車両について、**ピコ・イ・プラカ**（ナンバー末尾による通行制限）の**リアルタイム**情報を取得します。照会した **`plate`** に**例外**（障がいその他の承認済み免除など）がある場合は、応答に反映される場合があります。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `plate` | string | はい | 照会するナンバー（スペースなし・ボゴタ形式）。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/vehiculo/pico-y-placa", {
+  params: { plate: "ABC123" },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/vehiculo/pico-y-placa"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "placa": "ABC123",
+    "causalExcepcion": "Discapacidad - Documento #: 12345678",
+    "activoDesde": "16-06-2022 07:00:28 PM",
+    "estado": "ACTIVO",
+    "detalles": {
+      "informaciónDeLaExcepcion": [
+        "Tipo Excepción: Discapacidad",
+        "Descripción: vehiculos de personas con discapacidad.Automotores que transporten o sean conducidos por personas con discapacidad permanente, cuya condición motora, sensorial o mental limite su movilidad, siempre y cuando cumplan las normas establecidas.",
+        "Fecha Registro: 16-06-2022 05:25:29 PM"
+      ],
+      "observaciones": [
+        "Información validada ante en RUNT. "
+      ],
+      "informaciónDeLaPersonaEnCondicionDeDiscapacidad": [
+        "Nombres: MATEO VERIFIK",
+        "No. Documento: 1112345678"
+      ],
+      "informaciónDelvehiculo": [
+        "Placa: EHO820",
+        "ACTIVO"
+      ]
+    }
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "August 23, 2022 10:55 AM"}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### メモ
+
+- 対象は**ボゴタに登録された車両**です。
+- 規制はナンバー**末尾数字**に基づきます。
+- **特別許可**（障がい・緊急等）がある場合は例外として返ることがあります。
+- **`ACTIVO`** は当該例外が有効であることを示す例です。

@@ -1,0 +1,147 @@
+---
+id: colombia-registraduria-certificate
+title: Colombia — Certificado de vigencia de cédula (Registraduría)
+description: Obtén el certificado oficial de vigencia de la cédula colombiana (CC) con número y fecha de expedición mediante GET /v2/co/registraduria/certificado.
+slug: /identidad/colombia-registraduria-certificate
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Colombia — Certificado de vigencia de cédula (Registraduría)
+
+Este endpoint devuelve el **certificado de vigencia** de la **Cédula de Ciudadanía (CC)** desde la **Registraduría Nacional del Estado Civil**, usando **número de documento** y **fecha de expedición**. La respuesta incluye campos estructurados extraídos del PDF oficial (incluido **PDF en base64**) e información como **novedad** (estado de vigencia en la consulta previa).
+
+El flujo aplica a titulares de **CC**; la API valida solo **`documentNumber`** y **`date`**.
+
+## Qué devuelve la API
+
+- Contexto de **estado de vigencia** (**novedad**) según la consulta upstream
+- **Datos del documento** (número, expedición, lugar, nombre) cuando el parseo es correcto
+- **Código de verificación** y **PDF** (**pdfBase64**) para auditoría
+- Respuesta **firmada** por Verifik
+
+## Referencia de API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/registraduria/certificado
+```
+
+La misma integración está disponible como **`POST`** con cuerpo JSON con los mismos campos. **`GET`** usa **parámetros de consulta** como abajo.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentNumber` | string | sí | Número de CC sin espacios ni signos. |
+| `date` | string | sí | **Fecha de expedición** en **`DD/MM/AAAA`**. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/registraduria/certificado", {
+	params: { documentNumber: "123456789", date: "10/10/2020" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/registraduria/certificado"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentNumber": "123456789", "date": "10/10/2020"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"codigoVerificacion": "ABC123XYZ",
+		"novedad": "VIGENTE",
+		"pdfBase64": "JVBERi0xLjQK...",
+		"documento": {
+			"cedula": "123456789",
+			"fechaExpedicion": "10/10/2020",
+			"lugarExpedicion": "BOGOTA D.C.",
+			"nombre": "JUAN PEREZ"
+		}
+	},
+	"signature": {
+		"dateTime": "August 23, 2022 11:42 AM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "date format required: DD/MM/YYYY\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Características
+
+- **Fecha de expedición** en **`DD/MM/AAAA`**
+- Datos del **certificado en PDF** con **base64** cuando la generación tiene éxito
+- **GET** y **POST** comparten el mismo manejador
+
+## Casos de uso
+
+- **KYC** que requiere **certificado de vigencia** oficial para CC
+- Reducción de fraude cuando la fecha de expedición debe coincidir con Registraduría
+
+### Notas
+
+- **`date`** es la **fecha de expedición del documento**, no la fecha de nacimiento.
+- Un formato incorrecto suele devolver **409** (`MissingParameter`).
+- Fallas upstream (p. ej. flujo captcha/PDF) pueden aparecer como **409** con códigos como **`Endpoint_out_of_service`**.
+- **`GET`** y **`POST`** comparten el mismo manejador.
+- Trata **pdfBase64** y datos personales como **sensibles**; cumple la normativa colombiana y tus contratos.

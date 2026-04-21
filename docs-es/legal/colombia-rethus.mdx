@@ -1,0 +1,159 @@
+---
+id: colombia-rethus
+title: Colombia — RETHUS (registro de talento humano en salud)
+description: Consulta el registro RETHUS de Colombia mediante GET /v2/co/cedula/rethus.
+slug: /legal/colombia-rethus
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — RETHUS (registro de talento humano en salud)
+
+Verifik valida la identidad y consulta **RETHUS** (*Registro Único Nacional de Talento Humano en Salud*) con **`documentType`** y **`documentNumber`**. El flujo resuelve primero el ciudadano y luego RETHUS para **estado del registro**, **formación académica** y filas de **prestaciones / seguridad social (SSO)** cuando la fuente las devuelve.
+
+## Qué devuelve la API
+
+- Campos de **identidad** del ciudadano emparejado
+- **`rethus.status`** — texto de estado en la grilla RETHUS
+- **`rethus.academic`** — títulos / formación cuando existan
+- **`rethus.dataSSO`** — prestaciones, modalidades y entidades cuando existan
+- Respuesta **firmada** por Verifik
+
+## Referencia de API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/cedula/rethus
+```
+
+Los mismos campos pueden enviarse en **`POST`** con cuerpo JSON. **`GET`** usa **parámetros de consulta** como abajo.
+
+Resumen: **`documentType`**, **`documentNumber`**.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | sí | Uno de **`CC`**, **`CE`**, **`PPT`**. |
+| `documentNumber` | string | sí | Número sin espacios ni signos (**5–15** caracteres). |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/cedula/rethus", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/cedula/rethus"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CC",
+		"documentNumber": "123456789",
+		"firstName": "MARIA",
+		"lastName": "GOMEZ LOPEZ",
+		"fullName": "MARIA GOMEZ LOPEZ",
+		"rethus": {
+			"status": "ACTIVO EN RETHUS",
+			"academic": [
+				{
+					"type": "Pregrado",
+					"originDegree": "Nacional",
+					"profession": "MÉDICO GENERAL",
+					"startDate": "01/01/2010",
+					"administrativeAct": "…",
+					"entity": "…"
+				}
+			],
+			"dataSSO": []
+		}
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, CE, PPT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Características
+
+- Tipos aceptados en validación: **CC**, **CE**, **PPT**
+- **Sin fecha de expedición** obligatoria
+- **GET** y **POST** comparten el mismo manejador
+
+## Casos de uso
+
+- **Habilitación** de personal de salud
+- **Cumplimiento** normativo y auditoría
+
+### Notas
+
+- La consulta RETHUS ocurre **después** de emparejar al ciudadano; si no hay coincidencia, puede devolverse **404** u otros errores.
+- **`academic`** y **`dataSSO`** pueden ser **arrays vacíos**.
+- Los datos son **personales y sensibles**; úsalos según la ley colombiana de habeas data en salud.

@@ -1,0 +1,149 @@
+---
+id: colombia-situacion-militar
+title: Colombia — Military service status
+description: Query Colombian military service (situación militar) using a Cédula de Ciudadanía (CC). Returns status and related details from official sources.
+sidebar_label: Colombia — Military service
+slug: /identity/colombia-situacion-militar
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombia military service status | Verifik API",
+	description:
+		"Query Colombian military service (situación militar) using a Cédula de Ciudadanía (CC). Returns status and related details from official sources.",
+	articleSection: "API Documentation",
+	keywords: "Colombia, military service, situación militar, CC, cédula, Verifik API",
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Military service status
+
+Verifik’s **Military service status** endpoint retrieves a person’s **situación militar** (military situation) for Colombian citizens identified by **Cédula de Ciudadanía (CC)**. Use it for onboarding, workforce eligibility, or compliance checks where military obligation status is required.
+
+The integration queries official Colombian military sources. Only **`documentType=CC`** is supported; other ID types are rejected at validation.
+
+## API Reference
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/situacion-militar
+```
+
+Send **`documentType`** and **`documentNumber`** as **query** parameters. **`documentType`** must be **`CC`** (Cédula de Ciudadanía). **`documentNumber`** is the citizen’s ID number without spaces or separators, as registered.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parameters
+
+| Name             | Type   | Required | Description                                                                 |
+| ---------------- | ------ | -------- | --------------------------------------------------------------------------- |
+| `documentType`   | string | Yes      | Must be `CC`. The API does not accept CE, PPT, or other document types here. |
+| `documentNumber` | string | Yes      | Number of the Cédula de Ciudadanía to query.                                 |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/situacion-militar", {
+	params: { documentType: "CC", documentNumber: "1121329661" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/situacion-militar"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1121329661"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/co/situacion-militar?documentType=CC&documentNumber=1121329661" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN"
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"adress": "Example address or guidance text from the source",
+		"documentNumber": "1121329661",
+		"documentType": "CC",
+		"fullName": "LASTNAME FIRSTNAME",
+		"place": "Place text from the military record",
+		"remissSince": "Date or status text when applicable",
+		"state": "Military situation or classification text"
+	},
+	"signature": {
+		"message": "Certified by Verifik.co",
+		"dateTime": "April 20, 2026 10:00 AM"
+	},
+	"id": "ABC12"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "Validation error (e.g. missing query parameter or documentType not CC)."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+Field names and string values follow the upstream source; `adress` is spelled as returned by the API.
+
+### Notes
+
+- Only **`CC`** is valid for **`documentType`**. If a client or Explorer UI lists other document types, sending anything other than **`CC`** still results in validation failure (**409**).
+- Responses are derived from live consultation of official systems; availability and field population may vary by record.

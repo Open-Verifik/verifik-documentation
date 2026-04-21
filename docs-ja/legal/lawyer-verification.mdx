@@ -1,0 +1,126 @@
+---
+id: lawyer-verification
+title: 🇨🇴 コロンビア — 弁護士照会
+description: CC・CE・NITでコロンビアの弁護士公開登録を照会します。
+sidebar_label: 🇨🇴 弁護士検証
+slug: /legal/lawyer-verification
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/rama/abogados
+```
+
+**クエリ**に **`documentType`**（`CC` / `CE` / `NIT`）と **`documentNumber`** を送ります。結果は **`results`** 配列に入ります。
+
+### ヘッダー(Headers)
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメータ(Parameters)
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | `CC`、`CE`、`NIT` のいずれか。 |
+| `documentNumber` | string | yes | 照会する番号。 |
+
+### リクエスト(Request)
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/rama/abogados", {
+	params: { documentType: "CC", documentNumber: "123456789" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/rama/abogados"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス(Response)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentNumber": "123456789",
+		"documentType": "CC",
+		"firstName": "María",
+		"fullName": "María González López",
+		"lastName": "González López",
+		"results": [
+			{
+				"documentNumber": "123456789",
+				"documentTypeName": "Cédula de ciudadanía",
+				"firstName": "María",
+				"lastName": "González López",
+				"statusName": "Vigente",
+				"tarcarliceNumber": "987654"
+			}
+		]
+	},
+	"signature": {
+		"message": "Certified by Verifik.co",
+		"dateTime": "April 20, 2026 10:00 AM"
+	},
+	"id": "ABC12"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "検証エラー（CC・CE・NIT 以外の documentType など）。"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 備考(Notes)
+
+- **`documentType`** は **`CC`** / **`CE`** / **`NIT`** のみです。
+- 該当がなければ **404** になる場合があります。

@@ -34,6 +34,7 @@ const ES_REL_PATH_TO_CANONICAL = {
 	"validacion-empresarial/spain": "business-validation/spain",
 	"verificacion-antecendentes/verificacion-antecendentes-brasil": "background-check/brazil",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-inpec": "background-check/colombia-inpec",
+	"verificacion-antecendentes/verificacion-antecendentes-colombia-sisben": "background-check/colombia-sisben-score",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-procuraduria":
 		"background-check/colombia-disciplinary-records-attorneys-office",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-policia": "background-check/colombia-police-record-check",
@@ -47,6 +48,12 @@ const ES_REL_PATH_TO_CANONICAL = {
 	"verificacion-antecendentes/verificacion-antecendentes-fbi": "background-check/fbi-background-check",
 	"verificacion-antecendentes/verificacion-antecendentes-interpol": "background-check/interpol-background-check",
 	"verificacion-antecendentes/verificacion-antecendentes-ofac": "background-check/ofac-background-check",
+	"finance/deudores-morosos": "finance/delinquent-debtors",
+	"certificados/colombia-ministerio-trabajo-certificados-v3": "certificates/colombia-ministerio-trabajo-certificados-v3",
+	"validacion-empresarial/colombia-rues-v3": "business-validation/colombia-rues-v3",
+	"validacion-empresarial/validacion-empresarial-rues-completa-v3": "business-validation/rues-complete-v3",
+	"validacion-empresarial/verificacion-dian": "business-validation/colombia-dian-verification",
+	"validacion-empresarial/verificacion-facturador-legal": "business-validation/colombia-legal-invoicer-verification",
 };
 
 /**

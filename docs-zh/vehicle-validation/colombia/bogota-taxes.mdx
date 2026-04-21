@@ -1,0 +1,133 @@
+---
+id: vehicle-validation-colombia-bogota-taxes
+title: 波哥大 — 车辆税费
+description: 通过车主证件与车牌查询哥伦比亚波哥大登记车辆的税务义务与欠税状态。
+sidebar_label: 波哥大 — 车辆税费
+slug: /vehicle-validation/colombia/bogota-taxes
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/bogota/vehicle/tax
+```
+
+查询波哥大登记车辆的税务义务信息。须通过 **查询参数** 提供车主的 **`documentType`**、**`documentNumber`** 以及车辆 **`plate`**。响应包含车辆详情及各财政年度的义务状态。
+
+### 请求头（Headers）
+
+| 名称 | 取值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数（Parameters）
+
+| 名称 | 类型 | 必填 | 描述 |
+| --- | --- | --- | --- |
+| `plate` | string | 是 | 待查询车牌，5–6 位，不含空格或圆点。 |
+| `documentNumber` | string | 是 | 证件号码，不含空格或圆点。 |
+| `documentType` | string | 是 | 证件类型。允许：`CC`、`NIT`。 |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/bogota/vehicle/tax", {
+  params: { 
+    plate: "ABC123", 
+    documentType: "CC", 
+    documentNumber: "123456789" 
+  },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/bogota/vehicle/tax"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC123", "documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "details": "",
+    "documentNumber": "123456789",
+    "documentType": "CC",
+    "obligation": {
+      "vehicle": [
+        {
+          "brand": "MAZDA",
+          "form": "2020003010100010240",
+          "linea": "050365",
+          "model": "2021",
+          "obligation": "1.080.000",
+          "obligationStatus": "Moroso",
+          "plate": "ABC123",
+          "reference": "0000020034588543",
+          "taxableYear": "2020",
+          "totalToPay": "1.080.000"
+        }
+      ]
+    },
+    "plate": "ABC123"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "July 3, 2024 3:59 PM"},
+  "id": "5P20N"
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 说明
+
+- **`CC`** 表示哥伦比亚公民身份证；**`NIT`** 表示税务识别号（个人或法人）。
+- **`obligationStatus`** 为 **Moroso** 时表示尚有未缴税款。

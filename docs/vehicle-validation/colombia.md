@@ -12,9 +12,9 @@ Comprehensive Colombian vehicle validation services providing access to multiple
 
 ### 🏛️ **Bogotá Municipal Services**
 
--   **[Taxes in Bogotá](/vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxes)** - Check vehicle tax status and payment history in Bogotá
--   **[Vehicle Fines Check](/vehicle-validation/colombia/vehicle-validation-colombia-bogota-vehicle-fines)** - Query outstanding traffic fines and violations
--   **[Vehicle Accidentality](/vehicle-validation/colombia/vehicle-validation-colombia-bogota-vehicle-accidentality)** - Access accident history and records
+-   **[Taxes in Bogotá](/vehicle-validation/colombia/bogota-taxes)** - Check vehicle tax status and payment history in Bogotá
+-   **[Vehicle Fines Check](/vehicle-validation/colombia/bogota-vehicle-fines)** - Query outstanding traffic fines and violations
+-   **[Vehicle Accidentality](/vehicle-validation/colombia/bogota-vehicle-accidentality)** - Access accident history and records
 -   **[Pico y Placa](/vehicle-validation/colombia/vehicle-validation-colombia-bogota-pico-y-placa)** - Check vehicle restrictions and circulation schedules
 
 ### 🚗 **Fasecolda Services**
@@ -40,7 +40,7 @@ Comprehensive Colombian vehicle validation services providing access to multiple
 
 ### 🎓 **SISCONMP Training Records**
 
--   **[SISCONMP Training Records](/vehicle-validation/colombia/vehicle-validation-colombia-sisconmp-trainings)** - Access professional driver training certifications
+-   **[SISCONMP Training Records](/vehicle-validation/colombia/sisconmp-trainings)** - Access professional driver training certifications
 
 ## Service Categories
 

@@ -1,0 +1,158 @@
+---
+id: antecedentes-judiciales-colombia
+title: Colombia — Antecedentes judiciales (expedientes)
+description: Consulta expedientes judiciales en Colombia por CC, ciudad y número de documento (Rama Judicial).
+sidebar_label: 🇨🇴 Colombia — Antecedentes Judiciales
+slug: /legal/antecedentes-judiciales-colombia
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Antecedentes judiciales (expedientes)
+
+Este endpoint devuelve **datos de expediente judicial** desde el sistema judicial colombiano para titulares de **CC** (**cédula de ciudadanía**) en una **ciudad** (circuito) determinada. Suele incluir despacho (**EPMS**), fechas, municipio, radicación y nombres de partes cuando la fuente los provee.
+
+## Referencia de API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/rama/juzgado/expedientes
+```
+
+Envía **`documentType`**, **`documentNumber`** y **`city`** en la **query**.
+
+### Encabezados
+
+| Nombre        | Valor              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parámetros
+
+| Nombre           | Tipo   | Requerido | Descripción |
+| ---------------- | ------ | --------- | ----------- |
+| `documentType`   | string | Sí        | Debe ser **`CC`**. |
+| `documentNumber` | string | Sí        | Número de documento según la consulta. |
+| `city`           | string | Sí        | Código de ciudad/circuito, p. ej. **`BOGOTA`**, **`MEDELLIN`**, **`CALI`**, **`BARRANQUILLA`**, u otros admitidos por la integración. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/rama/juzgado/expedientes", {
+	params: {
+		documentType: "CC",
+		documentNumber: "1234567890",
+		city: "BOGOTA",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/rama/juzgado/expedientes"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1234567890", "city": "BOGOTA"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/co/rama/juzgado/expedientes?documentType=CC&documentNumber=1234567890&city=BOGOTA" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN"
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"appeal": "S",
+		"city": "BOGOTA",
+		"codeRoom": "001",
+		"consOffice": "01",
+		"corporation": "EJEMPLO",
+		"court": "JUZGADO EJEMPLO",
+		"courtOfepms": "EPMS EXAMPLE",
+		"documentNumber": "1234567890",
+		"documentType": "CC",
+		"filingNumber": "2024-000123",
+		"municipality": "BOGOTÁ D.C.",
+		"name": "USUARIO EJEMPLO",
+		"receiptDate": "2024-01-15",
+		"representative": "",
+		"year": "2024"
+	},
+	"signature": {
+		"dateTime": "20 de abril de 2026 10:00 AM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABC12"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "Validation error (e.g. missing query parameter or documentType not CC)."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Características
+
+- **Metadatos de expediente** según la integración con la Rama Judicial (los campos pueden variar)
+- Consulta **por ciudad** con códigos de circuito admitidos
+- Respuestas **firmadas**; las repeticiones pueden ir a **caché**
+
+## Casos de uso
+
+- **KYC y riesgo** con contexto de expediente judicial en Colombia
+- **Cumplimiento y estudios legales** ligados a CC y jurisdicción (ciudad)
+
+### Notas
+
+- En la API, **`documentType`** solo admite **`CC`**.
+- **`city`** debe coincidir con un valor aceptado por el servicio (véase **Parámetros**).
+- La disponibilidad de datos depende del **registro judicial**; incluso con datos válidos puede no haber resultado.

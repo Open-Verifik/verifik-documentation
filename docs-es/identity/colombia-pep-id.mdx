@@ -1,18 +1,25 @@
 ---
 id: colombia-pep-id
-title: 🇨🇴 Colombia - ID PEP
-description: Servicio de validación de Permiso Especial de Permanencia (PEP) colombiano para verificar permisos de ciudadanos venezolanos en Colombia
+title: Colombia — PEP (Permiso Especial de Permanencia)
+description: Valida el PEP ante Migración Colombia mediante GET /v2/co/foreigner-id/pep.
+sidebar_label: 🇨🇴 Colombia — PEP
 slug: /identidad/colombia-id-pep
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 🇨🇴 Colombia - ID PEP
+# Colombia — PEP (Permiso Especial de Permanencia)
 
-Validar el Permiso Especial de Permanencia (PEP) para ciudadanos venezolanos en Colombia. Este endpoint de API recupera datos autenticados del PEP, incluyendo el nombre completo del titular del permiso, número de documento, fecha de vencimiento y estado, simplificando la verificación de identidad para cumplimiento, verificaciones de elegibilidad o provisión de servicios.
+Verifik valida registros de **PEP** publicados por **Migración Colombia** para KYC, elegibilidad y cumplimiento.
 
-Ideal para organizaciones que necesitan verificar el estatus legal de nacionales venezolanos en Colombia, como para empleo, servicios financieros o programas humanitarios.
+## Qué devuelve esta API
+
+- **Estado** (p. ej. **VIGENTE** / **VENCIDO**) y fechas clave, incluidas **expedición** y **vencimiento** cuando la fuente las entrega
+- **Nombre** estructurado, metadatos del documento **PEP** e **identificación venezolana** cuando aplica
+- Respuestas **firmadas** y posible **caché**
+
+## Referencia de API
 
 ### Endpoint
 
@@ -20,19 +27,21 @@ Ideal para organizaciones que necesitan verificar el estatus legal de nacionales
 GET https://api.verifik.co/v2/co/foreigner-id/pep
 ```
 
-### Headers
+La misma integración está disponible como **`POST`** con cuerpo JSON con los mismos campos. En **`GET`** usa **parámetros de query** como abajo.
 
-| Name          | Value              |
-| ------------- | ------------------ |
-| Content-Type  | `application/json` |
-| Authorization | `Bearer <token>`   |
+### Encabezados
+
+| Nombre | Valor |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
 
 ### Parámetros
 
-| Name | Type | Required | Description | Example |
-| ---- | ---- | -------- | ----------- | ------- |
-| `documentNumber` | string | **Sí** | Número de documento sin espacios ni puntos. | `123456789` |
-| `expeditionDate` | string | **Sí** | Fecha cuando se generó el documento. | `10/10/2024` |
+| nombre | tipo | requerido | descripción |
+| --- | --- | --- | --- |
+| `documentNumber` | string | sí | Número PEP sin espacios ni puntuación. |
+| `expeditionDate` | string | sí | Fecha de expedición en **`DD/MM/AAAA`** (p. ej. `10/10/2024`). |
 
 ### Solicitud
 
@@ -40,88 +49,32 @@ GET https://api.verifik.co/v2/co/foreigner-id/pep
   <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
-const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/co/foreigner-id/pep',
-  params: {
-    expeditionDate: '10/10/2024',
-    documentNumber: '123456789'
-  },
-  headers: {
-    'Accept': 'application/json',
-    'Authorization': 'Bearer <tu_token>'
-  }
-};
-
-try {
-  const { data } = await axios.request(options);
-  console.log(data);
-} catch (error) {
-  console.error(error);
-}
+const { data } = await axios.get("https://api.verifik.co/v2/co/foreigner-id/pep", {
+	params: {
+		documentNumber: "123456789",
+		expeditionDate: "10/10/2024",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
 ```
 
   </TabItem>
   <TabItem value="python" label="Python">
 
 ```python
-import http.client
+import os, requests
 
-conn = http.client.HTTPSConnection("api.verifik.co")
-payload = ''
-headers = {}
-conn.request("GET", "/v2/co/foreigner-id/pep?documentNumber=123456789&expeditionDate=10/10/2024", payload, headers)
-res = conn.getresponse()
-data = res.read()
-print(data.decode("utf-8"))
-```
-
-  </TabItem>
-  <TabItem value="php" label="PHP">
-
-```php
-<?php
-require_once 'HTTP/Request2.php';
-$request = new HTTP_Request2();
-$request->setUrl('https://api.verifik.co/v2/co/foreigner-id/pep?documentNumber=123456789&expeditionDate=10/10/2024');
-$request->setMethod(HTTP_Request2::METHOD_GET);
-$request->setConfig(array(
-  'follow_redirects' => TRUE
-));
-try {
-  $response = $request->send();
-  if ($response->getStatus() == 200) {
-    echo $response->getBody();
-  }
-  else {
-    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
-    $response->getReasonPhrase();
-  }
-}
-catch(HTTP_Request2_Exception $e) {
-  echo 'Error: ' . $e->getMessage();
-}
-?>
-```
-
-  </TabItem>
-  <TabItem value="swift" label="Swift">
-
-```swift
-var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/co/foreigner-id/pep?documentNumber=123456789&expeditionDate=10%2F10%2F2024")!,timeoutInterval: Double.infinity)
-request.httpMethod = "GET"
-
-let task = URLSession.shared.dataTask(with: request) { data, response, error in 
-  guard let data = data else {
-    print(String(describing: error))
-    return
-  }
-  print(String(data: data, encoding: .utf8)!)
-}
-
-task.resume()
+url = "https://api.verifik.co/v2/co/foreigner-id/pep"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentNumber": "123456789", "expeditionDate": "10/10/2024"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
 ```
 
   </TabItem>
@@ -134,25 +87,22 @@ task.resume()
 
 ```json
 {
-  "data": {
-    "arrayName": [
-      "MATEO",
-      "VERIFIK"
-    ],
-    "documentNumber": "123456789012345",
-    "documentType": "PEP",
-    "expirationDate": "08/08/2018",
-    "firstName": "MATEO",
-    "fullName": "MATEO VERIFIK",
-    "identification": "17609583",
-    "lastName": "VERIFIK",
-    "status": "VENCIDO"
-  },
-  "signature": {
-    "dateTime": "August 22, 2023 8:02 PM",
-    "message": "Certified by Verifik.co"
-  },
-  "id": "tnlkb"
+	"data": {
+		"arrayName": ["MATEO", "VERIFIK"],
+		"documentNumber": "123456789012345",
+		"documentType": "PEP",
+		"expirationDate": "08/08/2018",
+		"firstName": "MATEO",
+		"fullName": "MATEO VERIFIK",
+		"identification": "17609583",
+		"lastName": "VERIFIK",
+		"status": "VENCIDO"
+	},
+	"signature": {
+		"dateTime": "August 22, 2023 8:02 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "tnlkb"
 }
 ```
 
@@ -161,43 +111,35 @@ task.resume()
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+	"code": "NotFound",
+	"message": "Record not found."
 }
 ```
 
   </TabItem>
-  <TabItem value="409" label="409 - Faltan parámetros">
+  <TabItem value="409" label="409">
 
 ```json
 {
-  "code": "MissingParameter",
-  "message": "missing date\n. missing documentNumber\n"
+	"code": "MissingParameter",
+	"message": "expeditionDate must be a valid date in DD/MM/YYYY format"
 }
 ```
 
   </TabItem>
 </Tabs>
 
-## Notas Importantes
-
-- El PEP es un permiso especial emitido por Migración Colombia exclusivamente para ciudadanos venezolanos. Para otras nacionalidades o tipos de documentos, por favor consulta nuestros servicios de validación alternativos.
-- El uso de este servicio está restringido a entidades autorizadas o con el permiso del usuario final. Los datos proporcionados están sujetos a las leyes de privacidad colombianas y deben manejarse de manera responsable.
-- Siempre verifica con el documento físico PEP para confirmar la información recuperada.
-
 ## Características
 
-- **Validación de Permiso Especial de Permanencia**: Validar PEP (Permiso Especial de Permanencia) para ciudadanos venezolanos en Colombia
-- **Verificación de Nacionales Venezolanos**: Verificar el estatus legal de nacionales venezolanos en Colombia
-- **Información del Documento**: Acceder a número de documento, tipo PEP, fecha de expedición y fecha de vencimiento
-- **Información Personal**: Recuperar primer nombre, apellido y nombre completo del titular del permiso
-- **Número de Identificación**: Acceder al número de identificación venezolano
-- **Estado del Documento**: Verificar estado del permiso (ej. VENCIDO - vencido)
-- **Verificación de Estatus Legal**: Verificar estatus legal para empleo, servicios financieros o programas humanitarios
-- **Verificación de Cumplimiento**: Simplificar la verificación de identidad para cumplimiento y verificaciones de elegibilidad
-- **Múltiples Lenguajes de Programación**: Soporte para JavaScript, Python, PHP y Swift
-- **Datos en Tiempo Real**: Acceder a información PEP actual y actualizada
-- **Manejo Completo de Errores**: Respuestas de error detalladas para varios escenarios
-- **Integración con Inmigración Colombiana**: Acceso directo a base de datos oficial de inmigración colombiana
-- **Cumplimiento de Privacidad**: Sujeto a leyes de privacidad colombianas y manejo responsable de datos
-- **Programas Humanitarios**: Ideal para verificación de elegibilidad de programas humanitarios
+- **Consulta oficial de PEP** contra el flujo de Migración Colombia
+- **Vigencia y fechas** cuando la fuente las devuelve
+## Casos de uso
+
+- **Empleo, banca y servicios** para connacionales venezolanos con PEP en Colombia
+- **Programas humanitarios** que requieran acreditar estancia
+
+### Notas
+
+- **`expeditionDate`** debe estar en **`DD/MM/AAAA`**; formatos incorrectos suelen devolver **409**.
+- **`GET`** y **`POST`** comparten el mismo manejador; usa **`POST`** si prefieres JSON en el cuerpo.
+- Cambios en el portal o indisponibilidad pueden producir **404** / **500**.

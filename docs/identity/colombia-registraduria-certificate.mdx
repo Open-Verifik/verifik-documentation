@@ -1,0 +1,166 @@
+---
+id: colombia-registraduria-certificate
+title: Colombia — Registraduría ID validity certificate (CC)
+description: Obtain the official Registraduría certificate of validity for a Colombian cédula (CC) using document number and issue date via GET /v2/co/registraduria/certificado.
+slug: /identity/colombia-registraduria-certificate
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombia Registraduría ID Validity Certificate | Verifik API",
+	description:
+		"Retrieve the Registraduría certificate that confirms whether a Colombian national ID (CC) is valid, with PDF and structured fields.",
+	articleSection: "API Documentation",
+	keywords: "Colombia, Registraduría, cédula, certificado vigencia, identity API",
+	about: {
+		"@type": "Thing",
+		name: "Identity Verification API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Colombia — Registraduría ID validity certificate (CC)
+
+This endpoint returns the **certificate of validity** (*certificado de vigencia*) for a **Colombian Cédula de Ciudadanía (CC)** from **Registraduría Nacional del Estado Civil**, using the **document number** and **issue date**. The response includes structured fields parsed from the official PDF (including a **base64-encoded PDF**) and status information such as **novedad** (validity state from the preliminary check).
+
+The underlying flow targets **CC** holders; the API validates **`documentNumber`** and **`date`** only.
+
+## What this API returns
+
+- **Validity status** context (**novedad**) from the upstream vigencia check
+- **Structured document** fields (e.g. number, issue date, issue place, name) when parsing succeeds
+- **Verification code** and **PDF** (**pdfBase64**) for audit and downstream use
+- A **signed** Verifik response wrapper
+
+## API reference
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/registraduria/certificado
+```
+
+The same integration is available as **`POST`** with a JSON body containing the same fields. **`GET`** uses **query parameters** as shown below.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentNumber` | string | yes | CC number without spaces or punctuation. |
+| `date` | string | yes | **Issue date** of the document in **`DD/MM/YYYY`**. |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/registraduria/certificado", {
+	params: {
+		documentNumber: "123456789",
+		date: "10/10/2020",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/registraduria/certificado"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentNumber": "123456789", "date": "10/10/2020"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"codigoVerificacion": "ABC123XYZ",
+		"novedad": "VIGENTE",
+		"pdfBase64": "JVBERi0xLjQK...",
+		"documento": {
+			"cedula": "123456789",
+			"fechaExpedicion": "10/10/2020",
+			"lugarExpedicion": "BOGOTA D.C.",
+			"nombre": "JUAN PEREZ"
+		}
+	},
+	"signature": {
+		"dateTime": "August 23, 2022 11:42 AM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "date format required: DD/MM/YYYY\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Features
+
+- **Issue date** must match **`DD/MM/YYYY`**
+- **PDF-backed** certificate data with **base64** payload when generation succeeds
+- **GET** and **POST** share the same handler
+
+## Use cases
+
+- **KYC** checks that require an official **validity certificate** for a Colombian CC
+- **Fraud reduction** when the issue date is known and must match Registraduría records
+
+### Notes
+
+- **`date`** is the **document issue date**, not the date of birth.
+- Wrong **`DD/MM/YYYY`** format typically returns **409** (`MissingParameter`).
+- Upstream or scraping failures (e.g. captcha/PDF flow) may surface as **409** with codes such as **`Endpoint_out_of_service`**.
+- **`GET`** and **`POST`** share the same handler; use **`POST`** if you prefer a JSON body.
+- Treat **pdfBase64** and personal fields as **sensitive**; comply with Colombian privacy rules and your contracts.

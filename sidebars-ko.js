@@ -29,8 +29,78 @@ const sidebars = {
 					items: [
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-plate",
+							label: "🇨🇴 보고타 — 택시（번호판）",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-vehicle-fines",
+							label: "🇨🇴 보고타 — 차량 과태료",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxes",
+							label: "🇨🇴 보고타 — 차량세",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-vehicle-accidentality",
+							label: "🇨🇴 보고타 — 사고 이력",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-pico-y-placa",
+							label: "🇨🇴 보고타 — 피코이플라카",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/colombia-fasecolda-values-by-plate",
+							label: "🇨🇴 Fasecolda — 번호판 차량 가치",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/colombia-fasecolda-vehicle-by-code",
+							label: "🇨🇴 Fasecolda — 코드별 차량 가치",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/colombia-fasecolda-claims-verification",
+							label: "🇨🇴 Fasecolda — 보험 청구",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license",
+							label: "🇨🇴 RUNT — 운전면허",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate",
+							label: "🇨🇴 RUNT — 차량 확인",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified",
+							label: "🇨🇴 RUNT — 차량 확인(간편)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo",
+							label: "🇨🇴 RUNT — 차량 확인(기본)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin",
+							label: "🇨🇴 RUNT — VIN 차량 확인",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-resolutions",
 							label: "🇨🇴 SIMIT - 결의",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-suspensiones",
+							label: "🇨🇴 SIMIT — 면허 정지",
 						},
 						{
 							type: "doc",
@@ -56,6 +126,16 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-consultation",
 							label: "🇨🇴 SIMIT - 조회",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-sisconmp-trainings",
+							label: "🇨🇴 SISCONMP — 운송 검증",
+						},
+						{
+							type: "doc",
+							id: "identity/colombia-situacion-militar",
+							label: "🇨🇴 군 복무 기록",
 						},
 					],
 				},
@@ -93,6 +173,26 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 칠레 — 신분증 유효성 검증" },
 				{ type: "doc", id: "identity/canada", label: "🇨🇦 캐나다 — 운전면허(BC·온타리오)" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 코스타리카 국민 신분증(CCCR)" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombian-citizen",
+					label: "🇨🇴 콜롬비아 — 국민 신분증(CC·PPT)",
+				},
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombian-cedula-premium",
+					label: "🇨🇴 콜롬비아 — 국민 신분증 프리미엄(CC)",
+				},
+				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 국민ID (확장)" },
+				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 선거청 유효성 증명" },
+				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 PEP (특별 체류)" },
+				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 외국인 CE" },
+				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 PPT (임시 보호)" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/identity-validation-colombia-colombian-politically-exposed-persons",
+					label: "🇨🇴 PEP 조회 (AML)",
+				},
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 파나마 국민 (CCPA)" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 파라과이 국민 (CIC)" },
 				{ type: "doc", id: "identity/identity-brazil", label: "🇧🇷 브라질 국민(CPF)" },
@@ -113,6 +213,21 @@ const sidebars = {
 				},
 				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 스페인 기업(KYB)" },
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 칠레 — 기업(RUT)" },
+				{
+					type: "doc",
+					id: "business-validation/rues-complete-v3",
+					label: "🇨🇴 콜롬비아 — RUES 전체 검증",
+				},
+				{
+					type: "doc",
+					id: "business-validation/colombia-dian-verification",
+					label: "🇨🇴 콜롬비아 — 세금 정보 확인 (DIAN)",
+				},
+				{
+					type: "doc",
+					id: "business-validation/colombia-legal-invoicer-verification",
+					label: "🇨🇴 콜롬비아 — DIAN 전자 청구",
+				},
 				{ type: "doc", id: "business-validation/canada", label: "🇨🇦 캐나다 기업 검증" },
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 코스타리카 기업(NITE)" },
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 파나마 기업 (RUC)" },
@@ -167,7 +282,43 @@ const sidebars = {
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 공공 계약" },
 				{ type: "doc", id: "background-check/colombia-disciplinary-records-attorneys-office", label: "🇨🇴 징계 기록" },
 				{ type: "doc", id: "background-check/colombia-inpec", label: "🇨🇴 INPEC" },
+				{ type: "doc", id: "background-check/colombia-sisben-score", label: "🇨🇴 SISBEN 점수" },
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 RNMC 시정 조치" },
+				{
+					type: "doc",
+					id: "legal/lawyer-verification",
+					label: "🇨🇴 변호사 조회",
+				},
+				{
+					type: "doc",
+					id: "legal/colombian-legal-processes",
+					label: "🇨🇴 사법 절차",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-judicial-records",
+					label: "🇨🇴 사법 기록",
+				},
+				{
+					type: "doc",
+					id: "legal/retrieve-details-of-a-legal-process-by-number",
+					label: "🇨🇴 사법 절차 세부",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-number",
+					label: "🇨🇴 SIGEP (문서번호)",
+				},
+				{
+					type: "doc",
+					id: "legal/sigep-public-servant-by-name",
+					label: "🇨🇴 SIGEP (이름)",
+				},
+				{
+					type: "doc",
+					id: "legal/certificate-of-validity-for-legal-professionals",
+					label: "🇨🇴 변호사 자격 증명",
+				},
 				{ type: "doc", id: "background-check/dea-background-check", label: "🌐 DEA" },
 				{ type: "doc", id: "background-check/europol-background-check", label: "🌐 Europol" },
 				{ type: "doc", id: "background-check/fbi-background-check", label: "🌐 FBI" },
