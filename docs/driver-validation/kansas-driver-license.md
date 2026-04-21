@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 ### Endpoint
 
 ```
-https://api.verifik.co/v2/usa/kansas/driver-license
+GET https://api.verifik.co/v2/usa/kansas/driver-license
 ```
 
 The Kansas Driver License Validation Service allows developers to programmatically validate the status, restrictions, endorsements, and designations of Kansas driver licenses. By providing a valid Kansas driver license number, users can obtain a response that includes details such as the license status, expiration date, any restrictions or endorsements, and designations associated with the license.

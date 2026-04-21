@@ -571,10 +571,22 @@ const sidebars = {
 					],
 				},
 				{
-					type: "doc",
-					id: "vehicle-validation/united-states",
+					type: "category",
 					label: "🇺🇸 United States",
-					key: "vehicle-united-states",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "vehicle-validation/united-states",
+							label: "Vehicle by plate",
+							key: "vehicle-united-states",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/united-states/vehicle-by-vin",
+							label: "Vehicle by VIN",
+						},
+					],
 				},
 			],
 		},
@@ -625,6 +637,11 @@ const sidebars = {
 					id: "background-check/brazil",
 					label: "🇧🇷 Brazil",
 					key: "background-check-brazil",
+				},
+				{
+					type: "doc",
+					id: "background-check/united-states-passport-entries",
+					label: "🇺🇸 United States - Passport & U.S. entries",
 				},
 				{
 					type: "doc",

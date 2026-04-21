@@ -57,6 +57,15 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 パラグアイ — 車両情報" },
 				{
 					type: "category",
+					label: "🇺🇸 アメリカ",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "vehicle-validation/united-states", label: "車両（ナンバー・州）" },
+						{ type: "doc", id: "vehicle-validation/united-states/vehicle-by-vin", label: "車両（VIN）" },
+					],
+				},
+				{
+					type: "category",
 					label: "🇵🇪 ペルー",
 					collapsible: true,
 					items: [
@@ -99,6 +108,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/peru-foreigner-id", label: "🇵🇪 ペルー外国人CE" },
 				{ type: "doc", id: "identity/peru-full-id", label: "🇵🇪 ペルーDNI（拡張）" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 メキシコ国民" },
+				{ type: "doc", id: "identity/united-states", label: "🇺🇸 アメリカ — SSN" },
 			],
 		},
 		{
@@ -123,6 +133,7 @@ const sidebars = {
 					id: "business-validation/business-validation-mexican-companies",
 					label: "🇲🇽 メキシコ法人検証 (FME)",
 				},
+				{ type: "doc", id: "business-validation/united-states", label: "🇺🇸 アメリカ法人（SEC EDGAR）" },
 			],
 		},
 		{
@@ -149,6 +160,16 @@ const sidebars = {
 					id: "driver-validation/chile-driver-license",
 					label: "🇨🇱 チリ — 運転免許",
 				},
+				{
+					type: "doc",
+					id: "driver-validation/florida-driver-license",
+					label: "🇺🇸 フロリダ州 — 運転免許",
+				},
+				{
+					type: "doc",
+					id: "driver-validation/kansas-driver-license",
+					label: "🇺🇸 カンザス州 — 運転免許",
+				},
 			],
 		},
 		{
@@ -169,6 +190,11 @@ const sidebars = {
 				{ type: "doc", id: "background-check/interpol-background-check", label: "🌐 Interpol" },
 				{ type: "doc", id: "background-check/ofac-background-check", label: "🌐 OFAC" },
 				{ type: "doc", id: "background-check/onu-background-check", label: "🌐 ONU" },
+				{
+					type: "doc",
+					id: "background-check/united-states-passport-entries",
+					label: "🇺🇸 パスポート・米国入出国",
+				},
 			],
 		},
 	],

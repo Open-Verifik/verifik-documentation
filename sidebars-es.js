@@ -451,10 +451,22 @@ const sidebars = {
 					],
 				},
 				{
-					type: "doc",
-					id: "validacion-vehiculos/estados-unidos",
+					type: "category",
 					label: "🇺🇸 Estados Unidos",
-					key: "vehiculos-estados-unidos",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "validacion-vehiculos/estados-unidos",
+							label: "Vehículo por placa",
+							key: "vehiculos-estados-unidos",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/estados-unidos-vin",
+							label: "Vehículo por VIN",
+						},
+					],
 				},
 			],
 		},
@@ -467,6 +479,11 @@ const sidebars = {
 					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-brasil",
 					label: "🇧🇷 Brasil - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-estados-unidos-entradas-pasaporte",
+					label: "🇺🇸 EE. UU. - Pasaporte y entradas/salidas",
 				},
 				{
 					type: "doc",

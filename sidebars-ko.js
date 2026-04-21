@@ -149,6 +149,11 @@ const sidebars = {
 					id: "driver-validation/chile-driver-license",
 					label: "🇨🇱 칠레 — 운전면허",
 				},
+				{
+					type: "doc",
+					id: "driver-validation/kansas-driver-license",
+					label: "🇺🇸 캔자스주 — 운전면허",
+				},
 			],
 		},
 		{

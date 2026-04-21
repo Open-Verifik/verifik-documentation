@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 ### Endpoint
 
 ```
-https://api.verifik.co/v2/usa/florida/driver-license
+GET https://api.verifik.co/v2/usa/florida/driver-license
 ```
 
 This service allows developers to validate the status, restrictions, endorsements, and designations of Florida driver licenses. By providing a valid Florida driver license number, the service response with the license status, expiration date, restrictions, endorsements, and designations.

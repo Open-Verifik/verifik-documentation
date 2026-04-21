@@ -1,0 +1,212 @@
+---
+id: united-states
+title: アメリカ合衆国 — SSN（社会保障番号）検証
+description: GET /v2/usa/ssn で米国 SSN を照会。documentNumber に SSN を指定します。
+slug: /identity/united-states
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "アメリカの SSN 検証 | Verifik KYC API",
+	description:
+		"GET /v2/usa/ssn で米国 SSN を照会。documentNumber に SSN を指定します。",
+	articleSection: "API ドキュメント",
+	keywords: "本人確認, KYC, アメリカ, SSN, 社会保障番号",
+	about: {
+		"@type": "Thing",
+		name: "本人確認 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# アメリカ合衆国 — SSN（社会保障番号）検証
+
+米国で発行された **社会保障番号（SSN）** を公的データに照合して検証します。KYC、オンボーディング、不正防止ワークフロー向けです。
+
+## この API で検証できること
+
+-   **SSN**: 番号の有効性に関する情報を取得します。
+-   **発行州**: どの州で発行されたかに関する情報を返します。
+-   **初回発行年**: 初めて発行された年を返します。
+-   **有効性**: 番号が有効とみなせるかのステータスを返します。
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/usa/ssn
+```
+
+米国の SSN を照会します。クエリパラメータ **`documentNumber`** に、書面どおりの形式で SSN を指定します。
+
+### ヘッダー
+
+| 名前          | 値                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 | 例 |
+| ---- | ---- | ---- | ---- | ---- |
+| `documentNumber` | string | **はい** | 照会する SSN。書面の表記どおり。 | `123-45-678` |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/usa/ssn',
+  params: {
+    documentNumber: '123-45-678'
+  },
+  headers: {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer <tu_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {}
+conn.request("GET", "/v2/usa/ssn?documentNumber=123-45-678", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/usa/ssn?documentNumber=123-45-678');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+?>
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/usa/ssn?documentNumber=123-45-678")!,timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "firstYearIssued": "1936",
+    "issuingState": "Oklahoma (OK)",
+    "SSN": "123-45-678",
+    "valid": true
+  },
+  "signature": {
+    "dateTime": "April 11, 2023 3:42 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+  </TabItem>
+</Tabs>

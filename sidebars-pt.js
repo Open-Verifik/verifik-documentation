@@ -62,6 +62,15 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 Paraguai — Informações do veículo" },
 				{
 					type: "category",
+					label: "🇺🇸 Estados Unidos",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "vehicle-validation/united-states", label: "Veículo por placa (estado)" },
+						{ type: "doc", id: "vehicle-validation/united-states/vehicle-by-vin", label: "Veículo por VIN" },
+					],
+				},
+				{
+					type: "category",
 					label: "🇵🇪 Peru",
 					collapsible: true,
 					items: [
@@ -90,6 +99,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 Chile — Validação de documento de identidade" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Cidadão costa-riquenho (CCCR)" },
 				{ type: "doc", id: "identity/spain-citizen", label: "🇪🇸 Cidadão espanhol" },
+				{ type: "doc", id: "identity/united-states", label: "🇺🇸 EUA — SSN (Social Security Number)" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 Cidadão mexicano" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Cidadão panamenho (CCPA)" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Cidadão paraguaio (CIC)" },
@@ -109,6 +119,7 @@ const sidebars = {
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 Chile — Empresa (RUT)" },
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 Empresa na Costa Rica (NITE)" },
 				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 Empresa espanhola (KYB)" },
+				{ type: "doc", id: "business-validation/united-states", label: "🇺🇸 EUA — Empresa (SEC EDGAR)" },
 				{ type: "doc", id: "business-validation/mexico", label: "🇲🇽 Verificação de empresas no México" },
 				{
 					type: "doc",
@@ -148,6 +159,16 @@ const sidebars = {
 					type: "doc",
 					id: "driver-validation/chile-driver-license",
 					label: "🇨🇱 Chile — Carteira de motorista",
+				},
+				{
+					type: "doc",
+					id: "driver-validation/florida-driver-license",
+					label: "🇺🇸 Flórida (EUA) — Carteira de motorista",
+				},
+				{
+					type: "doc",
+					id: "driver-validation/kansas-driver-license",
+					label: "🇺🇸 Kansas (EUA) — Carteira de motorista",
 				},
 			],
 		},
