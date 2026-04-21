@@ -17,6 +17,11 @@ const sidebars = {
 					items: [
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-agreements",
+							label: "🇨🇴 SIMIT - Accords de paiement",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-fines",
 							label: "🇨🇴 SIMIT - Amendes",
 						},
@@ -24,16 +29,6 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-consultation",
 							label: "🇨🇴 SIMIT - Consultation",
-						},
-						{
-							type: "doc",
-							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-agreements",
-							label: "🇨🇴 SIMIT - Accords de paiement",
-						},
-						{
-							type: "doc",
-							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-resolutions",
-							label: "🇨🇴 SIMIT - Résolutions",
 						},
 						{
 							type: "doc",
@@ -45,30 +40,57 @@ const sidebars = {
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-general-query-by-plate",
 							label: "🇨🇴 SIMIT - Requête générale par plaque",
 						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-resolutions",
+							label: "🇨🇴 SIMIT - Résolutions",
+						},
 					],
 				},
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 Costa Rica — Véhicule par plaque" },
+				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 Espagne" },
 				{
 					type: "doc",
 					id: "vehicle-validation/vehicle-validation-mexico-alt",
 					label: "🇲🇽 Mexique",
 				},
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 Paraguay — Informations véhicule" },
-				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 Espagne" },
+				{
+					type: "category",
+					label: "🇵🇪 Pérou",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 Pérou — Véhicules" },
+						{
+							type: "doc",
+							id: "vehicle-validation/peru/peru-vehicle-information",
+							label: "🇵🇪 Pérou — Véhicule par plaque",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/peru/peru-vehicle-insurance",
+							label: "🇵🇪 Pérou — Assurance SOAT",
+						},
+					],
+				},
 			],
 		},
 		{
 			type: "category",
 			label: "Identité",
 			items: [
+				{ type: "doc", id: "identity/canada", label: "🇨🇦 Canada — Permis (CB et Ontario)" },
 				{ type: "doc", id: "identity/chile", label: "🇨🇱 Citoyen chilien (RUN)" },
 				{ type: "doc", id: "identity/chile-taxpayer", label: "🇨🇱 Chili — Contribuable (RUT)" },
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 Chili — Validation de document d'identité" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Citoyen costaricien (CCCR)" },
+				{ type: "doc", id: "identity/spain-citizen", label: "🇪🇸 Citoyen espagnol" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 Citoyen mexicain" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Citoyen panaméen (CCPA)" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Citoyen paraguayen (CIC)" },
-				{ type: "doc", id: "identity/spain-citizen", label: "🇪🇸 Citoyen espagnol" },
+				{ type: "doc", id: "identity/peru", label: "🇵🇪 Pérou — Citoyen (DNI)" },
+				{ type: "doc", id: "identity/peru-foreigner-id", label: "🇵🇪 Pérou — CE étranger" },
+				{ type: "doc", id: "identity/peru-full-id", label: "🇵🇪 Pérou — DNI (données étendues)" },
 				{ type: "doc", id: "identity/venezuela", label: "🇻🇪 Citoyen vénézuélien (CCVE)" },
 				{ type: "doc", id: "identity/venezuela-foreigner-id", label: "🇻🇪 Venezuela — Cédula d'étranger (CEVE)" },
 			],
@@ -77,8 +99,10 @@ const sidebars = {
 			type: "category",
 			label: "Entreprises (KYB)",
 			items: [
+				{ type: "doc", id: "business-validation/canada", label: "🇨🇦 Vérification d'entreprise au Canada" },
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 Chili — Entreprise (RUT)" },
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 Entreprise costaricienne (NITE)" },
+				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 Entreprise espagnole (KYB)" },
 				{ type: "doc", id: "business-validation/mexico", label: "🇲🇽 Vérification d'entreprise au Mexique" },
 				{
 					type: "doc",
@@ -87,13 +111,23 @@ const sidebars = {
 				},
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 Entreprise panaméenne (RUC)" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 Entreprise paraguayenne (RUC)" },
-				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 Entreprise espagnole (KYB)" },
+				{ type: "doc", id: "business-validation/peru", label: "🇵🇪 Pérou — Entreprise (RUC)" },
 			],
 		},
 		{
 			type: "category",
 			label: "Permis de conduire",
 			items: [
+				{
+					type: "doc",
+					id: "driver-validation/british-columbia-driver-license",
+					label: "🇨🇦 Colombie-Britannique — Permis de conduire",
+				},
+				{
+					type: "doc",
+					id: "driver-validation/ontario-driver-license",
+					label: "🇨🇦 Ontario — Permis de conduire",
+				},
 				{
 					type: "doc",
 					id: "driver-validation/chile-driver-license",
@@ -107,12 +141,12 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				{ type: "doc", id: "background-check/brazil", label: "🇧🇷 Brésil" },
-				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 Contrats publics" },
 				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 Casier police" },
-				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 Mesures correctives (RNMC)" },
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 Contraloría" },
+				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 Contrats publics" },
 				{ type: "doc", id: "background-check/colombia-disciplinary-records-attorneys-office", label: "🇨🇴 Discipline (Procuraduría)" },
 				{ type: "doc", id: "background-check/colombia-inpec", label: "🇨🇴 INPEC" },
+				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 Mesures correctives (RNMC)" },
 				{ type: "doc", id: "background-check/dea-background-check", label: "🌐 DEA" },
 				{ type: "doc", id: "background-check/europol-background-check", label: "🌐 Europol" },
 				{ type: "doc", id: "background-check/fbi-background-check", label: "🌐 FBI" },
