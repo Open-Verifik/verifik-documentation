@@ -1,0 +1,243 @@
+---
+id: paraguay
+title: 巴拉圭企业（RUC）
+description: 使用 Verifik KYB API 验证巴拉圭企业（RUC）。对接官方数据源。
+slug: /business-validation/paraguay
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "巴拉圭企业核验 | Verifik KYB API",
+	description:
+		"使用 Verifik KYB API 验证巴拉圭企业。连接官方来源，数秒内完成数据核验。",
+	articleSection: "API Documentation",
+	keywords: "企业核验, KYB API, 巴拉圭 RUC, 官方数据, 合规",
+	about: {
+		"@type": "Thing",
+		name: "Business Verification API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 巴拉圭企业核验
+
+Verifik 企业核验 API 使用**巴拉圭政府官方数据**认证企业。**KYB** 更高效、降低欺诈并助力合规。
+
+适用于需要快速确认公司、合作伙伴或供应商**合法性**的企业。
+
+## 本 API 核验内容
+
+直连官方记录，核验：
+
+-   **公司名称与 RUC 号码**：支持 *Registro Único de Contribuyente*（RUC）。
+-   **工商信息**：名称与注册详情。
+-   **一致性**：确认信息与 RUC 匹配。
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/py/company
+```
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parameters
+
+| Name           | Type    | Required | Description                                    |
+| -------------- | ------- | -------- | ---------------------------------------------- |
+| `documentType` | string  | Yes      | 证件类型。允许值：`RUC`。 |
+| `documentNumber` | string | Yes      | 企业标识符。 |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/py/company", {
+  params: { documentType: "RUC", documentNumber: "80033331" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/py/company");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$query = http_build_query([
+    "documentType" => "RUC",
+    "documentNumber" => "80033331"
+]);
+curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/py/company?".$query);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/py/company"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "RUC", "documentNumber": "80033331"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/py/company?documentType=RUC&documentNumber=80033331"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Accept", "application/json")
+    req.Header.Set("Authorization", "Bearer "+getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    fmt.Println(resp.Status)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "businessName": "CONDOMINIO MANUEL ADOLFO FERREIRA BRUSQUETTI Y OTRO",
+    "documentNumber": "80033331",
+    "documentType": "RUC",
+    "fullRUC": "80033331-4"
+  },
+  "signature": {
+    "dateTime": "October 10, 2025 5:32 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "NI85Y"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [RUC]"
+}
+```
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "code": "InternalServerError",
+    "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 完整返回字段请联系支持团队。
+
+---
+
+## 常见使用场景
+
+-   **B2B 开户**：合作伙伴或供应商注册时核验企业。
+-   **金融服务**：开户或交易前认证企业。
+-   **合规与尽调**：在 KYC/KYB 流程中核验信息。
+-   **电商平台**：确认企业卖家合法性。
+
+## 官方来源与可靠性
+
+直连**巴拉圭政府官方来源**，每次查询均安全处理。
+
+## 主要优势
+
+-   **自动化合规**：顺畅的 KYB 体验。
+-   **即时结果**：适合实时企业开户。
+-   **可信数据**：官方登记。
+-   **易于集成**：REST API 与 SDK。
+
+## 合规与安全
+
+HTTPS/TLS 1.3、隐私保护、**7×24** 监控。
+
+## 关于 Verifik
+
+Verifik 是拉美领先的身份与企业核验及反欺诈平台，API 连接**巴拉圭**及区域官方数据源。

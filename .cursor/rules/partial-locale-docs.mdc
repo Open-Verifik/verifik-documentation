@@ -1,0 +1,56 @@
+---
+description: Rules for adding or updating partial-locale docs (FR, PT, KO, JA, ZH) in this Docusaurus site. Apply when editing docs-fr, docs-pt, docs-ko, docs-ja, docs-zh, sidebars-*.js, or docusaurus.config.js doc plugins.
+globs:
+  - docs-fr/**/*
+  - docs-pt/**/*
+  - docs-ko/**/*
+  - docs-ja/**/*
+  - docs-zh/**/*
+  - sidebars-fr.js
+  - sidebars-pt.js
+  - sidebars-ko.js
+  - sidebars-ja.js
+  - sidebars-zh.js
+  - docusaurus.config.js
+  - scripts/generate-hreflang-manifest.js
+---
+
+# Partial-locale documentation (verifik-fr, verifik-pt, etc.)
+
+## Single-prefix URLs (critical)
+
+- Each partial locale is a **separate docs plugin** with `routeBasePath: "verifik-{locale}"` in `docusaurus.config.js` (e.g. `verifik-fr`, `verifik-pt`).
+- **Do not** put a second locale folder in the **slug**. Wrong: `slug: /fr-docs/identity/chile` → permalink `/verifik-fr/fr-docs/identity/chile`. Right: `slug: /identity/chile` → `/verifik-fr/identity/chile`.
+- Same rule for every partial tree: never use `slug: /fr-docs/...`, `/pt-docs/...`, `/ko-docs/...`, `/ja-docs/...`, or `/zh-docs/...`. The slug must mirror the **English** doc path under `docs/` (category + file), e.g. `/background-check/international/onu-background-check`.
+
+## Front matter
+
+- Prefer explicit `slug: /category/page` matching the file’s logical path (same shape as `docs/`).
+- Keep `id` stable and aligned with sidebar doc ids (path without extension).
+- Reuse the same section structure as English where possible: `### Endpoint`, `### Headers`, `### Parameters`, `### Request`, `### Response`, `### Notes` — required for `verifik-backend` `scripts/seed-app-feature-docs.js` extraction.
+
+## Internal links
+
+- Use absolute site paths with **one** locale prefix: `/verifik-fr/identity/chile`, not `/fr-docs/...` and not `/verifik-fr/fr-docs/...`.
+- Cross-links between pages in the same locale should use that locale’s base (`/verifik-pt/...`, etc.).
+
+## Sidebars
+
+- Register new pages in `sidebars-fr.js` (and pt/ko/ja/zh) with the same **doc id** as the file path (e.g. `identity/chile`). Sidebar ids do not include `verifik-*`; the plugin path is already scoped.
+
+## SEO / hreflang
+
+- After changing slugs, run `node scripts/generate-hreflang-manifest.js` (or `npm run build`, which runs `prebuild`) so `static/hreflang-manifest.json` matches permalinks.
+
+## Verification before PR
+
+- Grep source: no `fr-docs`, `pt-docs`, `ko-docs`, `ja-docs`, `zh-docs` in `*.mdx`/`*.md` under partial trees.
+- `npm run build` (fix broken links if any). If `build/` is not writable locally, use `npx docusaurus build --out-dir _build_verify` and remove the temp folder after.
+
+## Out of scope unless requested
+
+- Spanish `docs-es` / `verifik-es` uses different folder names; follow existing ES conventions, not this partial-locale slug rule set.
+
+## Reference
+
+- Full rollout checklist: `internal/PARTIAL_LOCALE_DOCS_PLAYBOOK.md`.

@@ -16,6 +16,7 @@ This is a **Docusaurus v3** static documentation site (Verifik / Zelf Name Servi
 - The Docusaurus config uses ESM (`import`/`export`); the file is `docusaurus.config.js`.
 - Spanish docs are served at `/verifik-es/` (not `/es/`). The i18n prefix was intentionally removed.
 - Partial locales (fr, pt, ko, ja, zh) are served at `/verifik-fr/`, `/verifik-pt/`, `/verifik-ko/`, `/verifik-ja/`, `/verifik-zh/` (currently small trees + `intro` stub; expand sidebars as content grows).
+- **Partial-locale rollout:** use a **single URL prefix** per locale (`/verifik-{locale}/category/page/`). Do not use `slug: /fr-docs/...` or other `*-docs` segments — see `internal/PARTIAL_LOCALE_DOCS_PLAYBOOK.md` and `.cursor/rules/partial-locale-docs.mdc`.
 - If `npm start` / `npm run build` fails with **ENOENT** under `.docusaurus/` (missing `blog-tags-*.json`, `site-metadata.json`, etc.), the cache is corrupted or permissions are wrong. Run `npm run clear`. If that cannot remove `.docusaurus` (**EACCES**), fix ownership: `sudo chown -R "$(whoami)" .docusaurus` (or delete the folder with the same user that runs npm), then `npm run clear` again and restart the dev server.
 - `onBrokenLinks` is set to `"warn"` and `onDuplicateRoutes` is `"ignore"` — some warnings during build are expected.
 - The `future.v4: true` flag is enabled for forward compatibility with Docusaurus v4.
