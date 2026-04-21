@@ -2,7 +2,7 @@
 
 Previsualizar una etiqueta para ver si existe o verificar información de precios antes de alquilarla.
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/tags/preview
@@ -16,7 +16,7 @@ Este endpoint te permite previsualizar una etiqueta y ver sus detalles antes de 
 
 Este endpoint requiere autenticación mediante token JWT. Primero debes crear una sesión usando el endpoint `/api/sessions` para obtener un token JWT.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -25,7 +25,7 @@ Este endpoint requiere autenticación mediante token JWT. Primero debes crear un
 | `os` | string | Sí | Sistema operativo ("DESKTOP", "ANDROID", "IOS") |
 | `captchaToken` | string | No | Token CAPTCHA para protección contra bots (opcional) |
 
-## Respuesta
+### Respuesta
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

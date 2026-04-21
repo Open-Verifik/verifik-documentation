@@ -49,6 +49,11 @@ const sidebars = {
 				},
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 哥斯达黎加 — 车辆（号牌）" },
 				{
+					type: "doc",
+					id: "vehicle-validation/vehicle-validation-brazil",
+					label: "🇧🇷 巴西 — 车辆（号牌）",
+				},
+				{
 					type: "category",
 					label: "🇵🇪 秘鲁",
 					collapsible: true,
@@ -80,6 +85,7 @@ const sidebars = {
 			label: "身份核验",
 			items: [
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 巴拉圭公民（CIC）" },
+				{ type: "doc", id: "identity/identity-brazil", label: "🇧🇷 巴西公民（CPF）" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 巴拿马国民身份证（CCPA）" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 哥斯达黎加国民身份证（CCCR）" },
 				{ type: "doc", id: "identity/canada", label: "🇨🇦 加拿大 — 驾驶证（BC 与安大略）" },
@@ -100,6 +106,11 @@ const sidebars = {
 			label: "企业(KYB)",
 			items: [
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 巴拉圭企业（RUC）" },
+				{
+					type: "doc",
+					id: "business-validation/business-validation-brazil",
+					label: "🇧🇷 巴西企业（CNPJ）",
+				},
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 巴拿马企业（RUC）" },
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 哥斯达黎加企业（NITE）" },
 				{ type: "doc", id: "business-validation/canada", label: "🇨🇦 加拿大企业核验" },
@@ -127,6 +138,11 @@ const sidebars = {
 					type: "doc",
 					id: "driver-validation/ontario-driver-license",
 					label: "🇨🇦 安大略 — 驾驶证",
+				},
+				{
+					type: "doc",
+					id: "driver-validation/quebec-driver-license",
+					label: "🇨🇦 魁北克 — 驾驶证",
 				},
 				{
 					type: "doc",

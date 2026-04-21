@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 
 # British Columbia Driver License
 
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/ca/british-columbia/driver-license 

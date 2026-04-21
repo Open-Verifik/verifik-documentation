@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Eliminar una cuenta de cliente por ID.
 
-## Endpoint
+### Endpoint
 
 ```
 DELETE /api/clients/{id}
@@ -15,7 +15,7 @@ DELETE /api/clients/{id}
 
 Este endpoint te permite eliminar una cuenta de cliente por su ID. Requiere autenticación con clave API.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -28,7 +28,7 @@ Este endpoint requiere una clave API en el header de la solicitud:
 x-api-key: TU_CLAVE_API
 ```
 
-## Respuesta
+### Respuesta
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

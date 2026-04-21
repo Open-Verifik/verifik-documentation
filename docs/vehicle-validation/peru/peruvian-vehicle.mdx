@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 
 # Peru - Vehicle Information
 
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/pe/vehiculo/placa
@@ -18,20 +18,20 @@ https://api.verifik.co/v2/pe/vehiculo/placa
 
 The Peruvian Vehicle Information service provides detailed data about registered vehicles in Peru based on their license plate number. The response includes key details such as the vehicle's make, model, year, engine and chassis serial numbers, seating capacity, and usage type.
 
-## Headers
+### Headers
 
 | Name          | Value              |
 | ------------- | ------------------ |
 | Content-Type  | `application/json` |
 | Authorization | `Bearer <token>`   |
 
-## Parameters
+### Parameters
 
 | Name           | Type    | Required | Description                                    |
 | -------------- | ------- | -------- | ---------------------------------------------- |
 | `plate`        | string  | Yes      | Plate number to consult, without spaces or points. |
 
-## Request
+### Request
 
 <Tabs>
 <TabItem value="javascript" label="JavaScript">
@@ -120,7 +120,7 @@ catch(HTTP_Request2_Exception $e) {
 </TabItem>
 </Tabs>
 
-## Response
+### Response
 
 <Tabs>
 <TabItem value="200" label="200">

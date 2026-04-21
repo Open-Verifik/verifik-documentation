@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Change the master password for a client account.
 
-## Endpoint
+### Endpoint
 
 ```
 PUT /api/clients/sync/password
@@ -15,7 +15,7 @@ PUT /api/clients/sync/password
 
 This endpoint allows you to change the master password for a client account. Requires API key authentication.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -30,7 +30,7 @@ This endpoint requires an API key in the request header:
 x-api-key: YOUR_API_KEY
 ```
 
-## Response
+### Response
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

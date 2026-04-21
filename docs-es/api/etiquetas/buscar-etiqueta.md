@@ -2,7 +2,7 @@
 
 Buscar una etiqueta en cualquier nombre de dominio soportado (Zelf, Avax, BDAG, u otros dominios licenciados).
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/tags/search
@@ -22,7 +22,7 @@ Este endpoint te permite buscar una etiqueta a través de múltiples dominios y 
 
 Este endpoint requiere autenticación mediante token JWT. Primero debes crear una sesión usando el endpoint `/api/sessions` para obtener un token JWT.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -34,7 +34,7 @@ Este endpoint requiere autenticación mediante token JWT. Primero debes crear un
 | `captchaToken` | string | No | Token CAPTCHA para protección contra bots (opcional) |
 | `duration` | string | No | Duración para precios ("1", "2", "3", "4", "5", "lifetime") |
 
-## Respuesta
+### Respuesta
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

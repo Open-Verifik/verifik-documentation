@@ -6,10 +6,10 @@ description: Verify Argentine vehicle information using license plate
 
 # Argentina
 
-## Endpoint
+### Endpoint
 
 ```
-https://api.verifik.co/v2/ar/vehicle
+GET https://api.verifik.co/v2/ar/vehicle
 ```
 
 The Argentine Vehicle Information service provides detailed information about vehicles registered in Argentina using their license plate number. This service returns comprehensive vehicle data including make, model, year, engine specifications, and registration details.

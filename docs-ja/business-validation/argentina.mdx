@@ -1,0 +1,199 @@
+---
+id: argentina
+title: アルゼンチン — 法人検証
+description: Verifik の KYB API を使用してアルゼンチン企業を検証します。公式ソースに直接接続し、企業データを数秒で確認できます。
+slug: /business-validation/argentina
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "アルゼンチンの法人検証（CUIT） | Verifik KYB API",
+	description:
+		"Verifik の KYB API を使用してアルゼンチン企業を検証します。公式ソースに直接接続し、企業データを数秒で確認できます。",
+	articleSection: "API ドキュメント",
+	keywords: "法人検証, KYB API, アルゼンチン CUIT 検証, 企業確認, 公式データソース, 不正防止",
+	about: {
+		"@type": "Thing",
+		name: "法人検証 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# アルゼンチンの法人検証
+
+Verifik の法人検証 API は、公的な政府データを利用してアルゼンチンの企業を認証します。KYB（Know Your Business）プロセスの効率化、不正防止、各種規制要件への対応を簡単に実現できるよう設計されています。
+
+企業、取引先、ベンダーの正当性を迅速・安全・自動的に確認したいビジネス向けに構築しました。
+
+## この API は何を検証しますか？
+
+本 API は公式記録と直接接続し、以下を検証します。
+
+-   **企業名と CUIT 番号**: *Código Único de Identificación Tributaria*（CUIT）に対応します。
+-   **企業情報**: 企業名、法形態、契約日、経済活動などを返します。
+-   **経済活動**: 主・従の活動コードと説明を提供します。
+-   **企業の一致**: 入力された企業情報が CUIT 番号と一致するかを確認します。
+
+これらを検証することで、取引相手の企業が正当に登記されていることを確認でき、不正リスクの大幅な低減と法令遵守を実現できます。
+
+## API リファレンス
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/ar/company
+```
+
+**`documentType`**（`CUIT`）と **`documentNumber`** でアルゼンチンの法人を照会します。登記に基づく主要フィールドを返し、**KYB**、**取引先審査**、**コンプライアンス**に利用できます。
+
+### ヘッダー
+
+| 名前          | 値                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### パラメーター
+
+| 名前             | 型     | 必須 | 説明                                       |
+| ---------------- | ------ | ---- | ------------------------------------------ |
+| `documentType`   | string | はい | 文書タイプ。許可される値: `CUIT`。            |
+| `documentNumber` | string | はい | ハイフンなしの 11 桁の CUIT。               |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/ar/company", {
+  params: { documentType: "CUIT", documentNumber: "33516727409" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/ar/company"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CUIT", "documentNumber": "33516727409"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "businessName": "MERCADOLIBRE S.R.L.",
+        "contractDate": "15-07-1999",
+        "documentNumber": "30703088534",
+        "documentType": "CUIT",
+        "economicActivities": {
+            "mainActivity": [
+                {
+                    "code": "620900 (F-883)",
+                    "description": "SERVICIOS DE INFORMÁTICA N.C.P.",
+                    "startDate": "04/2015"
+                }
+            ],
+            "secondaryActivity": [
+                {
+                    "code": "731009 (F-883)",
+                    "description": "SERVICIOS DE PUBLICIDAD N.C.P.",
+                    "startDate": "12/2014"
+                },
+                {
+                    "code": "649999 (F-883)",
+                    "description": "SERVICIOS DE FINANCIACIÓN Y ACTIVIDADES FINANCIERAS N.C.P.",
+                    "startDate": "12/2014"
+                },
+                {
+                    "code": "829900 (F-883)",
+                    "description": "SERVICIOS EMPRESARIALES N.C.P.",
+                    "startDate": "12/2014"
+                },
+                {
+                    "code": "523090 (F-883)",
+                    "description": "SERVICIOS DE GESTIÓN Y LOGÍSTICA PARA EL TRANSPORTE DE MERCADERÍAS N.C.P.",
+                    "startDate": "08/2017"
+                }
+            ]
+        },
+        "legalForm": "S.R.L."
+    },
+    "signature": {
+        "dateTime": "October 10, 2025 10:26 AM",
+        "message": "Certified by Verifik.co"
+    },
+    "id": "AXR7A"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事項
+
+- `documentNumber` はハイフンなしの 11 桁である必要があります。
+
+---
+
+## 一般的なユースケース
+
+-   **B2B オンボーディング**: 取引先やベンダー登録時に企業を即時検証します。
+-   **金融サービス**: 口座開設や取引処理の前に企業を認証します。
+-   **コンプライアンスとデューデリジェンス**: KYC/KYB ワークフローの一部として企業情報を検証します。
+-   **EC とマーケットプレイス**: 出品を許可する前に企業の正当性を確認します。
+
+## 公式ソースと信頼性
+
+アルゼンチンの公的な政府ソースと直接接続し、検証済みかつ最新の情報を提供します。
+すべての照会は厳格なセキュリティおよび規制基準に基づいて処理されます。
+
+## 主な利点
+
+-   **自動化されたコンプライアンス**: 取引先体験を損なうことなく KYB チェックを効率化し、不正を防止します。
+-   **即時の結果**: 数秒で照会を処理できるため、リアルタイムでの企業オンボーディングに最適です。
+-   **信頼できるデータ**: 公式記録から直接取得したデータを利用できます。
+-   **容易な統合**: REST API または互換 SDK を通じて簡単に接続できます。
+
+## コンプライアンスとセキュリティ
+
+データの安全性を最優先します。Verifik は高度な暗号化（HTTPS / TLS 1.3）と厳格なプライバシー管理基準を採用し、機密性を確保します。
+当サービスは可用性を 24 時間 365 日監視しており、チームのアクセスを安全に保つロールベースのアクセス制御を提供します。
+
+## Verifik について
+
+Verifik は、ラテンアメリカ全域における本人確認、コンプライアンス、不正防止のためのリーディングプラットフォームです。
+当社の API は KYC、KYB、AML、生体検証プロセスを自動化し、コロンビア、メキシコ、ペルー、チリ、ウルグアイ、アルゼンチンなどの公式データソースとビジネスを接続します。
+

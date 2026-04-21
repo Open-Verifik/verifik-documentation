@@ -2,7 +2,7 @@
 
 Recover a tag using an existing ZelfProof from a previously leased tag. This endpoint allows you to create a new tag with the same wallet data from a previous tag.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/tags/lease-recovery
@@ -18,7 +18,7 @@ This endpoint allows you to recover a tag using an existing ZelfProof from a pre
 
 This endpoint requires authentication via JWT token. You must first create a session using the `/api/sessions` endpoint to obtain a JWT token.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -31,7 +31,7 @@ This endpoint requires authentication via JWT token. You must first create a ses
 | `removePGP` | boolean | No | Whether to skip PGP encryption (default: false) |
 | `captchaToken` | string | No | CAPTCHA token for bot protection (optional) |
 
-## Response
+### Response
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,0 +1,184 @@
+---
+id: vehicle-validation-brazil
+title: 🇧🇷 ブラジル — 車両情報
+description: "ブラジルのナンバープレート照会：登記スタイルの車両属性（メーカー、モデル、年式、VIN/シャーシ、該当時は FIPE コード）をフリート、保険、担保、マーケットプレイス向けに提供します。"
+slug: /vehicle-validation/brazil
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇧🇷 ブラジル — 車両情報
+
+## 車両情報照会
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/br/vehicle
+```
+
+ブラジルの**ナンバープレート**を指定すると、**Verifik** は1回のリクエストで構造化された車両データを返し、実物の資産を検証済みの正規化された属性に紐づけられます。**フリート・モビリティのオンボーディング**、**保険の見積もり・事故対応**、**担保付き融資・担保審査**、ナンバーが主な識別子となる**マーケットプレイスやディーラーでの確認**などを想定しています。
+
+Verifik API はそのナンバーに対する**正規化された車両レコード**を返します。**ナンバー**、**メーカー**、**モデル**、**モデル年式**と**製造年**、**シャーシ（VIN）**、**エンジン**、**色**、**ボディタイプ**、**燃料種別**、**トランスミッション**、**ドア数**、**製造元または工場**、該当する場合は **FIPE コード**、登記に**不備や制限の指標**がある場合はその指標などを含みます。処理を続ける前に、目の前の車両が公式のラインと一致するか確認するために使用します。
+
+### ヘッダー
+
+| 名前          | 値                 |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 |
+| ---- | ---- | ---- | ---- |
+| `plate` | string | **はい** | 照会するナンバープレート（英数字。大文字・小文字は正規化されます）。例: `ABC1D23`。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/br/vehicle",
+  params: { plate: "ABC1D23" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+conn.request("GET", "/v2/br/vehicle?plate=ABC1D23", "", headers)
+res = conn.getresponse()
+print(res.read().decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$client = new \GuzzleHttp\Client();
+$response = $client->request('GET', 'https://api.verifik.co/v2/br/vehicle', [
+  'query' => ['plate' => 'ABC1D23'],
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+]);
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/br/vehicle?plate=ABC1D23")!)
+request.httpMethod = "GET"
+request.setValue("application/json", forHTTPHeaderField: "Accept")
+request.setValue("Bearer <your_token>", forHTTPHeaderField: "Authorization")
+let task = URLSession.shared.dataTask(with: request) { data, _, _ in
+  print(String(data: data ?? Data(), encoding: .utf8) ?? "")
+}
+task.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "bodyType": "Hatch",
+    "brand": "Example Brand",
+    "chassis": "9BWZZZ377VT004251",
+    "color": "PRATA",
+    "country": "Brasil",
+    "doors": "4",
+    "engine": "1.0",
+    "factory": "Example Plant",
+    "fuelType": "Flex",
+    "irregularitiesCount": "0",
+    "irregularityCode": "",
+    "manufacturer": "Example Manufacturer",
+    "model": "Example Model",
+    "modelYear": "2022",
+    "plate": "ABC1D23",
+    "transmission": "Manual",
+    "vehicle": "Automóvel",
+    "version": "1.0 Flex",
+    "yearOfManufacture": "2022"
+  },
+  "signature": {
+    "dateTime": "April 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### メモ
+
+- クエリ文字列で **必須** なのは **`plate`** のみです。
+- 一部のアカウントでは **ナンバープレート別の拡張データシート** プロダクトが有効になります。その機能が有効なときは AppFeature カタログに記載の URL を使用してください。

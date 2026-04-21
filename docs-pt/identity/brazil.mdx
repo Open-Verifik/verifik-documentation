@@ -1,0 +1,198 @@
+---
+id: identity-brazil
+title: Brasil — Identidade (CPF)
+description: Valide a identidade de pessoas no Brasil com a API KYC da Verifik, conectando-se a fontes oficiais.
+slug: /identity/brazil
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Verificação de identidade no Brasil (CPF) | API KYC Verifik",
+	description:
+		"Valide a identidade no Brasil usando CPF com a API KYC da Verifik e fontes oficiais.",
+	articleSection: "Documentação da API",
+	keywords: "verificação de identidade, API KYC, CPF Brasil, prevenção a fraudes",
+	about: {
+		"@type": "Thing",
+		name: "API de verificação de identidade",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Verificação de identidade no Brasil
+
+A API de verificação de identidade da Verifik autentica cidadãos brasileiros usando o **Cadastro de Pessoas Físicas (CPF)**. Foi projetada para agilizar KYC, prevenir fraudes e apoiar conformidade regulatória.
+
+## O que esta API valida?
+
+Ela consulta registros oficiais para validar:
+
+- **Nome completo e número de CPF**: compatível com Cadastro de Pessoas Físicas (CPF).
+- **Correspondência de identidade**: o nome informado corresponde ao número de CPF?
+- **Data de nascimento**: a data corresponde aos registros oficiais?
+
+## Referência da API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/br/cedula
+```
+
+Confirma o **CPF** de uma pessoa física brasileira em fontes oficiais. Envie **CPF**, **data de nascimento** em `DD/MM/YYYY` e o número do documento com ou sem separadores; quando os dados coincidem, a resposta retorna partes normalizadas do nome e identificadores. Pensada para **KYC**, **prevenção a fraudes** e **onboarding regulado**.
+
+### Cabeçalhos
+
+| Nome          | Valor              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parâmetros
+
+| Nome | Tipo | Obrigatório | Descrição |
+| ---- | ---- | ----------- | --------- |
+| `documentType` | string | **Sim** | Tipo de documento. Valor permitido: `CPF`. |
+| `documentNumber` | string | **Sim** | Número CPF (com ou sem separadores). |
+| `dateOfBirth` | string | **Sim** | Data de nascimento no formato `DD/MM/YYYY`. |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/br/cedula", {
+  params: { documentType: "CPF", documentNumber: "012.345.678-01", dateOfBirth: "17/02/2002" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/br/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CPF", "documentNumber": "012.345.678-01", "dateOfBirth": "17/02/2002"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "arrayName": [
+      "RAISSA",
+      "LARA",
+      "ROCHA",
+      "ALVES",
+      "FERREIRA"
+    ],
+    "dateOfBirth": "2002-02-17",
+    "documentNumber": "01916658601",
+    "documentType": "CPF",
+    "firstName": "RAISSA LARA ROCHA",
+    "fullName": "RAISSA LARA ROCHA ALVES FERREIRA",
+    "lastName": "ALVES FERREIRA"
+  },
+  "signature": {
+    "dateTime": "October 8, 2025 6:44 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "AMARG"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [CPF]"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "dateOfBirth format required: DD/MM/YYYY\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- O CPF deve ser válido; a data de nascimento é obrigatória e deve coincidir.

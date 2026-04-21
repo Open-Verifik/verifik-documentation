@@ -2,7 +2,7 @@
 
 Retrieve the current user's license information and status.
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/licenses/my-license
@@ -16,14 +16,14 @@ This endpoint allows authenticated users to retrieve their own license informati
 
 This endpoint requires authentication via JWT token. You must first create a session using the `/api/sessions` endpoint to obtain a JWT token.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `includeUsage` | boolean | No | Include usage statistics in response (default: false) |
 | `includeHistory` | boolean | No | Include license history and changes (default: false) |
 
-## Response
+### Response
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

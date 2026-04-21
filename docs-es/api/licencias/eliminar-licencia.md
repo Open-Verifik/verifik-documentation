@@ -2,7 +2,7 @@
 
 Eliminar una licencia existente del sistema.
 
-## Endpoint
+### Endpoint
 
 ```
 DELETE /api/licenses/{licenseId}
@@ -16,7 +16,7 @@ Este endpoint permite a administradores o usuarios autorizados eliminar una lice
 
 Este endpoint requiere autenticación mediante token JWT con privilegios administrativos. Primero debes crear una sesión usando el endpoint `/api/sessions` para obtener un token JWT.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -24,7 +24,7 @@ Este endpoint requiere autenticación mediante token JWT con privilegios adminis
 | `reason` | string | No | Razón para la eliminación de la licencia (para propósitos de auditoría) |
 | `notifyUser` | boolean | No | Si notificar al usuario sobre la eliminación de la licencia (por defecto: true) |
 
-## Respuesta
+### Respuesta
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

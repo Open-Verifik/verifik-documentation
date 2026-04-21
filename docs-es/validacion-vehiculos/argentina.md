@@ -7,10 +7,10 @@ slug: /validacion-de-vehiculo/argentina
 
 # Argentina
 
-## Endpoint
+### Endpoint
 
 ```
-https://api.verifik.co/v2/ar/vehicle
+GET https://api.verifik.co/v2/ar/vehicle
 ```
 
 El servicio de información de vehículos argentinos proporciona información detallada sobre vehículos registrados en Argentina usando su número de placa de matrícula. Este servicio devuelve datos completos del vehículo incluyendo marca, modelo, año, especificaciones del motor y detalles de registro.

@@ -48,6 +48,11 @@ const sidebars = {
 					],
 				},
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 Costa Rica — Veículo por placa" },
+				{
+					type: "doc",
+					id: "vehicle-validation/vehicle-validation-brazil",
+					label: "🇧🇷 Brasil — Veículo por placa",
+				},
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 Espanha" },
 				{
 					type: "doc",
@@ -88,6 +93,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 Cidadão mexicano" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Cidadão panamenho (CCPA)" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Cidadão paraguaio (CIC)" },
+				{ type: "doc", id: "identity/identity-brazil", label: "🇧🇷 Brasil — Cidadão (CPF)" },
 				{ type: "doc", id: "identity/peru", label: "🇵🇪 Peru — Cidadão (DNI)" },
 				{ type: "doc", id: "identity/peru-foreigner-id", label: "🇵🇪 Peru — Cédula de estrangeiro (CE)" },
 				{ type: "doc", id: "identity/peru-full-id", label: "🇵🇪 Peru — DNI (dados estendidos)" },
@@ -111,6 +117,11 @@ const sidebars = {
 				},
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 Empresa panamenha (RUC)" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 Empresa paraguaia (RUC)" },
+				{
+					type: "doc",
+					id: "business-validation/business-validation-brazil",
+					label: "🇧🇷 Brasil — Empresa (CNPJ)",
+				},
 				{ type: "doc", id: "business-validation/peru", label: "🇵🇪 Peru — Empresa (RUC)" },
 			],
 		},
@@ -127,6 +138,11 @@ const sidebars = {
 					type: "doc",
 					id: "driver-validation/ontario-driver-license",
 					label: "🇨🇦 Ontário — Carteira de motorista",
+				},
+				{
+					type: "doc",
+					id: "driver-validation/quebec-driver-license",
+					label: "🇨🇦 Quebec — Carteira de motorista",
 				},
 				{
 					type: "doc",

@@ -2,7 +2,7 @@
 
 Alquilar una etiqueta para uso offline con datos ZelfProof.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/tags/lease-offline
@@ -12,7 +12,7 @@ POST /api/tags/lease-offline
 
 Este endpoint te permite alquilar una etiqueta para uso offline, habilitando la funcionalidad de Zelf sin conectividad a internet. Procesa datos ZelfProof y códigos QR para crear etiquetas capaces de funcionar offline.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -35,7 +35,7 @@ Este endpoint requiere un token JWT válido en el header de Autorización:
 Authorization: Bearer <tu-token-jwt>
 ```
 
-## Respuesta
+### Respuesta
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

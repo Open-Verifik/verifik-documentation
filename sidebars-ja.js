@@ -11,6 +11,11 @@ const sidebars = {
 			items: [
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 コスタリカ — 車両（ナンバー）" },
 				{
+					type: "doc",
+					id: "vehicle-validation/vehicle-validation-brazil",
+					label: "🇧🇷 ブラジル — 車両検証",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 コロンビア",
 					collapsible: true,
@@ -87,6 +92,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 チリ — 身分証の有効性確認" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 パナマ国民（CCPA）" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 パラグアイ国民（CIC）" },
+				{ type: "doc", id: "identity/identity-brazil", label: "🇧🇷 ブラジル国民（CPF）" },
 				{ type: "doc", id: "identity/venezuela", label: "🇻🇪 ベネズエラ国民（CCVE）" },
 				{ type: "doc", id: "identity/venezuela-foreigner-id", label: "🇻🇪 ベネズエラ — 外国人身分証（CEVE）" },
 				{ type: "doc", id: "identity/peru", label: "🇵🇪 ペルー国民（DNI）" },
@@ -105,6 +111,11 @@ const sidebars = {
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 チリ — 企業（RUT）" },
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 パナマ企業（RUC）" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 パラグアイ企業（RUC）" },
+				{
+					type: "doc",
+					id: "business-validation/business-validation-brazil",
+					label: "🇧🇷 ブラジル企業（CNPJ）",
+				},
 				{ type: "doc", id: "business-validation/peru", label: "🇵🇪 ペルー企業（RUC）" },
 				{ type: "doc", id: "business-validation/mexico", label: "🇲🇽 メキシコ法人検証" },
 				{
@@ -127,6 +138,11 @@ const sidebars = {
 					type: "doc",
 					id: "driver-validation/ontario-driver-license",
 					label: "🇨🇦 オンタリオ — 運転免許",
+				},
+				{
+					type: "doc",
+					id: "driver-validation/quebec-driver-license",
+					label: "🇨🇦 ケベック — 運転免許",
 				},
 				{
 					type: "doc",

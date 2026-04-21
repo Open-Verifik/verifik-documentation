@@ -2,7 +2,7 @@
 
 Search for a tag across any supported domain name (Zelf, Avax, BDAG, or other licensed domains).
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/tags/search
@@ -22,7 +22,7 @@ This endpoint allows you to search for a tag across multiple domains and storage
 
 This endpoint requires authentication via JWT token. You must first create a session using the `/api/sessions` endpoint to obtain a JWT token.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -34,7 +34,7 @@ This endpoint requires authentication via JWT token. You must first create a ses
 | `captchaToken` | string | No | CAPTCHA token for bot protection (optional) |
 | `duration` | string | No | Duration for pricing ("1", "2", "3", "4", "5", "lifetime") |
 
-## Response
+### Response
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

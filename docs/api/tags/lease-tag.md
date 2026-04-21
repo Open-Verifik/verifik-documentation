@@ -2,7 +2,7 @@
 
 Lease a tag for any supported domain name (Zelf, Avax, BDAG, or other licensed domains).
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/tags/lease
@@ -18,7 +18,7 @@ This endpoint allows you to lease a tag for any supported domain name, creating 
 
 This endpoint requires authentication via JWT token. You must first create a session using the `/api/sessions` endpoint to obtain a JWT token.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -29,7 +29,7 @@ This endpoint requires authentication via JWT token. You must first create a ses
 | `os` | string | Yes | Operating system ("DESKTOP", "ANDROID", "IOS") |
 | `captchaToken` | string | No | CAPTCHA token for bot protection (optional) |
 
-## Response
+### Response
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

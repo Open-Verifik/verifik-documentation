@@ -2,7 +2,7 @@
 
 Crear una nueva licencia para un usuario u organización.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/licenses
@@ -16,7 +16,7 @@ Este endpoint permite a administradores o usuarios autorizados crear nuevas lice
 
 Este endpoint requiere autenticación mediante token JWT con privilegios administrativos. Primero debes crear una sesión usando el endpoint `/api/sessions` para obtener un token JWT.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -29,7 +29,7 @@ Este endpoint requiere autenticación mediante token JWT con privilegios adminis
 | `notes` | string | No | Notas adicionales o comentarios sobre esta licencia |
 | `autoRenew` | boolean | No | Si la licencia debe renovarse automáticamente (por defecto: false) |
 
-## Respuesta
+### Respuesta
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

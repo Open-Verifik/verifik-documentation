@@ -6,7 +6,7 @@ description: Verify Mexican vehicle information using license plate
 
 # Mexico
 
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/mx/vehiculo/placa

@@ -18,6 +18,11 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/chile", label: "🇨🇱 칠레 — 차량(번호판)" },
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 코스타리카 — 차량(번호판)" },
 				{
+					type: "doc",
+					id: "vehicle-validation/vehicle-validation-brazil",
+					label: "🇧🇷 브라질 — 차량(번호판)",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 콜롬비아",
 					collapsible: true,
@@ -90,6 +95,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 코스타리카 국민 신분증(CCCR)" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 파나마 국민 (CCPA)" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 파라과이 국민 (CIC)" },
+				{ type: "doc", id: "identity/identity-brazil", label: "🇧🇷 브라질 국민(CPF)" },
 				{ type: "doc", id: "identity/peru", label: "🇵🇪 페루 국민(DNI)" },
 				{ type: "doc", id: "identity/peru-foreigner-id", label: "🇵🇪 페루 외국인 CE" },
 				{ type: "doc", id: "identity/peru-full-id", label: "🇵🇪 페루 DNI(확장)" },
@@ -111,6 +117,11 @@ const sidebars = {
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 코스타리카 기업(NITE)" },
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 파나마 기업 (RUC)" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 파라과이 기업 (RUC)" },
+				{
+					type: "doc",
+					id: "business-validation/business-validation-brazil",
+					label: "🇧🇷 브라질 기업(CNPJ)",
+				},
 				{ type: "doc", id: "business-validation/peru", label: "🇵🇪 페루 기업(RUC)" },
 			],
 		},
@@ -127,6 +138,11 @@ const sidebars = {
 					type: "doc",
 					id: "driver-validation/ontario-driver-license",
 					label: "🇨🇦 온타리오 — 운전면허",
+				},
+				{
+					type: "doc",
+					id: "driver-validation/quebec-driver-license",
+					label: "🇨🇦 퀘벡 — 운전면허",
 				},
 				{
 					type: "doc",

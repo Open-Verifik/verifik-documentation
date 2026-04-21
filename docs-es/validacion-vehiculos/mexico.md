@@ -7,7 +7,7 @@ slug: /validacion-vehiculos/mexico
 
 # México
 
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/mx/vehiculo/placa

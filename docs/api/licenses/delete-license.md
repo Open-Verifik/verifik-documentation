@@ -2,7 +2,7 @@
 
 Delete an existing license from the system.
 
-## Endpoint
+### Endpoint
 
 ```
 DELETE /api/licenses/{licenseId}
@@ -16,7 +16,7 @@ This endpoint allows administrators or authorized users to delete an existing li
 
 This endpoint requires authentication via JWT token with administrative privileges. You must first create a session using the `/api/sessions` endpoint to obtain a JWT token.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -24,7 +24,7 @@ This endpoint requires authentication via JWT token with administrative privileg
 | `reason` | string | No | Reason for license deletion (for audit purposes) |
 | `notifyUser` | boolean | No | Whether to notify the user about license deletion (default: true) |
 
-## Response
+### Response
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

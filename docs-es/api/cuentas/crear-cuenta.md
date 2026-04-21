@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Crear una nueva cuenta de cliente con verificación biométrica facial y autenticación con contraseña maestra.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/clients
@@ -15,7 +15,7 @@ POST /api/clients
 
 Este endpoint te permite crear una nueva cuenta de cliente con la información proporcionada. No se requiere autenticación para la creación de cuenta, pero se requiere verificación biométrica facial y una contraseña maestra por seguridad. La cuenta se almacena en IPFS y devuelve un token JWT para futuras autenticaciones.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -28,7 +28,7 @@ Este endpoint te permite crear una nueva cuenta de cliente con la información p
 | `faceBase64` | string | Sí | Imagen facial codificada en base64 para verificación biométrica |
 | `masterPassword` | string | Sí | Contraseña maestra para seguridad de la cuenta |
 
-## Respuesta
+### Respuesta
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

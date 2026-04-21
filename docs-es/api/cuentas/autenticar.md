@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Autenticar un cliente usando verificación biométrica facial.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/clients/auth
@@ -15,7 +15,7 @@ POST /api/clients/auth
 
 Este endpoint te permite autenticar un cliente usando email O número de teléfono con verificación biométrica opcional. Requiere autenticación con clave API.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -34,7 +34,7 @@ Este endpoint requiere una clave API en el header de la solicitud:
 x-api-key: TU_CLAVE_API
 ```
 
-## Respuesta
+### Respuesta
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

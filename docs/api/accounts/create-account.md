@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Create a new client account with biometric face verification and master password authentication.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/clients
@@ -15,7 +15,7 @@ POST /api/clients
 
 This endpoint allows you to create a new client account with the provided information. No authentication is required for account creation, but biometric face verification and a master password are required for security. The account is stored on IPFS and returns a JWT token for future authentication.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -28,7 +28,7 @@ This endpoint allows you to create a new client account with the provided inform
 | `faceBase64` | string | Yes | Base64-encoded face image for biometric verification |
 | `masterPassword` | string | Yes | Master password for account security |
 
-## Response
+### Response
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Actualizar la información de una cuenta de cliente existente.
 
-## Endpoint
+### Endpoint
 
 ```
 PUT /api/clients/sync
@@ -15,7 +15,7 @@ PUT /api/clients/sync
 
 Este endpoint te permite actualizar la información de un cliente existente. Requiere autenticación con clave API.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -32,7 +32,7 @@ Este endpoint requiere una clave API en el header de la solicitud:
 x-api-key: TU_CLAVE_API
 ```
 
-## Respuesta
+### Respuesta
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

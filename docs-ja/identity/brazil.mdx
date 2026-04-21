@@ -1,0 +1,198 @@
+---
+id: identity-brazil
+title: ブラジル — 本人確認（CPF）
+description: Verifik の KYC API でブラジル国民の CPF を公式ソースと照合し、本人確認を数秒で完了します。
+slug: /identity/brazil
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "ブラジルの本人確認（CPF） | Verifik KYC API",
+	description:
+		"CPF を用いてブラジル国民の本人確認を行います。公式データに接続し、個人情報を迅速に検証できます。",
+	articleSection: "API ドキュメント",
+	keywords: "本人確認, KYC API, ブラジル CPF, 不正防止",
+	about: {
+		"@type": "Thing",
+		name: "本人確認 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# ブラジルの本人確認
+
+Verifik の本人確認 API は、**Cadastro de Pessoas Físicas（CPF）** を用いてブラジル国民を認証します。KYC（Know Your Customer）の効率化、不正防止、規制要件への対応を支援します。
+
+## この API は何を検証しますか？
+
+公式記録と接続し、次を検証します。
+
+- **氏名と CPF 番号**: *Cadastro de Pessoas Físicas*（CPF）に対応します。
+- **本人一致**: 入力された氏名が CPF 番号と一致するかを確認します。
+- **生年月日**: 生年月日が公式記録と一致するかを検証します。
+
+## API リファレンス
+
+### エンドポイント
+
+```
+https://api.verifik.co/v2/br/cedula
+```
+
+ブラジル自然人の **CPF** を公式ソースと照合します。**CPF**、**生年月日**（`DD/MM/YYYY`）、および区切りの有無にかかわらない文書番号を渡します。データが一致すると、正規化された氏名の要素と識別子を返します。**KYC**、**不正防止**、**規制対象のオンボーディング**向けです。
+
+### ヘッダー
+
+| 名前          | 値                 |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 |
+| ---- | ---- | ---- | ---- |
+| `documentType` | string | **はい** | 文書タイプ。許可される値: `CPF`。 |
+| `documentNumber` | string | **はい** | CPF 番号（区切りあり・なし）。 |
+| `dateOfBirth` | string | **はい** | 生年月日。形式: `DD/MM/YYYY`。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/br/cedula", {
+  params: { documentType: "CPF", documentNumber: "012.345.678-01", dateOfBirth: "17/02/2002" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/br/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CPF", "documentNumber": "012.345.678-01", "dateOfBirth": "17/02/2002"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "arrayName": [
+      "RAISSA",
+      "LARA",
+      "ROCHA",
+      "ALVES",
+      "FERREIRA"
+    ],
+    "dateOfBirth": "2002-02-17",
+    "documentNumber": "01916658601",
+    "documentType": "CPF",
+    "firstName": "RAISSA LARA ROCHA",
+    "fullName": "RAISSA LARA ROCHA ALVES FERREIRA",
+    "lastName": "ALVES FERREIRA"
+  },
+  "signature": {
+    "dateTime": "October 8, 2025 6:44 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "AMARG"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [CPF]"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "dateOfBirth format required: DD/MM/YYYY\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### メモ
+
+- CPF は有効である必要があります。生年月日は必須で、記録と一致している必要があります。

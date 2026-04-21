@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Verificar si existe una cuenta de cliente basada en email o número de teléfono.
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/clients
@@ -15,7 +15,7 @@ GET /api/clients
 
 Este endpoint te permite verificar si existe una cuenta de cliente usando dirección de email o número de teléfono. No se requiere autenticación para esta verificación.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -26,7 +26,7 @@ Este endpoint te permite verificar si existe una cuenta de cliente usando direcc
 
 *Se debe proporcionar email O countryCode + phone
 
-## Respuesta
+### Respuesta
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

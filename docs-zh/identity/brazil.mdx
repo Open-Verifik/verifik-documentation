@@ -1,0 +1,197 @@
+---
+id: identity-brazil
+title: 巴西 — 身份核验（CPF）
+description: 使用 Verifik KYC API，将巴西个人 CPF 与官方来源比对并完成身份核验。
+slug: /identity/brazil
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "巴西身份核验（CPF）| Verifik KYC API",
+	description: "通过 CPF 核验巴西国民身份，并连接官方数据源。",
+	articleSection: "API 文档",
+	keywords: "身份核验, KYC API, 巴西 CPF, 反欺诈",
+	about: {
+		"@type": "Thing",
+		name: "身份核验 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 巴西身份核验
+
+Verifik 身份核验 API 使用 **Cadastro de Pessoas Físicas（CPF）** 认证巴西国民，旨在简化 KYC、防范欺诈并满足合规要求。
+
+## 本 API 核验什么？
+
+连接官方登记数据以核验：
+
+- **全名与 CPF 号码**：支持 *Cadastro de Pessoas Físicas*（CPF）。
+- **身份一致性**：提供的姓名是否与 CPF 号码一致。
+- **出生日期**：出生日期是否与官方记录一致。
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/br/cedula
+```
+
+将巴西自然人的 **CPF** 与官方来源比对。请提供 **CPF**、**出生日期**（`DD/MM/YYYY`）以及带或不带分隔符的证件号码；数据一致时，响应返回规范化姓名组成部分与标识符。适用于 **KYC**、**反欺诈**与**受监管入驻**。
+
+### 请求头（Headers）
+
+| 名称           | 取值                |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 参数（Parameters）
+
+| 名称 | 类型 | 必填 | 描述 |
+| ---- | ---- | ---- | ---- |
+| `documentType` | string | **是** | 证件类型。允许值：`CPF`。 |
+| `documentNumber` | string | **是** | CPF 号码（可含或不含分隔符）。 |
+| `dateOfBirth` | string | **是** | 出生日期，格式：`DD/MM/YYYY`。 |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/br/cedula", {
+  params: { documentType: "CPF", documentNumber: "012.345.678-01", dateOfBirth: "17/02/2002" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/br/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CPF", "documentNumber": "012.345.678-01", "dateOfBirth": "17/02/2002"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "arrayName": [
+      "RAISSA",
+      "LARA",
+      "ROCHA",
+      "ALVES",
+      "FERREIRA"
+    ],
+    "dateOfBirth": "2002-02-17",
+    "documentNumber": "01916658601",
+    "documentType": "CPF",
+    "firstName": "RAISSA LARA ROCHA",
+    "fullName": "RAISSA LARA ROCHA ALVES FERREIRA",
+    "lastName": "ALVES FERREIRA"
+  },
+  "signature": {
+    "dateTime": "October 8, 2025 6:44 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "AMARG"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [CPF]"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "dateOfBirth format required: DD/MM/YYYY\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- CPF 必须有效；出生日期为必填且须与记录一致。

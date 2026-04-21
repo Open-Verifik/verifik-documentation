@@ -608,6 +608,11 @@ const sidebars = {
 					id: "driver-validation/ontario-driver-license",
 					label: "🇨🇦 Ontario - Driver License",
 				},
+				{
+					type: "doc",
+					id: "driver-validation/quebec-driver-license",
+					label: "🇨🇦 Quebec - Driver License",
+				},
 			],
 		},
 		{

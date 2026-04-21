@@ -2,7 +2,7 @@
 
 Recuperar una etiqueta usando un ZelfProof existente de una etiqueta previamente alquilada. Este endpoint te permite crear una nueva etiqueta con los mismos datos de wallet de una etiqueta anterior.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/tags/lease-recovery
@@ -18,7 +18,7 @@ Este endpoint te permite recuperar una etiqueta usando un ZelfProof existente de
 
 Este endpoint requiere autenticación mediante token JWT. Primero debes crear una sesión usando el endpoint `/api/sessions` para obtener un token JWT.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -31,7 +31,7 @@ Este endpoint requiere autenticación mediante token JWT. Primero debes crear un
 | `removePGP` | boolean | No | Si omitir el cifrado PGP (por defecto: false) |
 | `captchaToken` | string | No | Token CAPTCHA para protección contra bots (opcional) |
 
-## Respuesta
+### Respuesta
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
