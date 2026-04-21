@@ -1,12 +1,18 @@
 ---
 id: colombian-cedula-premium
 title: Colombia — Cédula nacional premium (CC)
-description: Verificación ampliada de CC colombiana vía GET o POST /v2/co/cedula/premium; fecha de expedición resuelta automáticamente y el mismo flujo enriquecido que cédula extra.
+description: "Verifica una cédula colombiana (CC) con un perfil completo: escribes solo el número, la plataforma obtiene la fecha de expedición y te devuelve el mismo registro rico que cédula extra. Usa más créditos que la consulta básica de cédula."
 slug: /validacion-identidad/colombia/cedula-premium-cc
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+
+# Colombia — Cédula nacional premium (CC)
+
+**Finalidad:** **verificar** una **Cédula de Ciudadanía (CC)** frente a **fuentes oficiales** y devolver un **registro de identidad estructurado** para procesos de KYC y cumplimiento, no un simple sí/no sobre el número. Incluye **cómo figura el nombre**, **fecha de nacimiento**, **lugar y fecha de expedición** y, cuando las fuentes lo aportan, **género** e **indicación de supervivencia**, con un bloque de **certificación firmada**. Se **envía únicamente el número**; la **fecha de expedición se resuelve en el servidor** (sin tipo de documento ni fecha en la petición). El detalle equivale a [**cédula extra**](../../identity/colombia-full-id.mdx). El consumo de **créditos** es **superior** al de la [**consulta básica**](./colombian-citizen.mdx) por los pasos de resolución adicionales.
+
+## Referencia de API
 
 ### Punto de acceso
 
@@ -14,7 +20,7 @@ import TabItem from "@theme/TabItem";
 GET https://api.verifik.co/v2/co/cedula/premium
 ```
 
-Misma ruta: `GET https://verifik.app/v2/co/cedula/premium`. También **`POST`** con los mismos parámetros en JSON o formulario.
+**Respuesta:** devuelve **`data`** (atributos de identidad disponibles para el número enviado), **`signature`** (metadatos de certificación del payload) e **`id`** (identificador de la solicitud). **HTTP 404**: no fue posible constituir un registro completo para el número en este flujo. **HTTP 409**: la solicitud no superó la validación de entrada (p. ej. longitud de `documentNumber`) antes de la resolución. El **coste en créditos** por solicitud es **superior** al de `/v2/co/cedula` básico por la cadena de resolución.
 
 ### Cabeceras
 
@@ -76,7 +82,10 @@ console.log(data);
 
 ### Respuesta
 
-Ejemplo genérico (placeholders, no personas reales):
+<Tabs>
+  <TabItem value="200" label="200">
+
+Ejemplo de forma (placeholders ilustrativos, no personas reales):
 
 ```json
 {
@@ -104,9 +113,22 @@ Ejemplo genérico (placeholders, no personas reales):
 }
 ```
 
-**404** — `Record not found.` cuando no hay datos suficientes aguas arriba.
+Los nombres de campos y su presencia pueden alinearse con las fuentes y la disponibilidad de datos oficiales.
 
-**409** — por ejemplo:
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+Se devuelve cuando las fuentes aguas arriba no ofrecen coincidencia o datos requeridos (p. ej. falla la resolución de expedición).
+
+  </TabItem>
+  <TabItem value="409" label="409">
 
 ```json
 {
@@ -114,6 +136,11 @@ Ejemplo genérico (placeholders, no personas reales):
 	"message": "documentNumber maximum length: 10\n"
 }
 ```
+
+La validación usa **5–10** caracteres para `documentNumber`; pueden aparecer otros mensajes de Joi por entrada inválida o faltante.
+
+  </TabItem>
+</Tabs>
 
 ### Relacionados
 

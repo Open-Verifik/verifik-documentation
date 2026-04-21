@@ -1,7 +1,7 @@
 ---
 id: colombian-cedula-premium
 title: 🇨🇴 哥伦比亚 — 国民身份证高级核验(CC)
-description: "无需手动提供签发日期的 CC 扩展查询。GET/POST /v2/co/cedula/premium。"
+description: "用哥伦比亚国民身份证（CC）做“可读的本人画像”核验：只填证号。签发日由平台代查，结果丰富度与 cédula extra 相当；比基础核验消耗更多会议费/额度。"
 slug: /identity-validation/colombia/colombian-cedula-premium
 ---
 
@@ -10,7 +10,7 @@ export const structuredData = {
 	"@type": "TechArticle",
 	headline: "哥伦比亚国民身份证高级核验(CC) | Verifik KYC API",
 	description:
-		"自动解析签发日期后，返回与 cédula extra 一致的扩展字段。",
+		"面向 KYC/合规：基于官方数据返回姓名、出生日期、何时何地签发、可能的性别与生存状态等；只提交证号。比基础端点更贵。",
 	articleSection: "API 文档",
 	keywords: "哥伦比亚, CC, cédula, 高级, Verifik",
 	about: {
@@ -24,15 +24,19 @@ export const structuredData = {
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
+# 哥伦比亚 — 国民身份证高级核验 (CC)
+
+**用途：** 将 **哥伦比亚国民身份证（CC）证号** 与**官方来源**核对，返回适用于 **KYC/合规** 的**结构化身份信息**（**登记姓名、出生日期、签发地及签发时间**；来源返回时可能包含**性别、生存状态**等），并包含**可审计的签名字段**。**请求仅提供证号**；**签发日期在服务端完成解析**（**无需**在请求中提供证件类型或签发日期）。信息粒度与 **cédula extra** 相当；**单次额度消耗**高于**基础** `/v2/co/cedula` 路径，因含链式解析步骤。
+
+## API 参考
+
 ### 端点
 
 ```
 GET https://api.verifik.co/v2/co/cedula/premium
 ```
 
-`GET https://verifik.app/v2/co/cedula/premium`。支持相同参数的 **POST**。
-
-**仅 CC**：只需 **`documentNumber`**（5～10 位数字）。
+**响应：** 返回 **`data`**（针对所提交证号、来源可返回的本人属性）、**`signature`**（对本响应载荷的认证元数据）、**`id`**（请求标识符）。**HTTP 404** 表示在本工作流下**无法**为该证号**组装完整身份记录**。**HTTP 409** 表示在**进入上游处理前**未通过**输入校验**（例如 `documentNumber` 长度）。**每请求额度**高于**基础** `/v2/co/cedula`（链式解析）。**仅 CC**；证号一般 **5～10 位数字**（规范化后）。
 
 ### 请求头
 
@@ -40,6 +44,12 @@ GET https://api.verifik.co/v2/co/cedula/premium
 | --- | --- |
 | Accept | `application/json` |
 | Authorization | `Bearer <token>` |
+
+### 参数
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `documentNumber` | string | 是 | 哥伦比亚 **CC** 国民身份证证号。非数字字符会在服务端剥除。规范化后须为 **5～10** 位数字，以通过接口校验。 |
 
 ### 请求示例
 
@@ -60,6 +70,90 @@ console.log(data);
 ```
 
   </TabItem>
+  <TabItem value="post" label="POST">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+	"https://api.verifik.co/v2/co/cedula/premium",
+	{ documentNumber: "1234567890" },
+	{
+		headers: {
+			Accept: "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+	}
+);
+console.log(data);
+```
+
+  </TabItem>
 </Tabs>
 
-完整响应与错误说明见英文文档 [Colombian cédula premium](https://docs.verifik.co/identity-validation/colombia/colombian-cedula-premium)。
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+示例结构（占位字段，非真实人物）：
+
+```json
+{
+	"data": {
+		"arrayName": ["GIVEN", "MIDDLE", "PATERNAL", "MATERNAL"],
+		"dateOfBirth": "1990-05-20",
+		"documentNumber": "1234567890",
+		"documentType": "CC",
+		"expeditionDate": "2015-08-12",
+		"expeditionPlace": {
+			"municipio": "示例市",
+			"departamento": "示例省"
+		},
+		"firstName": "GIVEN MIDDLE",
+		"fullName": "GIVEN MIDDLE PATERNAL MATERNAL",
+		"gender": "HOMBRE",
+		"isAlive": true,
+		"lastName": "PATERNAL MATERNAL"
+	},
+	"signature": {
+		"dateTime": "April 21, 2026 9:34 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "XXXXX"
+}
+```
+
+字段名称及取值范围以官方上游数据为准。
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+当上游来源未返回匹配或所需数据（例如签发日期解析失败）时返回。
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentNumber maximum length: 10\n"
+}
+```
+
+`documentNumber` 长度限制为 **5–10**；其他 Joi 校验错误也可能在此返回。
+
+  </TabItem>
+</Tabs>
+
+### 相关
+
+- [国民身份证（基础）](/identity-validation/colombia/colombian-citizen) — `GET/POST /v2/co/cedula`（`CC` / `PPT`）。
+- 英文规范页面：[Colombian cédula premium](https://docs.verifik.co/identity-validation/colombia/colombian-cedula-premium)。
