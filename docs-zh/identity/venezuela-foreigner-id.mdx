@@ -1,7 +1,7 @@
 ---
 id: venezuela-foreigner-id
 title: 🇻🇪 委内瑞拉 — 外国人身份证（CEVE）
-description: 委内瑞拉外国人 CEVE 身份证核验—通过 GET /v2/ve/foreigner-id 支持 KYC 与合规。
+description: 委内瑞拉外国人 cédula（CEVE）核验 — 通过 GET /v2/ve/foreigner-id 按证件号查询，适用于 KYC 与合规。
 slug: /identity/venezuela-foreigner-id
 ---
 
@@ -10,9 +10,9 @@ export const structuredData = {
 	"@type": "TechArticle",
 	headline: "委内瑞拉外国人身份证（CEVE）核验 | Verifik KYC API",
 	description:
-		"核验在委内瑞拉居住的外国人 CEVE 身份证：GET /v2/ve/foreigner-id 与证件号码。",
+		"使用 CEVE cédula 核验委内瑞拉外国居民：通过 GET /v2/ve/foreigner-id 提交证件号即可获取结构化身份数据。",
 	articleSection: "API 文档",
-	keywords: "委内瑞拉 CEVE, 外国人身份证, v2/ve/foreigner-id, KYC",
+	keywords: "委内瑞拉 CEVE, cédula de extranjero, 外国人身份证, KYC API, v2/ve/foreigner-id, 反欺诈",
 	about: {
 		"@type": "Thing",
 		name: "身份核验 API",
@@ -24,39 +24,46 @@ export const structuredData = {
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 🇻🇪 委内瑞拉 — 外国人身份证（CEVE）
+# 🇻🇪 委内瑞拉 — 外国人身份证
 
-核验持 **CEVE**（*Cédula de Identidad de Extranjero*）的 **外国人**身份。
+Verifik 的身份核验 API 可基于政府官方数据对在委内瑞拉的外国人进行身份核实。该接口旨在简化您的 KYC（了解您的客户）流程、防范欺诈，并轻松满足合规要求。
 
-## 核验内容
+我们专为需要快速、安全且自动化核验委内瑞拉外籍客户、员工或合作方身份的组织打造此集成。
 
--   **CEVE 身份**：证件号码与登记姓名一致。
--   **证件类型**：响应包含 `documentType: "CEVE"`。
+## 此 API 验证哪些内容？
+
+我们的 API 直接对接官方记录，验证以下内容：
+
+-   **姓名全称与证件号码**：外国人识别证（**CEVE** — *Cédula de Identidad de Extranjero*）。
+-   **身份匹配**：返回的姓名与官方登记一致。
+-   **证件类型**：本路由响应中包含 `documentType: "CEVE"`。
+
+通过验证这些信息，您可以确信对接的外籍人士真实存在并持有有效证件，从而显著降低身份冒用与欺诈风险。
 
 ## API 参考
 
-### 端点
+### Endpoint
 
 ```
 https://api.verifik.co/v2/ve/foreigner-id
 ```
 
-面向 **外国人 CEVE**。传入 **`documentNumber`** 即可，服务按 **CEVE** 处理。**国民（CCVE）**请使用 [`GET /v2/ve/cedula`](/verifik-zh/identity/venezuela)。
+请使用此接口核验持 **CEVE** cédula 的**外国国民**。请将证件号作为 **`documentNumber`** 传入；API 默认按 **CEVE** 处理并返回结构化身份字段。如需核验**委内瑞拉本国公民**（**CCVE**），请使用 [`GET /v2/ve/cedula`](/identity/venezuela)。
 
-### 请求头
+### 请求头（Headers）
 
-| 名称 | 值 |
-| --- | --- |
-| Accept | `application/json` |
-| Authorization | `Bearer <token>` |
+| 名称           | 取值                |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
 
-### 参数
+### 参数（Parameters）
 
-| 名称 | 类型 | 必填 | 说明 |
-| --- | --- | --- | --- |
-| `documentNumber` | string | 是 | CEVE 号码。无需 `documentType` 查询参数—本端点为 **CEVE**。 |
+| 名称              | 类型    | 必填 | 描述                                                                                                |
+| ----------------- | ------- | ---- | --------------------------------------------------------------------------------------------------- |
+| `documentNumber`  | string  | 是   | 外国居民的 CEVE cédula 号码。无需传 `documentType`，本接口会自动按 **CEVE** 处理。                   |
 
-### 请求
+### 请求（Request）
 
 <Tabs>
   <TabItem value="node" label="Node.js">
@@ -75,18 +82,75 @@ console.log(data);
   <TabItem value="python" label="Python">
 
 ```python
-import os, requests
-print(requests.get(
-    "https://api.verifik.co/v2/ve/foreigner-id",
-    params={"documentNumber": "123456789"},
-    headers={"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"},
-).json())
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "Bearer <your_token>"
+}
+
+conn.request("GET", "/v2/ve/foreigner-id?documentNumber=123456789", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/ve/foreigner-id?documentNumber=123456789', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "Bearer <your_token>"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/ve/foreigner-id?documentNumber=123456789")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
 ```
 
   </TabItem>
 </Tabs>
 
-### 响应
+### 响应（Response）
 
 <Tabs>
   <TabItem value="200" label="200">
@@ -97,15 +161,49 @@ print(requests.get(
     "documentType": "CEVE",
     "documentNumber": "123456789",
     "fullName": "MATEO VENEZUELA VERIFIK",
-    "firstName": "VENEZUELA VERIFIK",
     "lastName": "MATEO",
-    "arrayName": ["MATEO", "VENEZUELA", "VERIFIK"]
+    "firstName": "VENEZUELA VERIFIK",
+    "arrayName": [
+      "MATEO",
+      "VENEZUELA",
+      "VERIFIK"
+    ]
   },
   "signature": {
     "dateTime": "March 13, 2024 2:01 AM",
     "message": "Certified by Verifik.co"
   },
   "id": "7VWXP"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
 }
 ```
 
@@ -122,6 +220,34 @@ print(requests.get(
   </TabItem>
 </Tabs>
 
-### 说明
+---
 
--   仅 **CEVE**；国籍 **CCVE** 使用 `/v2/ve/cedula`。
+## 常见使用场景
+
+-   **外国居民核验**：在雇佣场景中核验在委内瑞拉的外国人身份。
+-   **金融服务**：为外籍客户的银行与金融业务申请进行身份核验。
+-   **法律合规**：满足委内瑞拉对外国居民的合规要求。
+-   **证件鉴真**：在官方用途中对外国人证件进行鉴真。
+-   **身份核验**：简化外国国民的身份核验流程。
+
+## 官方数据源与可靠性
+
+我们直接对接委内瑞拉政府官方数据源，确保您获得经过验证且最新的信息。
+每次查询均严格遵循安全与监管标准。
+
+## 主要优势
+
+-   **自动化合规**：在不增加用户摩擦的前提下简化 KYC 检查并防范欺诈。
+-   **即时结果**：在数秒内完成核验，适用于实时身份验证。
+-   **可信数据**：采用直接来源于官方记录的数据。
+-   **轻松集成**：通过 REST API 或兼容 SDK 即可便捷接入。
+
+## 合规与安全
+
+我们高度重视您的数据安全。Verifik 采用高级加密（HTTPS / TLS 1.3）和严格的隐私管理标准以确保机密性。
+我们的服务全天候 24/7 监控可用性，并提供基于角色的访问控制以保障团队访问安全。
+
+## 关于 Verifik
+
+Verifik 是拉丁美洲领先的身份核验、合规与反欺诈平台。
+我们的 API 自动化 KYC、KYB、AML 与生物识别验证流程，将企业与哥伦比亚、墨西哥、秘鲁、智利、乌拉圭、阿根廷、巴西、委内瑞拉及更多地区的官方数据源相连。

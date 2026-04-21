@@ -1,58 +1,45 @@
 ---
 id: chile-validate-documents
-title: チリ — 身分証の有効性確認
-description: "RUN/RUT と物理カードのシリアルで有効性を確認；高信頼 KYC 向け。"
+title: チリ — 身分証明書の検証
+description: "チリの RUN または RUT と文書のシリアル番号を、戸籍または税務の検証フローに対して照会します。物理的な ID チェック向けに有効性ステータスを返します。"
 slug: /identity/chile-validate-documents
 ---
-
-export const structuredData = {
-	"@context": "https://schema.org",
-	"@type": "TechArticle",
-	headline: "チリ身分証の検証 | Verifik API",
-	description: "GET /v2/cl/validate/documents、serialNumber 必須。",
-	articleSection: "API ドキュメント",
-	keywords: "チリ RUN RUT, v2/cl/validate/documents",
-	about: {
-		"@type": "Thing",
-		name: "文書検証 API",
-	},
-};
-
-<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# チリ身分証の有効性確認
+# チリ — 身分証明書の検証
 
-このエンドポイントは、識別子に加えて物理 ID に**印刷されたシリアル番号**を用いて、チリの **RUN** または **RUT** の**有効性**を確認します。番号が存在するだけでなく**カードが有効か**確認する必要がある場合—単純な cédula 照会を超える**高信頼 KYC**や**コンプライアンス**に使います。
+本エンドポイントは、識別子に加えて、物理 ID に印字された **シリアル番号** を用いて、チリの **RUN** または **RUT** に対する **文書の有効性** を確認します。番号が存在することだけでなく、**カード自体が有効** であることを確認する必要がある場合（例: **高保証 KYC** や、単なる cedula 照会を超えた **コンプライアンス** 手続き）に使用します。
 
-シリアル**なし**で民籍の名義のみ確認する場合は **[チリにおける本人確認](/identity/chile)**（`v2/cl/cedula`）を参照してください。
+シリアル番号なしで戸籍登録に対する氏名のみの照会を行う場合は、**[チリの本人確認](/identity/chile)**（`v2/cl/cedula`）を使用してください。
 
-### Endpoint
+## API リファレンス
+
+### エンドポイント
 
 ```
 https://api.verifik.co/v2/cl/validate/documents
 ```
 
-**RUN** または **RUT**、**文書番号**、**印刷シリアル**を送ると、民籍または税務の検証ソースから**有効性に相当するステータス**が返ります。物理文書を確認する必要があるときに使います。
+**RUN** または **RUT**、**文書番号**、**印字シリアル** を送信し、戸籍または税務の検証ソースから **有効性ステータス** を取得します。番号だけでなく物理 ID を確認する必要がある場合に使用します。
 
-### Headers
+### ヘッダー
 
-| Name | Value |
+| 名前 | 値 |
 | --- | --- |
 | Accept | `application/json` |
 | Authorization | `Bearer <token>` |
 
-### Parameters
+### パラメーター
 
-| Name | Type | Required | Description |
+| 名前 | 型 | 必須 | 説明 |
 | --- | --- | --- | --- |
-| `documentType` | string | Yes | `RUN`（民籍）または `RUT`（税務）。 |
-| `documentNumber` | string | Yes | 統合ガイドに従いスペースなし。 |
-| `serialNumber` | string | Yes | カードに印字されたシリアル（ソース必須）。 |
+| `documentType` | string | はい | `RUN`（戸籍カードのフロー）または `RUT`（税務向けフロー）。                  |
+| `documentNumber` | string | はい | 識別子。統合ガイドラインに従い、スペースなしで指定します。                       |
+| `serialNumber` | string | はい | 文書に印字されたシリアル。下層の検証ソースで必須となります。                     |
 
-### Request
+### リクエスト
 
 <Tabs>
   <TabItem value="node" label="Node.js">
@@ -91,7 +78,7 @@ print(r.json())
   </TabItem>
 </Tabs>
 
-### Response
+### レスポンス
 
 <Tabs>
   <TabItem value="200" label="200">
@@ -135,7 +122,7 @@ print(r.json())
   </TabItem>
 </Tabs>
 
-### Notes
+### 注意事項
 
-- `status` の文言は上流レジストリに依存します。**有効性の目安**として扱い、法的助言の代わりにしないでください。
-- **`serialNumber`** は物理カードから取得してください。ないと民籍 **Registro Civil** フローは完了しません。
+- 正確な `status` の文字列は上流の登記の表現に依存します。**有効性インジケーター** として扱い、法的助言の代替とはしないでください。
+- 物理文書から **`serialNumber`** を取得してください。これがない場合、戸籍 **Registro Civil** フローでの検証は完了できません。

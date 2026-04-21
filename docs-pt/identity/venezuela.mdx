@@ -1,18 +1,18 @@
 ---
 id: venezuela
-title: Cidadão venezuelano (CCVE)
-description: Consulta de identidade nacional na Venezuela—cédula CCVE pelo número do documento via GET /v2/ve/cedula para KYC e prevenção a fraudes.
+title: Verificação de identidade na Venezuela (CCVE)
+description: Consulta de identidade nacional para a Venezuela — verifique titulares de cédula (CCVE) pelo número do documento via GET /v2/ve/cedula para KYC e prevenção a fraudes.
 slug: /identity/venezuela
 ---
 
 export const structuredData = {
 	"@context": "https://schema.org",
 	"@type": "TechArticle",
-	headline: "Verificação de identidade nacional (CCVE) na Venezuela | API KYC Verifik",
+	headline: "Verificação de identidade nacional Venezuela (CCVE) | API KYC Verifik",
 	description:
-		"Consulta de identidade para cidadãos venezuelanos: validação da cédula CCVE pelo número do documento com GET /v2/ve/cedula.",
+		"Consulta de identidade nacional para cidadãos venezuelanos: valide dados da cédula (CCVE) por número de documento usando o endpoint GET /v2/ve/cedula da Verifik.",
 	articleSection: "Documentação da API",
-	keywords: "Venezuela CCVE, cédula nacional, verificação identidade, API KYC, v2/ve/cedula",
+	keywords: "Venezuela CCVE, cédula nacional, verificação de identidade, API KYC, v2/ve/cedula, prevenção a fraudes",
 	about: {
 		"@type": "Thing",
 		name: "API de verificação de identidade",
@@ -24,15 +24,21 @@ export const structuredData = {
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Verificação de identidade na Venezuela (CCVE)
+# Verificação de identidade na Venezuela
 
-A API Verifik autentica **cidadãos venezuelanos** com a cédula nacional **CCVE** (*Cédula de Identidad*), com base em fontes oficiais. Agiliza **KYC**, reduz fraude e apoia conformidade.
+A API de verificação de identidade da Verifik permite autenticar cidadãos venezuelanos usando dados oficiais do governo. Foi projetada para automatizar seus processos de KYC (*Know Your Customer*), prevenir fraudes e garantir o cumprimento de todos os requisitos regulatórios sem esforço.
+
+Construímos esta integração para empresas que precisam de uma forma rápida, segura e automatizada de confirmar a verdadeira identidade de usuários, funcionários ou clientes.
 
 ## O que esta API valida?
 
--   **Nome e número do documento**: cédula nacional **CCVE**.
--   **Correspondência**: nomes retornados batem com o registro.
--   **Campos opcionais**: data de nascimento, gênero, etc., conforme disponibilidade.
+Nossa API conecta-se diretamente aos registros oficiais para validar:
+
+-   **Nome completo e número do documento**: suporta documentos de identidade venezuelanos (CCVE).
+-   **Correspondência de identidade**: confirma que o nome informado corresponde ao número do documento.
+-   **Detalhes pessoais opcionais**: pode incluir data de nascimento, gênero e estado civil quando disponíveis.
+
+Ao validar esses elementos, você pode confiar que a pessoa com quem está negociando é real e possui um documento válido, reduzindo significativamente os riscos de personificação e fraude.
 
 ## Referência da API
 
@@ -42,20 +48,20 @@ A API Verifik autentica **cidadãos venezuelanos** com a cédula nacional **CCVE
 https://api.verifik.co/v2/ve/cedula
 ```
 
-Esta rota retorna dados de identidade para **nacionais venezuelanos** com documento **CCVE**. Envie o número da cédula em **`documentNumber`** ; a API aplica **CCVE** e devolve campos estruturados para **KYC** e prevenção a fraudes. Para **estrangeiros**, use [`GET /v2/ve/foreigner-id`](/verifik-pt/identity/venezuela-foreigner-id) (**CEVE**).
+Esta rota retorna dados de identidade para **cidadãos venezuelanos** usando a classe de documento **CCVE** (*Cédula de Identidad*). Envie o número da cédula como **`documentNumber`**; a API resolve o registro e retorna campos de nome estruturados para **KYC**, onboarding e verificações de fraude. Para **residentes estrangeiros**, use [`GET /v2/ve/foreigner-id`](/identity/venezuela-foreigner-id) (CEVE).
 
 ### Cabeçalhos
 
-| Nome | Valor |
-| --- | --- |
-| Accept | `application/json` |
-| Authorization | `Bearer <token>` |
+| Nome          | Valor              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
 
 ### Parâmetros
 
-| Nome | Tipo | Obrigatório | Descrição |
-| --- | --- | --- | --- |
-| `documentNumber` | string | Sim | Número da cédula nacional (CCVE). Não é necessário `documentType` na query: o serviço aplica **CCVE** neste endpoint. |
+| Nome           | Tipo    | Obrigatório | Descrição                                    |
+| -------------- | ------- | ----------- | -------------------------------------------- |
+| `documentNumber` | string | Sim        | Número da cédula nacional (CCVE). Não é necessário enviar `documentType` — o serviço aplica **CCVE** para este endpoint. |
 
 ### Requisição
 
@@ -77,15 +83,19 @@ console.log(data);
 
 ```php
 <?php
-$query = http_build_query(["documentNumber" => "123456789"]);
-$ch = curl_init("https://api.verifik.co/v2/ve/cedula?" . $query);
+$ch = curl_init("https://api.verifik.co/v2/ve/cedula");
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Accept: application/json",
     "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
 ]);
+$query = http_build_query([
+    "documentNumber" => "123456789"
+]);
+curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/ve/cedula?".$query);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-echo curl_exec($ch);
+$response = curl_exec($ch);
 curl_close($ch);
+echo $response;
 ```
 
   </TabItem>
@@ -93,11 +103,34 @@ curl_close($ch);
 
 ```python
 import os, requests
-print(requests.get(
-    "https://api.verifik.co/v2/ve/cedula",
-    params={"documentNumber": "123456789"},
-    headers={"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"},
-).json())
+
+url = "https://api.verifik.co/v2/ve/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/ve/cedula?documentNumber=123456789"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Accept", "application/json")
+    req.Header.Set("Authorization", "Bearer "+getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    fmt.Println(resp.Status)
+}
 ```
 
   </TabItem>
@@ -111,7 +144,12 @@ print(requests.get(
 ```json
 {
   "data": {
-    "arrayName": ["CARLA", "SARAI", "PULIDO", "RAMIREZ"],
+    "arrayName": [
+      "CARLA",
+      "SARAI",
+      "PULIDO",
+      "RAMIREZ"
+    ],
     "documentNumber": "30246051",
     "documentType": "CCVE",
     "firstName": "CARLA SARAI",
@@ -127,6 +165,64 @@ print(requests.get(
 ```
 
   </TabItem>
+  <TabItem value="200-optional" label="200 (com campos opcionais)">
+
+```json
+{
+  "data": {
+    "arrayName": [
+      "NEIVIS",
+      "JOSEFINA",
+      "PEREZ",
+      "VARGAS"
+    ],
+    "birthDate": "1998-03-01",
+    "documentNumber": "28055196",
+    "documentType": "CCVE",
+    "firstName": "NEIVIS JOSEFINA",
+    "fullName": "NEIVIS JOSEFINA PEREZ VARGAS",
+    "gender": "FEMENINO",
+    "lastName": "PEREZ VARGAS"
+  },
+  "signature": {
+    "dateTime": "November 13, 2025 8:12 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "GGLIK"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
   <TabItem value="409" label="409">
 
 ```json
@@ -137,19 +233,51 @@ print(requests.get(
 ```
 
   </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "code": "InternalServerError",
+    "message": "Server error."
+}
+```
+
+  </TabItem>
 </Tabs>
 
-### Notas
+### Observações
 
--   `documentNumber` é obrigatório.
+- `documentNumber` é obrigatório.
+- Alguns campos podem ser incluídos na resposta dependendo da disponibilidade dos dados: `birthDate`, `gender` e `maritalStatus`. Esses campos não são garantidos em todas as respostas.
+- Quando presente, `birthDate` segue o formato `AAAA-MM-DD` (ex.: "1998-03-01").
 
 ---
 
-## Casos de uso
+## Casos de uso comuns
 
--   **Fintech e bancos**: abertura de conta e crédito.
--   **E-commerce**: verificação de usuários e entregadores.
+-   **Fintech e bancos**: verifique identidades instantaneamente durante a abertura de contas ou solicitações de empréstimo.
+-   **E-commerce e entregas**: autentique usuários e entregadores antes que se tornem ativos em sua plataforma.
+-   **RH e recrutamento**: valide documentos de candidatos como parte do seu fluxo de contratação.
+-   **Seguros e saúde**: confirme identidades antes de emitir apólices ou conceder benefícios médicos.
+
+## Fontes oficiais e confiabilidade
+
+Conectamo-nos diretamente às fontes oficiais do governo venezuelano para garantir que você receba informações verificadas e atualizadas.
+Cada consulta é tratada com estrita aderência a padrões de segurança e regulação.
+
+## Principais benefícios
+
+-   **Conformidade automatizada**: simplifique seus controles de KYC para prevenir fraudes sem adicionar atrito para seus usuários.
+-   **Resultados instantâneos**: processe verificações em segundos, ideal para onboarding digital em tempo real.
+-   **Dados confiáveis**: apoie-se em dados obtidos diretamente dos registros oficiais.
+-   **Integração simples**: conecte-se facilmente via nossa API REST ou utilize nossos SDKs compatíveis.
+
+## Conformidade e segurança
+
+Priorizamos a segurança dos seus dados. A Verifik utiliza criptografia avançada (HTTPS / TLS 1.3) e padrões rigorosos de gerenciamento de privacidade para garantir a confidencialidade.
+Nosso serviço é monitorado 24/7 quanto à disponibilidade e oferece controles de acesso baseados em funções para manter o acesso da sua equipe seguro.
 
 ## Sobre a Verifik
 
-Plataforma de identidade e conformidade na América Latina — API REST e fontes oficiais.
+A Verifik é uma plataforma líder em verificação de identidade, conformidade e prevenção a fraudes em toda a América Latina.
+Nossas APIs automatizam processos de KYC, KYB, AML e validação biométrica, conectando empresas a fontes de dados oficiais na Colômbia, México, Peru, Chile, Uruguai, Argentina, Brasil, Venezuela e além.

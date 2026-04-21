@@ -8,14 +8,14 @@ slug: /vehicle-validation/costa-rica
 export const structuredData = {
 	"@context": "https://schema.org",
 	"@type": "TechArticle",
-	headline: "Vérification véhicule au Costa Rica | Verifik API",
+	headline: "Vérification de véhicule au Costa Rica par plaque | API Verifik",
 	description:
-		"Interrogez un véhicule par plaque : GET /v2/cr/vehicle avec le paramètre plate.",
-	articleSection: "API Documentation",
-	keywords: "Costa Rica véhicule, plaque, v2/cr/vehicle",
+		"Interrogez les véhicules costariciens par plaque d'immatriculation : GET /v2/cr/vehicle avec le paramètre plate pour le propriétaire, les données techniques et l'historique.",
+	articleSection: "Documentation API",
+	keywords: "véhicule Costa Rica, plaque d'immatriculation, v2/cr/vehicle, flotte, assurance",
 	about: {
 		"@type": "Thing",
-		name: "Vehicle Verification API",
+		name: "API de vérification véhicule",
 	},
 };
 
@@ -24,11 +24,13 @@ export const structuredData = {
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Véhicule au Costa Rica (plaque)
+# 🇨🇷 Costa Rica — Informations véhicule
 
-Retourne propriétaire actuel, caractéristiques techniques, infractions et historique de titulaires lorsque la source les fournit.
+Ce service retourne des informations détaillées sur un véhicule immatriculé au Costa Rica à partir de sa **plaque d'immatriculation**. Les données typiques incluent le propriétaire actuel, les caractéristiques du véhicule (cylindrée, valeur fiscale, poids, capacité, puissance, traction), l'historique des **infractions** et celui des **propriétaires précédents** lorsqu'ils sont exposés par la source.
 
-## Référence API
+Utilisez-le pour les vérifications de flotte, l'assurance et les flux de conformité.
+
+## Référence de l'API
 
 ### Endpoint
 
@@ -36,22 +38,22 @@ Retourne propriétaire actuel, caractéristiques techniques, infractions et hist
 https://api.verifik.co/v2/cr/vehicle
 ```
 
-Envoyez le paramètre **`plate`** (plaque sans espaces ni ponctuation).
+Envoyez une requête GET avec le paramètre **`plate`** (sans espaces ni ponctuation). Une réponse réussie inclut les données structurées du véhicule, les champs propriétaire et les tableaux d'historique lorsqu'ils sont disponibles.
 
-### En-têtes
+### En-têtes (Headers)
 
-| Nom | Valeur |
-| --- | --- |
-| Accept | `application/json` |
-| Authorization | `Bearer <token>` |
+| Nom            | Valeur              |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
 
 ### Paramètres
 
-| Nom | Type | Obligatoire | Description | Exemple |
-| --- | --- | --- | --- | --- |
-| `plate` | string | Oui | Plaque à consulter. | `ABC123` |
+| Nom     | Type   | Requis  | Description                                         | Exemple   |
+| ------- | ------ | ------- | --------------------------------------------------- | --------- |
+| `plate` | string | **Oui** | Plaque à interroger, sans espaces ni points.        | `ABC123`  |
 
-### Requête
+### Requête (Request)
 
 <Tabs>
   <TabItem value="node" label="Node.js">
@@ -70,18 +72,67 @@ console.log(data);
   <TabItem value="python" label="Python">
 
 ```python
-import os, requests
-print(requests.get(
-    "https://api.verifik.co/v2/cr/vehicle",
-    params={"plate": "ABC123"},
-    headers={"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"},
-).json())
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {}
+conn.request("GET", "/v2/cr/vehicle?plate=ABC123", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/cr/vehicle?plate=ABC123');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+?>
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/cr/vehicle?plate=ABC123")!,timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
 ```
 
   </TabItem>
 </Tabs>
 
-### Réponse
+### Réponse (Response)
 
 <Tabs>
   <TabItem value="200" label="200">
@@ -89,12 +140,67 @@ print(requests.get(
 ```json
 {
   "data": {
-    "plate": "ABC123",
-    "vehicle": "Example make model",
-    "currentOwner": "NAME"
+    "currentOwner": "GUILLERMO RODRIGUEZ SOLIS",
+    "dataVehicle": {
+      "engineDisplacement": "2389 c.c.",
+      "estateValue": "CRC 530,000",
+      "grossWeight": "1550  kgrms.",
+      "netWeight": "1100  kgrms.",
+      "noVin": "",
+      "occupants": "5",
+      "power": "85 KW. (114 HP)",
+      "traction": "NO APLICA"
+    },
+    "infractions": [
+      {
+        "judicialAuthority": "JUZGADO DE TRANSITO DEL II CIRCUITO JUDICIAL DE SAN JOSE",
+        "summaryNumber": "18-003179-0174-TR",
+        "ticketNumber": "2018243000156",
+        "type": "COLISIONES"
+      },
+      {
+        "judicialAuthority": "JUZGADO DE TRANSITO DEL II CIRCUITO JUDICIAL DE SAN JOSE",
+        "summaryNumber": "17-008609-0174-TR",
+        "ticketNumber": "2017202000461",
+        "type": "COLISIONES"
+      }
+    ],
+    "ownerHistory": [
+      {
+        "date": "12/10/2016",
+        "fullName": "RODRIGUEZ GUILLERMO SOLIS"
+      },
+      {
+        "date": "15/02/2007",
+        "fullName": "RODRIGUEZ AGUSTIN SOLIS"
+      },
+      {
+        "date": "29/04/1991",
+        "fullName": "LAFUENTE ANDRES BARQUERO"
+      },
+      {
+        "date": "29/04/1991",
+        "fullName": "SALAS ANA EUGENIA VASQUEZ"
+      }
+    ],
+    "plate": "123456",
+    "vehicle": "1987 NISSAN D21 GRIS"
   },
-  "signature": { "message": "Certified by Verifik.co", "dateTime": "" },
-  "id": "…"
+  "signature": {
+    "dateTime": "June 24, 2024 7:39 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "OJBUG"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
 }
 ```
 
@@ -102,8 +208,26 @@ print(requests.get(
   <TabItem value="409" label="409">
 
 ```json
-{ "code": "MissingParameter", "message": "missing plate" }
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
 ```
 
   </TabItem>
 </Tabs>
+
+## Fonctionnalités
+
+- **Récupération d'informations véhicule** : obtenez les détails complets depuis le registre automobile costaricien.
+- **Validation de plaque** : vérifiez les plaques d'immatriculation au Costa Rica.
+- **Propriétaire actuel** : récupérez les coordonnées du propriétaire actuel.
+- **Caractéristiques du véhicule** : cylindrée, valeur fiscale, poids, capacité, puissance et traction.
+- **Historique des infractions** : accédez à l'historique complet des infractions routières.
+- **Historique des propriétaires** : consultez la liste chronologique de tous les propriétaires précédents.
+- **Autorité judiciaire** : informations sur l'autorité judiciaire en charge des infractions.
+- **Informations de contravention** : numéros de contravention et de dossier pour les infractions.
+- **Plusieurs langages de programmation** : exemples en JavaScript, Python, PHP et Swift.
+- **Données en temps réel** : informations à jour sur le véhicule.
+- **Gestion d'erreurs complète** : réponses d'erreur détaillées pour chaque scénario.
+- **Intégration au registre costaricien** : accès direct à la base officielle des véhicules au Costa Rica.

@@ -1,56 +1,41 @@
 ---
 id: chile
-title: チリ — 車両（ナンバー）
-description: "ナンバーでチリ車両を照会：車両諸元、違反、所有者 RUT など。"
+title: 🇨🇱 チリ — 車両情報
+description: "ナンバープレートでチリの車両を検証します。技術データ、罰金有無、可能であれば所有者の RUT を取得でき、フリート、保険、資産確認に最適です。"
 slug: /vehicle-validation/chile
 ---
-
-export const structuredData = {
-	"@context": "https://schema.org",
-	"@type": "TechArticle",
-	headline: "チリ車両照会 | Verifik API",
-	description: "GET /v2/cl/vehicle、plate。",
-	articleSection: "API ドキュメント",
-	keywords: "チリ 車両, v2/cl/vehicle",
-	about: {
-		"@type": "Thing",
-		name: "車両確認 API",
-	},
-};
-
-<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# チリ車両情報
+# 🇨🇱 チリ — 車両情報
 
-チリ登録車両の詳細情報を取得します。**フリート**、**保険**、**担保**、運用コンプライアンスに利用できます。
+チリの車両検証サービスは、車両情報の包括的な検証機能を提供します。本サービスでは、チリで登録された車両に関する詳細情報を取得できます。
 
-## ナンバー照会
+## 車両情報照会
 
-### Endpoint
+### エンドポイント
 
 ```
 https://api.verifik.co/v2/cl/vehicle
 ```
 
-**`plate`**（スペース・ドットなし）で照会します。通常 **メーカー**、**モデル**、**年式**、**車台/VIN**、**エンジン**、**色**、**車種**、**違反概要**、レジストリが公開すれば**所有者 RUT** などが返ります。
+**ナンバープレート**（`plate`、スペースやドットなし）で照会します。一般的なフィールドには、**メーカー**、**車種**、**年式**、**VIN/シャーシ**、**エンジン**、**色**、**車両種別**、**罰金サマリー**、登記が公開している場合は **所有者の RUT** などが含まれます。**フリートオンボーディング**、**担保確認**、**請求** ワークフローに使用できます。
 
-### Headers
+### ヘッダー
 
-| Name | Value |
-| --- | --- |
-| Accept | `application/json` |
-| Authorization | `Bearer <token>` |
+| 名前          | 値                 |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
 
-### Parameters
+### パラメーター
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `plate` | string | Yes | ナンバー（スペース・ドットなし） |
+| 名前 | 型 | 必須 | 説明 | 例 |
+| ---- | ---- | ---- | ---- | ---- |
+| `plate` | string | **はい** | 照会対象のナンバープレート。スペースやドットを含めずに入力してください。 | `ABC123` |
 
-### Request
+### リクエスト
 
 <Tabs>
   <TabItem value="node" label="Node.js">
@@ -66,22 +51,103 @@ console.log(data);
 ```
 
   </TabItem>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/cl/vehicle',
+  params: {
+    plate: 'BB985'
+  },
+  headers: {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer <tu_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
   <TabItem value="python" label="Python">
 
 ```python
-import os, requests
+import http.client
 
-url = "https://api.verifik.co/v2/cl/vehicle"
-headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"plate": "BB985"}
-r = requests.get(url, headers=headers, params=params)
-print(r.json())
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>",
+}
+conn.request("GET", "/v2/cl/vehicle?plate=BB985", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/cl/vehicle?plate=BB985');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setHeader('Accept', 'application/json');
+$request->setHeader('Authorization', 'Bearer <tu_token>');
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+?>
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/cl/vehicle?plate=BB985")!,timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+request.setValue("application/json", forHTTPHeaderField: "Accept")
+request.setValue("Bearer <tu_token>", forHTTPHeaderField: "Authorization")
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
 ```
 
   </TabItem>
 </Tabs>
 
-### Response
+### レスポンス
 
 <Tabs>
   <TabItem value="200" label="200">
@@ -135,21 +201,32 @@ print(r.json())
 ```
 
   </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "Server error."
+}
+```
+
+  </TabItem>
 </Tabs>
 
 ## 機能
 
-### 車両情報
-- **登録**：チリでの登録確認。
-- **諸元**：車台・エンジン・メーカー・モデル。
-- **詳細**：年式・色・タイプ。
-- **所有者**：RUT（取得可能な場合）。
-- **違反**：未処理の有無。
-- **盗難**：ソースが提供する場合。
-- **公共交通**：該当時の区分。
+### 車両情報照会
+- **車両登録**: チリにおける車両登録を検証します。
+- **技術仕様**: シャーシ番号、エンジン番号、製造元、モデルを取得します。
+- **車両詳細**: 年式、色、種別の情報にアクセスできます。
+- **所有者情報**: 車両所有者の RUT と詳細情報を取得します。
+- **罰金状況**: 当該車両に紐づく未払い罰金の有無を確認できます。
+- **盗難状況**: 車両に盗難届が出されているかを検証します。
+- **公共交通**: 公共交通分類を確認できます。
 
-### 一般
-- **Node.js・Python** サンプル。
-- **リアルタイム**のレジストリデータ。
-- 構造化された**エラー**応答。
-- **`signature`** 付き JSON。
+### 一般機能
+- **複数のプログラミング言語に対応**: JavaScript、Python、PHP、Swift をサポートします。
+- **リアルタイムデータ**: 最新の情報にアクセスできます。
+- **包括的なエラーハンドリング**: 各種シナリオに対応した詳細なエラーレスポンスを提供します。
+- **構造化されたレスポンス**: 署名検証付きの整形された JSON レスポンスを返します。
+- **チリ登録機関との連携**: チリの公式車両データベースに直接アクセスできます。

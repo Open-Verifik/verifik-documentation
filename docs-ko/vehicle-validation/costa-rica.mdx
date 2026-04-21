@@ -1,17 +1,18 @@
 ---
 id: costa-rica
-title: 코스타리카 — 차량(번호판)
-description: GET /v2/cr/vehicle로 번호판 조회.
+title: 🇨🇷 코스타리카 — 차량 정보
+description: GET /v2/cr/vehicle에 plate를 전달해 코스타리카 차량을 번호판으로 조회합니다. 가용 시 소유자, 사양, 위반 기록, 소유 이력을 반환합니다.
 slug: /vehicle-validation/costa-rica
 ---
 
 export const structuredData = {
 	"@context": "https://schema.org",
 	"@type": "TechArticle",
-	headline: "코스타리카 차량 조회 | Verifik API",
-	description: "번호판 plate로 조회: GET /v2/cr/vehicle.",
+	headline: "코스타리카 번호판 기반 차량 검증 | Verifik API",
+	description:
+		"코스타리카 차량을 번호판으로 조회합니다. GET /v2/cr/vehicle에 plate 매개변수를 전달해 소유자, 기술 데이터, 이력을 받아볼 수 있습니다.",
 	articleSection: "API 문서",
-	keywords: "코스타리카 차량, v2/cr/vehicle",
+	keywords: "코스타리카 차량, 번호판, v2/cr/vehicle, 차량 운영, 보험",
 	about: {
 		"@type": "Thing",
 		name: "차량 검증 API",
@@ -23,7 +24,13 @@ export const structuredData = {
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 코스타리카 차량 조회
+# 🇨🇷 코스타리카 — 차량 정보
+
+본 서비스는 **번호판**을 사용해 코스타리카에 등록된 차량의 상세 정보를 반환합니다. 일반적으로 현재 소유자, 차량 사양(배기량, 재정 평가액, 중량, 정원, 출력, 구동 방식), **위반** 이력, 출처가 노출하는 경우 **이전 소유자** 정보가 포함됩니다.
+
+차량 운영 점검, 보험, 컴플라이언스 워크플로우에 활용할 수 있습니다.
+
+## API 레퍼런스
 
 ### 엔드포인트
 
@@ -31,22 +38,22 @@ import TabItem from '@theme/TabItem';
 https://api.verifik.co/v2/cr/vehicle
 ```
 
-필수 **`plate`**.
+**`plate`** 쿼리 매개변수(공백이나 구두점 없음)와 함께 GET 요청을 전송합니다. 정상 응답에는 구조화된 차량 데이터, 소유자 필드, 그리고 가용 시 이력 배열이 포함됩니다.
 
-### 헤더
+### 헤더(Headers)
 
-| 이름 | 값 |
-| --- | --- |
-| Accept | `application/json` |
-| Authorization | `Bearer <token>` |
+| 이름           | 값                  |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
 
-### 매개변수
+### 매개변수(Parameters)
 
-| 이름 | 유형 | 필수 | 설명 |
-| --- | --- | --- | --- |
-| `plate` | string | 예 | 번호판(공백 없음) |
+| 이름     | 형식    | 필수 | 설명                                              | 예시      |
+| -------- | ------- | ---- | ------------------------------------------------- | --------- |
+| `plate`  | string  | **예** | 조회할 번호판. 공백이나 점 없이 입력합니다.    | `ABC123`  |
 
-### 요청
+### 요청(Request)
 
 <Tabs>
   <TabItem value="node" label="Node.js">
@@ -62,16 +69,165 @@ console.log(data);
 ```
 
   </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {}
+conn.request("GET", "/v2/cr/vehicle?plate=ABC123", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/cr/vehicle?plate=ABC123');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+?>
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/cr/vehicle?plate=ABC123")!,timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
+```
+
+  </TabItem>
 </Tabs>
 
-### 응답
+### 응답(Response)
 
 <Tabs>
   <TabItem value="200" label="200">
 
 ```json
-{ "data": {}, "signature": {}, "id": "" }
+{
+  "data": {
+    "currentOwner": "GUILLERMO RODRIGUEZ SOLIS",
+    "dataVehicle": {
+      "engineDisplacement": "2389 c.c.",
+      "estateValue": "CRC 530,000",
+      "grossWeight": "1550  kgrms.",
+      "netWeight": "1100  kgrms.",
+      "noVin": "",
+      "occupants": "5",
+      "power": "85 KW. (114 HP)",
+      "traction": "NO APLICA"
+    },
+    "infractions": [
+      {
+        "judicialAuthority": "JUZGADO DE TRANSITO DEL II CIRCUITO JUDICIAL DE SAN JOSE",
+        "summaryNumber": "18-003179-0174-TR",
+        "ticketNumber": "2018243000156",
+        "type": "COLISIONES"
+      },
+      {
+        "judicialAuthority": "JUZGADO DE TRANSITO DEL II CIRCUITO JUDICIAL DE SAN JOSE",
+        "summaryNumber": "17-008609-0174-TR",
+        "ticketNumber": "2017202000461",
+        "type": "COLISIONES"
+      }
+    ],
+    "ownerHistory": [
+      {
+        "date": "12/10/2016",
+        "fullName": "RODRIGUEZ GUILLERMO SOLIS"
+      },
+      {
+        "date": "15/02/2007",
+        "fullName": "RODRIGUEZ AGUSTIN SOLIS"
+      },
+      {
+        "date": "29/04/1991",
+        "fullName": "LAFUENTE ANDRES BARQUERO"
+      },
+      {
+        "date": "29/04/1991",
+        "fullName": "SALAS ANA EUGENIA VASQUEZ"
+      }
+    ],
+    "plate": "123456",
+    "vehicle": "1987 NISSAN D21 GRIS"
+  },
+  "signature": {
+    "dateTime": "June 24, 2024 7:39 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "OJBUG"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
 ```
 
   </TabItem>
 </Tabs>
+
+## 주요 기능
+
+- **차량 정보 조회**: 코스타리카 차량 등기소에서 종합 차량 상세 정보를 조회합니다.
+- **번호판 검증**: 코스타리카에 등록된 차량 번호판을 검증합니다.
+- **현재 소유자 정보**: 현재 차량 소유자 상세 정보를 조회합니다.
+- **차량 사양**: 배기량, 재정 평가액, 중량, 정원, 출력, 구동 방식을 제공합니다.
+- **위반 이력**: 교통 위반 및 침해의 전체 이력을 조회합니다.
+- **소유 이력**: 모든 이전 차량 소유자의 시간순 목록을 확인합니다.
+- **사법 기관**: 위반을 처리한 사법 기관 정보를 조회합니다.
+- **통고 정보**: 위반에 대한 통고 번호와 요약 번호를 조회합니다.
+- **다양한 프로그래밍 언어 지원**: JavaScript, Python, PHP, Swift 예제를 제공합니다.
+- **실시간 데이터**: 최신의 차량 정보를 조회할 수 있습니다.
+- **종합 오류 처리**: 다양한 시나리오에 대한 상세한 오류 응답을 제공합니다.
+- **코스타리카 등기소 연동**: 공식 코스타리카 차량 데이터베이스에 직접 접근합니다.

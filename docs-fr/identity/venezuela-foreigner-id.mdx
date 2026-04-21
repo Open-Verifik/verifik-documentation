@@ -8,14 +8,14 @@ slug: /identity/venezuela-foreigner-id
 export const structuredData = {
 	"@context": "https://schema.org",
 	"@type": "TechArticle",
-	headline: "Vérification CEVE (étrangers) au Venezuela | API KYC Verifik",
+	headline: "Vérification de la pièce d'étranger au Venezuela (CEVE) | API KYC Verifik",
 	description:
-		"Vérifiez les résidents étrangers au Venezuela avec la cédula CEVE : GET /v2/ve/foreigner-id et numéro de document.",
-	articleSection: "API Documentation",
-	keywords: "Venezuela CEVE, cédula extranjero, v2/ve/foreigner-id, KYC",
+		"Vérifiez les résidents étrangers au Venezuela avec la cédula CEVE : GET /v2/ve/foreigner-id avec le numéro de document pour des données d'identité structurées.",
+	articleSection: "Documentation API",
+	keywords: "Venezuela CEVE, cédula de extranjero, pièce d'étranger, API KYC, v2/ve/foreigner-id, prévention de la fraude",
 	about: {
 		"@type": "Thing",
-		name: "Identity Verification API",
+		name: "API de vérification d'identité",
 	},
 };
 
@@ -24,16 +24,23 @@ export const structuredData = {
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 🇻🇪 Venezuela — Cédula d'étranger (CEVE)
+# 🇻🇪 Venezuela — Cédula d'étranger
 
-Cette API permet d'authentifier les **personnes étrangères** résidant au Venezuela au moyen de la **CEVE** (*Cédula de Identidad de Extranjero*).
+L'API de vérification d'identité de Verifik vous permet d'authentifier les personnes étrangères au Venezuela à partir des données officielles du gouvernement. Elle est conçue pour fluidifier vos processus KYC (Know Your Customer), prévenir la fraude et vous assurer de respecter sans effort toutes les exigences réglementaires.
+
+Nous avons construit cette intégration pour les entreprises qui ont besoin d'un moyen rapide, sécurisé et automatisé de vérifier l'identité de clients, employés ou partenaires étrangers au Venezuela.
 
 ## Que valide cette API ?
 
--   **Identité CEVE** : numéro de document et noms cohérents avec le registre.
--   **Type de document** : la réponse inclut `documentType: "CEVE"`.
+Notre API se connecte directement aux registres officiels pour valider :
 
-## Référence API
+-   **Nom complet et numéro de document** : pièce d'identité d'étranger (**CEVE** — *Cédula de Identidad de Extranjero*).
+-   **Correspondance d'identité** : les noms retournés correspondent au document enregistré.
+-   **Type de document** : les réponses incluent `documentType: "CEVE"` pour cette route.
+
+En vérifiant ces éléments, vous pouvez avoir la certitude que la personne étrangère avec qui vous traitez existe et possède un document valide, ce qui réduit considérablement les risques d'usurpation d'identité et de fraude.
+
+## Référence de l'API
 
 ### Endpoint
 
@@ -41,22 +48,22 @@ Cette API permet d'authentifier les **personnes étrangères** résidant au Vene
 https://api.verifik.co/v2/ve/foreigner-id
 ```
 
-Endpoint dédié aux **étrangers** titulaires d'une **CEVE**. Passez le numéro en **`documentNumber`** ; le service applique **CEVE**. Pour les **nationaux** (**CCVE**), utilisez [`GET /v2/ve/cedula`](/verifik-fr/identity/venezuela).
+Utilisez cet endpoint pour les **étrangers** enregistrés avec une cédula **CEVE**. Transmettez le numéro de document via **`documentNumber`** ; l'API applique **CEVE** et retourne les champs d'identité structurés. Pour les **citoyens vénézuéliens** (cédula nationale **CCVE**), utilisez plutôt [`GET /v2/ve/cedula`](/identity/venezuela).
 
-### En-têtes
+### En-têtes (Headers)
 
-| Nom | Valeur |
-| --- | --- |
-| Accept | `application/json` |
-| Authorization | `Bearer <token>` |
+| Nom            | Valeur              |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
 
 ### Paramètres
 
-| Nom | Type | Obligatoire | Description |
-| --- | --- | --- | --- |
-| `documentNumber` | string | Oui | Numéro CEVE. Aucun `documentType` requis : **CEVE** est appliqué sur cet endpoint. |
+| Nom              | Type   | Requis  | Description                                                                                                            |
+| ---------------- | ------ | ------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `documentNumber` | string | **Oui** | Numéro de cédula CEVE du résident étranger. Aucun paramètre `documentType` n'est requis — le service applique **CEVE** pour cet endpoint. |
 
-### Requête
+### Requête (Request)
 
 <Tabs>
   <TabItem value="node" label="Node.js">
@@ -75,19 +82,75 @@ console.log(data);
   <TabItem value="python" label="Python">
 
 ```python
-import os, requests
-r = requests.get(
-    "https://api.verifik.co/v2/ve/foreigner-id",
-    params={"documentNumber": "123456789"},
-    headers={"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"},
-)
-print(r.json())
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "Bearer <votre_token>"
+}
+
+conn.request("GET", "/v2/ve/foreigner-id?documentNumber=123456789", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/ve/foreigner-id?documentNumber=123456789', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'Bearer <votre_token>',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "Bearer <votre_token>"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/ve/foreigner-id?documentNumber=123456789")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
 ```
 
   </TabItem>
 </Tabs>
 
-### Réponse
+### Réponse (Response)
 
 <Tabs>
   <TabItem value="200" label="200">
@@ -98,15 +161,49 @@ print(r.json())
     "documentType": "CEVE",
     "documentNumber": "123456789",
     "fullName": "MATEO VENEZUELA VERIFIK",
-    "firstName": "VENEZUELA VERIFIK",
     "lastName": "MATEO",
-    "arrayName": ["MATEO", "VENEZUELA", "VERIFIK"]
+    "firstName": "VENEZUELA VERIFIK",
+    "arrayName": [
+      "MATEO",
+      "VENEZUELA",
+      "VERIFIK"
+    ]
   },
   "signature": {
     "dateTime": "March 13, 2024 2:01 AM",
     "message": "Certified by Verifik.co"
   },
   "id": "7VWXP"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
 }
 ```
 
@@ -123,6 +220,34 @@ print(r.json())
   </TabItem>
 </Tabs>
 
-### Remarques
+---
 
--   Réservé à la **CEVE** ; la cédula nationale **CCVE** utilise `/v2/ve/cedula`.
+## Cas d'usage courants
+
+-   **Vérification de résidents étrangers** : validez l'identité de personnes étrangères au Venezuela à des fins d'embauche.
+-   **Services financiers** : vérifiez l'identité d'étrangers pour les demandes de services bancaires et financiers.
+-   **Conformité juridique** : assurez la conformité aux réglementations vénézuéliennes pour les résidents étrangers.
+-   **Authentification de documents** : authentifiez les documents d'étrangers pour des usages officiels.
+-   **Vérification d'identité** : fluidifiez les processus de vérification d'identité pour les étrangers.
+
+## Sources officielles et fiabilité
+
+Nous nous connectons directement aux sources officielles du gouvernement vénézuélien afin de vous garantir des informations vérifiées et à jour.
+Chaque requête est traitée dans le strict respect des normes de sécurité et de réglementation.
+
+## Avantages clés
+
+-   **Conformité automatisée** : simplifiez vos contrôles KYC pour prévenir la fraude sans ajouter de friction pour vos utilisateurs.
+-   **Résultats instantanés** : traitez les vérifications en quelques secondes, idéal pour la vérification d'identité en temps réel.
+-   **Données fiables** : appuyez-vous sur des données issues directement des registres officiels.
+-   **Intégration facile** : connectez-vous aisément via notre API REST ou utilisez nos SDK compatibles.
+
+## Conformité et sécurité
+
+Nous accordons la priorité à la sécurité de vos données. Verifik utilise un chiffrement avancé (HTTPS / TLS 1.3) et des normes strictes de gestion de la confidentialité pour garantir la confidentialité.
+Notre service est surveillé 24h/24 et 7j/7 et offre des contrôles d'accès basés sur les rôles pour sécuriser l'accès de votre équipe.
+
+## À propos de Verifik
+
+Verifik est une plateforme leader pour la vérification d'identité, la conformité et la prévention de la fraude en Amérique latine.
+Nos API automatisent les processus KYC, KYB, AML et de validation biométrique, en connectant les entreprises à des sources de données officielles en Colombie, au Mexique, au Pérou, au Chili, en Uruguay, en Argentine, au Brésil, au Venezuela et au-delà.
