@@ -1,0 +1,218 @@
+---
+title: Vehicle Information (v3)
+description: Chilean vehicle information with technical inspection history via API v3
+slug: /vehicle-validation/chile/vehicle-information-v3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Vehicle Information (v3)
+
+<mark>`GET - https://api.verifik.co/v3/cl/vehicle`</mark>
+
+This **v3** endpoint returns vehicle registry data for Chile, including identification fields and a **history** of technical inspection records (*revisiones técnicas*). Use the license plate as the only query parameter.
+
+### Implementation
+
+**Headers**
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+**Query parameters**
+
+| Name    | Type   | Required | Description                                      | Example   |
+| ------- | ------ | -------- | ------------------------------------------------ | --------- |
+| `plate` | String | Yes      | Plate to query, without spaces or punctuation. | `XH6640`  |
+
+#### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v3/cl/vehicle',
+  params: { plate: 'XH6640' },
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer <your_token>',
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer <your_token>'
+}
+conn.request("GET", "/v3/cl/vehicle?plate=XH6640", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v3/cl/vehicle?plate=XH6640")!, timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+request.setValue("application/json", forHTTPHeaderField: "Accept")
+request.setValue("Bearer <your_token>", forHTTPHeaderField: "Authorization")
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v3/cl/vehicle?plate=XH6640');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setHeader('Accept', 'application/json');
+$request->setHeader('Authorization', 'Bearer <your_token>');
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+$request->setBody('');
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+```
+
+</TabItem>
+</Tabs>
+
+**Response**
+
+`data` includes the requested `plate`, a nested `vehicle` object, and `history`: an array of inspection events (newest first). Each history item can include `date`, `plantCode`, `plantName`, `certificateNumber`, `expirationDate`, and `status`. The root response also includes `signature`, and an `id` for the transaction.
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "XH6640",
+    "vehicle": {
+      "plate": "XH6640",
+      "type": "CAMIONETA (CAP. DE CARGA MENOR A 1.750 KGS.) [B] (A2)",
+      "mark": "PEUGEOT",
+      "model": "PARTNER TOLE 1.9",
+      "year": "2004",
+      "engineNumber": "10DXDM0003203",
+      "chasisNumber": "60548210",
+      "vin": null,
+      "sealType": "SELLO VERDE"
+    },
+    "history": [
+      {
+        "date": "11/06/2024",
+        "plantCode": "AB0535",
+        "plantName": "APPLUS REVISIONES TÉCNICAS CHILE S.A.",
+        "certificateNumber": "B0535000000202194",
+        "expirationDate": "28-02-2025",
+        "status": "Revision vencida"
+      },
+      {
+        "date": "11/06/2024",
+        "plantCode": "AB0535",
+        "plantName": "APPLUS REVISIONES TÉCNICAS CHILE S.A.",
+        "certificateNumber": "B0535000000202144",
+        "expirationDate": "12/06/2024",
+        "status": "Rechazado"
+      },
+      {
+        "date": "27/02/2023",
+        "plantCode": "AB0535",
+        "plantName": "APPLUS REVISIONES TÉCNICAS CHILE S.A.",
+        "certificateNumber": "B0535000000138777",
+        "expirationDate": "29/02/2024",
+        "status": "Aprobado"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "April 23, 2026 10:38 AM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "SE6W7"
+}
+```
+
+Additional inspection records may appear in `history`; the list above is illustrative.
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "Server error."
+}
+```
+
+</TabItem>
+</Tabs>

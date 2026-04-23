@@ -282,10 +282,22 @@ const sidebars = {
 					key: "vehiculos-brazil",
 				},
 				{
-					type: "doc",
-					id: "validacion-vehiculos/chile",
+					type: "category",
 					label: "🇨🇱 Chile",
-					key: "vehiculos-chile",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "validacion-vehiculos/chile",
+							label: "Resumen",
+							key: "vehiculos-chile-resumen",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/chile/informacion-vehiculo-v3",
+							label: "Información de Vehículo (v3)",
+						},
+					],
 				},
 				{
 					type: "category",
