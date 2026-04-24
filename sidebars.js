@@ -397,10 +397,23 @@ const sidebars = {
 					key: "vehicle-brazil",
 				},
 				{
-					type: "doc",
-					id: "vehicle-validation/chile",
+					type: "category",
 					label: "🇨🇱 Chile",
-					key: "vehicle-chile",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "vehicle-validation/chile",
+							label: "Vehicle information",
+							key: "vehicle-chile",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/chile/transport-vehicle",
+							label: "Transport vehicle",
+							key: "vehicle-chile-transport",
+						},
+					],
 				},
 				{
 					type: "category",
