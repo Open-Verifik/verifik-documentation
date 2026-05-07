@@ -3,6 +3,21 @@ id: quebec-driver-license
 title: Quebec Driver License
 description: Verify Quebec (Canada) driver licenses by document number via Verifik's API.
 slug: /driver-validation/quebec-driver-license
+keywords:
+  - v2/ca/quebec/driver-license
+  - /v2/ca/quebec/driver-license
+  - v2 ca quebec driver-license
+  - api/ca/quebec/driver-license
+  - /api/ca/quebec/driver-license
+  - api ca quebec driver-license
+  - api.verifik.co/v2/ca/quebec/driver-license
+  - 'https://api.verifik.co/v2/ca/quebec/driver-license'
+  - GET v2/ca/quebec/driver-license
+  - GET /v2/ca/quebec/driver-license
+  - ca/quebec/driver-license
+  - /ca/quebec/driver-license
+  - quebec/driver-license
+  - /quebec/driver-license
 ---
 
 import Tabs from '@theme/Tabs';

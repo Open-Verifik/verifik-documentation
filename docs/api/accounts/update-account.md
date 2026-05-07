@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/clients/sync
+  - /api/clients/sync
+  - api clients sync
+  - api.verifik.co/api/clients/sync
+  - 'https://api.verifik.co/api/clients/sync'
+  - GET api/clients/sync
+  - GET /api/clients/sync
+  - clients/sync
+  - /clients/sync
+---
 # Update Account
 
 import Tabs from '@theme/Tabs';

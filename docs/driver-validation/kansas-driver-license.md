@@ -3,6 +3,21 @@ id: kansas-driver-license
 title: Kansas Driver License
 description: Kansas driver license verification service
 slug: /driver-validation/kansas-driver-license
+keywords:
+  - v2/usa/kansas/driver-license
+  - /v2/usa/kansas/driver-license
+  - v2 usa kansas driver-license
+  - api/usa/kansas/driver-license
+  - /api/usa/kansas/driver-license
+  - api usa kansas driver-license
+  - api.verifik.co/v2/usa/kansas/driver-license
+  - 'https://api.verifik.co/v2/usa/kansas/driver-license'
+  - GET v2/usa/kansas/driver-license
+  - GET /v2/usa/kansas/driver-license
+  - usa/kansas/driver-license
+  - /usa/kansas/driver-license
+  - kansas/driver-license
+  - /kansas/driver-license
 ---
 
 import Tabs from '@theme/Tabs';

@@ -2,6 +2,19 @@
 id: argentina
 title: Argentina
 description: Verify Argentine vehicle information using license plate
+keywords:
+  - v2/ar/vehicle
+  - /v2/ar/vehicle
+  - v2 ar vehicle
+  - api/ar/vehicle
+  - /api/ar/vehicle
+  - api ar vehicle
+  - api.verifik.co/v2/ar/vehicle
+  - 'https://api.verifik.co/v2/ar/vehicle'
+  - GET v2/ar/vehicle
+  - GET /v2/ar/vehicle
+  - ar/vehicle
+  - /ar/vehicle
 ---
 
 # Argentina

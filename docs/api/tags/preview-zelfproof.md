@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/tags/preview-zelfproof
+  - /api/tags/preview-zelfproof
+  - api tags preview-zelfproof
+  - api.verifik.co/api/tags/preview-zelfproof
+  - 'https://api.verifik.co/api/tags/preview-zelfproof'
+  - GET api/tags/preview-zelfproof
+  - GET /api/tags/preview-zelfproof
+  - tags/preview-zelfproof
+  - /tags/preview-zelfproof
+---
 # Preview ZelfProof
 
 import Tabs from '@theme/Tabs';

@@ -3,6 +3,23 @@ id: business-validation-colombia-verify-legal-invoicer-in-dian-for-colombian-com
 title: Colombia Legal Invoicer Verification
 description: Validate legal invoicer registration in DIAN for Colombian companies with Verifik's KYB API.
 slug: /business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies
+keywords:
+  - v2/co/company/dian/invoicer
+  - /v2/co/company/dian/invoicer
+  - v2 co company dian invoicer
+  - api/co/company/dian/invoicer
+  - /api/co/company/dian/invoicer
+  - api co company dian invoicer
+  - api.verifik.co/v2/co/company/dian/invoicer
+  - 'https://api.verifik.co/v2/co/company/dian/invoicer'
+  - GET v2/co/company/dian/invoicer
+  - GET /v2/co/company/dian/invoicer
+  - co/company/dian/invoicer
+  - /co/company/dian/invoicer
+  - company/dian/invoicer
+  - /company/dian/invoicer
+  - dian/invoicer
+  - /dian/invoicer
 ---
 
 export const structuredData = {

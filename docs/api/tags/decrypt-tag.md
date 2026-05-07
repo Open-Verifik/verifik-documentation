@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/tags/decrypt
+  - /api/tags/decrypt
+  - api tags decrypt
+  - api.verifik.co/api/tags/decrypt
+  - 'https://api.verifik.co/api/tags/decrypt'
+  - GET api/tags/decrypt
+  - GET /api/tags/decrypt
+  - tags/decrypt
+  - /tags/decrypt
+---
 # Decrypt Tag
 
 import Tabs from '@theme/Tabs';

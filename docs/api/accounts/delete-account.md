@@ -1,3 +1,16 @@
+---
+keywords:
+  - 'api/clients/{id}'
+  - '/api/clients/{id}'
+  - api/clients
+  - /api/clients
+  - api clients
+  - 'api clients {id}'
+  - 'api.verifik.co/api/clients/{id}'
+  - 'https://api.verifik.co/api/clients/{id}'
+  - 'GET api/clients/{id}'
+  - 'GET /api/clients/{id}'
+---
 # Delete Account
 
 import Tabs from '@theme/Tabs';

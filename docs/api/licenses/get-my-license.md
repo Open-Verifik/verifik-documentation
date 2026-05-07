@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/licenses/my-license
+  - /api/licenses/my-license
+  - api licenses my-license
+  - api.verifik.co/api/licenses/my-license
+  - 'https://api.verifik.co/api/licenses/my-license'
+  - GET api/licenses/my-license
+  - GET /api/licenses/my-license
+  - licenses/my-license
+  - /licenses/my-license
+---
 # Get My License
 
 Retrieve the current user's license information and status.

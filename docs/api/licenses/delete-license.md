@@ -1,3 +1,16 @@
+---
+keywords:
+  - 'api/licenses/{licenseid}'
+  - '/api/licenses/{licenseid}'
+  - api/licenses
+  - /api/licenses
+  - api licenses
+  - 'api licenses {licenseid}'
+  - 'api.verifik.co/api/licenses/{licenseid}'
+  - 'https://api.verifik.co/api/licenses/{licenseid}'
+  - 'GET api/licenses/{licenseid}'
+  - 'GET /api/licenses/{licenseid}'
+---
 # Delete License
 
 Delete an existing license from the system.

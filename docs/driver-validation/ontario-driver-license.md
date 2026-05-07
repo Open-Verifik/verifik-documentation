@@ -3,6 +3,21 @@ id: ontario-driver-license
 title: Ontario Driver License
 description: Ontario driver license verification service
 slug: /driver-validation/ontario-driver-license
+keywords:
+  - v2/ca/ontario/driver-license
+  - /v2/ca/ontario/driver-license
+  - v2 ca ontario driver-license
+  - api/ca/ontario/driver-license
+  - /api/ca/ontario/driver-license
+  - api ca ontario driver-license
+  - api.verifik.co/v2/ca/ontario/driver-license
+  - 'https://api.verifik.co/v2/ca/ontario/driver-license'
+  - GET v2/ca/ontario/driver-license
+  - GET /v2/ca/ontario/driver-license
+  - ca/ontario/driver-license
+  - /ca/ontario/driver-license
+  - ontario/driver-license
+  - /ontario/driver-license
 ---
 
 import Tabs from '@theme/Tabs';

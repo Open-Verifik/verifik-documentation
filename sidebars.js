@@ -1016,6 +1016,12 @@ const sidebars = {
 			collapsible: false,
 			items: ["roadmap/roadmap-2026"],
 		},
+		{
+			type: "category",
+			label: "REFERENCE",
+			collapsible: true,
+			items: ["reference/endpoint-doc-index"],
+		},
 	],
 };
 

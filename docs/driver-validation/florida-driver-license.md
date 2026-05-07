@@ -3,6 +3,21 @@ id: florida-driver-license
 title: Florida Driver License
 description: Florida driver license validation service
 slug: /driver-validation/florida-driver-license
+keywords:
+  - v2/usa/florida/driver-license
+  - /v2/usa/florida/driver-license
+  - v2 usa florida driver-license
+  - api/usa/florida/driver-license
+  - /api/usa/florida/driver-license
+  - api usa florida driver-license
+  - api.verifik.co/v2/usa/florida/driver-license
+  - 'https://api.verifik.co/v2/usa/florida/driver-license'
+  - GET v2/usa/florida/driver-license
+  - GET /v2/usa/florida/driver-license
+  - usa/florida/driver-license
+  - /usa/florida/driver-license
+  - florida/driver-license
+  - /florida/driver-license
 ---
 
 import Tabs from '@theme/Tabs';

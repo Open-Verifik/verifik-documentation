@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/tags/lease-recovery
+  - /api/tags/lease-recovery
+  - api tags lease-recovery
+  - api.verifik.co/api/tags/lease-recovery
+  - 'https://api.verifik.co/api/tags/lease-recovery'
+  - GET api/tags/lease-recovery
+  - GET /api/tags/lease-recovery
+  - tags/lease-recovery
+  - /tags/lease-recovery
+---
 # Lease Recovery
 
 Recover a tag using an existing ZelfProof from a previously leased tag. This endpoint allows you to create a new tag with the same wallet data from a previous tag.

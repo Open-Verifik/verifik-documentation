@@ -1,3 +1,17 @@
+---
+keywords:
+  - api/clients/sync/password
+  - /api/clients/sync/password
+  - api clients sync password
+  - api.verifik.co/api/clients/sync/password
+  - 'https://api.verifik.co/api/clients/sync/password'
+  - GET api/clients/sync/password
+  - GET /api/clients/sync/password
+  - clients/sync/password
+  - /clients/sync/password
+  - sync/password
+  - /sync/password
+---
 # Change Password
 
 import Tabs from '@theme/Tabs';

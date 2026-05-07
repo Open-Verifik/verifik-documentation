@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/zelf-proof/decrypt
+  - /api/zelf-proof/decrypt
+  - api zelf-proof decrypt
+  - api.verifik.co/api/zelf-proof/decrypt
+  - 'https://api.verifik.co/api/zelf-proof/decrypt'
+  - GET api/zelf-proof/decrypt
+  - GET /api/zelf-proof/decrypt
+  - zelf-proof/decrypt
+  - /zelf-proof/decrypt
+---
 # Decrypt a ZelfProof
 
 ### Endpoint

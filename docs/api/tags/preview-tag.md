@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/tags/preview
+  - /api/tags/preview
+  - api tags preview
+  - api.verifik.co/api/tags/preview
+  - 'https://api.verifik.co/api/tags/preview'
+  - GET api/tags/preview
+  - GET /api/tags/preview
+  - tags/preview
+  - /tags/preview
+---
 # Preview Tag
 
 Preview a tag to see if it exists or check pricing information before leasing it.

@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/tags/search
+  - /api/tags/search
+  - api tags search
+  - api.verifik.co/api/tags/search
+  - 'https://api.verifik.co/api/tags/search'
+  - GET api/tags/search
+  - GET /api/tags/search
+  - tags/search
+  - /tags/search
+---
 # Search Tag
 
 Search for a tag across any supported domain name (Zelf, Avax, BDAG, or other licensed domains).

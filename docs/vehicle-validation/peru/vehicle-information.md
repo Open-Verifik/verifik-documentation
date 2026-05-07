@@ -1,8 +1,23 @@
 ---
 id: peru-vehicle-information
 title: Peru - Vehicle Information
-description: The Peruvian Vehicle Information service provides detailed data about registered vehicles in Peru based on their license plate number. The response includes key details such as the vehicle's make, model, year, engine and chassis serial numbers, seating capacity, and usage type.
+description: 'The Peruvian Vehicle Information service provides detailed data about registered vehicles in Peru based on their license plate number. The response includes key details such as the vehicle''s make, model, year, engine and chassis serial numbers, seating capacity, and usage type.'
 slug: /vehicle-validation/peru/vehicle-information
+keywords:
+  - v2/pe/vehiculo/placa
+  - /v2/pe/vehiculo/placa
+  - v2 pe vehiculo placa
+  - api/pe/vehiculo/placa
+  - /api/pe/vehiculo/placa
+  - api pe vehiculo placa
+  - api.verifik.co/v2/pe/vehiculo/placa
+  - 'https://api.verifik.co/v2/pe/vehiculo/placa'
+  - GET v2/pe/vehiculo/placa
+  - GET /v2/pe/vehiculo/placa
+  - pe/vehiculo/placa
+  - /pe/vehiculo/placa
+  - vehiculo/placa
+  - /vehiculo/placa
 ---
 
 import Tabs from '@theme/Tabs';

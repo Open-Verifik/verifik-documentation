@@ -357,6 +357,26 @@ const config = {
 		require.resolve("./src/plugins/sitemap-index.js"),
 	],
 
+	themes: [
+		[
+			require.resolve("@easyops-cn/docusaurus-search-local"),
+			/** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+			{
+				hashed: true,
+				indexBlog: true,
+				indexPages: false,
+				docsRouteBasePath: ["/", "verifik-es", "docs-es", "doc-es", "verifik-fr", "verifik-pt", "verifik-ko", "verifik-ja", "verifik-zh", "recursos"],
+				language: ["en", "es"],
+				highlightSearchTermsOnTargetPage: true,
+				explicitSearchResultPath: true,
+				searchResultLimits: 12,
+				searchResultContextMaxLength: 60,
+				removeDefaultStopWordFilter: ["en"],
+				searchContextByPaths: ["verifik-es", "docs-es", "doc-es", "verifik-fr", "verifik-pt", "verifik-ko", "verifik-ja", "verifik-zh", "recursos"],
+			},
+		],
+	],
+
 	themeConfig:
 		/** @type {import('@docusaurus/preset-classic').ThemeConfig} */
 		({

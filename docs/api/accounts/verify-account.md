@@ -1,3 +1,13 @@
+---
+keywords:
+  - api/clients
+  - /api/clients
+  - api clients
+  - api.verifik.co/api/clients
+  - 'https://api.verifik.co/api/clients'
+  - GET api/clients
+  - GET /api/clients
+---
 # Verify Account
 
 import Tabs from '@theme/Tabs';

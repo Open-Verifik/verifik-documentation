@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/tags/lease-offline
+  - /api/tags/lease-offline
+  - api tags lease-offline
+  - api.verifik.co/api/tags/lease-offline
+  - 'https://api.verifik.co/api/tags/lease-offline'
+  - GET api/tags/lease-offline
+  - GET /api/tags/lease-offline
+  - tags/lease-offline
+  - /tags/lease-offline
+---
 # Lease Tag Offline
 
 Lease a tag for offline usage with ZelfProof data.

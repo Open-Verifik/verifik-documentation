@@ -1,3 +1,13 @@
+---
+keywords:
+  - api/licenses
+  - /api/licenses
+  - api licenses
+  - api.verifik.co/api/licenses
+  - 'https://api.verifik.co/api/licenses'
+  - GET api/licenses
+  - GET /api/licenses
+---
 # Create License
 
 Create a new license for a user or organization.

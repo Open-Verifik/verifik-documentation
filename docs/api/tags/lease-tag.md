@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/tags/lease
+  - /api/tags/lease
+  - api tags lease
+  - api.verifik.co/api/tags/lease
+  - 'https://api.verifik.co/api/tags/lease'
+  - GET api/tags/lease
+  - GET /api/tags/lease
+  - tags/lease
+  - /tags/lease
+---
 # Lease Tag
 
 Lease a tag for any supported domain name (Zelf, Avax, BDAG, or other licensed domains).
