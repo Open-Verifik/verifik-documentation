@@ -1,113 +1,91 @@
 ---
 id: voting-eci-epic
-title: Retrieve Voting Information by EPIC (Voter ID) - ECI (India)
-description: Retrieve polling location details from the Electoral Commission of India (ECI) using an EPIC (Voter ID).
+title: India EPIC (Voter ID) — Polling & voting location | Verifik
+description: Retrieve assembly, part, and polling-place details for an Indian EPIC (Voter ID) from ECI-oriented sources via Verifik's API.
 slug: /legal/voting-eci-epic
 ---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "India EPIC — Polling and voting location | Verifik API",
+	description:
+		"Look up assembly, constituency, and polling-station information for a 10-character Indian EPIC (Voter ID) through Verifik's secure API.",
+	articleSection: "API Documentation",
+	keywords: "India EPIC, polling station, ECI, voter location, Verifik API",
+	about: {
+		"@type": "Thing",
+		name: "Electoral location verification",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Voting (India - ECI)
+# India — EPIC (Voter ID) polling and voting information
 
-## Retrieve Voting Information by EPIC (Voter ID)
+This endpoint returns **where the voter is assigned to vote**: assembly, district, part (polling-section) details, building name, and related location fields—based on a valid **10-character EPIC** (*Elector's Photo Identity Card* number). It complements the [name-lookup API](/legal/epic-eci) when you need **polling-place context** for logistics, support, or compliance checks.
+
+## What does this API validate?
+
+The API returns electoral **location and assignment** data for a given EPIC, for example:
+
+- **Constituency and part**: Assembly (AC) identifiers, part number and name, section serial where applicable.
+- **Geography**: District, state, and parliamentary association where exposed by the source.
+- **Polling place**: Building name, address, and any room or booth details returned for the EPIC.
+- **EPIC match**: The query must use a full, valid **10-character** EPIC in `documentNumber`.
+
+## API Reference
 
 ### Endpoint
 
 ```
-https://electoralsearch.eci.gov.in/v2/in/epic/votacion
+https://api.verifik.co/v2/in/epic/votacion
 ```
 
-This endpoint returns polling and electoral location details for an EPIC (Voter ID) number.
+Send a **GET** request with the EPIC in the `documentNumber` query parameter. The response is tailored to **polling and voting-location** data (not the name-only profile returned by `GET /v2/in/epic`).
 
 ### Headers
 
-| Name         | Value              |
-| ------------ | ------------------ |
-| Accept       | `application/json` |
-| Content-Type | `application/json` |
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
 
-### Query Parameters
+### Parameters
 
-| Name             | Type   | Required | Description      | Example      |
-| ---------------- | ------ | -------- | ---------------- | ------------ |
-| `documentNumber` | string | Yes      | EPIC / Voter ID  | `IHM2796746` |
+| Name             | Type   | Required | Description                                                                 | Example     |
+| ---------------- | ------ | -------- | --------------------------------------------------------------------------- | ----------- |
+| `documentNumber` | string | **Yes**  | EPIC / Voter ID. Must be **exactly 10 characters** (alphanumeric, as issued). | `IHM2796746` |
 
 ### Request
 
 <Tabs>
-  <TabItem value="javascript" label="JavaScript">
+  <TabItem value="node" label="Node.js">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
-const options = {
-  method: 'GET',
-  url: 'https://electoralsearch.eci.gov.in/v2/in/epic/votacion',
-  params: { documentNumber: 'IHM2796746' },
-  headers: { Accept: 'application/json' },
-};
-
-try {
-  const { data } = await axios.request(options);
-  console.log(data);
-} catch (error) {
-  console.error(error);
-}
+const { data } = await axios.get("https://api.verifik.co/v2/in/epic/votacion", {
+  params: { documentNumber: "IHM2796746" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
 ```
 
   </TabItem>
   <TabItem value="python" label="Python">
 
 ```python
-import requests
+import os, requests
 
-url = "https://electoralsearch.eci.gov.in/v2/in/epic/votacion"
+url = "https://api.verifik.co/v2/in/epic/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
 params = {"documentNumber": "IHM2796746"}
-headers = {"Accept": "application/json"}
-
-r = requests.get(url, params=params, headers=headers, timeout=30)
+r = requests.get(url, headers=headers, params=params)
 print(r.json())
-```
-
-  </TabItem>
-  <TabItem value="swift" label="Swift">
-
-```swift
-import Foundation
-
-let url = URL(string: "https://electoralsearch.eci.gov.in/v2/in/epic/votacion?documentNumber=IHM2796746")!
-var request = URLRequest(url: url)
-request.httpMethod = "GET"
-request.setValue("application/json", forHTTPHeaderField: "Accept")
-
-URLSession.shared.dataTask(with: request) { data, response, error in
-  if let error = error {
-    print(error)
-    return
-  }
-  if let data = data {
-    print(String(data: data, encoding: .utf8) ?? "")
-  }
-}.resume()
-```
-
-  </TabItem>
-  <TabItem value="php" label="PHP">
-
-```php
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('GET', 'https://electoralsearch.eci.gov.in/v2/in/epic/votacion', [
-  'query' => ['documentNumber' => 'IHM2796746'],
-  'headers' => [
-    'Accept' => 'application/json',
-  ],
-]);
-
-echo $response->getBody();
 ```
 
   </TabItem>
@@ -172,9 +150,45 @@ echo $response->getBody();
 ```
 
   </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "Server error."
+}
+```
+
+  </TabItem>
 </Tabs>
 
-### Source
+### Notes
 
-- https://electoralsearch.eci.gov.in/
+- `documentNumber` must be **exactly 10 characters**; invalid length or format may return `409`.
+- Field presence can vary by state and ECI data availability; `null` may appear for optional string fields.
+- For **voter name and relative name** only, use [**GET /v2/in/epic**](/legal/epic-eci).
 
+---
+
+## Common use cases
+
+- **Voter help desks**: Direct citizens to the correct polling station, AC, and building for an EPIC.
+- **Logistics and field operations**: Pre-validate assignment before dispatch or in-person support.
+- **Regulatory and audit workflows** where you must show which electoral geography an EPIC maps to at query time.
+
+## Official sources and reliability
+
+Verifik normalizes ECI-oriented electoral data so you can rely on a single API contract. Results depend on the official registry at lookup time; always handle `404` for EPICs that are invalid or not returned by the current source.
+
+## Key benefits
+
+- **End-to-end TLS** and a consistent JSON shape with a Verifik `signature` on success.
+- **Complements name lookup**: Pair with `/v2/in/epic` for full KYC-style EPIC checks when both name and location are required.
+
+## Compliance and security
+
+Protect `Authorization` tokens and **never log** raw EPIC values in public analytics. Keep retention of electoral data within your policy and local law. Verifik enforces transport security and platform-level monitoring on the API edge.
+
+## About Verifik
+
+Verifik unifies access to global identity, vehicle, and registry services behind one security model, so you can add India electoral checks alongside your existing Verifik endpoints.
