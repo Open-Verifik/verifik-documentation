@@ -259,6 +259,20 @@ keywords:
   - "https://api.verifik.co/v2/ar/cedula"
   - "GET v2/ar/cedula"
   - "GET /v2/ar/cedula"
+  - "v2/ar/cedula/extra"
+  - "/v2/ar/cedula/extra"
+  - "v2 ar cedula extra"
+  - "ar/cedula/extra"
+  - "/ar/cedula/extra"
+  - "api/ar/cedula/extra"
+  - "/api/ar/cedula/extra"
+  - "api ar cedula extra"
+  - "cedula/extra"
+  - "/cedula/extra"
+  - "api.verifik.co/v2/ar/cedula/extra"
+  - "https://api.verifik.co/v2/ar/cedula/extra"
+  - "GET v2/ar/cedula/extra"
+  - "GET /v2/ar/cedula/extra"
   - "v2/ar/company"
   - "/v2/ar/company"
   - "v2 ar company"
@@ -670,8 +684,6 @@ keywords:
   - "api/co/cedula/extra"
   - "/api/co/cedula/extra"
   - "api co cedula extra"
-  - "cedula/extra"
-  - "/cedula/extra"
   - "api.verifik.co/v2/co/cedula/extra"
   - "https://api.verifik.co/v2/co/cedula/extra"
   - "GET v2/co/cedula/extra"
@@ -2319,18 +2331,19 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (186 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (187 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-05-15T22:13:42.683Z_
+_Last regenerated: 2026-05-15T22:16:27.972Z_
 
 ## Argentina
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/ar/cedula` | v2 ar cedula ar/cedula /ar/cedula api/ar/cedula /api/ar/cedula api ar cedula api.verifik.co/v2/ar/cedula https://api.verifik.co/v2/ar/cedula GET v2/ar/cedula GET /v2/ar/cedula | [Argentine Citizen](/identity-validation/argentina) |
+| `v2/ar/cedula/extra` | v2 ar cedula extra ar/cedula/extra /ar/cedula/extra api/ar/cedula/extra /api/ar/cedula/extra api ar cedula extra cedula/extra /cedula/extra api.verifik.co/v2/ar/cedula/extra https://api.verifik.co/v2/ar/cedula/extra GET v2/ar/cedula/extra GET /v2/ar/cedula/extra | [Argentina Extra](/identity/argentina-extra) |
 | `v2/ar/company` | v2 ar company ar/company /ar/company api/ar/company /api/ar/company api ar company api.verifik.co/v2/ar/company https://api.verifik.co/v2/ar/company GET v2/ar/company GET /v2/ar/company | [Argentine Business Verification](/business-validation/argentina) |
 | `v2/ar/vehicle` | v2 ar vehicle ar/vehicle /ar/vehicle api/ar/vehicle /api/ar/vehicle api ar vehicle api.verifik.co/v2/ar/vehicle https://api.verifik.co/v2/ar/vehicle GET v2/ar/vehicle GET /v2/ar/vehicle | [Argentina](/vehicle-validation/argentina) |
 

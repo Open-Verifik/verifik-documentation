@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-05-15T22:13:42.636Z
+Generated: 2026-05-15T22:16:27.924Z
 
-- **Files scanned:** 471
-- **Unique endpoint URLs:** 186
+- **Files scanned:** 472
+- **Unique endpoint URLs:** 187
 - **Duplicate URL groups (SEO / aliases):** 57
 - **Docs without `### Endpoint` block:** 207
 
@@ -13,7 +13,7 @@ Generated: 2026-05-15T22:13:42.636Z
 | --- | ---: | --- |
 | P0 | 21 | vehicle-validation/colombia |
 | P1 | 14 | vehicle-validation (other countries) |
-| P2 | 151 | identity, biometrics, resources, etc. |
+| P2 | 152 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -238,6 +238,7 @@ Generated: 2026-05-15T22:13:42.636Z
 | P2 | `v2/app-registrations/{id}` | `resources/app-registrations/retrieve-an-app-registration.mdx` |
 | P2 | `v2/app-registrations/{id}/sync` | `resources/app-registrations/sync-app-registration-status.mdx` |
 | P2 | `v2/ar/cedula` | `identity-validation/argentina.mdx` |
+| P2 | `v2/ar/cedula/extra` | `identity/argentina-extra.mdx` |
 | P2 | `v2/ar/company` | `business-validation/argentina.mdx` |
 | P1 | `v2/ar/vehicle` | `vehicle-validation/argentina.md` |
 | P2 | `v2/auth/session` | `authentication/renew-your-token-jwt.mdx` |
