@@ -1,0 +1,255 @@
+---
+id: ofac-background-check
+title: Contrôle de sanctions OFAC
+description: Liste SDN et personnes bloquées du Trésor américain (OFAC).
+slug: /background-check/international/ofac-background-check
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Contrôle de sanctions OFAC
+
+## Référence de l'API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/ofac
+```
+
+Vérifiez si une personne ou une entité figure sur la liste SDN (Specially Designated Nationals) et les personnes bloquées de l'Office of Foreign Assets Control (OFAC) du Trésor américain à partir du couple `documentType` + `documentNumber`, ou via `fullName`. Utilisez les résultats pour la conformité aux sanctions, le filtrage commercial et les flux KYC/AML.
+
+**Note :** les dates (date de naissance ou date de délivrance) doivent être au format `jj/mm/aaaa`.
+
+### En-têtes (Headers)
+
+| Nom            | Valeur              |
+| -------------- | ------------------- |
+| Content-Type   | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### Paramètres
+
+:::info
+Pour la liste complète des **types de documents** pris en charge ainsi que de leurs paramètres obligatoires spécifiques, consultez le guide [Types de documents](/background-check/document-types).
+:::
+
+| Nom              | Type   | Requis | Description                                                                                          |
+| ---------------- | ------ | ------ | ---------------------------------------------------------------------------------------------------- |
+| `documentType`   | string | Non    | Type de document à interroger.                                                                       |
+| `documentNumber` | string | Non    | Numéro de document à interroger, sans espaces ni points.                                             |
+| `fullName`       | string | Non    | À la place de `documentType` et `documentNumber`, vous pouvez transmettre directement le nom complet. |
+
+### Cas d'usage
+
+- **Conformité aux sanctions :** évitez de traiter avec des parties bloquées soumises à l'OFAC.
+- **Atténuation des risques :** réduisez les pénalités liées aux règles commerciales américaines et internationales.
+- **KYC et LCB-FT :** renforcez le filtrage clients dans la banque, l'assurance et l'immobilier.
+
+### Requête (Request)
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/ofac",
+  params: { documentType: "CC", documentNumber: "80251972" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "jwt <votre_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {}
+conn.request("GET", "/v2/ofac?fullName=Mateo%20Verifik", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/ofac?fullName=Mateo%20Verifik")!,timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
+
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/ofac?fullName=Mateo Verifik');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Réponse (Response)
+
+<Tabs>
+<TabItem value="200-not-found" label="200 (Non trouvé dans OFAC)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "80927603",
+    "fullName": "MATEO ANDRES VERIFIK",
+    "firstName": "MATEO ANDRES",
+    "lastName": "VERIFIK",
+    "arrayName": ["MATEO", "ANDRES", "VERIFIK"],
+    "foundInOFAC": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "June 27, 2025 4:33 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "U4RBQ"
+}
+```
+
+</TabItem>
+<TabItem value="200-found" label="200 (Trouvé dans OFAC)">
+
+```json
+{
+  "data": {
+    "documentType": "CURP",
+    "documentNumber": "VILJ580411HSLLRN09",
+    "fullName": "JUAN CARLOS VILLEGAS LOERA",
+    "firstName": "JUAN CARLOS",
+    "lastName": "VILLEGAS LOERA",
+    "arrayName": ["JUAN", "CARLOS", "VILLEGAS", "LOERA"],
+    "foundInOFAC": true,
+    "details": {
+      "fullLink": "https://sanctionssearch.ofac.treas.gov/Details.aspx?id=15785",
+      "type": "Individual",
+      "list": "SDN",
+      "lastName": "VILLEGAS LOERA",
+      "program": "SDNTK",
+      "firstName": "Juan Carlos",
+      "nationality": "",
+      "title": "",
+      "citizenship": "",
+      "dateOfBirth": "11 Apr 1958",
+      "placeOfBirth": "Culiacan, Sinaloa, Mexico",
+      "remarks": "(Linked To: BUENOS AIRES SERVICIOS, S.A. DE C.V.; Linked To: ESTACIONES DE SERVICIOS CANARIAS, S.A. DE C.V.; Linked To: GASODIESEL Y SERVICIOS ANCONA, S.A. DE C.V.; Linked To: GASOLINERA ALAMOS COUNTRY, S.A. DE C.V.; Linked To: GASOLINERA Y SERVICIOS VILLABONITA, S.A. DE C.V.; Linked To: PETROBARRANCOS, S.A. DE C.V.; Linked To: SERVICIOS CHULAVISTA, S.A. DE C.V.)",
+      "identifications": [
+        {
+          "type": "C.U.R.P.",
+          "idNumber": "VILJ580411HSLLRN09",
+          "country": "Mexico",
+          "issueDate": null,
+          "expireDate": null
+        }
+      ],
+      "addresses": [
+        {
+          "address": "Calle Golfo de California No. 1635",
+          "city": "Culiacan",
+          "stateOrProvince": "Sinaloa",
+          "postalCode": "",
+          "country": "Mexico"
+        }
+      ]
+    }
+  },
+  "signature": {
+    "dateTime": "June 27, 2025 4:48 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "1LMO7"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+
+<TabItem value="409-1" label="409 (Paramètres manquants)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
+}
+```
+
+</TabItem>
+<TabItem value="409-2" label="409 (Type de document invalide)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [DNIAR]"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- Les réponses incluent `foundInOFAC` et, le cas échéant, des métadonnées détaillées de l'OFAC telles que `fullLink` pour la fiche SDN.

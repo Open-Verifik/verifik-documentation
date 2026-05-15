@@ -79,7 +79,7 @@ const sidebars = {
 					type: "category",
 					label: "Face Comparison",
 					collapsible: true,
-					items: ["biometrics/compare", "biometrics/compare-live", "biometrics/compare-with-liveness", "biometrics/verify-face"],
+					items: ["biometrics/compare", "biometrics/compare-live", "biometrics/compare-with-liveness"],
 				},
 				{
 					type: "category",
@@ -93,6 +93,7 @@ const sidebars = {
 					collapsible: true,
 					items: [
 						"biometrics/zero-knowledge-face-proofs-overview",
+						"biometrics/humanauthn-vs-ur-codes",
 						"biometrics/zero-knowledge-face-proofs-encrypt",
 						"biometrics/zero-knowledge-face-proofs-encrypt-qr-code",
 						"biometrics/zero-knowledge-face-proofs-decrypt",
@@ -153,6 +154,18 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/chile-taxpayer",
+					label: "🇨🇱 Chile — Taxpayer (RUT)",
+					key: "identity-chile-taxpayer",
+				},
+				{
+					type: "doc",
+					id: "identity/chile-validate-documents",
+					label: "🇨🇱 Chile — Document validation",
+					key: "identity-chile-validate-documents",
+				},
+				{
+					type: "doc",
 					id: "identity/colombia",
 					label: "🇨🇴 Colombia",
 				},
@@ -163,18 +176,38 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity-validation/colombia/colombian-cedula-premium",
+					label: "🇨🇴 Colombia — National ID premium (CC)",
+				},
+				{
+					type: "doc",
+					id: "identity/colombia-registraduria-certificate",
+					label: "🇨🇴 Colombia - Registraduría certificate",
+				},
+				{
+					type: "doc",
 					id: "identity/colombia-ce",
 					label: "🇨🇴 Colombia - CE",
 				},
 				{
 					type: "doc",
 					id: "identity/colombia-pep-id",
-					label: "🇨🇴 Colombia - PEP ID",
+					label: "🇨🇴 Colombia — PEP",
 				},
 				{
 					type: "doc",
 					id: "identity/colombia-ppt",
 					label: "🇨🇴 Colombia - PPT",
+				},
+				{
+					type: "doc",
+					id: "identity-validation/colombia/identity-validation-colombia-colombian-politically-exposed-persons",
+					label: "🇨🇴 Colombia — PEP lookup (AML)",
+				},
+				{
+					type: "doc",
+					id: "identity/colombia-situacion-militar",
+					label: "🇨🇴 Colombia - Military service status",
 				},
 				{
 					type: "doc",
@@ -213,11 +246,6 @@ const sidebars = {
 					type: "doc",
 					id: "identity/honduras",
 					label: "🇭🇳 Honduras",
-				},
-				{
-					type: "doc",
-					id: "legal/epic-eci",
-					label: "🇮🇳 India - EPIC (ECI)",
 				},
 				{
 					type: "doc",
@@ -329,6 +357,11 @@ const sidebars = {
 					type: "doc",
 					id: "business-validation/colombia-legal-invoicer-verification",
 					label: "🇨🇴 Colombia - Legal Invoicer Verification",
+				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-colombia-rues-v3",
+					label: "🇨🇴 Colombia — RUES (v3 basic)",
 				},
 				{
 					type: "doc",
@@ -445,12 +478,7 @@ const sidebars = {
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-plate",
-							label: "Taxi Drivers by Plate",
-						},
-						{
-							type: "doc",
-							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-control-card",
-							label: "Taxi Drivers by Card",
+							label: "Bogotá - Taxi drivers by plate",
 						},
 						{
 							type: "doc",
@@ -484,6 +512,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo",
+							label: "RUNT - Vehicle by plate (basic)",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin",
 							label: "RUNT - Vehicle records by VIN",
 						},
@@ -506,6 +539,11 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-resolutions",
 							label: "SIMIT - Resolutions",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-suspensiones",
+							label: "SIMIT - License suspensions",
 						},
 						{
 							type: "doc",
@@ -549,6 +587,12 @@ const sidebars = {
 					key: "vehicle-paraguay",
 				},
 				{
+					type: "doc",
+					id: "vehicle-validation/spain",
+					label: "🇪🇸 Spain",
+					key: "vehicle-spain",
+				},
+				{
 					type: "category",
 					label: "🇵🇪 Peru",
 					collapsible: true,
@@ -572,10 +616,22 @@ const sidebars = {
 					],
 				},
 				{
-					type: "doc",
-					id: "vehicle-validation/united-states",
+					type: "category",
 					label: "🇺🇸 United States",
-					key: "vehicle-united-states",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "vehicle-validation/united-states",
+							label: "Vehicle by plate",
+							key: "vehicle-united-states",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/united-states/vehicle-by-vin",
+							label: "Vehicle by VIN",
+						},
+					],
 				},
 			],
 		},
@@ -609,6 +665,11 @@ const sidebars = {
 					id: "driver-validation/ontario-driver-license",
 					label: "🇨🇦 Ontario - Driver License",
 				},
+				{
+					type: "doc",
+					id: "driver-validation/quebec-driver-license",
+					label: "🇨🇦 Quebec - Driver License",
+				},
 			],
 		},
 		{
@@ -616,12 +677,16 @@ const sidebars = {
 			label: "BACKGROUND CHECK",
 			collapsible: false,
 			items: [
-				"background-check/document-types",
 				{
 					type: "doc",
 					id: "background-check/brazil",
 					label: "🇧🇷 Brazil",
 					key: "background-check-brazil",
+				},
+				{
+					type: "doc",
+					id: "background-check/united-states-passport-entries",
+					label: "🇺🇸 United States - Passport & U.S. entries",
 				},
 				{
 					type: "doc",
@@ -652,6 +717,11 @@ const sidebars = {
 					type: "doc",
 					id: "background-check/colombia-inpec",
 					label: "🇨🇴 Colombia - INPEC Prison Records",
+				},
+				{
+					type: "doc",
+					id: "background-check/colombia-sisben-score",
+					label: "🇨🇴 Colombia - SISBEN score",
 				},
 				{
 					type: "doc",
@@ -689,13 +759,13 @@ const sidebars = {
 			type: "category",
 			label: "VOTING",
 			collapsible: false,
-			items: ["legal/voting", "legal/voting-eci-epic", "legal/epic-eci"],
+			items: ["legal/voting"],
 		},
 		{
 			type: "category",
 			label: "HEALTH",
 			collapsible: false,
-			items: ["legal/health", "legal/verify-colombian-affiliations"],
+			items: ["legal/health", "legal/colombia-rethus", "legal/verify-colombian-affiliations"],
 		},
 		{
 			type: "category",
@@ -711,6 +781,11 @@ const sidebars = {
 					type: "doc",
 					id: "legal/colombian-legal-processes",
 					label: "🇨🇴 Colombian Legal Processes",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-judicial-records",
+					label: "🇨🇴 Colombia — Judicial Records",
 				},
 				{
 					type: "doc",
@@ -819,8 +894,6 @@ const sidebars = {
 						"resources/collections/create-a-collection",
 						"resources/collections/list-all-collections",
 						"resources/collections/retrieve-a-collection",
-						"resources/collections/update-a-collection",
-						"resources/collections/delete-a-collection",
 					],
 				},
 				{
@@ -881,11 +954,8 @@ const sidebars = {
 						"resources/persons/persons",
 						"resources/persons/the-person-object",
 						"resources/persons/create-a-person",
-						"resources/persons/create-a-person-with-liveness",
 						"resources/persons/retrieve-a-person",
 						"resources/persons/list-all-persons",
-						"resources/persons/update-a-person",
-						"resources/persons/delete-a-person",
 					],
 				},
 				{
@@ -950,6 +1020,12 @@ const sidebars = {
 			label: "ROADMAP",
 			collapsible: false,
 			items: ["roadmap/roadmap-2026"],
+		},
+		{
+			type: "category",
+			label: "REFERENCE",
+			collapsible: true,
+			items: ["reference/endpoint-doc-index"],
 		},
 	],
 };

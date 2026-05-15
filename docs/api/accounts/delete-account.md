@@ -1,3 +1,16 @@
+---
+keywords:
+  - 'api/clients/{id}'
+  - '/api/clients/{id}'
+  - api/clients
+  - /api/clients
+  - api clients
+  - 'api clients {id}'
+  - 'api.verifik.co/api/clients/{id}'
+  - 'https://api.verifik.co/api/clients/{id}'
+  - 'GET api/clients/{id}'
+  - 'GET /api/clients/{id}'
+---
 # Delete Account
 
 import Tabs from '@theme/Tabs';
@@ -5,7 +18,7 @@ import TabItem from '@theme/TabItem';
 
 Delete a client account by ID.
 
-## Endpoint
+### Endpoint
 
 ```
 DELETE /api/clients/{id}
@@ -15,7 +28,7 @@ DELETE /api/clients/{id}
 
 This endpoint allows you to delete a client account by their ID. Requires API key authentication.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -28,7 +41,7 @@ This endpoint requires an API key in the request header:
 x-api-key: YOUR_API_KEY
 ```
 
-## Response
+### Response
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

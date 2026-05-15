@@ -1,0 +1,143 @@
+---
+id: chile-validate-documents
+title: Chile — Identity document validation
+description: Validate a Chilean RUN or RUT together with the document serial against civil or tax validation flows; returns a vigency-style status for physical ID checks.
+slug: /identity/chile-validate-documents
+keywords:
+  - v2/cl/validate/documents
+  - /v2/cl/validate/documents
+  - v2 cl validate documents
+  - api/cl/validate/documents
+  - /api/cl/validate/documents
+  - api cl validate documents
+  - api.verifik.co/v2/cl/validate/documents
+  - 'https://api.verifik.co/v2/cl/validate/documents'
+  - GET v2/cl/validate/documents
+  - GET /v2/cl/validate/documents
+  - cl/validate/documents
+  - /cl/validate/documents
+  - validate/documents
+  - /validate/documents
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Chile — Identity document validation
+
+This endpoint checks **document vigency** for Chilean **RUN** or **RUT** using the **printed serial number** on the physical ID, in addition to the identifier. Use it when you must confirm that a **card** is **valid** (not only that the number exists)—for example **high-assurance KYC** or **compliance** steps that go beyond a simple cedula lookup.
+
+For name-only verification against civil registry without serial, use **[Identity verification in Chile](/identity/chile)** (`v2/cl/cedula`).
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/validate/documents
+```
+
+Submit **RUN** or **RUT**, **document number**, and **printed serial** to obtain a **vigency-style status** from civil or tax validation sources—use when the physical ID must be confirmed, not only the number.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Yes | `RUN` (civil card flow) or `RUT` (tax-oriented flow). |
+| `documentNumber` | string | Yes | Identifier without spaces, per integration guidelines. |
+| `serialNumber` | string | Yes | Serial printed on the document; required for the underlying validation sources. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/validate/documents", {
+  params: {
+    documentType: "RUN",
+    documentNumber: "18562530-3",
+    serialNumber: "A123456789",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/validate/documents"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {
+    "documentType": "RUN",
+    "documentNumber": "18562530-3",
+    "serialNumber": "A123456789",
+}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "RUN",
+    "documentNumber": "18.562.530-3",
+    "serialNumber": "A123456789",
+    "status": "Vigente"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 4:00 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "CLVAL1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [RUT, RUN]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- The exact `status` string depends on the upstream registry wording; treat it as a **vigency indicator**, not a substitute for legal advice.
+- Collect **`serialNumber`** from the physical document; without it, validation cannot complete against the civil **Registro Civil** flow.

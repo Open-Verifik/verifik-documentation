@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/zelf-proof/encrypt
+  - /api/zelf-proof/encrypt
+  - api zelf-proof encrypt
+  - api.verifik.co/api/zelf-proof/encrypt
+  - 'https://api.verifik.co/api/zelf-proof/encrypt'
+  - GET api/zelf-proof/encrypt
+  - GET /api/zelf-proof/encrypt
+  - zelf-proof/encrypt
+  - /zelf-proof/encrypt
+---
 # Create a QR-Code ZelfProof
 
 ### Endpoint

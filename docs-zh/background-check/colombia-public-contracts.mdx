@@ -1,0 +1,205 @@
+---
+id: colombia-public-contracts
+title: 哥伦比亚 — 公共合同
+description: 哥伦比亚公共合同背景核查。
+slug: /background-check/colombia-public-contracts
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 公共合同
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/co/contracts
+```
+
+公共合同服务允许用户通过提交证件号码与证件类型，检索与某人或某企业相关的公共合同清单。响应中包含每份合同的关键信息，例如承包方信息、合同金额、相关机构、合同期限等。
+
+该服务有助于提升透明度，便于追踪并监督在哥伦比亚与政府签订的公共合同。
+
+### 请求头（Headers）
+
+| 名称           | 取值                |
+| -------------- | ------------------- |
+| Content-Type   | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 参数（Parameters）
+
+:::info
+有关支持的**证件类型**及其专属必填参数的完整清单，请参阅 [证件类型](/background-check/document-types) 指南。
+:::
+
+| 名称              | 类型    | 必填 | 描述                                                       |
+| ----------------- | ------- | ---- | ---------------------------------------------------------- |
+| `documentType`    | string  | 是   | 证件类型。允许取值：CC、NIT。                               |
+| `documentNumber`  | string  | 是   | 待查询的证件号码。                                          |
+
+### 请求（Request）
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/co/contracts',
+  params: {documentType: 'CC', documentNumber: '123456789'},
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer <your_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {}
+conn.request("GET", "/v2/co/contracts?documentType=CC&documentNumber=63535790", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/co/contracts?documentType=CC&documentNumber=63535790")!,timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in 
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
+
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/co/contracts?documentType=CC&documentNumber=63535790');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "value": {
+    "data": {
+      "contractor": [
+        {
+          "contractor": "123456789",
+          "contractor_name": "MATEO VERIFIK",
+          "count": 19
+        }
+      ],
+      "contracts": [
+        {
+          "contractor_reference": "18486325807904513",
+          "contractor_id": "63535790",
+          "contractor": "DIANA ROCIO GARCIA PEÑARANDA",
+          "entity_id": "824002672",
+          "entity": "CESAR ESE HOSPITAL CAMILO VILLAZON PUMAREJO PUEBLO BELLO",
+          "url": "https://www.contratos.gov.co/consultas/detalleProceso.do?numConstancia=18-4-8632580",
+          "value": 1250000,
+          "object": "PRESTACION DE SERVICIOS PARA EL MANTENIMIENTO PREVENTIVO PLANIFICADO Y CORRECTIVO DE LOS EQUIPOS BIOMEDICOS DE LAS DISTINTAS AREAS DE LA ESE HOSPITAL CAMILO VILLAZON PUMAREJO DE PUEBLO BELLO  CESAR",
+          "process_id": "4",
+          "department": "CESAR",
+          "contract_start_date": "2018-11-01",
+          "contract_end_date": "2018-11-16"
+        }
+      ]
+    },
+    "signature": {
+      "dateTime": "May 24, 2023 4:41 PM",
+      "message": "Certified by Verifik.co"
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409-1" label="409（缺少参数）">
+
+```json
+{
+"code": "MissingParameter",
+"message": "missing documentType\n. missing documentNumber\n"
+}
+```
+
+</TabItem>
+<TabItem value="409-2" label="409（无效的证件类型）">
+
+```json
+{
+"code": "MissingParameter",
+"message": "documentType must be one of: [CC,NIT]"
+}
+```
+
+</TabItem>
+</Tabs>

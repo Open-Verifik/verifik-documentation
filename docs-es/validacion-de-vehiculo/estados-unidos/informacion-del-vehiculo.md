@@ -9,7 +9,7 @@ slug: /validacion-de-vehiculo/estados-unidos/informacion-del-vehiculo
 
 El servicio de validación de vehículos de Estados Unidos te permite recuperar información detallada sobre vehículos registrados en Estados Unidos usando el número de placa de matrícula y el estado.
 
-## Endpoint
+### Endpoint
 
 ```
 GET https://api.verifik.co/v2/us/vehicle

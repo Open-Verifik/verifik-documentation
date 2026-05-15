@@ -1,0 +1,128 @@
+---
+id: chile-validate-documents
+title: Chili — Validation de document d'identité
+description: "Validez RUN ou RUT avec le numéro de série du document physique ; statut de vigence pour KYC renforcé."
+slug: /identity/chile-validate-documents
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Chili — Validation de document d'identité
+
+Cet endpoint vérifie la **validité (vigencia) du document** chilien pour un **RUN** ou un **RUT** en utilisant le **numéro de série imprimé** sur la pièce d'identité physique, en plus de l'identifiant. Utilisez-le lorsque vous devez confirmer qu'une **carte** est **valide** (et pas seulement que le numéro existe) — par exemple pour des étapes de **KYC à fort niveau d'assurance** ou de **conformité** allant au-delà d'une simple recherche par cedula.
+
+Pour une vérification de nom uniquement contre le registre civil sans numéro de série, utilisez **[Vérification d'identité au Chili](/identity/chile)** (`v2/cl/cedula`).
+
+## Référence de l'API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/validate/documents
+```
+
+Transmettez le **RUN** ou le **RUT**, le **numéro de document** et le **numéro de série imprimé** pour obtenir un **statut de vigence** issu des sources de validation civiles ou fiscales — utile lorsque la pièce d'identité physique doit être confirmée, et pas seulement le numéro.
+
+### En-têtes (Headers)
+
+| Nom | Valeur |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Paramètres
+
+| Nom | Type | Requis | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | **Oui** | `RUN` (flux carte civile) ou `RUT` (flux orienté fiscal). |
+| `documentNumber` | string | **Oui** | Identifiant sans espaces, conformément aux consignes d'intégration. |
+| `serialNumber` | string | **Oui** | Numéro de série imprimé sur le document ; requis par les sources de validation sous-jacentes. |
+
+### Requête (Request)
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/validate/documents", {
+  params: {
+    documentType: "RUN",
+    documentNumber: "18562530-3",
+    serialNumber: "A123456789",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/validate/documents"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {
+    "documentType": "RUN",
+    "documentNumber": "18562530-3",
+    "serialNumber": "A123456789",
+}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse (Response)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "RUN",
+    "documentNumber": "18.562.530-3",
+    "serialNumber": "A123456789",
+    "status": "Vigente"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 4:00 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "CLVAL1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [RUT, RUN]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- La valeur exacte de `status` dépend du libellé renvoyé par le registre amont ; considérez-la comme un **indicateur de vigence**, et non comme un substitut à un avis juridique.
+- Récupérez **`serialNumber`** sur le document physique ; sans cette valeur, la validation contre le flux **Registro Civil** ne peut pas aboutir.

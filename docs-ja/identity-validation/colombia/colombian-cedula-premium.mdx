@@ -1,0 +1,159 @@
+---
+id: colombian-cedula-premium
+title: 🇨🇴 コロンビア — 国民身分証プレミアム(CC)
+description: "コロンビア国民身分証（CC）を「本人像」で確認: 番号だけ入力。発行日はVerifikが裏で解決し、cédula extra相当の豊富な戻り値。基本の照会よりクレジット高め。"
+slug: /identity-validation/colombia/colombian-cedula-premium
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "コロンビア国民身分証プレミアム(CC) | Verifik KYC API",
+	description:
+		"本人確認用：番号のみ。公的データに基づく氏名・生年月日・発行地・日付、必要に応じ性別と生存等を期待できます。基本ルートよりクレジット多め。",
+	articleSection: "API ドキュメント",
+	keywords: "コロンビア, CC, cédula, プレミアム, Verifik",
+	about: {
+		"@type": "Thing",
+		name: "本人確認 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# コロンビア — 国民身分証 プレミアム (CC)
+
+**目的:** コロンビア **CC（国民身分証）** 番号を**公的ソース**に照合し、KYC および法令対応向けの**構造化本人情報**を返します。戻り値は**名義、生年月日、発行日時・発行地**、ソースが返す範囲で**性別・生存**等を含み、**署名付きの認証ブロック**を含みます。**送信は番号のみ**—**発行日はサーバ側で解決**（リクエストに文書区分・発行日 **なし**）。属性の**粒度は cédula extra と同相当**です。**消費クレジット**は**基本** `/v2/co/cedula` より**高く**、連鎖的な前処理分が含まれます。
+
+## API リファレンス
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/cedula/premium
+```
+
+**レスポンス:** **`data`**（当該番号に対しソースが返す本人属性）、**`signature`**（ペイロードの認証メタデータ）、**`id`**（要求識別子）を返します。**HTTP 404** は、本フローでは当該番号について**完全な本人レコードを組み立てられなかった**ことを示します。**HTTP 409** は、上流連携前の**入力妥当性検証**に失敗（例: `documentNumber` の長さ）を示します。**クレジット**は**基本** `/v2/co/cedula` より**高**（解決の連鎖のため）。**CC のみ**、通常 **5～10 桁**の数字。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `documentNumber` | string | はい | コロンビア **CC**（Cédula de Ciudadanía）の番号。正規化で非数字を除去し、**5～10 桁**の数字として検証します。 |
+
+### リクエスト例
+
+<Tabs>
+  <TabItem value="get" label="GET">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/cedula/premium", {
+	params: { documentNumber: "1234567890" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="post" label="POST">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+	"https://api.verifik.co/v2/co/cedula/premium",
+	{ documentNumber: "1234567890" },
+	{
+		headers: {
+			Accept: "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+	}
+);
+console.log(data);
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+サンプル形状（プレースホルダ。実在人物ではありません）：
+
+```json
+{
+	"data": {
+		"arrayName": ["GIVEN", "MIDDLE", "PATERNAL", "MATERNAL"],
+		"dateOfBirth": "1990-05-20",
+		"documentNumber": "1234567890",
+		"documentType": "CC",
+		"expeditionDate": "2015-08-12",
+		"expeditionPlace": {
+			"municipio": "サンプル市",
+			"departamento": "サンプル州"
+		},
+		"firstName": "GIVEN MIDDLE",
+		"fullName": "GIVEN MIDDLE PATERNAL MATERNAL",
+		"gender": "HOMBRE",
+		"isAlive": true,
+		"lastName": "PATERNAL MATERNAL"
+	},
+	"signature": {
+		"dateTime": "April 21, 2026 9:34 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "XXXXX"
+}
+```
+
+実フィールドの有無は公式ソースの状況に依存します。
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+上流が一致または必要データを返せない場合（例: 発行日解決の失敗）。
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentNumber maximum length: 10\n"
+}
+```
+
+`documentNumber` の長さは **5～10** 桁。入力不備時は他の Joi メッセージが出ることもあります。
+
+  </TabItem>
+</Tabs>
+
+### 関連
+
+- [コロンビア国民身分証（基本）](/identity-validation/colombia/colombian-citizen) — `GET/POST /v2/co/cedula`（`CC` / `PPT`）。
+- 英語の正式仕様: [Colombian cédula premium](https://docs.verifik.co/identity-validation/colombia/colombian-cedula-premium)。

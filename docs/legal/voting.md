@@ -2,6 +2,21 @@
 id: voting
 title: Retrieve Voting Information for Colombian Citizens
 description: Retrieve voting information for Colombian citizens
+keywords:
+  - v2/co/registraduria/votacion
+  - /v2/co/registraduria/votacion
+  - v2 co registraduria votacion
+  - api/co/registraduria/votacion
+  - /api/co/registraduria/votacion
+  - api co registraduria votacion
+  - api.verifik.co/v2/co/registraduria/votacion
+  - 'https://api.verifik.co/v2/co/registraduria/votacion'
+  - GET v2/co/registraduria/votacion
+  - GET /v2/co/registraduria/votacion
+  - co/registraduria/votacion
+  - /co/registraduria/votacion
+  - registraduria/votacion
+  - /registraduria/votacion
 ---
 
 # Voting

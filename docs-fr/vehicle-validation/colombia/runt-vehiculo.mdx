@@ -1,0 +1,128 @@
+---
+id: vehicle-validation-colombia-runt-vehiculo
+title: RUNT — Véhicule (enregistrement de base)
+description: Consultez les données d’immatriculation et les caractéristiques de base du véhicule auprès du RUNT Colombie (plaque et titulaire).
+sidebar_label: RUNT — Véhicule (base)
+slug: /vehicle-validation/colombia/runt-vehiculo
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/runt/vehiculo
+```
+
+Retourne les informations véhicule auprès du **RUNT** pour la **plaque** et le titulaire (**`documentType`** + **`documentNumber`**). Réponse orientée **immatriculation et données de base** ; le rapport complet est sur **`/v2/co/runt/vehicle-by-plate`**. Paramètre optionnel **`audit`** (booléen en chaîne).
+
+### En-têtes
+
+| Nom | Valeur |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Paramètres
+
+| Nom | Type | Obligatoire | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Oui | Type de pièce du titulaire : **`CC`**, **`CE`**, **`PA`**, **`NIT`**. |
+| `documentNumber` | string | Oui | Numéro sans espaces ni ponctuation. |
+| `plate` | string | Oui | Plaque (**5–9** caractères selon validation API). |
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/runt/vehiculo", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+		plate: "ABC123",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/runt/vehiculo"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789", "plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentNumber": "31527228",
+		"documentType": "CC",
+		"plate": "WHH662",
+		"vehicle": {
+			"marca": "MAZDA",
+			"linea": "T 45",
+			"modelo": "1999",
+			"noPlaca": "WHH662",
+			"estadoDelVehiculo": "ACTIVO",
+			"tipoServicio": "Público",
+			"organismoTransito": "STRIA DE TTOyTTE MEDELLIN"
+		}
+	},
+	"signature": {
+		"dateTime": "October 10, 2025 8:10 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "GVMFW"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType. missing documentNumber. missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Rapport complet : **`GET /v2/co/runt/vehicle-by-plate`**.
+- Version allégée : **`GET /v2/co/runt/vehicle-by-plate-simplified`**.

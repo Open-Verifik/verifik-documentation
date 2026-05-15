@@ -3,6 +3,21 @@ id: vehicle-validation-colombia-runt-vehicle-soat-rtm
 title: SOAT and RTM Validation in RUNT
 description: Verify the status of mandatory insurance (SOAT) and technical review (RTM) for vehicles in Colombia. Real-time API for traffic compliance.
 slug: /vehicle-validation/colombia/runt-vehicle-soat-rtm
+keywords:
+  - v2/co/runt/vehiculo
+  - /v2/co/runt/vehiculo
+  - v2 co runt vehiculo
+  - api/co/runt/vehiculo
+  - /api/co/runt/vehiculo
+  - api co runt vehiculo
+  - api.verifik.co/v2/co/runt/vehiculo
+  - 'https://api.verifik.co/v2/co/runt/vehiculo'
+  - GET v2/co/runt/vehiculo
+  - GET /v2/co/runt/vehiculo
+  - co/runt/vehiculo
+  - /co/runt/vehiculo
+  - runt/vehiculo
+  - /runt/vehiculo
 ---
 
 export const structuredData = {

@@ -1,0 +1,126 @@
+---
+id: vehicle-validation-colombia-bogota-vehicle-accidentality
+title: ボゴタ — 交通事故履歴
+description: ボゴタ登録車両の事故履歴（日付、様式番号、深刻度）をナンバーで照会します。
+sidebar_label: ボゴタ — 交通事故履歴
+slug: /vehicle-validation/colombia/bogota-vehicle-accidentality
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/bogota/vehicle/accidentality
+```
+
+コロンビア・ボゴタに登録された車両の事故履歴を取得します。クエリ **`plate`** にナンバーを指定します。レスポンスの `accident` 配列には日付、様式（`form`）、深刻度（`seriousness`）が含まれます。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `plate` | string | はい | 照会するプレート。5～6文字。スペースやピリオドを含めないでください。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/bogota/vehicle/accidentality", {
+  params: { plate: "ABC123" },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/bogota/vehicle/accidentality"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "accident": [
+      {
+        "date": "VIERNES, 20 FEBRERO 2015 00:00",
+        "form": "A1689",
+        "seriousness": "SOLO DAÑOS"
+      },
+      {
+        "date": "LUNES, 10 FEBRERO 2014 00:00",
+        "form": "A1428611",
+        "seriousness": "SOLO DAÑOS"
+      },
+      {
+        "date": "SÁBADO, 9 MARZO 2013 00:00",
+        "form": "A1247163",
+        "seriousness": "SOLO DAÑOS"
+      }
+    ],
+    "plate": "TSP331"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "July 3, 2024 3:58 PM"},
+  "id": "3C9YY"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### メモ
+
+- **SOLO DAÑOS** は物損のみ（負傷なし）を意味します。
+- **`form`** は公式の事故届・報告書の参照番号です。
+- **`date`** はスペイン語表記（曜日と日付）で返る場合があります。

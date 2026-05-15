@@ -1,0 +1,226 @@
+---
+id: costa-rica
+title: コスタリカ — 国民身分証（CCCR）
+description: GET /v2/cr/cedula を介し、documentType と documentNumber でコスタリカの国民 ID（CCCR cédula）を検証します。KYC や不正防止に活用できます。
+slug: /identity/costa-rica
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "コスタリカの国民 ID（CCCR）検証 | Verifik KYC API",
+	description:
+		"コスタリカの国民 ID（CCCR）を検証します。GET /v2/cr/cedula に documentType=CCCR と documentNumber を指定し、構造化された本人情報を取得します。",
+	articleSection: "API ドキュメント",
+	keywords: "本人確認, KYC API, コスタリカ CCCR 検証, 公式データソース, 不正防止",
+	about: {
+		"@type": "Thing",
+		name: "本人確認 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# コスタリカの本人確認
+
+Verifik の本人確認 API は、公的な政府データを利用してコスタリカ市民を認証します。KYC（Know Your Customer）プロセスの効率化、不正防止、各種規制要件への対応を簡単に実現できるよう設計されています。
+
+ユーザー、従業員、顧客の真の本人性を、迅速・安全・自動的に確認したいビジネス向けに構築しました。
+
+## この API は何を検証しますか？
+
+本 API は公式記録と直接接続し、以下を検証します。
+
+-   **氏名と CCCR 番号**: *Cédula de Identidad Costarricense*（CCCR）に対応します。
+-   **本人一致**: 入力された氏名が CCCR 番号と一致するかを確認します。
+
+これらを検証することで、相手が実在し有効な文書を保有していることを確認でき、なりすましや不正のリスクを大幅に低減できます。
+
+## API リファレンス
+
+### エンドポイント
+
+```
+https://api.verifik.co/v2/cr/cedula
+```
+
+本エンドポイントは、公式ソースに対して **CCCR**（*Cédula de Identidad Costarricense*）を検証します。GET リクエストで **`documentType`** に `CCCR`、**`documentNumber`** に cédula 番号（スペースなし）を指定すると、レスポンスには **KYC**、オンボーディング、不正検知に活用できる構造化された氏名フィールドが含まれます。
+
+### ヘッダー
+
+| 名前          | 値                 |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### パラメーター
+
+| 名前             | 型     | 必須 | 説明                                       |
+| ---------------- | ------ | ---- | ------------------------------------------ |
+| `documentType`   | string | はい | 文書タイプ。許可される値: `CCCR`。           |
+| `documentNumber` | string | はい | スペースを含まない cédula 番号。             |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cr/cedula", {
+  params: { documentType: "CCCR", documentNumber: "123456789" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/cr/cedula");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$query = http_build_query([
+    "documentType" => "CCCR",
+    "documentNumber" => "123456789"
+]);
+curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/cr/cedula?".$query);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cr/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CCCR", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/cr/cedula?documentType=CCCR&documentNumber=123456789"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Accept", "application/json")
+    req.Header.Set("Authorization", "Bearer "+getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    fmt.Println(resp.Status)
+}
+```
+
+  </TabItem>
+ </Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CCCR",
+    "documentNumber": "123456789",
+    "firstName": "Ana",
+    "lastName": "Rodríguez",
+    "fullName": "Ana Rodríguez",
+    "status": "valid"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "January 16, 2024 3:44 PM"},
+  "id": "CR001"
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "Invalid document number",
+  "code": "INVALID_DOCUMENT"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "code": "InternalServerError",
+    "message": "Server error."
+}
+```
+
+  </TabItem>
+ </Tabs>
+
+### 注意事項
+
+- 番号はスペースやドットを含めずに入力してください。
+
+---
+
+## 一般的なユースケース
+
+-   **フィンテックと銀行**: 口座開設や融資申請の際に本人確認を即時実施します。
+-   **EC と配送**: プラットフォーム稼働前にユーザーや配達員を認証します。
+-   **HR と採用**: 採用ワークフローの一部として候補者の文書を検証します。
+-   **保険と医療**: 保険契約や医療給付の前に本人を確認します。
+
+## 公式ソースと信頼性
+
+コスタリカの公的な政府ソースと直接接続し、検証済みかつ最新の情報を提供します。
+すべての照会は厳格なセキュリティおよび規制基準に基づいて処理されます。
+
+## 主な利点
+
+-   **自動化されたコンプライアンス**: ユーザー体験を損なうことなく KYC チェックを効率化し、不正を防止します。
+-   **即時の結果**: 数秒で照会を処理できるため、リアルタイムでのデジタルオンボーディングに最適です。
+-   **信頼できるデータ**: 公式記録から直接取得したデータを利用できます。
+-   **容易な統合**: REST API または互換 SDK を通じて簡単に接続できます。
+
+## コンプライアンスとセキュリティ
+
+データの安全性を最優先します。Verifik は高度な暗号化（HTTPS / TLS 1.3）と厳格なプライバシー管理基準を採用し、機密性を確保します。
+当サービスは可用性を 24 時間 365 日監視しており、チームのアクセスを安全に保つロールベースのアクセス制御を提供します。
+
+## Verifik について
+
+Verifik は、ラテンアメリカ全域における本人確認、コンプライアンス、不正防止のためのリーディングプラットフォームです。
+当社の API は KYC、KYB、AML、生体検証プロセスを自動化し、コロンビア、メキシコ、ペルー、チリ、ウルグアイ、アルゼンチン、ブラジル、コスタリカなどの公式データソースとビジネスを接続します。

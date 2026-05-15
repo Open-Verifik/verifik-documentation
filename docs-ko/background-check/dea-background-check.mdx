@@ -1,0 +1,190 @@
+---
+id: dea-background-check
+title: 🌐 DEA 배경 조회
+description: DEA 배경 조회 서비스.
+slug: /background-check/international/dea-background-check
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# DEA 배경 조회
+
+## API 레퍼런스
+
+### 엔드포인트
+
+```
+https://api.verifik.co/v2/dea
+```
+
+`documentType`과 `documentNumber`, 또는 `fullName`을 사용해 미국 마약단속국(DEA) 감시 명단 대상으로 개인 또는 법인을 조회합니다. API는 일치 여부를 반환하며, 해당하는 경우 공식 DEA 기록의 URL도 함께 제공합니다.
+
+**참고:** 날짜(출생일 또는 발급일)는 `dd/mm/yyyy` 형식이어야 합니다.
+
+### 헤더(Headers)
+
+| 이름           | 값                  |
+| -------------- | ------------------- |
+| Content-Type   | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 매개변수(Parameters)
+
+:::info
+지원되는 **문서 종류**의 전체 목록과 각 종류별 필수 매개변수는 [Document Types](/background-check/document-types) 가이드를 참고해 주세요.
+:::
+
+| 이름             | 형식    | 필수 | 설명                                                                                                       |
+| ---------------- | ------- | ---- | ---------------------------------------------------------------------------------------------------------- |
+| `documentType`   | string  | 아니오 | 조회할 문서 종류.                                                                                          |
+| `documentNumber` | string  | 아니오 | 조회할 문서 번호. 공백이나 점 없이 입력합니다.                                                              |
+| `fullName`       | string  | 아니오 | documentType과 documentNumber 대신 개인 또는 법인의 이름을 직접 전달할 수 있습니다.                          |
+
+### 활용 사례
+
+- **규제 컴플라이언스:** 미국 연방 규정상 DEA 관련 위험 신호를 점검합니다.
+- **사기 예방:** 통제 약물 단속 기록과 연관된 위험을 식별합니다.
+- **KYC 및 AML:** 의료, 제약, 물류, 금융 분야의 컴플라이언스 프로그램을 지원합니다.
+
+### 요청(Request)
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/dea",
+  params: { documentType: "CC", documentNumber: "80251972" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {}
+conn.request("GET", "/v2/dea?fullName=", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/dea?fullName=")!,timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
+
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/dea?fullName=');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+$request->setBody('');
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 응답(Response)
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "123456789",
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": ["MATEO", "VERIFIK"],
+    "foundInDEA": true,
+    "urlDEA": "https://www.dea.gov/fugitives/ismael-zambada-garcia"
+  },
+  "signature": {
+    "dateTime": "June 28, 2022 11:41 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 비고
+
+- 공개된 DEA 참조 정보가 존재하는 경우 `foundInDEA`와 함께 선택적으로 `urlDEA`가 반환됩니다.

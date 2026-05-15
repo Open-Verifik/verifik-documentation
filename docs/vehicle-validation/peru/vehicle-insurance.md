@@ -1,8 +1,23 @@
 ---
 id: peru-vehicle-insurance
 title: Peru - Vehicle Insurance
-description: This service provides information on the insurance status of a vehicle in Peru. It returns details including the insurance company name, policy start and end dates, vehicle plate number, policy number, usage type, vehicle class, and policy status.
+description: 'This service provides information on the insurance status of a vehicle in Peru. It returns details including the insurance company name, policy start and end dates, vehicle plate number, policy number, usage type, vehicle class, and policy status.'
 slug: /vehicle-validation/peru/vehicle-insurance
+keywords:
+  - v2/pe/vehiculo/soat
+  - /v2/pe/vehiculo/soat
+  - v2 pe vehiculo soat
+  - api/pe/vehiculo/soat
+  - /api/pe/vehiculo/soat
+  - api pe vehiculo soat
+  - api.verifik.co/v2/pe/vehiculo/soat
+  - 'https://api.verifik.co/v2/pe/vehiculo/soat'
+  - GET v2/pe/vehiculo/soat
+  - GET /v2/pe/vehiculo/soat
+  - pe/vehiculo/soat
+  - /pe/vehiculo/soat
+  - vehiculo/soat
+  - /vehiculo/soat
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 # Peru - Vehicle Insurance
 
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/pe/vehiculo/soat
@@ -18,20 +33,20 @@ https://api.verifik.co/v2/pe/vehiculo/soat
 
 This service provides information on the insurance status of a vehicle in Peru. It returns details including the insurance company name, policy start and end dates, vehicle plate number, policy number, usage type, vehicle class, and policy status.
 
-## Headers
+### Headers
 
 | Name          | Value              |
 | ------------- | ------------------ |
 | Content-Type  | `application/json` |
 | Authorization | `Bearer <token>`   |
 
-## Parameters
+### Parameters
 
 | Name           | Type    | Required | Description                                    |
 | -------------- | ------- | -------- | ---------------------------------------------- |
 | `plate`        | string  | Yes      | Plate number to consult, without spaces or points. |
 
-## Request
+### Request
 
 <Tabs>
 <TabItem value="javascript" label="JavaScript">
@@ -120,7 +135,7 @@ catch(HTTP_Request2_Exception $e) {
 </TabItem>
 </Tabs>
 
-## Response
+### Response
 
 <Tabs>
 <TabItem value="200" label="200">

@@ -1,0 +1,143 @@
+---
+id: chile-validate-documents
+title: Chile — Validação de documento de identidade
+description: Valide um RUN ou RUT chileno em conjunto com o número de série do documento contra fluxos de validação civil ou tributária; retorna um status de vigência para verificação de documentos físicos.
+slug: /identity/chile-validate-documents
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Validação de documento (Chile) | API Verifik",
+	description: "GET /v2/cl/validate/documents com documentType, documentNumber e serialNumber.",
+	articleSection: "Documentação da API",
+	keywords: "Chile RUN, Chile RUT, validação de documento, v2/cl/validate/documents",
+	about: {
+		"@type": "Thing",
+		name: "API de validação de documento de identidade",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Chile — Validação de documento de identidade
+
+Este endpoint verifica a **vigência do documento** chileno **RUN** ou **RUT** usando o **número de série impresso** no documento físico, além do identificador. Use-o quando precisar confirmar que um **cartão** está **válido** (não apenas que o número existe) — por exemplo, em etapas de **KYC de alta confiança** ou **conformidade** que vão além de uma simples consulta de cédula.
+
+Para verificação apenas por nome no registro civil sem número de série, use **[Verificação de identidade no Chile](/identity/chile)** (`v2/cl/cedula`).
+
+## Referência da API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/validate/documents
+```
+
+Envie **RUN** ou **RUT**, **número do documento** e **número de série impresso** para obter um **status de vigência** a partir de fontes de validação civil ou tributária — use quando o documento físico precisar ser confirmado, não apenas o número.
+
+### Cabeçalhos
+
+| Nome | Valor |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parâmetros
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `documentType` | string | Sim | `RUN` (fluxo civil) ou `RUT` (fluxo tributário). |
+| `documentNumber` | string | Sim | Identificador sem espaços, conforme as diretrizes de integração. |
+| `serialNumber` | string | Sim | Número de série impresso no documento; obrigatório para as fontes de validação subjacentes. |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/validate/documents", {
+  params: {
+    documentType: "RUN",
+    documentNumber: "18562530-3",
+    serialNumber: "A123456789",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/validate/documents"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {
+    "documentType": "RUN",
+    "documentNumber": "18562530-3",
+    "serialNumber": "A123456789",
+}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "RUN",
+    "documentNumber": "18.562.530-3",
+    "serialNumber": "A123456789",
+    "status": "Vigente"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 4:00 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "CLVAL1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [RUT, RUN]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Observações
+
+- A string exata de `status` depende da redação do registro de origem; trate-a como um **indicador de vigência**, não como substituto de orientação jurídica.
+- Colete o **`serialNumber`** do documento físico; sem ele, a validação não pode ser concluída contra o fluxo do **Registro Civil**.

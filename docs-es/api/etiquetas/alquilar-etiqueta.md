@@ -2,7 +2,7 @@
 
 Alquilar una etiqueta para cualquier nombre de dominio soportado (Zelf, Avax, BDAG, u otros dominios licenciados).
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/tags/lease
@@ -18,7 +18,7 @@ Este endpoint te permite alquilar una etiqueta para cualquier nombre de dominio 
 
 Este endpoint requiere autenticación mediante token JWT. Primero debes crear una sesión usando el endpoint `/api/sessions` para obtener un token JWT.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -29,7 +29,7 @@ Este endpoint requiere autenticación mediante token JWT. Primero debes crear un
 | `os` | string | Sí | Sistema operativo ("DESKTOP", "ANDROID", "IOS") |
 | `captchaToken` | string | No | Token CAPTCHA para protección contra bots (opcional) |
 
-## Respuesta
+### Respuesta
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

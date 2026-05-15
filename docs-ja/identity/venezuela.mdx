@@ -1,0 +1,283 @@
+---
+id: venezuela
+title: ベネズエラ — 国民身分証（CCVE）
+description: ベネズエラの国民 ID 照会。GET /v2/ve/cedula を介して文書番号で cédula（CCVE）保持者を検証し、KYC や不正防止に活用できます。
+slug: /identity/venezuela
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "ベネズエラの国民 ID（CCVE）検証 | Verifik KYC API",
+	description:
+		"ベネズエラ市民の国民 ID 照会。Verifik の GET /v2/ve/cedula エンドポイントを使用して、文書番号で cédula（CCVE）データを検証します。",
+	articleSection: "API ドキュメント",
+	keywords: "ベネズエラ CCVE, cédula nacional, 本人確認, KYC API, v2/ve/cedula, 不正防止",
+	about: {
+		"@type": "Thing",
+		name: "本人確認 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# ベネズエラの本人確認
+
+Verifik の本人確認 API は、公的な政府データを利用してベネズエラ市民を認証します。KYC（Know Your Customer）プロセスの効率化、不正防止、各種規制要件への対応を簡単に実現できるよう設計されています。
+
+ユーザー、従業員、顧客の真の本人性を、迅速・安全・自動的に確認したいビジネス向けに構築しました。
+
+## この API は何を検証しますか？
+
+本 API は公式記録と直接接続し、以下を検証します。
+
+-   **氏名と文書番号**: ベネズエラの身分証（CCVE）に対応します。
+-   **本人一致**: 入力された氏名が文書番号と一致するかを確認します。
+-   **任意の個人情報**: 利用可能な場合、生年月日、性別、配偶者の有無を含む場合があります。
+
+これらを検証することで、相手が実在し有効な文書を保有していることを確認でき、なりすましや不正のリスクを大幅に低減できます。
+
+## API リファレンス
+
+### エンドポイント
+
+```
+https://api.verifik.co/v2/ve/cedula
+```
+
+本ルートは、**CCVE**（*Cédula de Identidad*）の文書クラスを用いて、**ベネズエラ国民** の本人情報を返します。cédula 番号を **`documentNumber`** に指定すると、API はレコードを解決し、**KYC**、オンボーディング、不正防止に活用できる構造化された氏名フィールドを返します。**外国人居住者** の場合は [`GET /v2/ve/foreigner-id`](/identity/venezuela-foreigner-id)（CEVE）を使用してください。
+
+### ヘッダー
+
+| 名前          | 値                 |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### パラメーター
+
+| 名前             | 型     | 必須 | 説明                                       |
+| ---------------- | ------ | ---- | ------------------------------------------ |
+| `documentNumber` | string | はい | 国民 cédula 番号（CCVE）。`documentType` クエリは不要で、このエンドポイントでは **CCVE** が自動的に適用されます。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/ve/cedula", {
+  params: { documentNumber: "123456789" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/ve/cedula");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$query = http_build_query([
+    "documentNumber" => "123456789"
+]);
+curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/ve/cedula?".$query);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/ve/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/ve/cedula?documentNumber=123456789"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Accept", "application/json")
+    req.Header.Set("Authorization", "Bearer "+getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    fmt.Println(resp.Status)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "arrayName": [
+      "CARLA",
+      "SARAI",
+      "PULIDO",
+      "RAMIREZ"
+    ],
+    "documentNumber": "30246051",
+    "documentType": "CCVE",
+    "firstName": "CARLA SARAI",
+    "fullName": "CARLA SARAI PULIDO RAMIREZ",
+    "lastName": "PULIDO RAMIREZ"
+  },
+  "signature": {
+    "dateTime": "November 13, 2025 3:52 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "OHZC9"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-optional" label="200 (任意フィールドを含む)">
+
+```json
+{
+  "data": {
+    "arrayName": [
+      "NEIVIS",
+      "JOSEFINA",
+      "PEREZ",
+      "VARGAS"
+    ],
+    "birthDate": "1998-03-01",
+    "documentNumber": "28055196",
+    "documentType": "CCVE",
+    "firstName": "NEIVIS JOSEFINA",
+    "fullName": "NEIVIS JOSEFINA PEREZ VARGAS",
+    "gender": "FEMENINO",
+    "lastName": "PEREZ VARGAS"
+  },
+  "signature": {
+    "dateTime": "November 13, 2025 8:12 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "GGLIK"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "code": "InternalServerError",
+    "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事項
+
+- `documentNumber` は必須です。
+- データの可用性に応じて、レスポンスに `birthDate`、`gender`、`maritalStatus` が含まれることがあります。これらのフィールドはすべてのレスポンスに含まれることが保証されていません。
+- 含まれる場合、`birthDate` は `YYYY-MM-DD` 形式（例: "1998-03-01"）に従います。
+
+---
+
+## 一般的なユースケース
+
+-   **フィンテックと銀行**: 口座開設や融資申請の際に本人確認を即時実施します。
+-   **EC と配送**: プラットフォーム稼働前にユーザーや配達員を認証します。
+-   **HR と採用**: 採用ワークフローの一部として候補者の文書を検証します。
+-   **保険と医療**: 保険契約や医療給付の前に本人を確認します。
+
+## 公式ソースと信頼性
+
+ベネズエラの公的な政府ソースと直接接続し、検証済みかつ最新の情報を提供します。
+すべての照会は厳格なセキュリティおよび規制基準に基づいて処理されます。
+
+## 主な利点
+
+-   **自動化されたコンプライアンス**: ユーザー体験を損なうことなく KYC チェックを効率化し、不正を防止します。
+-   **即時の結果**: 数秒で照会を処理できるため、リアルタイムでのデジタルオンボーディングに最適です。
+-   **信頼できるデータ**: 公式記録から直接取得したデータを利用できます。
+-   **容易な統合**: REST API または互換 SDK を通じて簡単に接続できます。
+
+## コンプライアンスとセキュリティ
+
+データの安全性を最優先します。Verifik は高度な暗号化（HTTPS / TLS 1.3）と厳格なプライバシー管理基準を採用し、機密性を確保します。
+当サービスは可用性を 24 時間 365 日監視しており、チームのアクセスを安全に保つロールベースのアクセス制御を提供します。
+
+## Verifik について
+
+Verifik は、ラテンアメリカ全域における本人確認、コンプライアンス、不正防止のためのリーディングプラットフォームです。
+当社の API は KYC、KYB、AML、生体検証プロセスを自動化し、コロンビア、メキシコ、ペルー、チリ、ウルグアイ、アルゼンチン、ブラジル、ベネズエラなどの公式データソースとビジネスを接続します。

@@ -1,0 +1,128 @@
+---
+id: vehicle-validation-colombia-runt-vehiculo
+title: 🇨🇴 RUNT — 차량 확인(기본)
+description: 콜롬비아 RUNT에서 번호판과 명의자 정보로 차량 등록·기본 특성을 조회합니다.
+sidebar_label: RUNT — 차량(기본)
+slug: /vehicle-validation/colombia/runt-vehiculo
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v2/co/runt/vehiculo
+```
+
+**번호판**과 명의자 **`documentType`**·**`documentNumber`** 로 **RUNT** 에 등록된 차량의 **일반 등록 정보·기본 특성**을 조회합니다. **`/v2/co/runt/vehicle-by-plate`** 의 전체 이력 보고서보다 가벼운 용도입니다. 필요 시 **`audit`** 쿼리(문자열 불리언)를 지원합니다.
+
+### 헤더(Headers)
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수(Parameters)
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | 명의자 문서 유형. **`CC`**, **`CE`**, **`PA`**, **`NIT`** 중 하나. |
+| `documentNumber` | string | yes | 문서 번호(공백·구두점 없음). |
+| `plate` | string | yes | 조회할 번호판(API 검증 **5–9**자). 서버에서 대문자로 정규화됩니다. |
+
+### 요청(Request)
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/runt/vehiculo", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+		plate: "ABC123",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/runt/vehiculo"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789", "plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답(Response)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentNumber": "31527228",
+		"documentType": "CC",
+		"plate": "WHH662",
+		"vehicle": {
+			"marca": "MAZDA",
+			"linea": "T 45",
+			"modelo": "1999",
+			"noPlaca": "WHH662",
+			"estadoDelVehiculo": "ACTIVO",
+			"tipoServicio": "Público",
+			"organismoTransito": "STRIA DE TTOyTTE MEDELLIN"
+		}
+	},
+	"signature": {
+		"dateTime": "October 10, 2025 8:10 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "GVMFW"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType. missing documentNumber. missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고(Notes)
+
+- 전체 이력·기술 보고서는 **`GET /v2/co/runt/vehicle-by-plate`** 를 사용하세요.
+- 간소화된 프로필은 **`GET /v2/co/runt/vehicle-by-plate-simplified`** 를 참고하세요.

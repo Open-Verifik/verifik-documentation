@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Descifrar un ZelfProof para acceder a datos de wallet y metadatos usando verificación biométrica facial.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/tags/decrypt
@@ -15,7 +15,7 @@ POST /api/tags/decrypt
 
 Este endpoint te permite descifrar un ZelfProof usando verificación biométrica facial para acceder a los datos originales del wallet, incluyendo frases mnemónicas y claves privadas. El proceso de descifrado verifica la identidad del usuario a través del reconocimiento facial antes de proporcionar acceso a información sensible.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -24,7 +24,7 @@ Este endpoint te permite descifrar un ZelfProof usando verificación biométrica
 | `faceBase64` | string | Sí | Imagen facial codificada en base64 para verificación biométrica |
 | `password` | string | Sí | Contraseña utilizada durante el cifrado original |
 
-## Respuesta
+### Respuesta
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

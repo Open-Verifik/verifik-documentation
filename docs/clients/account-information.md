@@ -1,7 +1,20 @@
 ---
 id: account-information
 title: Account Information
-description: Retrieve client information including credits, subscription plan and settings
+description: 'Retrieve client information including credits, subscription plan and settings'
+keywords:
+  - v2/clients/me
+  - /v2/clients/me
+  - v2 clients me
+  - api/clients/me
+  - /api/clients/me
+  - api clients me
+  - api.verifik.co/v2/clients/me
+  - 'https://api.verifik.co/v2/clients/me'
+  - GET v2/clients/me
+  - GET /v2/clients/me
+  - clients/me
+  - /clients/me
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,7 +22,7 @@ import TabItem from '@theme/TabItem';
 
 # Account Information
 
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/clients/me

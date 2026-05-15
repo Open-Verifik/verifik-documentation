@@ -1,0 +1,197 @@
+---
+id: identity-brazil
+title: 브라질 — 신원 확인(CPF)
+description: Verifik KYC API로 브라질 개인의 CPF를 공식 출처와 대조하여 신원을 검증합니다.
+slug: /identity/brazil
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "브라질 신원 확인(CPF) | Verifik KYC API",
+	description: "CPF를 사용해 브라질 국민의 신원을 검증하고 공식 데이터에 연결합니다.",
+	articleSection: "API 문서",
+	keywords: "신원 확인, KYC API, 브라질 CPF, 사기 방지",
+	about: {
+		"@type": "Thing",
+		name: "신원 확인 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 브라질 신원 확인
+
+Verifik 신원 확인 API는 **Cadastro de Pessoas Físicas(CPF)**로 브라질 국민을 인증합니다. KYC 프로세스, 사기 방지, 규제 준수를 지원하도록 설계되었습니다.
+
+## 이 API는 무엇을 검증하나요?
+
+공식 기록과 연결하여 다음을 검증합니다.
+
+- **전체 이름과 CPF 번호**: *Cadastro de Pessoas Físicas*(CPF)를 지원합니다.
+- **신원 일치**: 제공된 이름이 CPF 번호와 일치하는지 확인합니다.
+- **생년월일**: 생년월일이 공식 기록과 일치하는지 검증합니다.
+
+## API 레퍼런스
+
+### 엔드포인트
+
+```
+https://api.verifik.co/v2/br/cedula
+```
+
+브라질 개인의 **CPF**를 공식 출처와 대조합니다. **CPF**, `DD/MM/YYYY` 형식의 **생년월일**, 구분 기호 유무와 관계없이 **문서 번호**를 전달합니다. 일치하면 정규화된 이름 구성 요소와 식별자를 반환합니다. **KYC**, **사기 방지**, **규제 대상 온보딩**에 적합합니다.
+
+### 헤더(Headers)
+
+| 이름           | 값                  |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 매개변수(Parameters)
+
+| 이름 | 형식 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `documentType` | string | **예** | 문서 유형. 허용 값: `CPF`. |
+| `documentNumber` | string | **예** | CPF 번호(구분 기호 포함 또는 제외). |
+| `dateOfBirth` | string | **예** | 생년월일. 형식: `DD/MM/YYYY`. |
+
+### 요청(Request)
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/br/cedula", {
+  params: { documentType: "CPF", documentNumber: "012.345.678-01", dateOfBirth: "17/02/2002" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/br/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CPF", "documentNumber": "012.345.678-01", "dateOfBirth": "17/02/2002"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답(Response)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "arrayName": [
+      "RAISSA",
+      "LARA",
+      "ROCHA",
+      "ALVES",
+      "FERREIRA"
+    ],
+    "dateOfBirth": "2002-02-17",
+    "documentNumber": "01916658601",
+    "documentType": "CPF",
+    "firstName": "RAISSA LARA ROCHA",
+    "fullName": "RAISSA LARA ROCHA ALVES FERREIRA",
+    "lastName": "ALVES FERREIRA"
+  },
+  "signature": {
+    "dateTime": "October 8, 2025 6:44 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "AMARG"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Access forbidden",
+  "code": "FORBIDDEN"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth\n"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [CPF]"
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "dateOfBirth format required: DD/MM/YYYY\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- CPF는 유효해야 하며, 생년월일은 필수이고 기록과 일치해야 합니다.

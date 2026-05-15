@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Obtener una vista previa de un ZelfProof antes del descifrado para ver sus datos públicos y requisitos.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/tags/preview-zelfproof
@@ -15,14 +15,14 @@ POST /api/tags/preview-zelfproof
 
 Este endpoint te permite obtener una vista previa de un ZelfProof y ver sus detalles antes de intentar el descifrado. Devuelve información pública como direcciones de wallet y si se requiere una contraseña, sin exponer datos encriptados sensibles.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
 | `zelfProof` | string | Sí | El ZelfProof en formato base64 que necesita ser analizado |
 | `verifierKey` | string | No | Una clave de autenticación requerida si se especifica para el ZelfProof |
 
-## Respuesta
+### Respuesta
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

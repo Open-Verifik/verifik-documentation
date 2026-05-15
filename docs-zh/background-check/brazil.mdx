@@ -1,0 +1,210 @@
+---
+id: brazil
+title: 巴西
+description: 使用 CPF 对巴西个人进行背景核查。
+slug: /background-check/brazil
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 巴西
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/br/background-check
+```
+
+**巴西个人背景筛查**：使用 **CPF** 与**出生日期**进行查询。成功响应包含与身份相关的字段，且当数据提供方提供时，还会返回 **base64 编码的 PDF** 报告。该接口面向**雇佣审核**、**尽职调查**与**合规**等场景；请按照您自身的法律和数据留存要求处理 PDF 与元数据。
+
+### 请求头（Headers）
+
+| 名称           | 取值                |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 参数（Parameters）
+
+:::info
+有关支持的**证件类型**及其专属必填参数的完整清单，请参阅 [证件类型](/background-check/document-types) 指南。
+:::
+
+| 名称              | 类型    | 必填 | 描述                                                       |
+| ----------------- | ------- | ---- | ---------------------------------------------------------- |
+| `documentType`    | string  | 是   | 证件类型。允许取值：CPF。                                  |
+| `documentNumber`  | string  | 是   | 待查询人员的证件号码。                                      |
+| `dateOfBirth`     | string  | 是   | 待查询人员的出生日期，格式为 dd/mm/yyyy。                  |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/br/background-check',
+  params: {
+    documentType: 'CPF',
+    documentNumber: '012.345.678-01',
+    dateOfBirth: '17/02/2002'
+  },
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer <your_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "Bearer <your_token>"
+}
+
+conn.request("GET", "/v2/br/background-check?documentType=CPF&documentNumber=012.345.678-01&dateOfBirth=17/02/2002", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/br/background-check?documentType=CPF&documentNumber=012.345.678-01&dateOfBirth=17/02/2002', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'Bearer <your_token>',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "Bearer <your_token>"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/br/background-check?documentType=CPF&documentNumber=012.345.678-01&dateOfBirth=17/02/2002")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CPF",
+    "documentNumber": "012.345.678-01",
+    "firstName": "João",
+    "lastName": "Silva",
+    "fullName": "João Silva",
+    "dateOfBirth": "17/02/2002",
+    "certificationNumber": "123456789",
+    "canIssueReports": true,
+    "associatedNames": ["João Silva Santos"],
+    "pdfReport": "base64_encoded_pdf_content",
+    "status": "clear"
+  },
+  "signature": {
+    "dateTime": "April 11, 2023 12:25 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n. missing dateOfBirth\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-2" label="409（无效类型）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [CPF]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 功能特性
+
+-   **CPF 核验**：核验巴西 CPF 证件的真实性。
+-   **完整的背景数据**：返回完整姓名、证件信息、认证编号及 PDF 报告。
+-   **结构化响应**：数据格式整齐、便于集成。
+-   **多语言支持**：兼容 JavaScript、Python、PHP 与 Swift。
+-   **错误处理**：覆盖多种场景的完善错误响应。

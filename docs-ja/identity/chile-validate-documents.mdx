@@ -1,0 +1,128 @@
+---
+id: chile-validate-documents
+title: チリ — 身分証明書の検証
+description: "チリの RUN または RUT と文書のシリアル番号を、戸籍または税務の検証フローに対して照会します。物理的な ID チェック向けに有効性ステータスを返します。"
+slug: /identity/chile-validate-documents
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# チリ — 身分証明書の検証
+
+本エンドポイントは、識別子に加えて、物理 ID に印字された **シリアル番号** を用いて、チリの **RUN** または **RUT** に対する **文書の有効性** を確認します。番号が存在することだけでなく、**カード自体が有効** であることを確認する必要がある場合（例: **高保証 KYC** や、単なる cedula 照会を超えた **コンプライアンス** 手続き）に使用します。
+
+シリアル番号なしで戸籍登録に対する氏名のみの照会を行う場合は、**[チリの本人確認](/identity/chile)**（`v2/cl/cedula`）を使用してください。
+
+## API リファレンス
+
+### エンドポイント
+
+```
+https://api.verifik.co/v2/cl/validate/documents
+```
+
+**RUN** または **RUT**、**文書番号**、**印字シリアル** を送信し、戸籍または税務の検証ソースから **有効性ステータス** を取得します。番号だけでなく物理 ID を確認する必要がある場合に使用します。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `documentType` | string | はい | `RUN`（戸籍カードのフロー）または `RUT`（税務向けフロー）。                  |
+| `documentNumber` | string | はい | 識別子。統合ガイドラインに従い、スペースなしで指定します。                       |
+| `serialNumber` | string | はい | 文書に印字されたシリアル。下層の検証ソースで必須となります。                     |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/validate/documents", {
+  params: {
+    documentType: "RUN",
+    documentNumber: "18562530-3",
+    serialNumber: "A123456789",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/validate/documents"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {
+    "documentType": "RUN",
+    "documentNumber": "18562530-3",
+    "serialNumber": "A123456789",
+}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "RUN",
+    "documentNumber": "18.562.530-3",
+    "serialNumber": "A123456789",
+    "status": "Vigente"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 4:00 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "CLVAL1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [RUT, RUN]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事項
+
+- 正確な `status` の文字列は上流の登記の表現に依存します。**有効性インジケーター** として扱い、法的助言の代替とはしないでください。
+- 物理文書から **`serialNumber`** を取得してください。これがない場合、戸籍 **Registro Civil** フローでの検証は完了できません。

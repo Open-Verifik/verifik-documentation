@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/tags/preview-zelfproof
+  - /api/tags/preview-zelfproof
+  - api tags preview-zelfproof
+  - api.verifik.co/api/tags/preview-zelfproof
+  - 'https://api.verifik.co/api/tags/preview-zelfproof'
+  - GET api/tags/preview-zelfproof
+  - GET /api/tags/preview-zelfproof
+  - tags/preview-zelfproof
+  - /tags/preview-zelfproof
+---
 # Preview ZelfProof
 
 import Tabs from '@theme/Tabs';
@@ -5,7 +17,7 @@ import TabItem from '@theme/TabItem';
 
 Preview a ZelfProof before decryption to see its public data and requirements.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/tags/preview-zelfproof
@@ -15,14 +27,14 @@ POST /api/tags/preview-zelfproof
 
 This endpoint allows you to preview a ZelfProof and see its details before attempting decryption. It returns public information such as wallet addresses and whether a password is required, without exposing sensitive encrypted data.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `zelfProof` | string | Yes | The ZelfProof in base64 format that needs to be parsed |
 | `verifierKey` | string | No | An authentication key required if specified for the ZelfProof |
 
-## Response
+### Response
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

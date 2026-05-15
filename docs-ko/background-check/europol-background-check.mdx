@@ -1,0 +1,189 @@
+---
+id: europol-background-check
+title: 🌐 유로폴(Europol) 배경 조회
+description: 유로폴 배경 조회 서비스는 유로폴 형사 기록 데이터베이스를 실시간으로 조회할 수 있도록 지원합니다. 문서 종류와 번호 또는 전체 성명을 제공하여 유로폴 시스템에 등록된 항목과 일치하는지 확인할 수 있습니다.
+slug: /background-check/international/europol-background-check
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 유로폴 배경 조회
+
+## API 레퍼런스
+
+### 엔드포인트
+
+```
+https://api.verifik.co/v2/europol
+```
+
+`documentType`과 `documentNumber`, 또는 `fullName`만으로 유로폴 형사 기록 데이터를 실시간으로 조회합니다. 응답은 일치 여부를 나타내며, 일치 시 유로폴 직접 참조 URL이 포함될 수 있습니다.
+
+**참고:** 날짜(출생일 또는 발급일)는 `dd/mm/yyyy` 형식이어야 합니다.
+
+### 헤더(Headers)
+
+| 이름           | 값                  |
+| -------------- | ------------------- |
+| Content-Type   | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 매개변수(Parameters)
+
+:::info
+지원되는 **문서 종류**의 전체 목록과 각 종류별 필수 매개변수는 [Document Types](/background-check/document-types) 가이드를 참고해 주세요.
+:::
+
+| 이름             | 형식    | 필수 | 설명                                                                                                       |
+| ---------------- | ------- | ---- | ---------------------------------------------------------------------------------------------------------- |
+| `documentType`   | string  | 아니오 | 조회할 문서 종류.                                                                                          |
+| `documentNumber` | string  | 아니오 | 조회할 문서 번호. 공백이나 점 없이 입력합니다.                                                              |
+| `fullName`       | string  | 아니오 | documentType과 documentNumber 대신 개인 또는 법인의 이름을 직접 전달할 수 있습니다.                          |
+
+### 활용 사례
+
+- **사기 예방:** 민감한 거래 이전에 유로폴 형사 데이터베이스에 등재된 인물을 식별합니다.
+- **신원 검증:** 제공된 개인정보의 정합성을 확인합니다.
+- **컴플라이언스:** 은행, 금융, 부동산 분야의 KYC 및 AML 점검을 지원합니다.
+
+### 요청(Request)
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/europol",
+  params: { documentType: "CC", documentNumber: "80251972" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "JWT token"
+}
+
+conn.request("GET", "/v2/europol?fullName=Mateo%20Verifik", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/europol?fullName=Mateo Verifik', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'JWT token',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "JWT token"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/europol?fullName=Mateo%20Verifik")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답(Response)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "123456789",
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": ["MATEO", "VERIFIK"],
+    "foundInEuropol": true,
+    "urlEuropol": "https://eumostwanted.eu/es#/es/node/162"
+  },
+  "signature": {
+    "dateTime": "June 28, 2022 12:40 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 비고
+
+- **유로폴 데이터베이스 조회**: 문서 기반 또는 이름 기반 조회를 지원합니다.
+- **매치 감지**: 해당 시 유로폴 직접 URL이 응답에 포함될 수 있습니다.
+- **구조화된 응답**: 통합에 적합한 형식으로 데이터를 반환하며, 위에서 JavaScript, Python, PHP, Swift 예제를 제공합니다.

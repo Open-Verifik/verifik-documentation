@@ -2,7 +2,7 @@
 
 Obtener una lista de todas las licencias disponibles en el sistema.
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/licenses
@@ -16,7 +16,7 @@ Este endpoint te permite obtener una lista completa de todas las licencias dispo
 
 Este endpoint requiere autenticación mediante token JWT. Primero debes crear una sesión usando el endpoint `/api/sessions` para obtener un token JWT.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -26,7 +26,7 @@ Este endpoint requiere autenticación mediante token JWT. Primero debes crear un
 | `status` | string | No | Filtrar licencias por estado ("active", "inactive", "pending") |
 | `type` | string | No | Filtrar licencias por tipo ("personal", "business", "enterprise") |
 
-## Respuesta
+### Respuesta
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

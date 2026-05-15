@@ -1,0 +1,140 @@
+---
+id: vehicle-validation-colombia-simit-suspensiones
+title: SIMIT - License suspensions
+description: Query driver license suspension or cancellation records in Colombia’s SIMIT system by holder identification.
+slug: /vehicle-validation/colombia/simit-suspensiones
+keywords:
+  - v2/co/simit/suspensiones
+  - /v2/co/simit/suspensiones
+  - v2 co simit suspensiones
+  - api/co/simit/suspensiones
+  - /api/co/simit/suspensiones
+  - api co simit suspensiones
+  - api.verifik.co/v2/co/simit/suspensiones
+  - 'https://api.verifik.co/v2/co/simit/suspensiones'
+  - GET v2/co/simit/suspensiones
+  - GET /v2/co/simit/suspensiones
+  - co/simit/suspensiones
+  - /co/simit/suspensiones
+  - simit/suspensiones
+  - /simit/suspensiones
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/simit/suspensiones
+```
+
+This service returns **SIMIT** information about **suspension or cancellation** of a **driver license** (or related sanctions tied to the queried identity), including resolution references and dates when the upstream source provides them. Use it for compliance and risk checks on Colombian motorists identified by **`documentType`** and **`documentNumber`**.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Yes | Holder document type. Typical values: `CC`, `PA`, `CE`, `TI`, `RC`, `NIT`. |
+| `documentNumber` | string | Yes | Document number to query, **without spaces or punctuation**. Length limits enforced by the API may return `409` if exceeded. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/suspensiones", {
+	params: { documentType: "CC", documentNumber: "123456789" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/suspensiones"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CC",
+		"documentNumber": "123456789",
+		"firstName": "JUAN CARLOS",
+		"lastName": "PEREZ LOPEZ",
+		"fullName": "JUAN CARLOS PEREZ LOPEZ",
+		"suspensiones": [
+			{
+				"numeroResolucion": "RES-2024-000123",
+				"fechaSuspension": "2024/03/15",
+				"estado": "VIGENTE",
+				"motivo": "Sanción por acumulación de puntos"
+			}
+		]
+	},
+	"signature": {
+		"message": "Certified by Verifik.co",
+		"dateTime": "April 8, 2026 11:00 PM"
+	},
+	"id": "IDNT1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **SIMIT** (Sistema Integrado de Información de Multas y Sanciones por Infracciones de Tránsito) is Colombia’s national traffic infractions registry.
+- Field names and nested lists in **`data`** follow the upstream **SIMIT** payload; the sample illustrates common patterns—adjust integration code to the live response shape.
+- A **200** with an **empty** `suspensiones` array (or equivalent) may mean no suspensions were returned for that identity in the consulted window—interpret alongside business rules.
+- You may receive **`409`** with `documentNumber maximum length exceeded` if the document number is longer than allowed.

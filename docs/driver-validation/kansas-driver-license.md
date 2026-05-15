@@ -3,6 +3,21 @@ id: kansas-driver-license
 title: Kansas Driver License
 description: Kansas driver license verification service
 slug: /driver-validation/kansas-driver-license
+keywords:
+  - v2/usa/kansas/driver-license
+  - /v2/usa/kansas/driver-license
+  - v2 usa kansas driver-license
+  - api/usa/kansas/driver-license
+  - /api/usa/kansas/driver-license
+  - api usa kansas driver-license
+  - api.verifik.co/v2/usa/kansas/driver-license
+  - 'https://api.verifik.co/v2/usa/kansas/driver-license'
+  - GET v2/usa/kansas/driver-license
+  - GET /v2/usa/kansas/driver-license
+  - usa/kansas/driver-license
+  - /usa/kansas/driver-license
+  - kansas/driver-license
+  - /kansas/driver-license
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,10 +25,10 @@ import TabItem from '@theme/TabItem';
 
 # Kansas Driver's License Verification
 
-## Endpoint
+### Endpoint
 
 ```
-https://api.verifik.co/v2/usa/kansas/driver-license
+GET https://api.verifik.co/v2/usa/kansas/driver-license
 ```
 
 The Kansas Driver License Validation Service allows developers to programmatically validate the status, restrictions, endorsements, and designations of Kansas driver licenses. By providing a valid Kansas driver license number, users can obtain a response that includes details such as the license status, expiration date, any restrictions or endorsements, and designations associated with the license.

@@ -1,0 +1,130 @@
+---
+id: vehicle-validation-colombia-simit-fines
+title: SIMIT - 罚款
+description: SIMIT 交通违章与罚款服务
+slug: /vehicle-validation/colombia/simit-fines
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/co/simit/comparendos
+```
+
+交通违章服务可获取与哥伦比亚特定车辆相关的交通违章详情。通过提交车辆牌号，用户可以获取每条违章的完整信息，包括状态、日期、地点及违章类型等。
+
+### 请求头（Headers）
+
+| 名称 | 取值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数（Parameters）
+
+| 名称 | 类型 | 必填 | 描述 |
+| --- | --- | --- | --- |
+| `documentType` | string | 是 | 证件类型。允许取值：`CC`、`PA`、`CE`、`TI`、`RC`。 |
+| `documentNumber` | string | 是 | 待查询的证件号码，不含空格或圆点。 |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/comparendos", {
+  params: { 
+    documentType: "CC", 
+    documentNumber: "123456789" 
+  },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/comparendos"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "comparendos": [
+      {
+        "tipovehiculo": "AUTOMOVIL",
+        "estadoComparendo": "Pendiente",
+        "fechaComparendo": "2016/02/23",
+        "fotodeteccion": false,
+        "NúmeroComparendo": "2561200100015264662173",
+        "placavehiculo": "AAA123",
+        "secretariaComparendo": "Ricaurte",
+        "total": 344730,
+        "idOrganismoTransito": "25612123",
+        "codigoInfraccion": "C35",
+        "descripcionInfraccion": "No realizar la revisión técnico-mecánica en el plazo legal establecido o cuando el vehiculo no se encuentre en adecuadas condiciones técnico-mecánicas o de emisión de gases, aun cuando porte los certificados correspondientes.",
+        "direccionComparendo": "CARRERA 9 CON CALLE 10 AGUA DE DIOS",
+        "infractorComparendo": "CAR BER",
+        "serviciovehiculo": "Particular"
+      }
+    ]
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "February 13, 2023 6:17 AM"}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- SIMIT 是哥伦比亚的交通违章综合系统。
+- "Comparendo" 是西班牙语中的“交通违章罚单”。
+- 罚款金额以哥伦比亚比索（COP）计。
+- 状态 "Pendiente" 表示罚单待支付。
+- 电子摄像取证类违章会标记 `fotodeteccion: true`。

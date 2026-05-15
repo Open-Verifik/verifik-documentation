@@ -1,8 +1,18 @@
+---
+keywords:
+  - api/licenses
+  - /api/licenses
+  - api licenses
+  - api.verifik.co/api/licenses
+  - 'https://api.verifik.co/api/licenses'
+  - GET api/licenses
+  - GET /api/licenses
+---
 # Create License
 
 Create a new license for a user or organization.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/licenses
@@ -16,7 +26,7 @@ This endpoint allows administrators or authorized users to create new licenses f
 
 This endpoint requires authentication via JWT token with administrative privileges. You must first create a session using the `/api/sessions` endpoint to obtain a JWT token.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -29,7 +39,7 @@ This endpoint requires authentication via JWT token with administrative privileg
 | `notes` | string | No | Additional notes or comments about this license |
 | `autoRenew` | boolean | No | Whether license should auto-renew (default: false) |
 
-## Response
+### Response
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

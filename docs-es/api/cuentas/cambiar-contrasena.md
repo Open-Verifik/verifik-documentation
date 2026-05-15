@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Cambiar la contraseña maestra de una cuenta de cliente.
 
-## Endpoint
+### Endpoint
 
 ```
 PUT /api/clients/sync/password
@@ -15,7 +15,7 @@ PUT /api/clients/sync/password
 
 Este endpoint te permite cambiar la contraseña maestra de una cuenta de cliente. Requiere autenticación con clave API.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
@@ -30,7 +30,7 @@ Este endpoint requiere una clave API en el header de la solicitud:
 x-api-key: TU_CLAVE_API
 ```
 
-## Respuesta
+### Respuesta
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

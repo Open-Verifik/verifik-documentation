@@ -1,8 +1,20 @@
+---
+keywords:
+  - api/tags/lease-offline
+  - /api/tags/lease-offline
+  - api tags lease-offline
+  - api.verifik.co/api/tags/lease-offline
+  - 'https://api.verifik.co/api/tags/lease-offline'
+  - GET api/tags/lease-offline
+  - GET /api/tags/lease-offline
+  - tags/lease-offline
+  - /tags/lease-offline
+---
 # Lease Tag Offline
 
 Lease a tag for offline usage with ZelfProof data.
 
-## Endpoint
+### Endpoint
 
 ```
 POST /api/tags/lease-offline
@@ -12,7 +24,7 @@ POST /api/tags/lease-offline
 
 This endpoint allows you to lease a tag for offline usage, enabling Zelf functionality without internet connectivity. It processes ZelfProof data and QR codes to create offline-capable tags.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -35,7 +47,7 @@ This endpoint requires a valid JWT token in the Authorization header:
 Authorization: Bearer <your-jwt-token>
 ```
 
-## Response
+### Response
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

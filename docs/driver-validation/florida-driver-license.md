@@ -3,6 +3,21 @@ id: florida-driver-license
 title: Florida Driver License
 description: Florida driver license validation service
 slug: /driver-validation/florida-driver-license
+keywords:
+  - v2/usa/florida/driver-license
+  - /v2/usa/florida/driver-license
+  - v2 usa florida driver-license
+  - api/usa/florida/driver-license
+  - /api/usa/florida/driver-license
+  - api usa florida driver-license
+  - api.verifik.co/v2/usa/florida/driver-license
+  - 'https://api.verifik.co/v2/usa/florida/driver-license'
+  - GET v2/usa/florida/driver-license
+  - GET /v2/usa/florida/driver-license
+  - usa/florida/driver-license
+  - /usa/florida/driver-license
+  - florida/driver-license
+  - /florida/driver-license
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,10 +25,10 @@ import TabItem from '@theme/TabItem';
 
 # Florida Driver License Validation
 
-## Endpoint
+### Endpoint
 
 ```
-https://api.verifik.co/v2/usa/florida/driver-license
+GET https://api.verifik.co/v2/usa/florida/driver-license
 ```
 
 This service allows developers to validate the status, restrictions, endorsements, and designations of Florida driver licenses. By providing a valid Florida driver license number, the service response with the license status, expiration date, restrictions, endorsements, and designations.

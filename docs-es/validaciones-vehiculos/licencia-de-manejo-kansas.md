@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 
 # Verificación de Licencia de Manejo Kansas
 
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/usa/kansas/driver-license

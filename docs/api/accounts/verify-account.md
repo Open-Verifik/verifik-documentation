@@ -1,3 +1,13 @@
+---
+keywords:
+  - api/clients
+  - /api/clients
+  - api clients
+  - api.verifik.co/api/clients
+  - 'https://api.verifik.co/api/clients'
+  - GET api/clients
+  - GET /api/clients
+---
 # Verify Account
 
 import Tabs from '@theme/Tabs';
@@ -5,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 Verify if a client account exists based on email or phone number.
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/clients
@@ -15,7 +25,7 @@ GET /api/clients
 
 This endpoint allows you to check if a client account exists using either email address or phone number. No authentication is required for this verification.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -26,7 +36,7 @@ This endpoint allows you to check if a client account exists using either email 
 
 *Either email OR countryCode + phone must be provided
 
-## Response
+### Response
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

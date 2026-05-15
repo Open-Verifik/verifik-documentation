@@ -1,35 +1,78 @@
 ---
 id: finance-delinquent-debtors
-title: Delinquent Debtors
-description: Consultation of information about delinquent debtors and financial records
+title: Colombia — Delinquent debtors (BDME)
+description: Query Colombia’s BDME (Base de Datos de Morosos) delinquent debtors registry via GET /v2/co/deudoresmorosos.
 slug: /finance/delinquent-debtors
+keywords:
+  - v2/co/deudoresmorosos
+  - /v2/co/deudoresmorosos
+  - v2 co deudoresmorosos
+  - api/co/deudoresmorosos
+  - /api/co/deudoresmorosos
+  - api co deudoresmorosos
+  - api.verifik.co/v2/co/deudoresmorosos
+  - 'https://api.verifik.co/v2/co/deudoresmorosos'
+  - GET v2/co/deudoresmorosos
+  - GET /v2/co/deudoresmorosos
+  - co/deudoresmorosos
+  - /co/deudoresmorosos
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombia BDME Delinquent Debtors | Verifik API",
+	description:
+		"Check whether a natural person or company appears in Colombia’s BDME registry using document type and number.",
+	articleSection: "API Documentation",
+	keywords: "Colombia, BDME, morosos, Contaduría, credit risk, Verifik API",
+	about: {
+		"@type": "Thing",
+		name: "Finance Verification API",
+	},
+};
 
-# Delinquent Debtors
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
-This service allows you to consult information about delinquent debtors and financial records.
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-## Endpoint
+# Colombia — Delinquent debtors (BDME)
+
+Verifik queries **BDME** (*Base de Datos de Morosos*), the Colombian **delinquent debtors bulletin** published by **Contaduría General de la Nación** (via the official **BDME** web portal), using **`documentType`** and **`documentNumber`**. The integration returns a **status** line and **reporting** fields when the source responds with a match.
+
+Use this for **credit risk**, **onboarding**, and **compliance** checks where BDME consultation is allowed.
+
+## What this API returns
+
+- **`documentType`** / **`documentNumber`** echoed from the request
+- **`status`** — bulletin state text from the upstream response
+- **`reportingEntity`**, **`reportedName`**, **`city`**, **`phone`** — fields parsed from the BDME payload when present
+- A **signed** Verifik wrapper (`data` + `signature`)
+
+## API reference
+
+### Endpoint
 
 ```
 GET https://api.verifik.co/v2/co/deudoresmorosos
 ```
 
+Query-only **GET**; pass **`documentType`** and **`documentNumber`**. There is **no** `POST` route for this path in the current backend.
+
 ### Headers
 
-| Name          | Value              |
-| ------------- | ------------------ |
-| Content-Type  | `application/json` |
-| Authorization | `Bearer <token>`   |
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
 
 ### Parameters
 
-| Name | Type | Required | Description | Example |
-| ---- | ---- | -------- | ----------- | ------- |
-| `documentNumber` | string | **Yes** | Document number to consult. | `123456789` |
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | Document category. Use **`CC`**, **`CE`**, **`PA`**, **`NIT`**, or **`PPT`** (maps to BDME identification types in the integration). |
+| `documentNumber` | string | yes | ID number **without** spaces or punctuation. |
 
 ### Request
 
@@ -37,26 +80,32 @@ GET https://api.verifik.co/v2/co/deudoresmorosos
   <TabItem value="javascript" label="JavaScript">
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
-const options = {
-  method: 'GET',
-  url: 'https://api.verifik.co/v2/co/deudoresmorosos',
-  params: {
-    documentNumber: '123456789'
-  },
-  headers: {
-    'Accept': 'application/json',
-    'Authorization': 'Bearer <your_token>'
-  }
-};
+const { data } = await axios.get("https://api.verifik.co/v2/co/deudoresmorosos", {
+	params: {
+		documentType: "NIT",
+		documentNumber: "800096561",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
 
-try {
-  const { data } = await axios.request(options);
-  console.log(data);
-} catch (error) {
-  console.error(error);
-}
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/deudoresmorosos"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "NIT", "documentNumber": "800096561"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
 ```
 
   </TabItem>
@@ -69,21 +118,59 @@ try {
 
 ```json
 {
-  "data": {
-    "documentNumber": "123456789",
-    "status": "clear",
-    "details": {}
-  },
-  "signature": {
-    "dateTime": "January 16, 2024 3:44 PM",
-    "message": "Certified by Verifik.co"
-  }
+	"data": {
+		"documentType": "NIT",
+		"documentNumber": "800096561",
+		"reportingEntity": "…",
+		"reportedName": "…",
+		"phone": "…",
+		"city": "…",
+		"status": "…"
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType\n. missing documentNumber\n"
 }
 ```
 
   </TabItem>
 </Tabs>
 
-## Resources
+## Features
 
-- [Finance](/finance)
+- **Natural persons and companies** (e.g. **NIT**) supported via `documentType`
+- **GET** query parameters only
+- Captcha-backed upstream flow (failures may surface as **5xx** or service errors)
+
+## Use cases
+
+- **Lending** and **credit** decisioning
+- **Vendor** and **KYB** risk checks
+
+### Notes
+
+- Both **`documentType`** and **`documentNumber`** are **required**; the API returns **409** if either is missing.
+- BDME is an official **debtor bulletin**; interpret **`status`** and entity fields under your legal and policy rules.
+- Upstream **captcha** or portal outages may cause failures (e.g. captcha resolution errors).
+- **PPT** uses the integration’s **PPT** mapping; confirm behaviour in your environment if you rely on it.

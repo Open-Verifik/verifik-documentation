@@ -2,7 +2,7 @@
 
 Buscar todas las etiquetas dentro de un dominio específico y sistema de almacenamiento.
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/tags/search-by-domain
@@ -16,14 +16,14 @@ Este endpoint te permite buscar todas las etiquetas disponibles dentro de un dom
 
 Este endpoint requiere autenticación mediante token JWT. Primero debes crear una sesión usando el endpoint `/api/sessions` para obtener un token JWT.
 
-## Parámetros
+### Parámetros
 
 | Parámetro | Tipo | Requerido | Descripción |
 |-----------|------|-----------|-------------|
 | `domain` | string | Sí | El dominio en el que buscar (ej., "zelf", "avax", "bdag") |
 | `storage` | string | Sí | Sistema de almacenamiento a buscar ("IPFS", "Arweave", "Walrus") |
 
-## Respuesta
+### Respuesta
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

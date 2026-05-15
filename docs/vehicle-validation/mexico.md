@@ -2,11 +2,26 @@
 id: mexico
 title: Mexico
 description: Verify Mexican vehicle information using license plate
+keywords:
+  - v2/mx/vehiculo/placa
+  - /v2/mx/vehiculo/placa
+  - v2 mx vehiculo placa
+  - api/mx/vehiculo/placa
+  - /api/mx/vehiculo/placa
+  - api mx vehiculo placa
+  - api.verifik.co/v2/mx/vehiculo/placa
+  - 'https://api.verifik.co/v2/mx/vehiculo/placa'
+  - GET v2/mx/vehiculo/placa
+  - GET /v2/mx/vehiculo/placa
+  - mx/vehiculo/placa
+  - /mx/vehiculo/placa
+  - vehiculo/placa
+  - /vehiculo/placa
 ---
 
 # Mexico
 
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/mx/vehiculo/placa

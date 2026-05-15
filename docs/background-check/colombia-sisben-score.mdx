@@ -1,0 +1,150 @@
+---
+id: colombia-sisben-score
+title: Colombia — SISBEN score
+description: Verify SISBEN (Sistema de Identificación de Potenciales Beneficiarios de Programas Sociales) score and group classification for Colombian residents.
+slug: /background-check/colombia-sisben-score
+keywords:
+  - v2/co/sisben
+  - /v2/co/sisben
+  - v2 co sisben
+  - api/co/sisben
+  - /api/co/sisben
+  - api co sisben
+  - api.verifik.co/v2/co/sisben
+  - 'https://api.verifik.co/v2/co/sisben'
+  - GET v2/co/sisben
+  - GET /v2/co/sisben
+  - co/sisben
+  - /co/sisben
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — SISBEN score
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/sisben
+```
+
+Returns **SISBEN group / score information** from the official consultation portal using the person’s **`documentType`** and **`documentNumber`**. Data may include group label, survey validity, municipality, department, and related metadata. This endpoint uses **browser automation** against the public SISBEN report site; responses can be slower than typical REST calls.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | One of **`CC`**, **`CE`**, **`PEP`**, **`PPT`**, **`PA`**. |
+| `documentNumber` | string | yes | ID number without spaces or punctuation. |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/sisben", {
+	params: { documentType: "CC", documentNumber: "1121329661" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/sisben"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1121329661"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["APELLIDO", "NOMBRE", "SEGUNDO"],
+		"city": "BOGOTÁ D.C.",
+		"currentSurvey": "…",
+		"department": "CUNDINAMARCA",
+		"detaliGroup": "…",
+		"documentNumber": "1121329661",
+		"documentType": "CC",
+		"file": "…",
+		"firstName": "NOMBRE SEGUNDO",
+		"fullName": "NOMBRE SEGUNDO APELLIDO",
+		"lastCitizenUpdate": "…",
+		"lastName": "APELLIDO",
+		"sisbenGroup": "A",
+		"validity": "…"
+	},
+	"signature": {
+		"dateTime": "April 8, 2026 11:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "IDNT1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of: [CC,CE,PEP,PPT,PA]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Features
+
+- **Group / score**: SISBEN group and related labels returned when the portal shows a result.
+- **Location fields**: Municipality and department when parsed from the report.
+- **Survey metadata**: Current survey and last update lines when available.
+
+## Use cases
+
+- **Social programs**: Eligibility checks tied to SISBEN classification.
+- **KYCC / onboarding**: Validate beneficiary status where regulations allow use of official consultation data.
+
+### Notes
+
+- Requests may take **several seconds** because the integration drives the public web consultation.
+- **`PPT`** is accepted by API validation; if the upstream form mapping changes, you may see **500** errors until the integration is updated.

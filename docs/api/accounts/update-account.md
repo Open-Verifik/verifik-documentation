@@ -1,3 +1,15 @@
+---
+keywords:
+  - api/clients/sync
+  - /api/clients/sync
+  - api clients sync
+  - api.verifik.co/api/clients/sync
+  - 'https://api.verifik.co/api/clients/sync'
+  - GET api/clients/sync
+  - GET /api/clients/sync
+  - clients/sync
+  - /clients/sync
+---
 # Update Account
 
 import Tabs from '@theme/Tabs';
@@ -5,7 +17,7 @@ import TabItem from '@theme/TabItem';
 
 Update an existing client account information.
 
-## Endpoint
+### Endpoint
 
 ```
 PUT /api/clients/sync
@@ -15,7 +27,7 @@ PUT /api/clients/sync
 
 This endpoint allows you to update an existing client's information. Requires API key authentication.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -32,7 +44,7 @@ This endpoint requires an API key in the request header:
 x-api-key: YOUR_API_KEY
 ```
 
-## Response
+### Response
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

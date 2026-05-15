@@ -1,8 +1,20 @@
+---
+keywords:
+  - api/tags/preview
+  - /api/tags/preview
+  - api tags preview
+  - api.verifik.co/api/tags/preview
+  - 'https://api.verifik.co/api/tags/preview'
+  - GET api/tags/preview
+  - GET /api/tags/preview
+  - tags/preview
+  - /tags/preview
+---
 # Preview Tag
 
 Preview a tag to see if it exists or check pricing information before leasing it.
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/tags/preview
@@ -16,7 +28,7 @@ This endpoint allows you to preview a tag and see its details before committing 
 
 This endpoint requires authentication via JWT token. You must first create a session using the `/api/sessions` endpoint to obtain a JWT token.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -25,7 +37,7 @@ This endpoint requires authentication via JWT token. You must first create a ses
 | `os` | string | Yes | Operating system ("DESKTOP", "ANDROID", "IOS") |
 | `captchaToken` | string | No | CAPTCHA token for bot protection (optional) |
 
-## Response
+### Response
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

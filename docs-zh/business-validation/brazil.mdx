@@ -1,0 +1,242 @@
+---
+id: business-validation-brazil
+title: 巴西 — 企业核验（CNPJ）
+description: 使用 Verifik KYB API，通过 CNPJ 将巴西企业与官方登记数据比对并完成核验。
+slug: /business-validation/brazil
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "巴西企业核验（CNPJ）| Verifik KYB API",
+	description: "通过 CNPJ 核验巴西企业并连接官方数据源。",
+	articleSection: "API 文档",
+	keywords: "企业核验, KYB API, 巴西 CNPJ, 合规",
+	about: {
+		"@type": "Thing",
+		name: "企业核验 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 巴西企业核验
+
+Verifik 企业核验 API 使用官方政府数据认证巴西企业，旨在简化 KYB、防范欺诈并满足合规要求。
+
+## 本 API 核验什么？
+
+连接官方登记数据以核验：
+
+- **企业名称与 CNPJ 号码**：支持 *Cadastro Nacional da Pessoa Jurídica*（CNPJ）。
+- **企业信息**：返回商号、法人性质、成立日期、状态与地址。
+- **经济活动**：提供主要与次要行业代码及描述。
+- **一致性**：企业信息与 CNPJ 号码是否一致。
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/br/company
+```
+
+将巴西法人实体与官方 **CNPJ** 登记比对。请发送 `documentType=CNPJ` 以及不含分隔符的 14 位 `documentNumber`。典型字段包括登记状态、地址、法人性质及主要与次要经济活动。适用于 **KYB**、**供应商尽职调查**与**合规**项目。
+
+### 请求头（Headers）
+
+| 名称           | 取值                |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 参数（Parameters）
+
+| 名称 | 类型 | 必填 | 描述 |
+| ---- | ---- | ---- | ---- |
+| `documentType` | string | **是** | 证件类型。允许值：`CNPJ`。 |
+| `documentNumber` | string | **是** | 不含分隔符的 14 位 CNPJ。 |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/br/company", {
+  params: { documentType: "CNPJ", documentNumber: "09159197000180" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/br/company");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$query = http_build_query([
+    "documentType" => "CNPJ",
+    "documentNumber" => "09159197000180"
+]);
+curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/br/company?".$query);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/br/company"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CNPJ", "documentNumber": "09159197000180"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/br/company?documentType=CNPJ&documentNumber=09159197000180"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Accept", "application/json")
+    req.Header.Set("Authorization", "Bearer "+getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    fmt.Println(resp.Status)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "address": {
+            "city": "CAMPINAS",
+            "complement": "KM 98",
+            "district": "JARDIM EULINA",
+            "state": "SP",
+            "street": "ROD ANHANGUERA KM 98",
+            "zipCode": "SN"
+        },
+        "businessName": "ROBERT BOSCH LIMITADA",
+        "documentNumber": "45990181000189",
+        "documentType": "CNPJ",
+        "legalNature": "206-2 - Sociedade Empresária Limitada",
+        "mainActivity": [
+            {
+                "code": "29.41-7-00",
+                "description": "Fabricação de peças e acessórios para o sistema motor de veículos automotores"
+            }
+        ],
+        "openingDate": "21/07/1966",
+        "secondaryActivities": [
+            {
+                "code": "18.30-0-03",
+                "description": "Reprodução de software em qualquer suporte"
+            },
+            {
+                "code": "23.99-1-02",
+                "description": "Fabricação de abrasivos"
+            },
+            {
+                "code": "25.39-0-02",
+                "description": "Serviços de tratamento e revestimento em metais"
+            },
+            {
+                "code": "26.10-8-00",
+                "description": "Fabricação de componentes eletrônicos"
+            },
+            {
+                "code": "26.40-0-00",
+                "description": "Fabricação de aparelhos de recepção, reprodução, gravação e amplificação de áudio e vídeo"
+            },
+            {
+                "code": "82.99-7-99",
+                "description": "Outras atividades de serviços prestados principalmente às empresas não especificadas anteriormente"
+            },
+            {
+                "code": "85.99-6-04",
+                "description": "Treinamento em desenvolvimento profissional e gerencial"
+            }
+        ],
+        "status": "ATIVA",
+        "taxId": "45.990.181/0001-89",
+        "tradeName": "",
+        "type": "MATRIZ"
+    },
+    "signature": {
+        "dateTime": "October 10, 2025 11:02 AM",
+        "message": "Certified by Verifik.co"
+    },
+    "id": "2EM87"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "code": "InternalServerError",
+    "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- `documentNumber` 必须为不含分隔符的 14 位数字。

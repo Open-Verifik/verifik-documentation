@@ -1,3 +1,17 @@
+---
+keywords:
+  - api/clients/sync/password
+  - /api/clients/sync/password
+  - api clients sync password
+  - api.verifik.co/api/clients/sync/password
+  - 'https://api.verifik.co/api/clients/sync/password'
+  - GET api/clients/sync/password
+  - GET /api/clients/sync/password
+  - clients/sync/password
+  - /clients/sync/password
+  - sync/password
+  - /sync/password
+---
 # Change Password
 
 import Tabs from '@theme/Tabs';
@@ -5,7 +19,7 @@ import TabItem from '@theme/TabItem';
 
 Change the master password for a client account.
 
-## Endpoint
+### Endpoint
 
 ```
 PUT /api/clients/sync/password
@@ -15,7 +29,7 @@ PUT /api/clients/sync/password
 
 This endpoint allows you to change the master password for a client account. Requires API key authentication.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -30,7 +44,7 @@ This endpoint requires an API key in the request header:
 x-api-key: YOUR_API_KEY
 ```
 
-## Response
+### Response
 
 <Tabs>
 <TabItem value="200" label="200 OK" default>

@@ -1,0 +1,159 @@
+---
+id: colombian-cedula-premium
+title: 🇨🇴 Colômbia — Cédula nacional premium (CC)
+description: "Confirme uma cédula colombiana (CC) com um perfil completo: você informa só o número, a Verifik encontra a data de expedição e devolve o mesmo registro rico da cédula extra. Usa mais créditos que a verificação básica."
+slug: /identity-validation/colombia/colombian-cedula-premium
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colômbia — Cédula premium (CC) | API KYC Verifik",
+	description:
+		"Premium CC: só o número; data de expedição resolvida na plataforma; identidade com dados oficiais no mesmo nível da cédula extra — com custo de créditos acima do endpoint básico.",
+	articleSection: "Documentação da API",
+	keywords: "Colômbia, CC, cédula, premium, Verifik",
+	about: {
+		"@type": "Thing",
+		name: "API de verificação de identidade",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colômbia — Cédula nacional premium (CC)
+
+**Finalidade:** **validar** uma **Cédula de Ciudadanía (CC)** perante **fontes oficiais** e retornar um **registro de identidade estruturado** para KYC e conformidade, e não apenas um sim/não sobre o número. A resposta consolida **nome conforme o cadastro**, **data de nascimento**, **local e data de expedição** e, quando houver, **gênero** e **sinal de vida**, com bloco de **certificação assinada**. **Apenas o número** é informado; a **data de expedição é resolvida no servidor** (sem tipo de documento ou data na requisição). Nível de detalhe **equivalente à cédula extra**. O **custo de créditos** é **maior** que o do **endpoint básico** devido à cadeia de resolução.
+
+## Referência da API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/cedula/premium
+```
+
+**Resposta:** retorna **`data`** (atributos de identidade retornados para o número informado), **`signature`** (metadados de certificação do payload) e **`id`** (identificador da requisição). **HTTP 404** indica que não foi possível montar um registro completo para o número neste fluxo. **HTTP 409** indica falha de validação de entrada (p. ex. comprimento de `documentNumber`) antes do processamento. **Custo de créditos** por requisição **superior** ao de `/v2/co/cedula` básico, pela cadeia de resolução.
+
+### Cabeçalhos
+
+| Nome | Valor |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parâmetros
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `documentNumber` | string | Sim | Número da *Cédula de Ciudadanía* (**CC**). O servidor **normaliza** para somente **dígitos**; o comprimento deve ficar entre **5 e 10** caracteres (validação de API). |
+
+### Solicitação
+
+<Tabs>
+  <TabItem value="get" label="GET">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/cedula/premium", {
+	params: { documentNumber: "1234567890" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="post" label="POST">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+	"https://api.verifik.co/v2/co/cedula/premium",
+	{ documentNumber: "1234567890" },
+	{
+		headers: {
+			Accept: "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+	}
+);
+console.log(data);
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+Forma ilustrativa (valores de exemplo, não pessoas reais):
+
+```json
+{
+	"data": {
+		"arrayName": ["GIVEN", "MIDDLE", "PATERNAL", "MATERNAL"],
+		"dateOfBirth": "1990-05-20",
+		"documentNumber": "1234567890",
+		"documentType": "CC",
+		"expeditionDate": "2015-08-12",
+		"expeditionPlace": {
+			"municipio": "Município de exemplo",
+			"departamento": "Departamento de exemplo"
+		},
+		"firstName": "GIVEN MIDDLE",
+		"fullName": "GIVEN MIDDLE PATERNAL MATERNAL",
+		"gender": "HOMBRE",
+		"isAlive": true,
+		"lastName": "PATERNAL MATERNAL"
+	},
+	"signature": {
+		"dateTime": "April 21, 2026 9:34 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "XXXXX"
+}
+```
+
+Os nomes de campos e sua presença podem variar conforme as fontes oficiais.
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+Retornado quando as fontes acima não trazem correspondência ou dados necessários (por exemplo, falha na resolução da data de expedição).
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentNumber maximum length: 10\n"
+}
+```
+
+A validação exige **5 a 10** caracteres em `documentNumber`; outras mensagens do Joi podem aparecer para entradas ausentes ou inválidas.
+
+  </TabItem>
+</Tabs>
+
+### Relacionados
+
+- [Cédula colombiana (básica)](/identity-validation/colombia/colombian-citizen) — `GET/POST /v2/co/cedula` (`CC` / `PPT`).
+- Referência oficial em inglês: [Colombian cédula premium](https://docs.verifik.co/identity-validation/colombia/colombian-cedula-premium).

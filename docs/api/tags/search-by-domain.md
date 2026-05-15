@@ -1,8 +1,20 @@
+---
+keywords:
+  - api/tags/search-by-domain
+  - /api/tags/search-by-domain
+  - api tags search-by-domain
+  - api.verifik.co/api/tags/search-by-domain
+  - 'https://api.verifik.co/api/tags/search-by-domain'
+  - GET api/tags/search-by-domain
+  - GET /api/tags/search-by-domain
+  - tags/search-by-domain
+  - /tags/search-by-domain
+---
 # Search Tags by Domain
 
 Search for all tags within a specific domain and storage system.
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/tags/search-by-domain
@@ -16,14 +28,14 @@ This endpoint allows you to search for all available tags within a specific doma
 
 This endpoint requires authentication via JWT token. You must first create a session using the `/api/sessions` endpoint to obtain a JWT token.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `domain` | string | Yes | The domain to search within (e.g., "zelf", "avax", "bdag") |
 | `storage` | string | Yes | Storage system to search ("IPFS", "Arweave", "Walrus") |
 
-## Response
+### Response
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

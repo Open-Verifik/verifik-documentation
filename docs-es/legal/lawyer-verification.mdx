@@ -1,0 +1,149 @@
+---
+id: verificacion-abogados
+title: Colombia — Consulta de abogados
+description: Consulta abogados colombianos por tipo y número de documento (CC, CE o NIT) vía registro público.
+slug: /legal/verificacion-abogados
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Consulta de abogados
+
+El endpoint **Consulta de abogados** interroga el **registro público de abogados** (integración Rama Judicial) con **`documentType`** y **`documentNumber`**.
+
+**Valores admitidos de `documentType`:** **`CC`**, **`CE`** o **`NIT`**.
+
+## Referencia de API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/rama/abogados
+```
+
+Envía **`documentType`** y **`documentNumber`** en la **query**.
+
+### Encabezados
+
+| Nombre        | Valor              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parámetros
+
+| Nombre             | Tipo   | Requerido | Descripción                                                                 |
+| ------------------ | ------ | --------- | --------------------------------------------------------------------------- |
+| `documentType`     | string | Sí        | `CC`, `CE` o `NIT`.                                                         |
+| `documentNumber`   | string | Sí        | Número de documento o NIT a consultar.                                       |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/rama/abogados", {
+	params: { documentType: "CC", documentNumber: "123456789" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/rama/abogados"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentNumber": "123456789",
+		"documentType": "CC",
+		"firstName": "María",
+		"fullName": "María González López",
+		"lastName": "González López",
+		"results": [
+			{
+				"contactId": "12345",
+				"documentNumber": "123456789",
+				"documentTypeId": "1",
+				"documentTypeName": "Cédula de ciudadanía",
+				"firstName": "María",
+				"lastName": "González López",
+				"nonValidityReason": "",
+				"numberOfRecords": "1",
+				"personalEmail": "",
+				"statusName": "Vigente",
+				"tarcarliceNumber": "987654"
+			}
+		]
+	},
+	"signature": {
+		"message": "Certified by Verifik.co",
+		"dateTime": "April 20, 2026 10:00 AM"
+	},
+	"id": "ABC12"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "Error de validación (parámetro faltante o documentType distinto de CC, NIT o CE)."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Características
+
+- **Consulta al registro** por **CC**, **CE** o **NIT**
+- **Resultados estructurados** en el array `results`
+- **Firma Verifik** en respuestas correctas
+
+## Casos de uso
+
+- **KYC**: Confirmar inscripción como abogado
+- **Debida diligencia**: Validar estado antes de contratar
+
+### Notas
+
+- Solo se aceptan **`CC`**, **`CE`** y **`NIT`** como **`documentType`**.
+- Si no hay coincidencias en la fuente, la API puede responder **404**.

@@ -1,0 +1,125 @@
+---
+id: vehicle-validation-colombia-simit-suspensiones
+title: 🇨🇴 SIMIT — 면허 정지
+description: 콜롬비아 SIMIT에서 신분증으로 운전면허 정지·취소 여부를 조회합니다.
+sidebar_label: SIMIT — 면허 정지
+slug: /vehicle-validation/colombia/simit-suspensiones
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v2/co/simit/suspensiones
+```
+
+**SIMIT** 에서 운전면허 **정지 또는 취소** 등 신분과 연관된 제재 정보를 조회합니다(데이터 제공 시 관련 결의·일자 포함). **`documentType`** 과 **`documentNumber`** 로 명의자를 지정합니다.
+
+### 헤더(Headers)
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수(Parameters)
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | 명의자 문서 유형. 보통 `CC`, `PA`, `CE`, `TI`, `RC`, `NIT` 등. |
+| `documentNumber` | string | yes | 조회할 문서 번호(공백·구두점 없음). 길이 초과 시 `409` 가 날 수 있습니다. |
+
+### 요청(Request)
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/suspensiones", {
+	params: { documentType: "CC", documentNumber: "123456789" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/suspensiones"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답(Response)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CC",
+		"documentNumber": "123456789",
+		"firstName": "JUAN CARLOS",
+		"lastName": "PEREZ LOPEZ",
+		"fullName": "JUAN CARLOS PEREZ LOPEZ",
+		"suspensiones": [
+			{
+				"numeroResolucion": "RES-2024-000123",
+				"fechaSuspension": "2024/03/15",
+				"estado": "VIGENTE",
+				"motivo": "Sanción por acumulación de puntos"
+			}
+		]
+	},
+	"signature": {
+		"message": "Certified by Verifik.co",
+		"dateTime": "April 8, 2026 11:00 PM"
+	},
+	"id": "IDNT1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고(Notes)
+
+- **SIMIT** 은 콜롬비아 전국 교통 위반·과태료 통합 정보 체계입니다.
+- `data` 필드명과 배열 구조는 **상위 SIMIT** 응답을 따르며, 예시는 대표적인 형태입니다.
+- **`suspensiones`** 가 비어 있으면 해당 조회에서 정지 내역이 없었을 수 있습니다(비즈니스 규칙과 함께 해석).

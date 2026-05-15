@@ -1,0 +1,157 @@
+---
+id: colombian-cedula-premium
+title: 🇨🇴 콜롬비아 — 국민 신분증 프리미엄(CC)
+description: "콜롬비아 국민신분증(CC)로 본인 확인을 “프로필 수준”으로: 번호만 입력하고 발급일은 Verifik이 찾은 뒤, cédula extra와 같은 풍부한 신원 기록이 돌아옵니다. 기본 취득 API보다 크레딧을 더 씁니다."
+slug: /identity-validation/colombia/colombian-cedula-premium
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "콜롬비아 국민 신분증 프리미엄(CC) | Verifik KYC API",
+	description:
+		"CC만 입력: 공식 출처에 기반한 온보딩·규정 대응에 쓰기 좋은 신원 응답. 발급일은 시스템이 조회, 기본 경로보다 크레딧이 높은 프리미엄입니다.",
+	articleSection: "API 문서",
+	keywords: "콜롬비아, CC, cédula, 프리미엄, Verifik",
+	about: {
+		"@type": "Thing",
+		name: "신원 확인 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 콜롬비아 — 국민 신분증 프리미엄 (CC)
+
+**목적:** 콜롬비아 **CC(국민신분증)** 번호를 **공식 출처**에 대조하여 **정형화된 신원 레코드**를 반환합니다(KYC·AML·규정 절차용). **등록상 성명·생년월일·발급일시·발급지** 및, 출처가 제공하는 경우 **성별·생존 여부**를 포함하며, **서명 기반 인증** 정보가 응답에 포함됩니다. **제출은 번호만** — **발급일은 서버에서 자동으로 확정**되며(요청에 문서 유형·발급일 **미포함**), 상세 수준은 **cédula extra**와 **동일**합니다. **기본** `/v2/co/cedula` 엔드포인트보다 **크레딧**이 **높습니다**(연쇄 해상도 단계).
+
+## API 참고
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v2/co/cedula/premium
+```
+
+**응답:** **`data`**(제출한 번호에 대해 출처가 반환한 신원 속성), **`signature`**(페이로드에 대한 인증 메타데이터), **`id`**(요청 식별자)를 반환합니다. **HTTP 404**는 본 엔드포인트 흐름에서 해당 번호에 대한 **완전한 신원 레코드를 구성할 수 없음**을 뜻합니다. **HTTP 409**는 상위 연동 전 **입력 유효성 검사**에 실패(예: `documentNumber` 길이)했음을 뜻합니다. 요청당 **크레딧**은 **기본** `/v2/co/cedula`보다 **높습니다**(연쇄 해상도). **CC**만 지원, 일반 **5~10**자리 숫자.
+
+### 헤더
+
+| 이름 | 값 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| 이름 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| `documentNumber` | string | 예 | 콜롬비아 **CC**(국민신분증) 번호. **비숫자는 정규화로 제거**되며, **5~10**자 **숫자**로 유효성이 검사됩니다. `documentType`·발급일은 **불필요**(프리미엄). |
+
+### 요청
+
+<Tabs>
+  <TabItem value="get" label="GET">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/cedula/premium", {
+	params: { documentNumber: "1234567890" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="post" label="POST">
+
+```javascript
+const { data } = await axios.post(
+	"https://api.verifik.co/v2/co/cedula/premium",
+	{ documentNumber: "1234567890" },
+	{
+		headers: {
+			Accept: "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+	}
+);
+console.log(data);
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+예시 형태(자리표시자, 실제 인물 아님):
+
+```json
+{
+	"data": {
+		"arrayName": ["GIVEN", "MIDDLE", "PATERNAL", "MATERNAL"],
+		"dateOfBirth": "1990-05-20",
+		"documentNumber": "1234567890",
+		"documentType": "CC",
+		"expeditionDate": "2015-08-12",
+		"expeditionPlace": {
+			"municipio": "예시 시",
+			"departamento": "예시 도"
+		},
+		"firstName": "GIVEN MIDDLE",
+		"fullName": "GIVEN MIDDLE PATERNAL MATERNAL",
+		"gender": "HOMBRE",
+		"isAlive": true,
+		"lastName": "PATERNAL MATERNAL"
+	},
+	"signature": {
+		"dateTime": "April 21, 2026 9:34 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "XXXXX"
+}
+```
+
+필드 명칭과 존재 여부는 공식 출처 데이터에 따라 달라질 수 있습니다.
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+상위 출처에서 일치 또는 필요한 데이터를 반환하지 못한 경우(예: 발급일 해석 실패) 반환됩니다.
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentNumber maximum length: 10\n"
+}
+```
+
+`documentNumber` 길이는 **5–10**자입니다. 누락 또는 형식 오류 시 다른 Joi 메시지가 나타날 수 있습니다.
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- 기본 신분 확인: [국민 신분증(CC·PPT)](/identity-validation/colombia/colombian-citizen) (`/v2/co/cedula`).
+- 영문 정식 문서: [Colombian cédula premium](https://docs.verifik.co/identity-validation/colombia/colombian-cedula-premium).

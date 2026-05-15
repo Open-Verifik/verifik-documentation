@@ -1,0 +1,189 @@
+---
+id: europol-background-check
+title: 欧洲刑警组织（Europol）背景核查
+description: 欧洲刑警组织（Europol）背景核查服务，开发者可借助该服务对 Europol 的犯罪记录数据库进行实时核查。通过提交人员的证件类型与号码，或姓名全称，即可核实信息是否与 Europol 系统中的条目相匹配。
+slug: /background-check/international/europol-background-check
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 欧洲刑警组织（Europol）背景核查
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/europol
+```
+
+通过 `documentType` 与 `documentNumber`，或单独使用 `fullName`，对 Europol 犯罪记录数据进行实时核查。响应将指明是否命中匹配，并在适用时附带指向 Europol 的官方参考 URL。
+
+**注意：** 日期字段（出生日期或签发日期）必须采用 `dd/mm/yyyy` 格式。
+
+### 请求头（Headers）
+
+| 名称           | 取值                |
+| -------------- | ------------------- |
+| Content-Type   | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 参数（Parameters）
+
+:::info
+有关支持的**证件类型**及其专属必填参数的完整清单，请参阅 [证件类型](/background-check/document-types) 指南。
+:::
+
+| 名称              | 类型    | 必填 | 描述                                                                                              |
+| ----------------- | ------- | ---- | ------------------------------------------------------------------------------------------------- |
+| `documentType`    | string  | 否   | 待请求的证件类型。                                                                                 |
+| `documentNumber`  | string  | 否   | 待查询的证件号码，不含空格或圆点。                                                                 |
+| `fullName`        | string  | 否   | 可不传 documentType 与 documentNumber，而直接传入个人或企业的姓名/名称。                            |
+
+### 使用场景
+
+- **欺诈预防：** 在敏感交易前识别在 Europol 犯罪数据库中被标记的人员。
+- **身份核验：** 校验所提交的个人信息是否真实合法。
+- **合规审查：** 支持银行、金融与房地产行业的 KYC 与 AML 检查。
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/europol",
+  params: { documentType: "CC", documentNumber: "80251972" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "JWT token"
+}
+
+conn.request("GET", "/v2/europol?fullName=Mateo%20Verifik", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/europol?fullName=Mateo Verifik', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'JWT token',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "JWT token"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/europol?fullName=Mateo%20Verifik")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "123456789",
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": ["MATEO", "VERIFIK"],
+    "foundInEuropol": true,
+    "urlEuropol": "https://eumostwanted.eu/es#/es/node/162"
+  },
+  "signature": {
+    "dateTime": "June 28, 2022 12:40 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- **Europol 数据库查询**：支持基于证件或姓名的查询。
+- **命中检测**：在适用时可包含直接的 Europol URL。
+- **结构化响应**：便于集成；上文提供 JavaScript、Python、PHP、Swift 等示例。

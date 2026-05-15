@@ -3,6 +3,21 @@ id: british-columbia-driver-license
 title: British Columbia Driver License
 description: British Columbia driver license verification service
 slug: /driver-validation/british-columbia-driver-license
+keywords:
+  - v2/ca/british-columbia/driver-license
+  - /v2/ca/british-columbia/driver-license
+  - v2 ca british-columbia driver-license
+  - api/ca/british-columbia/driver-license
+  - /api/ca/british-columbia/driver-license
+  - api ca british-columbia driver-license
+  - api.verifik.co/v2/ca/british-columbia/driver-license
+  - 'https://api.verifik.co/v2/ca/british-columbia/driver-license'
+  - GET v2/ca/british-columbia/driver-license
+  - GET /v2/ca/british-columbia/driver-license
+  - ca/british-columbia/driver-license
+  - /ca/british-columbia/driver-license
+  - british-columbia/driver-license
+  - /british-columbia/driver-license
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 # British Columbia Driver License
 
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/ca/british-columbia/driver-license 

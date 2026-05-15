@@ -1,0 +1,128 @@
+---
+id: vehicle-validation-colombia-runt-vehiculo
+title: RUNT — 车辆(基本登记)
+description: 通过哥伦比亚 RUNT 使用车牌与车主证件查询车辆登记与基本特征。
+sidebar_label: RUNT — 车辆(基本)
+slug: /vehicle-validation/colombia/runt-vehiculo
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/co/runt/vehiculo
+```
+
+根据 **车牌** 与车主 **`documentType`**、**`documentNumber`** 从 **RUNT** 获取车辆信息，侧重**登记与基本技术字段**；完整历史报告请用 **`/v2/co/runt/vehicle-by-plate`**。可选查询参数 **`audit`**（字符串布尔）。
+
+### 请求头
+
+| 名称 | 值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `documentType` | string | 是 | 车主证件类型：`CC`、`CE`、`PA`、`NIT` 之一。 |
+| `documentNumber` | string | 是 | 证件号码（无空格和标点）。 |
+| `plate` | string | 是 | 车牌（API 校验 **5–9** 位）。服务器会将车牌转为大写。 |
+
+### 请求
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/runt/vehiculo", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+		plate: "ABC123",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/runt/vehiculo"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789", "plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentNumber": "31527228",
+		"documentType": "CC",
+		"plate": "WHH662",
+		"vehicle": {
+			"marca": "MAZDA",
+			"linea": "T 45",
+			"modelo": "1999",
+			"noPlaca": "WHH662",
+			"estadoDelVehiculo": "ACTIVO",
+			"tipoServicio": "Público",
+			"organismoTransito": "STRIA DE TTOyTTE MEDELLIN"
+		}
+	},
+	"signature": {
+		"dateTime": "October 10, 2025 8:10 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "GVMFW"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType. missing documentNumber. missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 说明
+
+- 完整历史：**`GET /v2/co/runt/vehicle-by-plate`**。
+- 轻量版本：**`GET /v2/co/runt/vehicle-by-plate-simplified`**。

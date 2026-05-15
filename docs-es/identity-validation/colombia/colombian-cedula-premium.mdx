@@ -1,0 +1,148 @@
+---
+id: colombian-cedula-premium
+title: Colombia — Cédula nacional premium (CC)
+description: "Verifica una cédula colombiana (CC) con un perfil completo: escribes solo el número, la plataforma obtiene la fecha de expedición y te devuelve el mismo registro rico que cédula extra. Usa más créditos que la consulta básica de cédula."
+slug: /validacion-identidad/colombia/cedula-premium-cc
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Cédula nacional premium (CC)
+
+**Finalidad:** **verificar** una **Cédula de Ciudadanía (CC)** frente a **fuentes oficiales** y devolver un **registro de identidad estructurado** para procesos de KYC y cumplimiento, no un simple sí/no sobre el número. Incluye **cómo figura el nombre**, **fecha de nacimiento**, **lugar y fecha de expedición** y, cuando las fuentes lo aportan, **género** e **indicación de supervivencia**, con un bloque de **certificación firmada**. Se **envía únicamente el número**; la **fecha de expedición se resuelve en el servidor** (sin tipo de documento ni fecha en la petición). El detalle equivale a [**cédula extra**](../../identity/colombia-full-id.mdx). El consumo de **créditos** es **superior** al de la [**consulta básica**](./colombian-citizen.mdx) por los pasos de resolución adicionales.
+
+## Referencia de API
+
+### Punto de acceso
+
+```
+GET https://api.verifik.co/v2/co/cedula/premium
+```
+
+**Respuesta:** devuelve **`data`** (atributos de identidad disponibles para el número enviado), **`signature`** (metadatos de certificación del payload) e **`id`** (identificador de la solicitud). **HTTP 404**: no fue posible constituir un registro completo para el número en este flujo. **HTTP 409**: la solicitud no superó la validación de entrada (p. ej. longitud de `documentNumber`) antes de la resolución. El **coste en créditos** por solicitud es **superior** al de `/v2/co/cedula` básico por la cadena de resolución.
+
+### Cabeceras
+
+| Nombre | Valor |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Obligatorio | Descripción |
+| --- | --- | --- | --- |
+| `documentNumber` | string | Sí | Número de **CC**; el servidor deja solo dígitos. **Entre 5 y 10** caracteres (validación API). |
+
+### Notas
+
+- Solo **CC**: no se envía `documentType` ni `date`; el flujo resuelve la **fecha de expedición** de forma interna y luego aplica el mismo flujo ampliado que [**cédula extra**](../../identity/colombia-full-id.mdx).
+- Comparado con [**consulta básica de cédula**](./colombian-citizen.mdx) (`/v2/co/cedula`), devuelve el conjunto **extra** completo a mayor coste en créditos.
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="get" label="GET">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/cedula/premium", {
+	params: { documentNumber: "1234567890" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="post" label="POST">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+	"https://api.verifik.co/v2/co/cedula/premium",
+	{ documentNumber: "1234567890" },
+	{
+		headers: {
+			Accept: "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+	}
+);
+console.log(data);
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+Ejemplo de forma (placeholders ilustrativos, no personas reales):
+
+```json
+{
+	"data": {
+		"arrayName": ["NOMBRE1", "NOMBRE2", "APELLIDO1", "APELLIDO2"],
+		"dateOfBirth": "1990-05-20",
+		"documentNumber": "1234567890",
+		"documentType": "CC",
+		"expeditionDate": "2015-08-12",
+		"expeditionPlace": {
+			"municipio": "Municipio de ejemplo",
+			"departamento": "Departamento de ejemplo"
+		},
+		"firstName": "NOMBRE1 NOMBRE2",
+		"fullName": "NOMBRE1 NOMBRE2 APELLIDO1 APELLIDO2",
+		"gender": "HOMBRE",
+		"isAlive": true,
+		"lastName": "APELLIDO1 APELLIDO2"
+	},
+	"signature": {
+		"dateTime": "April 21, 2026 9:34 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "XXXXX"
+}
+```
+
+Los nombres de campos y su presencia pueden alinearse con las fuentes y la disponibilidad de datos oficiales.
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+Se devuelve cuando las fuentes aguas arriba no ofrecen coincidencia o datos requeridos (p. ej. falla la resolución de expedición).
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentNumber maximum length: 10\n"
+}
+```
+
+La validación usa **5–10** caracteres para `documentNumber`; pueden aparecer otros mensajes de Joi por entrada inválida o faltante.
+
+  </TabItem>
+</Tabs>
+
+### Relacionados
+
+- [Ciudadano colombiano (básico)](./colombian-citizen.mdx) — `GET/POST /v2/co/cedula`
+- Documentación canónica (EN): [National ID premium (CC)](https://docs.verifik.co/identity-validation/colombia/colombian-cedula-premium)

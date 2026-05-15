@@ -1,0 +1,245 @@
+---
+id: interpol-background-check
+title: 国际刑警组织（Interpol）背景核查
+description: 该 API 端点允许对个人或企业的犯罪背景进行检索。如需获得成功响应，必须提交证件类型与证件号码。响应将返回证件类型、证件号码、名、姓、姓名全称及其拆解后的姓名分量等信息，适用于自然人与法人。
+slug: /background-check/international/interpol-background-check
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 国际刑警组织（Interpol）背景核查
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/interpol
+```
+
+可使用 `documentType` 与 `documentNumber`，或单独使用 `fullName`，对自然人或法人在国际刑警组织（Interpol）相关的犯罪背景信息进行检索。当存在记录时，成功响应将返回身份字段与匹配详情；本服务面向具备资质的执法与安全场景使用，须确保安全且授权访问。
+
+**注意：** 日期字段（出生日期或签发日期）必须采用 `dd/mm/yyyy` 格式。
+
+### 请求头（Headers）
+
+| 名称           | 取值                |
+| -------------- | ------------------- |
+| Content-Type   | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 参数（Parameters）
+
+:::info
+有关支持的**证件类型**及其专属必填参数的完整清单，请参阅 [证件类型](/background-check/document-types) 指南。
+:::
+
+| 名称              | 类型    | 必填 | 描述                                                                                              |
+| ----------------- | ------- | ---- | ------------------------------------------------------------------------------------------------- |
+| `documentType`    | string  | 否   | 待请求的证件类型。                                                                                 |
+| `documentNumber`  | string  | 否   | 待查询的证件号码，不含空格或圆点。                                                                 |
+| `fullName`        | string  | 否   | 可不传 documentType 与 documentNumber，而直接传入个人或企业的姓名/名称。                            |
+
+### 使用场景
+
+- **犯罪背景核验：** 用于雇佣审核、安全许可或法律合规，包含国际范围的记录。
+- **执法用途：** 授权机构对照 Interpol 数据进行筛查。
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/interpol",
+  params: { documentType: "CC", documentNumber: "80251972" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "jwt <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "JWT token"
+}
+
+conn.request("GET", "/v2/interpol?fullName=IVAN%20LUCIANO%20MARQUEZ%20MARIN%20ARANGO", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "JWT token"
+]
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/interpol?fullName=IVAN%20LUCIANO%20MARQUEZ%20MARIN%20ARANGO")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/interpol?fullName=IVAN LUCIANO MARQUEZ MARIN ARANGO', [
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'JWT token',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200-found" label="200（命中）">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "19304877",
+    "firstName": "IVAN LUCIANO MARQUEZ",
+    "lastName": "MARIN ARANGO",
+    "fullName": "IVAN LUCIANO MARQUEZ MARIN ARANGO",
+    "arrayName": ["IVAN", "LUCIANO", "MARQUEZ", "MARIN", "ARANGO"],
+    "foundInInterpol": true,
+    "details": {
+      "totalCards": "2",
+      "cards": [
+        {
+          "arrestWarrants": [
+            {
+              "issuingCountryId": "CO",
+              "charge": "ARTICULO 162.  - RECLUTAMIENTO ILÍCITO \r\nARTICULO 135-6 - HOMICIDIO EN PERSONA PROTEGIDA \r\nARTICULO 165 y 166 causal 3 - DESAPARICIÓN FORZADA AGRAVADA POR LA MENOR EDAD DE LA VÍCTIMA"
+            }
+          ],
+          "weight": "0",
+          "languagesSpokenIds": ["SPA"],
+          "height": "1.75",
+          "sexId": "M",
+          "countryOfBirthId": "CO",
+          "distinguishingMarks": null,
+          "eyesColorsId": null,
+          "hairsId": null,
+          "placeOfBirth": "FLORENCIA - CAQUETA"
+        }
+      ]
+    }
+  },
+  "signature": {
+    "dateTime": "June 16, 2025 4:31 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "PHVXK"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-not-found" label="200（未命中）">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "123456789",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "fullName": "MATEO VERIFIK",
+    "arrayName": ["MATEO", "VERIFIK"],
+    "foundInInterpol": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "June 16, 2025 4:32 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "FX5TI"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- 该服务用于检索 Interpol 数据库，仅限授权的执法与安全机构使用，严禁未经授权使用。
+- 所获取的数据高度敏感，受国际隐私与数据保护法律约束，请审慎处理并确保遵守所有相关法规。
+- 涉及关键决策时，请通过官方 Interpol 渠道或当地主管部门进行二次核实。
+- **犯罪背景检索：** 覆盖与 Interpol 关联的记录。
+- **结构化响应：** 便于集成；上文提供 JavaScript、Python、PHP、Swift 等示例。

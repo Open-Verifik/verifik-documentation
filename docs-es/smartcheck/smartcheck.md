@@ -426,7 +426,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa colombiana"
       description=""
       image="/img/smartcheck/colombia-citizen.png"
-      link="/verifik-es/validacion-empresarial/colombia-informacion-empresarial-rues"
+      link="/verifik-es/validacion-empresarial/colombia-registro-empresarial-rues"
     />
   </div>
 </div>
@@ -437,7 +437,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa costarricense"
       description=""
       image="/img/smartcheck/costa-rica-citizen.png"
-      link="/verifik-es/validacion-empresarial/costa-rica-empresarial"
+      link="/verifik-es/validacion-empresarial/costa-rica"
     />
   </div>
   <div className="col col--4">
@@ -480,7 +480,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de empresa española"
       description=""
       image="/img/smartcheck/spain-citizen.png"
-      link="/verifik-es/validacion-empresarial/spain"
+      link="/verifik-es/validacion-empresarial/espana"
     />
   </div>
 </div>

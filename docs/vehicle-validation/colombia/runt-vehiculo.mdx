@@ -1,0 +1,154 @@
+---
+id: vehicle-validation-colombia-runt-vehiculo
+title: RUNT - Vehicle registration (basic)
+description: Retrieve general registration data and basic vehicle characteristics from RUNT using plate and registered owner identification.
+sidebar_label: RUNT - Vehicle by plate (basic)
+slug: /vehicle-validation/colombia/runt-vehiculo
+keywords:
+  - v2/co/runt/vehiculo
+  - /v2/co/runt/vehiculo
+  - v2 co runt vehiculo
+  - api/co/runt/vehiculo
+  - /api/co/runt/vehiculo
+  - api co runt vehiculo
+  - api.verifik.co/v2/co/runt/vehiculo
+  - 'https://api.verifik.co/v2/co/runt/vehiculo'
+  - GET v2/co/runt/vehiculo
+  - GET /v2/co/runt/vehiculo
+  - co/runt/vehiculo
+  - /co/runt/vehiculo
+  - runt/vehiculo
+  - /runt/vehiculo
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/runt/vehiculo
+```
+
+Returns **RUNT** vehicle data for **Colombia** tied to the **license plate** and the **holder’s identification** (`documentType` + `documentNumber`). The response is oriented toward **registration, identity, and basic technical markers** (SOAT / technical inspection summaries may appear when present in the formatted payload), not the full historical “complete report” available on **`/v2/co/runt/vehicle-by-plate`**.
+
+Optional **`audit`** query flag (boolean strings such as `true` / `false`) when supported by your integration.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | Yes | Holder document type. Allowed values: **`CC`**, **`CE`**, **`PA`**, **`NIT`**. |
+| `documentNumber` | string | Yes | Holder document number, **without spaces or punctuation**. |
+| `plate` | string | Yes | License plate to query (API validation: **5–9** characters). Plates are normalized to **uppercase** server-side. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/runt/vehiculo", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+		plate: "ABC123",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/runt/vehiculo"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789", "plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentNumber": "31527228",
+		"documentType": "CC",
+		"plate": "WHH662",
+		"vehicle": {
+			"capacidadCarga": "0 KILO",
+			"cilindraje": "4500",
+			"clasificacion": "AUTOMOVIL",
+			"color": "BLANCO VERDE",
+			"estadoDelVehiculo": "ACTIVO",
+			"linea": "T 45",
+			"marca": "MAZDA",
+			"modelo": "1999",
+			"noChasis": "T45LB00445",
+			"noPlaca": "WHH662",
+			"numRegraSerie": "T45LB9900385RG",
+			"organismoTransito": "STRIA DE TTOyTTE MEDELLIN",
+			"tipoServicio": "Público",
+			"toneladas": "0.00",
+			"vehiculoEnsenanza": "NO"
+		}
+	},
+	"signature": {
+		"dateTime": "October 10, 2025 8:10 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "GVMFW"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType. missing documentNumber. missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`** must be one of **`CC`**, **`CE`**, **`PA`**, **`NIT`** (validated by the API).
+- For the **full** RUNT history (SOAT, policies, registrations, etc.), use **`GET /v2/co/runt/vehicle-by-plate`** with the same three query parameters.
+- For a **lighter** plate + owner profile, see **`GET /v2/co/runt/vehicle-by-plate-simplified`**.

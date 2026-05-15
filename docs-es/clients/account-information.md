@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 
 # Información de Cuenta
 
-## Endpoint
+### Endpoint
 
 ```
 https://api.verifik.co/v2/clients/me

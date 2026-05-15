@@ -1,8 +1,18 @@
+---
+keywords:
+  - api/licenses
+  - /api/licenses
+  - api licenses
+  - api.verifik.co/api/licenses
+  - 'https://api.verifik.co/api/licenses'
+  - GET api/licenses
+  - GET /api/licenses
+---
 # Get Licenses
 
 Retrieve a list of all available licenses in the system.
 
-## Endpoint
+### Endpoint
 
 ```
 GET /api/licenses
@@ -16,7 +26,7 @@ This endpoint allows you to retrieve a comprehensive list of all licenses availa
 
 This endpoint requires authentication via JWT token. You must first create a session using the `/api/sessions` endpoint to obtain a JWT token.
 
-## Parameters
+### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -26,7 +36,7 @@ This endpoint requires authentication via JWT token. You must first create a ses
 | `status` | string | No | Filter licenses by status ("active", "inactive", "pending") |
 | `type` | string | No | Filter licenses by type ("personal", "business", "enterprise") |
 
-## Response
+### Response
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

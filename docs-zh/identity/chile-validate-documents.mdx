@@ -1,0 +1,128 @@
+---
+id: chile-validate-documents
+title: 智利 — 身份证件核验
+description: "结合智利 RUN 或 RUT 与证件序列号，对接民事或税务核验流程；用于实体证件检查的有效期（vigency）状态返回。"
+slug: /identity/chile-validate-documents
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 智利 — 身份证件核验
+
+该接口在标识符之外，进一步使用实体证件上**印刷的序列号**，对智利 **RUN** 或 **RUT** 进行**有效期（vigency）核验**。当您必须确认**证件**本身**有效**（而非仅证明编号存在）时使用 —— 例如**高保证级别的 KYC** 或超出简单 cedula 查询的**合规**步骤。
+
+如仅需基于民事登记按姓名核验、不涉及序列号，请使用**[智利身份核验](/identity/chile)**（`v2/cl/cedula`）。
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/validate/documents
+```
+
+提交 **RUN** 或 **RUT**、**证件号**与**印刷序列号**，可从民事或税务核验数据源获取**有效期状态** —— 适用于必须确认实体证件本身（而非仅其编号）的场景。
+
+### 请求头（Headers）
+
+| 名称 | 取值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数（Parameters）
+
+| 名称 | 类型 | 必填 | 描述 |
+| --- | --- | --- | --- |
+| `documentType` | string | 是 | `RUN`（民事证件流程）或 `RUT`（面向税务的流程）。 |
+| `documentNumber` | string | 是 | 证件标识，按集成指南去除空格。 |
+| `serialNumber` | string | 是 | 印刷在证件上的序列号；底层核验数据源所必需。 |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/validate/documents", {
+  params: {
+    documentType: "RUN",
+    documentNumber: "18562530-3",
+    serialNumber: "A123456789",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/validate/documents"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {
+    "documentType": "RUN",
+    "documentNumber": "18562530-3",
+    "serialNumber": "A123456789",
+}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "RUN",
+    "documentNumber": "18.562.530-3",
+    "serialNumber": "A123456789",
+    "status": "Vigente"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 4:00 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "CLVAL1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [RUT, RUN]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- 具体 `status` 字符串取决于上游登记机构的措辞；请将其视为**有效期指示**，并非替代法律意见。
+- 请从实体证件上抄录 **`serialNumber`**；缺失该字段，民事 **Registro Civil** 流程将无法完成核验。

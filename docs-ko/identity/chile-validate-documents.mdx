@@ -1,0 +1,128 @@
+---
+id: chile-validate-documents
+title: 🇨🇱 칠레 — 신분증 유효성 검증
+description: "칠레 RUN 또는 RUT와 실물 일련번호를 함께 사용해 민정 또는 세무 검증 흐름으로 검증합니다. 실물 신분증 점검에 활용 가능한 효력(vigency) 상태를 반환합니다."
+slug: /identity/chile-validate-documents
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 🇨🇱 칠레 — 신분증 유효성 검증
+
+본 엔드포인트는 식별 번호 외에도 실물 신분증에 인쇄된 **일련번호**를 사용해 칠레 **RUN** 또는 **RUT**의 **문서 효력(vigency)** 을 점검합니다. 단순 cedula 조회를 넘어 **카드 자체가 유효한지** 확인해야 하는 경우(예: **고신뢰 KYC**, 컴플라이언스 절차)에 사용합니다.
+
+일련번호 없이 민정 등기소를 기반으로 이름만 확인하려면 **[칠레 신원 검증](/identity/chile)** (`v2/cl/cedula`)을 사용하시기 바랍니다.
+
+## API 레퍼런스
+
+### 엔드포인트
+
+```
+https://api.verifik.co/v2/cl/validate/documents
+```
+
+**RUN** 또는 **RUT**, **문서 번호**, **인쇄된 일련번호**를 전달하면 민정 또는 세무 검증 출처에서 **효력(vigency) 상태**를 반환합니다. 번호뿐 아니라 실물 신분증을 확인해야 하는 경우에 사용합니다.
+
+### 헤더(Headers)
+
+| 이름           | 값                  |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 매개변수(Parameters)
+
+| 이름             | 형식    | 필수 | 설명                                                                            |
+| ---------------- | ------- | ---- | ------------------------------------------------------------------------------- |
+| `documentType`   | string  | 예   | `RUN`(민정 카드 흐름) 또는 `RUT`(세무 지향 흐름).                                |
+| `documentNumber` | string  | 예   | 통합 가이드라인에 따라 공백 없이 입력한 식별자.                                  |
+| `serialNumber`   | string  | 예   | 문서에 인쇄된 일련번호. 기반 검증 출처에서 필수입니다.                          |
+
+### 요청(Request)
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/validate/documents", {
+  params: {
+    documentType: "RUN",
+    documentNumber: "18562530-3",
+    serialNumber: "A123456789",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/validate/documents"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {
+    "documentType": "RUN",
+    "documentNumber": "18562530-3",
+    "serialNumber": "A123456789",
+}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답(Response)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "RUN",
+    "documentNumber": "18.562.530-3",
+    "serialNumber": "A123456789",
+    "status": "Vigente"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 4:00 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "CLVAL1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [RUT, RUN]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 비고
+
+- 정확한 `status` 문자열은 상위 등기소의 표현에 따라 달라집니다. **효력 지표**로만 활용하시고 법적 자문을 대체하지 않습니다.
+- **`serialNumber`** 는 실물 문서에서 수집해야 합니다. 일련번호 없이는 민정 **Registro Civil** 흐름을 통한 검증을 완료할 수 없습니다.

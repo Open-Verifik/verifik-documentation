@@ -1,0 +1,267 @@
+---
+id: panama
+title: 巴拿马公民
+description: 通过对接民事登记官方数据源，核验巴拿马 CCPA 国民身份证数据（证件、姓名、出生日期），适用于 KYC 与反欺诈。
+slug: /identity/panama
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "巴拿马身份核验 | Verifik KYC API",
+	description:
+		"通过对接民事登记官方数据源，核验巴拿马 CCPA 国民身份证数据（证件、姓名、出生日期），适用于 KYC 与反欺诈。",
+	articleSection: "API 文档",
+	keywords: "身份核验, KYC API, 巴拿马 CCPA 核验, 官方数据源, 反欺诈",
+	about: {
+		"@type": "Thing",
+		name: "身份核验 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 巴拿马身份核验
+
+Verifik 的身份核验 API 可基于政府官方数据对巴拿马公民进行身份核实。该接口旨在简化您的 KYC（了解您的客户）流程、防范欺诈，并轻松满足合规要求。
+
+我们专为需要快速、安全且自动化确认用户、员工或客户真实身份的企业打造此集成。
+
+## 此 API 验证哪些内容？
+
+我们的 API 直接对接官方记录，验证以下内容：
+
+-   **姓名全称与 CCPA 号码**：支持公民及居民的 *Cédula de Identidad Personal*（CCPA）。
+-   **身份匹配**：确认所提供姓名与 CCPA 号码相符。
+-   **出生日期核验**：校验出生日期与官方记录是否一致。
+
+通过验证这些信息，您可以确信对接的人员真实存在并持有有效证件，从而显著降低身份冒用与欺诈风险。
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/pa/cedula
+```
+
+基于民事登记官方数据源核验巴拿马 **CCPA**（*Cédula de Identidad Personal*）数据。请传入 **`documentType`**（`CCPA`）、归一化后的 **`documentNumber`**，以及格式为 **`DD/MM/YYYY`** 的 **`dateOfBirth`**；响应将确认身份记录的一致性，适用于 **KYC**、客户开通与反欺诈控制。
+
+### 请求头（Headers）
+
+| 名称           | 取值                |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 参数（Parameters）
+
+| 名称              | 类型    | 必填 | 描述                                                                                              |
+| ----------------- | ------- | ---- | ------------------------------------------------------------------------------------------------- |
+| `documentType`    | string  | 是   | 证件类型。允许取值：`CCPA`。                                                                       |
+| `documentNumber`  | string  | 是   | 经归一化后的完整巴拿马 cédula（详见下方 **[`documentNumber` 接受的格式](#documentnumber-接受的格式)**）。 |
+| `dateOfBirth`     | string  | 是   | 出生日期，格式为 `DD/MM/YYYY`。                                                                    |
+
+### `documentNumber` 接受的格式
+
+API 接受**完整**的 cédula 字符串。服务端将进行**归一化**处理：去除首尾空白、统一转大写、将连续的分隔符合并为单个连字符。空格、`/`、`_`、`.` 与 Unicode 类破折号字符均会被视为分隔符。如果省份代码与后缀 `AV` 或 `PI` 之间被多余的连字符隔开（例如 `10-AV-1234-12345`），将在校验前合并为 `10AV-1234-12345`。
+
+**结构：** `firstSegment-libro-tomo`
+
+- **Libro（中段）：** 1–4 位数字
+- **Tomo（末段）：** 1–6 位数字
+
+**首段（首选下列之一）：**
+
+1. **巴拿马本国出生** — 省份代码 `1`、`2`–`9` 或 `10`–`13`，随后是 libro、tomo。例：`8-1234-12345`、`4-56-789`、`12-12-12345`
+2. **海外出生的巴拿马人** — 前缀 `PE`。例：`PE-1234-12345`
+3. **持 cédula 的外国国民** — 前缀 `E`。例：`E-1234-12345`、`E-8-102017`
+4. **入籍** — 前缀 `N`。例：`N-1234-12345`
+5. **2006 年前的民事登记（AV）** — 省份代码后紧接 `AV`。例：`10AV-1234-12345`
+6. **原住民（PI）** — 省份代码后紧接 `PI`。例：`1PI-1234-12345`
+
+官方省份代码为 **1–13**。无效代码（例如 `14`）会被拒绝。
+
+**查询字符串：** 请按方式发送 `documentNumber`，**保留连字符**。某些客户端或解析器会错误处理类似 `E-8-197698` 的值（例如解析为科学计数）；请使用原始查询字符串、合理编码或将其作为字符串传递的库。
+
+**校验错误：** 如果 `documentNumber` 在归一化后并非完整有效的 cédula，API 将返回 **409** 并提示格式错误（例如 `Format incorrect: documentNumber`）。
+
+格式规则与开源校验器 [cedula-panama](https://github.com/merlos/cedula-panama)（MIT 协议）保持一致。
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/pa/cedula", {
+  params: { documentType: "CCPA", documentNumber: "8-1251-1829", dateOfBirth: "02/03/1992" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/pa/cedula");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+$query = http_build_query([
+    "documentType" => "CCPA",
+    "documentNumber" => "8-1251-1829",
+    "dateOfBirth" => "02/03/1992"
+]);
+curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/pa/cedula?".$query);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/pa/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CCPA", "documentNumber": "8-1251-1829", "dateOfBirth": "02/03/1992"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/pa/cedula?documentType=CCPA&documentNumber=8-1251-1829&dateOfBirth=02/03/1992"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Accept", "application/json")
+    req.Header.Set("Authorization", "Bearer "+getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    fmt.Println(resp.Status)
+}
+```
+
+  </TabItem>
+ </Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CCPA",
+    "documentNumber": "8-1251-1829",
+    "firstName": "Roberto",
+    "lastName": "Martínez",
+    "fullName": "Roberto Martínez",
+    "dateOfBirth": "1992-03-02",
+    "status": "valid"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "January 16, 2024 3:44 PM"},
+  "id": "PA001"
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "Invalid document number",
+  "code": "INVALID_DOCUMENT"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "code": "InternalServerError",
+    "message": "Server error."
+}
+```
+
+  </TabItem>
+ </Tabs>
+
+### 备注
+
+- 出生日期为必填，且须与证件持有人一致。
+- 完整支持的 cédula 格式与归一化行为，请参见 **[`documentNumber` 接受的格式](#documentnumber-接受的格式)**。
+
+---
+
+## 常见使用场景
+
+-   **金融科技与银行**：在开户或贷款申请过程中即时核验身份。
+-   **电商与配送**：在用户与配送员入驻您的平台前完成身份核验。
+-   **人力资源与招聘**：将候选人证件核验纳入招聘流程。
+-   **保险与医疗**：在出单或提供医疗福利前确认身份。
+
+## 官方数据源与可靠性
+
+我们直接对接巴拿马政府官方数据源，确保您获得经过验证且最新的信息。
+每次查询均严格遵循安全与监管标准。
+
+## 主要优势
+
+-   **自动化合规**：在不增加用户摩擦的前提下简化 KYC 检查并防范欺诈。
+-   **即时结果**：在数秒内完成核验，适用于实时数字化开通。
+-   **可信数据**：采用直接来源于官方记录的数据。
+-   **轻松集成**：通过 REST API 或兼容 SDK 即可便捷接入。
+
+## 合规与安全
+
+我们高度重视您的数据安全。Verifik 采用高级加密（HTTPS / TLS 1.3）和严格的隐私管理标准以确保机密性。
+我们的服务全天候 24/7 监控可用性，并提供基于角色的访问控制以保障团队访问安全。
+
+## 关于 Verifik
+
+Verifik 是拉丁美洲领先的身份核验、合规与反欺诈平台。
+我们的 API 自动化 KYC、KYB、AML 与生物识别验证流程，将企业与哥伦比亚、墨西哥、秘鲁、智利、乌拉圭、阿根廷、巴西、巴拿马及更多地区的官方数据源相连。

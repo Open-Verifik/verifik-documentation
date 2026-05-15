@@ -1,0 +1,126 @@
+---
+id: vehicle-validation-colombia-bogota-vehicle-accidentality
+title: 波哥大 — 车辆事故记录
+description: 通过车牌查询哥伦比亚波哥大登记车辆的事故历史（日期、表单编号、严重程度）。
+sidebar_label: 波哥大 — 事故记录
+slug: /vehicle-validation/colombia/bogota-vehicle-accidentality
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/bogota/vehicle/accidentality
+```
+
+查询波哥大登记车辆的事故历史。通过查询参数 **`plate`** 传入车牌。响应中的 `accident` 数组包含日期、表单编号（`form`）和严重程度（`seriousness`）。
+
+### 请求头（Headers）
+
+| 名称 | 取值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数（Parameters）
+
+| 名称 | 类型 | 必填 | 描述 |
+| --- | --- | --- | --- |
+| `plate` | string | 是 | 待查询车牌，5–6 位，不含空格或圆点。 |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/bogota/vehicle/accidentality", {
+  params: { plate: "ABC123" },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/bogota/vehicle/accidentality"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "accident": [
+      {
+        "date": "VIERNES, 20 FEBRERO 2015 00:00",
+        "form": "A1689",
+        "seriousness": "SOLO DAÑOS"
+      },
+      {
+        "date": "LUNES, 10 FEBRERO 2014 00:00",
+        "form": "A1428611",
+        "seriousness": "SOLO DAÑOS"
+      },
+      {
+        "date": "SÁBADO, 9 MARZO 2013 00:00",
+        "form": "A1247163",
+        "seriousness": "SOLO DAÑOS"
+      }
+    ],
+    "plate": "TSP331"
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "July 3, 2024 3:58 PM"},
+  "id": "3C9YY"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 说明
+
+- **SOLO DAÑOS** 表示仅财产损失（无人员伤亡）。
+- **`form`** 为官方事故报告参考编号。
+- **`date`** 可能以西班牙语格式返回（含星期）。

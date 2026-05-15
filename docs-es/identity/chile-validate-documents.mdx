@@ -1,0 +1,128 @@
+---
+id: chile-validate-documents
+title: Chile — Validación de documento de identidad
+description: "Valida RUN o RUT chileno junto al número de serie del documento físico; devuelve un estado de vigencia para controles de alta confianza."
+slug: /identidad/chile-validate-documents
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Chile — Validación de documento de identidad
+
+Este endpoint comprueba la **vigencia** del documento para **RUN** o **RUT** chileno usando el **número de serie** impreso en la cédula o tarjeta, además del identificador. Úsalo cuando debas confirmar que el **documento físico** es **válido**, no solo que el número existe—por ejemplo en **KYC de alta garantía** o pasos de **cumplimiento** que van más allá de una consulta simple a cédula.
+
+Para verificación nominal contra registro civil **sin** serie, usa **[Verificación de identidad en Chile](/verifik-es/identidad/chile)** (`v2/cl/cedula`).
+
+## Referencia de API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/validate/documents
+```
+
+Envía **RUN** o **RUT**, **número de documento** y **serie impresa** para obtener un **estado de vigencia** desde fuentes de validación civil o tributaria—úsalo cuando deba confirmarse el documento físico, no solo el número.
+
+### Encabezados
+
+| Nombre | Valor |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Descripción |
+| --- | --- | --- | --- |
+| `documentType` | string | Sí | `RUN` (flujo cédula/registro civil) o `RUT` (flujo tributario). |
+| `documentNumber` | string | Sí | Identificador sin espacios, según guías de integración. |
+| `serialNumber` | string | Sí | Serie impresa en el documento; requerida por las fuentes de validación. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/validate/documents", {
+  params: {
+    documentType: "RUN",
+    documentNumber: "18562530-3",
+    serialNumber: "A123456789",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/validate/documents"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {
+    "documentType": "RUN",
+    "documentNumber": "18562530-3",
+    "serialNumber": "A123456789",
+}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "RUN",
+    "documentNumber": "18.562.530-3",
+    "serialNumber": "A123456789",
+    "status": "Vigente"
+  },
+  "signature": {
+    "dateTime": "April 9, 2026 4:00 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "CLVAL1"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [RUT, RUN]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- El texto exacto de `status` depende del registro origen; trátalo como **indicador de vigencia**, no como asesoría legal.
+- Solicita **`serialNumber`** del documento físico; sin él, la validación contra **Registro Civil** no puede completarse.

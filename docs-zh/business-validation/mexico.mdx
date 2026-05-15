@@ -1,0 +1,197 @@
+---
+id: mexico
+title: 墨西哥企业核验
+description: 使用 Verifik 的 KYB API 核验墨西哥企业。直接对接官方数据源，在数秒内完成企业数据核验。
+slug: /business-validation/mexico
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "墨西哥企业核验（FME）| Verifik KYB API",
+	description:
+		"使用 Verifik 的 KYB API 核验墨西哥企业。直接对接官方数据源，在数秒内完成企业数据核验。",
+	articleSection: "API 文档",
+	keywords: "企业核验, KYB API, 墨西哥 FME 核验, 公司核验, 官方数据源, 反欺诈",
+	about: {
+		"@type": "Thing",
+		name: "企业核验 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 墨西哥企业核验
+
+Verifik 的企业核验 API 可基于政府官方数据对墨西哥企业进行身份核实。该接口旨在简化您的 KYB（了解您的企业）流程、防范欺诈，并轻松满足合规要求。
+
+我们专为需要快速、安全且自动化确认企业、合作伙伴或供应商合法性的组织打造此集成。
+
+## 此 API 验证哪些内容？
+
+我们的 API 直接对接官方记录，验证以下内容：
+
+-   **公司名称与 FME 编号**：支持 *Folio Mercantil Electrónico*（FME）。
+-   **企业信息**：返回公司名称、所在城市及登记详情。
+-   **企业匹配**：确认企业信息与 FME 编号相符。
+
+通过验证这些信息，您可以确信对接的企业真实合法且依法登记，从而显著降低欺诈风险并保障合规。
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/company
+```
+
+该接口用于通过 **FME**（*Folio Mercantil Electrónico*）查询墨西哥法人实体。请使用 GET 方式，传入 `documentType=FME` 与 `documentNumber`，即可从政府工商登记数据源获取法定企业名称与所在城市等官方登记详情。
+
+### 请求头（Headers）
+
+| 名称           | 取值                |
+| -------------- | ------------------- |
+| Content-Type   | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 参数（Parameters）
+
+| 名称              | 类型    | 必填 | 描述                                |
+| ----------------- | ------- | ---- | ----------------------------------- |
+| `documentType`    | string  | 是   | 证件类型。允许取值：`FME`。           |
+| `documentNumber`  | string  | 是   | FME 编号（例如 `N-2021007300`）。    |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/company", {
+  params: { documentType: "FME", documentNumber: "N-2021007300" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/company"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "FME", "documentNumber": "N-2021007300"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "business": "INNOVACION, DISEÑO Y CONSTRUCCION APLICADA FER'S, SOCIEDAD ANÓNIMA DE CAPITAL VARIABLE",
+    "city": "OTUMBA",
+    "documentNumber": "N-2021007300",
+    "documentType": "FME"
+  },
+  "signature": {
+    "dateTime": "October 10, 2025 5:23 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "0FEVQ"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [FME]"
+}
+```
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- `documentNumber` 必须匹配现有的 FME 记录。
+
+---
+
+## 常见使用场景
+
+-   **B2B 客户开通**：在合作伙伴或供应商注册时即时核验企业身份。
+-   **金融服务**：在开户或交易前对企业进行身份核验。
+-   **合规与尽职调查**：将企业信息核验纳入 KYC/KYB 流程。
+-   **电商与平台**：在企业入驻销售前核实其合法身份。
+
+## 官方数据源与可靠性
+
+我们直接对接墨西哥政府官方数据源，确保您获得经过验证且最新的信息。
+每次查询均严格遵循安全与监管标准。
+
+## 主要优势
+
+-   **自动化合规**：在不增加合作方摩擦的前提下简化 KYB 检查并防范欺诈。
+-   **即时结果**：在数秒内完成核验，适用于实时企业开通。
+-   **可信数据**：采用直接来源于官方记录的数据。
+-   **轻松集成**：通过 REST API 或兼容 SDK 即可便捷接入。
+
+## 合规与安全
+
+我们高度重视您的数据安全。Verifik 采用高级加密（HTTPS / TLS 1.3）和严格的隐私管理标准以确保机密性。
+我们的服务全天候 24/7 监控可用性，并提供基于角色的访问控制以保障团队访问安全。
+
+## 关于 Verifik
+
+Verifik 是拉丁美洲领先的身份核验、合规与反欺诈平台。
+我们的 API 自动化 KYC、KYB、AML 与生物识别验证流程，将企业与哥伦比亚、墨西哥、秘鲁、智利、乌拉圭、阿根廷、巴西及更多地区的官方数据源相连。

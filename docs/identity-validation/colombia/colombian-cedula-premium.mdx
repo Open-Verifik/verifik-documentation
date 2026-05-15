@@ -1,0 +1,191 @@
+---
+id: colombian-cedula-premium
+title: Colombia — National ID premium lookup (CC)
+description: 'Verify a Colombian national ID (CC) with a full profile: you type only the number, Verifik finds the issue date for you, and you get the same rich identity record as cédula extra. Uses more credits than the basic cédula check.'
+slug: /identity-validation/colombia/colombian-cedula-premium
+keywords:
+  - v2/co/cedula/premium
+  - /v2/co/cedula/premium
+  - v2 co cedula premium
+  - api/co/cedula/premium
+  - /api/co/cedula/premium
+  - api co cedula premium
+  - api.verifik.co/v2/co/cedula/premium
+  - 'https://api.verifik.co/v2/co/cedula/premium'
+  - GET v2/co/cedula/premium
+  - GET /v2/co/cedula/premium
+  - co/cedula/premium
+  - /co/cedula/premium
+  - cedula/premium
+  - /cedula/premium
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombia National ID Premium (CC) | Verifik KYC API",
+	description:
+		"Colombian cédula (CC) premium: enter the number only; get a full identity read-out from official sources—name, birth date, where and when the ID was issued, and more. No issue date in your request.",
+	articleSection: "API Documentation",
+	keywords: "Colombia, cédula, CC, premium, National ID, Verifik API",
+	about: {
+		"@type": "Thing",
+		name: "Identity Verification API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — National ID premium lookup (CC)
+
+**Purpose:** confirm a **Colombian *Cédula de Ciudadanía* (CC)** against official sources and return a **structured identity record** suitable for KYC and compliance workflows—not a binary pass/fail on the number alone. The response reflects **how the name is recorded**, **date of birth**, **place and date of issue**, and—where provided by sources—**gender** and **alive status**, with a **signed certification** block in the response. **Submit only the document number**; the **issue date is resolved server-side** (no `documentType` or issue date in the request). Record depth matches [**cédula extra**](/identity/colombia-full-id). Credit consumption is **higher** than the [**basic cédula endpoint**](/identity-validation/colombia/colombian-citizen) because of additional resolution steps.
+
+## API reference
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/cedula/premium
+```
+
+**Response:** Returns **`data`** (identity attributes returned for the submitted number), **`signature`** (certification metadata for the payload), and **`id`** (request identifier). **HTTP 404** indicates that a complete identity record could not be assembled for the supplied number under this workflow. **HTTP 409** indicates that the request failed validation (for example, `documentNumber` length) before upstream resolution. Per-request **credit cost** exceeds the basic `/v2/co/cedula` route because of the chained resolution.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `documentNumber` | string | Yes | CC number, **digits only** after normalization (non-digits stripped). **5–10** characters (API validation). |
+
+### Notes
+
+- **CC only** — there is no `documentType` on this route; the flow always treats the number as **CC** (see controller).
+- Prefer **digits only** in `documentNumber` (spaces and separators are stripped server-side).
+- For **PPT**, **CE**, or other types, use the appropriate dedicated endpoints—not this one.
+
+### Request
+
+<Tabs>
+  <TabItem value="get" label="GET">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/cedula/premium", {
+	params: { documentNumber: "1234567890" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="post" label="POST">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+	"https://api.verifik.co/v2/co/cedula/premium",
+	{ documentNumber: "1234567890" },
+	{
+		headers: {
+			Accept: "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+	}
+);
+console.log(data);
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+Example shape (illustrative placeholders, not real individuals):
+
+```json
+{
+	"data": {
+		"arrayName": ["GIVEN", "MIDDLE", "PATERNAL", "MATERNAL"],
+		"dateOfBirth": "1990-05-20",
+		"documentNumber": "1234567890",
+		"documentType": "CC",
+		"expeditionDate": "2015-08-12",
+		"expeditionPlace": {
+			"municipio": "Example Municipality",
+			"departamento": "Example Department"
+		},
+		"firstName": "GIVEN MIDDLE",
+		"fullName": "GIVEN MIDDLE PATERNAL MATERNAL",
+		"gender": "HOMBRE",
+		"isAlive": true,
+		"lastName": "PATERNAL MATERNAL"
+	},
+	"signature": {
+		"dateTime": "April 21, 2026 9:34 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "XXXXX"
+}
+```
+
+Field names and presence may match upstream and official data availability.
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+Returned when upstream sources do not yield a match or required data (e.g. expedition resolution fails).
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentNumber maximum length: 10\n"
+}
+```
+
+Validation uses **5–10** characters for `documentNumber`; other Joi messages may appear for missing or invalid input.
+
+  </TabItem>
+</Tabs>
+
+### Related
+
+- [**National ID (basic)**](/identity-validation/colombia/colombian-citizen) — `GET/POST /v2/co/cedula` (`CC` / `PPT`).
+- [**National ID extra (manual date)**](/identity/colombia-full-id) — `GET/POST /v2/co/cedula/extra` with `documentType`, `documentNumber`, and `date`.
+
+### Other languages
+
+Same page is available under each localized site (same API, translated UI copy where present):
+
+- **Español:** [/verifik-es/validacion-identidad/colombia/cedula-premium-cc/](/verifik-es/validacion-identidad/colombia/cedula-premium-cc/)
+- **Français:** [/verifik-fr/identity-validation/colombia/colombian-cedula-premium/](/verifik-fr/identity-validation/colombia/colombian-cedula-premium/)
+- **Português:** [/verifik-pt/identity-validation/colombia/colombian-cedula-premium/](/verifik-pt/identity-validation/colombia/colombian-cedula-premium/)
+- **한국어:** [/verifik-ko/identity-validation/colombia/colombian-cedula-premium/](/verifik-ko/identity-validation/colombia/colombian-cedula-premium/)
+- **日本語:** [/verifik-ja/identity-validation/colombia/colombian-cedula-premium/](/verifik-ja/identity-validation/colombia/colombian-cedula-premium/)
+- **中文:** [/verifik-zh/identity-validation/colombia/colombian-cedula-premium/](/verifik-zh/identity-validation/colombia/colombian-cedula-premium/)

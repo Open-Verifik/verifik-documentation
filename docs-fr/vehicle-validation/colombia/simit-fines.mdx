@@ -1,0 +1,130 @@
+---
+id: vehicle-validation-colombia-simit-fines
+title: SIMIT - Amendes
+description: Service d'amendes et de contraventions routières SIMIT
+slug: /vehicle-validation/colombia/simit-fines
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/co/simit/comparendos
+```
+
+Le service Contraventions routières fournit des informations détaillées sur les contraventions associées à un véhicule en Colombie. En saisissant le numéro de plaque, vous accédez à des détails complets sur chaque contravention : statut, date, lieu et type d'infraction.
+
+### En-têtes (Headers)
+
+| Nom | Valeur |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Paramètres
+
+| Nom | Type | Requis | Description |
+| --- | --- | --- | --- |
+| `documentType` | string | **Oui** | Type de document. Valeurs autorisées : `CC`, `PA`, `CE`, `TI`, `RC`. |
+| `documentNumber` | string | **Oui** | Numéro de document à interroger, sans espaces ni points. |
+
+### Requête (Request)
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/comparendos", {
+  params: { 
+    documentType: "CC", 
+    documentNumber: "123456789" 
+  },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/comparendos"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse (Response)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "comparendos": [
+      {
+        "tipovehiculo": "AUTOMOVIL",
+        "estadoComparendo": "Pendiente",
+        "fechaComparendo": "2016/02/23",
+        "fotodeteccion": false,
+        "NúmeroComparendo": "2561200100015264662173",
+        "placavehiculo": "AAA123",
+        "secretariaComparendo": "Ricaurte",
+        "total": 344730,
+        "idOrganismoTransito": "25612123",
+        "codigoInfraccion": "C35",
+        "descripcionInfraccion": "No realizar la revisión técnico-mecánica en el plazo legal establecido o cuando el vehiculo no se encuentre en adecuadas condiciones técnico-mecánicas o de emisión de gases, aun cuando porte los certificados correspondientes.",
+        "direccionComparendo": "CARRERA 9 CON CALLE 10 AGUA DE DIOS",
+        "infractorComparendo": "CAR BER",
+        "serviciovehiculo": "Particular"
+      }
+    ]
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "February 13, 2023 6:17 AM"}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- SIMIT est le système intégré d'infractions routières de la Colombie.
+- « Comparendo » est le terme espagnol pour contravention.
+- Les amendes sont exprimées en pesos colombiens (COP).
+- Le statut « Pendiente » indique que la contravention est en attente de paiement.
+- Les infractions détectées par photo sont signalées avec `fotodeteccion: true`.
