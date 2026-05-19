@@ -328,6 +328,18 @@ const sidebars = {
 				{ type: "doc", id: "background-check/onu-background-check", label: "🌐 ONU" },
 			],
 		},
+		{
+			type: "category",
+			label: "VERIFIK LLC",
+			collapsible: false,
+			items: [
+				"legal/privacy-policy",
+				"legal/terms-and-conditions",
+				"legal/service-level-agreement",
+				"legal/verifik-for-enterprises-hub-eng",
+				"legal/smartcheck-terms-and-conditions-of-use",
+			],
+		},
 	],
 };
 

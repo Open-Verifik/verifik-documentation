@@ -6,7 +6,7 @@ description: Verifik's terms and conditions of service
 
 # Terms and Conditions
 
-**Last Updated: Sept 10, 2024**
+**Last Updated: May 18, 2026**
 
 **Effective: March 9, 2023**
 
@@ -180,6 +180,22 @@ Verifik may provide the User with a certain number of trial Credits in order to 
 
 Verifik reserves the right to update its Fee rates in accordance with its business policy, in which case the User will be informed, via email or App notification, so that the User may freely decide whether to continue with the Service or not.
 
+### **Refunds, Credits, and Fraudulent Transactions**
+
+The following rules apply to refunds, credits, payment disputes, and claims of unauthorized or fraudulent charges:
+
+1. **No automatic refunds.** Fees paid for the Services are generally **non-refundable**. Any adjustment Verifik may grant will be issued as **Credits** on the User's account (subject to the Credit expiration rules in these Terms and Conditions), unless Verifik approves another remedy under this section.
+
+2. **Contact Verifik first.** Before initiating a **chargeback**, payment dispute, or reversal with a bank or card network, the User must **notify Verifik in writing** through the support channels available in the App (or any email address designated in the App) and cooperate in good faith. Filing a card-network dispute without prior notice to Verifik may void eligibility for any remedy under this section.
+
+3. **Fraud claims — timing and evidence.** Claims of unauthorized or fraudulent charges must be submitted **within forty-eight (48) hours** of the User discovering the activity. The User must:
+   * Complete **identity verification (KYC)** as requested by Verifik;
+   * Provide **reasonable evidence of fraud**, including proof that the payment method was compromised (for example, documentation that a **new card was requested or issued** by the bank, a police report, or bank correspondence, as applicable).
+
+4. **Remedy after verification.** If Verifik confirms that a transaction was made by someone other than the rightful account holder, Verifik may, **at its sole discretion**, issue **Credits** or a **monetary refund** to the original payment method. Any approved remedy will be processed within **thirty (30) calendar days** after Verifik completes its review and notifies the User in writing.
+
+Chargebacks or payment disputes filed in breach of this section may be contested with evidence that these Terms and Conditions were accepted **during sign-up** and that the User did not follow the process described above.
+
 ### **Do we perform maintenance to the** App?
 
 Verifik undertakes to perform preventive and corrective maintenance activities, in order to avoid possible errors, failures or intermittencies in the App. In execution of the obligation to maintain the App, Verifik may disable access and use of the App to perform repairs or maintenance that have been scheduled twenty-four (24) hours in advance, or when reasonably required to ensure the availability of the Services, in the case of urgent Maintenance.
@@ -282,7 +298,7 @@ Users agree and acknowledge that the Services allow Users to verify the identity
 
 In addition, Users acknowledge that the Services, are informative in nature, so that in no case these should be interpreted as an absolute classification of End Users regarding how they will behave within the framework of the User's business model. In this regard, Users acknowledge that it is their sole responsibility to analyze the information provided by the App and releases Verifik from any liability for the decisions that the User makes based on the information provided under the Services.
 
-No information that the User has received by any means by Verifik or any of its representatives or officers, in addition to these Terms and Conditions, shall engage the responsibility of Verifik or represent any warranty on the Services. Therefore, the only recourse that the User has in relation to the Services provided by the App, will be to cancel your account and not use the App again, without this implying any refund.
+No information that the User has received by any means by Verifik or any of its representatives or officers, in addition to these Terms and Conditions, shall engage the responsibility of Verifik or represent any warranty on the Services. Therefore, the only recourse that the User has in relation to the Services provided by the App, will be to cancel your account and not use the App again, without this implying any refund, **except as expressly provided in the Refunds, Credits, and Fraudulent Transactions section above**.
 
 In no event shall Verifik be liable for consequential damages, or for any damages for loss of data, revenue, profits or other variables with respect to the use of the App, for improper use of the solution or for attacks, sabotage or other unethical practices or illegal circumstances, force majeure or acts of God. Notwithstanding the foregoing, and Verifik being an expert in the Services it provides, it shall endeavor to have the necessary computer security measures to ensure the protection of the User's data and information. In any case, Verifik's liability, in case of persistence, whether contractual or extra-contractual, of any kind or nature, shall be limited to the amount received in the provision of the Services in the 12 months prior to the occurrence of the damage.
 
