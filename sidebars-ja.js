@@ -8,6 +8,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "車両検証",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 コスタリカ — 車両（ナンバー）" },
 				{
@@ -172,6 +173,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "本人確認",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "identity/canada", label: "🇨🇦 カナダ — 運転免許（BC・オンタリオ）" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 コスタリカ国民（CCCR）" },
@@ -209,10 +211,11 @@ const sidebars = {
 		{
 			type: "category",
 			label: "法人(KYB)",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "business-validation/canada", label: "🇨🇦 カナダ法人検証" },
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 コスタリカ法人（NITE）" },
-				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 スペイン企業（KYB）" },
+				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 スペイン — 企業（CIF/NIF）" },
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 チリ — 企業（RUT）" },
 				{
 					type: "doc",

@@ -126,13 +126,13 @@ When accessing the Verifik App, the User will find that each of the services off
 
 | ---------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 
-| **Database Screening** | **Subscription:** Basic, Plus and Business                          | <p><strong>PAYG:</strong> 12 months<br /><strong>Subscription:</strong> Monthly or Yearly</p> |
+| **Database Screening** | **Subscription:** Basic, Plus and Business                          | <strong>PAYG:</strong> 12 months<br /><strong>Subscription:</strong> Monthly or Yearly |
 
 | **Biometrics**         | **Volume Commitment**                                               | **Subscription:** Monthly or Yearly                                                         |
 
 | **zk Face Proofs**     | **Volume Commitment**                                               | **Subscription:** Monthly or Yearly                                                         |
 
-| **smartCHECK**         | **PAYG** (Pay as you go) **Subscription:** Basic, Plus and Business | <p><strong>PAYG:</strong> 12 months<br /><strong>Subscription:</strong> Monthly or Yearly</p> |
+| **smartCHECK**         | **PAYG** (Pay as you go) **Subscription:** Basic, Plus and Business | <strong>PAYG:</strong> 12 months<br /><strong>Subscription:</strong> Monthly or Yearly |
 
 | **smartACCESS**        | **Subscription:** Free, Plus and Business                           | **Subscription:** Monthly                                                                   |
 

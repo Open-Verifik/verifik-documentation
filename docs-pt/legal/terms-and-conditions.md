@@ -125,10 +125,10 @@ Ao acessar o App da Verifik, o Usuário verificará que cada um dos serviços of
 
 | **Serviços**           | **Plano de pagamento**                                              | **Validade dos Créditos**                                                                   |
 | ---------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| **Database Screening** | **Assinatura:** Basic, Plus e Business                              | <p><strong>PAYG:</strong> 12 meses<br /><strong>Assinatura:</strong> Mensal ou Anual</p>     |
+| **Database Screening** | **Assinatura:** Basic, Plus e Business                              | <strong>PAYG:</strong> 12 meses<br /><strong>Assinatura:</strong> Mensal ou Anual     |
 | **Biometrics**         | **Compromisso de volume (Volume Commitment)**                       | **Assinatura:** Mensal ou Anual                                                             |
 | **zk Face Proofs**     | **Compromisso de volume (Volume Commitment)**                       | **Assinatura:** Mensal ou Anual                                                             |
-| **smartCHECK**         | **PAYG** (Pay as you go) **Assinatura:** Basic, Plus e Business     | <p><strong>PAYG:</strong> 12 meses<br /><strong>Assinatura:</strong> Mensal ou Anual</p>     |
+| **smartCHECK**         | **PAYG** (Pay as you go) **Assinatura:** Basic, Plus e Business     | <strong>PAYG:</strong> 12 meses<br /><strong>Assinatura:</strong> Mensal ou Anual     |
 | **smartACCESS**        | **Assinatura:** Free, Plus e Business                               | **Assinatura:** Mensal                                                                      |
 | **smartENROLL**        | **Assinatura:** Free, Plus e Business                               | **Assinatura:** Mensal                                                                      |
 | **smartLINK**          | **Assinatura:** Free, Plus e Business                               | **Assinatura:** Mensal                                                                      |

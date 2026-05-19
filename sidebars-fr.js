@@ -8,6 +8,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "Validation véhicules",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "vehicle-validation/chile", label: "🇨🇱 Chili — Véhicule (plaque)" },
 				{
@@ -163,6 +164,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "Identité",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "identity/canada", label: "🇨🇦 Canada — Permis (CB et Ontario)" },
 				{ type: "doc", id: "identity/chile", label: "🇨🇱 Citoyen chilien (RUN)" },
@@ -199,6 +201,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "Entreprises (KYB)",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "business-validation/canada", label: "🇨🇦 Vérification d'entreprise au Canada" },
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 Chili — Entreprise (RUT)" },
@@ -208,7 +211,7 @@ const sidebars = {
 					label: "🇨🇴 Colombie — RUES dossier complet",
 				},
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 Entreprise costaricienne (NITE)" },
-				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 Entreprise espagnole (KYB)" },
+				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 Espagne — Entreprise (CIF/NIF)" },
 				{ type: "doc", id: "business-validation/mexico", label: "🇲🇽 Vérification d'entreprise au Mexique" },
 				{
 					type: "doc",

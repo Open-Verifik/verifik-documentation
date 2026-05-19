@@ -8,6 +8,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "车辆核验",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 巴拉圭 — 车辆信息" },
 				{
@@ -163,6 +164,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "身份核验",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 巴拉圭公民（CIC）" },
 				{ type: "doc", id: "identity/identity-brazil", label: "🇧🇷 巴西公民（CPF）" },
@@ -199,6 +201,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "企业(KYB)",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 巴拉圭企业（RUC）" },
 				{
@@ -216,7 +219,7 @@ const sidebars = {
 					id: "business-validation/business-validation-mexican-companies",
 					label: "🇲🇽 墨西哥企业核验 (FME)",
 				},
-				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 西班牙企业（KYB）" },
+				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 西班牙 — 企业（CIF/NIF）" },
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 智利 — 企业（RUT）" },
 				{
 					type: "doc",

@@ -229,6 +229,15 @@ const config = {
 
 	onBrokenLinks: "warn",
 
+	// Docusaurus 3.10+ stricter MDX: keep HTML comments (blog <!-- truncate -->, generated files).
+	markdown: {
+		mdx1Compat: {
+			comments: true,
+			admonitions: true,
+			headingIds: true,
+		},
+	},
+
 	// Internationalization configuration REMOVED
 	// i18n removed to prevent /es prefix on Spanish routes
 	// Spanish docs will be at /verifik-es/ instead of /es/docs-es/

@@ -1,3 +1,7 @@
 # Downloads
 
-<table><thead><tr><th width="139">App</th><th width="608.98828125">link</th></tr></thead><tbody><tr><td>Android</td><td><a href="https://play.google.com/store/apps/details?id=co.verifik.wallet&#x26;hl=en-US">https://play.google.com/store/apps/details?id=co.verifik.wallet&#x26;hl=en-US</a></td></tr><tr><td>iOS</td><td><a href="https://apps.apple.com/pa/app/zelf-name-service/id6739672296?l=en-GB">https://apps.apple.com/pa/app/zelf-name-service/id6739672296?l=en-GB</a></td></tr><tr><td>Extension</td><td><a href="https://chromewebstore.google.com/detail/zelf-name-service/ennoagncbcpgikfajeeakjolikjmindc">https://chromewebstore.google.com/detail/zelf-name-service/ennoagncbcpgikfajeeakjolikjmindc</a></td></tr></tbody></table>
+| App | Link |
+| --- | --- |
+| Android | [Google Play](https://play.google.com/store/apps/details?id=co.verifik.wallet&hl=en-US) |
+| iOS | [App Store](https://apps.apple.com/pa/app/zelf-name-service/id6739672296?l=en-GB) |
+| Extension | [Chrome Web Store](https://chromewebstore.google.com/detail/zelf-name-service/ennoagncbcpgikfajeeakjolikjmindc) |

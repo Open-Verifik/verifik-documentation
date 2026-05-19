@@ -8,6 +8,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "차량 검증",
+			collapsible: false,
 			items: [
 				{
 					type: "doc",
@@ -163,6 +164,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "신원",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 멕시코 시민" },
 				{ type: "doc", id: "identity/venezuela", label: "🇻🇪 베네수엘라 국민(CCVE)" },
@@ -204,6 +206,7 @@ const sidebars = {
 		{
 			type: "category",
 			label: "기업(KYB)",
+			collapsible: false,
 			items: [
 				{ type: "doc", id: "business-validation/mexico", label: "🇲🇽 멕시코 기업 검증" },
 				{
@@ -211,7 +214,7 @@ const sidebars = {
 					id: "business-validation/business-validation-mexican-companies",
 					label: "🇲🇽 멕시코 기업 검증 (FME)",
 				},
-				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 스페인 기업(KYB)" },
+				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 스페인 — 기업(CIF/NIF)" },
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 칠레 — 기업(RUT)" },
 				{
 					type: "doc",

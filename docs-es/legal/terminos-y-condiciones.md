@@ -127,13 +127,13 @@ Al acceder a la App Verifik, el Usuario encontrará que cada uno de los servicio
 
 | ---------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 
-| **Database Screening** | **Suscripción:** Basic, Plus y Business                          | <p><strong>PAYG:</strong> 12 meses<br /><strong>Suscripción:</strong> Mensual o Anual</p> |
+| **Database Screening** | **Suscripción:** Basic, Plus y Business                          | <strong>PAYG:</strong> 12 meses<br /><strong>Suscripción:</strong> Mensual o Anual |
 
 | **Biometrics**         | **Compromiso de Volumen**                                               | **Suscripción:** Mensual o Anual                                                         |
 
 | **zk Face Proofs**     | **Compromiso de Volumen**                                               | **Suscripción:** Mensual o Anual                                                         |
 
-| **smartCHECK**         | **PAYG** (Paga a la Marcha) **Suscripción:** Basic, Plus y Business | <p><strong>PAYG:</strong> 12 meses<br /><strong>Suscripción:</strong> Mensual o Anual</p> |
+| **smartCHECK**         | **PAYG** (Paga a la Marcha) **Suscripción:** Basic, Plus y Business | <strong>PAYG:</strong> 12 meses<br /><strong>Suscripción:</strong> Mensual o Anual |
 
 | **smartACCESS**        | **Suscripción:** Free, Plus y Business                           | **Suscripción:** Mensual                                                                   |
 

@@ -127,13 +127,13 @@ Verifik 将在创建账户或会话之前验证每位用户的身份。在企业
 
 | ---------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 
-| **Database Screening** | **订阅：** Basic、Plus 和 Business                                  | <p><strong>PAYG：</strong> 12 个月<br /><strong>订阅：</strong> 按月或按年</p>                |
+| **Database Screening** | **订阅：** Basic、Plus 和 Business                                  | <strong>PAYG：</strong> 12 个月<br /><strong>订阅：</strong> 按月或按年                |
 
 | **Biometrics**         | **用量承诺**                                                        | **订阅：** 按月或按年                                                                       |
 
 | **zk Face Proofs**     | **用量承诺**                                                        | **订阅：** 按月或按年                                                                       |
 
-| **smartCHECK**         | **PAYG**（按需付费）**订阅：** Basic、Plus 和 Business              | <p><strong>PAYG：</strong> 12 个月<br /><strong>订阅：</strong> 按月或按年</p>                |
+| **smartCHECK**         | **PAYG**（按需付费）**订阅：** Basic、Plus 和 Business              | <strong>PAYG：</strong> 12 个月<br /><strong>订阅：</strong> 按月或按年                |
 
 | **smartACCESS**        | **订阅：** Free、Plus 和 Business                                   | **订阅：** 按月                                                                             |
 
