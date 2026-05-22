@@ -20,7 +20,7 @@ Servicios integrales de validación de vehículos colombianos que proporcionan a
 ### 🚗 **Servicios Fasecolda**
 
 -   **[Valores de Vehículos por Placa](/verifik-es/validacion-de-vehiculo/colombia/valores-de-vehiculos-por-placa-fasecolda)** - Obtener valores de mercado actuales y datos de tasación
--   **[Vehículo por Código](/verifik-es/validacion-de-vehiculo/colombia/vehiculo-por-codigo-fasecolda)** - Recuperar información detallada del vehículo usando códigos únicos
+-   **[Vehículo por Código](/verifik-es/validacion-vehiculos/colombia/vehiculo-por-codigo-fasecolda)** - Recuperar información detallada del vehículo usando códigos únicos
 -   **[Verificación de Siniestros](/verifik-es/validacion-vehiculos/colombia/verificacion-siniestros-fasecolda)** - Verificar reportes de accidentes y reclamos de seguros
 
 ### 🚙 **RUNT (Registro Nacional de Tránsito)**
