@@ -1,0 +1,127 @@
+---
+id: ecuador
+title: 🇪🇨 厄瓜多尔 — 车辆罚单
+description: 通过车牌查询厄瓜多尔车辆登记信息与未缴交通罚单。
+slug: /vehicle-validation/ecuador
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇪🇨 厄瓜多尔 — 车辆罚单
+
+按车牌查询厄瓜多尔车辆登记信息（号牌、级别、型号、状态、服务类型、登记到期日等）及关联未缴罚单，便于合规与车队管理。
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/ec/vehiculo/placa/multas
+```
+
+使用 **`plate`** 查询登记详情与 **`multas`** 罚单列表。
+
+### 标头
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `plate` | string | yes | 车牌，不含空格或句点。 |
+
+### 请求
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/ec/vehiculo/placa/multas", {
+	params: { plate: "ABC1234" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/ec/vehiculo/placa/multas"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC1234"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"plate": "ABC1234",
+		"class": "AUTOMOVIL",
+		"model": "SENTRA 1.6 M/T",
+		"status": "ASIGNADO",
+		"service": "PARTICULAR",
+		"registrationExpirationDate": "2024/03/19",
+		"total": "76.72",
+		"multas": [
+			{
+				"id": "1",
+				"infraccion": "92507343",
+				"entidad": "MNO-MANCOMUNIDAD DEL NORTE",
+				"totalAPagar": "23"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "March 12, 2024 7:50 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "OB2YV"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing plate\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- `multas` 数组包含罚单实体、 citation、金额与法律依据等字段（视数据源返回而定）。

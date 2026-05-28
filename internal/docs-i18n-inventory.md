@@ -1,19 +1,19 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-05-22T15:23:30.218Z
+Generated: 2026-05-28T21:56:26.102Z
 
-- **Files scanned:** 472
-- **Unique endpoint URLs:** 187
+- **Files scanned:** 478
+- **Unique endpoint URLs:** 194
 - **Duplicate URL groups (SEO / aliases):** 57
-- **Docs without `### Endpoint` block:** 207
+- **Docs without `### Endpoint` block:** 206
 
 ## Summary by priority (canonical primary path only)
 
 | Priority | Count | Scope |
 | --- | ---: | --- |
-| P0 | 21 | vehicle-validation/colombia |
-| P1 | 14 | vehicle-validation (other countries) |
-| P2 | 152 | identity, biometrics, resources, etc. |
+| P0 | 23 | vehicle-validation/colombia |
+| P1 | 15 | vehicle-validation (other countries) |
+| P2 | 156 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -260,6 +260,7 @@ Generated: 2026-05-22T15:23:30.218Z
 | P2 | `v2/cl/company` | `business-validation/chilean.mdx` |
 | P2 | `v2/cl/driver-license` | `driver-validation/chile-driver-license.mdx` |
 | P2 | `v2/cl/taxpayer` | `identity/chile-taxpayer.mdx` |
+| P1 | `v2/cl/transport-vehicle` | `vehicle-validation/chile/transport-vehicle.mdx` |
 | P2 | `v2/cl/validate/documents` | `identity/chile-validate-documents.mdx` |
 | P1 | `v2/cl/vehicle` | `vehicle-validation/chile.mdx` |
 | P2 | `v2/clients/me` | `accounts/clients/account-information.mdx` |
@@ -285,6 +286,7 @@ Generated: 2026-05-22T15:23:30.218Z
 | P2 | `v2/co/foreigner-id/pep` | `identity-validation/colombia/special-stay-permit-pep.mdx` |
 | P2 | `v2/co/foreigner-id/ppt` | `identity/colombia-ppt.mdx` |
 | P2 | `v2/co/inpec` | `background-check/colombia-inpec.mdx` |
+| P0 | `v2/co/medellin/vehicle/fines` | `vehicle-validation/colombia/medellin-vehicle-fines.mdx` |
 | P2 | `v2/co/policia/consultar` | `background-check/colombia-police-record-check.mdx` |
 | P2 | `v2/co/policia/rnmc` | `background-check/colombia-police-compliance-corrective-measures.mdx` |
 | P2 | `v2/co/politically-exposed-persons` | `identity-validation/colombia/colombian-politically-exposed-persons.mdx` |
@@ -296,14 +298,18 @@ Generated: 2026-05-22T15:23:30.218Z
 | P2 | `v2/co/rama/procesos` | `legal/colombian-legal-processes.mdx` |
 | P2 | `v2/co/registraduria/certificado` | `identity/colombia-registraduria-certificate.mdx` |
 | P2 | `v2/co/registraduria/votacion` | `legal/voting.md` |
+| P2 | `v2/co/rues` | `business-validation/colombia-rues-v2.mdx` |
+| P2 | `v2/co/rues/complete` | `business-validation/colombia-rues-complete-v2.mdx` |
 | P0 | `v2/co/runt/conductor` | `vehicle-validation/colombia/driver-s-license.mdx` |
 | P0 | `v2/co/runt/vehicle-by-plate` | `vehicle-validation/colombia/runt-vehicle-by-plate.mdx` |
 | P0 | `v2/co/runt/vehicle-by-plate-simplified` | `vehicle-validation/colombia/runt-vehicle-by-plate-simplified.mdx` |
 | P0 | `v2/co/runt/vehicle-by-vin` | `vehicle-validation/colombia/runt-vehicle-by-vin.mdx` |
 | P0 | `v2/co/runt/vehiculo` | `vehicle-validation/colombia/runt-vehicle-soat-rtm.md` |
+| P2 | `v2/co/sena/certificados` | `certificates/sena-certificates.mdx` |
 | P2 | `v2/co/sigep/name` | `legal/sigep-public-servant-by-name.mdx` |
 | P2 | `v2/co/sigep/number` | `legal/sigep-public-servant-by-number.mdx` |
 | P0 | `v2/co/simit/acuerdos` | `vehicle-validation/colombia/simit-agreements.mdx` |
+| P0 | `v2/co/simit/comparendo` | `vehicle-validation/colombia/simit-comparendo-details.mdx` |
 | P0 | `v2/co/simit/comparendos` | `vehicle-validation/colombia/simit-fines.mdx` |
 | P0 | `v2/co/simit/consultar` | `vehicle-validation/colombia/general-query-of-simit-by-identification-document.mdx` |
 | P0 | `v2/co/simit/consultar/placa` | `vehicle-validation/colombia/general-query-of-simit-by-license-plate.mdx` |
@@ -353,6 +359,7 @@ Generated: 2026-05-22T15:23:30.218Z
 | P2 | `v2/in/epic` | `legal/epic-eci.mdx` |
 | P2 | `v2/in/epic/votacion` | `legal/voting-eci-epic.mdx` |
 | P2 | `v2/interpol` | `background-check/interpol-background-check.mdx` |
+| P2 | `v2/ip-lookup` | `identity/ip-lookup.mdx` |
 | P2 | `v2/mx/company` | `business-validation/mexican-companies.mdx` |
 | P2 | `v2/mx/curp` | `identity/mexico.mdx` |
 | P1 | `v2/mx/vehiculo/placa` | `vehicle-validation/mexico.md` |
@@ -427,7 +434,6 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `business-validation/business-verification.mdx`
 - `business-validation/chile.mdx`
 - `business-validation/colombia.mdx`
-- `certificates/sena-certificates.mdx`
 - `compensar/COMPENSAR_API_REFERENCE.md`
 - `compensar/COMPENSAR_COMPLIANCE_MATRIX.md`
 - `compensar/COMPENSAR_EXECUTIVE_SUMMARY.md`

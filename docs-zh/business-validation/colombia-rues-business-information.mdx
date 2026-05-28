@@ -1,0 +1,152 @@
+---
+id: business-validation-colombia-rues-business-information
+title: 哥伦比亚 — RUES 完整企业信息 (v3)
+description: "从 RUES 获取哥伦比亚完整企业档案。GET /v3/co/rues-complete。"
+slug: /business-validation/colombia-rues-business-information
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "RUES 完整企业核验 (v3) | Verifik KYB API",
+	description: "从 RUES 获取哥伦比亚完整企业档案。GET /v3/co/rues-complete。",
+	articleSection: "API 文档",
+	keywords: "企业核验, KYB API, 哥伦比亚 RUES, NIT, Verifik",
+	about: {
+		"@type": "Thing",
+		name: "企业核验 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 哥伦比亚 — RUES 完整企业信息 (v3)
+
+Verifik RUES 完整企业核验 API 从哥伦比亚 **RUES**（*Registro Único Empresarial y Social*）获取 **完整** 企业档案，用于 KYB、防欺诈与合规。
+
+## 本接口核验什么？
+
+对接 RUES 官方记录：
+
+- **企业名称与 NIT**
+- **完整企业信息**：商业登记、经济活动、分支机构所有人、法定代表人等
+- **多类别**：RM、PROP、RUNEOL、RNT、ESAL、RESAL、JUEGOS、EXTRANJERAS
+- **信息匹配**：确认 NIT 与企业信息一致并提供完整详情
+
+## API 参考
+
+### 端点
+
+```
+GET https://api.verifik.co/v3/co/rues-complete
+```
+
+应用域名：`GET https://verifik.app/v3/co/rues-complete`
+
+### 请求头
+
+| 名称 | 值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `category` | string | 是 | **`RM`**, **`PROP`**, **`RUNEOL`**, **`RNT`**, **`ESAL`**, **`RESAL`**, **`JUEGOS`**, **`EXTRANJERAS`** 之一。 |
+| `documentNumber` | string | 是 | 企业法定 ID（如 `1121329661`）。 |
+| `documentType` | string | 是 | 企业证件类型。哥伦比亚使用 **`NIT`**。 |
+
+### 说明
+
+- 本路由 **仅** 支持上表参数。**`municipality`**、**`chamber`**、**`page`** **不是** **`GET /v3/co/rues-complete`** 的有效查询参数。
+- 若只需 **摘要**，请使用 **`GET /v3/co/rues`**（[RUES 企业查询 (v3)](/business-validation/colombia-rues-v3)）。
+- 完整响应示例（含 RM、PROP、JUEGOS、RNT、ESAL、EXTRANJERAS 等类别）见英文文档 [RUES Complete Business Validation (v3)](https://docs.verifik.co/business-validation/colombia-rues-business-information)。
+
+### 请求
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get(
+  "https://api.verifik.co/v3/co/rues-complete",
+  {
+    params: { category: "RM", documentNumber: "1121329661", documentType: "NIT" },
+    headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+  }
+);
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/rues-complete"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+params = {"category": "RM", "documentNumber": "1121329661", "documentType": "NIT"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "commercialRegistry": {
+      "NIT": "1121329661",
+      "businessName": "ANUAR DE JESUS HERNANDEZ GARCIA",
+      "registrationStatus": "CANCELADA"
+    },
+    "economicActivities": [],
+    "establishmentOwner": []
+  },
+  "signature": {
+    "dateTime": "October 6, 2025 3:11 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "2VTPR"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>

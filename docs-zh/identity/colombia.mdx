@@ -1,0 +1,128 @@
+---
+id: colombia
+title: 🇨🇴 哥伦比亚公民（CC / PPT）
+description: 使用 CC 或 PPT 号码核验哥伦比亚公民身份，对接 Registraduría 等官方数据源。
+slug: /identity/colombia
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 哥伦比亚公民身份核验
+
+Verifik 身份核验 API 可对接哥伦比亚官方记录，核验 **CC**（国民身份证）或 **PPT**（临时保护许可），简化 KYC 与合规流程。
+
+## 此 API 验证哪些内容？
+
+- **姓名与证件号**：**CC** 或 **PPT**（本端点不支持 **CE**，请使用专用 CE 文档）。
+- **证件状态**：对照民事登记等官方来源。
+- **身份匹配**：确认返回信息与所查证件号一致。
+
+## API 参考
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/co/cedula
+```
+
+亦可通过 **`POST`** 提交相同字段。`GET https://verifik.app/v2/co/cedula` 为同一路径。
+
+### 标头
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | **`CC`** 或 **`PPT`**（非 `NIT`）。 |
+| `documentNumber` | string | yes | **5–10** 位字符，不含空格或句点。 |
+
+### 请求
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/cedula", {
+	params: { documentType: "CC", documentNumber: "123456789" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["JULIO", "CESAR", "CABANA", "CONTRERAS"],
+		"documentNumber": "1121329662",
+		"documentType": "CC",
+		"firstName": "JULIO CESAR",
+		"fullName": "JULIO CESAR CABANA CONTRERAS",
+		"lastName": "CABANA CONTRERAS"
+	},
+	"signature": {
+		"dateTime": "October 8, 2025 8:21 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "I70IL"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- **`documentType=CC`**：国民身份证；**`PPT`**：临时保护许可。
+- 扩展字段（签发日、性别等）请使用 [国民身份证（扩展）](/verifik-zh/identity/colombia-full-id)。

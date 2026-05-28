@@ -1,0 +1,167 @@
+---
+id: vehicle-validation-colombia-general-query-of-simit-by-license-plate
+title: 🇨🇴 SIMIT — 번호판 기반 일반 조회
+description: 번호판별 SIMIT 종합 데이터 서비스.
+sidebar_label: SIMIT — 번호판 일반 조회
+slug: /vehicle-validation/colombia/general-query-of-simit-by-license-plate
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### 엔드포인트
+
+```
+https://api.verifik.co/v2/co/simit/consultar/placa
+```
+
+본 서비스는 콜롬비아 내 특정 차량 번호판과 연결된 교통 과태료 및 통고에 대한 상세 정보를 조회할 수 있도록 합니다. 응답에는 위반 종류, 과태료 금액, 통고의 현재 상태 등 각 통고에 대한 종합 정보가 포함됩니다.
+
+### 헤더(Headers)
+
+| 이름           | 값                  |
+| -------------- | ------------------- |
+| Accept         | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 매개변수(Parameters)
+
+| 이름     | 형식    | 필수 | 설명                                            |
+| -------- | ------- | ---- | ----------------------------------------------- |
+| `plate`  | string  | 예   | 조회할 번호판. 공백이나 점 없이 입력합니다.     |
+
+### 요청(Request)
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/simit/consultar/placa", {
+  params: { plate: "ABC123" },
+  headers: { 
+    Accept: "application/json", 
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` 
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/simit/consultar/placa"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답(Response)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "value": {
+    "value": {
+      "data": {
+        "multas": [
+          {
+            "infractor": {
+              "tipoDocumento": "Cédula",
+              "numeroDocumento": "123456789",
+              "nombre": "C**",
+              "apellido": "B**",
+              "idTipoDocumento": 1
+            },
+            "valor": 344730,
+            "placa": "RDL805",
+            "infracciones": [
+              {
+                "codigoInfraccion": "C35",
+                "descripcionInfraccion": "No realizar la revisión técnico-mecánica en el plazo legal establecido o cuando el vehiculo no se encuentre en adecuadas condiciones técnico-mecánicas o de emisión de gases, aun cuando porte los certificados correspondientes.",
+                "valorInfraccion": 344730
+              }
+            ],
+            "valorPagar": 344730,
+            "departamento": "Cundinamarca",
+            "organismoTransito": "Ricaurte",
+            "fechaComparendo": "23/02/2016 00:00:00",
+            "fechaResolucion": "12/12/2022",
+            "numeroComparendo": "25612001000012662173",
+            "estadoComparendo": "Pendiente"
+          }
+        ],
+        "cursos": [
+          {
+            "numeroMulta": "00001234",
+            "fechaCurso": "21/12/2011",
+            "numeroCurso": "60462",
+            "ciudadRealizacion": "Medellin",
+            "centroInstruccion": "CIA AL INFRACTOR DE TRANSITO",
+            "estado": "No aplicado",
+            "certificado": "60462"
+          }
+        ],
+        "acuerdosPago": [
+          {
+            "resolucion": "324",
+            "fechaResolucion": "16/02/2018",
+            "estado": "Acuerdo de pago",
+            "valorAcuerdo": 837716,
+            "pendiente": 837716,
+            "totalPagar": 837716,
+            "secretaria": "Jamundi",
+            "departamento": "Valle del Cauca"
+          }
+        ],
+        "totalMultasPagar": 31,
+        "cantMultasPagar": 0,
+        "totalAcuerdosPagar": 11,
+        "cantAcuerdosPagar": 0
+      },
+      "signature": {"message": "Certified by Verifik.co", "dateTime": "August 31, 2022 4:16 PM"}
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 비고
+
+- 본 종합 서비스는 과태료, 교육 과정, 분할 납부 합의를 포함한 차량의 모든 SIMIT 데이터를 제공합니다.
+- "Multas"에는 차량 번호판과 연결된 교통 위반 상세 정보가 포함됩니다.
+- "Cursos"는 차량 위반과 관련된 교통 교육 과정을 보여 줍니다.
+- "AcuerdosPago"는 미납 과태료에 대한 분할 납부 합의를 표시합니다.
+- 금액은 콜롬비아 페소(COP)로 제공됩니다.

@@ -1,0 +1,129 @@
+---
+id: certificates-colombia-ministerio-trabajo-v3
+title: 🇨🇴 콜롬비아 — 노동부 증명서（v3）
+description: 콜롬비아 노동부 증명서(고소 작업 curso de alturas 등)를 GET /v3/co/ministerio-de-trabajo/certificados로 조회합니다.
+slug: /certificates/colombia-ministerio-trabajo-certificados-v3
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇴 콜롬비아 — 노동부 증명서（v3）
+
+본 엔드포인트는 콜롬비아 국민의 **노동부** 증명서 정보(**고소 작업·직업 안전** 교육 *curso de alturas* 등)를 반환합니다. Verifik **보고타 마이크로서비스**를 통해 제공됩니다. **v3**는 마이크로서비스 **전체 페이로드**를 반환하며, 증명서 행은 **`records`**(상류 `constances` 매핑)에 포함됩니다.
+
+**고용 컴플라이언스**, **하도급업체 온보딩**, **작업장 안전** 확인에 사용할 수 있습니다.
+
+## 반환 데이터
+
+- **`records`** — 통합이 반환하는 증명서/constance 행(상류 `constances`에서 이름 변경)
+- `data`의 마이크로서비스 추가 필드(구조는 소스에 따라 달라질 수 있음)
+- Verifik **서명**이 포함된 응답
+
+## API 레퍼런스
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados
+```
+
+**GET**만 지원(**v3** 라우터에 POST 없음). 쿼리: **`documentType`**, **`documentNumber`**.
+
+### 헤더(Headers)
+
+| 이름 | 값 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수(Parameters)
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | **`CC`**, **`CE`**, **`PPT`**, **`PA`** 중 하나. |
+| `documentNumber` | string | yes | 공백·구두점 없이 입력하는 신분증 번호. |
+
+### 요청(Request)
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답(Response)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"records": []
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, CE, PPT, PA]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 비고
+
+- 고소 작업 정보가 없는 경우 상류에서 **404**(예: *「No registra información en Curso de Alturas.」*)가 반환될 수 있습니다.
+- **`v2`** 엔드포인트 **`/v2/co/ministerio-de-trabajo/certificados`**는 동일 마이크로서비스를 사용하지만 더 좁은 페이로드를 반환합니다. **`records`**와 전체 객체가 필요하면 **v3**를 권장합니다.
+- 마이크로서비스 토큰·가용성은 환경에 따라 다릅니다. 장애 시 **5xx**가 발생할 수 있습니다.
+- 결과는 콜롬비아 법 및 내부 정책에 따라 개인·노동 데이터로 취급하세요.

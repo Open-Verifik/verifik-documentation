@@ -1,0 +1,126 @@
+---
+id: vehicle-validation-colombia-medellin-vehicle-fines
+title: 🇨🇴 メデジン - 交通反則
+description: GET /v2/co/medellin/vehicle/fines でメデジン登録車両の地方交通反則と comparendo を照会します。
+sidebar_label: 🇨🇴 メデジン - 交通反則
+slug: /vehicle-validation/colombia/medellin-vehicle-fines
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### エンドポイント
+
+```
+https://api.verifik.co/v2/co/medellin/vehicle/fines
+```
+
+**コロンビア・メデジン**のナンバーに対する**地方交通反則と comparendo**を返します。違反行、金額、違反者情報（利用可能な場合）を含みます。**市政コンプライアンス**、**フリート管理**、メデジン mobility 記録に限定した**デューデリジェンス**に利用できます。
+
+主なフィールド: **`plate`**、**`informacionComparendo`**、**`valorTotalAdeudado`** および関連配列。
+
+### ヘッダー
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `plate` | string | Yes | ナンバー（5–8 文字）。スペースやピリオドなし。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/medellin/vehicle/fines", {
+  params: { plate: "ABC10001" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/medellin/vehicle/fines"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC10001"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "ABC10001",
+    "informacionComparendo": [
+      {
+        "numeroComparendo": "MDL202400000001",
+        "placa": "ABC10001",
+        "fecha": "15/01/2024",
+        "valor": 180000,
+        "estado": "Pendiente",
+        "codigoInfraccion": "C29",
+        "descripcionInfraccion": "Transitar en sitios prohibidos."
+      }
+    ],
+    "valorTotalAdeudado": 180000,
+    "valorTotalPago": 0
+  },
+  "signature": {
+    "dateTime": "January 16, 2024 3:44 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"plate\" is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 備考
+
+- **Sandbox:** ナンバー **`ABC10001`**–**`ABC10010`** は固定フィクスチャ; **`ERR404`** → **404**。
+- **メデジンのみ**対象; 全国 SIMIT は [SIMIT - 反則](/vehicle-validation/colombia/simit-fines) を参照。
+- 市政ポータルの**可用性**は変動する場合があり、障害時は **5xx** エラーになることがあります。

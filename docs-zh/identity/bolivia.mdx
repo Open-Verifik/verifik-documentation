@@ -1,0 +1,116 @@
+---
+id: bolivia
+title: 🇧🇴 玻利维亚公民（CI）
+description: 使用 CI 号码与出生日期核验玻利维亚公民身份，对接官方数据源，适用于 KYC 与合规。
+slug: /identity/bolivia
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 玻利维亚身份核验
+
+Verifik 身份核验 API 可对接玻利维亚官方记录，核验公民身份，简化 KYC、防范欺诈并满足合规要求。
+
+## 此 API 验证哪些内容？
+
+- **姓名与 CI 号码**：支持 *Cédula de Identidad*（CI）。
+- **身份匹配**：确认姓名与 CI 号码一致。
+- **出生日期**：须与官方记录一致。
+
+## API 参考
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/bo/cedula
+```
+
+使用 **`documentType`**=`CI`、**`documentNumber`**、**`dateOfBirth`**（`DD/MM/YYYY`）查询玻利维亚公民身份。
+
+### 标头
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | 仅 **`CI`**。 |
+| `documentNumber` | string | yes | CI 证件号码。 |
+| `dateOfBirth` | string | yes | 出生日期，格式 **`DD/MM/YYYY`**。 |
+
+### 请求
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/bo/cedula", {
+	params: { documentType: "CI", documentNumber: "123456789", dateOfBirth: "15/03/1990" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/bo/cedula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CI", "documentNumber": "123456789", "dateOfBirth": "15/03/1990"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CI",
+		"documentNumber": "123456789",
+		"firstName": "María",
+		"lastName": "González",
+		"fullName": "María González",
+		"dateOfBirth": "1990-03-15",
+		"status": "valid"
+	},
+	"signature": { "message": "Certified by Verifik.co", "dateTime": "January 16, 2024 3:44 PM" },
+	"id": "BO001"
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+	"message": "Invalid document number",
+	"code": "INVALID_DOCUMENT"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- 出生日期为必填项，须与 CI 记录一致。

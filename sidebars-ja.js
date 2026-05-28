@@ -28,8 +28,23 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-control-card",
+							label: "🇨🇴 ボゴタ - タクシー（管理カード）",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-vehicle-fines",
 							label: "🇨🇴 ボゴタ — 車両反則金",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-vehicle-fines-check-in-bogota-colombia",
+							label: "🇨🇴 ボゴタ — 反則金照会",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-vehicle-fines-check-in-bogot-tta-colombia",
+							label: "🇨🇴 ボゴタ — 反則金（TTA）",
 						},
 						{
 							type: "doc",
@@ -53,8 +68,18 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-values-by-plate-fasecolda",
+							label: "🇨🇴 Fasecolda — 価格（プレート）",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/colombia-fasecolda-vehicle-by-code",
 							label: "🇨🇴 Fasecolda — コード別車両価格",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-vehicle-values-by-code-fasecolda",
+							label: "🇨🇴 Fasecolda — 価格（コード）",
 						},
 						{
 							type: "doc",
@@ -63,8 +88,28 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-sinister-verification-fasecolda",
+							label: "🇨🇴 Fasecolda — 請求履歴（別名）",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license",
 							label: "🇨🇴 RUNT — 運転免許",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-driver-s-license",
+							label: "🇨🇴 RUNT — 運転免許証",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-drivers-license",
+							label: "🇨🇴 RUNT — 運転免許（別名）",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-drivers-license-verification",
+							label: "🇨🇴 RUNT — 免許検証",
 						},
 						{
 							type: "doc",
@@ -73,13 +118,43 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-colombian-vehicle-information-service",
+							label: "🇨🇴 RUNT — 車両情報サービス",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-complete-vehicle-with-historical-records-by-license-plate-and-identification-card",
+							label: "🇨🇴 RUNT — 履歴付き車両",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-colombian-vehicle",
+							label: "🇨🇴 RUNT — コロンビア車両",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-vehicle-by-plate-and-identification-card-only",
+							label: "🇨🇴 RUNT — プレート+身分証",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified",
 							label: "🇨🇴 RUNT — 車両（ナンバー・簡易）",
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-records-by-plate-number-simplified",
+							label: "🇨🇴 RUNT — 簡易車両記録",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo",
 							label: "🇨🇴 RUNT — 車両(基本)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-vehicle-s-soat-and-rtm-by-plate-and-identification-document",
+							label: "🇨🇴 RUNT — SOAT/RTM",
 						},
 						{
 							type: "doc",
@@ -90,6 +165,11 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-general-query-by-plate",
 							label: "🇨🇴 SIMIT - ナンバープレートによる一般照会",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-general-query-of-simit-by-license-plate",
+							label: "🇨🇴 SIMIT — プレート一般照会",
 						},
 						{
 							type: "doc",
@@ -113,8 +193,23 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-general-query-of-simit-by-identification-document",
+							label: "🇨🇴 SIMIT — 証明書一般照会",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-fines",
 							label: "🇨🇴 SIMIT - 反則金",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-comparendo-details",
+							label: "🇨🇴 SIMIT - 違反切符詳細",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-medellin-vehicle-fines",
+							label: "🇨🇴 メデジン - 交通違反",
 						},
 						{
 							type: "doc",
@@ -128,6 +223,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-information-system-for-drivers-transporting-dangerous-goods",
+							label: "🇨🇴 SISCONMP — 危険物運搬",
+						},
+						{
+							type: "doc",
 							id: "identity/colombia-situacion-militar",
 							label: "🇨🇴 兵役状況",
 						},
@@ -135,6 +235,10 @@ const sidebars = {
 				},
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 スペイン" },
 				{ type: "doc", id: "vehicle-validation/chile", label: "🇨🇱 チリ — 車両（ナンバー）" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-transport-vehicle", label: "🇨🇱 チリ — 公共交通車両" },
+				{ type: "doc", id: "vehicle-validation/ecuador", label: "🇪🇨 エクアドル — 車両罰金" },
+				{ type: "doc", id: "vehicle-validation/bolivia", label: "🇧🇴 ボリビア — 車両情報" },
+				{ type: "doc", id: "vehicle-validation/argentina", label: "🇦🇷 アルゼンチン — 車両情報" },
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 パラグアイ — 車両情報" },
 				{
 					type: "category",
@@ -178,11 +282,6 @@ const sidebars = {
 				{ type: "doc", id: "identity/canada", label: "🇨🇦 カナダ — 運転免許（BC・オンタリオ）" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 コスタリカ国民（CCCR）" },
 				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 国民ID（拡張）" },
-				{
-					type: "doc",
-					id: "identity-validation/colombia/colombian-cedula-premium",
-					label: "🇨🇴 国民身分証プレミアム(CC)",
-				},
 				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 選挙管理庁 有効性証明" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 PEP（特別滞在）" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 外国人 CE" },
@@ -196,11 +295,16 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile", label: "🇨🇱 チリ国民（RUN）" },
 				{ type: "doc", id: "identity/chile-taxpayer", label: "🇨🇱 チリ — 納税者（RUT）" },
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 チリ — 身分証の有効性確認" },
+				{ type: "doc", id: "identity/identity-ip-lookup", label: "🌐 IP ジオロケーション" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 パナマ国民（CCPA）" },
+				{ type: "doc", id: "identity/argentina", label: "🇦🇷 アルゼンチン — 国民身分証" },
+				{ type: "doc", id: "identity/argentina-extra", label: "🇦🇷 アルゼンチン — 拡張本人確認" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 パラグアイ国民（CIC）" },
 				{ type: "doc", id: "identity/identity-brazil", label: "🇧🇷 ブラジル国民（CPF）" },
 				{ type: "doc", id: "identity/venezuela", label: "🇻🇪 ベネズエラ国民（CCVE）" },
 				{ type: "doc", id: "identity/venezuela-foreigner-id", label: "🇻🇪 ベネズエラ — 外国人身分証（CEVE）" },
+				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 エクアドル国民（CCEC）" },
+				{ type: "doc", id: "identity/bolivia", label: "🇧🇴 ボリビア国民（CI）" },
 				{ type: "doc", id: "identity/peru", label: "🇵🇪 ペルー国民（DNI）" },
 				{ type: "doc", id: "identity/peru-foreigner-id", label: "🇵🇪 ペルー外国人CE" },
 				{ type: "doc", id: "identity/peru-full-id", label: "🇵🇪 ペルーDNI（拡張）" },
@@ -222,7 +326,23 @@ const sidebars = {
 					id: "business-validation/rues-complete-v3",
 					label: "🇨🇴 コロンビア — RUES 企業フル",
 				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-colombia-rues-v3",
+					label: "🇨🇴 コロンビア — RUES 企業照会 (v3)",
+				},
+				{
+					type: "doc",
+					id: "business-validation/colombia-dian-verification",
+					label: "🇨🇴 コロンビア — DIAN 税務確認",
+				},
+				{
+					type: "doc",
+					id: "business-validation/colombia-legal-invoicer-verification",
+					label: "🇨🇴 コロンビア — DIAN 法定請求者",
+				},
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 パナマ企業（RUC）" },
+				{ type: "doc", id: "business-validation/argentina", label: "🇦🇷 アルゼンチン — 法人検証" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 パラグアイ企業（RUC）" },
 				{
 					type: "doc",
@@ -237,6 +357,23 @@ const sidebars = {
 					label: "🇲🇽 メキシコ法人検証 (FME)",
 				},
 				{ type: "doc", id: "business-validation/united-states", label: "🇺🇸 アメリカ法人（SEC EDGAR）" },
+			],
+		},
+		{
+			type: "category",
+			label: "証明書",
+			collapsible: false,
+			items: [
+				{
+					type: "doc",
+					id: "certificates/certificates-colombia-ministerio-trabajo-v3",
+					label: "🇨🇴 労働省証明書（v3）",
+				},
+				{
+					type: "doc",
+					id: "certificates/certificates-sena-certificates",
+					label: "🇨🇴 SENA 証明書",
+				},
 			],
 		},
 		{
@@ -284,6 +421,11 @@ const sidebars = {
 				{ type: "doc", id: "background-check/colombia-inpec", label: "🇨🇴 INPEC" },
 				{ type: "doc", id: "background-check/colombia-sisben-score", label: "🇨🇴 SISBEN" },
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 RNMC 是正措置" },
+				{
+					type: "doc",
+					id: "background-check/colombia/background-check-colombia-verify-police-compliance-with-corrective-measures",
+					label: "🇨🇴 RNMC — 是正措置照会",
+				},
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 会計検査院証明" },
 				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 警察の犯罪経歴" },
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 公共契約" },

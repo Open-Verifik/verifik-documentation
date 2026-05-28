@@ -1,0 +1,126 @@
+---
+id: vehicle-validation-colombia-medellin-vehicle-fines
+title: 🇨🇴 메델린 - 교통 벌금
+description: GET /v2/co/medellin/vehicle/fines로 메델린 등록 차량의 지역 교통 벌금 및 고지서를 조회합니다.
+sidebar_label: 🇨🇴 메델린 - 교통 벌금
+slug: /vehicle-validation/colombia/medellin-vehicle-fines
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### 엔드포인트
+
+```
+https://api.verifik.co/v2/co/medellin/vehicle/fines
+```
+
+**콜롬비아 메델린** 번호판에 대한 **지역 교통 벌금 및 comparendo**를 반환합니다. 위반 내역, 금액, 위반자 정보(가능한 경우)를 포함합니다. **시정 준수**, **차량 관리**, 메델린 mobility 기록에 한정된 **실사**에 사용하세요.
+
+주요 필드: **`plate`**, **`informacionComparendo`**, **`valorTotalAdeudado`** 및 관련 배열.
+
+### 헤더
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `plate` | string | Yes | 번호판(5–8자). 공백이나 점 없이. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/medellin/vehicle/fines", {
+  params: { plate: "ABC10001" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/medellin/vehicle/fines"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC10001"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "ABC10001",
+    "informacionComparendo": [
+      {
+        "numeroComparendo": "MDL202400000001",
+        "placa": "ABC10001",
+        "fecha": "15/01/2024",
+        "valor": 180000,
+        "estado": "Pendiente",
+        "codigoInfraccion": "C29",
+        "descripcionInfraccion": "Transitar en sitios prohibidos."
+      }
+    ],
+    "valorTotalAdeudado": 180000,
+    "valorTotalPago": 0
+  },
+  "signature": {
+    "dateTime": "January 16, 2024 3:44 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"plate\" is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- **Sandbox:** 번호판 **`ABC10001`**–**`ABC10010`**은 고정 fixture; **`ERR404`** → **404**.
+- **메델린만** 해당; 전국 SIMIT는 [SIMIT - 벌금](/vehicle-validation/colombia/simit-fines) 참조.
+- 시청 포털 **가용성**은 변동될 수 있으며, 장애 시 **5xx** 오류가 발생할 수 있습니다.

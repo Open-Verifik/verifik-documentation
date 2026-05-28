@@ -1,0 +1,151 @@
+---
+id: certificates-sena-certificates
+title: コロンビア — SENA 証明書
+description: GET /v2/co/sena/certificados で SENA（Servicio Nacional de Aprendizaje）の研修・認定記録を照会します。
+slug: /certificates/sena-certificates
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# コロンビア — SENA 証明書
+
+本エンドポイントは、コロンビア国民の **SENA**（Servicio Nacional de Aprendizaje）**研修・認定記録**を返します。SENA 公式デジタル証明書ポータルから取得します。各行にはプログラム名、認定種別、発行日、利用可能な場合はデジタル証明書のダウンロード URL が含まれます。
+
+**雇用スクリーニング**、**スキル検証**、**教育コンプライアンス**確認に利用できます。
+
+## 返却データ
+
+- **`data`** 内の **証明書行の配列**（**`record`**、**`title`**、**`type`**、**`program`**、**`certificationDate`**、**`certificationSignature`**、**`certificateDownload`**）
+- Verifik **署名**付きレスポンス
+
+## API リファレンス
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/sena/certificados
+```
+
+**GET** のみ。**クエリパラメータ**を使用。
+
+クエリ: **documentType**、**documentNumber**。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| documentType | string | yes | **CC**、**TI**、**CE**、**PA**、**RC**、**PEP** のいずれか。 |
+| documentNumber | string | yes | スペース・句読点なしの証番号。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/sena/certificados", {
+	params: {
+		documentType: "CC",
+		documentNumber: "1234567890",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/sena/certificados"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1234567890"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": [
+		{
+			"record": "1",
+			"title": "TÉCNICO EN SISTEMAS",
+			"type": "TITULO",
+			"program": "ANALISIS Y DESARROLLO DE SOFTWARE",
+			"certificationDate": "15/06/2019",
+			"certificationSignature": "SIG-EXAMPLE",
+			"certificateDownload": "https://certificados.sena.edu.co/CertificadoDigital/cert-example.pdf"
+		}
+	],
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 機能
+
+- **証種**: **CC**、**TI**、**CE**、**PA**、**RC**、**PEP**
+- **GET** クエリパラメータ
+- 複数の SENA 記録がある場合は **複数行** を返却
+
+## ユースケース
+
+- **技術スキル**・**職業訓練**の検証
+- **雇用**デューデリジェンス・**請負業者**オンボーディング
+- SENA 資格が必要な職種の **教育コンプライアンス**
+
+### 備考
+
+- SENA が証書 **なし** の場合 **404**（上流: *「No se ha encontrado certificados」*）。
+- **サンドボックス**: `documentNumber` **`10000001`**–**`10000010`** で固定サンプル、**`90040401`** で **404**。
+- ミドルウェアは現状 **CC** と **NIT** のみ検証。カタログの他証種は SENA ポータル依存。
+- ポータル **可用性**・**CAPTCHA** は環境依存。**5xx** の可能性あり。
+- コロンビア法および社内ポリシーに従い **個人・教育** データとして扱ってください。

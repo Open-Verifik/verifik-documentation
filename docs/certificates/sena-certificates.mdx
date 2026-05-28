@@ -1,24 +1,182 @@
 ---
 id: certificates-sena-certificates
-title: SENA Certificates
-description: Information about SENA (Servicio Nacional de Aprendizaje) certificates
+title: Colombia — SENA Certificates
+description: Verify SENA (Servicio Nacional de Aprendizaje) training and certification records via GET /v2/co/sena/certificados.
 slug: /certificates/sena-certificates
+keywords:
+  - v2/co/sena/certificados
+  - /v2/co/sena/certificados
+  - v2 co sena certificados
+  - api/co/sena/certificados
+  - /api/co/sena/certificados
+  - api co sena certificados
+  - api.verifik.co/v2/co/sena/certificados
+  - 'https://api.verifik.co/v2/co/sena/certificados'
+  - GET v2/co/sena/certificados
+  - GET /v2/co/sena/certificados
+  - co/sena/certificados
+  - /co/sena/certificados
+  - sena/certificados
+  - /sena/certificados
 ---
 
-# SENA Certificates
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombia SENA Certificates API | Verifik",
+	description:
+		"Query SENA (Servicio Nacional de Aprendizaje) training and certification records for a Colombian individual using document type and number.",
+	articleSection: "API Documentation",
+	keywords: "Colombia, SENA, certificados, training, Verifik API",
+	about: {
+		"@type": "Thing",
+		name: "Certificates API",
+	},
+};
 
-Information about certificates from the Servicio Nacional de Aprendizaje (SENA) in Colombia.
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
-## Description
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-SENA certificates are documents that certify the training and education received through the Servicio Nacional de Aprendizaje in Colombia.
+# Colombia — SENA Certificates
+
+This endpoint returns **SENA** (Servicio Nacional de Aprendizaje) **training and certification records** for a Colombian individual, sourced from the official SENA digital certificate portal. Each row describes a program title, certification type, completion date, and a link to download the digital certificate when available.
+
+Use it for **employment screening**, **skills verification**, and **education compliance** checks where this registry is allowed.
+
+## What this API returns
+
+- An **array of certificate rows** under **`data`**, each with fields such as **`record`**, **`title`**, **`type`**, **`program`**, **`certificationDate`**, **`certificationSignature`**, and **`certificateDownload`**
+- A **signed** Verifik response
+
+## API reference
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/sena/certificados
+```
+
+**GET** with **query parameters** only.
+
+Query summary: **`documentType`**, **`documentNumber`**.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | One of **`CC`**, **`TI`**, **`CE`**, **`PA`**, **`RC`**, **`PEP`**. |
+| `documentNumber` | string | yes | Document number **without** spaces or punctuation. |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/sena/certificados", {
+	params: {
+		documentType: "CC",
+		documentNumber: "1234567890",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/sena/certificados"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1234567890"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": [
+		{
+			"record": "1",
+			"title": "TÉCNICO EN SISTEMAS",
+			"type": "TITULO",
+			"program": "ANALISIS Y DESARROLLO DE SOFTWARE",
+			"certificationDate": "15/06/2019",
+			"certificationSignature": "SIG-EXAMPLE",
+			"certificateDownload": "https://certificados.sena.edu.co/CertificadoDigital/cert-example.pdf"
+		}
+	],
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
 
 ## Features
 
-- **Certificate Verification**: Verification of authenticity of SENA certificates
-- **Training Information**: Access to information about training programs
-- **Validation**: Certificate validation process
+- **Document types**: **CC**, **TI**, **CE**, **PA**, **RC**, **PEP**
+- **GET** query parameters
+- Returns **multiple certificate rows** when the person has more than one SENA record
 
-## Resources
+## Use cases
 
-For more information about SENA certificates, contact our support team.
+- **Technical skills** and **vocational training** verification
+- **Employer** due diligence and **contractor** onboarding
+- **Education compliance** for roles requiring SENA credentials
+
+### Notes
+
+- When SENA reports **no certificates** for the document, the integration may return **404** (upstream message: *“No se ha encontrado certificados”*).
+- **Sandbox mode**: use `documentNumber` **`10000001`**–**`10000010`** for fixed sample rows; **`90040401`** returns **404**.
+- The route validator currently accepts **`CC`** and **`NIT`** at the middleware layer; other document types listed in the catalog may depend on upstream SENA portal support.
+- SENA portal **availability** and **captcha** handling are environment-dependent; outages may return **5xx** errors.
+- Treat results as **personal / education** data under Colombian law and your policies.

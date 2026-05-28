@@ -1,0 +1,155 @@
+---
+id: certificates-sena-certificates
+title: Colombie — Certificats SENA
+description: Vérifiez les formations et certifications SENA (Servicio Nacional de Aprendizaje) via GET /v2/co/sena/certificados.
+slug: /certificates/sena-certificates
+keywords:
+  - v2/co/sena/certificados
+  - GET v2/co/sena/certificados
+  - api.verifik.co/v2/co/sena/certificados
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombie — Certificats SENA
+
+Ce point d'accès renvoie les **formations et certifications SENA** (Servicio Nacional de Aprendizaje) pour une personne en Colombie, issues du portail officiel de certificats numériques du SENA. Chaque ligne décrit le titre du programme, le type de certification, la date d'obtention et un lien de téléchargement du certificat numérique le cas échéant.
+
+Utilisez-le pour le **contrôle d'embauche**, la **vérification des compétences** et la **conformité éducative** lorsque ce registre est autorisé.
+
+## Ce que renvoie l'API
+
+- Un **tableau de lignes de certificats** sous **`data`**, avec **`record`**, **`title`**, **`type`**, **`program`**, **`certificationDate`**, **`certificationSignature`**, **`certificateDownload`**
+- Une réponse **signée** par Verifik
+
+## Référence API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/sena/certificados
+```
+
+**GET** avec **paramètres de requête** uniquement.
+
+Résumé : **`documentType`**, **`documentNumber`**.
+
+### En-têtes
+
+| Nom | Valeur |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Paramètres
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | **`CC`**, **`TI`**, **`CE`**, **`PA`**, **`RC`**, **`PEP`**. |
+| `documentNumber` | string | yes | Numéro de document **sans** espaces ni ponctuation. |
+
+### Requête
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/sena/certificados", {
+	params: {
+		documentType: "CC",
+		documentNumber: "1234567890",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/sena/certificados"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1234567890"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": [
+		{
+			"record": "1",
+			"title": "TÉCNICO EN SISTEMAS",
+			"type": "TITULO",
+			"program": "ANALISIS Y DESARROLLO DE SOFTWARE",
+			"certificationDate": "15/06/2019",
+			"certificationSignature": "SIG-EXAMPLE",
+			"certificateDownload": "https://certificados.sena.edu.co/CertificadoDigital/cert-example.pdf"
+		}
+	],
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Fonctionnalités
+
+- **Types de document** : **CC**, **TI**, **CE**, **PA**, **RC**, **PEP**
+- Paramètres de requête **GET**
+- **Plusieurs lignes** si la personne a plusieurs enregistrements SENA
+
+## Cas d'usage
+
+- Vérification des **compétences techniques** et de la **formation professionnelle**
+- **Due diligence** employeur et intégration de **sous-traitants**
+- **Conformité éducative** pour les postes exigeant des credentials SENA
+
+### Remarques
+
+- Si le SENA signale **aucun certificat**, l'intégration peut renvoyer **404** (*« No se ha encontrado certificados »*).
+- **Mode sandbox** : `documentNumber` **`10000001`**–**`10000010`** pour des exemples fixes ; **`90040401`** → **404**.
+- Le validateur accepte actuellement **CC** et **NIT** au middleware ; les autres types dépendent du portail SENA.
+- **Disponibilité** du portail et **captcha** selon l'environnement ; risque de **5xx**.
+- Traitez les résultats comme **données personnelles / éducatives** selon la loi colombienne et vos politiques.

@@ -1,0 +1,199 @@
+---
+id: argentina
+title: 🇦🇷 阿根廷企业（CUIT）
+description: 使用 Verifik 的 KYB API 核验阿根廷企业。直接对接官方数据源，在数秒内完成企业数据核验。
+slug: /business-validation/argentina
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "阿根廷企业核验（CUIT）| Verifik KYB API",
+	description:
+		"使用 Verifik 的 KYB API 核验阿根廷企业。直接对接官方数据源，在数秒内完成企业数据核验。",
+	articleSection: "API 文档",
+	keywords: "企业核验, KYB API, 阿根廷 CUIT 核验, 公司核验, 官方数据源, 反欺诈",
+	about: {
+		"@type": "Thing",
+		name: "企业核验 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 阿根廷企业核验
+
+Verifik 的企业核验 API 可基于政府官方数据对阿根廷企业进行身份核实。该接口旨在简化您的 KYB（了解您的企业）流程、防范欺诈，并轻松满足合规要求。
+
+我们专为需要快速、安全且自动化确认企业、合作伙伴或供应商合法性的组织打造此集成。
+
+## 此 API 验证哪些内容？
+
+我们的 API 直接对接官方记录，验证以下内容：
+
+-   **公司名称与 CUIT 编号**：支持 *Código Único de Identificación Tributaria*（CUIT）。
+-   **企业信息**：返回公司名称、法形態、签约日期及经济活动。
+-   **经济活动**：提供主要与次要活动代码及描述。
+-   **企业匹配**：确认企业信息与 CUIT 编号相符。
+
+通过验证这些信息，您可以确信对接的企业真实合法且依法登记，从而显著降低欺诈风险并保障合规。
+
+## API 参考
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/ar/company
+```
+
+使用 **`documentType`** `CUIT` 与 **`documentNumber`** 查询阿根廷法人。返回登记字段以支持 **KYB**、**供应商筛查**与 **合规**。
+
+### 请求头
+
+| 名称          | 取值                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### 参数
+
+| 名称             | 类型   | 必填 | 描述                                       |
+| ---------------- | ------ | ---- | ------------------------------------------ |
+| `documentType`   | string | 是 | 证件类型。允许值：`CUIT`。            |
+| `documentNumber` | string | 是 | 11 位 CUIT（不含连字符）。               |
+
+### 请求
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/ar/company", {
+  params: { documentType: "CUIT", documentNumber: "33516727409" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/ar/company"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CUIT", "documentNumber": "33516727409"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "businessName": "MERCADOLIBRE S.R.L.",
+        "contractDate": "15-07-1999",
+        "documentNumber": "30703088534",
+        "documentType": "CUIT",
+        "economicActivities": {
+            "mainActivity": [
+                {
+                    "code": "620900 (F-883)",
+                    "description": "SERVICIOS DE INFORMÁTICA N.C.P.",
+                    "startDate": "04/2015"
+                }
+            ],
+            "secondaryActivity": [
+                {
+                    "code": "731009 (F-883)",
+                    "description": "SERVICIOS DE PUBLICIDAD N.C.P.",
+                    "startDate": "12/2014"
+                },
+                {
+                    "code": "649999 (F-883)",
+                    "description": "SERVICIOS DE FINANCIACIÓN Y ACTIVIDADES FINANCIERAS N.C.P.",
+                    "startDate": "12/2014"
+                },
+                {
+                    "code": "829900 (F-883)",
+                    "description": "SERVICIOS EMPRESARIALES N.C.P.",
+                    "startDate": "12/2014"
+                },
+                {
+                    "code": "523090 (F-883)",
+                    "description": "SERVICIOS DE GESTIÓN Y LOGÍSTICA PARA EL TRANSPORTE DE MERCADERÍAS N.C.P.",
+                    "startDate": "08/2017"
+                }
+            ]
+        },
+        "legalForm": "S.R.L."
+    },
+    "signature": {
+        "dateTime": "October 10, 2025 10:26 AM",
+        "message": "Certified by Verifik.co"
+    },
+    "id": "AXR7A"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 说明
+
+- `documentNumber` 必须为 11 位数字，不含连字符。
+
+---
+
+## 常见用例
+
+-   **B2B onboarding**：在合作伙伴或供应商注册时即时核验企业。
+-   **金融服务**：在开户或处理交易前认证企业。
+-   **合规与尽职调查**：作为 KYC/KYB 工作流的一部分验证企业信息。
+-   **电商与市场平台**：在允许销售前确认企业合法性。
+
+## 官方来源与可靠性
+
+我们直接对接阿根廷官方政府数据源，确保您获得经过核验且最新的信息。
+所有查询均严格遵循安全与监管标准处理。
+
+## 主要优势
+
+-   **自动化合规**：在不增加合作伙伴摩擦的情况下简化 KYB 检查并防范欺诈。
+-   **即时结果**：数秒内完成核验，适用于实时企业 onboarding。
+-   **可信数据**：数据直接来源于官方记录。
+-   **易于集成**：通过 REST API 或兼容 SDK 轻松接入。
+
+## 合规与安全
+
+我们优先保障数据安全。Verifik 采用高级加密（HTTPS/TLS 1.3）与严格的隐私管理标准以确保机密性。
+服务 7×24 监控可用性，并提供基于角色的访问控制以保护团队访问安全。
+
+## 关于 Verifik
+
+Verifik 是拉丁美洲领先的 identity verification、合规与反欺诈平台。
+我们的 API 自动化 KYC、KYB、AML 与生物识别验证流程，将企业与哥伦比亚、墨西哥、秘鲁、智利、乌拉圭、阿根廷等官方数据源连接。
+

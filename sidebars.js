@@ -176,11 +176,6 @@ const sidebars = {
 				},
 				{
 					type: "doc",
-					id: "identity-validation/colombia/colombian-cedula-premium",
-					label: "🇨🇴 Colombia — National ID premium (CC)",
-				},
-				{
-					type: "doc",
 					id: "identity/colombia-registraduria-certificate",
 					label: "🇨🇴 Colombia - Registraduría certificate",
 				},
@@ -306,6 +301,12 @@ const sidebars = {
 					type: "doc",
 					id: "identity/venezuela-foreigner-id",
 					label: "🇻🇪 Venezuela - Foreigner ID",
+				},
+				{
+					type: "doc",
+					id: "identity/identity-ip-lookup",
+					label: "🌐 IP Geolocation Lookup",
+					key: "identity-ip-lookup",
 				},
 			],
 		},
@@ -445,6 +446,12 @@ const sidebars = {
 					key: "vehicle-chile",
 				},
 				{
+					type: "doc",
+					id: "vehicle-validation/chile/vehicle-validation-chile-transport-vehicle",
+					label: "🇨🇱 Chile - Public Transport Vehicle",
+					key: "vehicle-chile-transport-vehicle",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 Colombia",
 					collapsible: true,
@@ -467,6 +474,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-medellin-vehicle-fines",
+							label: "Medellín - Transit Fines",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-vehicle-accidentality",
 							label: "Vehicle Accidentality",
 						},
@@ -479,6 +491,11 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-plate",
 							label: "Bogotá - Taxi drivers by plate",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-control-card",
+							label: "Bogotá - Taxi drivers by control card",
 						},
 						{
 							type: "doc",
@@ -529,6 +546,11 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-fines",
 							label: "SIMIT - Fines",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-comparendo-details",
+							label: "SIMIT - Subpoena Details",
 						},
 						{
 							type: "doc",

@@ -1,0 +1,151 @@
+---
+id: certificates-sena-certificates
+title: 哥伦比亚 — SENA 证书
+description: 通过 GET /v2/co/sena/certificados 查询 SENA（Servicio Nacional de Aprendizaje）培训与认证记录。
+slug: /certificates/sena-certificates
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 哥伦比亚 — SENA 证书
+
+本接口返回哥伦比亚个人的 **SENA**（Servicio Nacional de Aprendizaje）**培训与认证记录**，数据来源于 SENA 官方数字证书门户。每行包含项目名称、认证类型、颁发日期及可用的数字证书下载链接。
+
+适用于 **用工筛查**、**技能核验** 及 **教育合规** 等场景（须符合当地法规与您的数据政策）。
+
+## 本接口返回内容
+
+- **`data`** 下的 **证书记录数组**，字段包括 **`record`**、**`title`**、**`type`**、**`program`**、**`certificationDate`**、**`certificationSignature`**、**`certificateDownload`**
+- 经 Verifik **签名** 的响应
+
+## API 参考
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/co/sena/certificados
+```
+
+本路由为 **GET**，仅使用 **查询参数**。
+
+查询摘要：**`documentType`**、**`documentNumber`**。
+
+### 请求头（Headers）
+
+| 名称 | 取值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数（Parameters）
+
+| 名称 | 类型 | 必填 | 描述 |
+| --- | --- | --- | --- |
+| `documentType` | string | 是 | 其一：**`CC`**、**`TI`**、**`CE`**、**`PA`**、**`RC`**、**`PEP`**。 |
+| `documentNumber` | string | 是 | 证件号码，不含空格或标点。 |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/sena/certificados", {
+	params: {
+		documentType: "CC",
+		documentNumber: "1234567890",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/sena/certificados"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1234567890"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": [
+		{
+			"record": "1",
+			"title": "TÉCNICO EN SISTEMAS",
+			"type": "TITULO",
+			"program": "ANALISIS Y DESARROLLO DE SOFTWARE",
+			"certificationDate": "15/06/2019",
+			"certificationSignature": "SIG-EXAMPLE",
+			"certificateDownload": "https://certificados.sena.edu.co/CertificadoDigital/cert-example.pdf"
+		}
+	],
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 特性
+
+- **证件类型**：**CC**、**TI**、**CE**、**PA**、**RC**、**PEP**
+- **GET** 查询参数
+- 当个人有多条 SENA 记录时返回 **多行证书**
+
+## 使用场景
+
+- **技术技能** 与 **职业培训** 核验
+- **雇主** 尽职调查与 **承包商** 入职
+- 要求 SENA 资质的 **教育合规**
+
+### 说明
+
+- 当 SENA 报告该证件 **无证书** 时，集成可能返回 **404**（上游消息：*“No se ha encontrado certificados”*）。
+- **沙盒模式**：`documentNumber` 使用 **`10000001`**–**`10000010`** 获取固定样例行；**`90040401`** 返回 **404**。
+- 路由验证器在 middleware 层目前接受 **`CC`** 与 **`NIT`**；目录中列出的其他证件类型取决于 SENA 门户支持。
+- SENA 门户 **可用性** 与 **验证码** 处理因环境而异；中断时可能返回 **5xx** 错误。
+- 请按哥伦比亚法律及您的政策，将结果作为 **个人 / 教育** 数据处理。

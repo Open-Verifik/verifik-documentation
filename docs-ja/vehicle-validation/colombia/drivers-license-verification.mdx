@@ -1,0 +1,127 @@
+---
+id: vehicle-validation-colombia-drivers-license-verification
+title: RUNT — 運転免許検証
+description: RUNT で運転免許の有効性・区分・違反履歴を検証します。
+sidebar_label: RUNT — 免許検証
+slug: /vehicle-validation/colombia/drivers-license-verification
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/runt/conductor
+```
+
+**RUNT** に登録された運転免許情報を、**`documentType`** と **`documentNumber`** で照会します。ステータス、カテゴリ、適性証明・申請履歴、違反の有無などが含まれる場合があります。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `documentType` | string | はい | 証明書種別。API 許可: **`CC`**, **`CE`**, **`PA`**, **`PPT`**. |
+| `documentNumber` | string | はい | 証番号（スペース・句点なし）。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/runt/conductor", {
+	params: { documentType: "CC", documentNumber: "123456789" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/runt/conductor"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CC",
+		"documentNumber": "63535709",
+		"fullName": "ARLETH PATRICIA RUEDA CORREA",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "B1",
+				"status": "ACTIVA",
+				"dueDate": "19/09/2034",
+				"expeditionDate": "19/09/2024"
+			}
+		],
+		"infractions": {
+			"tieneMultas": "NO"
+		}
+	},
+	"signature": {
+		"dateTime": "October 10, 2025 7:29 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "3R2V0"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType. missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注記
+
+- フィールド構成は **RUNT** の返却内容に依存します。
+- 本エンドポイントで検証される文書種別は **`CC`**, **`CE`**, **`PA`**, **`PPT`** です。

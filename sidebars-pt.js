@@ -11,6 +11,7 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				{ type: "doc", id: "vehicle-validation/chile", label: "🇨🇱 Chile — Veículo (placa)" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-transport-vehicle", label: "🇨🇱 Chile — Transporte público" },
 				{
 					type: "category",
 					label: "🇨🇴 Colômbia",
@@ -108,6 +109,16 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-comparendo-details",
+							label: "🇨🇴 SIMIT - Detalhes comparendo",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-medellin-vehicle-fines",
+							label: "🇨🇴 Medellín - Multas",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-resolutions",
 							label: "🇨🇴 SIMIT - Resoluções",
 						},
@@ -123,23 +134,116 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-control-card",
+							label: "🇨🇴 Bogotá - táxi por cartão de controle",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-vehicle-fines-check-in-bogota-colombia",
+							label: "🇨🇴 Bogotá — multas (consulta)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-vehicle-fines-check-in-bogot-tta-colombia",
+							label: "🇨🇴 Bogotá — multas (TTA)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-values-by-plate-fasecolda",
+							label: "🇨🇴 Fasecolda — valores por placa (v2)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-vehicle-values-by-code-fasecolda",
+							label: "🇨🇴 Fasecolda — valores por código (v2)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-sinister-verification-fasecolda",
+							label: "🇨🇴 Fasecolda — sinistros (v2)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-colombian-vehicle",
+							label: "🇨🇴 RUNT — veículo colombiano",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-colombian-vehicle-information-service",
+							label: "🇨🇴 RUNT — serviço info veículo",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-vehicle-by-plate-and-identification-card-only",
+							label: "🇨🇴 RUNT — placa + documento",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-complete-vehicle-with-historical-records-by-license-plate-and-identification-card",
+							label: "🇨🇴 RUNT — veículo completo + histórico",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-records-by-plate-number-simplified",
+							label: "🇨🇴 RUNT — registro simplificado por placa",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-vehicle-s-soat-and-rtm-by-plate-and-identification-document",
+							label: "🇨🇴 RUNT — SOAT e RTM",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-drivers-license",
+							label: "🇨🇴 RUNT — carteira (drivers-license)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-driver-s-license",
+							label: "🇨🇴 RUNT — carteira (driver-s-license)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-drivers-license-verification",
+							label: "🇨🇴 RUNT — verificação de carteira",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-general-query-of-simit-by-identification-document",
+							label: "🇨🇴 SIMIT — consulta geral (documento)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-general-query-of-simit-by-license-plate",
+							label: "🇨🇴 SIMIT — consulta geral (placa)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-information-system-for-drivers-transporting-dangerous-goods",
+							label: "🇨🇴 SISCONMP — carga perigosa",
+						},
+						{
+							type: "doc",
 							id: "identity/colombia-situacion-militar",
 							label: "🇨🇴 Situação militar",
 						},
 					],
 				},
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 Costa Rica — Veículo por placa" },
+				{ type: "doc", id: "vehicle-validation/ecuador", label: "🇪🇨 Equador — Multas de veículo" },
 				{
 					type: "doc",
 					id: "vehicle-validation/vehicle-validation-brazil",
 					label: "🇧🇷 Brasil — Veículo por placa",
 				},
+				{ type: "doc", id: "vehicle-validation/bolivia", label: "🇧🇴 Bolívia — Informações do veículo" },
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 Espanha" },
 				{
 					type: "doc",
 					id: "vehicle-validation/vehicle-validation-mexico-alt",
 					label: "🇲🇽 México",
 				},
+				{ type: "doc", id: "vehicle-validation/argentina", label: "🇦🇷 Argentina — veículo" },
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 Paraguai — Informações do veículo" },
 				{
 					type: "category",
@@ -179,13 +283,10 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile", label: "🇨🇱 Cidadão chileno (RUN)" },
 				{ type: "doc", id: "identity/chile-taxpayer", label: "🇨🇱 Chile — Contribuinte (RUT)" },
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 Chile — Validação de documento de identidade" },
+				{ type: "doc", id: "identity/identity-ip-lookup", label: "🌐 Geolocalização IP" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Cidadão costa-riquenho (CCCR)" },
+				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 Cidadão equatoriano (CCEC)" },
 				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 Colômbia — RG estendido" },
-				{
-					type: "doc",
-					id: "identity-validation/colombia/colombian-cedula-premium",
-					label: "🇨🇴 Colômbia — Cédula premium (CC)",
-				},
 				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 Colômbia — Certificado Registraduría" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 Colômbia — PEP" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 Colômbia — CE" },
@@ -199,8 +300,11 @@ const sidebars = {
 				{ type: "doc", id: "identity/united-states", label: "🇺🇸 EUA — SSN (Social Security Number)" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 Cidadão mexicano" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Cidadão panamenho (CCPA)" },
+				{ type: "doc", id: "identity/argentina", label: "🇦🇷 Cidadão argentino (DNI)" },
+				{ type: "doc", id: "identity/argentina-extra", label: "🇦🇷 Argentina — identidade ampliada" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Cidadão paraguaio (CIC)" },
 				{ type: "doc", id: "identity/identity-brazil", label: "🇧🇷 Brasil — Cidadão (CPF)" },
+				{ type: "doc", id: "identity/bolivia", label: "🇧🇴 Cidadão boliviano (CI)" },
 				{ type: "doc", id: "identity/peru", label: "🇵🇪 Peru — Cidadão (DNI)" },
 				{ type: "doc", id: "identity/peru-foreigner-id", label: "🇵🇪 Peru — Cédula de estrangeiro (CE)" },
 				{ type: "doc", id: "identity/peru-full-id", label: "🇵🇪 Peru — DNI (dados estendidos)" },
@@ -217,8 +321,23 @@ const sidebars = {
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 Chile — Empresa (RUT)" },
 				{
 					type: "doc",
+					id: "business-validation/business-validation-colombia-rues-v3",
+					label: "🇨🇴 Colômbia — Consulta RUES (v3)",
+				},
+				{
+					type: "doc",
 					id: "business-validation/rues-complete-v3",
 					label: "🇨🇴 Colômbia — RUES empresa completa",
+				},
+				{
+					type: "doc",
+					id: "business-validation/colombia-dian-verification",
+					label: "🇨🇴 Colômbia — Verificação DIAN",
+				},
+				{
+					type: "doc",
+					id: "business-validation/colombia-legal-invoicer-verification",
+					label: "🇨🇴 Colômbia — Faturador legal",
 				},
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 Empresa na Costa Rica (NITE)" },
 				{ type: "doc", id: "business-validation/spain", label: "🇪🇸 Espanha — Empresa (CIF/NIF)" },
@@ -230,6 +349,7 @@ const sidebars = {
 					label: "🇲🇽 Verificação de empresas no México (FME)",
 				},
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 Empresa panamenha (RUC)" },
+				{ type: "doc", id: "business-validation/argentina", label: "🇦🇷 Empresa argentina (CUIT)" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 Empresa paraguaia (RUC)" },
 				{
 					type: "doc",
@@ -290,6 +410,11 @@ const sidebars = {
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 RNMC / medidas corretivas" },
 				{
 					type: "doc",
+					id: "background-check/colombia/background-check-colombia-verify-police-compliance-with-corrective-measures",
+					label: "🇨🇴 RNMC — medidas corretivas (v2 caminho)",
+				},
+				{
+					type: "doc",
 					id: "legal/lawyer-verification",
 					label: "🇨🇴 Consulta de advogados",
 				},
@@ -329,6 +454,23 @@ const sidebars = {
 				{ type: "doc", id: "background-check/interpol-background-check", label: "🌐 Interpol" },
 				{ type: "doc", id: "background-check/ofac-background-check", label: "🌐 OFAC" },
 				{ type: "doc", id: "background-check/onu-background-check", label: "🌐 ONU" },
+			],
+		},
+		{
+			type: "category",
+			label: "Certificados",
+			collapsible: false,
+			items: [
+				{
+					type: "doc",
+					id: "certificates/certificates-colombia-ministerio-trabajo-v3",
+					label: "🇨🇴 Ministério do Trabalho (v3)",
+				},
+				{
+					type: "doc",
+					id: "certificates/certificates-sena-certificates",
+					label: "🇨🇴 Certificados SENA",
+				},
 			],
 		},
 		{

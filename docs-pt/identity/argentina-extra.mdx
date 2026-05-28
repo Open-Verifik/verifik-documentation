@@ -1,0 +1,291 @@
+---
+id: argentina-extra
+title: 🇦🇷 Argentina — identidade ampliada
+description: Valide titulares de DNI argentino com campos adicionais como data de nascimento, gênero e status vital.
+slug: /identity/argentina-extra
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Verificação de identidade na Argentina (ampliada) | API KYC Verifik",
+	description:
+		"Valide cidadãos argentinos com a API KYC Verifik incluindo data de nascimento, gênero, partes do nome e status vital.",
+	articleSection: "Documentação da API",
+	keywords:
+		"verificação de identidade, API KYC, validação DNI Argentina, DNIAR, fonte oficial, prevenção a fraudes, data de nascimento, gênero",
+	about: {
+		"@type": "Thing",
+		name: "API de verificação de identidade",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Verificação de identidade na Argentina (ampliada)
+
+A API Verifik autentica cidadãos argentinos com dados governamentais oficiais. Este endpoint retorna campos estendidos além da cédula padrão: **data de nascimento**, **gênero**, tokens de nome estruturados e **status vital** (`isAlive`).
+
+## O que esta API valida?
+
+Nossa API conecta-se diretamente aos registros oficiais para validar:
+
+-   **Nome completo e número DNI**: suporta *Documento Nacional de Identidad* (DNI), tipo `DNIAR`.
+-   **Correspondência de identidade**: confirma que o número corresponde a uma pessoa registrada.
+-   **Dados extras**: retorna **dateOfBirth**, **gender**, **firstName**, **lastName**, **fullName**, **arrayName** e **isAlive**.
+
+Ao validar esses elementos, você reduz significativamente riscos de personificação e fraude.
+
+## Referência da API
+
+### Ponto de acesso
+
+```
+https://api.verifik.co/v2/ar/cedula/extra
+```
+
+### Cabeçalhos
+
+| Nome          | Valor              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parâmetros
+
+| Nome             | Tipo   | Obrigatório | Descrição                                                                   |
+| ---------------- | ------ | -------- | --------------------------------------------------------------------------- |
+| `documentType`   | string | Sim         | Tipo de documento. Valor permitido: `DNIAR`.                                |
+| `documentNumber` | string | Sim         | Número DNI a consultar, sem espaços.                                        |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/ar/cedula/extra',
+  params: { documentType: 'DNIAR', documentNumber: '44768756' },
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer <token>',
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "Bearer <token>"
+}
+
+conn.request(
+    "GET",
+    "/v2/ar/cedula/extra?documentType=DNIAR&documentNumber=44768756",
+    headers=headers
+)
+
+res = conn.getresponse()
+data = res.read()
+
+print(data.decode("utf-8"))
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/ar/cedula/extra', [
+  'query' => [
+    'documentType' => 'DNIAR',
+    'documentNumber' => '44768756',
+  ],
+  'headers' => [
+    'Accept' => 'application/json',
+    'Authorization' => 'Bearer <token>',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+  </TabItem>
+  <TabItem value="swift" label="Swift">
+
+```swift
+import Foundation
+
+let headers = [
+  "Accept": "application/json",
+  "Authorization": "Bearer <token>"
+]
+
+let request = NSMutableURLRequest(
+  url: NSURL(string: "https://api.verifik.co/v2/ar/cedula/extra?documentType=DNIAR&documentNumber=44768756")! as URL,
+  cachePolicy: .useProtocolCachePolicy,
+  timeoutInterval: 10.0
+)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "documentType": "DNIAR",
+        "documentNumber": "44768756",
+        "firstName": "MARIA LOURDES",
+        "lastName": "ARCE",
+        "fullName": "MARIA LOURDES ARCE",
+        "arrayName": [
+            "MARIA",
+            "LOURDES",
+            "ARCE"
+        ],
+        "gender": "F",
+        "dateOfBirth": "2003-03-25",
+        "isAlive": true
+    },
+    "signature": {
+        "dateTime": "April 15, 2026 5:43 PM",
+        "message": "Certified by Verifik.co"
+    },
+    "id": "B7T6Y"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "code": "MissingParameter",
+    "message": "missing documentType\n. missing documentNumber\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-2" label="409 (Invalid Type)">
+
+```json
+{
+    "code": "MissingParameter",
+    "message": "documentType must be one of: [DNIAR]"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "code": "InternalServerError",
+    "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- `documentType` deve ser `DNIAR`.
+- `gender` é retornado como código de uma letra (ex.: `F` ou `M`) quando disponível.
+- `isAlive` indica se o registro reporta a pessoa como viva no momento da consulta.
+
+---
+
+## Casos de uso comuns
+
+-   **Fintech e bancos**: enriqueça onboarding com data de nascimento e status vital.
+-   **E-commerce e entregas**: valide entregadores ou contas de alto valor com sinais mais fortes.
+-   **RH e recrutamento**: confirme detalhes de candidatos contra registros oficiais.
+-   **Seguros e saúde**: suporte regras de elegibilidade e idade com datas verificadas.
+
+## Fontes oficiais e confiabilidade
+
+Conexão direta com fontes governamentais argentinas para informações verificadas e atualizadas.
+Cada consulta segue padrões rigorosos de segurança e conformidade.
+
+## Principais benefícios
+
+-   **Sinal de identidade mais rico**: data de nascimento, gênero e status vital além de nome e documento.
+-   **Conformidade automatizada**: simplifique KYC sem atrito para usuários.
+-   **Resultados instantâneos**: processamento em segundos para onboarding digital.
+-   **Dados confiáveis**: diretamente de registros oficiais.
+-   **Integração fácil**: via API REST ou SDKs compatíveis.
+
+## Conformidade e segurança
+
+A Verifik usa HTTPS/TLS 1.3 e padrões rigorosos de privacidade.
+Monitoramento 24/7 e controles de acesso baseados em funções.
+
+## Sobre a Verifik
+
+A Verifik é plataforma líder em verificação de identidade e conformidade na América Latina.
+Nossas APIs automatizam KYC, KYB, AML e biometria, conectando empresas a fontes oficiais.

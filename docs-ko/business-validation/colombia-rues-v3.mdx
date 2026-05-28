@@ -1,0 +1,180 @@
+---
+id: business-validation-colombia-rues-v3
+title: 🇨🇴 콜롬비아 — RUES 기업 조회 (v3)
+description: "NIT와 등록 구분으로 콜롬비아 RUES 기본 정보를 조회합니다. GET /v3/co/rues."
+slug: /business-validation/colombia-rues-v3
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "콜롬비아 RUES 기업 조회 (v3) | Verifik KYB API",
+	description:
+		"NIT와 등록 구분으로 콜롬비아 RUES 기본 정보를 조회합니다. GET /v3/co/rues.",
+	articleSection: "API 문서",
+	keywords: "기업 검증, KYB API, 콜롬비아 RUES, NIT, Registro Mercantil, Verifik",
+	about: {
+		"@type": "Thing",
+		name: "기업 검증 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇴 콜롬비아 — RUES 기업 조회 (v3)
+
+Verifik는 **RUES**(*Registro Único Empresarial y Social*)에서 **`NIT`**와 **등록 구분(category)**에 따라 구분별 **정규화된 기본 레코드**(상업 등기, RUP 제안자, 관광, 비영리 등)를 반환합니다. 이는 **경량** **`/v3/co/rues`** 연동입니다. 대표자·경제 활동·사업장 등 **전체** 정보가 필요하면 **`/v3/co/rues-complete`**를 사용하세요.
+
+## 어떤 엔드포인트를 사용해야 하나요?
+
+| | **`GET /v3/co/rues`**(본 API) | **`GET /v3/co/rues-complete`** |
+| --- | --- | --- |
+| **목적** | 등록 구분별 **요약** | **전체** 기업 파일 |
+| **주요 필드** | 구분별 핵심 항목(상호, NIT, 상태, 상공회의소 등) | 대표자·활동·사업장 포함 전체 블록 |
+| **매개변수** | `documentType`(**`NIT`**), `documentNumber`, 선택 `category` | **동일** |
+| **카탈로그 가격** | 낮음(예: **0.2** 크레딧 / **0.3** SmartCheck) | 높음(예: **0.3** 크레딧 / **0.4** SmartCheck) |
+
+전체 추출은 [RUES 전체 기업 검증 (v3)](/verifik-ko/business-validation/rues-complete-v3)를 참고하세요.
+
+## 본 API 반환 내용
+
+- **구분별** 요약 필드(예: **RM**: 상호, DV 포함 NIT, 상공회의소, 등록 상태, 조직 유형)
+- 연동 RUES 응답 스키마에 매핑된 데이터
+- **캐싱**이 적용될 수 있음
+- Verifik **서명**이 포함된 응답
+
+## API 참고
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v3/co/rues
+```
+
+본 경로는 **쿼리 매개변수만** 사용하는 **GET**입니다. 전체 추출은 **`GET /v3/co/rues-complete`**(동일 매개변수)를 사용하세요.
+
+쿼리: **`documentType`**(**`NIT`**만), **`documentNumber`**, 선택 **`category`**.
+
+### 헤더
+
+| 이름 | 값 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| 이름 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| `documentType` | string | 예 | 반드시 **`NIT`**. |
+| `documentNumber` | string | 예 | 세금 ID 숫자(구두점은 서버에서 제거). |
+| `category` | string | 아니오 | 조회할 RUES 구분. **`RM`**, **`PROP`**, **`RUNEOL`**, **`RNT`**, **`ESAL`**, **`ESOL`**, **`JUEGOS`**, **`EXTRANJERAS`** 중 하나. 생략 시 **`RM`**. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/co/rues", {
+	params: {
+		documentType: "NIT",
+		documentNumber: "800096561",
+		category: "RM",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/rues"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "NIT", "documentNumber": "800096561", "category": "RM"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"businessName": "EXAMPLE SAS",
+		"documentNumber": "800096561",
+		"documentType": "NIT",
+		"fullNit": "800096561-7",
+		"location": "…",
+		"organizationType": "…",
+		"status": "ACTIVA",
+		"category": "RM",
+		"registration": "…",
+		"chamberCode": "…"
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be [NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 기능
+
+- API 계층에서 **NIT만** 검증
+- RM, PROP, 관광(RNT), ESAL 등 **구분** 선택
+- **v3** RUES elastic API 연동
+
+## 사용 사례
+
+- **KYB** 및 **벤더** 스크리닝
+- RUES Complete 전체 조회 전 **등기 확인**
+
+### 참고
+
+- **`category`**는 생략 가능(**기본값 `RM`**). **Registro Mercantil**이 아닌 구분을 조회할 때는 명시적으로 지정하세요.
+- 본 엔드포인트는 **요약**을 반환하며 전체 RUES 파일이 아닙니다. 대표자·활동·사업장은 **`GET /v3/co/rues-complete`**([RUES 전체 (v3)](/verifik-ko/business-validation/rues-complete-v3))를 사용하세요.
+- 검증에서 허용되는 일부 구분 코드는 모듈 내부 **레거시** 경로를 따를 수 있습니다. 결과가 예상과 다르면 **`RM`** 또는 **`rues-complete`**를 시도하세요.
+- 구 연동용 **`/v2/co/rues`**도 존재합니다. 신규 개발에는 **v3**를 권장합니다.
+- RUES 가용성 및 captcha/속도 제한으로 **404** / **409** / **5xx**가 발생할 수 있습니다.

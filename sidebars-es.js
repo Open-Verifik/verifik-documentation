@@ -105,11 +105,6 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 Chile — Validación de documento", key: "identity-chile-validate-documents" },
 				{ type: "doc", id: "identity/colombia", label: "🇨🇴 Ciudadano Colombiano" },
 				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 Colombia - ID Completo" },
-				{
-					type: "doc",
-					id: "identity-validation/colombia/colombian-cedula-premium",
-					label: "🇨🇴 Colombia — Cédula premium (CC)",
-				},
 				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 Colombia - Certificado Registraduría" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 Colombia - CE" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 Colombia — PEP" },
@@ -138,6 +133,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/uruguay", label: "🇺🇾 Uruguay" },
 				{ type: "doc", id: "identity/venezuela", label: "🇻🇪 Venezuela" },
 				{ type: "doc", id: "identity/venezuela-foreigner-id", label: "🇻🇪 Venezuela - Cédula de Extranjero" },
+				{ type: "doc", id: "identity/identity-ip-lookup", label: "🌐 Consulta de Geoubicación IP", key: "identity-ip-lookup" },
 			],
 		},
 		{
@@ -308,6 +304,12 @@ const sidebars = {
 					key: "vehiculos-chile",
 				},
 				{
+					type: "doc",
+					id: "validacion-vehiculos/chile/validacion-vehiculos-chile-transport-vehicle",
+					label: "🇨🇱 Chile - Vehículo de transporte público",
+					key: "vehiculos-chile-transport-vehicle",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 Colombia",
 					collapsible: true,
@@ -330,6 +332,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "validacion-vehiculos/colombia/validacion-vehiculos-colombia-medellin-multas-vehiculo",
+							label: "Medellín - Multas de tránsito",
+						},
+						{
+							type: "doc",
 							id: "validacion-vehiculos/colombia/accidentalidad-vehiculos-bogota",
 							label: "Accidentalidad de Vehículos",
 						},
@@ -337,6 +344,11 @@ const sidebars = {
 							type: "doc",
 							id: "validacion-vehiculos/colombia/pico-y-placa-bogota",
 							label: "Pico y Placa",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/colombia/taxis-conductores-bogota-por-tarjeta",
+							label: "Bogotá - Taxis (por tarjeta)",
 						},
 						{
 							type: "doc",
@@ -392,6 +404,11 @@ const sidebars = {
 							type: "doc",
 							id: "validacion-vehiculos/colombia/multas-simit",
 							label: "SIMIT - Multas",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/colombia/validacion-vehiculos-colombia-simit-comparendo-detalles",
+							label: "SIMIT - Detalles de comparendo",
 						},
 						{
 							type: "doc",

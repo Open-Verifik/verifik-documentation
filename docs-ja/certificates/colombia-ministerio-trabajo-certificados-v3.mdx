@@ -1,0 +1,129 @@
+---
+id: certificates-colombia-ministerio-trabajo-v3
+title: コロンビア — 労働省証明書（v3）
+description: コロンビア労働省の証明書（高所作業 curso de alturas 等）を GET /v3/co/ministerio-de-trabajo/certificados で照会します。
+slug: /certificates/colombia-ministerio-trabajo-certificados-v3
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# コロンビア — 労働省証明書（v3）
+
+本エンドポイントは、コロンビア国民の**労働省**証明書情報（**高所作業・職業安全**研修 *curso de alturas* 等）を返します。Verifik の**ボゴタ・マイクロサービス**経由です。**v3** はマイクロサービスの**完全ペイロード**を返し、証明書行は **records**（上流 constances のマッピング）に含まれます。
+
+**雇用コンプライアンス**、**請負業者オンボーディング**、**職場安全**確認に利用できます。
+
+## 返却データ
+
+- **records** — 統合が返す証明書・constance 行（上流 constances から改名）
+- `data` 上のマイクロサービス追加フィールド（構造はソースに依存）
+- Verifik **署名**付きレスポンス
+
+## API リファレンス
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados
+```
+
+**GET** のみ（**v3** ルーターに POST なし）。クエリ: **documentType**, **documentNumber**。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| documentType | string | yes | **CC**, **CE**, **PPT**, **PA** のいずれか。 |
+| documentNumber | string | yes | スペース・句読点なしの証番号。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"records": []
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, CE, PPT, PA]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事項
+
+- 高所作業情報がない場合、上流は **404**（例: *「No registra información en Curso de Alturas.」*）となることがあります。
+- **v2** エンドポイント **/v2/co/ministerio-de-trabajo/certificados** は同じマイクロサービスですが、より狭いペイロードです。**records** と完全オブジェクトが必要なら **v3** を推奨します。
+- マイクロサービスのトークン・可用性は環境依存です。障害時は **5xx** の可能性があります。
+- 結果はコロンビア法および社内ポリシーに従い個人・労働データとして取り扱ってください。

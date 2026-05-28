@@ -1,0 +1,128 @@
+---
+id: vehicle-validation-colombia-vehicle-s-soat-and-rtm-by-plate-and-identification-document
+title: RUNT — SOAT・RTM 検証
+description: ナンバーと身分証で SOAT（任意保険）と RTM（車検）の状態を照会します。
+sidebar_label: RUNT — SOAT/RTM
+slug: /vehicle-validation/colombia/vehicle-s-soat-and-rtm-by-plate-and-identification-document
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/runt/vehiculo
+```
+
+**ナンバー**と名義人の **`documentType`** / **`documentNumber`** で **RUNT** の車両情報を取得します。**`/v2/co/runt/vehicle-by-plate`** より軽い用途向けです。必要に応じ **`audit`** クエリ（文字列の真偽）を使用できます。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `documentType` | string | はい | 名義人の証明書種別。`CC`、`CE`、`PA`、`NIT` のいずれか。 |
+| `documentNumber` | string | はい | 証番号（スペース・句点なし）。 |
+| `plate` | string | はい | 照会するナンバー（API 検証上 **5〜9** 文字）。サーバーは大文字に正規化します。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/runt/vehiculo", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+		plate: "ABC123",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/runt/vehiculo"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789", "plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentNumber": "31527228",
+		"documentType": "CC",
+		"plate": "WHH662",
+		"vehicle": {
+			"marca": "MAZDA",
+			"linea": "T 45",
+			"modelo": "1999",
+			"noPlaca": "WHH662",
+			"estadoDelVehiculo": "ACTIVO",
+			"tipoServicio": "Público",
+			"organismoTransito": "STRIA DE TTOyTTE MEDELLIN"
+		}
+	},
+	"signature": {
+		"dateTime": "October 10, 2025 8:10 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "GVMFW"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType. missing documentNumber. missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注記
+
+- 包括的な履歴は **`GET /v2/co/runt/vehicle-by-plate`** を参照してください。
+- 簡易版は **`GET /v2/co/runt/vehicle-by-plate-simplified`** です。

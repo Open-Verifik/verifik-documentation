@@ -10,6 +10,7 @@ const sidebars = {
 			label: "车辆核验",
 			collapsible: false,
 			items: [
+				{ type: "doc", id: "vehicle-validation/argentina", label: "🇦🇷 阿根廷 — 车辆信息" },
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 巴拉圭 — 车辆信息" },
 				{
 					type: "category",
@@ -20,6 +21,11 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-plate",
 							label: "🇨🇴 波哥大 — 出租车（车牌）",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-bogota-taxi-drivers-by-control-card",
+							label: "🇨🇴 波哥大 - 出租车（控制卡）",
 						},
 						{
 							type: "doc",
@@ -103,6 +109,16 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-comparendo-details",
+							label: "🇨🇴 SIMIT - 罚单详情",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-medellin-vehicle-fines",
+							label: "🇨🇴 麦德林 - 交通罚单",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-agreements",
 							label: "🇨🇴 SIMIT - 分期付款协议",
 						},
@@ -129,6 +145,8 @@ const sidebars = {
 					],
 				},
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 哥斯达黎加 — 车辆（号牌）" },
+				{ type: "doc", id: "vehicle-validation/bolivia", label: "🇧🇴 玻利维亚 — 车辆信息" },
+				{ type: "doc", id: "vehicle-validation/ecuador", label: "🇪🇨 厄瓜多尔 — 车辆罚单" },
 				{
 					type: "doc",
 					id: "vehicle-validation/vehicle-validation-brazil",
@@ -159,6 +177,7 @@ const sidebars = {
 				},
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 西班牙" },
 				{ type: "doc", id: "vehicle-validation/chile", label: "🇨🇱 智利 — 车辆（号牌）" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-transport-vehicle", label: "🇨🇱 智利 — 公共交通车辆" },
 			],
 		},
 		{
@@ -166,15 +185,20 @@ const sidebars = {
 			label: "身份核验",
 			collapsible: false,
 			items: [
+				{ type: "doc", id: "identity/argentina", label: "🇦🇷 阿根廷公民（DNI）" },
+				{ type: "doc", id: "identity/argentina-extra", label: "🇦🇷 阿根廷 — 扩展身份" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 巴拉圭公民（CIC）" },
 				{ type: "doc", id: "identity/identity-brazil", label: "🇧🇷 巴西公民（CPF）" },
+				{ type: "doc", id: "identity/bolivia", label: "🇧🇴 玻利维亚公民（CI）" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 巴拿马国民身份证（CCPA）" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 哥斯达黎加国民身份证（CCCR）" },
+				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 厄瓜多尔公民（CCEC）" },
+				{ type: "doc", id: "identity/colombia", label: "🇨🇴 哥伦比亚公民（CC / PPT）" },
 				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 国民身份证（扩展）" },
 				{
 					type: "doc",
-					id: "identity-validation/colombia/colombian-cedula-premium",
-					label: "🇨🇴 国民身份证高级核验(CC)",
+					id: "identity-validation/colombia/colombian-citizen",
+					label: "🇨🇴 哥伦比亚公民（身份核验）",
 				},
 				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 选举机构有效性证明" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 PEP（特别居留）" },
@@ -196,6 +220,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile", label: "🇨🇱 智利国民身份证（RUN）" },
 				{ type: "doc", id: "identity/chile-taxpayer", label: "🇨🇱 智利 — 纳税人（RUT）" },
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 智利 — 身份证件有效性" },
+				{ type: "doc", id: "identity/identity-ip-lookup", label: "🌐 IP 地理定位" },
 			],
 		},
 		{
@@ -203,6 +228,7 @@ const sidebars = {
 			label: "企业(KYB)",
 			collapsible: false,
 			items: [
+				{ type: "doc", id: "business-validation/argentina", label: "🇦🇷 阿根廷企业（CUIT）" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 巴拉圭企业（RUC）" },
 				{
 					type: "doc",
@@ -223,8 +249,28 @@ const sidebars = {
 				{ type: "doc", id: "business-validation/chilean", label: "🇨🇱 智利 — 企业（RUT）" },
 				{
 					type: "doc",
+					id: "business-validation/colombia-dian-verification",
+					label: "🇨🇴 DIAN 税务核验",
+				},
+				{
+					type: "doc",
+					id: "business-validation/colombia-legal-invoicer-verification",
+					label: "🇨🇴 法定开票人核验",
+				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-colombia-rues-v3",
+					label: "🇨🇴 RUES 企业查询 (v3)",
+				},
+				{
+					type: "doc",
 					id: "business-validation/rues-complete-v3",
-					label: "🇨🇴 哥伦比亚 — RUES 完整核验",
+					label: "🇨🇴 RUES 完整核验 (v3)",
+				},
+				{
+					type: "doc",
+					id: "business-validation/colombia-rues-v2",
+					label: "🇨🇴 RUES 企业查询 (v2)",
 				},
 			],
 		},
@@ -308,6 +354,23 @@ const sidebars = {
 				{ type: "doc", id: "background-check/interpol-background-check", label: "🌐 Interpol" },
 				{ type: "doc", id: "background-check/ofac-background-check", label: "🌐 OFAC" },
 				{ type: "doc", id: "background-check/onu-background-check", label: "🌐 ONU" },
+			],
+		},
+		{
+			type: "category",
+			label: "证书",
+			collapsible: false,
+			items: [
+				{
+					type: "doc",
+					id: "certificates/certificates-colombia-ministerio-trabajo-v3",
+					label: "🇨🇴 劳动部证书 (v3)",
+				},
+				{
+					type: "doc",
+					id: "certificates/certificates-sena-certificates",
+					label: "🇨🇴 SENA 证书",
+				},
 			],
 		},
 		{

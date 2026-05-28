@@ -1,0 +1,169 @@
+---
+id: vehicle-validation-colombia-vehicle-by-plate-and-identification-card-only
+title: RUNT — 車両（プレート＋身分証のみ）
+description: ナンバーと身分証のみで RUNT 車両情報を照会します。
+sidebar_label: RUNT — プレート+身分証
+slug: /vehicle-validation/colombia/vehicle-by-plate-and-identification-card-only
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/runt/vehicle-by-plate
+```
+
+ナンバーと名義人の **`documentType`** / **`documentNumber`** を **クエリ** で渡し、**RUNT** から車両の**包括的な履歴と技術レポート**を取得します（SOAT、RC 保険、テクノメカニカ、登録関連の申請履歴など、利用可能な場合）。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `documentType` | string | はい | 名義人の証明書種別。`CC`、`CE`、`PA`、`NIT` のいずれか。 |
+| `documentNumber` | string | はい | 名義人の証番号（スペース・句点なし）。 |
+| `plate` | string | はい | 照会するナンバー（API 検証上、通常 5〜9 文字）。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/runt/vehicle-by-plate", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+		plate: "ABC123",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/runt/vehicle-by-plate"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789", "plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"informacionGeneral": {
+			"noLicenciaTransito": "10021312347",
+			"estadoDelVehiculo": "ACTIVO",
+			"tipoServicio": "Particular",
+			"claseVehiculo": "CAMIONETA",
+			"marca": "MAZDA",
+			"linea": "CX-30",
+			"modelo": "2021",
+			"color": "MACHINE GRAY",
+			"noMotor": "PY402912330",
+			"noChasis": "3MVDM2WLAML234946",
+			"noVin": "3MVDM2WLAML234946",
+			"cilidraje": "2488",
+			"tipoCarroceria": "WAGON",
+			"fechaMatricula": "17/10/2020",
+			"tieneGravamenes": "NO",
+			"organismoTransito": "SECRETARIA DISTRITAL DE MOVILIDAD DE BOGOTA",
+			"prendas": "NO",
+			"clasificacion": "AUTOMOVIL",
+			"tipoCombustible": "GASOLINA",
+			"noPlaca": "ABC123",
+			"puertas": "5"
+		},
+		"datosTecnicos": {
+			"pesoBrutoVehicular": "1939",
+			"noEjes": "2",
+			"pasajerosSentados": "5"
+		},
+		"soat": [
+			{
+				"noPoliza": "355100023467200",
+				"fechaExpedicion": "03/10/2023",
+				"fechaVigencia": "17/10/2023",
+				"fechaVencimiento": "16/10/2024",
+				"entidadExpideSoat": "SEGUROS COMERCIALES BOLIVAR S.A",
+				"estado": "VIGENTE",
+				"tipoTarifa": "221"
+			}
+		],
+		"polizasResponsabilidadCivil": [],
+		"tecnoMecanica": [
+			{
+				"vigente": "NO APLICA"
+			}
+		],
+		"solicitudes": [
+			{
+				"noSolicitud": "124539870",
+				"fechaSolicitud": "17/10/2020",
+				"estado": "AUTORIZADA",
+				"tramitesRealizados": "Tramite matricula inicial",
+				"entidad": "SECRETARIA DISTRITAL DE MOVILIDAD DE BOGOTA"
+			}
+		]
+	},
+	"signature": { "message": "Certified by Verifik.co", "dateTime": "March 14, 2024 2:23 PM" },
+	"id": "DWTV2"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentType. missing documentNumber. missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### メモ
+
+- RUNT から技術仕様・法的ステータスを含む広範な情報が返ります。
+- **SOAT** はコロンビアの自賠責（交通事故）保険です。
+- **`VIGENTE`** は保険が有効な状態の例です。
+- **`ACTIVO`** は登録が有効で運用可能な状態の例です。

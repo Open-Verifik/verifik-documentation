@@ -1,0 +1,126 @@
+---
+id: vehicle-validation-colombia-sinister-verification-fasecolda
+title: Fasecolda — 保険請求・事故履歴
+description: Fasecolda 公式データでコロンビア車両の保険事故・請求履歴を照会します。
+sidebar_label: Fasecolda — 請求履歴（別名）
+slug: /vehicle-validation/colombia/sinister-verification-fasecolda
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/fasecolda/sinister
+```
+
+Fasecolda のデータで、車両の事故・保険金請求（**sinister**）履歴を取得します。コロンビアのナンバー **`plate`** を **クエリ**（`?plate=`）で渡します。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `plate` | string | はい | 照会するプレート。スペースやピリオドを含めないでください。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/fasecolda/sinister", {
+  params: { plate: "ABC123" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/fasecolda/sinister"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC123"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "KDK605",
+    "sinister": [
+      {
+        "id": "1",
+        "accidentDate": "20/01/2015",
+        "protection": "Pérdida Menor Cuantía"
+      },
+      {
+        "id": "2",
+        "accidentDate": "17/08/2012",
+        "protection": "Pérdida Menor Cuantía"
+      },
+      {
+        "id": "3",
+        "accidentDate": "16/01/2017",
+        "protection": "Pérdida Menor Cuantía"
+      }
+    ]
+  },
+  "signature": {"message": "Certified by Verifik.co", "dateTime": "February 9, 2024 7:43 PM"},
+  "id": "PFDB2"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### メモ
+
+- エンドポイント名の **sinister** はコロンビアの保険用語で保険事故・請求を指します。
+- **Pérdida Menor Cuantía** は小額損失など軽微な区分の例です。
+- 各レコードには請求 ID・事故日・保護区分などが含まれます。

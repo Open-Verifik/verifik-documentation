@@ -1,0 +1,180 @@
+---
+id: business-validation-colombia-rues-v3
+title: 🇨🇴 コロンビア — RUES 企業照会 (v3)
+description: "NIT と登録区分でコロンビア RUES の基本情報を照会します。GET /v3/co/rues。"
+slug: /business-validation/colombia-rues-v3
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "コロンビア RUES 企業照会 (v3) | Verifik KYB API",
+	description:
+		"NIT と登録区分でコロンビア RUES の基本情報を照会します。GET /v3/co/rues。",
+	articleSection: "API ドキュメント",
+	keywords: "企業確認, KYB API, コロンビア RUES, NIT, Registro Mercantil, Verifik",
+	about: {
+		"@type": "Thing",
+		name: "企業確認 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇴 コロンビア — RUES 企業照会 (v3)
+
+Verifik は **RUES**（*Registro Único Empresarial y Social*）から、**`NIT`** と **登録区分（category）** に基づき、区分ごとの **正規化された基本レコード**（商業登記、RUP 提案者、観光、非営利など）を返します。これは **軽量** な **`/v3/co/rues`** 連携です。代表者・経済活動・事業所など **フル** 情報が必要な場合は **`/v3/co/rues-complete`** を使用してください。
+
+## どのエンドポイントを使うべきか？
+
+| | **`GET /v3/co/rues`**（本 API） | **`GET /v3/co/rues-complete`** |
+| --- | --- | --- |
+| **目的** | 登録区分ごとの **要約** | **完全** な企業ファイル |
+| **主なフィールド** | 区分別のコア項目（商号、NIT、ステータス、商工会等） | 代表者・活動・事業所を含むフルブロック |
+| **パラメータ** | `documentType`（**`NIT`**）、`documentNumber`、任意 `category` | **同一** |
+| **カタログ価格** | 低（例: **0.2** クレジット / **0.3** SmartCheck） | 高（例: **0.3** クレジット / **0.4** SmartCheck） |
+
+フル抽出は [RUES 企業フル照会 (v3)](/verifik-ja/business-validation/rues-complete-v3) を参照してください。
+
+## 本 API の返却内容
+
+- **区分別** 要約フィールド（例: **RM** の場合: 商号、DV 付き NIT、商工会、登録状態、組織形態など）
+- 連携で使用する RUES レスポンススキーマにマッピングされたデータ
+- **キャッシュ** が適用される場合あり
+- Verifik **署名** 付きレスポンス
+
+## API リファレンス
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v3/co/rues
+```
+
+本ルートは **クエリパラメータのみ** の **GET** です。フル抽出には **`GET /v3/co/rues-complete`**（同一パラメータ）を使用します。
+
+クエリ: **`documentType`**（**`NIT`** のみ）、**`documentNumber`**、任意 **`category`**。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `documentType` | string | はい | 必ず **`NIT`**。 |
+| `documentNumber` | string | はい | 税 ID 桁（句読点はサーバー側で除去）。 |
+| `category` | string | いいえ | 照会する RUES 区分。**`RM`**, **`PROP`**, **`RUNEOL`**, **`RNT`**, **`ESAL`**, **`ESOL`**, **`JUEGOS`**, **`EXTRANJERAS`** のいずれか。省略時は **`RM`**。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/co/rues", {
+	params: {
+		documentType: "NIT",
+		documentNumber: "800096561",
+		category: "RM",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/rues"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "NIT", "documentNumber": "800096561", "category": "RM"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"businessName": "EXAMPLE SAS",
+		"documentNumber": "800096561",
+		"documentType": "NIT",
+		"fullNit": "800096561-7",
+		"location": "…",
+		"organizationType": "…",
+		"status": "ACTIVA",
+		"category": "RM",
+		"registration": "…",
+		"chamberCode": "…"
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be [NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 機能
+
+- API レイヤーでの **NIT のみ** 検証
+- RM、PROP、観光（RNT）、ESAL などの **区分** 選択
+- **v3** RUES elastic API 連携
+
+## ユースケース
+
+- **KYB** および **ベンダー** スクリーニング
+- フル RUES Complete 取得前の **登記確認**
+
+### 注意
+
+- **`category`** は省略可能（**デフォルト `RM`**）。**Registro Mercantil** 以外を照会する場合は明示的に指定してください。
+- 本エンドポイントは **要約** を返し、フル RUES ファイルではありません。代表者・活動・事業所には **`GET /v3/co/rues-complete`**（[RUES 企業フル (v3)](/verifik-ja/business-validation/rues-complete-v3)）を使用してください。
+- 検証で受理される区分コードの一部はモジュール内で **レガシー** 経路をたどる場合があります。結果が想定外の場合は **`RM`** または **`rues-complete`** を試してください。
+- 旧連携向け **`/v2/co/rues`** も存在します。新規開発では **v3** を推奨します。
+- RUES の可用性や captcha/レート制限により **404** / **409** / **5xx** が発生する場合があります。

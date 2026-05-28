@@ -1,0 +1,193 @@
+---
+id: business-validation-colombia-rues-v3
+title: 🇨🇴 Colombie — Consultation RUES entreprise (v3)
+description: "Interrogez le registre RUES colombien par NIT et catégorie via GET /v3/co/rues."
+slug: /business-validation/colombia-rues-v3
+keywords:
+  - v3/co/rues
+  - /v3/co/rues
+  - v3 co rues
+  - api/co/rues
+  - /api/co/rues
+  - api co rues
+  - api.verifik.co/v3/co/rues
+  - 'https://api.verifik.co/v3/co/rues'
+  - GET v3/co/rues
+  - GET /v3/co/rues
+  - co/rues
+  - /co/rues
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombie — Consultation RUES entreprise (v3) | API KYB Verifik",
+	description:
+		"Vérifiez les entreprises colombiennes dans le RUES (NIT) par catégorie RM, PROP, RNT, ESAL, etc. ; l'endpoint v3 de base renvoie un résumé par catégorie.",
+	articleSection: "Documentation API",
+	keywords: "Colombie, RUES, NIT, KYB, Registro Mercantil, API Verifik",
+	about: {
+		"@type": "Thing",
+		name: "API de vérification d'entreprise",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇴 Colombie — Consultation RUES entreprise (v3)
+
+Verifik interroge le **RUES** (*Registro Único Empresarial y Social*) pour une entité juridique colombienne à partir du **`NIT`**, d'une **catégorie de registre**, et renvoie un **enregistrement de base normalisé** pour cette catégorie (registre du commerce, proponent RUP, tourisme, associations, etc.). Il s'agit de l'intégration **légère** **`/v3/co/rues`** ; utilisez **`/v3/co/rues-complete`** lorsque vous avez besoin du **dossier complet** (représentants, activités économiques, établissements, etc.).
+
+## Quel endpoint utiliser ?
+
+| | **`GET /v3/co/rues`** (cette API) | **`GET /v3/co/rues-complete`** |
+| --- | --- | --- |
+| **Objectif** | **Résumé** rapide par catégorie de registre | **Dossier** complet d'entreprise |
+| **Champs typiques** | Champs principaux selon la catégorie (nom, NIT, statut, chambre, etc.) | Blocs complets du registre, y compris représentants et activités |
+| **Paramètres** | `documentType` (**`NIT`**), `documentNumber`, `category` optionnelle | **Identiques** |
+| **Tarification catalogue** | Plus basse (p. ex. **0,2** crédits / **0,3** SmartCheck) | Plus élevée (p. ex. **0,3** crédits / **0,4** SmartCheck) |
+
+Consultez [RUES dossier complet (v3)](/verifik-fr/business-validation/rues-complete-v3) pour l'extrait complet.
+
+## Ce que renvoie cette API
+
+- Champs de **résumé** spécifiques à la catégorie (p. ex. pour **RM** : raison sociale, NIT avec DV, chambre, état de matrícula, type d'organisation — voir les réponses en direct)
+- Données mappées via le schéma de réponse RUES utilisé dans l'intégration
+- **Mise en cache** possible
+- Une réponse Verifik **signée**
+
+## Référence API
+
+### Point d'accès
+
+```
+GET https://api.verifik.co/v3/co/rues
+```
+
+**GET** avec **paramètres de requête** uniquement sur cette route. Pour l'extrait **complet**, utilisez **`GET /v3/co/rues-complete`** (mêmes paramètres).
+
+Requête : **`documentType`** (**`NIT`** uniquement), **`documentNumber`**, **`category`** optionnelle.
+
+### En-têtes
+
+| Nom | Valeur |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Paramètres
+
+| name | type | required | description |
+| --- | --- | --- | --- |
+| `documentType` | string | yes | Doit être **`NIT`**. |
+| `documentNumber` | string | yes | Chiffres du NIF (la ponctuation est supprimée côté serveur). |
+| `category` | string | no | Ligne RUES à interroger. Une de **`RM`**, **`PROP`**, **`RUNEOL`**, **`RNT`**, **`ESAL`**, **`ESOL`**, **`JUEGOS`**, **`EXTRANJERAS`**. Par défaut **`RM`** si omise. |
+
+### Requête
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/co/rues", {
+	params: {
+		documentType: "NIT",
+		documentNumber: "800096561",
+		category: "RM",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/rues"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "NIT", "documentNumber": "800096561", "category": "RM"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"businessName": "EXAMPLE SAS",
+		"documentNumber": "800096561",
+		"documentType": "NIT",
+		"fullNit": "800096561-7",
+		"location": "…",
+		"organizationType": "…",
+		"status": "ACTIVA",
+		"category": "RM",
+		"registration": "…",
+		"chamberCode": "…"
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be [NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Fonctionnalités
+
+- Validation **NIT uniquement** au niveau de l'API
+- Sélection de **catégorie** pour RM, PROP, tourisme (RNT), ESAL, etc.
+- Intégration API RUES elastic **v3** (voir les commentaires du module pour le comportement par catégorie)
+
+## Cas d'usage
+
+- **KYB** et filtrage **fournisseurs**
+- **Confirmation au registre** avant un tirage RUES Complete complet
+
+### Notes
+
+- **`category`** est optionnelle dans le handler (**par défaut `RM`**); incluez-la explicitement si vous n'interrogez pas le **Registro Mercantil**.
+- Cet endpoint renvoie un **résumé**, pas le dossier RUES complet. Pour les représentants, activités et établissements, utilisez **`GET /v3/co/rues-complete`** ([RUES Complete (v3)](/verifik-fr/business-validation/rues-complete-v3)).
+- Certains codes de catégorie acceptés par la validation peuvent suivre un **chemin legacy** dans le module ; si les résultats semblent inattendus, confirmez la catégorie avec le support ou essayez **`RM`** / **`rues-complete`**.
+- **`/v2/co/rues`** existe pour les intégrations plus anciennes ; préférez **v3** pour les nouveaux projets.
+- La disponibilité RUES et le comportement captcha/limitation peuvent produire des erreurs **404** / **409** / **5xx** selon l'état en amont.

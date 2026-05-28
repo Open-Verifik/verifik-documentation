@@ -1,0 +1,150 @@
+---
+id: colombia-legal-invoicer-verification
+title: 🇨🇴 コロンビア — DIAN 法定請求者（電子請求）
+description: "コロンビア DIAN の法定請求者・電子請求登録を NIT で確認します。GET /v2/co/company/dian/invoicer。"
+slug: /business-validation/colombia-legal-invoicer-verification
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "コロンビア DIAN 法定請求者 | Verifik KYB API",
+	description:
+		"コロンビア DIAN の法定請求者・電子請求登録を NIT で確認します。GET /v2/co/company/dian/invoicer。",
+	articleSection: "API ドキュメント",
+	keywords: "DIAN, 電子請求, facturación electrónica, NIT, コロンビア, Verifik",
+	about: {
+		"@type": "Thing",
+		name: "企業確認 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇴 コロンビア — DIAN 法定請求者（電子請求）
+
+Verifik の法定請求者確認 API は、コロンビア企業が **DIAN**（*Dirección de Impuestos y Aduanas Nacionales*）に **法定請求者（legal invoicer）** として登録されているかを検証します。KYB の効率化、不正防止、規制要件への対応を支援します。
+
+## この API は何を検証しますか？
+
+本 API は公式 DIAN 記録と直接接続し、以下を検証します。
+
+-   **NIT と電子請求（facturación electrónica）登録**
+-   **請求者連絡先**: DIAN が公開する場合、登録 **メール** 等を返します
+-   **登録確認**: 電子請求向け **法定請求者** データセットへの登録（一般納税者ステータスとは別 — [DIAN 税務確認](/verifik-ja/business-validation/colombia-dian-verification) を参照）
+
+## API リファレンス
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/company/dian/invoicer
+```
+
+アプリホスト: `GET https://verifik.app/v2/co/company/dian/invoicer`
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `documentType` | string | はい | 必ず **`NIT`**。 |
+| `documentNumber` | string | はい | 税 ID（NIT）。サーバー側で **空白除去**；検証桁の有無は任意。API 検証上 **最小 5 文字**。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/company/dian/invoicer", {
+  params: { documentType: "NIT", documentNumber: "901708460" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/company/dian/invoicer"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "NIT", "documentNumber": "901708460"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentNumber": "901708460",
+    "documentType": "NIT",
+    "email": "info@sayshannon.com",
+    "nit": "901708460"
+  },
+  "signature": {
+    "dateTime": "October 10, 2025 5:11 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "JS4GP"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "code": "NotFound",
+    "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意
+
+- **`GET` クエリのみ** — ボディなし。JSON レスポンスには **`Accept`** を使用してください。
+- 本ルートは **法定請求者 / 電子請求登録** データ（利用可能な場合 **email** 等）を返します。一般 **納税者** ステータスには [DIAN 税務確認](/verifik-ja/business-validation/colombia-dian-verification)（`GET /v2/co/company/dian`）を使用してください。
+- DIAN が当該 NIT の請求者 **email** を返さない場合 **404** となることがあります。
+
+---
+
+## 一般的なユースケース
+
+-   **B2B オンボーディング**: パートナー・ベンダー登録時の即時確認
+-   **コンプライアンス**: KYC/KYB ワークフローでの請求者登録検証
+-   **EC・マーケットプレイス**: 販売前の請求能力確認

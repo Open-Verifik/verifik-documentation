@@ -531,6 +531,18 @@ keywords:
   - "https://api.verifik.co/v2/cl/taxpayer"
   - "GET v2/cl/taxpayer"
   - "GET /v2/cl/taxpayer"
+  - "v2/cl/transport-vehicle"
+  - "/v2/cl/transport-vehicle"
+  - "v2 cl transport-vehicle"
+  - "cl/transport-vehicle"
+  - "/cl/transport-vehicle"
+  - "api/cl/transport-vehicle"
+  - "/api/cl/transport-vehicle"
+  - "api cl transport-vehicle"
+  - "api.verifik.co/v2/cl/transport-vehicle"
+  - "https://api.verifik.co/v2/cl/transport-vehicle"
+  - "GET v2/cl/transport-vehicle"
+  - "GET /v2/cl/transport-vehicle"
   - "v2/cl/validate/documents"
   - "/v2/cl/validate/documents"
   - "v2 cl validate documents"
@@ -880,6 +892,20 @@ keywords:
   - "https://api.verifik.co/v2/co/inpec"
   - "GET v2/co/inpec"
   - "GET /v2/co/inpec"
+  - "v2/co/medellin/vehicle/fines"
+  - "/v2/co/medellin/vehicle/fines"
+  - "v2 co medellin vehicle fines"
+  - "co/medellin/vehicle/fines"
+  - "/co/medellin/vehicle/fines"
+  - "api/co/medellin/vehicle/fines"
+  - "/api/co/medellin/vehicle/fines"
+  - "api co medellin vehicle fines"
+  - "medellin/vehicle/fines"
+  - "/medellin/vehicle/fines"
+  - "api.verifik.co/v2/co/medellin/vehicle/fines"
+  - "https://api.verifik.co/v2/co/medellin/vehicle/fines"
+  - "GET v2/co/medellin/vehicle/fines"
+  - "GET /v2/co/medellin/vehicle/fines"
   - "v2/co/policia/consultar"
   - "/v2/co/policia/consultar"
   - "v2 co policia consultar"
@@ -1036,6 +1062,32 @@ keywords:
   - "https://api.verifik.co/v2/co/registraduria/votacion"
   - "GET v2/co/registraduria/votacion"
   - "GET /v2/co/registraduria/votacion"
+  - "v2/co/rues"
+  - "/v2/co/rues"
+  - "v2 co rues"
+  - "co/rues"
+  - "/co/rues"
+  - "api/co/rues"
+  - "/api/co/rues"
+  - "api co rues"
+  - "api.verifik.co/v2/co/rues"
+  - "https://api.verifik.co/v2/co/rues"
+  - "GET v2/co/rues"
+  - "GET /v2/co/rues"
+  - "v2/co/rues/complete"
+  - "/v2/co/rues/complete"
+  - "v2 co rues complete"
+  - "co/rues/complete"
+  - "/co/rues/complete"
+  - "api/co/rues/complete"
+  - "/api/co/rues/complete"
+  - "api co rues complete"
+  - "rues/complete"
+  - "/rues/complete"
+  - "api.verifik.co/v2/co/rues/complete"
+  - "https://api.verifik.co/v2/co/rues/complete"
+  - "GET v2/co/rues/complete"
+  - "GET /v2/co/rues/complete"
   - "v2/co/runt/conductor"
   - "/v2/co/runt/conductor"
   - "v2 co runt conductor"
@@ -1106,6 +1158,20 @@ keywords:
   - "https://api.verifik.co/v2/co/runt/vehiculo"
   - "GET v2/co/runt/vehiculo"
   - "GET /v2/co/runt/vehiculo"
+  - "v2/co/sena/certificados"
+  - "/v2/co/sena/certificados"
+  - "v2 co sena certificados"
+  - "co/sena/certificados"
+  - "/co/sena/certificados"
+  - "api/co/sena/certificados"
+  - "/api/co/sena/certificados"
+  - "api co sena certificados"
+  - "sena/certificados"
+  - "/sena/certificados"
+  - "api.verifik.co/v2/co/sena/certificados"
+  - "https://api.verifik.co/v2/co/sena/certificados"
+  - "GET v2/co/sena/certificados"
+  - "GET /v2/co/sena/certificados"
   - "v2/co/sigep/name"
   - "/v2/co/sigep/name"
   - "v2 co sigep name"
@@ -1148,6 +1214,20 @@ keywords:
   - "https://api.verifik.co/v2/co/simit/acuerdos"
   - "GET v2/co/simit/acuerdos"
   - "GET /v2/co/simit/acuerdos"
+  - "v2/co/simit/comparendo"
+  - "/v2/co/simit/comparendo"
+  - "v2 co simit comparendo"
+  - "co/simit/comparendo"
+  - "/co/simit/comparendo"
+  - "api/co/simit/comparendo"
+  - "/api/co/simit/comparendo"
+  - "api co simit comparendo"
+  - "simit/comparendo"
+  - "/simit/comparendo"
+  - "api.verifik.co/v2/co/simit/comparendo"
+  - "https://api.verifik.co/v2/co/simit/comparendo"
+  - "GET v2/co/simit/comparendo"
+  - "GET /v2/co/simit/comparendo"
   - "v2/co/simit/comparendos"
   - "/v2/co/simit/comparendos"
   - "v2 co simit comparendos"
@@ -1752,6 +1832,18 @@ keywords:
   - "https://api.verifik.co/v2/interpol"
   - "GET v2/interpol"
   - "GET /v2/interpol"
+  - "v2/ip-lookup"
+  - "/v2/ip-lookup"
+  - "v2 ip-lookup"
+  - "ip-lookup"
+  - "/ip-lookup"
+  - "api/ip-lookup"
+  - "/api/ip-lookup"
+  - "api ip-lookup"
+  - "api.verifik.co/v2/ip-lookup"
+  - "https://api.verifik.co/v2/ip-lookup"
+  - "GET v2/ip-lookup"
+  - "GET /v2/ip-lookup"
   - "v2/mx/company"
   - "/v2/mx/company"
   - "v2 mx company"
@@ -2227,11 +2319,6 @@ keywords:
   - "v3/co/rues"
   - "/v3/co/rues"
   - "v3 co rues"
-  - "co/rues"
-  - "/co/rues"
-  - "api/co/rues"
-  - "/api/co/rues"
-  - "api co rues"
   - "api.verifik.co/v3/co/rues"
   - "https://api.verifik.co/v3/co/rues"
   - "GET v3/co/rues"
@@ -2331,12 +2418,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (187 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (194 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-05-22T15:23:30.265Z_
+_Last regenerated: 2026-05-28T21:56:26.160Z_
 
 ## Argentina
 
@@ -2372,6 +2459,7 @@ _Last regenerated: 2026-05-22T15:23:30.265Z_
 | `v2/cl/company` | v2 cl company cl/company /cl/company api/cl/company /api/cl/company api cl company api.verifik.co/v2/cl/company https://api.verifik.co/v2/cl/company GET v2/cl/company GET /v2/cl/company | [\U0001F1E8\U0001F1F1 Chile - Business Validation](/business-validation/chilean) |
 | `v2/cl/driver-license` | v2 cl driver-license cl/driver-license /cl/driver-license api/cl/driver-license /api/cl/driver-license api cl driver-license api.verifik.co/v2/cl/driver-license https://api.verifik.co/v2/cl/driver-license GET v2/cl/driver-license GET /v2/cl/driver-license | [\U0001F1E8\U0001F1F1 Chile - Driver License](/driver-validation/chile-driver-license) |
 | `v2/cl/taxpayer` | v2 cl taxpayer cl/taxpayer /cl/taxpayer api/cl/taxpayer /api/cl/taxpayer api cl taxpayer api.verifik.co/v2/cl/taxpayer https://api.verifik.co/v2/cl/taxpayer GET v2/cl/taxpayer GET /v2/cl/taxpayer | [Chile — Taxpayer (RUT) lookup](/identity/chile-taxpayer) |
+| `v2/cl/transport-vehicle` | v2 cl transport-vehicle cl/transport-vehicle /cl/transport-vehicle api/cl/transport-vehicle /api/cl/transport-vehicle api cl transport-vehicle api.verifik.co/v2/cl/transport-vehicle https://api.verifik.co/v2/cl/transport-vehicle GET v2/cl/transport-vehicle GET /v2/cl/transport-vehicle | [\U0001F1E8\U0001F1F1 Chile - Public Transport Vehicle](/vehicle-validation/chile/transport-vehicle) |
 | `v2/cl/validate/documents` | v2 cl validate documents cl/validate/documents /cl/validate/documents api/cl/validate/documents /api/cl/validate/documents api cl validate documents validate/documents /validate/documents api.verifik.co/v2/cl/validate/documents https://api.verifik.co/v2/cl/validate/documents GET v2/cl/validate/documents GET /v2/cl/validate/documents | [Chile — Identity document validation](/identity/chile-validate-documents) |
 | `v2/cl/vehicle` | v2 cl vehicle cl/vehicle /cl/vehicle api/cl/vehicle /api/cl/vehicle api cl vehicle api.verifik.co/v2/cl/vehicle https://api.verifik.co/v2/cl/vehicle GET v2/cl/vehicle GET /v2/cl/vehicle | [\U0001F1E8\U0001F1F1 Chile - Vehicle Information](/vehicle-validation/chile) |
 
@@ -2401,6 +2489,7 @@ _Last regenerated: 2026-05-22T15:23:30.265Z_
 | `v2/co/foreigner-id/pep` | v2 co foreigner-id pep co/foreigner-id/pep /co/foreigner-id/pep api/co/foreigner-id/pep /api/co/foreigner-id/pep api co foreigner-id pep foreigner-id/pep /foreigner-id/pep api.verifik.co/v2/co/foreigner-id/pep https://api.verifik.co/v2/co/foreigner-id/pep GET v2/co/foreigner-id/pep GET /v2/co/foreigner-id/pep | [\U0001F1E8\U0001F1F4 Colombia - Special Stay Permit (PEP)](/identity-validation/colombia/special-stay-permit-pep) |
 | `v2/co/foreigner-id/ppt` | v2 co foreigner-id ppt co/foreigner-id/ppt /co/foreigner-id/ppt api/co/foreigner-id/ppt /api/co/foreigner-id/ppt api co foreigner-id ppt foreigner-id/ppt /foreigner-id/ppt api.verifik.co/v2/co/foreigner-id/ppt https://api.verifik.co/v2/co/foreigner-id/ppt GET v2/co/foreigner-id/ppt GET /v2/co/foreigner-id/ppt | [Colombia — PPT (Temporary Protection Permit)](/identity/colombia-ppt) |
 | `v2/co/inpec` | v2 co inpec co/inpec /co/inpec api/co/inpec /api/co/inpec api co inpec api.verifik.co/v2/co/inpec https://api.verifik.co/v2/co/inpec GET v2/co/inpec GET /v2/co/inpec | [Colombia - INPEC Prison Records Check](/background-check/colombia-inpec) |
+| `v2/co/medellin/vehicle/fines` | v2 co medellin vehicle fines co/medellin/vehicle/fines /co/medellin/vehicle/fines api/co/medellin/vehicle/fines /api/co/medellin/vehicle/fines api co medellin vehicle fines medellin/vehicle/fines /medellin/vehicle/fines vehicle/fines /vehicle/fines api.verifik.co/v2/co/medellin/vehicle/fines https://api.verifik.co/v2/co/medellin/vehicle/fines GET v2/co/medellin/vehicle/fines GET /v2/co/medellin/vehicle/fines | [Medellín - Transit Fines](/vehicle-validation/colombia/medellin-vehicle-fines) |
 | `v2/co/policia/consultar` | v2 co policia consultar co/policia/consultar /co/policia/consultar api/co/policia/consultar /api/co/policia/consultar api co policia consultar policia/consultar /policia/consultar api.verifik.co/v2/co/policia/consultar https://api.verifik.co/v2/co/policia/consultar GET v2/co/policia/consultar GET /v2/co/policia/consultar | [Colombia - Colombian Police Record Check](/background-check/colombia-police-record-check) |
 | `v2/co/policia/rnmc` | v2 co policia rnmc co/policia/rnmc /co/policia/rnmc api/co/policia/rnmc /api/co/policia/rnmc api co policia rnmc policia/rnmc /policia/rnmc api.verifik.co/v2/co/policia/rnmc https://api.verifik.co/v2/co/policia/rnmc GET v2/co/policia/rnmc GET /v2/co/policia/rnmc | [Colombia - Verify Police Compliance with Corrective Measures](/background-check/colombia-police-compliance-corrective-measures) |
 | `v2/co/politically-exposed-persons` | v2 co politically-exposed-persons co/politically-exposed-persons /co/politically-exposed-persons api/co/politically-exposed-persons /api/co/politically-exposed-persons api co politically-exposed-persons api.verifik.co/v2/co/politically-exposed-persons https://api.verifik.co/v2/co/politically-exposed-persons GET v2/co/politically-exposed-persons GET /v2/co/politically-exposed-persons | [Colombia — Politically exposed persons (PEP) lookup](/identity-validation/colombia/colombian-politically-exposed-persons) |
@@ -2412,14 +2501,18 @@ _Last regenerated: 2026-05-22T15:23:30.265Z_
 | `v2/co/rama/procesos` | v2 co rama procesos co/rama/procesos /co/rama/procesos api/co/rama/procesos /api/co/rama/procesos api co rama procesos rama/procesos /rama/procesos api.verifik.co/v2/co/rama/procesos https://api.verifik.co/v2/co/rama/procesos GET v2/co/rama/procesos GET /v2/co/rama/procesos | [Colombia — Judicial processes](/legal/colombian-legal-processes) |
 | `v2/co/registraduria/certificado` | v2 co registraduria certificado co/registraduria/certificado /co/registraduria/certificado api/co/registraduria/certificado /api/co/registraduria/certificado api co registraduria certificado registraduria/certificado /registraduria/certificado api.verifik.co/v2/co/registraduria/certificado https://api.verifik.co/v2/co/registraduria/certificado GET v2/co/registraduria/certificado GET /v2/co/registraduria/certificado | [Colombia — Registraduría ID validity certificate (CC)](/identity/colombia-registraduria-certificate) |
 | `v2/co/registraduria/votacion` | v2 co registraduria votacion co/registraduria/votacion /co/registraduria/votacion api/co/registraduria/votacion /api/co/registraduria/votacion api co registraduria votacion registraduria/votacion /registraduria/votacion api.verifik.co/v2/co/registraduria/votacion https://api.verifik.co/v2/co/registraduria/votacion GET v2/co/registraduria/votacion GET /v2/co/registraduria/votacion | [Retrieve Voting Information for Colombian Citizens](/legal/voting) |
+| `v2/co/rues` | v2 co rues co/rues /co/rues api/co/rues /api/co/rues api co rues api.verifik.co/v2/co/rues https://api.verifik.co/v2/co/rues GET v2/co/rues GET /v2/co/rues | [Colombia — RUES business lookup (v2, legacy)](/business-validation/colombia-rues-v2) |
+| `v2/co/rues/complete` | v2 co rues complete co/rues/complete /co/rues/complete api/co/rues/complete /api/co/rues/complete api co rues complete rues/complete /rues/complete api.verifik.co/v2/co/rues/complete https://api.verifik.co/v2/co/rues/complete GET v2/co/rues/complete GET /v2/co/rues/complete | [Colombia — RUES complete lookup (v2, legacy)](/business-validation/colombia-rues-complete-v2) |
 | `v2/co/runt/conductor` | v2 co runt conductor co/runt/conductor /co/runt/conductor api/co/runt/conductor /api/co/runt/conductor api co runt conductor runt/conductor /runt/conductor api.verifik.co/v2/co/runt/conductor https://api.verifik.co/v2/co/runt/conductor GET v2/co/runt/conductor GET /v2/co/runt/conductor | [Driver's License](/vehicle-validation/colombia/driver-s-license) |
 | `v2/co/runt/vehicle-by-plate` | v2 co runt vehicle-by-plate co/runt/vehicle-by-plate /co/runt/vehicle-by-plate api/co/runt/vehicle-by-plate /api/co/runt/vehicle-by-plate api co runt vehicle-by-plate runt/vehicle-by-plate /runt/vehicle-by-plate api.verifik.co/v2/co/runt/vehicle-by-plate https://api.verifik.co/v2/co/runt/vehicle-by-plate GET v2/co/runt/vehicle-by-plate GET /v2/co/runt/vehicle-by-plate | [Vehicle Records by Plate](/vehicle-validation/colombia/runt-vehicle-by-plate) |
 | `v2/co/runt/vehicle-by-plate-simplified` | v2 co runt vehicle-by-plate-simplified co/runt/vehicle-by-plate-simplified /co/runt/vehicle-by-plate-simplified api/co/runt/vehicle-by-plate-simplified /api/co/runt/vehicle-by-plate-simplified api co runt vehicle-by-plate-simplified runt/vehicle-by-plate-simplified /runt/vehicle-by-plate-simplified api.verifik.co/v2/co/runt/vehicle-by-plate-simplified https://api.verifik.co/v2/co/runt/vehicle-by-plate-simplified GET v2/co/runt/vehicle-by-plate-simplified GET /v2/co/runt/vehicle-by-plate-simplified | [Simplified Vehicle Records by Plate in RUNT](/vehicle-validation/colombia/runt-vehicle-by-plate-simplified) |
 | `v2/co/runt/vehicle-by-vin` | v2 co runt vehicle-by-vin co/runt/vehicle-by-vin /co/runt/vehicle-by-vin api/co/runt/vehicle-by-vin /api/co/runt/vehicle-by-vin api co runt vehicle-by-vin runt/vehicle-by-vin /runt/vehicle-by-vin api.verifik.co/v2/co/runt/vehicle-by-vin https://api.verifik.co/v2/co/runt/vehicle-by-vin GET v2/co/runt/vehicle-by-vin GET /v2/co/runt/vehicle-by-vin | [Vehicle Records by VIN](/vehicle-validation/colombia/runt-vehicle-by-vin) |
 | `v2/co/runt/vehiculo` | v2 co runt vehiculo co/runt/vehiculo /co/runt/vehiculo api/co/runt/vehiculo /api/co/runt/vehiculo api co runt vehiculo runt/vehiculo /runt/vehiculo api.verifik.co/v2/co/runt/vehiculo https://api.verifik.co/v2/co/runt/vehiculo GET v2/co/runt/vehiculo GET /v2/co/runt/vehiculo | [SOAT and RTM Validation in RUNT](/vehicle-validation/colombia/runt-vehicle-soat-rtm) |
+| `v2/co/sena/certificados` | v2 co sena certificados co/sena/certificados /co/sena/certificados api/co/sena/certificados /api/co/sena/certificados api co sena certificados sena/certificados /sena/certificados api.verifik.co/v2/co/sena/certificados https://api.verifik.co/v2/co/sena/certificados GET v2/co/sena/certificados GET /v2/co/sena/certificados | [Colombia — SENA Certificates](/certificates/sena-certificates) |
 | `v2/co/sigep/name` | v2 co sigep name co/sigep/name /co/sigep/name api/co/sigep/name /api/co/sigep/name api co sigep name sigep/name /sigep/name api.verifik.co/v2/co/sigep/name https://api.verifik.co/v2/co/sigep/name GET v2/co/sigep/name GET /v2/co/sigep/name | [Colombia — SIGEP lookup by full name](/legal/sigep-public-servant-by-name) |
 | `v2/co/sigep/number` | v2 co sigep number co/sigep/number /co/sigep/number api/co/sigep/number /api/co/sigep/number api co sigep number sigep/number /sigep/number api.verifik.co/v2/co/sigep/number https://api.verifik.co/v2/co/sigep/number GET v2/co/sigep/number GET /v2/co/sigep/number | [Colombia — SIGEP lookup by document](/legal/sigep-public-servant-by-number) |
 | `v2/co/simit/acuerdos` | v2 co simit acuerdos co/simit/acuerdos /co/simit/acuerdos api/co/simit/acuerdos /api/co/simit/acuerdos api co simit acuerdos simit/acuerdos /simit/acuerdos api.verifik.co/v2/co/simit/acuerdos https://api.verifik.co/v2/co/simit/acuerdos GET v2/co/simit/acuerdos GET /v2/co/simit/acuerdos | [SIMIT - Agreements](/vehicle-validation/colombia/simit-agreements) |
+| `v2/co/simit/comparendo` | v2 co simit comparendo co/simit/comparendo /co/simit/comparendo api/co/simit/comparendo /api/co/simit/comparendo api co simit comparendo simit/comparendo /simit/comparendo api.verifik.co/v2/co/simit/comparendo https://api.verifik.co/v2/co/simit/comparendo GET v2/co/simit/comparendo GET /v2/co/simit/comparendo | [SIMIT - Subpoena Details](/vehicle-validation/colombia/simit-comparendo-details) |
 | `v2/co/simit/comparendos` | v2 co simit comparendos co/simit/comparendos /co/simit/comparendos api/co/simit/comparendos /api/co/simit/comparendos api co simit comparendos simit/comparendos /simit/comparendos api.verifik.co/v2/co/simit/comparendos https://api.verifik.co/v2/co/simit/comparendos GET v2/co/simit/comparendos GET /v2/co/simit/comparendos | [SIMIT - Fines](/vehicle-validation/colombia/simit-fines) |
 | `v2/co/simit/consultar` | v2 co simit consultar co/simit/consultar /co/simit/consultar api/co/simit/consultar /api/co/simit/consultar api co simit consultar simit/consultar /simit/consultar api.verifik.co/v2/co/simit/consultar https://api.verifik.co/v2/co/simit/consultar GET v2/co/simit/consultar GET /v2/co/simit/consultar | [SIMIT - General query by identification document](/vehicle-validation/colombia/general-query-of-simit-by-identification-document) |
 | `v2/co/simit/consultar/placa` | v2 co simit consultar placa co/simit/consultar/placa /co/simit/consultar/placa api/co/simit/consultar/placa /api/co/simit/consultar/placa api co simit consultar placa simit/consultar/placa /simit/consultar/placa consultar/placa /consultar/placa api.verifik.co/v2/co/simit/consultar/placa https://api.verifik.co/v2/co/simit/consultar/placa GET v2/co/simit/consultar/placa GET /v2/co/simit/consultar/placa | [SIMIT - General query by plate number](/vehicle-validation/colombia/general-query-of-simit-by-license-plate) |
@@ -2633,6 +2726,12 @@ _Last regenerated: 2026-05-22T15:23:30.265Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/interpol` | v2 interpol interpol /interpol api/interpol /api/interpol api interpol api.verifik.co/v2/interpol https://api.verifik.co/v2/interpol GET v2/interpol GET /v2/interpol | [Interpol Background Check](/background-check/international/interpol-background-check) |
+
+## Ip Lookup
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/ip-lookup` | v2 ip-lookup ip-lookup /ip-lookup api/ip-lookup /api/ip-lookup api ip-lookup api.verifik.co/v2/ip-lookup https://api.verifik.co/v2/ip-lookup GET v2/ip-lookup GET /v2/ip-lookup | [🌐 IP Geolocation Lookup](/identity/ip-lookup) |
 
 ## Ocr
 

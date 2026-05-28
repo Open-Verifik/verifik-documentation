@@ -1,0 +1,142 @@
+---
+id: certificates-colombia-ministerio-trabajo-v3
+title: 哥伦比亚 — 劳动部证书（v3）
+description: 通过 GET /v3/co/ministerio-de-trabajo/certificados 查询哥伦比亚劳动部证书及高空作业（curso de alturas）培训数据。
+slug: /certificates/colombia-ministerio-trabajo-certificados-v3
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 哥伦比亚 — 劳动部证书（v3）
+
+本接口返回哥伦比亚个人的 **劳动部（Ministerio de Trabajo）** 证书信息，包括与 **高空 / 职业安全** 培训（*curso de alturas*）相关的数据，数据来源于 Verifik 的 **波哥大微服务**。**v3** 处理程序返回 **完整微服务载荷**，并在 **`records`** 字段下暴露证书记录（由上游 `constances` 字段映射而来）。
+
+适用于 **用工合规**、**承包商入职** 及 **工作场所安全** 核查等场景（须符合当地法规与您的数据政策）。
+
+## 本接口返回内容
+
+- **`records`** — 集成返回的证书 / 证明行列表（由上游 `constances` 重命名）
+- 微服务在 `data` 上返回的 **其他字段**（结构可能随数据源演进）
+- 经 Verifik **签名** 的响应
+
+## API 参考
+
+### 端点
+
+```
+GET https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados
+```
+
+本路由为 **GET**，仅使用 **查询参数**（v3 路由上 **无** POST）。旧版 **`v2`** 路径参数名相同但响应结构不同；详见说明。
+
+查询摘要：**`documentType`**、**`documentNumber`**。
+
+### 请求头（Headers）
+
+| 名称 | 取值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数（Parameters）
+
+| 名称 | 类型 | 必填 | 描述 |
+| --- | --- | --- | --- |
+| `documentType` | string | 是 | 其一：**`CC`**、**`CE`**、**`PPT`**、**`PA`**。 |
+| `documentNumber` | string | 是 | 证件号码，不含空格或标点。 |
+
+### 请求（Request）
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"records": []
+	},
+	"signature": {
+		"dateTime": "January 16, 2024 3:44 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, CE, PPT, PA]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 特性
+
+- **证件类型**：**CC**、**CE**、**PPT**、**PA**
+- **v3** 响应将 **`constances` → `records`** 映射到返回给客户端的载荷
+- **GET** 查询参数
+
+## 使用场景
+
+- **高空作业** 与 **安全培训** 核验
+- **雇主** 尽职调查与 **承包商** 合规
+
+### 说明
+
+- 当个人 **无** 高空课程信息时，上游可能返回 **404**，消息类似 *“No registra información en Curso de Alturas.”*
+- **`v2`** 端点 **`/v2/co/ministerio-de-trabajo/certificados`** 使用同一微服务，但返回 **较窄** 的载荷（部分路径仅含证书数组）；需要 **完整** 对象及 **`records`** 时请优先使用 **v3**。
+- 微服务 **令牌** 与 **可用性** 因环境而异；中断时可能返回 **5xx** 错误。
+- 请按哥伦比亚法律及您的政策，将结果作为 **个人 / 劳动** 数据处理。
