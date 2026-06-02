@@ -254,6 +254,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "validaciones-conductores/peru-licencia-conducir",
+					label: "🇵🇪 Perú - Licencia de Conducir",
+				},
+				{
+					type: "doc",
 					id: "validaciones-conductores/licencia-conducir-british-columbia",
 					label: "🇨🇦 Canadá - Licencia de Conducir British Columbia",
 				},

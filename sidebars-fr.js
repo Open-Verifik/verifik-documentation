@@ -252,6 +252,11 @@ const sidebars = {
 					id: "driver-validation/chile-driver-license",
 					label: "🇨🇱 Chili — Permis de conduire",
 				},
+				{
+					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 Pérou — Permis de conduire",
+				},
 			],
 		},
 		{

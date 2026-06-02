@@ -269,6 +269,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 페루 — 운전면허",
+				},
+				{
+					type: "doc",
 					id: "driver-validation/kansas-driver-license",
 					label: "🇺🇸 캔자스주 — 운전면허",
 				},
