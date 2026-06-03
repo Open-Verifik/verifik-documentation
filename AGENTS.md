@@ -6,8 +6,9 @@ This is a **Docusaurus v3** static documentation site (Verifik / Zelf Name Servi
 
 ### Quick reference
 
-- **Dev server:** `npm start` (port 3000, hot-reloading)
-- **Production build:** `npm run build` (outputs to `build/`)
+- **Dev server:** `npm start` (port 3000, hot-reloading). **Navbar search does not work** in this mode — `@easyops-cn/docusaurus-search-local` only loads indexes from a production build.
+- **Local preview with search:** `npm run preview:search` (runs `build`, then serves on port 3001). Re-run after doc changes so the Lunr index updates.
+- **Production build:** `npm run build` (outputs to `build/`, including `search-index*.json`)
 - **All scripts:** see `package.json` `"scripts"` section
 - **Endpoint inventory (i18n seeding):** `npm run inventory-docs-i18n` writes `internal/docs-i18n-inventory.{md,json}`. Rollout chunks: `docs-i18n-CHUNKS.md`.
 
