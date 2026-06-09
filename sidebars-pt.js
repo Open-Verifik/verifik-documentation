@@ -385,6 +385,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 Peru — Carteira de motorista",
+				},
+				{
+					type: "doc",
 					id: "driver-validation/florida-driver-license",
 					label: "🇺🇸 Flórida (EUA) — Carteira de motorista",
 				},

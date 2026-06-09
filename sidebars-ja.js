@@ -402,6 +402,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 ペルー — 運転免許",
+				},
+				{
+					type: "doc",
 					id: "driver-validation/florida-driver-license",
 					label: "🇺🇸 フロリダ州 — 運転免許",
 				},

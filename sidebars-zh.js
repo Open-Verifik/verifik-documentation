@@ -298,6 +298,11 @@ const sidebars = {
 					id: "driver-validation/chile-driver-license",
 					label: "🇨🇱 智利 — 驾驶证",
 				},
+				{
+					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 秘鲁 — 驾驶证",
+				},
 			],
 		},
 		{
