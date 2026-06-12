@@ -91,10 +91,32 @@ If the query returns a **200** or **404**, it will be charged. Otherwise, if the
 |             | 422             |
 |             | 500             |
 
-#### **VIII. Platform Unavailability**
+#### **VIII. smartCHECK 服务动态查询**
+
+作为 smartCHECK 服务标准架构的一部分，Verifik 实施了动态查询（Dynamic Query）机制，旨在最大化受支持端点的服务可用性、覆盖范围和可靠性。
+
+动态查询机制允许 smartCHECK 和 DB Screening 在主要数据源返回不成功响应（包括但不限于“Not Found”或等效的 HTTP 400 级别响应）时，自动且依次查询多个授权数据源。该架构旨在通过利用多个符合条件的数据源来提高获得成功验证结果的概率。
+
+客户承认并同意，政府数据库的质量、完整性和可用性可能因司法管辖区而显著不同，某些数据库由于记录不完整、服务中断或数据覆盖范围有限，可能呈现更高的不成功响应概率。
+
+为减轻这些限制，动态查询在所有适用的 smartCHECK 端点上默认启用，并构成 Verifik 冗余和故障转移策略的组成部分。该机制使 Verifik 能够在必要时将请求动态路由到可用的替代来源，从而在某些端点上维持接近百分之百（100%）的服务可用性和覆盖范围。
+
+客户进一步承认并同意：
+
+a) 动态查询旨在提高获得成功验证响应的可能性，但不保证在所有情况下都能成功匹配或获得结果；
+
+b) 响应时间可能有所不同，在某些情况下，由于多源请求的级联性质，可能比标准单源查询更长；
+
+c) 动态查询的有效性和可用性仍受基础第三方或政府来源的正常运行时间、可访问性和数据质量的影响；以及
+
+d) Verifik 保留在其唯一裁量权下修改、优先排序或替换动态查询架构内数据源的权利，以维持服务连续性、优化覆盖范围并提高验证性能。
+
+动态查询应被视为 smartCHECK 服务的固有功能，并应自动适用于使用符合条件端点的所有客户，除非 Verifik 另有书面规定。
+
+#### **IX. 平台不可用**
 
 Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.
 
-#### **IX. New Adaptations or Developments**
+#### **X. 新适配或开发**
 
 The timeframes for developing new adaptations due to unexpected changes from User systems integrating via API with the Platform will vary according to the changes required by the User and will not count as Platform Downtime.

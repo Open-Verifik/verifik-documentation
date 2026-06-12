@@ -91,10 +91,32 @@ If the query returns a **200** or **404**, it will be charged. Otherwise, if the
 |             | 422             |
 |             | 500             |
 
-#### **VIII. Platform Unavailability**
+#### **VIII. smartCHECK 서비스 동적 쿼리**
+
+smartCHECK 서비스의 표준 아키텍처의 일부로, Verifik은 지원되는 엔드포인트에서 서비스 가용성, 커버리지 및 신뢰성을 극대화하도록 설계된 동적 쿼리(Dynamic Query) 메커니즘을 구현합니다.
+
+동적 쿼리 메커니즘을 통해 smartCHECK 및 DB Screening은 주 데이터 소스가 "Not Found" 또는 이에 상응하는 HTTP 400 수준의 오류를 포함하여 성공하지 못한 응답을 반환하는 경우, 여러 승인된 데이터 소스를 자동으로 순차적으로 조회할 수 있습니다. 이 아키텍처는 여러 적격 데이터 소스를 활용하여 성공적인 검증 결과를 얻을 확률을 높이는 것을 목적으로 합니다.
+
+클라이언트는 정부 데이터베이스의 품질, 완전성 및 가용성이 관할권에 따라 크게 달라질 수 있으며, 불완전한 기록, 서비스 중단 또는 제한된 데이터 커버리지로 인해 특정 데이터베이스에서 성공하지 못한 응답의 확률이 더 높을 수 있음을 인정하고 동의합니다.
+
+이러한 제한을 완화하기 위해 동적 쿼리는 해당되는 모든 smartCHECK 엔드포인트에서 기본적으로 활성화되어 있으며 Verifik의 중복 및 장애 조치 전략의 필수적인 부분을 구성합니다. 이 메커니즘을 통해 Verifik은 필요한 경우 요청을 대체 가능한 소스로 동적으로 라우팅하여 특정 엔드포인트에서 100%에 가까운 서비스 가용성 및 커버리지를 유지할 수 있습니다.
+
+클라이언트는 또한 다음을 인정하고 동의합니다:
+
+a) 동적 쿼리는 성공적인 검증 응답을 얻을 가능성을 높이는 것을 목적으로 하지만, 모든 경우에 성공적인 일치 또는 결과를 보장하지는 않습니다;
+
+b) 응답 시간은 변동될 수 있으며, 여러 소스에 대한 요청의 연쇄적 특성으로 인해 경우에 따라 표준 단일 소스 쿼리보다 더 길 수 있습니다;
+
+c) 동적 쿼리의 효과 및 가용성은 기본적인 제3자 또는 정부 소스의 가동 시간, 접근성 및 데이터 품질의 영향을 받습니다; 및
+
+d) Verifik은 서비스 연속성 유지, 커버리지 최적화 및 검증 성능 개선을 위해 동적 쿼리 아키텍처 내의 데이터 소스를 수정, 우선순위 지정 또는 대체할 권리를 단독 재량으로 보유합니다.
+
+동적 쿼리는 smartCHECK 서비스의 고유 기능으로 간주되며, Verifik이 서면으로 달리 명시하지 않는 한 적격 엔드포인트를 사용하는 모든 클라이언트에 자동으로 적용됩니다.
+
+#### **IX. 플랫폼 이용 불가**
 
 Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.
 
-#### **IX. New Adaptations or Developments**
+#### **X. 신규 적응 또는 개발**
 
 The timeframes for developing new adaptations due to unexpected changes from User systems integrating via API with the Platform will vary according to the changes required by the User and will not count as Platform Downtime.

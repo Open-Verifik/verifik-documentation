@@ -91,10 +91,32 @@ Si la consulta retorna un **200** o **404** esta se cobrará. De lo contrario, s
 |           | 422                  |
 |           | 500                  |
 
-#### **VIII. No disponibilidad de la Plataforma**
+#### **VIII. Consulta Dinámica para el Servicio smartCHECK**
+
+Como parte de la arquitectura estándar del servicio smartCHECK, Verifik implementa un mecanismo de Consulta Dinámica (Dynamic Query) diseñado para maximizar la disponibilidad, cobertura y confiabilidad del servicio en los endpoints soportados.
+
+El mecanismo de Consulta Dinámica permite que smartCHECK y DB Screening consulten de manera automática y secuencial múltiples fuentes de datos autorizadas en aquellos casos en que la fuente de datos primaria devuelva una respuesta no exitosa, incluyendo, entre otras, respuestas de tipo "No Encontrado" o equivalentes a errores HTTP de nivel 400. Esta arquitectura tiene como finalidad incrementar la probabilidad de obtener un resultado de verificación exitoso mediante el aprovechamiento de múltiples fuentes de datos elegibles.
+
+El Cliente reconoce y acepta que la calidad, integridad y disponibilidad de las bases de datos gubernamentales pueden variar significativamente según la jurisdicción, y que ciertas bases de datos pueden presentar una mayor probabilidad de respuestas no exitosas debido a registros incompletos, interrupciones del servicio o cobertura limitada de datos.
+
+Con el fin de mitigar dichas limitaciones, la Consulta Dinámica se encuentra habilitada por defecto en todos los endpoints aplicables de smartCHECK y constituye una parte integral de la estrategia de redundancia y failover de Verifik. Este mecanismo permite a Verifik mantener niveles de disponibilidad y cobertura cercanos al cien por ciento (100%) en determinados endpoints, mediante el enrutamiento dinámico de solicitudes hacia fuentes alternativas disponibles cuando sea necesario.
+
+El Cliente reconoce y acepta además que:
+
+a) La Consulta Dinámica tiene como finalidad incrementar la probabilidad de obtener respuestas de verificación exitosas, pero no garantiza una coincidencia o resultado exitoso en todos los casos;
+
+b) Los tiempos de respuesta podrán variar y, en ciertos casos, podrán ser mayores que los de una consulta estándar a una sola fuente, debido a la naturaleza escalonada o en cascada de las consultas a múltiples fuentes;
+
+c) La efectividad y disponibilidad de la Consulta Dinámica estarán sujetas a la disponibilidad, accesibilidad y calidad de los datos de las fuentes gubernamentales o de terceros subyacentes; y
+
+d) Verifik se reserva el derecho de modificar, priorizar o sustituir las fuentes de datos dentro de la arquitectura de Consulta Dinámica, a su entera discreción, con el fin de mantener la continuidad del servicio, optimizar la cobertura y mejorar el rendimiento de las verificaciones.
+
+La Consulta Dinámica será considerada una funcionalidad inherente del servicio smartCHECK y aplicará automáticamente a todos los Clientes que utilicen endpoints elegibles, salvo que Verifik disponga lo contrario por escrito.
+
+#### **IX. No disponibilidad de la Plataforma**
 
 Los tiempos de Mantenimiento programado se realizarán en las noches y/o fines de semana, con previa comunicación vía e-mail a los usuarios.
 
-#### **IX. Adaptaciones o desarrollos nuevos**
+#### **X. Adaptaciones o desarrollos nuevos**
 
 Los tiempos para el desarrollo de adaptaciones nuevas, por cambios inesperados por parte de los sistemas de los Usuarios que se integran vía API con la Plataforma, serán variables de acuerdo a los cambios requeridos por el Usuario y no contarán como Tiempos de Inactividad de la Plataforma.

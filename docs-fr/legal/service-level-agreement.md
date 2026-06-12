@@ -91,10 +91,32 @@ Si la requête renvoie un **200** ou un **404**, elle sera facturée. Sinon, si 
 |             | 422             |
 |             | 500             |
 
-#### **VIII. Indisponibilité de la plateforme**
+#### **VIII. Requête dynamique pour le service smartCHECK**
+
+Dans le cadre de l'architecture standard du service smartCHECK, Verifik met en œuvre un mécanisme de Requête dynamique (Dynamic Query) conçu pour maximiser la disponibilité, la couverture et la fiabilité du service sur les points de terminaison pris en charge.
+
+Le mécanisme de Requête dynamique permet à smartCHECK et DB Screening d'interroger automatiquement et séquentiellement plusieurs sources de données autorisées lorsque la source de données principale renvoie une réponse infructueuse, y compris, sans s'y limiter, les réponses de type « Non trouvé » ou équivalentes aux erreurs HTTP de niveau 400. Cette architecture vise à améliorer la probabilité d'obtenir un résultat de vérification réussi en tirant parti de plusieurs sources de données éligibles.
+
+Le Client reconnaît et accepte que la qualité, l'exhaustivité et la disponibilité des bases de données gouvernementales peuvent varier considérablement selon la juridiction, et que certaines bases de données peuvent présenter une probabilité plus élevée de réponses infructueuses en raison d'enregistrements incomplets, d'interruptions de service ou d'une couverture de données limitée.
+
+Afin d'atténuer ces limitations, la Requête dynamique est activée par défaut sur tous les points de terminaison smartCHECK applicables et constitue une partie intégrante de la stratégie de redondance et de basculement de Verifik. Ce mécanisme permet à Verifik de maintenir une disponibilité et une couverture proches de cent pour cent (100 %) sur certains points de terminaison, en acheminant dynamiquement les requêtes vers des sources alternatives disponibles lorsque cela est nécessaire.
+
+Le Client reconnaît et accepte en outre que :
+
+a) La Requête dynamique vise à augmenter la probabilité d'obtenir des réponses de vérification réussies, mais ne garantit pas une correspondance ou un résultat réussi dans tous les cas ;
+
+b) Les temps de réponse peuvent varier et, dans certains cas, être plus longs que ceux d'une requête standard à source unique en raison de la nature en cascade des requêtes vers plusieurs sources ;
+
+c) L'efficacité et la disponibilité de la Requête dynamique restent soumises à la disponibilité, l'accessibilité et la qualité des données des sources gouvernementales ou tierces sous-jacentes ; et
+
+d) Verifik se réserve le droit de modifier, prioriser ou substituer les sources de données au sein de l'architecture de Requête dynamique, à sa seule discrétion, afin de maintenir la continuité du service, d'optimiser la couverture et d'améliorer les performances de vérification.
+
+La Requête dynamique sera considérée comme une fonctionnalité inhérente au service smartCHECK et s'appliquera automatiquement à tous les Clients utilisant des points de terminaison éligibles, sauf disposition contraire écrite de Verifik.
+
+#### **IX. Indisponibilité de la plateforme**
 
 Les fenêtres de maintenance programmées auront lieu la nuit et/ou le week-end, avec notification préalable par e-mail aux utilisateurs.
 
-#### **IX. Nouvelles adaptations ou développements**
+#### **X. Nouvelles adaptations ou développements**
 
 Les délais de développement de nouvelles adaptations dus à des changements inattendus des systèmes de l'Utilisateur intégrant via l'API à la Plateforme varieront en fonction des modifications requises par l'Utilisateur et ne compteront pas comme Temps d'Indisponibilité de la Plateforme.

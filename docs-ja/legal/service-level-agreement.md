@@ -91,10 +91,32 @@ If the query returns a **200** or **404**, it will be charged. Otherwise, if the
 |             | 422             |
 |             | 500             |
 
-#### **VIII. Platform Unavailability**
+#### **VIII. smartCHECKサービスの動的クエリ**
+
+smartCHECKサービスの標準アーキテクチャの一環として、Verifikは、サポート対象エンドポイントにおけるサービスの可用性、カバレッジ、信頼性を最大化するために設計された動的クエリ（Dynamic Query）メカニズムを実装しています。
+
+動的クエリメカニズムにより、smartCHECKおよびDB Screeningは、主要データソースが「Not Found」または同等のHTTP 400レベルのエラーを含む、成功しない応答を返した場合に、複数の認可されたデータソースを自動的かつ順次に照会することができます。このアーキテクチャは、複数の適格なデータソースを活用することにより、成功した検証結果を得る確率を高めることを目的としています。
+
+クライアントは、政府データベースの品質、完全性、可用性が管轄区域によって大きく異なる場合があり、不完全なレコード、サービスの中断、または限定的なデータカバレッジにより、特定のデータベースでは成功しない応答の確率が高くなる場合があることを認識し、同意するものとします。
+
+これらの制限を軽減するため、動的クエリは、該当するすべてのsmartCHECKエンドポイントでデフォルトで有効化されており、Verifikの冗長化およびフェイルオーバー戦略の不可欠な部分を構成します。このメカニズムにより、Verifikは必要に応じてリクエストを代替の利用可能なソースに動的にルーティングすることで、特定のエンドポイントにおいて100%に近いサービスの可用性およびカバレッジを維持することができます。
+
+クライアントはさらに以下を認識し、同意するものとします：
+
+a) 動的クエリは、成功した検証応答を得る可能性を高めることを目的としていますが、すべてのケースにおいて成功した一致または結果を保証するものではありません；
+
+b) 応答時間は変動する場合があり、複数ソースへのリクエストのカスケード的な性質により、場合によっては標準的な単一ソースクエリよりも長くなることがあります；
+
+c) 動的クエリの有効性および可用性は、基盤となる第三者または政府ソースの稼働時間、アクセス可能性、データ品質の影響を受けます；および
+
+d) Verifikは、サービスの継続性の維持、カバレッジの最適化、検証パフォーマンスの向上のために、動的クエリアーキテクチャ内のデータソースを変更、優先順位付け、または置換する権利を単独の裁量で留保します。
+
+動的クエリは、smartCHECKサービスの固有の機能とみなされ、Verifikが書面で別段定めない限り、適格なエンドポイントを使用するすべてのクライアントに自動的に適用されます。
+
+#### **IX. プラットフォームの利用不可**
 
 Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.
 
-#### **IX. New Adaptations or Developments**
+#### **X. 新規の適応または開発**
 
 The timeframes for developing new adaptations due to unexpected changes from User systems integrating via API with the Platform will vary according to the changes required by the User and will not count as Platform Downtime.
