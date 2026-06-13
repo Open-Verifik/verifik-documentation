@@ -30,6 +30,45 @@ GET https://api.verifik.co/v2/co/cedula
 | `documentType` | string | yes | **`CC`** 或 **`PPT`**。不接受 **`NIT`**。 |
 | `documentNumber` | string | yes | **5–10** 位，不含空格或句点。 |
 
+### 动态定价 {#dynamic-pricing}
+
+本端点参与 Verifik 的**动态查询**架构。多数情况下按 `/v2/co/cedula` 的**标准费率**计费。当标准验证路径未返回匹配时，可能自动运行**扩展验证路径**；若该路径返回 **HTTP 200**，则适用**动态定价**，积分按该端点系列的**高级层级**扣除，而非标准层级。
+
+**价格预期：** 从账户**标准费率** · 最高至**高级费率**（见您的套餐、Postman 或客户端面板）。
+
+```mermaid
+flowchart LR
+  client[客户端调用 /v2/co/cedula]
+  standardPath[标准验证路径]
+  extendedPath[扩展验证路径]
+  chargeStandard[按标准费率计费]
+  chargePremium[按高级费率计费 — 动态定价]
+
+  client --> standardPath
+  standardPath -->|"匹配 HTTP 200"| chargeStandard
+  standardPath -->|"无匹配"| extendedPath
+  extendedPath -->|"匹配 HTTP 200"| chargePremium
+  extendedPath -->|"无匹配 HTTP 404"| chargeStandard
+```
+
+**可选计费透明：** 在请求中传递查询参数 **`includeCost=true`**。扣除积分时，若适用动态定价，响应可能包含 **`billing`** 对象：
+
+```json
+"billing": {
+  "dynamicQueryApplied": true,
+  "adjustmentType": "dynamic_query_premium",
+  "standardCredits": 0.3,
+  "chargedCredits": 2,
+  "standardFeatureCode": "colombia_api_identity_lookup",
+  "billedFeatureCode": "colombia_api_identity_lookup_premium"
+}
+```
+
+积分数量为**示例**；实际值取决于您的套餐。
+
+- **SLA：** [动态定价（计费）](/verifik-zh/legal/service-level-agreement#viiia-动态定价计费)
+- **直接高级路由：** [高级身份证核验](/verifik-zh/identity-validation/colombia/colombian-cedula-premium)（`/v2/co/cedula/premium`）始终按高级定价计费。
+
 ### 请求
 
 <Tabs>

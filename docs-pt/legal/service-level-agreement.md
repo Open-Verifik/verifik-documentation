@@ -113,6 +113,20 @@ d) A Verifik reserva-se o direito de modificar, priorizar ou substituir as fonte
 
 A Consulta Dinâmica será considerada uma funcionalidade inerente ao serviço smartCHECK e aplicará automaticamente a todos os Clientes que utilizem endpoints elegíveis, salvo disposição em contrário por escrito da Verifik.
 
+#### **VIII.A Preço dinâmico (faturamento)**
+
+Quando a Consulta Dinâmica utiliza um caminho de verificação estendido em um endpoint elegível e retorna uma correspondência bem-sucedida (**HTTP 200**), pode aplicar-se **preço dinâmico**. Nesse caso, os créditos são deduzidos no **nível premium** dessa família de endpoints, e não no nível padrão associado à rota base.
+
+O preço dinâmico aplica-se hoje ao endpoint padrão de cédula colombiana (**`GET/POST /v2/co/cedula`**) quando um caminho de verificação estendido é concluído com sucesso após os caminhos padrão não retornarem correspondência. Os valores de crédito dependem da **precificação configurada para o Cliente** (tarifa padrão vs. tarifa premium para essa família de endpoints).
+
+O preço dinâmico **não altera** as regras de cobrança da seção **VII**: erros de validação e de servidor (**403**, **409**, **412**, **422**, **500**) não são cobrados; respostas **404** são cobradas na tarifa padrão quando nenhuma correspondência bem-sucedida é obtida nos caminhos aplicáveis.
+
+Para transparência, o Cliente pode enviar **`includeCost=true`** em solicitações elegíveis para receber um objeto **`billing`** quando créditos forem cobrados (incluindo quando o preço dinâmico se aplica). O histórico de solicitações API registra metadados de ajuste (por exemplo, valores padrão vs. cobrados).
+
+Chamar diretamente **`/v2/co/cedula/premium`** sempre usa precificação premium; o preço dinâmico descreve a escalada automática a partir da rota padrão **`/v2/co/cedula`**.
+
+Consulte [Cédula colombiana premium](/verifik-pt/identity-validation/colombia/colombian-cedula-premium#dynamic-pricing) para detalhes da API.
+
 #### **IX. Indisponibilidade da Plataforma**
 
 Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.

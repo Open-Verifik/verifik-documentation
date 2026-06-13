@@ -47,6 +47,14 @@ export const faqData = {
 				text: "Sí, nuestra API se conecta directamente con fuentes oficiales del gobierno para proporcionar información en tiempo real y actualizada.",
 			},
 		},
+		{
+			"@type": "Question",
+			name: "¿Por qué me cobraron más que el precio listado de la cédula?",
+			acceptedAnswer: {
+				"@type": "Answer",
+				text: "Cuando las rutas de verificación estándar en GET/POST /v2/co/cedula no devuelven coincidencia, Verifik puede intentar automáticamente una ruta de verificación extendida mediante Consulta Dinámica. Si esa ruta devuelve HTTP 200, aplica precio dinámico y se cobra el nivel premium de esa familia de endpoints. Envíe includeCost=true para ver un objeto billing en la respuesta, o revise su historial de solicitudes API.",
+			},
+		},
 	],
 };
 
@@ -143,6 +151,13 @@ Explora otros servicios de verificación en el ecosistema colombiano:
   </div>
 </details>
 
+<details>
+  <summary>¿Por qué me cobraron más que el precio listado de la cédula?</summary>
+  <div>
+    Cuando las rutas de verificación estándar en <strong>GET/POST /v2/co/cedula</strong> no devuelven coincidencia, Verifik puede intentar automáticamente una ruta de verificación extendida mediante <strong>Consulta Dinámica</strong>. Si esa ruta devuelve <strong>HTTP 200</strong>, aplica <strong>precio dinámico</strong> y se cobra el nivel premium de esa familia de endpoints. Envíe <strong>includeCost=true</strong> para ver un objeto <strong>billing</strong> en la respuesta, o revise su historial de solicitudes API.
+  </div>
+</details>
+
 ### Endpoint
 
 ```
@@ -162,6 +177,45 @@ https://api.verifik.co/v2/co/cedula
 | ---------------- | ------ | -------- | -------------------------------------------- |
 | `documentType`   | string | Sí       | Uno de `CC`, `PPT`.                          |
 | `documentNumber` | string | Sí       | Número de documento (sin espacios o puntos). |
+
+### Precio dinámico {#dynamic-pricing}
+
+Este endpoint participa en la arquitectura de **Consulta Dinámica** de Verifik. En la mayoría de los casos pagas la **tarifa estándar** de `/v2/co/cedula`. Cuando las rutas de verificación estándar no devuelven coincidencia, puede ejecutarse automáticamente una **ruta de verificación extendida**. Si esa ruta devuelve **HTTP 200**, aplica **precio dinámico** y los créditos se deducen en el **nivel premium** de esta familia de endpoints, no en el nivel estándar.
+
+**Expectativa de precio:** Desde tu **tarifa estándar** · hasta **tarifa premium** (consulta tu plan, Postman o el panel de cliente).
+
+```mermaid
+flowchart LR
+  client[Cliente llama /v2/co/cedula]
+  standardPath[Rutas de verificación estándar]
+  extendedPath[Ruta de verificación extendida]
+  chargeStandard[Cobro tarifa estándar]
+  chargePremium[Cobro tarifa premium — precio dinámico]
+
+  client --> standardPath
+  standardPath -->|"Coincidencia HTTP 200"| chargeStandard
+  standardPath -->|"Sin coincidencia"| extendedPath
+  extendedPath -->|"Coincidencia HTTP 200"| chargePremium
+  extendedPath -->|"Sin coincidencia HTTP 404"| chargeStandard
+```
+
+**Transparencia de facturación (opcional):** envía el parámetro de consulta **`includeCost=true`**. Cuando se cobren créditos, la respuesta puede incluir un objeto **`billing`** si aplica precio dinámico:
+
+```json
+"billing": {
+  "dynamicQueryApplied": true,
+  "adjustmentType": "dynamic_query_premium",
+  "standardCredits": 0.3,
+  "chargedCredits": 2,
+  "standardFeatureCode": "colombia_api_identity_lookup",
+  "billedFeatureCode": "colombia_api_identity_lookup_premium"
+}
+```
+
+Los montos son **ilustrativos**; los valores reales dependen de tu plan.
+
+- **SLA:** [Precio dinámico (facturación)](/verifik-es/acuerdo-de-niveles-de-servicio#viiia-precio-dinámico-facturación)
+- **Ruta premium directa:** [Cédula premium](/verifik-es/validacion-identidad/colombia/cedula-premium-cc) (`/v2/co/cedula/premium`) siempre usa tarificación premium.
 
 ### Solicitud
 

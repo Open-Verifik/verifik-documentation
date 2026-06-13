@@ -113,6 +113,20 @@ d) Verifik se réserve le droit de modifier, prioriser ou substituer les sources
 
 La Requête dynamique sera considérée comme une fonctionnalité inhérente au service smartCHECK et s'appliquera automatiquement à tous les Clients utilisant des points de terminaison éligibles, sauf disposition contraire écrite de Verifik.
 
+#### **VIII.A Tarification dynamique (facturation)**
+
+Lorsque la Requête dynamique utilise un chemin de vérification étendu sur un point de terminaison éligible et renvoie une correspondance réussie (**HTTP 200**), une **tarification dynamique** peut s'appliquer. Dans ce cas, les crédits sont déduits au **niveau premium** de cette famille de points de terminaison, et non au niveau standard associé à la route de base.
+
+La tarification dynamique s'applique aujourd'hui au point de terminaison standard de la carte d'identité colombienne (**`GET/POST /v2/co/cedula`**) lorsqu'un chemin de vérification étendu aboutit avec succès après l'échec des chemins standard. Les montants de crédits dépendent de la **tarification configurée pour le Client** (tarif standard vs. tarif premium pour cette famille de points de terminaison).
+
+La tarification dynamique **ne modifie pas** les règles de facturation de la section **VII** : les erreurs de validation et serveur (**403**, **409**, **412**, **422**, **500**) ne sont pas facturées ; les réponses **404** sont facturées au tarif standard lorsqu'aucune correspondance réussie n'est obtenue sur les chemins applicables.
+
+Pour plus de transparence, le Client peut transmettre **`includeCost=true`** sur les requêtes éligibles pour recevoir un objet **`billing`** lorsque des crédits sont facturés (y compris en cas de tarification dynamique). L'historique des requêtes API enregistre les métadonnées d'ajustement (par exemple, montants standard vs. facturés).
+
+Appeler directement **`/v2/co/cedula/premium`** utilise toujours la tarification premium ; la tarification dynamique décrit l'escalade automatique depuis la route standard **`/v2/co/cedula`**.
+
+Voir [Cédula colombienne premium](/verifik-fr/identity-validation/colombia/colombian-cedula-premium#dynamic-pricing) pour les détails de l'API.
+
 #### **IX. Indisponibilité de la plateforme**
 
 Les fenêtres de maintenance programmées auront lieu la nuit et/ou le week-end, avec notification préalable par e-mail aux utilisateurs.

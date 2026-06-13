@@ -60,6 +60,14 @@ export const faqData = {
 				text: "Yes, our API connects directly to official government sources to provide real-time and up-to-date information.",
 			},
 		},
+		{
+			"@type": "Question",
+			name: "Why was I charged more than the listed cédula price?",
+			acceptedAnswer: {
+				"@type": "Answer",
+				text: "When standard verification paths on GET/POST /v2/co/cedula do not return a match, Verifik may automatically try an extended verification path through Dynamic Query. If that path returns HTTP 200, dynamic pricing applies and you are charged the premium tier for that endpoint family. Pass includeCost=true to see a billing object on the response, or review your API request history for standard vs. charged amounts.",
+			},
+		},
 	],
 };
 
@@ -92,6 +100,45 @@ The route also accepts **`POST`** with the same fields in the body (for clients 
 | --- | --- | --- | --- |
 | `documentType` | string | Yes | **`CC`** (*Cédula de Ciudadanía*) or **`PPT`** (*Permiso por Protección Temporal*). **`NIT`** and other types are **not** accepted on this endpoint (API validation). |
 | `documentNumber` | string | Yes | Document number. **5–10** characters (API validation). Send digits without spaces or periods. |
+
+### Dynamic pricing {#dynamic-pricing}
+
+This endpoint participates in Verifik's **Dynamic Query** architecture. In most cases you pay the **standard rate** for `/v2/co/cedula`. When standard verification paths do not return a match, an **extended verification path** may run automatically. If that path returns **HTTP 200**, **dynamic pricing** applies and credits are deducted at the **premium tier** for this endpoint family—not the standard tier.
+
+**Price expectation:** From your account's **standard rate** · up to **premium rate** (see your plan, Postman, or the client panel).
+
+```mermaid
+flowchart LR
+  client[Client calls /v2/co/cedula]
+  standardPath[Standard verification paths]
+  extendedPath[Extended verification path]
+  chargeStandard[Charge standard rate]
+  chargePremium[Charge premium rate — dynamic pricing]
+
+  client --> standardPath
+  standardPath -->|"Match HTTP 200"| chargeStandard
+  standardPath -->|"No match"| extendedPath
+  extendedPath -->|"Match HTTP 200"| chargePremium
+  extendedPath -->|"No match HTTP 404"| chargeStandard
+```
+
+**Optional billing transparency:** pass query parameter **`includeCost=true`** on your request. When credits are charged, the response may include a **`billing`** object when dynamic pricing applies:
+
+```json
+"billing": {
+  "dynamicQueryApplied": true,
+  "adjustmentType": "dynamic_query_premium",
+  "standardCredits": 0.3,
+  "chargedCredits": 2,
+  "standardFeatureCode": "colombia_api_identity_lookup",
+  "billedFeatureCode": "colombia_api_identity_lookup_premium"
+}
+```
+
+Credit amounts are **illustrative**; actual values depend on your plan.
+
+- **SLA:** [Dynamic pricing (billing)](/legal/service-level-agreement#viiia-dynamic-pricing-billing)
+- **Direct premium route:** [National ID premium lookup](/identity-validation/colombia/colombian-cedula-premium) (`/v2/co/cedula/premium`) always uses premium pricing.
 
 ### Request
 
