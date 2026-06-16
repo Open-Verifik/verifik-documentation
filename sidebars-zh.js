@@ -203,6 +203,11 @@ const sidebars = {
 				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 选举机构有效性证明" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 PEP（特别居留）" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 外国人 CE" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombia-identity-documents-guide",
+					label: "🇨🇴 哥伦比亚证件指南",
+				},
 				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 PPT（临时保护）" },
 				{
 					type: "doc",

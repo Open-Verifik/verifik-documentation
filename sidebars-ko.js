@@ -289,6 +289,11 @@ const sidebars = {
 				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 선거청 유효성 증명" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 PEP (특별 체류)" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 외국인 CE" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombia-identity-documents-guide",
+					label: "🇨🇴 콜롬비아 신분증 가이드",
+				},
 				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 PPT (임시 보호)" },
 				{
 					type: "doc",

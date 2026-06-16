@@ -1,0 +1,64 @@
+---
+id: colombia-identity-documents-guide
+title: コロンビア — 身分証明書ガイド
+description: コロンビアの身分証（CC、CE、PPT、PEP）の種類ごとに、Verifik のエンドポイント、番号形式、一般的な桁数を説明します。
+slug: /identity-validation/colombia/colombia-identity-documents-guide
+---
+
+# コロンビア — 身分証明書ガイド
+
+ユーザーが **どの種類の身分証** を持っているか、**どの Verifik エンドポイント** を呼ぶべきか不明な場合にこのページを参照してください。各コロンビア身分証は発行機関と API パスが異なります。
+
+## クイック決定表
+
+| 所持書類 | 一般的名称 | Verifik エンドポイント | 必須フィールド | 一般的な桁数 | この API が受け付ける形式 |
+| --- | --- | --- | --- | --- | --- |
+| **CC** | *Cédula de Ciudadanía*（国民 ID） | `GET/POST /v2/co/cedula` | `documentType=CC`, `documentNumber` | **3–10** 桁（現在は **8** または **10** NUIP が多い） | **5–10** 桁 |
+| **PPT**（氏名 / 民事データ） | *Permiso de Protección Temporal* | `GET/POST /v2/co/cedula` | `documentType=PPT`, `documentNumber` | 最大 **7** 桁（15 桁パディングのシステムあり） | このパスでは **5–10** 桁 |
+| **PPT**（入国管理ステータス） | 同一許可、Migración Colombia | `GET/POST /v2/co/foreigner-id/ppt` | `documentNumber`, `expeditionDate` | 最大 **7** 桁 | 必須文字列 + 日付 **`DD/MM/YYYY`** |
+| **CE** | *Cédula de Extranjería*（外国人居住者） | `GET/POST /v2/co/foreigner-id/ce` | `documentNumber`, `expeditionDate` | 通常 **6–7** 桁 | 必須文字列 + 日付 **`DD/MM/YYYY`** |
+| **PEP** | *Permiso Especial de Permanencia*（入国） | `GET/POST /v2/co/foreigner-id/pep` | `documentNumber`, `expeditionDate` | **15** 桁（固定） | 必須文字列 + 日付 **`DD/MM/YYYY`** |
+
+### 番号の入力方法
+
+- **数字のみ** — ドット、スペース、ハイフンなし（Verifik は非数字を除去します）。
+- 物理書類やソースシステムにそのようにない限り、**先頭ゼロでパディングしない**でください。
+- **409** エラー時は `/v2/co/cedula` の長さ（**5–10**）または *foreigner-id* ルートの **`expeditionDate`** の欠落・誤りを確認してください。
+
+## PEP 名称の重要な区別
+
+| 用語 | 意味 | Verifik 製品 |
+| --- | --- | --- |
+| **PEP**（書類） | *Permiso Especial de Permanencia* — 入国許可 | `/v2/co/foreigner-id/pep` |
+| **政治的要人（PEP）** | AML / コンプライアンススクリーニング | `/v2/co/politically-exposed-persons`（CC または NIT）— [コロンビア PEP（AML）](/verifik-ja/identity-validation/colombia/colombian-politically-exposed-persons) を参照 |
+
+入国 **PEP** 番号を AML 政治的要人エンドポイントに送らないでください。逆も同様です。
+
+## よくある質問
+
+<details>
+  <summary>CC と CE のどちらを使うべきですか？</summary>
+  <div>
+    コロンビア市民（<em>Cédula de Ciudadanía</em>）なら <strong>CC</strong>。外国人居住者（<em>Cédula de Extranjería</em>）なら <strong>CE</strong>。政府ソースと Verifik エンドポイントが異なります。
+  </div>
+</details>
+
+<details>
+  <summary>どの PPT エンドポイントを使いますか？</summary>
+  <div>
+    身分証と同様の氏名・身元データには <code>/v2/co/cedula</code> + <code>documentType=PPT</code>。Migración Colombia の<strong>入国ステータス</strong>には <code>/v2/co/foreigner-id/ppt</code> — <code>expeditionDate</code> 必須。
+  </div>
+</details>
+
+<details>
+  <summary>CC 番号が 409 になる理由は？</summary>
+  <div>
+    <code>/v2/co/cedula</code> では <code>documentNumber</code> は正規化後 <strong>5–10 桁</strong>である必要があります。5 桁未満や桁不足の形式は上流照会前に拒否されます。
+  </div>
+</details>
+
+## 関連 API ページ
+
+- [コロンビア CE](/verifik-ja/identity/colombia-ce)
+- [コロンビア PPT（Migración）](/verifik-ja/identity/colombia-ppt)
+- [コロンビア PEP（入国許可）](/verifik-ja/identity/colombia-pep-id)

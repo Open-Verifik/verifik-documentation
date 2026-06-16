@@ -66,7 +66,7 @@ import TabItem from '@theme/TabItem';
 
 ### Notas
 
--   Usa `documentType=CC` para cédula; `PPT` para Permiso por Protección Temporal.
+-   Usa `documentType=CC` para cédula de ciudadanía y `PPT` para consulta de nombres con Permiso de Protección Temporal. Para **CE**, **PEP** migratorio o estado migratorio de **PPT**, consulta la [guía de documentos](/verifik-es/validacion-identidad/colombia/guia-documentos-identidad-colombia).
 
 
 
@@ -83,7 +83,7 @@ Creamos esta integración para empresas que necesitan una forma rápida, segura 
 
 Nuestra API se conecta directamente con registros oficiales para validar:
 
--   **Nombre Completo y Número de ID**: Soporta *Cédula de Ciudadanía* y *Cédula de Extranjería*.
+-   **Nombre completo y número de ID**: *Cédula de Ciudadanía* (**CC**) o *Permiso de Protección Temporal* (**PPT**) en este endpoint — **no** *Cédula de Extranjería* (**CE**); usa [Colombia CE](/verifik-es/identidad/colombia-ce).
 -   **Estado del Documento**: Verifica el estado actual en la base de datos de la *Registraduría Nacional del Estado Civil*.
 -   **Expedición y Vigencia**: Confirma la fecha de expedición y si el documento está actualmente vigente.
 -   **Coincidencia de Identidad**: Verifica que el nombre proporcionado coincida con el número de identificación.
@@ -171,12 +171,30 @@ https://api.verifik.co/v2/co/cedula
 | Accept        | `application/json` |
 | Authorization | `Bearer <token>`   |
 
+### Requisitos del documento
+
+**¿Para quién es?** Ciudadanos colombianos con *Cédula de Ciudadanía* (**CC**), o migrantes venezolanos con *Permiso de Protección Temporal* (**PPT**) cuando necesitas **nombre y datos de identidad** desde fuentes de registro civil.
+
+| Tipo | Quién lo tiene | `documentType` | Longitud típica en Colombia | Esta API acepta |
+| --- | --- | --- | --- | --- |
+| **CC** | Ciudadanos colombianos | `CC` | **3–10** dígitos (común: **8** o **10** NUIP) | **5–10** dígitos, solo números |
+| **PPT** | Migrantes venezolanos (nombres en esta ruta) | `PPT` | Hasta **7** dígitos | **5–10** dígitos, solo números |
+
+**Cómo ingresar `documentNumber`:** solo dígitos — sin puntos, espacios ni guiones. Ejemplo CC: `1032386359`.
+
+**Usa otro endpoint para:**
+- **CE** (*Cédula de Extranjería*) → [Colombia CE](/verifik-es/identidad/colombia-ce) (`/v2/co/foreigner-id/ce` + `expeditionDate`)
+- **Estado migratorio PPT** (VIGENTE / vencimiento) → [Colombia PPT](/verifik-es/identidad/colombia-ppt) (`/v2/co/foreigner-id/ppt` + `expeditionDate`)
+- **PEP migratorio** (*Permiso Especial de Permanencia*, 15 dígitos) → [Colombia PEP](/verifik-es/identidad/colombia-id-pep)
+
+Guía completa: [Guía de documentos de identidad](/verifik-es/validacion-identidad/colombia/guia-documentos-identidad-colombia).
+
 ### Parámetros
 
 | Name             | Type   | Required | Description                                  |
 | ---------------- | ------ | -------- | -------------------------------------------- |
-| `documentType`   | string | Sí       | Uno de `CC`, `PPT`.                          |
-| `documentNumber` | string | Sí       | Número de documento (sin espacios o puntos). |
+| `documentType`   | string | Sí       | **`CC`** (*Cédula de Ciudadanía*) o **`PPT`** (*Permiso de Protección Temporal*). **`NIT`**, **`CE`** y **PEP** migratorio **no** se aceptan aquí — ver la [guía de documentos](/verifik-es/validacion-identidad/colombia/guia-documentos-identidad-colombia). |
+| `documentNumber` | string | Sí       | Número del documento, **solo dígitos** (sin espacios ni puntos). **5–10** caracteres (validación API). La CC suele tener **8** o **10** dígitos; el PPT suele tener **hasta 7** en registros oficiales. Ejemplo: `1032386359`. |
 
 ### Precio dinámico {#dynamic-pricing}
 

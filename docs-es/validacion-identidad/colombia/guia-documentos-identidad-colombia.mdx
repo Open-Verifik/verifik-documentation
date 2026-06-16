@@ -1,0 +1,106 @@
+---
+id: guia-documentos-identidad-colombia
+title: Colombia — Guía de documentos de identidad
+description: Guía clara sobre tipos de documento colombianos (CC, CE, PPT, PEP)—qué endpoint de Verifik usar, cómo formatear el número y longitudes típicas.
+slug: /validacion-identidad/colombia/guia-documentos-identidad-colombia
+---
+
+# Colombia — Guía de documentos de identidad
+
+Usa esta página cuando no estés seguro de **qué tipo de documento** tiene tu usuario o **qué endpoint de Verifik** debes llamar. Cada documento colombiano tiene un emisor distinto y una ruta de API diferente.
+
+## Tabla de decisión rápida
+
+| Si la persona tiene… | Nombre común | Endpoint Verifik | Campos requeridos | Longitud típica | Lo que acepta esta API |
+| --- | --- | --- | --- | --- | --- |
+| **CC** | *Cédula de Ciudadanía* | `GET/POST /v2/co/cedula` | `documentType=CC`, `documentNumber` | **3–10** dígitos (hoy común: **8** o **10** NUIP) | **5–10** dígitos |
+| **PPT** (nombres / datos civiles) | *Permiso de Protección Temporal* | `GET/POST /v2/co/cedula` | `documentType=PPT`, `documentNumber` | Hasta **7** dígitos (algunos sistemas rellenan a 15) | **5–10** dígitos en esta ruta |
+| **PPT** (estado migratorio) | Mismo permiso, Migración Colombia | `GET/POST /v2/co/foreigner-id/ppt` | `documentNumber`, `expeditionDate` | Hasta **7** dígitos | Texto obligatorio + fecha **`DD/MM/YYYY`** |
+| **CE** | *Cédula de Extranjería* | `GET/POST /v2/co/foreigner-id/ce` | `documentNumber`, `expeditionDate` | Normalmente **6–7** dígitos | Texto obligatorio + fecha **`DD/MM/YYYY`** |
+| **PEP** | *Permiso Especial de Permanencia* | `GET/POST /v2/co/foreigner-id/pep` | `documentNumber`, `expeditionDate` | **15** dígitos (fijo) | Texto obligatorio + fecha **`DD/MM/YYYY`** |
+
+### Cómo ingresar el número
+
+- Envía **solo dígitos** — sin puntos, espacios ni guiones (Verifik elimina caracteres no numéricos).
+- **No** rellenes con ceros a la izquierda salvo que así figure en el documento físico o en tu sistema origen.
+- Si recibes **409** de validación, revisa la longitud en `/v2/co/cedula` (**5–10**) o una **`expeditionDate`** faltante o incorrecta en rutas foreigner-id.
+
+## Tipos de documento explicados
+
+### CC — Cédula de Ciudadanía
+
+Para personas **ciudadanas colombianas**. El número las identifica en la *Registraduría*.
+
+- **Cédulas antiguas** (antes de ~2004): suelen tener **6–8 dígitos**.
+- **NUIP actual** (desde ~2004): **10 dígitos**, normalmente desde `1.000.000.000`.
+- **Cédulas históricas muy antiguas** pueden tener **3 dígitos**; la ruta `/v2/co/cedula` de Verifik exige **mínimo 5 dígitos**. Si solo tienes un número histórico más corto, contacta a soporte Verifik.
+
+**Endpoint:** [Ciudadano colombiano](/verifik-es/validacion-identidad/colombia/ciudadano-colombiano) — `documentType=CC`.
+
+### CE — Cédula de Extranjería
+
+Para **extranjeros** con residencia legal en Colombia. Lo expide **Migración Colombia**, no el flujo de cédula de la *Registraduría*.
+
+- Los números suelen tener **6 o 7 dígitos** (longitud variable).
+- Debes enviar la **fecha de expedición** en formato **`DD/MM/YYYY`**.
+
+**Endpoint:** [Colombia CE](/verifik-es/identidad/colombia-ce) — **no** uses `/v2/co/cedula`.
+
+### PPT — Permiso de Protección Temporal
+
+Para **nacionales venezolanos** bajo el régimen de protección temporal en Colombia.
+
+- El número del permiso suele tener **hasta 7 dígitos**. Algunos portales (SENA, nómina, etc.) lo muestran **rellenado con ceros hasta 15 caracteres** — usa el formato que ya maneja tu integración.
+- **Dos endpoints:**
+  - **Consulta de nombre / identidad:** `/v2/co/cedula` con `documentType=PPT` (validación 5–10 dígitos).
+  - **Estado migratorio (VIGENTE, vencimiento, etc.):** `/v2/co/foreigner-id/ppt` con **`expeditionDate`**.
+
+**Endpoints:** [Ciudadano colombiano (PPT nombres)](/verifik-es/validacion-identidad/colombia/ciudadano-colombiano) · [PPT Migración](/verifik-es/identidad/colombia-ppt).
+
+### PEP — Permiso Especial de Permanencia
+
+Para **nacionales venezolanos** con este **permiso migratorio** (distinto de “persona expuesta políticamente” en AML).
+
+- El número tiene **siempre 15 dígitos**.
+- Requiere **`expeditionDate`** en **`DD/MM/YYYY`**.
+
+**Endpoint:** [Colombia PEP (migración)](/verifik-es/identidad/colombia-id-pep).
+
+## Distinción importante de nombres
+
+| Término | Significado | Producto Verifik |
+| --- | --- | --- |
+| **PEP** (documento) | *Permiso Especial de Permanencia* — permiso migratorio | `/v2/co/foreigner-id/pep` |
+| **Personas expuestas políticamente (PEP)** | Cumplimiento AML | `/v2/co/politically-exposed-persons` (CC o NIT) — ver [PEP colombiano (AML)](/verifik-es/identity-validation/colombia/colombian-politically-exposed-persons) |
+
+No envíes un **PEP** migratorio al endpoint AML de personas expuestas políticamente, ni al revés.
+
+## Preguntas frecuentes
+
+<details>
+  <summary>¿Debo usar CC o CE?</summary>
+  <div>
+    <strong>CC</strong> si la persona es ciudadana colombiana (<em>Cédula de Ciudadanía</em>). <strong>CE</strong> si es extranjero residente (<em>Cédula de Extranjería</em>). Usan fuentes gubernamentales y endpoints de Verifik distintos.
+  </div>
+</details>
+
+<details>
+  <summary>¿Qué endpoint PPT debo usar?</summary>
+  <div>
+    Usa <code>/v2/co/cedula</code> con <code>documentType=PPT</code> cuando necesites datos de identidad/nombre similares a una cédula. Usa <code>/v2/co/foreigner-id/ppt</code> cuando necesites el <strong>estado migratorio</strong> ante Migración Colombia — debes incluir <code>expeditionDate</code>.
+  </div>
+</details>
+
+<details>
+  <summary>¿Por qué mi CC falla con 409?</summary>
+  <div>
+    En <code>/v2/co/cedula</code>, <code>documentNumber</code> debe tener <strong>5–10 dígitos</strong> tras la normalización. Números más cortos o formatos que dejen muy pocos dígitos se rechazan antes de consultar la fuente oficial.
+  </div>
+</details>
+
+## Páginas relacionadas
+
+- [Ciudadano colombiano (CC / PPT nombres)](/verifik-es/validacion-identidad/colombia/ciudadano-colombiano)
+- [Colombia CE](/verifik-es/identidad/colombia-ce)
+- [Colombia PPT (Migración)](/verifik-es/identidad/colombia-ppt)
+- [Colombia PEP (permiso migratorio)](/verifik-es/identidad/colombia-id-pep)

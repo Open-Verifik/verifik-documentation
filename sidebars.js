@@ -171,6 +171,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity-validation/colombia/colombia-identity-documents-guide",
+					label: "🇨🇴 Colombia — ID documents guide",
+				},
+				{
+					type: "doc",
 					id: "identity/colombia-full-id",
 					label: "🇨🇴 Colombia - Full ID",
 				},

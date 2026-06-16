@@ -285,6 +285,11 @@ const sidebars = {
 				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 選挙管理庁 有効性証明" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 PEP（特別滞在）" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 外国人 CE" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombia-identity-documents-guide",
+					label: "🇨🇴 コロンビア身分証ガイド",
+				},
 				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 PPT（一時保護）" },
 				{
 					type: "doc",

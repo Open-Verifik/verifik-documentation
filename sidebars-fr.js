@@ -281,6 +281,11 @@ const sidebars = {
 				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 Colombie — Certificat Registraduría" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 Colombie — PEP" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 Colombie — CE" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombia-identity-documents-guide",
+					label: "🇨🇴 Colombie — Guide documents d'identité",
+				},
 				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 Colombie — PPT" },
 				{
 					type: "doc",

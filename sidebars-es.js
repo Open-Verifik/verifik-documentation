@@ -104,6 +104,11 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile-taxpayer", label: "🇨🇱 Chile — Contribuyente (RUT)", key: "identity-chile-taxpayer" },
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 Chile — Validación de documento", key: "identity-chile-validate-documents" },
 				{ type: "doc", id: "identity/colombia", label: "🇨🇴 Ciudadano Colombiano" },
+				{
+					type: "doc",
+					id: "validacion-identidad/colombia/guia-documentos-identidad-colombia",
+					label: "🇨🇴 Guía de documentos de identidad",
+				},
 				{ type: "doc", id: "identity/colombia-full-id", label: "🇨🇴 Colombia - ID Completo" },
 				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 Colombia - Certificado Registraduría" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 Colombia - CE" },

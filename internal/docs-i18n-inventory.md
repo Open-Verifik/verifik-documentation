@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-06-13T05:17:27.076Z
+Generated: 2026-06-16T16:53:14.245Z
 
-- **Files scanned:** 478
+- **Files scanned:** 479
 - **Unique endpoint URLs:** 194
 - **Duplicate URL groups (SEO / aliases):** 57
-- **Docs without `### Endpoint` block:** 206
+- **Docs without `### Endpoint` block:** 207
 
 ## Summary by priority (canonical primary path only)
 
@@ -460,6 +460,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `identity-validation/chile/quebec-driver-license.mdx`
 - `identity-validation/chile/validate-chilean-document.mdx`
 - `identity-validation/colombia.mdx`
+- `identity-validation/colombia/colombia-identity-documents-guide.mdx`
 - `identity-validation/peru.mdx`
 - `identity-validation/united-states.mdx`
 - `identity/identity-verification.mdx`

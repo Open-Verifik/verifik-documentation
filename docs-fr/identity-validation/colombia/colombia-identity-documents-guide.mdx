@@ -1,0 +1,64 @@
+---
+id: colombia-identity-documents-guide
+title: Colombie — Guide des documents d'identité
+description: Guide client pour les types de pièces colombiennes (CC, CE, PPT, PEP) — quel endpoint Verifik appeler, format des numéros et longueurs habituelles.
+slug: /identity-validation/colombia/colombia-identity-documents-guide
+---
+
+# Colombie — Guide des documents d'identité
+
+Utilisez cette page lorsque vous ne savez pas **quel type de document** possède votre utilisateur ou **quel endpoint Verifik** appeler. Chaque pièce colombienne a un émetteur et un chemin API différents.
+
+## Tableau de décision rapide
+
+| Si la personne a… | Nom courant | Endpoint Verifik | Champs requis | Longueur habituelle | Accepté par cette API |
+| --- | --- | --- | --- | --- | --- |
+| **CC** | *Cédula de Ciudadanía* (carte d'identité nationale) | `GET/POST /v2/co/cedula` | `documentType=CC`, `documentNumber` | **3–10** chiffres (aujourd'hui souvent **8** ou **10** NUIP) | **5–10** chiffres |
+| **PPT** (noms / données civiles) | *Permiso de Protección Temporal* | `GET/POST /v2/co/cedula` | `documentType=PPT`, `documentNumber` | Jusqu'à **7** chiffres (certains systèmes paddent à 15) | **5–10** chiffres sur ce chemin |
+| **PPT** (statut migratoire) | Même permis, Migración Colombia | `GET/POST /v2/co/foreigner-id/ppt` | `documentNumber`, `expeditionDate` | Jusqu'à **7** chiffres | Chaîne obligatoire + date **`JJ/MM/AAAA`** |
+| **CE** | *Cédula de Extranjería* (résidents étrangers) | `GET/POST /v2/co/foreigner-id/ce` | `documentNumber`, `expeditionDate` | Généralement **6–7** chiffres | Chaîne obligatoire + date **`JJ/MM/AAAA`** |
+| **PEP** | *Permiso Especial de Permanencia* (immigration) | `GET/POST /v2/co/foreigner-id/pep` | `documentNumber`, `expeditionDate` | **15** chiffres (fixe) | Chaîne obligatoire + date **`JJ/MM/AAAA`** |
+
+### Saisie du numéro
+
+- Envoyez **des chiffres uniquement** — pas de points, espaces ou tirets (Verifik supprime les caractères non numériques).
+- Ne complétez **pas** avec des zéros en tête sauf si c'est ainsi sur le document physique ou dans votre système source.
+- En cas d'erreur **409**, vérifiez la longueur sur `/v2/co/cedula` (**5–10**) ou une **`expeditionDate`** manquante / incorrecte sur les routes *foreigner-id*.
+
+## Distinction importante sur le nom PEP
+
+| Terme | Signification | Produit Verifik |
+| --- | --- | --- |
+| **PEP** (document) | *Permiso Especial de Permanencia* — permis d'immigration | `/v2/co/foreigner-id/pep` |
+| **Personnes politiquement exposées (PEP)** | Dépistage LCB / conformité | `/v2/co/politically-exposed-persons` (CC ou NIT) — voir [PEP colombien (LCB)](/verifik-fr/identity-validation/colombia/colombian-politically-exposed-persons) |
+
+N'envoyez pas un numéro de **PEP** immigration à l'endpoint LCB des personnes politiquement exposées, ni l'inverse.
+
+## Foire aux questions
+
+<details>
+  <summary>Dois-je utiliser CC ou CE ?</summary>
+  <div>
+    <strong>CC</strong> si la personne est citoyenne colombienne (<em>Cédula de Ciudadanía</em>). <strong>CE</strong> si c'est un résident étranger (<em>Cédula de Extranjería</em>). Sources gouvernementales et endpoints Verifik différents.
+  </div>
+</details>
+
+<details>
+  <summary>Quel endpoint PPT utiliser ?</summary>
+  <div>
+    Utilisez <code>/v2/co/cedula</code> avec <code>documentType=PPT</code> pour des données d'identité / nom similaires à une cédula. Utilisez <code>/v2/co/foreigner-id/ppt</code> pour le <strong>statut migratoire</strong> Migración Colombia — <code>expeditionDate</code> obligatoire.
+  </div>
+</details>
+
+<details>
+  <summary>Pourquoi mon numéro CC renvoie 409 ?</summary>
+  <div>
+    Sur <code>/v2/co/cedula</code>, <code>documentNumber</code> doit comporter <strong>5–10 chiffres</strong> après normalisation. Moins de 5 chiffres, ou un formatage laissant trop peu de chiffres, est rejeté avant la consultation amont.
+  </div>
+</details>
+
+## Pages API associées
+
+- [Colombie CE](/verifik-fr/identity/colombia-ce)
+- [Colombie PPT (Migración)](/verifik-fr/identity/colombia-ppt)
+- [Colombie PEP (permis d'immigration)](/verifik-fr/identity/colombia-pep-id)

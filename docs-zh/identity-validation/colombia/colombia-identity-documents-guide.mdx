@@ -1,0 +1,65 @@
+---
+id: colombia-identity-documents-guide
+title: 哥伦比亚 — 身份证件指南
+description: 哥伦比亚身份证件类型（CC、CE、PPT、PEP）客户端指南：应调用哪个 Verifik 端点、号码格式及常见位数。
+slug: /identity-validation/colombia/colombia-identity-documents-guide
+---
+
+# 哥伦比亚 — 身份证件指南
+
+当您不确定用户持有**哪种证件**或应调用**哪个 Verifik 端点**时，请使用本页。每种哥伦比亚证件对应不同的签发机构与 API 路径。
+
+## 快速决策表
+
+| 持有人有… | 常用名称 | Verifik 端点 | 必填字段 | 常见号码长度 | 本 API 接受 |
+| --- | --- | --- | --- | --- | --- |
+| **CC** | *Cédula de Ciudadanía*（国民身份证） | `GET/POST /v2/co/cedula` | `documentType=CC`, `documentNumber` | **3–10** 位（目前常见 **8** 或 **10** 位 NUIP） | **5–10** 位 |
+| **PPT**（姓名/民事数据） | *Permiso de Protección Temporal* | `GET/POST /v2/co/cedula` | `documentType=PPT`, `documentNumber` | 最多 **7** 位（部分系统补零至 15 位） | 此路径 **5–10** 位 |
+| **PPT**（移民状态） | 同一许可，Migración Colombia | `GET/POST /v2/co/foreigner-id/ppt` | `documentNumber`, `expeditionDate` | 最多 **7** 位 | 必填字符串 + 日期 **`DD/MM/YYYY`** |
+| **CE** | *Cédula de Extranjería*（外国居民） | `GET/POST /v2/co/foreigner-id/ce` | `documentNumber`, `expeditionDate` | 通常 **6–7** 位 | 必填字符串 + 日期 **`DD/MM/YYYY`** |
+| **PEP** | *Permiso Especial de Permanencia*（移民） | `GET/POST /v2/co/foreigner-id/pep` | `documentNumber`, `expeditionDate` | **15** 位（固定） | 必填字符串 + 日期 **`DD/MM/YYYY`** |
+
+### 如何填写号码
+
+- 仅发送**数字** — 不含点、空格或连字符（Verifik 会去除非数字字符）。
+- 除非物理证件或源系统如此存储，否则**不要用前导零填充**。
+- 若返回 **409**，请检查 `/v2/co/cedula` 长度（**5–10**）或 *foreigner-id* 路由中缺失/错误的 **`expeditionDate`**。
+
+## PEP 名称的重要区分
+
+| 术语 | 含义 | Verifik 产品 |
+| --- | --- | --- |
+| **PEP**（证件） | *Permiso Especial de Permanencia* — 移民许可 | `/v2/co/foreigner-id/pep` |
+| **政治公众人物（PEP）** | AML / 合规筛查 | `/v2/co/politically-exposed-persons`（CC 或 NIT）— 见 [哥伦比亚 PEP（AML）](/verifik-zh/identity-validation/colombia/colombian-politically-exposed-persons) |
+
+不要将移民 **PEP** 号码发往 AML 政治公众人物端点，反之亦然。
+
+## 常见问题
+
+<details>
+  <summary>应使用 CC 还是 CE？</summary>
+  <div>
+    哥伦比亚公民（<em>Cédula de Ciudadanía</em>）用 <strong>CC</strong>。外国居民（<em>Cédula de Extranjería</em>）用 <strong>CE</strong>。政府数据源与 Verifik 端点不同。
+  </div>
+</details>
+
+<details>
+  <summary>应使用哪个 PPT 端点？</summary>
+  <div>
+    需要类似身份证的姓名/身份数据时，使用 <code>/v2/co/cedula</code> 并设 <code>documentType=PPT</code>。需要 Migración Colombia 的<strong>移民状态</strong>时，使用 <code>/v2/co/foreigner-id/ppt</code> — 必须包含 <code>expeditionDate</code>。
+  </div>
+</details>
+
+<details>
+  <summary>为什么 CC 号码返回 409？</summary>
+  <div>
+    在 <code>/v2/co/cedula</code> 上，<code>documentNumber</code> 规范化后必须为 <strong>5–10 位</strong>。少于 5 位或格式化后位数不足会在上游查询前被拒绝。
+  </div>
+</details>
+
+## 相关 API 页面
+
+- [哥伦比亚公民（CC / PPT 姓名）](/verifik-zh/identity-validation/colombia/colombian-citizen)
+- [哥伦比亚 CE](/verifik-zh/identity/colombia-ce)
+- [哥伦比亚 PPT（Migración）](/verifik-zh/identity/colombia-ppt)
+- [哥伦比亚 PEP（移民许可）](/verifik-zh/identity/colombia-pep-id)

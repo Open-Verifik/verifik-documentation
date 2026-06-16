@@ -1,0 +1,65 @@
+---
+id: colombia-identity-documents-guide
+title: 콜롬비아 — 신분증 유형 가이드
+description: 콜롬비아 신분증(CC, CE, PPT, PEP) 유형별 Verifik 엔드포인트, 번호 형식 및 일반적인 자릿수 안내.
+slug: /identity-validation/colombia/colombia-identity-documents-guide
+---
+
+# 콜롬비아 — 신분증 유형 가이드
+
+사용자가 **어떤 신분증**을 보유하는지, **어떤 Verifik 엔드포인트**를 호출해야 하는지 불확실할 때 이 페이지를 참고하세요. 콜롬비아 신분증마다 발급 기관과 API 경로가 다릅니다.
+
+## 빠른 결정 표
+
+| 보유 문서 | 일반 명칭 | Verifik 엔드포인트 | 필수 필드 | 일반적인 번호 길이 | 이 API에서 허용 |
+| --- | --- | --- | --- | --- | --- |
+| **CC** | *Cédula de Ciudadanía* (국민 신분증) | `GET/POST /v2/co/cedula` | `documentType=CC`, `documentNumber` | **3–10**자리 (현재 흔함: **8** 또는 **10** NUIP) | **5–10**자리 |
+| **PPT** (이름/민사 데이터) | *Permiso de Protección Temporal* | `GET/POST /v2/co/cedula` | `documentType=PPT`, `documentNumber` | 최대 **7**자리 (일부 시스템은 15자리 패딩) | 이 경로에서 **5–10**자리 |
+| **PPT** (이민 상태) | 동일 허가, Migración Colombia | `GET/POST /v2/co/foreigner-id/ppt` | `documentNumber`, `expeditionDate` | 최대 **7**자리 | 필수 문자열 + 날짜 **`DD/MM/YYYY`** |
+| **CE** | *Cédula de Extranjería* (외국인 거주자) | `GET/POST /v2/co/foreigner-id/ce` | `documentNumber`, `expeditionDate` | 보통 **6–7**자리 | 필수 문자열 + 날짜 **`DD/MM/YYYY`** |
+| **PEP** | *Permiso Especial de Permanencia* (이민) | `GET/POST /v2/co/foreigner-id/pep` | `documentNumber`, `expeditionDate` | **15**자리 (고정) | 필수 문자열 + 날짜 **`DD/MM/YYYY`** |
+
+### 번호 입력 방법
+
+- **숫자만** 전송 — 점, 공백, 하이픈 없음 (Verifik는 비숫자 문자를 제거합니다).
+- 실물 문서나 원본 시스템에 그렇게 표시되지 않는 한 **앞자리 0으로 패딩하지 마세요**.
+- **409** 오류 시 `/v2/co/cedula` 길이(**5–10**) 또는 *foreigner-id* 경로의 누락/잘못된 **`expeditionDate`**를 확인하세요.
+
+## PEP 명칭 구분 (중요)
+
+| 용어 | 의미 | Verifik 제품 |
+| --- | --- | --- |
+| **PEP** (문서) | *Permiso Especial de Permanencia* — 이민 허가 | `/v2/co/foreigner-id/pep` |
+| **정치적 주요 인물(PEP)** | AML / 컴플라이언스 스크리닝 | `/v2/co/politically-exposed-persons` (CC 또는 NIT) — [콜롬비아 PEP(AML)](/verifik-ko/identity-validation/colombia/colombian-politically-exposed-persons) 참고 |
+
+이민 **PEP** 번호를 AML 정치적 주요 인물 엔드포인트로 보내지 마세요. 반대도 마찬가지입니다.
+
+## 자주 묻는 질문
+
+<details>
+  <summary>CC와 CE 중 무엇을 써야 하나요?</summary>
+  <div>
+    콜롬비아 국민(<em>Cédula de Ciudadanía</em>)이면 <strong>CC</strong>. 외국인 거주자(<em>Cédula de Extranjería</em>)이면 <strong>CE</strong>. 정부 출처와 Verifik 엔드포인트가 다릅니다.
+  </div>
+</details>
+
+<details>
+  <summary>어떤 PPT 엔드포인트를 사용해야 하나요?</summary>
+  <div>
+    신분증과 유사한 이름/신원 데이터가 필요하면 <code>/v2/co/cedula</code> + <code>documentType=PPT</code>. Migración Colombia의 <strong>이민 상태</strong>가 필요하면 <code>/v2/co/foreigner-id/ppt</code> — <code>expeditionDate</code> 필수.
+  </div>
+</details>
+
+<details>
+  <summary>CC 번호가 왜 409를 반환하나요?</summary>
+  <div>
+    <code>/v2/co/cedula</code>에서 <code>documentNumber</code>는 정규화 후 <strong>5–10자리</strong>여야 합니다. 5자리 미만이거나 숫자가 부족한 형식은 upstream 조회 전에 거부됩니다.
+  </div>
+</details>
+
+## 관련 API 페이지
+
+- [콜롬비아 국민(CC / PPT 이름)](/verifik-ko/identity-validation/colombia/colombian-citizen)
+- [콜롬비아 CE](/verifik-ko/identity/colombia-ce)
+- [콜롬비아 PPT (Migración)](/verifik-ko/identity/colombia-ppt)
+- [콜롬비아 PEP (이민 허가)](/verifik-ko/identity/colombia-pep-id)

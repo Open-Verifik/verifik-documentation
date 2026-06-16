@@ -290,6 +290,11 @@ const sidebars = {
 				{ type: "doc", id: "identity/colombia-registraduria-certificate", label: "🇨🇴 Colômbia — Certificado Registraduría" },
 				{ type: "doc", id: "identity/colombia-pep-id", label: "🇨🇴 Colômbia — PEP" },
 				{ type: "doc", id: "identity/colombia-ce", label: "🇨🇴 Colômbia — CE" },
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombia-identity-documents-guide",
+					label: "🇨🇴 Colômbia — Guia de documentos",
+				},
 				{ type: "doc", id: "identity/colombia-ppt", label: "🇨🇴 Colômbia — PPT" },
 				{
 					type: "doc",
