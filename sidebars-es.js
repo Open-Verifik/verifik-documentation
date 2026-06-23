@@ -397,11 +397,6 @@ const sidebars = {
 						},
 						{
 							type: "doc",
-							id: "validacion-vehiculos/colombia/soat-rtm-vehiculo-runt",
-							label: "SOAT y RTM del Vehículo",
-						},
-						{
-							type: "doc",
 							id: "validacion-vehiculos/colombia/colombia-runt-soat-rtm",
 							label: "RUNT - SOAT y RTM",
 						},
