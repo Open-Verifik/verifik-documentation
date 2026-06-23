@@ -6,7 +6,7 @@ description: Verifik's terms and conditions of service
 
 # Terms and Conditions
 
-**Last Updated: May 18, 2026**
+**Last Updated: June 22, 2026**
 
 **Effective: March 9, 2023**
 
@@ -50,23 +50,19 @@ The following definitions shall be used to interpret these Terms and Conditions:
 
 #### APIs
 
-`i.`` `**`Database Screening.`**` ``Cross checking and verification of data subject's with official Public Data Bases, through API.`
-
-`ii.`` `**`zk Face Proofs.`**` ``Migrate private and sensitive data of end users from data bases to the blockchain, and give full control to data subjects to manage it.`
-
-`iii.`` `**`Biometrics.`**` ``An API that will permit you to build a solution with Face Recognition and Liveness Detection.`&#x20;
+1. **Database Screening.** Cross checking and verification of data subject's with official Public Data Bases.
+2. **Access.** Replace passwords with stronger authentication
+3. **Face Recognition.** Face recognition and passive liveness detection.
+4. **Scan Doc.** Extract document data with OCR
+5. **HumanAuthn.** A new primitive for encryption and detection
 
 #### APPS
 
-`i.`` `**`smartCHECK.`**` ``Cross checking and verification of data subject's with official Public Data Bases.`
-
-`ii.`` `**`smartACCESS.`**` ``Permit Passworless Logins to end users.`
-
-`iii.`` `**`smartENROLL.`**` ``Onboard end users in a thorough registration process.`
-
-`iv.`` `**`smartLINK.`**` ``Generate a link to stream line authentication during client support.`
-
-`v.`` `**`smartSCAN.`**` ``Scan Documents through Optical character recognition (OCR) technology with scan Prompt and scan Studio.`
+1. **SmartCHECK.** Cross checking and verification of data subject's with official Public Data Bases.
+2. **SmartACCESS.** Passwordless authentication for your apps
+3. **SmartENROLL.** Customizable KYC/AML enrollment flow.
+4. **SmartSCAN.** Scan Documents through Optical character recognition (OCR) technology.
+5. **SmartLINK.** Generate a link to streamline authentication during client support.
 
 **Software as a Service:** is a method of delivering software and granting non-exclusive licenses through which the software is accessed through a computer connected to the internet and running from the cloud, in exchange for payment of the Subscription Fee.
 
@@ -122,47 +118,39 @@ To access the Verifik Services you must:
 
 When accessing the Verifik App, the User will find that each of the services offered have their own payment Plan, this was thought out to enhance the consumption management done by each of the services and to permit the User to link a different payment method to each of the services.
 
-| **Services**           | **Payment Plan**                                                    | **Term of Credits**                                                                         |
-
-| ---------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-
-| **Database Screening** | **Subscription:** Basic, Plus and Business                          | <strong>PAYG:</strong> 12 months<br /><strong>Subscription:</strong> Monthly or Yearly |
-
-| **Biometrics**         | **Volume Commitment**                                               | **Subscription:** Monthly or Yearly                                                         |
-
-| **zk Face Proofs**     | **Volume Commitment**                                               | **Subscription:** Monthly or Yearly                                                         |
-
-| **smartCHECK**         | **PAYG** (Pay as you go) **Subscription:** Basic, Plus and Business | <strong>PAYG:</strong> 12 months<br /><strong>Subscription:</strong> Monthly or Yearly |
-
-| **smartACCESS**        | **Subscription:** Free, Plus and Business                           | **Subscription:** Monthly                                                                   |
-
-| **smartENROLL**        | **Subscription:** Free, Plus and Business                           | **Subscription:** Monthly                                                                   |
-
-| **smartLINK**          | **Subscription:** Free, Plus and Business                           | **Subscription:** Monthly                                                                   |
-
-| **smartSCAN**          | TBD                                                                 | TBD                                                                                         |
+| **Services** | **Payment Plan** | **Term of Credits** |
+| --- | --- | --- |
+| **Database Screening** | **Subscription:** Starter, Basic, Plus, Business, Enterprise | Monthly or Yearly |
+| **Face Recognition** | **Contract / Subscription** | Monthly or Yearly |
+| **Scan Doc** | **Contract/PAYG** | Monthly or Yearly |
+| **HumanAuthn** | **Contract** | Monthly or Yearly |
+| **smartCHECK** | **Subscription:** Starter, Basic, Plus, Business, Enterprise | Monthly or Yearly |
+| **smartACCESS** | **Subscription:** Free, Plus, Business, Enterprise | Monthly or Yearly |
+| **smartENROLL** | **Subscription:** Free, Plus, Business, Enterprise | Monthly or Yearly |
+| **smartSCAN** | **Contract/PAYG** | Monthly or Yearly |
+| **smartLINK** | **Contract/PAYG** | Monthly or Yearly |
 
 The User will be subject to the plan rate purchased on the App or agreed on the contract.&#x20;
 
 #### PAYG
 
-The PAYG plan was specifically made for smartCHECK service and it must be paid through Credits that the User must purchase on the App. The minimum amount that the User can acquire is twenty (20) USD worth of Credits. For this plan the credits will be valid for twelve (12) months from the date of purchase, after this period, they will expire automatically, and cannot be used to access the Services.
+The Pay-As-You-Go (PAYG) Plan applies to smartScan and scanDoc, both of which are integrated within the smartENROLL service. Consumption on both services will be discounted when the User maintains an active subscription plan or an available credit balance.
 
-To continue enjoying the Services on the App, in the case of the PAYG Plan, the User must maintain a Positive Balance, which implies that it will be the User's responsibility to acquire the number of Credits necessary to continue accessing the Services selected on the App. In the event that the balance of Credits on the App reaches 0, the Services will no longer be available and may be suspended automatically by Verifik.
+The minimum credit purchase under the PAYG Plan is forty-nine United States Dollars (USD $49.00). Credits purchased under this plan shall remain valid for a period of twelve (12) months from the date of purchase. Upon expiration of this period, any unused credits shall expire automatically and will no longer be available for redemption or use in connection with the Services.
 
-#### Subscription
+To maintain uninterrupted access to the Services through the App under the PAYG Plan, the User must maintain a positive credit balance at all times. It shall be the sole responsibility of the User to purchase and maintain sufficient Credits to continue accessing the selected Services. If the User's credit balance reaches zero (0), access to the Services may be automatically suspended or discontinued by Verifik until additional Credits are acquired.
 
-The subscription plans vary depending on the architecture of the Services, so does the terms of expiration for the credits, as we explain:
+#### Subscription Plans
 
-* The subscription plans for smartCHECK (Basic, Plus, Business and Enterprise) can be acquired in a monthly or yearly subscription. The monthly subscription issues credits with an expiration of 1 month and correspondingly the yearly subscription will issue credits with an expiration term of 12 months.
+Subscription plans vary depending on the architecture and scope of the Services, as well as the validity period of the Credits associated with each plan, as detailed below:
 
-* The subscription plan for smartACCESS, smartENROLL and smartLINK (Free, Plus and Business) can only be acquired for a monthly basis. Consequently, the monthly subscription issues credits with an expiration of 1 month.
+* The subscription plans for smartCHECK (Starter, Basic, Plus, Business, and Enterprise) may be purchased on either a monthly or yearly basis. The monthly subscription issues credits with an expiration of 1 month and correspondingly the yearly subscription will issue credits with an expiration term of 12 months.
 
-* The Free Forever Plan can be consumed freely in perpetuity as long as the User configures it to only consume email verification. The moment that any other feature is enabled and used by the end users, a charge will be done on the specific used of the features.
+* The subscription plans for smartACCESS and smartENROLL (Free, Plus, and Business) are available exclusively on a monthly subscription basis. Consequently, the monthly subscription issues credits with an expiration of 1 month.
 
-* Each subscription plan has a specific fee rate depending on the Service been purchased.
+* The Free Forever Plan may be used indefinitely at no cost, provided that the User configures and uses the Services exclusively for email verification. If the User enables and uses any additional features beyond email verification, charges shall apply based on the specific features consumed.
 
-To continue enjoying the Services on the App, in the case of Free, Basic, Plus and Business plans, the User must keep the subscription active to continue accessing the Services.
+* To maintain uninterrupted access to the Services, the User must keep the applicable subscription active and in good standing. Failure to maintain an active subscription may result in the suspension or termination of access to the Services.
 
 #### Enabled Features and Fees
 

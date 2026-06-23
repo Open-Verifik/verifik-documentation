@@ -7,7 +7,7 @@ slug: /legal/terms-and-conditions
 
 # Termes et conditions
 
-**Dernière mise à jour : 18 mai 2026**
+**Dernière mise à jour : 22 juin 2026**
 
 **En vigueur : 9 mars 2023**
 
@@ -51,23 +51,19 @@ Les définitions suivantes doivent être utilisées pour interpréter les prése
 
 #### API
 
-`i.`` `**`Contrôle des bases de données.`**` ``Vérification croisée et vérification des personnes concernées avec les bases de données publiques officielles, via l'API.`
-
-`ii.`` `**`zk Face Proofs.`**` ``Migrez les données privées et sensibles des utilisateurs finaux des bases de données vers la blockchain et donnez le contrôle total aux personnes concernées pour les gérer.`
-
-`iii.`` `**`Biométriques.`**` ``Une API qui vous permettra de créer une solution avec la reconnaissance faciale et la détection de la vivacité.`&#x20;
+1. **Database Screening.** Vérification croisée et vérification des personnes concernées avec les bases de données publiques officielles.
+2. **Access.** Remplacez les mots de passe par une authentification plus forte
+3. **Face Recognition.** Reconnaissance faciale et détection passive de la vivacité.
+4. **Scan Doc.** Extraire les données des documents avec l'OCR
+5. **HumanAuthn.** Une nouvelle primitive pour le chiffrement et la détection
 
 #### APPLICATIONS
 
-`i.`` `**`smartCHECK.`**` ``Contrôle croisé et vérification des personnes concernées avec les bases de données publiques officielles.`
-
-`ii.`` `**`smartACCESS.`**` ``Autoriser les connexions sans mot de passe aux utilisateurs finaux.`
-
-`iii.`` `**`smartENROLL.`**` ``Intégrer les utilisateurs finaux dans un processus d'enregistrement approfondi.`
-
-`iv.`` `**`smartLINK.`**` ``Générer un lien pour rationaliser l'authentification de ligne pendant le support client.`
-
-`v.`` `**`smartSCAN.`**` ``Numériser des documents via la technologie de reconnaissance optique de caractères (OCR) avec l'invite de numérisation et Scan Studio.`
+1. **SmartCHECK.** Vérification croisée et vérification des personnes concernées avec les bases de données publiques officielles.
+2. **SmartACCESS.** Authentification sans mot de passe pour vos applications
+3. **SmartENROLL.** Flux d'inscription KYC/AML personnalisable.
+4. **SmartSCAN.** Numérisez des documents grâce à la technologie de reconnaissance optique de caractères (OCR).
+5. **SmartLINK.** Générez un lien pour rationaliser l'authentification lors du support client.
 
 **Software as a Service :** est une méthode de fourniture de logiciels et d'octroi de licences non exclusives par laquelle le logiciel est accessible via un ordinateur connecté à Internet et exécuté à partir du cloud, en échange du paiement des frais d'abonnement.
 
@@ -123,47 +119,39 @@ Pour accéder aux services Verifik, vous devez :
 
 En accédant à l'application Verifik, l'utilisateur constatera que chacun des services proposés dispose de son propre plan de paiement, ceci a été pensé pour améliorer la gestion de la consommation effectuée par chacun des services et pour permettre à l'utilisateur de lier un mode de paiement différent à chacun des services.
 
-| **Services**           | **Payment Plan**                                                    | **Term of Credits**                                                                         |
-
-| ---------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-
-| **Database Screening** | **Subscription:** Basic, Plus and Business                          | <strong>PAYG:</strong> 12 months<br /><strong>Subscription:</strong> Monthly or Yearly |
-
-| **Biometrics**         | **Volume Commitment**                                               | **Subscription:** Monthly or Yearly                                                         |
-
-| **zk Face Proofs**     | **Volume Commitment**                                               | **Subscription:** Monthly or Yearly                                                         |
-
-| **smartCHECK**         | **PAYG** (Pay as you go) **Subscription:** Basic, Plus and Business | <strong>PAYG:</strong> 12 months<br /><strong>Subscription:</strong> Monthly or Yearly |
-
-| **smartACCESS**        | **Subscription:** Free, Plus and Business                           | **Subscription:** Monthly                                                                   |
-
-| **smartENROLL**        | **Subscription:** Free, Plus and Business                           | **Subscription:** Monthly                                                                   |
-
-| **smartLINK**          | **Subscription:** Free, Plus and Business                           | **Subscription:** Monthly                                                                   |
-
-| **smartSCAN**          | TBD                                                                 | TBD                                                                                         |
+| **Services** | **Plan de paiement** | **Durée des crédits** |
+| --- | --- | --- |
+| **Database Screening** | **Abonnement :** Starter, Basic, Plus, Business, Enterprise | Mensuel ou annuel |
+| **Face Recognition** | **Contrat / Abonnement** | Mensuel ou annuel |
+| **Scan Doc** | **Contrat/PAYG** | Mensuel ou annuel |
+| **HumanAuthn** | **Contrat** | Mensuel ou annuel |
+| **smartCHECK** | **Abonnement :** Starter, Basic, Plus, Business, Enterprise | Mensuel ou annuel |
+| **smartACCESS** | **Abonnement :** Free, Plus, Business, Enterprise | Mensuel ou annuel |
+| **smartENROLL** | **Abonnement :** Free, Plus, Business, Enterprise | Mensuel ou annuel |
+| **smartSCAN** | **Contrat/PAYG** | Mensuel ou annuel |
+| **smartLINK** | **Contrat/PAYG** | Mensuel ou annuel |
 
 L'Utilisateur sera soumis au tarif du forfait acheté sur l'Application ou convenu dans le contrat.&#x20;
 
-#### PAIEMENT
+#### PAYG
 
-Le plan PAYG a été spécialement conçu pour le service smartCHECK et doit être payé via des crédits que l'utilisateur doit acheter sur l'application. Le montant minimum que l'Utilisateur peut acquérir est de vingt (20) USD de Crédits. Pour ce plan, les crédits seront valables douze (12) mois à compter de la date d'achat, passé ce délai, ils expireront automatiquement et ne pourront pas être utilisés pour accéder aux Services.
+Le plan Pay-As-You-Go (PAYG) s'applique aux services smartScan et scanDoc, tous deux intégrés au service smartENROLL. La consommation de ces deux services fera l'objet d'une réduction lorsque l'Utilisateur maintient un plan d'abonnement actif ou un solde de crédits disponible.
 
-Pour continuer à profiter des Services sur l'Application, dans le cas du Plan PAYG, l'Utilisateur doit maintenir un Solde Positif, ce qui implique qu'il appartiendra à l'Utilisateur d'acquérir le nombre de Crédits nécessaires pour continuer à accéder aux Services sélectionnés sur l'Application. Dans le cas où le solde des Crédits sur l'Application atteint 0, les Services ne seront plus disponibles et pourront être suspendus automatiquement par Verifik.
+L'achat minimum de crédits sous le plan PAYG est de quarante-neuf dollars américains (USD 49,00). Les crédits achetés sous ce plan restent valables pendant une période de douze (12) mois à compter de la date d'achat. À l'expiration de cette période, tout crédit non utilisé expirera automatiquement et ne pourra plus être utilisé ni échangé en relation avec les Services.
 
-#### Abonnement
+Pour maintenir un accès ininterrompu aux Services via l'Application sous le plan PAYG, l'Utilisateur doit maintenir en permanence un solde de crédits positif. Il incombe exclusivement à l'Utilisateur d'acheter et de maintenir un nombre suffisant de Crédits pour continuer à accéder aux Services sélectionnés. Si le solde de crédits de l'Utilisateur atteint zéro (0), l'accès aux Services peut être automatiquement suspendu ou interrompu par Verifik jusqu'à l'acquisition de Crédits supplémentaires.
 
-Les formules d'abonnement varient en fonction de l'architecture des Services, tout comme les modalités d'expiration des crédits, comme nous l'expliquons :
+#### Plans d'abonnement
 
-* Les plans d'abonnement pour smartCHECK (Basic, Plus, Business et Enterprise) peuvent être acquis sous forme d'abonnement mensuel ou annuel. L'abonnement mensuel émet des crédits avec une expiration de 1 mois et, en conséquence, l'abonnement annuel émet des crédits avec une durée d'expiration de 12 mois.
+Les plans d'abonnement varient selon l'architecture et la portée des Services, ainsi que la période de validité des Crédits associés à chaque plan, comme détaillé ci-dessous :
 
-* Les plans d'abonnement smartACCESS, smartENROLL et smartLINK (Free, Plus et Business) ne peuvent être acquis que sur une base mensuelle. Par conséquent, l'abonnement mensuel délivre des crédits avec une expiration de 1 mois.
+* Les plans d'abonnement pour smartCHECK (Starter, Basic, Plus, Business et Enterprise) peuvent être achetés sur une base mensuelle ou annuelle. L'abonnement mensuel émet des crédits avec une expiration de 1 mois et, en conséquence, l'abonnement annuel émet des crédits avec une durée d'expiration de 12 mois.
 
-* Le forfait Free Forever peut être consommé librement à perpétuité tant que l'utilisateur le configure pour consommer uniquement la vérification des e-mails. Dès qu'une autre fonctionnalité est activée et utilisée par les utilisateurs finaux, des frais seront facturés pour l'utilisation spécifique des fonctionnalités.
+* Les plans d'abonnement pour smartACCESS et smartENROLL (Free, Plus et Business) sont disponibles exclusivement sur une base d'abonnement mensuel. Par conséquent, l'abonnement mensuel émet des crédits avec une expiration de 1 mois.
 
-* Chaque plan d'abonnement a un taux de frais spécifique en fonction du service acheté.
+* Le plan Free Forever peut être utilisé indéfiniment sans frais, à condition que l'Utilisateur configure et utilise les Services exclusivement pour la vérification des e-mails. Si l'Utilisateur active et utilise des fonctionnalités supplémentaires au-delà de la vérification des e-mails, des frais s'appliqueront en fonction des fonctionnalités spécifiques consommées.
 
-Pour continuer à profiter des Services sur l'Application, dans le cas des forfaits Free, Basic, Plus et Business, l'Utilisateur doit maintenir l'abonnement actif pour continuer à accéder aux Services.
+* Pour maintenir un accès ininterrompu aux Services, l'Utilisateur doit maintenir l'abonnement applicable actif et en règle. Le défaut de maintien d'un abonnement actif peut entraîner la suspension ou la résiliation de l'accès aux Services.
 
 #### Fonctionnalités et frais activés
 

@@ -7,7 +7,7 @@ slug: /legal/terms-and-conditions
 
 # 条款与条件
 
-**最后更新：2026年5月18日**
+**最后更新：2026年6月22日**
 
 **生效日期：2023年3月9日**
 
@@ -51,23 +51,19 @@ Verifik LLC（及其关联公司、经销商、合作公司、相关公司等，
 
 #### API
 
-`i.`` `**`Database Screening.`**` ``通过 API 与官方公共数据库进行数据主体的交叉比对与验证。`
-
-`ii.`` `**`zk Face Proofs.`**` ``将终端用户的私密敏感数据从数据库迁移至区块链，并赋予数据主体完全控制权以管理其数据。`
-
-`iii.`` `**`Biometrics.`**` ``允许您构建含人脸识别与活体检测功能的解决方案的 API。`&#x20;
+1. **Database Screening.** 与官方公共数据库进行数据主体的交叉比对与验证。
+2. **Access.** 用更强的身份验证替代密码
+3. **Face Recognition.** 人脸识别与被动活体检测。
+4. **Scan Doc.** 通过 OCR 提取文档数据
+5. **HumanAuthn.** 用于加密与检测的新基础工具
 
 #### 应用程序
 
-`i.`` `**`smartCHECK.`**` ``与官方公共数据库进行数据主体的交叉比对与验证。`
-
-`ii.`` `**`smartACCESS.`**` ``为终端用户提供无密码登录。`
-
-`iii.`` `**`smartENROLL.`**` ``使终端用户完成全面的注册入驻流程。`
-
-`iv.`` `**`smartLINK.`**` ``生成链接以在客户支持过程中简化身份验证。`
-
-`v.`` `**`smartSCAN.`**` ``通过光学字符识别（OCR）技术，配合 scan Prompt 与 scan Studio 扫描文档。`
+1. **SmartCHECK.** 与官方公共数据库进行数据主体的交叉比对与验证。
+2. **SmartACCESS.** 为您的应用提供无密码身份验证
+3. **SmartENROLL.** 可定制的 KYC/AML 注册流程。
+4. **SmartSCAN.** 通过光学字符识别（OCR）技术扫描文档。
+5. **SmartLINK.** 生成链接以在客户支持过程中简化身份验证。
 
 **软件即服务：** 指一种通过联网计算机从云端访问软件并授予非独占许可的软件交付方式，用户以支付订阅费为对价获得访问权。
 
@@ -123,47 +119,39 @@ Verifik 将在创建账户或会话之前验证每位用户的身份。在企业
 
 访问 Verifik 应用程序时，用户会发现每项所提供的服务均有各自的付款计划，旨在加强各服务的消费管理，并允许用户为每项服务关联不同的付款方式。
 
-| **服务**               | **付款计划**                                                        | **Credits 期限**                                                                            |
-
-| ---------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-
-| **Database Screening** | **订阅：** Basic、Plus 和 Business                                  | <strong>PAYG：</strong> 12 个月<br /><strong>订阅：</strong> 按月或按年                |
-
-| **Biometrics**         | **用量承诺**                                                        | **订阅：** 按月或按年                                                                       |
-
-| **zk Face Proofs**     | **用量承诺**                                                        | **订阅：** 按月或按年                                                                       |
-
-| **smartCHECK**         | **PAYG**（按需付费）**订阅：** Basic、Plus 和 Business              | <strong>PAYG：</strong> 12 个月<br /><strong>订阅：</strong> 按月或按年                |
-
-| **smartACCESS**        | **订阅：** Free、Plus 和 Business                                   | **订阅：** 按月                                                                             |
-
-| **smartENROLL**        | **订阅：** Free、Plus 和 Business                                   | **订阅：** 按月                                                                             |
-
-| **smartLINK**          | **订阅：** Free、Plus 和 Business                                   | **订阅：** 按月                                                                             |
-
-| **smartSCAN**          | 待定                                                                | 待定                                                                                        |
+| **服务** | **付款计划** | **Credits 期限** |
+| --- | --- | --- |
+| **Database Screening** | **订阅：** Starter、Basic、Plus、Business、Enterprise | 按月或按年 |
+| **Face Recognition** | **合同 / 订阅** | 按月或按年 |
+| **Scan Doc** | **合同/PAYG** | 按月或按年 |
+| **HumanAuthn** | **合同** | 按月或按年 |
+| **smartCHECK** | **订阅：** Starter、Basic、Plus、Business、Enterprise | 按月或按年 |
+| **smartACCESS** | **订阅：** Free、Plus、Business、Enterprise | 按月或按年 |
+| **smartENROLL** | **订阅：** Free、Plus、Business、Enterprise | 按月或按年 |
+| **smartSCAN** | **合同/PAYG** | 按月或按年 |
+| **smartLINK** | **合同/PAYG** | 按月或按年 |
 
 用户须遵守在应用程序上购买或在合同中约定的计划费率。&#x20;
 
 #### PAYG（按需付费）
 
-PAYG 计划专为 smartCHECK 服务设计，须通过用户在应用程序上购买的 Credits 支付。用户可购买的最低金额为价值二十（20）美元的 Credits。在此计划下，Credits 自购买之日起十二（12）个月内有效，此后将自动过期，无法用于访问服务。
+按需付费（Pay-As-You-Go，PAYG）计划适用于 smartScan 和 scanDoc 服务，两者均集成在 smartENROLL 服务内。当用户保持有效订阅计划或可用 Credits 余额时，两项服务的消费将享受折扣。
 
-为在应用程序上继续享受服务，在 PAYG 计划下，用户须保持正余额，即用户有责任购买继续访问其在应用程序所选服务所需的 Credits 数量。若应用程序上的 Credits 余额降至 0，服务将不再可用，Verifik 可自动暂停服务。
+PAYG 计划下的最低 Credits 购买金额为四十九美元（USD $49.00）。根据本计划购买的 Credits 自购买之日起十二（12）个月内有效。该期限届满后，任何未使用的 Credits 将自动过期，且不再可用于兑换或与 Services 相关的使用。
 
-#### 订阅
+为在 PAYG 计划下通过应用程序不间断访问 Services，用户须始终保持正 Credits 余额。购买并维持足够 Credits 以继续访问所选 Services 的责任完全由用户承担。若用户的 Credits 余额降至零（0），Verifik 可自动暂停或终止对 Services 的访问，直至获得额外 Credits。
 
-订阅计划因服务架构而异，Credits 的过期期限亦不同，说明如下：
+#### 订阅计划
 
-* smartCHECK 的订阅计划（Basic、Plus、Business 和 Enterprise）可按月或按年购买。月度订阅发放的 Credits 有效期为 1 个月，年度订阅发放的 Credits 有效期为 12 个月。
+订阅计划因 Services 的架构与范围以及各计划关联 Credits 的有效期而异，具体如下：
 
-* smartACCESS、smartENROLL 和 smartLINK 的订阅计划（Free、Plus 和 Business）仅可按月购买。因此，月度订阅发放的 Credits 有效期为 1 个月。
+* smartCHECK 的订阅计划（Starter、Basic、Plus、Business 和 Enterprise）可按月或按年购买。月度订阅发放的 Credits 有效期为一（1）个月，年度订阅发放的 Credits 有效期为十二（12）个月。
 
-* Free Forever 计划可永久免费使用，前提是用户将其配置为仅消耗电子邮件验证功能。一旦终端用户启用并使用任何其他功能，将按具体使用的功能收费。
+* smartACCESS 和 smartENROLL 的订阅计划（Free、Plus 和 Business）仅可按月度订阅方式购买。因此，月度订阅发放的 Credits 有效期为一（1）个月。
 
-* 每项订阅计划根据所购服务有特定的费率。
+* Free Forever 计划可在用户将 Services 配置并仅用于电子邮件验证的情况下无限期免费使用。若用户启用并使用电子邮件验证以外的任何附加功能，将根据所消耗的具体功能收费。
 
-为在应用程序上继续享受服务，在 Free、Basic、Plus 和 Business 计划下，用户须保持订阅有效以继续访问服务。
+* 为不间断访问 Services，用户须保持相应订阅有效且状态良好。未能维持有效订阅可能导致对 Services 的访问被暂停或终止。
 
 #### 已启用功能与费用
 

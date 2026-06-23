@@ -7,7 +7,7 @@ slug: /terminos-y-condiciones
 
 # Términos y Condiciones
 
-**Última Actualización: 18 de mayo de 2026**
+**Última Actualización: 22 de junio de 2026**
 
 **Efectivo: 9 de marzo de 2023**
 
@@ -51,23 +51,19 @@ Las siguientes definiciones se utilizarán para interpretar estos Términos y Co
 
 #### APIs
 
-`i.`` `**`Database Screening.`**` ``Cruce y verificación de los titulares de datos con Bases de Datos Públicas oficiales, a través de API.`
-
-`ii.`` `**`zk Face Proofs.`**` ``Migrar datos privados y sensibles de usuarios finales desde bases de datos a la cadena de bloques, y dar control total a los titulares de datos para gestionarlos.`
-
-`iii.`` `**`Biometrics.`**` ``Una API que te permitirá construir una solución con Reconocimiento Facial y Detección de Vida.`&#x20;
+1. **Database Screening.** Cotejo y verificación de los datos de los interesados con las bases de datos públicas oficiales.
+2. **Access.** Reemplace las contraseñas con una autenticación más segura.
+3. **Face Recognition.** Reconocimiento facial y detección pasiva de vitalidad.
+4. **Scan Doc.** Extraer datos de documentos con OCR
+5. **HumanAuthn.** Una nueva herramienta básica para cifrado y detección
 
 #### APPS
 
-`i.`` `**`smartCHECK.`**` ``Cruce y verificación de los titulares de datos con Bases de Datos Públicas oficiales.`
-
-`ii.`` `**`smartACCESS.`**` ``Permitir Inicios de Sesión sin Contraseña a usuarios finales.`
-
-`iii.`` `**`smartENROLL.`**` ``Incorporar usuarios finales en un proceso de registro exhaustivo.`
-
-`iv.`` `**`smartLINK.`**` ``Generar un enlace para optimizar la autenticación durante el soporte al cliente.`
-
-`v.`` `**`smartSCAN.`**` ``Escanear Documentos a través de tecnología de reconocimiento óptico de caracteres (OCR) con scan Prompt y scan Studio.`
+1. **SmartCHECK.** Cotejo y verificación de los datos de los interesados con las bases de datos públicas oficiales.
+2. **SmartACCESS.** Autenticación sin contraseña para tus aplicaciones.
+3. **SmartENROLL.** Flujo de inscripción KYC/AML personalizable.
+4. **SmartSCAN.** Escanee documentos mediante tecnología de reconocimiento óptico de caracteres (OCR).
+5. **SmartLINK.** Generar un enlace para agilizar la autenticación durante la atención al cliente.
 
 **Software como Servicio:** es un método de entrega de software y concesión de licencias no exclusivas a través del cual se accede al software a través de una computadora conectada a internet y que se ejecuta desde la nube, a cambio del pago de la Tarifa de Suscripción.
 
@@ -121,49 +117,41 @@ Para acceder a los Servicios de Verifik debes:
 
 ### Pago de Servicios
 
-Al acceder a la App Verifik, el Usuario encontrará que cada uno de los servicios ofrecidos tiene su propio Plan de pago, esto fue pensado para mejorar la gestión del consumo realizada por cada uno de los servicios y para permitir al Usuario vincular un método de pago diferente a cada uno de los servicios.
+Al acceder a la aplicación Verifik, el Usuario encontrará que cada uno de los servicios ofrecidos tiene su propio plan de pago. Esto se diseñó para mejorar la gestión del consumo realizada por cada servicio y para permitir al Usuario vincular un método de pago diferente a cada uno de ellos.
 
-| **Servicios**           | **Plan de Pago**                                                    | **Término de Créditos**                                                                         |
+| **Servicios** | **Plan de Pago** | **Término de Créditos** |
+| --- | --- | --- |
+| **Database Screening** | **Suscripción:** Starter, Basic, Plus, Business, Enterprise | Mensual o Anual |
+| **Face Recognition** | **Contrato / Suscripción** | Mensual o Anual |
+| **Scan Doc** | **Contrato / PAYG** | Mensual o Anual |
+| **HumanAuthn** | **Contrato** | Mensual o Anual |
+| **smartCHECK** | **Suscripción:** Starter, Basic, Plus, Business, Enterprise | Mensual o Anual |
+| **smartACCESS** | **Suscripción:** Free, Plus, Business, Enterprise | Mensual o Anual |
+| **smartENROLL** | **Suscripción:** Free, Plus, Business, Enterprise | Mensual o Anual |
+| **smartSCAN** | **Contrato/PAYG** | Mensual o Anual |
+| **smartLINK** | **Contrato/PAYG** | Mensual o Anual |
 
-| ---------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-
-| **Database Screening** | **Suscripción:** Basic, Plus y Business                          | <strong>PAYG:</strong> 12 meses<br /><strong>Suscripción:</strong> Mensual o Anual |
-
-| **Biometrics**         | **Compromiso de Volumen**                                               | **Suscripción:** Mensual o Anual                                                         |
-
-| **zk Face Proofs**     | **Compromiso de Volumen**                                               | **Suscripción:** Mensual o Anual                                                         |
-
-| **smartCHECK**         | **PAYG** (Paga a la Marcha) **Suscripción:** Basic, Plus y Business | <strong>PAYG:</strong> 12 meses<br /><strong>Suscripción:</strong> Mensual o Anual |
-
-| **smartACCESS**        | **Suscripción:** Free, Plus y Business                           | **Suscripción:** Mensual                                                                   |
-
-| **smartENROLL**        | **Suscripción:** Free, Plus y Business                           | **Suscripción:** Mensual                                                                   |
-
-| **smartLINK**          | **Suscripción:** Free, Plus y Business                           | **Suscripción:** Mensual                                                                   |
-
-| **smartSCAN**          | Por Determinar                                                                 | Por Determinar                                                                                         |
-
-El Usuario estará sujeto a la tarifa del plan adquirido en la App o acordado en el contrato.&#x20;
+El Usuario estará sujeto a la tarifa del plan adquirido en la Aplicación o acordado en el contrato.&#x20;
 
 #### PAYG
 
-El plan PAYG fue creado específicamente para el servicio smartCHECK y debe pagarse mediante Créditos que el Usuario debe comprar en la App. El monto mínimo que el Usuario puede adquirir es de veinte (20) USD en Créditos. Para este plan los créditos serán válidos por doce (12) meses desde la fecha de compra, después de este período, expirarán automáticamente y no podrán usarse para acceder a los Servicios.
+El Plan de Pago por Uso (PAYG) aplica a los servicios smartScan y scanDoc, ambos integrados dentro del servicio smartENROLL. El consumo de ambos servicios tendrá descuento cuando el Usuario mantenga un plan de suscripción activo o un saldo de crédito disponible.
 
-Para continuar disfrutando de los Servicios en la App, en el caso del Plan PAYG, el Usuario debe mantener un Balance Positivo, lo que implica que será responsabilidad del Usuario adquirir la cantidad de Créditos necesarios para continuar accediendo a los Servicios seleccionados en la App. En el caso de que el balance de Créditos en la App llegue a 0, los Servicios ya no estarán disponibles y pueden ser suspendidos automáticamente por Verifik.
+El monto mínimo de compra bajo el Plan PAYG es de cuarenta y nueve dólares de los Estados Unidos de América (USD $49.00). Los Créditos adquiridos bajo este plan tendrán una vigencia de doce (12) meses contados a partir de la fecha de compra. Una vez transcurrido dicho período, cualquier Crédito no utilizado expirará automáticamente y no podrá ser redimido ni utilizado para acceder a los Servicios.
 
-#### Suscripción
+Para mantener el acceso ininterrumpido a los Servicios a través de la Aplicación bajo el Plan PAYG, el Usuario deberá mantener en todo momento un saldo positivo de Créditos. Será responsabilidad exclusiva del Usuario adquirir y mantener la cantidad de Créditos necesaria para continuar accediendo a los Servicios seleccionados. En caso de que el saldo de Créditos llegue a cero (0), el acceso a los Servicios podrá ser suspendido o descontinuado automáticamente por Verifik hasta que se adquieran Créditos adicionales.
 
-Los planes de suscripción varían dependiendo de la arquitectura de los Servicios, así como los términos de vencimiento de los créditos, como explicamos:
+#### Planes de Suscripción
 
-* Los planes de suscripción para smartCHECK (Basic, Plus, Business y Enterprise) se pueden adquirir en una suscripción mensual o anual. La suscripción mensual emite créditos con un vencimiento de 1 mes y correspondientemente la suscripción anual emitirá créditos con un término de vencimiento de 12 meses.
+Los planes de suscripción varían según la arquitectura y el alcance de los Servicios, así como el período de vigencia de los Créditos asociados a cada plan, conforme se detalla a continuación:
 
-* El plan de suscripción para smartACCESS, smartENROLL y smartLINK (Free, Plus y Business) solo se puede adquirir de forma mensual. En consecuencia, la suscripción mensual emite créditos con un vencimiento de 1 mes.
+* Los planes de suscripción de smartCHECK (Starter, Basic, Plus, Business y Enterprise) podrán adquirirse bajo una modalidad mensual o anual. La suscripción mensual otorga Créditos con una vigencia de un (1) mes, mientras que la suscripción anual otorga Créditos con una vigencia de doce (12) meses.
 
-* El Plan Free Forever puede consumirse libremente a perpetuidad siempre que el Usuario lo configure para consumir solo la verificación por correo electrónico. En el momento en que cualquier otra función sea habilitada y utilizada por los usuarios finales, se realizará un cargo por el uso específico de las funciones.
+* Los planes de suscripción de smartACCESS y smartENROLL (Free, Plus y Business) estarán disponibles exclusivamente bajo una modalidad de suscripción mensual. En consecuencia, los Créditos emitidos bajo dichos planes tendrán una vigencia de un (1) mes.
 
-* Cada plan de suscripción tiene una tarifa específica dependiendo del Servicio que se esté comprando.
+* El Plan Free Forever podrá ser utilizado de manera indefinida y sin costo, siempre que el Usuario configure y utilice los Servicios exclusivamente para la verificación de correo electrónico. En caso de que el Usuario habilite y utilice funcionalidades adicionales distintas a la verificación de correo electrónico, se aplicarán cargos de acuerdo con las funcionalidades específicas consumidas.
 
-Para continuar disfrutando de los Servicios en la App, en el caso de los planes Free, Basic, Plus y Business, el Usuario debe mantener la suscripción activa para continuar accediendo a los Servicios.
+* Para mantener el acceso ininterrumpido a los Servicios, el Usuario deberá mantener activa y al día la suscripción correspondiente. La falta de mantenimiento de una suscripción activa podrá resultar en la suspensión o terminación del acceso a los Servicios.
 
 #### Funciones Habilitadas y Tarifas
 

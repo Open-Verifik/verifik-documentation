@@ -7,7 +7,7 @@ slug: /legal/terms-and-conditions
 
 # Termos e Condições
 
-**Última atualização: 18 de maio de 2026**
+**Última atualização: 22 de junho de 2026**
 
 **Vigência: 9 de março de 2023**
 
@@ -51,23 +51,19 @@ As definições a seguir serão utilizadas para interpretar estes Termos e Condi
 
 #### APIs
 
-`i.`` `**`Database Screening.`**` ``Cruzamento e verificação de titulares de dados com bases de dados públicas oficiais, por meio de API.`
-
-`ii.`` `**`zk Face Proofs.`**` ``Migração de dados privados e sensíveis de usuários finais de bases de dados para a blockchain, conferindo controle integral aos titulares dos dados para gerenciá-los.`
-
-`iii.`` `**`Biometrics.`**` ``API que permite construir uma solução com Reconhecimento Facial e Detecção de Vivacidade (Liveness Detection).`
+1. **Database Screening.** Cruzamento e verificação de titulares de dados com bases de dados públicas oficiais.
+2. **Access.** Substitua senhas por autenticação mais forte
+3. **Face Recognition.** Reconhecimento facial e detecção passiva de vivacidade.
+4. **Scan Doc.** Extrair dados de documentos com OCR
+5. **HumanAuthn.** Uma nova primitiva para criptografia e detecção
 
 #### APPS
 
-`i.`` `**`smartCHECK.`**` ``Cruzamento e verificação de titulares de dados com bases de dados públicas oficiais.`
-
-`ii.`` `**`smartACCESS.`**` ``Permite logins sem senha (Passwordless Logins) para usuários finais.`
-
-`iii.`` `**`smartENROLL.`**` ``Onboarding de usuários finais em processo de cadastro completo.`
-
-`iv.`` `**`smartLINK.`**` ``Geração de link para simplificar a autenticação durante o atendimento ao cliente.`
-
-`v.`` `**`smartSCAN.`**` ``Digitalização de documentos por meio de tecnologia de reconhecimento óptico de caracteres (OCR), com scan Prompt e scan Studio.`
+1. **SmartCHECK.** Cruzamento e verificação de titulares de dados com bases de dados públicas oficiais.
+2. **SmartACCESS.** Autenticação sem senha para seus aplicativos
+3. **SmartENROLL.** Fluxo de inscrição KYC/AML personalizável.
+4. **SmartSCAN.** Digitalize documentos por meio de tecnologia de reconhecimento óptico de caracteres (OCR).
+5. **SmartLINK.** Gere um link para agilizar a autenticação durante o atendimento ao cliente.
 
 **Software como Serviço:** método de entrega de software e concessão de licenças não exclusivas por meio do qual o software é acessado por computador conectado à internet e executado na nuvem, em troca do pagamento da Taxa de Assinatura.
 
@@ -123,38 +119,39 @@ Para acessar os Serviços da Verifik, você deve:
 
 Ao acessar o App da Verifik, o Usuário verificará que cada um dos serviços oferecidos possui seu próprio Plano de pagamento, pensado para aprimorar a gestão de consumo de cada serviço e permitir que o Usuário vincule um método de pagamento diferente a cada serviço.
 
-| **Serviços**           | **Plano de pagamento**                                              | **Validade dos Créditos**                                                                   |
-| ---------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| **Database Screening** | **Assinatura:** Basic, Plus e Business                              | <strong>PAYG:</strong> 12 meses<br /><strong>Assinatura:</strong> Mensal ou Anual     |
-| **Biometrics**         | **Compromisso de volume (Volume Commitment)**                       | **Assinatura:** Mensal ou Anual                                                             |
-| **zk Face Proofs**     | **Compromisso de volume (Volume Commitment)**                       | **Assinatura:** Mensal ou Anual                                                             |
-| **smartCHECK**         | **PAYG** (Pay as you go) **Assinatura:** Basic, Plus e Business     | <strong>PAYG:</strong> 12 meses<br /><strong>Assinatura:</strong> Mensal ou Anual     |
-| **smartACCESS**        | **Assinatura:** Free, Plus e Business                               | **Assinatura:** Mensal                                                                      |
-| **smartENROLL**        | **Assinatura:** Free, Plus e Business                               | **Assinatura:** Mensal                                                                      |
-| **smartLINK**          | **Assinatura:** Free, Plus e Business                               | **Assinatura:** Mensal                                                                      |
-| **smartSCAN**          | A definir (TBD)                                                     | A definir (TBD)                                                                             |
+| **Serviços** | **Plano de pagamento** | **Validade dos Créditos** |
+| --- | --- | --- |
+| **Database Screening** | **Assinatura:** Starter, Basic, Plus, Business, Enterprise | Mensal ou Anual |
+| **Face Recognition** | **Contrato / Assinatura** | Mensal ou Anual |
+| **Scan Doc** | **Contrato/PAYG** | Mensal ou Anual |
+| **HumanAuthn** | **Contrato** | Mensal ou Anual |
+| **smartCHECK** | **Assinatura:** Starter, Basic, Plus, Business, Enterprise | Mensal ou Anual |
+| **smartACCESS** | **Assinatura:** Free, Plus, Business, Enterprise | Mensal ou Anual |
+| **smartENROLL** | **Assinatura:** Free, Plus, Business, Enterprise | Mensal ou Anual |
+| **smartSCAN** | **Contrato/PAYG** | Mensal ou Anual |
+| **smartLINK** | **Contrato/PAYG** | Mensal ou Anual |
 
 O Usuário estará sujeito à tarifa do plano adquirido no App ou acordada em contrato.
 
 #### PAYG
 
-O plano PAYG foi criado especificamente para o serviço smartCHECK e deve ser pago por meio de Créditos que o Usuário deve adquirir no App. O valor mínimo que o Usuário pode adquirir é equivalente a vinte (20) USD em Créditos. Neste plano, os créditos serão válidos por doze (12) meses a partir da data de compra; após esse período, expirarão automaticamente e não poderão ser utilizados para acessar os Serviços.
+O plano Pay-As-You-Go (PAYG) aplica-se aos serviços smartScan e scanDoc, ambos integrados ao serviço smartENROLL. O consumo de ambos os serviços será descontado quando o Usuário mantiver um plano de assinatura ativo ou um saldo de crédito disponível.
 
-Para continuar utilizando os Serviços no App, no caso do Plano PAYG, o Usuário deve manter Saldo Positivo, sendo de sua responsabilidade adquirir a quantidade de Créditos necessária para continuar acessando os Serviços selecionados no App. Caso o saldo de Créditos no App chegue a 0, os Serviços deixarão de estar disponíveis e poderão ser suspensos automaticamente pela Verifik.
+A compra mínima de créditos sob o plano PAYG é de quarenta e nove dólares americanos (USD $49,00). Os Créditos adquiridos sob este plano permanecerão válidos por um período de doze (12) meses a partir da data de compra. Após a expiração deste período, quaisquer créditos não utilizados expirarão automaticamente e não estarão mais disponíveis para resgate ou uso em conexão com os Serviços.
 
-#### Assinatura
+Para manter o acesso ininterrupto aos Serviços por meio do App sob o plano PAYG, o Usuário deve manter um saldo positivo de créditos em todos os momentos. Será responsabilidade exclusiva do Usuário adquirir e manter Créditos suficientes para continuar acessando os Serviços selecionados. Se o saldo de créditos do Usuário atingir zero (0), o acesso aos Serviços poderá ser automaticamente suspenso ou descontinuado pela Verifik até que Créditos adicionais sejam adquiridos.
 
-Os planos de assinatura variam conforme a arquitetura dos Serviços, assim como os prazos de expiração dos créditos, conforme explicado:
+#### Planos de Assinatura
 
-* Os planos de assinatura do smartCHECK (Basic, Plus, Business e Enterprise) podem ser adquiridos em assinatura mensal ou anual. A assinatura mensal emite créditos com validade de 1 mês; a assinatura anual emite créditos com validade de 12 meses.
+Os planos de assinatura variam conforme a arquitetura e o escopo dos Serviços, bem como o período de validade dos Créditos associados a cada plano, conforme detalhado abaixo:
 
-* O plano de assinatura do smartACCESS, smartENROLL e smartLINK (Free, Plus e Business) só pode ser adquirido em base mensal. Consequentemente, a assinatura mensal emite créditos com validade de 1 mês.
+* Os planos de assinatura do smartCHECK (Starter, Basic, Plus, Business e Enterprise) podem ser adquiridos em base mensal ou anual. A assinatura mensal emite créditos com validade de 1 mês; a assinatura anual emite créditos com validade de 12 meses.
 
-* O Plano Free Forever pode ser consumido livremente de forma perpétua, desde que o Usuário o configure para consumir apenas verificação de e-mail. No momento em que qualquer outra funcionalidade for habilitada e utilizada pelos usuários finais, será cobrada a utilização específica das funcionalidades.
+* Os planos de assinatura do smartACCESS e smartENROLL (Free, Plus e Business) estão disponíveis exclusivamente em base de assinatura mensal. Consequentemente, a assinatura mensal emite créditos com validade de 1 mês.
 
-* Cada plano de assinatura possui tarifa específica conforme o Serviço adquirido.
+* O Plano Free Forever pode ser utilizado indefinidamente sem custo, desde que o Usuário configure e utilize os Serviços exclusivamente para verificação de e-mail. Se o Usuário habilitar e utilizar funcionalidades adicionais além da verificação de e-mail, serão aplicadas cobranças com base nas funcionalidades específicas consumidas.
 
-Para continuar utilizando os Serviços no App, nos planos Free, Basic, Plus e Business, o Usuário deve manter a assinatura ativa para continuar acessando os Serviços.
+* Para manter o acesso ininterrupto aos Serviços, o Usuário deve manter a assinatura aplicável ativa e em dia. A falta de manutenção de uma assinatura ativa pode resultar na suspensão ou rescisão do acesso aos Serviços.
 
 #### Funcionalidades habilitadas e taxas
 
