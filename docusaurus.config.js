@@ -400,6 +400,7 @@ const config = {
 				logo: {
 					alt: "Verifik Logo",
 					src: "img/logo.svg",
+					srcDark: "img/logo-dark.svg",
 				},
 				items: [
 					{
@@ -472,7 +473,6 @@ const config = {
 					},
 				],
 				hideOnScroll: true,
-				style: "primary",
 			},
 			footer: {
 				style: "light",
