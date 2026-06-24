@@ -401,6 +401,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 페루 — 운전면허",
+				},
+				{
+					type: "doc",
 					id: "driver-validation/kansas-driver-license",
 					label: "🇺🇸 캔자스주 — 운전면허",
 				},
@@ -412,6 +417,8 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				{ type: "doc", id: "background-check/brazil", label: "🇧🇷 브라질" },
+				{ type: "doc", id: "background-check/argentina-certificate-verify", label: "🇦🇷 범죄 경력 증명" },
+				{ type: "doc", id: "background-check/chile-certificate-verify", label: "🇨🇱 Registro Civil" },
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 감사원 증명" },
 				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 경찰 범죄 경력" },
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 공공 계약" },

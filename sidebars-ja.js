@@ -407,6 +407,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 ペルー — 運転免許",
+				},
+				{
+					type: "doc",
 					id: "driver-validation/florida-driver-license",
 					label: "🇺🇸 フロリダ州 — 運転免許",
 				},
@@ -423,6 +428,8 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				{ type: "doc", id: "background-check/brazil", label: "🇧🇷 ブラジル" },
+				{ type: "doc", id: "background-check/argentina-certificate-verify", label: "🇦🇷 犯罪歴証明" },
+				{ type: "doc", id: "background-check/chile-certificate-verify", label: "🇨🇱 Registro Civil" },
 				{ type: "doc", id: "background-check/colombia-inpec", label: "🇨🇴 INPEC" },
 				{ type: "doc", id: "background-check/colombia-sisben-score", label: "🇨🇴 SISBEN" },
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 RNMC 是正措置" },

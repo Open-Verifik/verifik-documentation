@@ -390,6 +390,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 Peru — Carteira de motorista",
+				},
+				{
+					type: "doc",
 					id: "driver-validation/florida-driver-license",
 					label: "🇺🇸 Flórida (EUA) — Carteira de motorista",
 				},
@@ -406,6 +411,8 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				{ type: "doc", id: "background-check/brazil", label: "🇧🇷 Brasil" },
+				{ type: "doc", id: "background-check/argentina-certificate-verify", label: "🇦🇷 Antecedentes criminais" },
+				{ type: "doc", id: "background-check/chile-certificate-verify", label: "🇨🇱 Registro Civil" },
 				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 Antecedentes policiais" },
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 Contraloria" },
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 Contratos públicos" },

@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-06-23T13:54:39.860Z
+Generated: 2026-06-24T03:14:02.434Z
 
-- **Files scanned:** 479
-- **Unique endpoint URLs:** 194
+- **Files scanned:** 482
+- **Unique endpoint URLs:** 197
 - **Duplicate URL groups (SEO / aliases):** 57
 - **Docs without `### Endpoint` block:** 207
 
@@ -13,7 +13,7 @@ Generated: 2026-06-23T13:54:39.860Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 15 | vehicle-validation (other countries) |
-| P2 | 156 | identity, biometrics, resources, etc. |
+| P2 | 159 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -239,6 +239,7 @@ Generated: 2026-06-23T13:54:39.860Z
 | P2 | `v2/app-registrations/{id}/sync` | `resources/app-registrations/sync-app-registration-status.mdx` |
 | P2 | `v2/ar/cedula` | `identity-validation/argentina.mdx` |
 | P2 | `v2/ar/cedula/extra` | `identity/argentina-extra.mdx` |
+| P2 | `v2/ar/certificate/verify` | `background-check/argentina-certificate-verify.mdx` |
 | P2 | `v2/ar/company` | `business-validation/argentina.mdx` |
 | P1 | `v2/ar/vehicle` | `vehicle-validation/argentina.md` |
 | P2 | `v2/auth/session` | `authentication/renew-your-token-jwt.mdx` |
@@ -257,6 +258,7 @@ Generated: 2026-06-23T13:54:39.860Z
 | P2 | `v2/ca/ontario/driver-license` | `driver-validation/ontario-driver-license.md` |
 | P2 | `v2/ca/quebec/driver-license` | `driver-validation/quebec-driver-license.md` |
 | P2 | `v2/cl/cedula` | `identity/chile.mdx` |
+| P2 | `v2/cl/certificate/verify` | `background-check/chile-certificate-verify.mdx` |
 | P2 | `v2/cl/company` | `business-validation/chilean.mdx` |
 | P2 | `v2/cl/driver-license` | `driver-validation/chile-driver-license.mdx` |
 | P2 | `v2/cl/taxpayer` | `identity/chile-taxpayer.mdx` |
@@ -371,6 +373,7 @@ Generated: 2026-06-23T13:54:39.860Z
 | P2 | `v2/pa/cedula` | `identity/panama.mdx` |
 | P2 | `v2/pa/company` | `business-validation/panama.mdx` |
 | P2 | `v2/passport/us/entries` | `background-check/united-states-passport-entries.mdx` |
+| P2 | `v2/pe/driver-license` | `driver-validation/peru-driver-license.mdx` |
 | P2 | `v2/pe/foreigner-id/ce` | `identity-validation/peru/peruvian-foreigner-resident.mdx` |
 | P1 | `v2/pe/vehiculo/placa` | `vehicle-validation/peru/peruvian-vehicle.mdx` |
 | P1 | `v2/pe/vehiculo/soat` | `vehicle-validation/peru/peruvian-vehicle-insurance.mdx` |

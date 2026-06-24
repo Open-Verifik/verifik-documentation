@@ -273,6 +273,20 @@ keywords:
   - "https://api.verifik.co/v2/ar/cedula/extra"
   - "GET v2/ar/cedula/extra"
   - "GET /v2/ar/cedula/extra"
+  - "v2/ar/certificate/verify"
+  - "/v2/ar/certificate/verify"
+  - "v2 ar certificate verify"
+  - "ar/certificate/verify"
+  - "/ar/certificate/verify"
+  - "api/ar/certificate/verify"
+  - "/api/ar/certificate/verify"
+  - "api ar certificate verify"
+  - "certificate/verify"
+  - "/certificate/verify"
+  - "api.verifik.co/v2/ar/certificate/verify"
+  - "https://api.verifik.co/v2/ar/certificate/verify"
+  - "GET v2/ar/certificate/verify"
+  - "GET /v2/ar/certificate/verify"
   - "v2/ar/company"
   - "/v2/ar/company"
   - "v2 ar company"
@@ -495,6 +509,18 @@ keywords:
   - "https://api.verifik.co/v2/cl/cedula"
   - "GET v2/cl/cedula"
   - "GET /v2/cl/cedula"
+  - "v2/cl/certificate/verify"
+  - "/v2/cl/certificate/verify"
+  - "v2 cl certificate verify"
+  - "cl/certificate/verify"
+  - "/cl/certificate/verify"
+  - "api/cl/certificate/verify"
+  - "/api/cl/certificate/verify"
+  - "api cl certificate verify"
+  - "api.verifik.co/v2/cl/certificate/verify"
+  - "https://api.verifik.co/v2/cl/certificate/verify"
+  - "GET v2/cl/certificate/verify"
+  - "GET /v2/cl/certificate/verify"
   - "v2/cl/company"
   - "/v2/cl/company"
   - "v2 cl company"
@@ -1984,6 +2010,18 @@ keywords:
   - "https://api.verifik.co/v2/passport/us/entries"
   - "GET v2/passport/us/entries"
   - "GET /v2/passport/us/entries"
+  - "v2/pe/driver-license"
+  - "/v2/pe/driver-license"
+  - "v2 pe driver-license"
+  - "pe/driver-license"
+  - "/pe/driver-license"
+  - "api/pe/driver-license"
+  - "/api/pe/driver-license"
+  - "api pe driver-license"
+  - "api.verifik.co/v2/pe/driver-license"
+  - "https://api.verifik.co/v2/pe/driver-license"
+  - "GET v2/pe/driver-license"
+  - "GET /v2/pe/driver-license"
   - "v2/pe/foreigner-id/ce"
   - "/v2/pe/foreigner-id/ce"
   - "v2 pe foreigner-id ce"
@@ -2418,12 +2456,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (194 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (197 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-06-23T13:54:39.907Z_
+_Last regenerated: 2026-06-24T03:14:02.482Z_
 
 ## Argentina
 
@@ -2431,6 +2469,7 @@ _Last regenerated: 2026-06-23T13:54:39.907Z_
 | --- | --- | --- |
 | `v2/ar/cedula` | v2 ar cedula ar/cedula /ar/cedula api/ar/cedula /api/ar/cedula api ar cedula api.verifik.co/v2/ar/cedula https://api.verifik.co/v2/ar/cedula GET v2/ar/cedula GET /v2/ar/cedula | [Argentine Citizen](/identity-validation/argentina) |
 | `v2/ar/cedula/extra` | v2 ar cedula extra ar/cedula/extra /ar/cedula/extra api/ar/cedula/extra /api/ar/cedula/extra api ar cedula extra cedula/extra /cedula/extra api.verifik.co/v2/ar/cedula/extra https://api.verifik.co/v2/ar/cedula/extra GET v2/ar/cedula/extra GET /v2/ar/cedula/extra | [Argentina Extra](/identity/argentina-extra) |
+| `v2/ar/certificate/verify` | v2 ar certificate verify ar/certificate/verify /ar/certificate/verify api/ar/certificate/verify /api/ar/certificate/verify api ar certificate verify certificate/verify /certificate/verify api.verifik.co/v2/ar/certificate/verify https://api.verifik.co/v2/ar/certificate/verify GET v2/ar/certificate/verify GET /v2/ar/certificate/verify | [Argentina - Criminal Record Certificate](/background-check/argentina-certificate-verify) |
 | `v2/ar/company` | v2 ar company ar/company /ar/company api/ar/company /api/ar/company api ar company api.verifik.co/v2/ar/company https://api.verifik.co/v2/ar/company GET v2/ar/company GET /v2/ar/company | [Argentine Business Verification](/business-validation/argentina) |
 | `v2/ar/vehicle` | v2 ar vehicle ar/vehicle /ar/vehicle api/ar/vehicle /api/ar/vehicle api ar vehicle api.verifik.co/v2/ar/vehicle https://api.verifik.co/v2/ar/vehicle GET v2/ar/vehicle GET /v2/ar/vehicle | [Argentina](/vehicle-validation/argentina) |
 
@@ -2456,6 +2495,7 @@ _Last regenerated: 2026-06-23T13:54:39.907Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/cl/cedula` | v2 cl cedula cl/cedula /cl/cedula api/cl/cedula /api/cl/cedula api cl cedula api.verifik.co/v2/cl/cedula https://api.verifik.co/v2/cl/cedula GET v2/cl/cedula GET /v2/cl/cedula | [Chilean Citizen](/identity/chile) |
+| `v2/cl/certificate/verify` | v2 cl certificate verify cl/certificate/verify /cl/certificate/verify api/cl/certificate/verify /api/cl/certificate/verify api cl certificate verify certificate/verify /certificate/verify api.verifik.co/v2/cl/certificate/verify https://api.verifik.co/v2/cl/certificate/verify GET v2/cl/certificate/verify GET /v2/cl/certificate/verify | [Chile - Civil Registry Certificate Verification](/background-check/chile-certificate-verify) |
 | `v2/cl/company` | v2 cl company cl/company /cl/company api/cl/company /api/cl/company api cl company api.verifik.co/v2/cl/company https://api.verifik.co/v2/cl/company GET v2/cl/company GET /v2/cl/company | [\U0001F1E8\U0001F1F1 Chile - Business Validation](/business-validation/chilean) |
 | `v2/cl/driver-license` | v2 cl driver-license cl/driver-license /cl/driver-license api/cl/driver-license /api/cl/driver-license api cl driver-license api.verifik.co/v2/cl/driver-license https://api.verifik.co/v2/cl/driver-license GET v2/cl/driver-license GET /v2/cl/driver-license | [\U0001F1E8\U0001F1F1 Chile - Driver License](/driver-validation/chile-driver-license) |
 | `v2/cl/taxpayer` | v2 cl taxpayer cl/taxpayer /cl/taxpayer api/cl/taxpayer /api/cl/taxpayer api cl taxpayer api.verifik.co/v2/cl/taxpayer https://api.verifik.co/v2/cl/taxpayer GET v2/cl/taxpayer GET /v2/cl/taxpayer | [Chile — Taxpayer (RUT) lookup](/identity/chile-taxpayer) |
@@ -2593,6 +2633,7 @@ _Last regenerated: 2026-06-23T13:54:39.907Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
+| `v2/pe/driver-license` | v2 pe driver-license pe/driver-license /pe/driver-license api/pe/driver-license /api/pe/driver-license api pe driver-license api.verifik.co/v2/pe/driver-license https://api.verifik.co/v2/pe/driver-license GET v2/pe/driver-license GET /v2/pe/driver-license | [Peru - Driver License](/driver-validation/peru-driver-license) |
 | `v2/pe/foreigner-id/ce` | v2 pe foreigner-id ce pe/foreigner-id/ce /pe/foreigner-id/ce api/pe/foreigner-id/ce /api/pe/foreigner-id/ce api pe foreigner-id ce foreigner-id/ce /foreigner-id/ce api.verifik.co/v2/pe/foreigner-id/ce https://api.verifik.co/v2/pe/foreigner-id/ce GET v2/pe/foreigner-id/ce GET /v2/pe/foreigner-id/ce | [\U0001F1F5\U0001F1EA Peru - Foreigner Resident](/identity-validation/peru/peruvian-foreigner-resident) |
 | `v2/pe/vehiculo/placa` | v2 pe vehiculo placa pe/vehiculo/placa /pe/vehiculo/placa api/pe/vehiculo/placa /api/pe/vehiculo/placa api pe vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/pe/vehiculo/placa https://api.verifik.co/v2/pe/vehiculo/placa GET v2/pe/vehiculo/placa GET /v2/pe/vehiculo/placa | [Peru - Vehicle Information](/vehicle-validation/peru/peruvian-vehicle) |
 | `v2/pe/vehiculo/soat` | v2 pe vehiculo soat pe/vehiculo/soat /pe/vehiculo/soat api/pe/vehiculo/soat /api/pe/vehiculo/soat api pe vehiculo soat vehiculo/soat /vehiculo/soat api.verifik.co/v2/pe/vehiculo/soat https://api.verifik.co/v2/pe/vehiculo/soat GET v2/pe/vehiculo/soat GET /v2/pe/vehiculo/soat | [Peru - Vehicle Insurance](/vehicle-validation/peru/peruvian-vehicle-insurance) |

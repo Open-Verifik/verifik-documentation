@@ -679,6 +679,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 Peru - Driver License",
+				},
+				{
+					type: "doc",
 					id: "driver-validation/florida-driver-license",
 					label: "🇺🇸 Florida - Driver License",
 				},
@@ -709,6 +714,16 @@ const sidebars = {
 					id: "background-check/brazil",
 					label: "🇧🇷 Brazil",
 					key: "background-check-brazil",
+				},
+				{
+					type: "doc",
+					id: "background-check/argentina-certificate-verify",
+					label: "🇦🇷 Argentina - Criminal Record Certificate",
+				},
+				{
+					type: "doc",
+					id: "background-check/chile-certificate-verify",
+					label: "🇨🇱 Chile - Civil Registry Certificate",
 				},
 				{
 					type: "doc",

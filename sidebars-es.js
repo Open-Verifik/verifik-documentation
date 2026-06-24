@@ -255,6 +255,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "validaciones-conductores/peru-licencia-conducir",
+					label: "🇵🇪 Perú - Licencia de Conducir",
+				},
+				{
+					type: "doc",
 					id: "validaciones-conductores/licencia-conducir-british-columbia",
 					label: "🇨🇦 Canadá - Licencia de Conducir British Columbia",
 				},
@@ -549,6 +554,16 @@ const sidebars = {
 					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-contraloria",
 					label: "🇨🇴 Colombia - Contraloría",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-argentina-certificado-penal",
+					label: "🇦🇷 Argentina - Certificado de Antecedentes Penales",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-chile-certificado-registro-civil",
+					label: "🇨🇱 Chile - Certificado Registro Civil",
 				},
 				{
 					type: "doc",

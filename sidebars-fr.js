@@ -377,6 +377,11 @@ const sidebars = {
 					id: "driver-validation/chile-driver-license",
 					label: "🇨🇱 Chili — Permis de conduire",
 				},
+				{
+					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 Pérou — Permis de conduire",
+				},
 			],
 		},
 		{
@@ -385,6 +390,8 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				{ type: "doc", id: "background-check/brazil", label: "🇧🇷 Brésil" },
+				{ type: "doc", id: "background-check/argentina-certificate-verify", label: "🇦🇷 Casier judiciaire" },
+				{ type: "doc", id: "background-check/chile-certificate-verify", label: "🇨🇱 Registro Civil" },
 				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 Casier police" },
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 Contraloría" },
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 Contrats publics" },

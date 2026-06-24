@@ -303,6 +303,11 @@ const sidebars = {
 					id: "driver-validation/chile-driver-license",
 					label: "🇨🇱 智利 — 驾驶证",
 				},
+				{
+					type: "doc",
+					id: "driver-validation/peru-driver-license",
+					label: "🇵🇪 秘鲁 — 驾驶证",
+				},
 			],
 		},
 		{
@@ -311,6 +316,8 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				{ type: "doc", id: "background-check/brazil", label: "🇧🇷 巴西" },
+				{ type: "doc", id: "background-check/argentina-certificate-verify", label: "🇦🇷 犯罪记录证明" },
+				{ type: "doc", id: "background-check/chile-certificate-verify", label: "🇨🇱 民事登记证明" },
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 公共合同" },
 				{ type: "doc", id: "background-check/colombia-disciplinary-records-attorneys-office", label: "🇨🇴 纪律处分记录" },
 				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 警方犯罪记录" },
