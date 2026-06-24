@@ -1,6 +1,6 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-06-24T04:13:46.365Z
+Generated: 2026-06-24T12:58:01.469Z
 
 - **Files scanned:** 482
 - **Unique endpoint URLs:** 197
@@ -239,8 +239,8 @@ Generated: 2026-06-24T04:13:46.365Z
 | P2 | `v2/app-registrations/{id}/sync` | `resources/app-registrations/sync-app-registration-status.mdx` |
 | P2 | `v2/ar/cedula` | `identity-validation/argentina.mdx` |
 | P2 | `v2/ar/cedula/extra` | `identity/argentina-extra.mdx` |
-| P2 | `v2/ar/certificate/verify` | `background-check/argentina-certificate-verify.mdx` |
 | P2 | `v2/ar/company` | `business-validation/argentina.mdx` |
+| P2 | `v2/ar/dnrec/antecedentes` | `background-check/argentina-certificate-verify.mdx` |
 | P1 | `v2/ar/vehicle` | `vehicle-validation/argentina.md` |
 | P2 | `v2/auth/session` | `authentication/renew-your-token-jwt.mdx` |
 | P2 | `v2/biometric-validations/app-login` | `resources/app-logins/create-an-app-login-biometric-validation.mdx` |
@@ -258,9 +258,9 @@ Generated: 2026-06-24T04:13:46.365Z
 | P2 | `v2/ca/ontario/driver-license` | `driver-validation/ontario-driver-license.md` |
 | P2 | `v2/ca/quebec/driver-license` | `driver-validation/quebec-driver-license.md` |
 | P2 | `v2/cl/cedula` | `identity/chile.mdx` |
-| P2 | `v2/cl/certificate/verify` | `background-check/chile-certificate-verify.mdx` |
 | P2 | `v2/cl/company` | `business-validation/chilean.mdx` |
 | P2 | `v2/cl/driver-license` | `driver-validation/chile-driver-license.mdx` |
+| P2 | `v2/cl/registro-civil/certificado` | `background-check/chile-certificate-verify.mdx` |
 | P2 | `v2/cl/taxpayer` | `identity/chile-taxpayer.mdx` |
 | P1 | `v2/cl/transport-vehicle` | `vehicle-validation/chile/transport-vehicle.mdx` |
 | P2 | `v2/cl/validate/documents` | `identity/chile-validate-documents.mdx` |
