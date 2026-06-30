@@ -2482,7 +2482,7 @@ grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/c
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-06-30T20:06:07.563Z_
+_Last regenerated: 2026-06-30T22:15:14.567Z_
 
 ## Argentina
 
@@ -2506,10 +2506,10 @@ _Last regenerated: 2026-06-30T20:06:07.563Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
-| `v2/br/background-check` | v2 br background-check br/background-check /br/background-check api/br/background-check /api/br/background-check api br background-check api.verifik.co/v2/br/background-check https://api.verifik.co/v2/br/background-check GET v2/br/background-check GET /v2/br/background-check | [Brazil](/background-check/brazil) |
+| `v2/br/background-check` | v2 br background-check br/background-check /br/background-check api/br/background-check /api/br/background-check api br background-check api.verifik.co/v2/br/background-check https://api.verifik.co/v2/br/background-check GET v2/br/background-check GET /v2/br/background-check | [Background Check (CPF)](/background-check/brazil) |
 | `v2/br/cedula` | v2 br cedula br/cedula /br/cedula api/br/cedula /api/br/cedula api br cedula api.verifik.co/v2/br/cedula https://api.verifik.co/v2/br/cedula GET v2/br/cedula GET /v2/br/cedula | [Brazilian Citizen](/identity/brazil) |
-| `v2/br/company` | v2 br company br/company /br/company api/br/company /api/br/company api br company api.verifik.co/v2/br/company https://api.verifik.co/v2/br/company GET v2/br/company GET /v2/br/company | [Brazilian Business Verification](/business-validation/brazil) |
-| `v2/br/vehicle` | v2 br vehicle br/vehicle /br/vehicle api/br/vehicle /api/br/vehicle api br vehicle api.verifik.co/v2/br/vehicle https://api.verifik.co/v2/br/vehicle GET v2/br/vehicle GET /v2/br/vehicle | [\U0001F1E7\U0001F1F7 Brazil - Vehicle information](/vehicle-validation/brazil) |
+| `v2/br/company` | v2 br company br/company /br/company api/br/company /api/br/company api br company api.verifik.co/v2/br/company https://api.verifik.co/v2/br/company GET v2/br/company GET /v2/br/company | [Business Verification (CNPJ)](/business-validation/brazil) |
+| `v2/br/vehicle` | v2 br vehicle br/vehicle /br/vehicle api/br/vehicle /api/br/vehicle api br vehicle api.verifik.co/v2/br/vehicle https://api.verifik.co/v2/br/vehicle GET v2/br/vehicle GET /v2/br/vehicle | [Vehicle Information](/vehicle-validation/brazil) |
 
 ## Chile
 

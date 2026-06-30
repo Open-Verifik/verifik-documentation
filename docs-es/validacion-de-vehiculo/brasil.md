@@ -1,11 +1,11 @@
 ---
 id: brazil
-title: Brasil
+title: Información de vehículos
 description: Verificar información de vehículos brasileños usando placa de matrícula
 slug: /validacion-de-vehiculo/brasil
 ---
 
-# Brasil
+# Información de vehículos
 
 ### Endpoint
 
