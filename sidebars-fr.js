@@ -12,6 +12,7 @@ const sidebars = {
 			items: [
 				{ type: "doc", id: "vehicle-validation/chile", label: "🇨🇱 Chili — Véhicule (plaque)" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-transport-vehicle", label: "🇨🇱 Chili — Transport public" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-technical-review", label: "🇨🇱 Chili — Contrôle technique" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap", label: "🇨🇱 Chili — SOAP véhicule" },
 				{
 					type: "category",

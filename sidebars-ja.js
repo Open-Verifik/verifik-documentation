@@ -236,6 +236,7 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 スペイン" },
 				{ type: "doc", id: "vehicle-validation/chile", label: "🇨🇱 チリ — 車両（ナンバー）" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-transport-vehicle", label: "🇨🇱 チリ — 公共交通車両" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-technical-review", label: "🇨🇱 チリ — 車両技術検査" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap", label: "🇨🇱 チリ — 車両 SOAP" },
 				{ type: "doc", id: "vehicle-validation/ecuador", label: "🇪🇨 エクアドル — 車両罰金" },
 				{ type: "doc", id: "vehicle-validation/bolivia", label: "🇧🇴 ボリビア — 車両情報" },

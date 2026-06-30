@@ -321,6 +321,12 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "validacion-vehiculos/chile/validacion-vehiculos-chile-vehicle-technical-review",
+					label: "🇨🇱 Chile - Revisión técnica vehicular",
+					key: "vehiculos-chile-vehicle-technical-review",
+				},
+				{
+					type: "doc",
 					id: "validacion-vehiculos/chile/validacion-vehiculos-chile-vehicle-soap",
 					label: "🇨🇱 Chile - SOAP vehicular",
 					key: "vehiculos-chile-vehicle-soap",

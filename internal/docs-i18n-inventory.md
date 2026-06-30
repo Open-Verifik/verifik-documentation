@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-06-30T15:58:11.363Z
+Generated: 2026-06-30T17:20:39.156Z
 
-- **Files scanned:** 483
-- **Unique endpoint URLs:** 198
+- **Files scanned:** 484
+- **Unique endpoint URLs:** 199
 - **Duplicate URL groups (SEO / aliases):** 57
 - **Docs without `### Endpoint` block:** 207
 
@@ -12,7 +12,7 @@ Generated: 2026-06-30T15:58:11.363Z
 | Priority | Count | Scope |
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
-| P1 | 16 | vehicle-validation (other countries) |
+| P1 | 17 | vehicle-validation (other countries) |
 | P2 | 159 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
@@ -402,6 +402,7 @@ Generated: 2026-06-30T15:58:11.363Z
 | P2 | `v2/zelf-proof/encrypt` | `biometrics/zero-knowledge-face-proofs-encrypt.mdx` |
 | P2 | `v2/zelf-proof/encrypt-qr-code` | `biometrics/zero-knowledge-face-proofs-encrypt-qr-code.mdx` |
 | P2 | `v2/zelf-proof/preview` | `biometrics/zero-knowledge-face-proofs-preview.mdx` |
+| P1 | `v3/cl/vehicle` | `vehicle-validation/chile/vehicle-technical-review.mdx` |
 | P2 | `v3/co/ministerio-de-trabajo/certificados` | `certificates/colombia-ministerio-trabajo-certificados-v3.mdx` |
 | P2 | `v3/co/rues` | `business-validation/colombia-rues-v3.mdx` |
 | P2 | `v3/co/rues-complete` | `business-validation/colombia-rues-business-information.mdx` |

@@ -1,0 +1,154 @@
+---
+id: vehicle-validation-chile-vehicle-technical-review
+title: "🇨🇱 Chile - Vehicle Technical Review"
+description: "Query Chile vehicle technical review status and inspection history by license plate via GET /v3/cl/vehicle."
+slug: /vehicle-validation/chile/vehicle-technical-review
+sidebar_label: "🇨🇱 Chile - Vehicle Technical Review"
+keywords:
+  - v3/cl/vehicle
+  - /v3/cl/vehicle
+  - api.verifik.co/v3/cl/vehicle
+  - GET v3/cl/vehicle
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇱 Chile - Vehicle Technical Review
+
+Use this endpoint when you need Chilean **technical review / inspection** data by license plate: vehicle details, inspection plant, certificate number, expiration date, and review status.
+
+Related Chile vehicle endpoints:
+
+- **Vehicle Information (`v2/cl/vehicle`)**: general vehicle registry data such as make, model, owner RUT, engine, chassis, fines, and theft flags.
+- **Vehicle Technical Review (`v3/cl/vehicle`)**: technical inspection status and history.
+- **Vehicle SOAP (`v2/cl/vehicle-soap`)**: mandatory personal accident insurance certificate by plate and policy number.
+
+### Endpoint
+
+```text
+GET https://api.verifik.co/v3/cl/vehicle
+```
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Yes** | Chilean license plate in a v3-supported format, such as four letters plus two digits or two letters plus four digits. | `XH6640` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/cl/vehicle", {
+	params: { plate: "XH6640" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/cl/vehicle"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "XH6640"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"plate": "XH6640",
+		"vehicle": {
+			"plate": "XH6640",
+			"type": "CAMIONETA (CAP. DE CARGA MENOR A 1.750 KGS.) [B] (A2)",
+			"mark": "PEUGEOT",
+			"model": "PARTNER TOLE 1.9",
+			"year": "2004",
+			"engineNumber": "10DXDM0003203",
+			"chasisNumber": "60548210",
+			"vin": null,
+			"sealType": "SELLO VERDE"
+		},
+		"history": [
+			{
+				"date": "2026-01-12",
+				"plantCode": "PRT-014",
+				"plantName": "REVISIONES METROPOLITANA",
+				"certificateNumber": "RT-XH6640-2026",
+				"expirationDate": "2027-01-12",
+				"status": "APROBADA"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "June 30, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409-format" label="409 Invalid_plate_format">
+
+```json
+{
+	"code": "Invalid_plate_format",
+	"message": "Plate must match Chile vehicle format ABCD12 (4 letters and 2 digits) or XH6640 (2 letters and 4 digits)"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-timeout" label="409 timeout_data_source">
+
+```json
+{
+	"code": "timeout_data_source",
+	"message": "timeout_data_source"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `XH6640`, `FHDJ31`, and `DCCH18` return stable technical review profiles.
+- `BB985` returns `409 Invalid_plate_format` because it does not match the v3 plate format.

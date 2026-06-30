@@ -1,0 +1,152 @@
+---
+id: validacion-vehiculos-chile-vehicle-technical-review
+title: "🇨🇱 Chile - Revisión técnica vehicular"
+description: "Consulta estado e historial de revisión técnica vehicular chilena por patente mediante GET /v3/cl/vehicle."
+slug: /validacion-vehiculos/chile/vehicle-technical-review
+sidebar_label: "🇨🇱 Chile - Revisión técnica vehicular"
+keywords:
+  - v3/cl/vehicle
+  - GET v3/cl/vehicle
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇱 Chile - Revisión técnica vehicular
+
+Usa este endpoint cuando necesites datos de **revisión técnica / inspección** de un vehículo chileno por patente: datos del vehículo, planta, número de certificado, fecha de vencimiento y estado de revisión.
+
+Endpoints vehiculares relacionados en Chile:
+
+- **Información vehicular (`v2/cl/vehicle`)**: datos generales del registro, como marca, modelo, RUT del titular, motor, chasis, multas y encargos por robo.
+- **Revisión técnica vehicular (`v3/cl/vehicle`)**: estado e historial de inspecciones técnicas.
+- **SOAP vehicular (`v2/cl/vehicle-soap`)**: certificado de seguro obligatorio por patente y número de póliza.
+
+### Endpoint
+
+```text
+GET https://api.verifik.co/v3/cl/vehicle
+```
+
+### Headers
+
+| Nombre | Valor |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Descripción | Ejemplo |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Sí** | Patente chilena en formato compatible con v3, como cuatro letras y dos dígitos o dos letras y cuatro dígitos. | `XH6640` |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/cl/vehicle", {
+	params: { plate: "XH6640" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/cl/vehicle"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "XH6640"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"plate": "XH6640",
+		"vehicle": {
+			"plate": "XH6640",
+			"type": "CAMIONETA (CAP. DE CARGA MENOR A 1.750 KGS.) [B] (A2)",
+			"mark": "PEUGEOT",
+			"model": "PARTNER TOLE 1.9",
+			"year": "2004",
+			"engineNumber": "10DXDM0003203",
+			"chasisNumber": "60548210",
+			"vin": null,
+			"sealType": "SELLO VERDE"
+		},
+		"history": [
+			{
+				"date": "2026-01-12",
+				"plantCode": "PRT-014",
+				"plantName": "REVISIONES METROPOLITANA",
+				"certificateNumber": "RT-XH6640-2026",
+				"expirationDate": "2027-01-12",
+				"status": "APROBADA"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "June 30, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409-format" label="409 Invalid_plate_format">
+
+```json
+{
+	"code": "Invalid_plate_format",
+	"message": "Plate must match Chile vehicle format ABCD12 (4 letters and 2 digits) or XH6640 (2 letters and 4 digits)"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-timeout" label="409 timeout_data_source">
+
+```json
+{
+	"code": "timeout_data_source",
+	"message": "timeout_data_source"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- `XH6640`, `FHDJ31` y `DCCH18` devuelven perfiles estables de revisión técnica.
+- `BB985` devuelve `409 Invalid_plate_format` porque no cumple el formato v3 de patente.

@@ -2354,6 +2354,13 @@ keywords:
   - "https://api.verifik.co/v2/zelf-proof/preview"
   - "GET v2/zelf-proof/preview"
   - "GET /v2/zelf-proof/preview"
+  - "v3/cl/vehicle"
+  - "/v3/cl/vehicle"
+  - "v3 cl vehicle"
+  - "api.verifik.co/v3/cl/vehicle"
+  - "https://api.verifik.co/v3/cl/vehicle"
+  - "GET v3/cl/vehicle"
+  - "GET /v3/cl/vehicle"
   - "v3/co/ministerio-de-trabajo/certificados"
   - "/v3/co/ministerio-de-trabajo/certificados"
   - "v3 co ministerio-de-trabajo certificados"
@@ -2470,12 +2477,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (198 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (199 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-06-30T15:58:11.412Z_
+_Last regenerated: 2026-06-30T17:20:39.285Z_
 
 ## Argentina
 
@@ -2884,6 +2891,7 @@ _Last regenerated: 2026-06-30T15:58:11.412Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
+| `v3/cl/vehicle` | v3 cl vehicle cl/vehicle /cl/vehicle api/cl/vehicle /api/cl/vehicle api cl vehicle api.verifik.co/v3/cl/vehicle https://api.verifik.co/v3/cl/vehicle GET v3/cl/vehicle GET /v3/cl/vehicle | [🇨🇱 Chile - Vehicle Technical Review](/vehicle-validation/chile/vehicle-technical-review) |
 | `v3/co/ministerio-de-trabajo/certificados` | v3 co ministerio-de-trabajo certificados co/ministerio-de-trabajo/certificados /co/ministerio-de-trabajo/certificados api/co/ministerio-de-trabajo/certificados /api/co/ministerio-de-trabajo/certificados api co ministerio-de-trabajo certificados ministerio-de-trabajo/certificados /ministerio-de-trabajo/certificados api.verifik.co/v3/co/ministerio-de-trabajo/certificados https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados GET v3/co/ministerio-de-trabajo/certificados GET /v3/co/ministerio-de-trabajo/certificados | [Colombia — Ministry of Labor certificates (v3)](/certificates/colombia-ministerio-trabajo-certificados-v3) |
 | `v3/co/rues` | v3 co rues co/rues /co/rues api/co/rues /api/co/rues api co rues api.verifik.co/v3/co/rues https://api.verifik.co/v3/co/rues GET v3/co/rues GET /v3/co/rues | [Colombia — RUES business lookup (v3)](/business-validation/colombia-rues-v3) |
 | `v3/co/rues-complete` | v3 co rues-complete co/rues-complete /co/rues-complete api/co/rues-complete /api/co/rues-complete api co rues-complete api.verifik.co/v3/co/rues-complete https://api.verifik.co/v3/co/rues-complete GET v3/co/rues-complete GET /v3/co/rues-complete | [RUES Complete Business Validation (v3)](/business-validation/colombia-rues-business-information) |

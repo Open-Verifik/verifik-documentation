@@ -458,6 +458,12 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-technical-review",
+					label: "🇨🇱 Chile - Vehicle Technical Review",
+					key: "vehicle-chile-vehicle-technical-review",
+				},
+				{
+					type: "doc",
 					id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap",
 					label: "🇨🇱 Chile - Vehicle SOAP",
 					key: "vehicle-chile-vehicle-soap",
