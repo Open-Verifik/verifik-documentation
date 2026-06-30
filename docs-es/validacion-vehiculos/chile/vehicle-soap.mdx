@@ -1,0 +1,135 @@
+---
+id: validacion-vehiculos-chile-vehicle-soap
+title: "🇨🇱 Chile - SOAP vehicular"
+description: "Consulta certificado SOAP vehicular chileno por patente y número de póliza: estado, aseguradora, propietario, vigencia y datos del vehículo."
+slug: /validacion-vehiculos/chile/vehicle-soap
+sidebar_label: "🇨🇱 Chile - SOAP vehicular"
+keywords:
+  - v2/cl/vehicle-soap
+  - GET v2/cl/vehicle-soap
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇱 Chile - SOAP vehicular
+
+La consulta **SOAP** vehicular (*Seguro Obligatorio de Accidentes Personales*) valida el seguro obligatorio de accidentes personales de un vehículo registrado en Chile. Consulta por **placa** y **número de póliza** para obtener aseguradora, titular, vigencia y datos del vehículo en el registro AACH.
+
+## Consulta SOAP vehicular
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/cl/vehicle-soap
+```
+
+Consulta por **placa** (`plate`) y **número de póliza** (`policyNumber`; el servicio usa los últimos cuatro dígitos en el registro AACH). Suele devolver **status**, **insuranceCompany**, **ownerName**, **ownerRut**, **validFrom**, **validTo**, **brand**, **model**, **manufactureYear**, **engineNumber** y **premium**—útil para **cumplimiento de seguros**, **onboarding de flotas** y **siniestros**.
+
+### Encabezados
+
+| Nombre | Valor |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Descripción | Ejemplo |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Sí** | Patente chilena, 4–6 caracteres alfanuméricos. | `HTRT86` |
+| `policyNumber` | string | **Sí** | Número de póliza; se usan los últimos cuatro dígitos para la consulta SOAP AACH. | `94596506` |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap", {
+	params: { plate: "HTRT86", policyNumber: "94596506" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/vehicle-soap"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "HTRT86", "policyNumber": "94596506"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"status": "VIGENTE",
+		"plate": "HTRT86",
+		"policyNumber": "94596506",
+		"vehicleType": "AUTOMOVIL",
+		"brand": "TOYOTA",
+		"model": "COROLLA",
+		"manufactureYear": "2019",
+		"engineNumber": "ENG123456",
+		"folioNumber": "FOL789",
+		"insuranceCompany": "MAPFRE",
+		"ownerName": "JUAN PEREZ LOPEZ",
+		"ownerRut": "12.345.678-9",
+		"validFrom": "01/01/2026",
+		"validTo": "31/12/2026",
+		"premium": "$50.000"
+	},
+	"signature": {
+		"dateTime": "June 30, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing plate\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- **Modo sandbox:** patentes **`AB1001`**–**`AB1010`** devuelven perfiles SOAP fijos (`AB1004` = **VENCIDO**); **`HTRT86`** + **`policyNumber=94596506`** devuelve el perfil demo estilo producción; **`ERR404`** devuelve **404**; patentes no mapeadas devuelven **200** aleatorio.
+- **Ejemplos sandbox:** `AB1001`/`94590001` (sedán, MAPFRE), `AB1007`/`94590007` (camioneta, CHUBB), `HTRT86`/`94596506` (demo TOYOTA COROLLA).
+- Para consulta de vehículo **particular** en Chile, ver [🇨🇱 Chile - Información de Vehículos](/verifik-es/validacion-vehiculos/chile).

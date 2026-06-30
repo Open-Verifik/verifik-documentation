@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-06-24T12:58:01.469Z
+Generated: 2026-06-30T15:58:11.363Z
 
-- **Files scanned:** 482
-- **Unique endpoint URLs:** 197
+- **Files scanned:** 483
+- **Unique endpoint URLs:** 198
 - **Duplicate URL groups (SEO / aliases):** 57
 - **Docs without `### Endpoint` block:** 207
 
@@ -12,7 +12,7 @@ Generated: 2026-06-24T12:58:01.469Z
 | Priority | Count | Scope |
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
-| P1 | 15 | vehicle-validation (other countries) |
+| P1 | 16 | vehicle-validation (other countries) |
 | P2 | 159 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
@@ -265,6 +265,7 @@ Generated: 2026-06-24T12:58:01.469Z
 | P1 | `v2/cl/transport-vehicle` | `vehicle-validation/chile/transport-vehicle.mdx` |
 | P2 | `v2/cl/validate/documents` | `identity/chile-validate-documents.mdx` |
 | P1 | `v2/cl/vehicle` | `vehicle-validation/chile.mdx` |
+| P1 | `v2/cl/vehicle-soap` | `vehicle-validation/chile/vehicle-soap.mdx` |
 | P2 | `v2/clients/me` | `accounts/clients/account-information.mdx` |
 | P2 | `v2/co/afiliaciones` | `legal/verify-colombian-affiliations.mdx` |
 | P0 | `v2/co/bogota/taxi-drivers/card/{controlcardnumber}` | `vehicle-validation/colombia/bogota-taxi-drivers-by-control-card.mdx` |

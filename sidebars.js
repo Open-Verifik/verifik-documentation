@@ -457,6 +457,12 @@ const sidebars = {
 					key: "vehicle-chile-transport-vehicle",
 				},
 				{
+					type: "doc",
+					id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap",
+					label: "🇨🇱 Chile - Vehicle SOAP",
+					key: "vehicle-chile-vehicle-soap",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 Colombia",
 					collapsible: true,

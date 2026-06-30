@@ -178,6 +178,7 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 西班牙" },
 				{ type: "doc", id: "vehicle-validation/chile", label: "🇨🇱 智利 — 车辆（号牌）" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-transport-vehicle", label: "🇨🇱 智利 — 公共交通车辆" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap", label: "🇨🇱 智利 — 车辆 SOAP" },
 			],
 		},
 		{
