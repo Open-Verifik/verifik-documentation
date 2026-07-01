@@ -1,11 +1,11 @@
 ---
 id: mexico
-title: México
+title: Vehículo Mexicano por Placa
 description: Verificar información de vehículos mexicanos usando placa de matrícula
 slug: /validacion-vehiculos/mexico
 ---
 
-# México
+# Vehículo Mexicano por Placa
 
 ### Endpoint
 

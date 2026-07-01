@@ -1,6 +1,6 @@
 ---
 id: mexico
-title: Mexico
+title: Mexico Vehicle by Plate
 description: Verify Mexican vehicle information using license plate
 keywords:
   - v2/mx/vehiculo/placa
@@ -19,7 +19,7 @@ keywords:
   - /vehiculo/placa
 ---
 
-# Mexico
+# Mexico Vehicle by Plate
 
 ### Endpoint
 

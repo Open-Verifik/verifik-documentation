@@ -1,11 +1,11 @@
 ---
 id: argentina
-title: Argentina
+title: Argentina - Información Vehicular
 description: Verificar información de vehículos argentinos usando placa de matrícula
 slug: /validacion-de-vehiculo/argentina
 ---
 
-# Argentina
+# Argentina - Información Vehicular
 
 ### Endpoint
 

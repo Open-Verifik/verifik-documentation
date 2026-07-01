@@ -427,10 +427,37 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				{
-					type: "doc",
-					id: "vehicle-validation/argentina",
+					type: "category",
 					label: "🇦🇷 Argentina",
-					key: "vehicle-argentina",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "vehicle-validation/argentina",
+							label: "Overview",
+							key: "vehicle-argentina-overview",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/argentina/vehicle-validation-argentina-vehicle-v3",
+							label: "Vehicle v3",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/argentina/vehicle-validation-argentina-buenos-aires-traffic-infractions",
+							label: "Buenos Aires - Traffic Infractions",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/argentina/vehicle-validation-argentina-buenos-aires-technical-inspection",
+							label: "Buenos Aires - Technical Inspection",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/argentina/vehicle-validation-argentina-rto",
+							label: "RTO",
+						},
+					],
 				},
 				{
 					type: "doc",

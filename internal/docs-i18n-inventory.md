@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-06-30T22:15:14.515Z
+Generated: 2026-07-01T22:24:58.403Z
 
-- **Files scanned:** 484
-- **Unique endpoint URLs:** 199
+- **Files scanned:** 488
+- **Unique endpoint URLs:** 203
 - **Duplicate URL groups (SEO / aliases):** 57
 - **Docs without `### Endpoint` block:** 207
 
@@ -12,7 +12,7 @@ Generated: 2026-06-30T22:15:14.515Z
 | Priority | Count | Scope |
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
-| P1 | 17 | vehicle-validation (other countries) |
+| P1 | 21 | vehicle-validation (other countries) |
 | P2 | 159 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
@@ -237,10 +237,13 @@ Generated: 2026-06-30T22:15:14.515Z
 | P2 | `v2/app-registrations` | `resources/app-registrations/create-an-app-registration.mdx` |
 | P2 | `v2/app-registrations/{id}` | `resources/app-registrations/retrieve-an-app-registration.mdx` |
 | P2 | `v2/app-registrations/{id}/sync` | `resources/app-registrations/sync-app-registration-status.mdx` |
+| P1 | `v2/ar/buenos-aires/technical-inspection` | `vehicle-validation/argentina/buenos-aires-technical-inspection.mdx` |
+| P1 | `v2/ar/buenos-aires/traffic-infractions` | `vehicle-validation/argentina/buenos-aires-traffic-infractions.mdx` |
 | P2 | `v2/ar/cedula` | `identity-validation/argentina.mdx` |
 | P2 | `v2/ar/cedula/extra` | `identity/argentina-extra.mdx` |
 | P2 | `v2/ar/company` | `business-validation/argentina.mdx` |
 | P2 | `v2/ar/dnrec/antecedentes` | `background-check/argentina-certificate-verify.mdx` |
+| P1 | `v2/ar/rto` | `vehicle-validation/argentina/rto.mdx` |
 | P1 | `v2/ar/vehicle` | `vehicle-validation/argentina.md` |
 | P2 | `v2/auth/session` | `authentication/renew-your-token-jwt.mdx` |
 | P2 | `v2/biometric-validations/app-login` | `resources/app-logins/create-an-app-login-biometric-validation.mdx` |
@@ -402,6 +405,7 @@ Generated: 2026-06-30T22:15:14.515Z
 | P2 | `v2/zelf-proof/encrypt` | `biometrics/zero-knowledge-face-proofs-encrypt.mdx` |
 | P2 | `v2/zelf-proof/encrypt-qr-code` | `biometrics/zero-knowledge-face-proofs-encrypt-qr-code.mdx` |
 | P2 | `v2/zelf-proof/preview` | `biometrics/zero-knowledge-face-proofs-preview.mdx` |
+| P1 | `v3/ar/vehicle` | `vehicle-validation/argentina/vehicle-v3.mdx` |
 | P1 | `v3/cl/vehicle` | `vehicle-validation/chile/vehicle-technical-review.mdx` |
 | P2 | `v3/co/ministerio-de-trabajo/certificados` | `certificates/colombia-ministerio-trabajo-certificados-v3.mdx` |
 | P2 | `v3/co/rues` | `business-validation/colombia-rues-v3.mdx` |

@@ -1,6 +1,6 @@
 ---
 id: argentina
-title: Argentina
+title: Argentina - Vehicle Information
 description: Verify Argentine vehicle information using license plate
 keywords:
   - v2/ar/vehicle
@@ -17,7 +17,7 @@ keywords:
   - /ar/vehicle
 ---
 
-# Argentina
+# Argentina - Vehicle Information
 
 ### Endpoint
 
@@ -26,6 +26,13 @@ GET https://api.verifik.co/v2/ar/vehicle
 ```
 
 The Argentine Vehicle Information service provides detailed information about vehicles registered in Argentina using their license plate number. This service returns comprehensive vehicle data including make, model, year, engine specifications, and registration details.
+
+### Related Argentina Vehicle Services
+
+- [Argentina Vehicle v3](/vehicle-validation/argentina/vehicle-v3) returns vehicle identifiers, active policy status, and technical-sheet data when available.
+- [Buenos Aires Traffic Infractions](/vehicle-validation/argentina/buenos-aires-traffic-infractions) checks traffic infraction records by plate.
+- [Buenos Aires Technical Inspection](/vehicle-validation/argentina/buenos-aires-technical-inspection) checks VTV-style technical inspection history by plate.
+- [Argentina RTO](/vehicle-validation/argentina/rto) checks RTO inspection records by plate.
 
 ### Headers
 
