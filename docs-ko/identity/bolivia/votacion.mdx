@@ -1,0 +1,137 @@
+---
+title: 볼리비아 - 투표 장소
+description: CI와 생년월일로 볼리비아 공식 선거 등록부(OEP Yo Participo)를 조회합니다. 투표소, 테이블, 투표 자격 및 거주지 정보를 반환합니다.
+slug: /identity/bolivia/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 볼리비아 - 투표 장소
+
+Verifik는 **CI**와 **생년월일**을 사용하여 **Yo Participo (OEP)**를 조회합니다. OEP 데이터 사용이 허용되는 **선거 확인**, **유권자 온보딩**, **규정 준수** 워크플로에 이 엔드포인트를 사용하세요.
+
+소스에서 제공하는 경우 선거 장소 세부 정보를 반환합니다:
+
+- **`documentType`** — 허용 값: **CI**
+- **`documentNumber`** — 볼리비아 신분증 번호 (**5–13**자)
+- **`dateOfBirth`** — **DD/MM/YYYY** 형식의 생년월일 (OEP 기록과 일치해야 함)
+- **`fullName`** — 선거 등록부의 시민 전체 이름
+- **`votingStatus`** — 시민의 투표 자격 여부
+- **`department`**, **`locality`**, **`pollingPlace`**, **`pollingTable`** — 선거 장소 필드
+- **`election`** — 제공 시 선거 라벨 또는 등록부 업데이트 메모
+- **선택 필드** — 소스에 포함된 경우 `isJury`, `jurySortDate`, `politicalMembership`, `latitude`, `longitude`
+- **`force`** — 선택; `true`로 캐시 우회
+- Verifik **서명** 응답
+
+### Endpoint
+
+```
+GET v2/bo/votacion
+```
+
+### Headers
+
+| Header | Value | Description |
+| --- | --- | --- |
+| Accept | application/json | 응답 형식 |
+| Authorization | Bearer \<token\> | Verifik JWT |
+
+### Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| documentType | String | Yes | 문서 유형. 허용 값: `CI`. |
+| documentNumber | String | Yes | 발급 코드 없는 볼리비아 CI 번호 (**5–13**자). |
+| dateOfBirth | String | Yes | `DD/MM/YYYY` 형식의 생년월일. |
+| force | String | No | `true`로 설정하면 캐시를 우회하고 최신 데이터를 가져옵니다. |
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/bo/votacion", {
+  params: {
+    documentType: "CI",
+    documentNumber: "4511200",
+    dateOfBirth: "27/03/1978",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/bo/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CI", "documentNumber": "4511200", "dateOfBirth": "27/03/1978"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CI",
+    "documentNumber": "4511200",
+    "fullName": "LIDIA IRIARTE TORREZ",
+    "votingStatus": "USTED ESTA HABILITADO/A PARA VOTAR",
+    "country": "BOLIVIA",
+    "department": "Cochabamba",
+    "locality": "Cercado, Cochabamba",
+    "election": "Elecciones Generales 2026",
+    "pollingPlace": "Unidad Educativa Santa Maria Micaela",
+    "pollingTable": "18"
+  },
+  "signature": {
+    "dateTime": "July 2, 2026 3:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`**은 **`CI`**여야 하며, **`dateOfBirth`**는 필수이고 OEP 기록과 일치해야 합니다.
+- 선택적 배심원, 정당 가입 및 좌표 필드는 소스 HTML/JSON에 포함된 경우에만 표시됩니다.
+- MongoDB 캐시 레코드를 우회해야 할 때 **`force=true`**를 사용하세요.
+- 응답은 **민감한 개인 데이터**입니다. 해당 개인정보 보호법을 준수하세요.

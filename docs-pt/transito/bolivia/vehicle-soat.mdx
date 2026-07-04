@@ -1,0 +1,128 @@
+---
+title: Bolívia - SOAT de Veículo
+description: Consulte o seguro obrigatório de acidentes de trânsito (SOAT) na Bolívia por placa. Devolve validade da cobertura, classificação do veículo, departamento e status calculado.
+slug: /transito/bolivia/vehicle-soat
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Bolívia - SOAT de Veículo
+
+Verifik consulta o registro oficial de **SOAT** (*Seguro Obligatorio de Accidentes de Tránsito*) na Bolívia por **placa de matrícula**. Use este endpoint para **conformidade de frota**, **verificação de seguros** e **controles de trânsito**.
+
+Devolve detalhes de cobertura SOAT quando a fonte os fornece:
+
+- **`plate`** — placa de matrícula (**5–8** caracteres), normalizada em maiúsculas
+- **`managementYear`** — ano de gestão ou cobertura SOAT
+- **`validFrom`** / **`validTo`** — datas de validade da cobertura (DD/MM/AAAA)
+- **`vehicleType`** — categoria do veículo (p. ex. AUTOMOVIL, VAGONETA, MOTOCICLETA)
+- **`useType`** — classificação de uso (PARTICULAR, COMERCIAL)
+- **`department`** — departamento associado à apólice
+- **`status`** — status calculado: VIGENTE, VENCIDO ou PENDIENTE
+- **`force`** — opcional; `true` ignora o cache e atualiza da fonte
+- Resposta **assinada** pela Verifik
+
+### Endpoint
+
+```
+GET v2/bo/vehicle-soat
+```
+
+### Headers
+
+| Header | Valor | Descrição |
+| --- | --- | --- |
+| Accept | application/json | Formato de resposta |
+| Authorization | Bearer \<token\> | Seu JWT da Verifik |
+
+### Parâmetros
+
+| Campo | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| plate | String | Sim | Placa de matrícula sem espaços (**5–8** caracteres). |
+| force | String | Não | Defina como `true` para ignorar o cache e buscar dados atualizados. |
+
+### Solicitação
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/bo/vehicle-soat", {
+  params: { plate: "1852PHD" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/bo/vehicle-soat"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "1852PHD"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "1852PHD",
+    "managementYear": "2026",
+    "validFrom": "01/01/2026",
+    "validTo": "31/12/2026",
+    "vehicleType": "VAGONETA",
+    "useType": "PARTICULAR",
+    "department": "LA PAZ",
+    "status": "VIGENTE"
+  },
+  "signature": {
+    "dateTime": "July 2, 2026 3:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notas
+
+- **`plate`** é obrigatória; o middleware a normaliza em maiúsculas.
+- **`status`** é calculado a partir de **`validFrom`** e **`validTo`** em relação à data atual.
+- Use **`force=true`** quando precisar ignorar registros em cache no MongoDB.
+- Trate as respostas como **dados sensíveis do veículo**; cumpra a legislação de privacidade aplicável.

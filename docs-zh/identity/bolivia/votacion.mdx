@@ -1,0 +1,137 @@
+---
+title: 玻利维亚 - 投票地点
+description: 通过 CI 和出生日期查询玻利维亚官方选举登记（OEP Yo Participo）。返回投票站、桌号、投票资格及居住信息。
+slug: /identity/bolivia/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 玻利维亚 - 投票地点
+
+Verifik 使用 **CI** 和**出生日期**查询 **Yo Participo (OEP)**。在允许使用 OEP 数据的场景下，可用于**选举核验**、**选民 onboarding** 和**合规**流程。
+
+在数据源提供时，返回选举地点详情：
+
+- **`documentType`** — 允许值：**CI**
+- **`documentNumber`** — 玻利维亚身份证号（**5–13** 位）
+- **`dateOfBirth`** — **DD/MM/YYYY** 格式的出生日期（须与 OEP 记录一致）
+- **`fullName`** — 选举登记中的公民全名
+- **`votingStatus`** — 公民是否具备投票资格
+- **`department`**、**`locality`**、**`pollingPlace`**、**`pollingTable`** — 选举地点字段
+- **`election`** — 提供时的选举标签或登记更新说明
+- **可选字段** — 数据源包含时：`isJury`、`jurySortDate`、`politicalMembership`、`latitude`、`longitude`
+- **`force`** — 可选；`true` 绕过缓存
+- Verifik **签名** 响应
+
+### Endpoint
+
+```
+GET v2/bo/votacion
+```
+
+### Headers
+
+| Header | Value | Description |
+| --- | --- | --- |
+| Accept | application/json | 响应格式 |
+| Authorization | Bearer \<token\> | 您的 Verifik JWT |
+
+### Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| documentType | String | Yes | 证件类型。允许值：`CI`。 |
+| documentNumber | String | Yes | 无签发代码的玻利维亚 CI 号（**5–13** 位）。 |
+| dateOfBirth | String | Yes | `DD/MM/YYYY` 格式的出生日期。 |
+| force | String | No | 设为 `true` 可绕过缓存并获取最新数据。 |
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/bo/votacion", {
+  params: {
+    documentType: "CI",
+    documentNumber: "4511200",
+    dateOfBirth: "27/03/1978",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/bo/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CI", "documentNumber": "4511200", "dateOfBirth": "27/03/1978"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CI",
+    "documentNumber": "4511200",
+    "fullName": "LIDIA IRIARTE TORREZ",
+    "votingStatus": "USTED ESTA HABILITADO/A PARA VOTAR",
+    "country": "BOLIVIA",
+    "department": "Cochabamba",
+    "locality": "Cercado, Cochabamba",
+    "election": "Elecciones Generales 2026",
+    "pollingPlace": "Unidad Educativa Santa Maria Micaela",
+    "pollingTable": "18"
+  },
+  "signature": {
+    "dateTime": "July 2, 2026 3:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`** 必须为 **`CI`**；**`dateOfBirth`** 为必填且须与 OEP 记录一致。
+- 可选的陪审员、党籍和坐标字段仅在数据源 HTML/JSON 包含时出现。
+- 需要绕过 MongoDB 缓存记录时使用 **`force=true`**。
+- 响应包含**敏感个人数据**；请遵守适用的隐私法规。

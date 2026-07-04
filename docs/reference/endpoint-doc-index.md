@@ -435,6 +435,30 @@ keywords:
   - "https://api.verifik.co/v2/bo/vehicle"
   - "GET v2/bo/vehicle"
   - "GET /v2/bo/vehicle"
+  - "v2/bo/vehicle-soat"
+  - "/v2/bo/vehicle-soat"
+  - "v2 bo vehicle-soat"
+  - "bo/vehicle-soat"
+  - "/bo/vehicle-soat"
+  - "api/bo/vehicle-soat"
+  - "/api/bo/vehicle-soat"
+  - "api bo vehicle-soat"
+  - "api.verifik.co/v2/bo/vehicle-soat"
+  - "https://api.verifik.co/v2/bo/vehicle-soat"
+  - "GET v2/bo/vehicle-soat"
+  - "GET /v2/bo/vehicle-soat"
+  - "v2/bo/votacion"
+  - "/v2/bo/votacion"
+  - "v2 bo votacion"
+  - "bo/votacion"
+  - "/bo/votacion"
+  - "api/bo/votacion"
+  - "/api/bo/votacion"
+  - "api bo votacion"
+  - "api.verifik.co/v2/bo/votacion"
+  - "https://api.verifik.co/v2/bo/votacion"
+  - "GET v2/bo/votacion"
+  - "GET /v2/bo/votacion"
   - "v2/br/background-check"
   - "/v2/br/background-check"
   - "v2 br background-check"
@@ -2524,12 +2548,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (203 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (205 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-07-04T00:09:52.293Z_
+_Last regenerated: 2026-07-04T00:56:02.560Z_
 
 ## Argentina
 
@@ -2551,6 +2575,8 @@ _Last regenerated: 2026-07-04T00:09:52.293Z_
 | `v2/bo/cedula` | v2 bo cedula bo/cedula /bo/cedula api/bo/cedula /api/bo/cedula api bo cedula api.verifik.co/v2/bo/cedula https://api.verifik.co/v2/bo/cedula GET v2/bo/cedula GET /v2/bo/cedula | [Bolivian Citizen](/identity/bolivia) |
 | `v2/bo/company` | v2 bo company bo/company /bo/company api/bo/company /api/bo/company api bo company api.verifik.co/v2/bo/company https://api.verifik.co/v2/bo/company GET v2/bo/company GET /v2/bo/company | [Bolivian Business Verification](/business-validation/bolivia) |
 | `v2/bo/vehicle` | v2 bo vehicle bo/vehicle /bo/vehicle api/bo/vehicle /api/bo/vehicle api bo vehicle api.verifik.co/v2/bo/vehicle https://api.verifik.co/v2/bo/vehicle GET v2/bo/vehicle GET /v2/bo/vehicle | [\U0001F1E7\U0001F1F4 Bolivia - Vehicle Information](/vehicle-validation/bolivia) |
+| `v2/bo/vehicle-soat` | v2 bo vehicle-soat bo/vehicle-soat /bo/vehicle-soat api/bo/vehicle-soat /api/bo/vehicle-soat api bo vehicle-soat api.verifik.co/v2/bo/vehicle-soat https://api.verifik.co/v2/bo/vehicle-soat GET v2/bo/vehicle-soat GET /v2/bo/vehicle-soat | [Bolivia - Vehicle SOAT](/transit/bolivia/vehicle-soat) |
+| `v2/bo/votacion` | v2 bo votacion bo/votacion /bo/votacion api/bo/votacion /api/bo/votacion api bo votacion api.verifik.co/v2/bo/votacion https://api.verifik.co/v2/bo/votacion GET v2/bo/votacion GET /v2/bo/votacion | [Bolivia - Voting Location](/identity/bolivia/votacion) |
 
 ## Brazil
 

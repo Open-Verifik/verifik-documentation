@@ -1,0 +1,128 @@
+---
+title: 볼리비아 - 차량 SOAT
+description: 볼리비아에서 번호판으로 의무 교통사고 보험(SOAT)을 조회합니다. 보장 유효 기간, 차량 분류, 주(department) 및 계산된 상태를 반환합니다.
+slug: /transit/bolivia/vehicle-soat
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 볼리비아 - 차량 SOAT
+
+Verifik는 **번호판**으로 볼리비아 공식 **SOAT**(*Seguro Obligatorio de Accidentes de Tránsito*) 등록부를 조회합니다. **차량대 관리**, **보험 확인**, **교통 점검**에 이 엔드포인트를 사용하세요.
+
+소스에서 제공하는 경우 SOAT 보장 세부 정보를 반환합니다:
+
+- **`plate`** — 차량 번호판 (**5–8**자), 대문자로 정규화
+- **`managementYear`** — SOAT 관리 또는 보장 연도
+- **`validFrom`** / **`validTo`** — 보장 유효 기간 (DD/MM/YYYY)
+- **`vehicleType`** — 차량 유형 (예: AUTOMOVIL, VAGONETA, MOTOCICLETA)
+- **`useType`** — 사용 분류 (PARTICULAR, COMERCIAL)
+- **`department`** — 보험과 연관된 주(department)
+- **`status`** — 계산된 상태: VIGENTE, VENCIDO 또는 PENDIENTE
+- **`force`** — 선택; `true`로 캐시를 우회하고 소스에서 새로고침
+- Verifik **서명** 응답
+
+### Endpoint
+
+```
+GET v2/bo/vehicle-soat
+```
+
+### Headers
+
+| Header | Value | Description |
+| --- | --- | --- |
+| Accept | application/json | 응답 형식 |
+| Authorization | Bearer \<token\> | Verifik JWT |
+
+### Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| plate | String | Yes | 공백 없는 차량 번호판 (**5–8**자). |
+| force | String | No | `true`로 설정하면 캐시를 우회하고 최신 데이터를 가져옵니다. |
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/bo/vehicle-soat", {
+  params: { plate: "1852PHD" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/bo/vehicle-soat"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "1852PHD"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "1852PHD",
+    "managementYear": "2026",
+    "validFrom": "01/01/2026",
+    "validTo": "31/12/2026",
+    "vehicleType": "VAGONETA",
+    "useType": "PARTICULAR",
+    "department": "LA PAZ",
+    "status": "VIGENTE"
+  },
+  "signature": {
+    "dateTime": "July 2, 2026 3:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`plate`**는 필수이며, 미들웨어가 대문자로 정규화합니다.
+- **`status`**는 현재 날짜 기준 **`validFrom`** 및 **`validTo`**에서 계산됩니다.
+- MongoDB 캐시 레코드를 우회해야 할 때 **`force=true`**를 사용하세요.
+- 응답은 **민감한 차량 데이터**입니다. 해당 개인정보 보호법을 준수하세요.

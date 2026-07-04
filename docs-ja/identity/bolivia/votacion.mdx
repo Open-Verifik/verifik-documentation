@@ -1,0 +1,137 @@
+---
+title: ボリビア - 投票所
+description: CIと生年月日でボリビア公式選挙登録（OEP Yo Participo）を照会します。投票所、テーブル、投票資格、居住地情報を返します。
+slug: /identity/bolivia/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# ボリビア - 投票所
+
+Verifikは**CI**と**生年月日**を使用して**Yo Participo (OEP)**を照会します。OEPデータの利用が許可される**選挙確認**、**有権者オンボーディング**、**コンプライアンス**ワークフローにこのエンドポイントを使用してください。
+
+ソースが提供する場合、選挙場所の詳細を返します：
+
+- **`documentType`** — 許可値：**CI**
+- **`documentNumber`** — ボリビア身分証番号（**5–13**文字）
+- **`dateOfBirth`** — **DD/MM/YYYY**形式の生年月日（OEP記録と一致する必要あり）
+- **`fullName`** — 選挙登録の市民氏名
+- **`votingStatus`** — 市民の投票資格の有無
+- **`department`**、**`locality`**、**`pollingPlace`**、**`pollingTable`** — 選挙場所フィールド
+- **`election`** — 提供時の選挙ラベルまたは登録更新メモ
+- **任意フィールド** — ソースに含まれる場合 `isJury`、`jurySortDate`、`politicalMembership`、`latitude`、`longitude`
+- **`force`** — 任意；`true`でキャッシュをバイパス
+- Verifik **署名**付きレスポンス
+
+### Endpoint
+
+```
+GET v2/bo/votacion
+```
+
+### Headers
+
+| Header | Value | Description |
+| --- | --- | --- |
+| Accept | application/json | レスポンス形式 |
+| Authorization | Bearer \<token\> | Verifik JWT |
+
+### Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| documentType | String | Yes | 書類タイプ。許可値：`CI`。 |
+| documentNumber | String | Yes | 発行コードなしのボリビアCI番号（**5–13**文字）。 |
+| dateOfBirth | String | Yes | `DD/MM/YYYY`形式の生年月日。 |
+| force | String | No | `true`に設定するとキャッシュをバイパスし最新データを取得します。 |
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/bo/votacion", {
+  params: {
+    documentType: "CI",
+    documentNumber: "4511200",
+    dateOfBirth: "27/03/1978",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/bo/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CI", "documentNumber": "4511200", "dateOfBirth": "27/03/1978"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CI",
+    "documentNumber": "4511200",
+    "fullName": "LIDIA IRIARTE TORREZ",
+    "votingStatus": "USTED ESTA HABILITADO/A PARA VOTAR",
+    "country": "BOLIVIA",
+    "department": "Cochabamba",
+    "locality": "Cercado, Cochabamba",
+    "election": "Elecciones Generales 2026",
+    "pollingPlace": "Unidad Educativa Santa Maria Micaela",
+    "pollingTable": "18"
+  },
+  "signature": {
+    "dateTime": "July 2, 2026 3:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`**は**`CI`**である必要があり、**`dateOfBirth`**は必須でOEP記録と一致する必要があります。
+- 任意の陪審員、党員、座標フィールドはソースHTML/JSONに含まれる場合のみ表示されます。
+- MongoDBキャッシュレコードをバイパスする必要がある場合は**`force=true`**を使用してください。
+- レスポンスは**機微な個人データ**です。適用されるプライバシー法を遵守してください。

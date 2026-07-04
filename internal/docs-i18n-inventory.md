@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-07-04T00:09:52.245Z
+Generated: 2026-07-04T00:56:02.512Z
 
-- **Files scanned:** 488
-- **Unique endpoint URLs:** 203
+- **Files scanned:** 490
+- **Unique endpoint URLs:** 205
 - **Duplicate URL groups (SEO / aliases):** 57
 - **Docs without `### Endpoint` block:** 207
 
@@ -13,7 +13,7 @@ Generated: 2026-07-04T00:09:52.245Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 21 | vehicle-validation (other countries) |
-| P2 | 159 | identity, biometrics, resources, etc. |
+| P2 | 161 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -252,6 +252,8 @@ Generated: 2026-07-04T00:09:52.245Z
 | P2 | `v2/bo/cedula` | `identity/bolivia.mdx` |
 | P2 | `v2/bo/company` | `business-validation/bolivia.mdx` |
 | P1 | `v2/bo/vehicle` | `vehicle-validation/bolivia.mdx` |
+| P2 | `v2/bo/vehicle-soat` | `transit/bolivia/vehicle-soat.mdx` |
+| P2 | `v2/bo/votacion` | `identity/bolivia/votacion.mdx` |
 | P2 | `v2/br/background-check` | `background-check/brazil.mdx` |
 | P2 | `v2/br/cedula` | `identity/brazil.mdx` |
 | P2 | `v2/br/company` | `business-validation/brazil.mdx` |

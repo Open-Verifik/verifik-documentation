@@ -1,0 +1,137 @@
+---
+title: Bolivie - Lieu de vote
+description: Consultez le registre électoral officiel bolivien (OEP Yo Participo) par CI et date de naissance. Retourne le bureau de vote, la table, l'éligibilité et les données de résidence.
+slug: /identite/bolivie/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Bolivie - Lieu de vote
+
+Verifik interroge **Yo Participo (OEP)** avec la **CI** et la **date de naissance**. Utilisez ce point de terminaison pour la **vérification électorale**, l'**intégration des électeurs** et la **conformité** lorsque les données OEP sont autorisées.
+
+Retourne les détails du lieu de vote lorsque la source les fournit :
+
+- **`documentType`** — valeur autorisée : **CI**
+- **`documentNumber`** — numéro de carte d'identité bolivienne (**5–13** caractères)
+- **`dateOfBirth`** — date de naissance au format **JJ/MM/AAAA** (doit correspondre aux registres OEP)
+- **`fullName`** — nom complet du citoyen dans le registre électoral
+- **`votingStatus`** — indique si le citoyen est habilité à voter
+- **`department`**, **`locality`**, **`pollingPlace`**, **`pollingTable`** — champs de localisation électorale
+- **`election`** — libellé d'élection ou note de mise à jour du registre
+- **Champs optionnels** — `isJury`, `jurySortDate`, `politicalMembership`, `latitude`, `longitude` lorsque la source les inclut
+- **`force`** — optionnel ; `true` ignore le cache
+- Réponse **signée** par Verifik
+
+### Endpoint
+
+```
+GET v2/bo/votacion
+```
+
+### Headers
+
+| Header | Valeur | Description |
+| --- | --- | --- |
+| Accept | application/json | Format de réponse |
+| Authorization | Bearer \<token\> | Votre JWT Verifik |
+
+### Paramètres
+
+| Champ | Type | Requis | Description |
+| --- | --- | --- | --- |
+| documentType | String | Oui | Type de document. Valeur autorisée : `CI`. |
+| documentNumber | String | Oui | Numéro de CI sans code d'expédition (**5–13** caractères). |
+| dateOfBirth | String | Oui | Date de naissance au format `JJ/MM/AAAA`. |
+| force | String | Non | Définir sur `true` pour ignorer le cache et interroger la source. |
+
+### Requête
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/bo/votacion", {
+  params: {
+    documentType: "CI",
+    documentNumber: "4511200",
+    dateOfBirth: "27/03/1978",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/bo/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CI", "documentNumber": "4511200", "dateOfBirth": "27/03/1978"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CI",
+    "documentNumber": "4511200",
+    "fullName": "LIDIA IRIARTE TORREZ",
+    "votingStatus": "USTED ESTA HABILITADO/A PARA VOTAR",
+    "country": "BOLIVIA",
+    "department": "Cochabamba",
+    "locality": "Cercado, Cochabamba",
+    "election": "Elecciones Generales 2026",
+    "pollingPlace": "Unidad Educativa Santa Maria Micaela",
+    "pollingTable": "18"
+  },
+  "signature": {
+    "dateTime": "July 2, 2026 3:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`** doit être **`CI`** ; **`dateOfBirth`** est obligatoire et doit correspondre aux registres OEP.
+- Les champs optionnels de jury, militance et coordonnées n'apparaissent que si la source les inclut.
+- Utilisez **`force=true`** pour ignorer les enregistrements en cache MongoDB.
+- Traitez les réponses comme des **données personnelles sensibles** ; respectez les lois applicables en matière de confidentialité.

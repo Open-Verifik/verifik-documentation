@@ -1,0 +1,137 @@
+---
+title: Bolivia - Voting Location
+description: Query official Bolivian electoral registry (OEP Yo Participo) by CI and date of birth. Returns polling place, table, voting eligibility, and residence details.
+slug: /identity/bolivia/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Bolivia - Voting Location
+
+Verifik queries **Yo Participo (OEP)** using **CI** and **date of birth**. Use this endpoint for **electoral verification**, **voter onboarding**, and **compliance** workflows where OEP data is permitted.
+
+Returns electoral location details when the source provides them:
+
+- **`documentType`** — allowed value: **CI**
+- **`documentNumber`** — Bolivian identity document number (**5–13** characters)
+- **`dateOfBirth`** — date of birth in **DD/MM/YYYY** format (must match OEP records)
+- **`fullName`** — citizen full name from the electoral registry
+- **`votingStatus`** — whether the citizen is enabled to vote
+- **`department`**, **`locality`**, **`pollingPlace`**, **`pollingTable`** — electoral location fields
+- **`election`** — election label or registry update note when provided
+- **Optional fields** — `isJury`, `jurySortDate`, `politicalMembership`, `latitude`, `longitude` when included by the source
+- **`force`** — optional; set to `true` to bypass cache
+- **Signed** Verifik response
+
+### Endpoint
+
+```
+GET v2/bo/votacion
+```
+
+### Headers
+
+| Header | Value | Description |
+| --- | --- | --- |
+| Accept | application/json | Response format |
+| Authorization | Bearer \<token\> | Your Verifik JWT |
+
+### Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| documentType | String | Yes | Document type. Allowed value: `CI`. |
+| documentNumber | String | Yes | Bolivian CI number without expedition code (**5–13** characters). |
+| dateOfBirth | String | Yes | Date of birth in `DD/MM/YYYY` format. |
+| force | String | No | Set to `true` to bypass cache and fetch fresh data. |
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/bo/votacion", {
+  params: {
+    documentType: "CI",
+    documentNumber: "4511200",
+    dateOfBirth: "27/03/1978",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/bo/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CI", "documentNumber": "4511200", "dateOfBirth": "27/03/1978"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CI",
+    "documentNumber": "4511200",
+    "fullName": "LIDIA IRIARTE TORREZ",
+    "votingStatus": "USTED ESTA HABILITADO/A PARA VOTAR",
+    "country": "BOLIVIA",
+    "department": "Cochabamba",
+    "locality": "Cercado, Cochabamba",
+    "election": "Elecciones Generales 2026",
+    "pollingPlace": "Unidad Educativa Santa Maria Micaela",
+    "pollingTable": "18"
+  },
+  "signature": {
+    "dateTime": "July 2, 2026 3:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`** must be **`CI`**; **`dateOfBirth`** is required and must match OEP records.
+- Optional jury, militancy, and coordinate fields appear only when the source HTML/JSON includes them.
+- Use **`force=true`** when you need to bypass cached MongoDB records.
+- Treat responses as **sensitive personal data**; comply with applicable privacy laws.

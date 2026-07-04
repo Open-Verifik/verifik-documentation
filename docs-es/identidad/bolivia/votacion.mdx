@@ -1,0 +1,137 @@
+---
+title: Bolivia - Lugar de Votación
+description: Consulta el padrón electoral oficial de Bolivia (OEP Yo Participo) por CI y fecha de nacimiento. Devuelve recinto, mesa, habilitación para votar y datos de residencia.
+slug: /identidad/bolivia/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Bolivia - Lugar de Votación
+
+Verifik consulta **Yo Participo (OEP)** usando **CI** y **fecha de nacimiento**. Usa este endpoint para **verificación electoral**, **incorporación de votantes** y **cumplimiento** cuando los datos OEP estén permitidos.
+
+Devuelve detalles del lugar de votación cuando la fuente los proporciona:
+
+- **`documentType`** — valor permitido: **CI**
+- **`documentNumber`** — número de cédula de identidad (**5–13** caracteres)
+- **`dateOfBirth`** — fecha de nacimiento en formato **DD/MM/YYYY** (debe coincidir con OEP)
+- **`fullName`** — nombre completo del ciudadano en el padrón electoral
+- **`votingStatus`** — si el ciudadano está habilitado para votar
+- **`department`**, **`locality`**, **`pollingPlace`**, **`pollingTable`** — datos del recinto electoral
+- **`election`** — etiqueta de elección o nota de actualización del padrón
+- **Campos opcionales** — `isJury`, `jurySortDate`, `politicalMembership`, `latitude`, `longitude` cuando la fuente los incluye
+- **`force`** — opcional; `true` omite caché
+- Respuesta **firmada** por Verifik
+
+### Endpoint
+
+```
+GET v2/bo/votacion
+```
+
+### Headers
+
+| Header | Valor | Descripción |
+| --- | --- | --- |
+| Accept | application/json | Formato de respuesta |
+| Authorization | Bearer \<token\> | Tu JWT de Verifik |
+
+### Parámetros
+
+| Campo | Tipo | Requerido | Descripción |
+| --- | --- | --- | --- |
+| documentType | String | Sí | Tipo de documento. Valor permitido: `CI`. |
+| documentNumber | String | Sí | Número de CI sin código de expedición (**5–13** caracteres). |
+| dateOfBirth | String | Sí | Fecha de nacimiento en formato `DD/MM/YYYY`. |
+| force | String | No | Establecer en `true` para omitir caché y consultar la fuente. |
+
+### Solicitud
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/bo/votacion", {
+  params: {
+    documentType: "CI",
+    documentNumber: "4511200",
+    dateOfBirth: "27/03/1978",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/bo/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CI", "documentNumber": "4511200", "dateOfBirth": "27/03/1978"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CI",
+    "documentNumber": "4511200",
+    "fullName": "LIDIA IRIARTE TORREZ",
+    "votingStatus": "USTED ESTA HABILITADO/A PARA VOTAR",
+    "country": "BOLIVIA",
+    "department": "Cochabamba",
+    "locality": "Cercado, Cochabamba",
+    "election": "Elecciones Generales 2026",
+    "pollingPlace": "Unidad Educativa Santa Maria Micaela",
+    "pollingTable": "18"
+  },
+  "signature": {
+    "dateTime": "July 2, 2026 3:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing dateOfBirth\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notas
+
+- **`documentType`** debe ser **`CI`**; **`dateOfBirth`** es obligatoria y debe coincidir con OEP.
+- Los campos opcionales de jurado, militancia y coordenadas aparecen solo cuando la fuente los incluye.
+- Usa **`force=true`** cuando necesites omitir registros en caché de MongoDB.
+- Trata las respuestas como **datos personales sensibles**; cumple las leyes de privacidad aplicables.
