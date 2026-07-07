@@ -1,9 +1,9 @@
 ---
 id: vehicle-validation-chile-vehicle-soap-plate
-title: "🇨🇱 Chile - Vehicle SOAP (by plate)"
-description: "Query Chile vehicular SOAP by license plate only. Returns nested soap and vehicle objects."
+title: "🇨🇱 チリ — 車両 SOAP（ナンバーのみ）"
+description: "ナンバープレートのみでチリ車両 SOAP を照会します。ネストされた soap/vehicle オブジェクトとステータス、保険会社、所有者、有効期間を返します。"
 slug: /vehicle-validation/chile/vehicle-soap-plate
-sidebar_label: "🇨🇱 Chile - Vehicle SOAP (by plate)"
+sidebar_label: "🇨🇱 チリ — 車両 SOAP（ナンバーのみ）"
 keywords:
   - v2/cl/vehicle-soap-plate
   - GET v2/cl/vehicle-soap-plate
@@ -12,64 +12,111 @@ keywords:
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# 🇨🇱 Chile - Vehicle SOAP (by plate)
+# 🇨🇱 チリ — 車両 SOAP（ナンバーのみ）
 
-Query Chile vehicular **SOAP** using **license plate only**. Nested **`soap`** / **`vehicle`** response.
+**ナンバープレートのみ**でチリの **SOAP**（*Seguro Obligatorio de Accidentes Personales*）を照会します。Boostr で SOAP を取得し、証券番号があれば AACH で enrich、SOAP がない場合は Carvuk から車両属性を返します。
 
-### Endpoint
+ソースが応答する場合の**ネスト**ペイロード：
+
+- **`plate`** — チリナンバー（Patente）、**4–6** 文字の英数字
+- **`message`** — SOAP あり時は空；車両のみでアクティブ SOAP なしは `No_active_SOAP_certificate_found_for_this_plate`
+- **`soap`** — 見つかった場合：**`status`**, **`policyNumber`**, **`insuranceCompany`**, **`validFrom`**, **`validTo`**, **`folioNumber`**, **`ownerName`**, **`ownerRut`**, **`premium`**
+- **`vehicle`** — **`brand`**, **`model`**, **`year`**, **`type`**, **`engineNumber`**
+- **`force`** — 任意；`true` でキャッシュをバイパス
+- Verifik **署名**付きレスポンス
+
+ナンバーのみ判明時の**保険コンプライアンス**、**フリートオンボーディング**、**クレーム**に使用します。
+
+### エンドポイント
 
 ```
 GET v2/cl/vehicle-soap-plate
 ```
 
-### Headers
+**ナンバー**（`plate`）のみで照会。**`soap`** の **status**, **insuranceCompany**, **ownerName**, **validFrom**, **validTo** および **`vehicle`** の **brand**, **model**, **year** などが含まれます。
+
+### ヘッダー
 
 | Name | Value |
 | --- | --- |
 | Accept | `application/json` |
 | Authorization | `Bearer <token>` |
 
-### Parameters
+### パラメータ
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `plate` | string | Yes | Chilean license plate (4–6 chars). |
-| `force` | string | No | `true` to bypass cache. |
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Yes** | チリナンバー（Patente）、4–6 文字の英数字。 | `HTRT86` |
+| `force` | string | No | `true` でキャッシュを無視して最新取得。 | `true` |
 
-### Request
+### リクエスト
 
 <Tabs>
-  <TabItem value="javascript" label="JavaScript">
+  <TabItem value="node" label="Node.js">
 
 ```javascript
 const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plate", {
   params: { plate: "HTRT86" },
-  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
 });
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cl/vehicle-soap-plate"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "HTRT86"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
 ```
 
   </TabItem>
 </Tabs>
 
-### Response
+### レスポンス
 
 <Tabs>
-  <TabItem value="200-soap" label="200 SOAP found">
+  <TabItem value="200-soap" label="200 SOAP あり">
 
 ```json
 {
   "data": {
     "plate": "HTRT86",
     "message": "",
-    "soap": { "status": "CERTIFICADO VALIDO", "policyNumber": "94596506" },
-    "vehicle": { "brand": "MITSUBISHI", "model": "L200 KATANA 2.4", "year": "2016" }
+    "soap": {
+      "status": "CERTIFICADO VALIDO",
+      "policyNumber": "94596506",
+      "insuranceCompany": "MUTUAL DE SEGUROS DE CHILE",
+      "validFrom": "01/04/2026",
+      "validTo": "31/03/2027",
+      "folioNumber": "FOL789",
+      "ownerName": "JUAN PEREZ LOPEZ",
+      "ownerRut": "12.345.678-9",
+      "premium": "$50.000"
+    },
+    "vehicle": {
+      "brand": "MITSUBISHI",
+      "model": "L200 KATANA 2.4",
+      "year": "2016",
+      "type": "CAMIONETA",
+      "engineNumber": "ENG123456"
+    }
   },
-  "signature": { "message": "Certified by Verifik.co" }
+  "signature": {
+    "dateTime": "July 7, 2026 11:00 AM",
+    "message": "Certified by Verifik.co"
+  }
 }
 ```
 
   </TabItem>
-  <TabItem value="200-no-soap" label="200 No active SOAP">
+  <TabItem value="200-no-soap" label="200 アクティブ SOAP なし">
 
 ```json
 {
@@ -77,7 +124,17 @@ const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plat
     "plate": "CSXZ27",
     "message": "No_active_SOAP_certificate_found_for_this_plate",
     "soap": {},
-    "vehicle": { "brand": "MAHINDRA", "model": "PIK UP", "year": "2011" }
+    "vehicle": {
+      "brand": "MAHINDRA",
+      "model": "PIK UP",
+      "year": "2011",
+      "type": "",
+      "engineNumber": ""
+    }
+  },
+  "signature": {
+    "dateTime": "July 7, 2026 11:00 AM",
+    "message": "Certified by Verifik.co"
   }
 }
 ```
@@ -86,21 +143,29 @@ const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plat
   <TabItem value="404" label="404">
 
 ```json
-{ "code": "NotFound", "message": "Vehicle_not_found_for_this_plate" }
+{
+  "code": "NotFound",
+  "message": "Vehicle_not_found_for_this_plate"
+}
 ```
 
   </TabItem>
   <TabItem value="409" label="409">
 
 ```json
-{ "code": "MissingParameter", "message": "missing plate\n" }
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
 ```
 
   </TabItem>
 </Tabs>
 
-### Notes
+### 注意
 
-- **No active SOAP** returns **HTTP 200** with empty **`soap`**, not 404.
-- Live plates: `CLTK27`, `HTRT86`, `RRWX51`, `THHV64`, `CSXZ52`, `CSXZ57`; `CSXZ27` has no active SOAP.
-- See [Vehicle SOAP (plate + policy)](/verifik-ja/vehicle-validation/chile/vehicle-soap).
+- **アクティブ SOAP なし**は **HTTP 200**、空の **`soap`**、**`message: No_active_SOAP_certificate_found_for_this_plate`** — 404 ではありません。
+- **Live プレート:** `CLTK27`, `HTRT86`, `RRWX51`, `THHV64`, `CSXZ52`, `CSXZ57` はアクティブ SOAP；`CSXZ27` は SOAP なしで車両のみ。
+- **サンドボックス:** **`AB1001`**–**`AB1010`**, **`HTRT86`** は安定ネストプロフィール；**`ERR404`** → **404**。
+- ナンバー+証券照会は [車両 SOAP（ナンバー+証券）](/verifik-ja/vehicle-validation/chile/vehicle-soap) を参照。
+- レジストリ**可用性**は環境依存；**409** タイムアウトの可能性あり。

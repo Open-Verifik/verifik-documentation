@@ -1,7 +1,7 @@
 ---
 id: vehicle-validation-chile-vehicle-soap-plate
 title: "🇨🇱 Chile — SOAP veicular (por placa)"
-description: "Consulte o SOAP veicular chileno apenas pela placa. Retorna objetos aninhados soap e vehicle."
+description: "Consulte o SOAP veicular chileno apenas pela placa. Retorna objetos aninhados soap e vehicle com status, seguradora, titular e vigência."
 slug: /vehicle-validation/chile/vehicle-soap-plate
 sidebar_label: "🇨🇱 Chile — SOAP veicular (por placa)"
 keywords:
@@ -14,7 +14,18 @@ import TabItem from "@theme/TabItem";
 
 # 🇨🇱 Chile — SOAP veicular (por placa)
 
-Consulte o certificado **SOAP** (*Seguro Obligatorio de Accidentes Personales*) usando **somente a placa**. Resposta aninhada com **`soap`** e **`vehicle`**.
+Consulte o **SOAP** veicular (*Seguro Obligatorio de Accidentes Personales*) no Chile usando **somente a placa**. O serviço consulta Boostr, enriquece com AACH quando há número de apólice e retorna atributos do veículo via Carvuk quando o SOAP está ausente.
+
+Payload **aninhado** quando a fonte responde:
+
+- **`plate`** — Placa chilena (Patente), **4–6** caracteres alfanuméricos
+- **`message`** — vazio se SOAP encontrado; `No_active_SOAP_certificate_found_for_this_plate` se o veículo existe sem SOAP ativo
+- **`soap`** — se encontrado: **`status`**, **`policyNumber`**, **`insuranceCompany`**, **`validFrom`**, **`validTo`**, **`folioNumber`**, **`ownerName`**, **`ownerRut`**, **`premium`**
+- **`vehicle`** — **`brand`**, **`model`**, **`year`**, **`type`**, **`engineNumber`**
+- **`force`** — opcional; `true` para ignorar cache
+- Resposta **assinada** Verifik
+
+Use para **conformidade de seguros**, **onboarding de frotas** e **sinistros** quando só a placa é conhecida.
 
 ### Endpoint
 
@@ -22,30 +33,47 @@ Consulte o certificado **SOAP** (*Seguro Obligatorio de Accidentes Personales*) 
 GET v2/cl/vehicle-soap-plate
 ```
 
+Consulte por **placa** (`plate`) apenas. Campos típicos em **`soap`**: **status**, **insuranceCompany**, **ownerName**, **validFrom**, **validTo**; em **`vehicle`**: **brand**, **model**, **year**.
+
 ### Cabeçalhos
 
-| Nome | Valor |
+| Name | Value |
 | --- | --- |
 | Accept | `application/json` |
 | Authorization | `Bearer <token>` |
 
 ### Parâmetros
 
-| Nome | Tipo | Obrigatório | Descrição |
-| --- | --- | --- | --- |
-| `plate` | string | Sim | Placa chilena (4–6 caracteres). |
-| `force` | string | Não | `true` para ignorar cache. |
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Yes** | Placa chilena (Patente), 4–6 caracteres alfanuméricos. | `HTRT86` |
+| `force` | string | No | `true` para ignorar cache e buscar dados frescos. | `true` |
 
-### Solicitação
+### Requisição
 
 <Tabs>
-  <TabItem value="javascript" label="JavaScript">
+  <TabItem value="node" label="Node.js">
 
 ```javascript
 const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plate", {
   params: { plate: "HTRT86" },
-  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
 });
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cl/vehicle-soap-plate"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "HTRT86"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
 ```
 
   </TabItem>
@@ -61,10 +89,29 @@ const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plat
   "data": {
     "plate": "HTRT86",
     "message": "",
-    "soap": { "status": "CERTIFICADO VALIDO", "policyNumber": "94596506" },
-    "vehicle": { "brand": "MITSUBISHI", "model": "L200 KATANA 2.4", "year": "2016" }
+    "soap": {
+      "status": "CERTIFICADO VALIDO",
+      "policyNumber": "94596506",
+      "insuranceCompany": "MUTUAL DE SEGUROS DE CHILE",
+      "validFrom": "01/04/2026",
+      "validTo": "31/03/2027",
+      "folioNumber": "FOL789",
+      "ownerName": "JUAN PEREZ LOPEZ",
+      "ownerRut": "12.345.678-9",
+      "premium": "$50.000"
+    },
+    "vehicle": {
+      "brand": "MITSUBISHI",
+      "model": "L200 KATANA 2.4",
+      "year": "2016",
+      "type": "CAMIONETA",
+      "engineNumber": "ENG123456"
+    }
   },
-  "signature": { "message": "Certified by Verifik.co" }
+  "signature": {
+    "dateTime": "July 7, 2026 11:00 AM",
+    "message": "Certified by Verifik.co"
+  }
 }
 ```
 
@@ -77,7 +124,17 @@ const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plat
     "plate": "CSXZ27",
     "message": "No_active_SOAP_certificate_found_for_this_plate",
     "soap": {},
-    "vehicle": { "brand": "MAHINDRA", "model": "PIK UP", "year": "2011" }
+    "vehicle": {
+      "brand": "MAHINDRA",
+      "model": "PIK UP",
+      "year": "2011",
+      "type": "",
+      "engineNumber": ""
+    }
+  },
+  "signature": {
+    "dateTime": "July 7, 2026 11:00 AM",
+    "message": "Certified by Verifik.co"
   }
 }
 ```
@@ -86,14 +143,20 @@ const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plat
   <TabItem value="404" label="404">
 
 ```json
-{ "code": "NotFound", "message": "Vehicle_not_found_for_this_plate" }
+{
+  "code": "NotFound",
+  "message": "Vehicle_not_found_for_this_plate"
+}
 ```
 
   </TabItem>
   <TabItem value="409" label="409">
 
 ```json
-{ "code": "MissingParameter", "message": "missing plate\n" }
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
 ```
 
   </TabItem>
@@ -101,6 +164,8 @@ const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plat
 
 ### Notas
 
-- **Sem SOAP ativo** retorna **HTTP 200** com **`soap` vazio**, não 404.
-- Placas live: `CLTK27`, `HTRT86`, `RRWX51`, `THHV64`, `CSXZ52`, `CSXZ57` (SOAP ativo); `CSXZ27` (sem SOAP).
-- Veja também [SOAP veicular (placa + apólice)](/verifik-pt/vehicle-validation/chile/vehicle-soap).
+- **Sem SOAP ativo** retorna **HTTP 200** com **`soap` vazio** e **`message: No_active_SOAP_certificate_found_for_this_plate`** — não é 404.
+- **Placas live:** `CLTK27`, `HTRT86`, `RRWX51`, `THHV64`, `CSXZ52`, `CSXZ57` retornam SOAP ativo; `CSXZ27` retorna veículo sem SOAP ativo.
+- **Modo sandbox:** **`AB1001`**–**`AB1010`** e **`HTRT86`** retornam perfis aninhados estáveis; **`ERR404`** retorna **404**.
+- Para placa + apólice, veja [SOAP veicular (placa + apólice)](/verifik-pt/vehicle-validation/chile/vehicle-soap).
+- A **disponibilidade** do registro depende do ambiente; indisponibilidade pode retornar **409** (timeout).
