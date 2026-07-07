@@ -58,6 +58,7 @@ When adding a **new** country, copy the English MDX structure first, then transl
 
 3. **Sidebars**  
    - Add doc entries to `sidebars-fr.js`, `sidebars-pt.js`, `sidebars-ko.js`, `sidebars-ja.js`, `sidebars-zh.js` (same `id` as relative path without `.mdx`).
+   - **Order:** run `npm run partial-locale:sync-sidebars` after adding pages so category and doc order match English/Spanish (Identity → Business → Driver → Vehicle → Background → Certificados → VERIFIK LLC). Keeps localized labels; only reorders structure.
 
 4. **Links**  
    - Internal links: `/verifik-fr/...`, `/verifik-pt/...`, etc. Never embed `fr-docs` in URLs.

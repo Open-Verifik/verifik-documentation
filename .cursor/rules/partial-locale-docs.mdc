@@ -29,6 +29,46 @@ globs:
 - Keep `id` stable and aligned with sidebar doc ids (path without extension).
 - Reuse the same section structure as English where possible: `### Endpoint`, `### Headers`, `### Parameters`, `### Request`, `### Response`, `### Notes` — required for `verifik-backend` `scripts/seed-app-feature-docs.js` extraction.
 
+## Full content parity (critical — Postman About panel)
+
+Partial locales are **not** stubs. Every endpoint page in `docs-fr`, `docs-pt`, `docs-ko`, `docs-ja`, and `docs-zh` must match **`docs/` (English) depth**, not a one-line summary.
+
+The Smart-Agent Postman **About** tab reads Mongo `AppFeature.docs.*` seeded from MDX. Thin partial pages produce empty overviews and hurt UX.
+
+### Required on every partial-locale endpoint MDX
+
+1. **Intro paragraph** (before `### Endpoint`) — same substance as English: what the service does, inputs, and use cases.
+2. **Bullet list** when English has one (field lists, nested shapes, optional params).
+3. **`### Endpoint` prose after the URL fence** — paragraph listing typical response fields and workflows (this text is merged into `overview` by the seeder).
+4. **Parameters table** — include **Example** column when English has it; full descriptions (not “4–6 chars” only).
+5. **`### Request`** — Node.js **and** Python tabs when English has both.
+6. **`### Response`** — all status tabs English documents (e.g. 200 SOAP found, 200 no SOAP, 404, 409); **full JSON bodies**, not truncated `{ "brand": "..." }` snippets.
+7. **`### Notes`** — at least as many bullets as English (sandbox, live examples, cross-links, availability).
+
+### Never do
+
+- ❌ Single-sentence intro + minimal tables “for partial rollout”
+- ❌ Omit endpoint paragraph after the URL code block
+- ❌ Skip Python request example when EN has it
+- ❌ Truncate response JSON to 4–5 fields
+- ❌ One-line sandbox note only
+
+### Verification before merge
+
+Compare side-by-side with `docs/<same-path>.mdx`:
+
+```bash
+# Overview length check (seeded into Postman About)
+node -e "
+const fs=require('fs');const p=require('path');
+const {execSync}=require('child_process');
+const en=p.join('docs', process.argv[1]);
+const loc=p.join(process.argv[2], process.argv[1]);
+" # prefer scripts/seed-app-feature-docs.js --verbose --dry-run on changed slugs
+```
+
+After editing, run `node scripts/seed-app-feature-docs.js` from **verifik-backend** for dev + production, then `npm run i18n:sync-features-from-docs` in Smart-Agent if titles changed.
+
 ## Internal links
 
 - Use absolute site paths with **one** locale prefix: `/verifik-fr/identity/chile`, not `/fr-docs/...` and not `/verifik-fr/fr-docs/...`.

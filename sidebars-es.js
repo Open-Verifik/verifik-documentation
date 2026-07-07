@@ -290,10 +290,37 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				{
-					type: "doc",
-					id: "validacion-vehiculos/argentina",
+					type: "category",
 					label: "🇦🇷 Argentina",
-					key: "vehiculos-argentina",
+					collapsible: true,
+					items: [
+						{
+							type: "doc",
+							id: "validacion-vehiculos/argentina",
+							label: "Resumen",
+							key: "vehiculos-argentina-overview",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/argentina/validacion-vehiculos-argentina-vehicle-v3",
+							label: "Vehículo v3",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/argentina/validacion-vehiculos-argentina-buenos-aires-traffic-infractions",
+							label: "Buenos Aires - Infracciones de Tránsito",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/argentina/validacion-vehiculos-argentina-buenos-aires-technical-inspection",
+							label: "Buenos Aires - Inspección Técnica",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/argentina/validacion-vehiculos-argentina-rto",
+							label: "RTO",
+						},
+					],
 				},
 				{
 					type: "doc",
@@ -330,6 +357,12 @@ const sidebars = {
 					id: "validacion-vehiculos/chile/validacion-vehiculos-chile-vehicle-soap",
 					label: "🇨🇱 Chile - SOAP vehicular",
 					key: "vehiculos-chile-vehicle-soap",
+				},
+				{
+					type: "doc",
+					id: "validacion-vehiculos/chile/validacion-vehiculos-chile-vehicle-soap-plate",
+					label: "🇨🇱 Chile - SOAP vehicular (por patente)",
+					key: "vehiculos-chile-vehicle-soap-plate",
 				},
 				{
 					type: "category",
