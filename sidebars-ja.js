@@ -238,6 +238,7 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-transport-vehicle", label: "🇨🇱 チリ — 公共交通車両" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-technical-review", label: "🇨🇱 チリ — 車両技術検査" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap", label: "🇨🇱 チリ — 車両 SOAP" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap-plate", label: "🇨🇱 チリ — 車両 SOAP（番号のみ）" },
 				{ type: "doc", id: "vehicle-validation/ecuador", label: "🇪🇨 エクアドル — 車両罰金" },
 				{ type: "doc", id: "vehicle-validation/bolivia", label: "🇧🇴 ボリビア — 車両情報" },
 				{ type: "doc", id: "vehicle-validation/argentina", label: "🇦🇷 アルゼンチン — 車両情報" },

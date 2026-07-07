@@ -332,6 +332,12 @@ const sidebars = {
 					key: "vehiculos-chile-vehicle-soap",
 				},
 				{
+					type: "doc",
+					id: "validacion-vehiculos/chile/validacion-vehiculos-chile-vehicle-soap-plate",
+					label: "🇨🇱 Chile - SOAP vehicular (por patente)",
+					key: "vehiculos-chile-vehicle-soap-plate",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 Colombia",
 					collapsible: true,

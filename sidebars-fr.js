@@ -14,6 +14,7 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-transport-vehicle", label: "🇨🇱 Chili — Transport public" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-technical-review", label: "🇨🇱 Chili — Contrôle technique" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap", label: "🇨🇱 Chili — SOAP véhicule" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap-plate", label: "🇨🇱 Chili — SOAP véhicule (par plaque)" },
 				{
 					type: "category",
 					label: "🇨🇴 Colombie",
