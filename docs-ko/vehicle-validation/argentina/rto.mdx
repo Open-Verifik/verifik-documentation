@@ -1,0 +1,160 @@
+---
+id: vehicle-validation-argentina-rto
+title: 🇦🇷 아르헨티나 — RTO
+description: 차량 번호판으로 아르헨티나 RTO 검사 기록을 조회합니다.
+slug: /vehicle-validation/argentina/rto
+keywords:
+  - v2/ar/rto
+  - /v2/ar/rto
+  - api.verifik.co/v2/ar/rto
+  - 'https://api.verifik.co/v2/ar/rto'
+  - GET v2/ar/rto
+  - GET /v2/ar/rto
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 🇦🇷 아르헨티나 — RTO
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v2/ar/rto
+```
+
+이 엔드포인트로 번호판 기준 아르헨티나 RTO 검사 기록을 조회합니다. 응답에는 검사 결과, 검사 유형, 검사 및 만료 날짜, 인증서, 확장성 카테고리, 검사 센터 및 알림 유형이 포함됩니다.
+
+### 헤더
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### 매개변수
+
+| 이름 | 유형 | 필수 | 설명 |
+| ---- | ---- | -------- | ----------- |
+| `plate` | string | **Yes** | 조회할 번호판(공백 및 구두점 없음). 예: `ABC10001`. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const { data } = await axios.get('https://api.verifik.co/v2/ar/rto', {
+  params: { plate: 'ABC10001' },
+  headers: {
+    Accept: 'application/json',
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/ar/rto"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC10001"}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "ABC10001",
+    "totalRecords": "1",
+    "inspections": [
+      {
+        "plate": "ABC10001",
+        "result": "CONDICIONAL",
+        "inspectionType": "RTO",
+        "inspectionDate": "2026-01-15",
+        "expirationDate": "2027-01-15",
+        "certificate": "RTO-10000001",
+        "scalabilityCategory": "L",
+        "inspectionCenter": "CENT UTN",
+        "alertType": "danger"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "July 1, 2026 10:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답 필드
+
+| 필드 | 유형 | 설명 |
+| ----- | ---- | ----------- |
+| `plate` | string | 정규화된 번호판. |
+| `totalRecords` | string | 반환된 RTO 기록 수. |
+| `inspections` | object[] | RTO 검사 기록. |
+| `inspections[].result` | string \| null | 검사 결과. |
+| `inspections[].inspectionType` | string \| null | 검사 유형 라벨. |
+| `inspections[].inspectionDate` | string \| null | 검사 날짜. |
+| `inspections[].expirationDate` | string \| null | 만료 날짜. |
+| `inspections[].certificate` | string \| null | 인증서 식별자. |
+| `inspections[].scalabilityCategory` | string \| null | 소스에서 반환된 확장성 카테고리. |
+| `inspections[].inspectionCenter` | string \| null | 검사 센터 이름. |
+| `inspections[].alertType` | string \| null | 가능한 경우 소스 알림 유형. |
+
+### 참고
+
+- 소스가 인식 가능한 일/월/년 값을 반환하면 날짜 필드가 정규화됩니다.
+- RTO 기록은 동일 번호판의 여러 기록을 처리하기 위해 `inspections` 배열로 반환됩니다.

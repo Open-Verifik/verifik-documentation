@@ -17,6 +17,13 @@ GET https://api.verifik.co/v2/ar/vehicle
 
 Consulte um veículo argentino com **`plate`**. Retorna detalhes e registro para **verificação de veículos** e **conformidade**.
 
+### Serviços relacionados de veículos na Argentina
+
+- [Argentina Veículo v3](/verifik-pt/vehicle-validation/argentina/vehicle-v3) retorna identificadores do veículo, status da apólice ativa e dados da ficha técnica quando disponíveis.
+- [Buenos Aires — Infrações de trânsito](/verifik-pt/vehicle-validation/argentina/buenos-aires-traffic-infractions) consulta registros de infrações de trânsito por placa.
+- [Buenos Aires — Inspeção técnica](/verifik-pt/vehicle-validation/argentina/buenos-aires-technical-inspection) consulta o histórico VTV por placa.
+- [Argentina RTO](/verifik-pt/vehicle-validation/argentina/rto) consulta registros de inspeção RTO por placa.
+
 ### Cabeçalhos
 
 | Nome          | Valor              |

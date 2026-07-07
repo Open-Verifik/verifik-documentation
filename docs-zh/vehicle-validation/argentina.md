@@ -17,6 +17,13 @@ GET https://api.verifik.co/v2/ar/vehicle
 
 通过车牌（**`plate`**）查询阿根廷车辆，返回车辆详情与登记信息，用于 **车辆核验** 与 **合规**。
 
+### 相关阿根廷车辆服务
+
+- [阿根廷 车辆 v3](/verifik-zh/vehicle-validation/argentina/vehicle-v3) 返回车辆标识符、有效保单状态及技术参数表数据（如有）。
+- [布宜诺斯艾利斯 — 交通违章](/verifik-zh/vehicle-validation/argentina/buenos-aires-traffic-infractions) 按车牌查询交通违章记录。
+- [布宜诺斯艾利斯 — 技术检验](/verifik-zh/vehicle-validation/argentina/buenos-aires-technical-inspection) 查询 VTV 技术检验历史。
+- [阿根廷 RTO](/verifik-zh/vehicle-validation/argentina/rto) 查询 RTO 检验记录。
+
 ### 请求头
 
 | 名称          | 取值                 |

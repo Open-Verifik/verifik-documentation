@@ -17,6 +17,13 @@ GET https://api.verifik.co/v2/ar/vehicle
 
 번호판(**`plate`**)으로 아르헨티나 차량을 조회합니다. 차량 상세 및 등록 정보를 반환하여 **차량 검증** 및 **컴플라이언스**에 활용할 수 있습니다.
 
+### 관련 아르헨티나 차량 서비스
+
+- [아르헨티나 차량 v3](/verifik-ko/vehicle-validation/argentina/vehicle-v3)는 차량 식별자, 활성 보험 상태 및 기술 시트 데이터(가능한 경우)를 반환합니다.
+- [부에노스아이레스 — 교통 위반](/verifik-ko/vehicle-validation/argentina/buenos-aires-traffic-infractions)은 번호판으로 교통 위반 기록을 조회합니다.
+- [부에노스아이레스 — 기술 검사](/verifik-ko/vehicle-validation/argentina/buenos-aires-technical-inspection)는 VTV 기술 검사 이력을 조회합니다.
+- [아르헨티나 RTO](/verifik-ko/vehicle-validation/argentina/rto)는 RTO 검사 기록을 조회합니다.
+
 ### 헤더
 
 | 이름          | 값                 |

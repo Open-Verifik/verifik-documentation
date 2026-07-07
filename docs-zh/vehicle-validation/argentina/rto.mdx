@@ -1,0 +1,160 @@
+---
+id: vehicle-validation-argentina-rto
+title: 🇦🇷 阿根廷 — RTO
+description: 通过车辆车牌查询阿根廷 RTO 检验记录。
+slug: /vehicle-validation/argentina/rto
+keywords:
+  - v2/ar/rto
+  - /v2/ar/rto
+  - api.verifik.co/v2/ar/rto
+  - 'https://api.verifik.co/v2/ar/rto'
+  - GET v2/ar/rto
+  - GET /v2/ar/rto
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 🇦🇷 阿根廷 — RTO
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/ar/rto
+```
+
+使用此端点通过车牌查询阿根廷 RTO 检验记录。响应包括检验结果、检验类型、检验与到期日期、证书、扩展类别、检验中心及警报类型。
+
+### 请求头
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### 参数
+
+| 名称 | 类型 | 必填 | 说明 |
+| ---- | ---- | -------- | ----------- |
+| `plate` | string | **Yes** | 要查询的车牌，不含空格或标点。示例：`ABC10001`. |
+
+### 请求
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const { data } = await axios.get('https://api.verifik.co/v2/ar/rto', {
+  params: { plate: 'ABC10001' },
+  headers: {
+    Accept: 'application/json',
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/ar/rto"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC10001"}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "ABC10001",
+    "totalRecords": "1",
+    "inspections": [
+      {
+        "plate": "ABC10001",
+        "result": "CONDICIONAL",
+        "inspectionType": "RTO",
+        "inspectionDate": "2026-01-15",
+        "expirationDate": "2027-01-15",
+        "certificate": "RTO-10000001",
+        "scalabilityCategory": "L",
+        "inspectionCenter": "CENT UTN",
+        "alertType": "danger"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "July 1, 2026 10:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应字段
+
+| 字段 | 类型 | 说明 |
+| ----- | ---- | ----------- |
+| `plate` | string | 标准化车牌。 |
+| `totalRecords` | string | 返回的 RTO 记录数。 |
+| `inspections` | object[] | RTO 检验记录。 |
+| `inspections[].result` | string \| null | 检验结果。 |
+| `inspections[].inspectionType` | string \| null | 检验类型标签。 |
+| `inspections[].inspectionDate` | string \| null | 检验日期。 |
+| `inspections[].expirationDate` | string \| null | 到期日期。 |
+| `inspections[].certificate` | string \| null | 证书标识。 |
+| `inspections[].scalabilityCategory` | string \| null | 数据源返回的扩展类别。 |
+| `inspections[].inspectionCenter` | string \| null | 检验中心名称。 |
+| `inspections[].alertType` | string \| null | 数据源警报类型（如有）。 |
+
+### 说明
+
+- 当数据源返回可识别的日/月/年值时，日期字段会被标准化。
+- RTO 记录以 `inspections` 数组返回，以便处理同一车牌的多条记录。

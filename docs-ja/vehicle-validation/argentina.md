@@ -17,6 +17,13 @@ GET https://api.verifik.co/v2/ar/vehicle
 
 ナンバープレート（**`plate`**）でアルゼンチンの車両を照会します。車両詳細・登録情報などを返し、**車両検証**や **コンプライアンス**に利用できます。
 
+### 関連アルゼンチン車両サービス
+
+- [アルゼンチン 車両 v3](/verifik-ja/vehicle-validation/argentina/vehicle-v3) は車両識別子、アクティブ保険の状態、技術シートデータ（利用可能な場合）を返します。
+- [ブエノスアイレス — 交通違反](/verifik-ja/vehicle-validation/argentina/buenos-aires-traffic-infractions) はナンバープレートで交通違反記録を照会します。
+- [ブエノスアイレス — 技術検査](/verifik-ja/vehicle-validation/argentina/buenos-aires-technical-inspection) は VTV 技術検査履歴を照会します。
+- [アルゼンチン RTO](/verifik-ja/vehicle-validation/argentina/rto) は RTO 検査記録を照会します。
+
 ### ヘッダー
 
 | 名前          | 値                 |
