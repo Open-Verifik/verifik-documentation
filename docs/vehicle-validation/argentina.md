@@ -45,7 +45,7 @@ The Argentine Vehicle Information service provides detailed information about ve
 
 | Name   | Type   | Required? | Description                                    | Example      |
 | ------ | ------ | --------- | ---------------------------------------------- | ------------ |
-| plate  | String | True      | License plate to be queried, without spaces or dots. | `ABC123`     |
+| plate  | String | True      | Mercosur format `AA-123-BB` (send as `AA123BB`, without spaces or dots). | `AA123BB`     |
 
 ### Request
 
@@ -61,7 +61,7 @@ import axios from 'axios';
 const options = {
   method: 'GET',
   url: 'https://api.verifik.co/v2/ar/vehicle',
-  params: {plate: 'AE834AM'},
+  params: {plate: 'AA123BB'},
   headers: {
     Accept: 'application/json',
     Authorization: 'Bearer <your_token>'
@@ -87,7 +87,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
 ]);
 $query = http_build_query([
-    "plate" => "AE834AM"
+    "plate" => "AA123BB"
 ]);
 curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/ar/vehicle?".$query);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -104,7 +104,7 @@ import os, requests
 
 url = "https://api.verifik.co/v2/ar/vehicle"
 headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"plate": "AE834AM"}
+params = {"plate": "AA123BB"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
@@ -124,7 +124,7 @@ print(r.json())
     "codeRegistrySectional": "2097",
     "isPlateMercosur": "true",
     "model": "FURGON",
-    "plate": "AE834AM",
+    "plate": "AA123BB",
     "recordAddress": "AV. CORRIENTES 2063  PISO: 1 DPTO: 35",
     "registrationDenomination": "CAPITAL FEDERAL N° 097",
     "registrationLocality": "CABA",

@@ -35,7 +35,7 @@ GET https://api.verifik.co/v2/ar/vehicle
 
 | 名前   | 型     | 必須 | 説明                                    | 例      |
 | ------ | ------ | ---- | --------------------------------------- | ------- |
-| plate  | String | はい | 照会するナンバープレート（スペースや句点なし）。 | `ABC123` |
+| plate  | String | はい | メルコスール形式 `AA-123-BB`（`AA123BB` として送信。スペースや句点なし）。 | `AA123BB` |
 
 ### リクエスト
 
@@ -51,7 +51,7 @@ import axios from 'axios';
 const options = {
   method: 'GET',
   url: 'https://api.verifik.co/v2/ar/vehicle',
-  params: {plate: 'AE834AM'},
+  params: {plate: 'AA123BB'},
   headers: {
     Accept: 'application/json',
     Authorization: 'Bearer <your_token>'
@@ -77,7 +77,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
 ]);
 $query = http_build_query([
-    "plate" => "AE834AM"
+    "plate" => "AA123BB"
 ]);
 curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/ar/vehicle?".$query);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -94,7 +94,7 @@ import os, requests
 
 url = "https://api.verifik.co/v2/ar/vehicle"
 headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"plate": "AE834AM"}
+params = {"plate": "AA123BB"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
@@ -114,7 +114,7 @@ print(r.json())
     "codeRegistrySectional": "2097",
     "isPlateMercosur": "true",
     "model": "FURGON",
-    "plate": "AE834AM",
+    "plate": "AA123BB",
     "recordAddress": "AV. CORRIENTES 2063  PISO: 1 DPTO: 35",
     "registrationDenomination": "CAPITAL FEDERAL N° 097",
     "registrationLocality": "CABA",

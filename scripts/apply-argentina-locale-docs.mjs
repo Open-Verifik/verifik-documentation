@@ -45,7 +45,7 @@ const META = {
 			intro:
 				"Utiliza este endpoint para obtener los detalles de un vehículo argentino a partir de la placa. La respuesta incluye identificadores normalizados como número de motor, chasis, marca, modelo, año, color, tipo de unidad, estado de póliza activa y campos de ficha técnica cuando estén disponibles.",
 			plateDesc:
-				"Placa del vehículo a consultar, sin espacios ni signos de puntuación. Ejemplo: `ABC10001`.",
+				"Placa del vehículo a consultar, sin espacios ni signos de puntuación. Ejemplo: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Placa del vehículo normalizada."],
 				["engineNumber", "Número de motor devuelto por la fuente."],
@@ -72,7 +72,7 @@ const META = {
 			intro:
 				"Utilisez ce point d'accès pour récupérer les détails d'un véhicule argentin à partir de la plaque. La réponse inclut des identifiants normalisés tels que le numéro de moteur, le châssis, la marque, le modèle, l'année, la couleur, le type d'unité, le statut de police active et les champs de fiche technique lorsqu'ils sont disponibles.",
 			plateDesc:
-				"Plaque d'immatriculation à interroger, sans espaces ni ponctuation. Exemple : `ABC10001`.",
+				"Plaque d'immatriculation à interroger, sans espaces ni ponctuation. Exemple : `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Plaque normalisée."],
 				["engineNumber", "Numéro de moteur renvoyé par la source."],
@@ -98,7 +98,7 @@ const META = {
 			h1: "# 🇦🇷 Argentina — Veículo v3",
 			intro:
 				"Use este endpoint para recuperar detalhes de um veículo argentino a partir da placa. A resposta inclui identificadores normalizados como número do motor, chassi, marca, modelo, ano, cor, tipo de unidade, status da apólice ativa e campos da ficha técnica quando disponíveis.",
-			plateDesc: "Placa do veículo a consultar, sem espaços ou pontuação. Exemplo: `ABC10001`.",
+			plateDesc: "Placa do veículo a consultar, sem espaços ou pontuação. Exemplo: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Placa normalizada."],
 				["engineNumber", "Número do motor retornado pela fonte."],
@@ -124,7 +124,7 @@ const META = {
 			h1: "# 🇦🇷 아르헨티나 — 차량 v3",
 			intro:
 				"이 엔드포인트를 사용하여 번호판으로 아르헨티나 차량 상세 정보를 조회합니다. 응답에는 엔진 번호, 섀시, 브랜드, 모델, 연식, 색상, 차량 유형, 활성 보험 상태 및 기술 시트 필드(가능한 경우)가 포함됩니다.",
-			plateDesc: "조회할 차량 번호판(공백 및 구두점 없음). 예: `ABC10001`.",
+			plateDesc: "조회할 차량 번호판(공백 및 구두점 없음). 예: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "정규화된 차량 번호판."],
 				["engineNumber", "소스에서 반환된 엔진 번호."],
@@ -150,7 +150,7 @@ const META = {
 			h1: "# 🇦🇷 アルゼンチン — 車両 v3",
 			intro:
 				"このエンドポイントでナンバープレートからアルゼンチン車両の詳細を取得します。レスポンスにはエンジン番号、シャシー、ブランド、モデル、年式、色、車両タイプ、アクティブ保険の状態、技術シートフィールド（利用可能な場合）が含まれます。",
-			plateDesc: "照会するナンバープレート（スペース・句読点なし）。例: `ABC10001`.",
+			plateDesc: "照会するナンバープレート（スペース・句読点なし）。例: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "正規化されたナンバープレート。"],
 				["engineNumber", "ソースから返されたエンジン番号。"],
@@ -175,7 +175,7 @@ const META = {
 			h1: "# 🇦🇷 阿根廷 — 车辆 v3",
 			intro:
 				"使用此端点通过车牌获取阿根廷车辆详情。响应包括标准化的车辆标识符，如发动机号、底盘号、品牌、型号、年份、颜色、车辆类型、有效保单状态及技术参数表字段（如有）。",
-			plateDesc: "要查询的车牌，不含空格或标点。示例：`ABC10001`.",
+			plateDesc: "要查询的车牌，不含空格或标点。示例：`AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "标准化车牌。"],
 				["engineNumber", "数据源返回的发动机号。"],
@@ -205,7 +205,7 @@ const META = {
 			intro:
 				"Utiliza este endpoint para verificar si una placa tiene infracciones de tránsito en Buenos Aires. La respuesta incluye la placa, total de registros, números de caso y acta, estado, montos, autoridad emisora, fechas y detalles de infracción cuando se encuentren registros.",
 			plateDesc:
-				"Placa del vehículo a consultar, sin espacios ni signos de puntuación. Ejemplo: `ABC10001`.",
+				"Placa del vehículo a consultar, sin espacios ni signos de puntuación. Ejemplo: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Placa normalizada."],
 				["totalRecords", "Número de registros devueltos por la fuente."],
@@ -229,7 +229,7 @@ const META = {
 			intro:
 				"Utilisez ce point d'accès pour vérifier si une plaque présente des infractions routières à Buenos Aires. La réponse inclut la plaque, le total des enregistrements, les numéros de dossier et d'acte, le statut, les montants, l'autorité émettrice, les dates et les détails d'infraction lorsque des enregistrements sont trouvés.",
 			plateDesc:
-				"Plaque à interroger, sans espaces ni ponctuation. Exemple : `ABC10001`.",
+				"Plaque à interroger, sans espaces ni ponctuation. Exemple : `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Plaque normalisée."],
 				["totalRecords", "Nombre d'enregistrements renvoyés par la source."],
@@ -252,7 +252,7 @@ const META = {
 			h1: "# Buenos Aires — Infrações de trânsito",
 			intro:
 				"Use este endpoint para verificar se uma placa possui infrações de trânsito em Buenos Aires. A resposta inclui a placa, total de registros, números de caso e auto, status, valores, autoridade emissora, datas e detalhes da infração quando registros forem encontrados.",
-			plateDesc: "Placa a consultar, sem espaços ou pontuação. Exemplo: `ABC10001`.",
+			plateDesc: "Placa a consultar, sem espaços ou pontuação. Exemplo: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Placa normalizada."],
 				["totalRecords", "Número de registros retornados pela fonte."],
@@ -275,7 +275,7 @@ const META = {
 			h1: "# 부에노스아이레스 — 교통 위반",
 			intro:
 				"이 엔드포인트로 번호판의 부에노스아이레스 교통 위반 여부를 확인합니다. 응답에는 번호판, 총 기록 수, 사건 및 조서 번호, 상태, 금액, 발행 기관, 날짜 및 위반 상세(기록이 있는 경우)가 포함됩니다.",
-			plateDesc: "조회할 번호판(공백 및 구두점 없음). 예: `ABC10001`.",
+			plateDesc: "조회할 번호판(공백 및 구두점 없음). 예: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "정규화된 번호판."],
 				["totalRecords", "소스에서 반환된 기록 수."],
@@ -298,7 +298,7 @@ const META = {
 			h1: "# ブエノスアイレス — 交通違反",
 			intro:
 				"このエンドポイントでナンバープレートにブエノスアイレスの交通違反があるか確認します。レスポンスにはプレート、記録総数、事件番号・通告番号、ステータス、金額、発行機関、日付、違反詳細（記録がある場合）が含まれます。",
-			plateDesc: "照会するナンバープレート（スペース・句読点なし）。例: `ABC10001`.",
+			plateDesc: "照会するナンバープレート（スペース・句読点なし）。例: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "正規化されたプレート。"],
 				["totalRecords", "ソースから返された記録数。"],
@@ -321,7 +321,7 @@ const META = {
 			h1: "# 布宜诺斯艾利斯 — 交通违章",
 			intro:
 				"使用此端点检查车牌在布宜诺斯艾利斯是否有交通违章。响应包括车牌、记录总数、案件与文书编号、状态、金额、签发机构、日期及违章详情（如有记录）。",
-			plateDesc: "要查询的车牌，不含空格或标点。示例：`ABC10001`.",
+			plateDesc: "要查询的车牌，不含空格或标点。示例：`AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "标准化车牌。"],
 				["totalRecords", "数据源返回的记录数。"],
@@ -349,7 +349,7 @@ const META = {
 			intro:
 				"Utiliza este endpoint para consultar el historial de inspección técnica vehicular en Buenos Aires por placa. La respuesta devuelve registros con identificadores de verificación, fechas de verificación y vencimiento, tipo de resultado, número de oblea, comentarios, marca y modelo del vehículo, y nombre de la planta de inspección.",
 			plateDesc:
-				"Placa del vehículo a consultar, sin espacios ni signos de puntuación. Ejemplo: `ABC10001`.",
+				"Placa del vehículo a consultar, sin espacios ni signos de puntuación. Ejemplo: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Placa normalizada."],
 				["totalRecords", "Número de registros de inspección técnica devueltos."],
@@ -375,7 +375,7 @@ const META = {
 			intro:
 				"Utilisez ce point d'accès pour consulter l'historique de contrôle technique à Buenos Aires par plaque. La réponse renvoie des enregistrements avec identifiants de vérification, dates de vérification et d'expiration, type de résultat, numéro de vignette, commentaires, marque et modèle du véhicule, et nom du centre de contrôle.",
 			plateDesc:
-				"Plaque à interroger, sans espaces ni ponctuation. Exemple : `ABC10001`.",
+				"Plaque à interroger, sans espaces ni ponctuation. Exemple : `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Plaque normalisée."],
 				["totalRecords", "Nombre d'enregistrements de contrôle technique renvoyés."],
@@ -400,7 +400,7 @@ const META = {
 			h1: "# Buenos Aires — Inspeção técnica",
 			intro:
 				"Use este endpoint para consultar o histórico de inspeção técnica em Buenos Aires pela placa. A resposta retorna registros com identificadores de verificação, datas de verificação e vencimento, tipo de resultado, número do selo, comentários, marca e modelo do veículo, e nome da planta de inspeção.",
-			plateDesc: "Placa a consultar, sem espaços ou pontuação. Exemplo: `ABC10001`.",
+			plateDesc: "Placa a consultar, sem espaços ou pontuação. Exemplo: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Placa normalizada."],
 				["totalRecords", "Número de registros de inspeção técnica retornados."],
@@ -425,7 +425,7 @@ const META = {
 			h1: "# 부에노스아이레스 — 기술 검사",
 			intro:
 				"이 엔드포인트로 번호판 기준 부에노스아이레스 차량 기술 검사 이력을 조회합니다. 응답에는 검증 ID, 검증 및 만료 날짜, 결과 유형, 스티커 번호, 코멘트, 차량 브랜드 및 모델, 검사소 이름이 포함됩니다.",
-			plateDesc: "조회할 번호판(공백 및 구두점 없음). 예: `ABC10001`.",
+			plateDesc: "조회할 번호판(공백 및 구두점 없음). 예: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "정규화된 번호판."],
 				["totalRecords", "반환된 기술 검사 기록 수."],
@@ -450,7 +450,7 @@ const META = {
 			h1: "# ブエノスアイレス — 技術検査",
 			intro:
 				"このエンドポイントでナンバープレートからブエノスアイレスの車両技術検査履歴を照会します。レスポンスには検証ID、検証日・有効期限、結果タイプ、ステッカー番号、コメント、車両ブランド・モデル、検査場名が含まれます。",
-			plateDesc: "照会するナンバープレート（スペース・句読点なし）。例: `ABC10001`.",
+			plateDesc: "照会するナンバープレート（スペース・句読点なし）。例: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "正規化されたプレート。"],
 				["totalRecords", "返された技術検査記録数。"],
@@ -475,7 +475,7 @@ const META = {
 			h1: "# 布宜诺斯艾利斯 — 技术检验",
 			intro:
 				"使用此端点通过车牌查询布宜诺斯艾利斯车辆技术检验历史。响应返回检验记录，包括验证标识、检验与到期日期、结果类型、检验贴纸编号、备注、车辆品牌型号及检验站名称。",
-			plateDesc: "要查询的车牌，不含空格或标点。示例：`ABC10001`.",
+			plateDesc: "要查询的车牌，不含空格或标点。示例：`AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "标准化车牌。"],
 				["totalRecords", "返回的技术检验记录数。"],
@@ -505,7 +505,7 @@ const META = {
 			intro:
 				"Utiliza este endpoint para consultar registros de inspección RTO argentinos por placa. La respuesta incluye resultado de inspección, tipo de inspección, fechas de inspección y vencimiento, certificado, categoría de escalabilidad, centro de inspección y tipo de alerta.",
 			plateDesc:
-				"Placa del vehículo a consultar, sin espacios ni signos de puntuación. Ejemplo: `ABC10001`.",
+				"Placa del vehículo a consultar, sin espacios ni signos de puntuación. Ejemplo: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Placa normalizada."],
 				["totalRecords", "Número de registros RTO devueltos."],
@@ -531,7 +531,7 @@ const META = {
 			intro:
 				"Utilisez ce point d'accès pour consulter les enregistrements d'inspection RTO argentine par plaque. La réponse inclut le résultat, le type d'inspection, les dates d'inspection et d'expiration, le certificat, la catégorie d'évolutivité, le centre d'inspection et le type d'alerte.",
 			plateDesc:
-				"Plaque à interroger, sans espaces ni ponctuation. Exemple : `ABC10001`.",
+				"Plaque à interroger, sans espaces ni ponctuation. Exemple : `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Plaque normalisée."],
 				["totalRecords", "Nombre d'enregistrements RTO renvoyés."],
@@ -556,7 +556,7 @@ const META = {
 			h1: "# 🇦🇷 Argentina — RTO",
 			intro:
 				"Use este endpoint para consultar registros de inspeção RTO argentina pela placa. A resposta inclui resultado da inspeção, tipo de inspeção, datas de inspeção e vencimento, certificado, categoria de escalabilidade, centro de inspeção e tipo de alerta.",
-			plateDesc: "Placa a consultar, sem espaços ou pontuação. Exemplo: `ABC10001`.",
+			plateDesc: "Placa a consultar, sem espaços ou pontuação. Exemplo: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "Placa normalizada."],
 				["totalRecords", "Número de registros RTO retornados."],
@@ -581,7 +581,7 @@ const META = {
 			h1: "# 🇦🇷 아르헨티나 — RTO",
 			intro:
 				"이 엔드포인트로 번호판 기준 아르헨티나 RTO 검사 기록을 조회합니다. 응답에는 검사 결과, 검사 유형, 검사 및 만료 날짜, 인증서, 확장성 카테고리, 검사 센터 및 알림 유형이 포함됩니다.",
-			plateDesc: "조회할 번호판(공백 및 구두점 없음). 예: `ABC10001`.",
+			plateDesc: "조회할 번호판(공백 및 구두점 없음). 예: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "정규화된 번호판."],
 				["totalRecords", "반환된 RTO 기록 수."],
@@ -606,7 +606,7 @@ const META = {
 			h1: "# 🇦🇷 アルゼンチン — RTO",
 			intro:
 				"このエンドポイントでナンバープレートからアルゼンチンRTO検査記録を照会します。レスポンスには検査結果、検査タイプ、検査日・有効期限、証明書、スケーラビリティカテゴリ、検査センター、アラートタイプが含まれます。",
-			plateDesc: "照会するナンバープレート（スペース・句読点なし）。例: `ABC10001`.",
+			plateDesc: "照会するナンバープレート（スペース・句読点なし）。例: `AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "正規化されたプレート。"],
 				["totalRecords", "返されたRTO記録数。"],
@@ -631,7 +631,7 @@ const META = {
 			h1: "# 🇦🇷 阿根廷 — RTO",
 			intro:
 				"使用此端点通过车牌查询阿根廷 RTO 检验记录。响应包括检验结果、检验类型、检验与到期日期、证书、扩展类别、检验中心及警报类型。",
-			plateDesc: "要查询的车牌，不含空格或标点。示例：`ABC10001`.",
+			plateDesc: "要查询的车牌，不含空格或标点。示例：`AA123BB`, without spaces or punctuation).",
 			fields: [
 				["plate", "标准化车牌。"],
 				["totalRecords", "返回的 RTO 记录数。"],

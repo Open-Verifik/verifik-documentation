@@ -25,7 +25,7 @@ Este endpoint de API te permite verificar la información de un vehículo regist
 
 **Parámetros de Consulta**
 
-<table><thead><tr><th width="99">Name</th><th width="88">Type</th><th width="105">Required?</th><th width="341">Description</th><th>Example</th></tr></thead><tbody><tr><td>plate</td><td>String</td><td><code>True</code></td><td>Placa a consultar, sin espacios ni puntos.</td><td><code>ABC123</code></td></tr></tbody></table>
+<table><thead><tr><th width="99">Name</th><th width="88">Type</th><th width="105">Required?</th><th width="341">Description</th><th>Example</th></tr></thead><tbody><tr><td>plate</td><td>String</td><td><code>True</code></td><td>Formato actual BB-CC-12 (enviar como BBCC12, cuatro letras + dos dígitos, sin espacios ni puntos).</td><td><code>BBCC12</code></td></tr></tbody></table>
 
 #### Solicitud
 
@@ -38,7 +38,7 @@ import axios from "axios";
 const options = {
 	method: "GET",
 	url: "<https://api.verifik.co/v2/cl/vehicle>",
-	params: { plate: "BB985" },
+	params: { plate: "BBCC12" },
 	headers: {
 		Accept: "application/json",
 		Authorization: "jwt <tu_token>",
@@ -135,7 +135,7 @@ catch(HTTP_Request2_Exception $e) {
 		"orderTheft": "NO DISPONIBLE",
 		"origin": "NO DISPONIBLE",
 		"owner": "",
-		"plate": "BB985",
+		"plate": "BBCC12",
 		"publicTrans": "NO DISPONIBLE",
 		"revision": "NO DISPONIBLE",
 		"rut": "26043542-6",
