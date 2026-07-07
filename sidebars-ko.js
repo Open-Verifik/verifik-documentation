@@ -85,6 +85,10 @@ const sidebars = {
 					collapsible: true,
 					items: [
 						{ type: "doc", id: "vehicle-validation/argentina", label: "개요", key: "vehicle-argentina-overview" },
+						{ type: "doc", id: "vehicle-validation/argentina/vehicle-validation-argentina-vehicle-v3", label: "차량 v3" },
+						{ type: "doc", id: "vehicle-validation/argentina/vehicle-validation-argentina-buenos-aires-traffic-infractions", label: "부에노스아이레스 - 교통 위반" },
+						{ type: "doc", id: "vehicle-validation/argentina/vehicle-validation-argentina-buenos-aires-technical-inspection", label: "부에노스아이레스 - 기술 검사" },
+						{ type: "doc", id: "vehicle-validation/argentina/vehicle-validation-argentina-rto", label: "RTO" },
 					],
 				},
 				{ type: "doc", id: "vehicle-validation/bolivia", label: "🇧🇴 볼리비아 — 차량 정보", key: "vehicle-bolivia" },

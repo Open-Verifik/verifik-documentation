@@ -1,0 +1,160 @@
+---
+id: vehicle-validation-argentina-rto
+title: 🇦🇷 アルゼンチン — RTO
+description: ナンバープレートでアルゼンチンRTO検査記録を照会します。
+slug: /vehicle-validation/argentina/rto
+keywords:
+  - v2/ar/rto
+  - /v2/ar/rto
+  - api.verifik.co/v2/ar/rto
+  - 'https://api.verifik.co/v2/ar/rto'
+  - GET v2/ar/rto
+  - GET /v2/ar/rto
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 🇦🇷 アルゼンチン — RTO
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/ar/rto
+```
+
+このエンドポイントでナンバープレートからアルゼンチンRTO検査記録を照会します。レスポンスには検査結果、検査タイプ、検査日・有効期限、証明書、スケーラビリティカテゴリ、検査センター、アラートタイプが含まれます。
+
+### ヘッダー
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 |
+| ---- | ---- | -------- | ----------- |
+| `plate` | string | **Yes** | 照会するナンバープレート（スペース・句読点なし）。例: `ABC10001`. |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const { data } = await axios.get('https://api.verifik.co/v2/ar/rto', {
+  params: { plate: 'ABC10001' },
+  headers: {
+    Accept: 'application/json',
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/ar/rto"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "ABC10001"}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "plate": "ABC10001",
+    "totalRecords": "1",
+    "inspections": [
+      {
+        "plate": "ABC10001",
+        "result": "CONDICIONAL",
+        "inspectionType": "RTO",
+        "inspectionDate": "2026-01-15",
+        "expirationDate": "2027-01-15",
+        "certificate": "RTO-10000001",
+        "scalabilityCategory": "L",
+        "inspectionCenter": "CENT UTN",
+        "alertType": "danger"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "July 1, 2026 10:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンスフィールド
+
+| フィールド | 型 | 説明 |
+| ----- | ---- | ----------- |
+| `plate` | string | 正規化されたプレート。 |
+| `totalRecords` | string | 返されたRTO記録数。 |
+| `inspections` | object[] | RTO検査記録。 |
+| `inspections[].result` | string \| null | 検査結果。 |
+| `inspections[].inspectionType` | string \| null | 検査タイプラベル。 |
+| `inspections[].inspectionDate` | string \| null | 検査日。 |
+| `inspections[].expirationDate` | string \| null | 有効期限。 |
+| `inspections[].certificate` | string \| null | 証明書識別子。 |
+| `inspections[].scalabilityCategory` | string \| null | ソースから返されたスケーラビリティカテゴリ。 |
+| `inspections[].inspectionCenter` | string \| null | 検査センター名。 |
+| `inspections[].alertType` | string \| null | 利用可能な場合のソースアラートタイプ。 |
+
+### メモ
+
+- ソースが認識可能な日/月/年値を返す場合、日付フィールドは正規化されます。
+- RTO記録は同一プレートの複数記録に対応するため `inspections` 配列で返されます。
