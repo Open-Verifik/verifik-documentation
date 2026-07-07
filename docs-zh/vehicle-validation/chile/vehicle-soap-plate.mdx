@@ -1,9 +1,9 @@
 ---
 id: vehicle-validation-chile-vehicle-soap-plate
-title: "🇨🇱 Chile - Vehicle SOAP (by plate)"
-description: "Query Chile vehicular SOAP by license plate only. Returns nested soap and vehicle objects."
+title: "🇨🇱 智利 — 车辆 SOAP（仅车牌）"
+description: "仅用车牌查询智利车辆 SOAP。返回嵌套的 soap/vehicle 对象及状态、保险公司、车主和有效期。"
 slug: /vehicle-validation/chile/vehicle-soap-plate
-sidebar_label: "🇨🇱 Chile - Vehicle SOAP (by plate)"
+sidebar_label: "🇨🇱 智利 — 车辆 SOAP（仅车牌）"
 keywords:
   - v2/cl/vehicle-soap-plate
   - GET v2/cl/vehicle-soap-plate
@@ -12,64 +12,111 @@ keywords:
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# 🇨🇱 Chile - Vehicle SOAP (by plate)
+# 🇨🇱 智利 — 车辆 SOAP（仅车牌）
 
-Query Chile vehicular **SOAP** using **license plate only**. Nested **`soap`** / **`vehicle`** response.
+**仅用车牌**查询智利 **SOAP**（*Seguro Obligatorio de Accidentes Personales*）。服务通过 Boostr 查询 SOAP，有保单号时经 AACH  enrichment，无 SOAP 时从 Carvuk 返回车辆属性。
 
-### Endpoint
+源响应时的**嵌套**载荷：
+
+- **`plate`** — 智利号牌（Patente），**4–6** 位字母数字
+- **`message`** — 找到 SOAP 时为空；车辆存在但无有效 SOAP 时为 `No_active_SOAP_certificate_found_for_this_plate`
+- **`soap`** — 找到时：**`status`**, **`policyNumber`**, **`insuranceCompany`**, **`validFrom`**, **`validTo`**, **`folioNumber`**, **`ownerName`**, **`ownerRut`**, **`premium`**
+- **`vehicle`** — **`brand`**, **`model`**, **`year`**, **`type`**, **`engineNumber`**
+- **`force`** — 可选；`true` 跳过缓存
+- Verifik **签名**响应
+
+适用于仅知车牌的**保险合规**、**车队接入**和**理赔**流程。
+
+### 端点
 
 ```
 GET v2/cl/vehicle-soap-plate
 ```
 
-### Headers
+仅通过**车牌**（`plate`）查询。**`soap`** 含 **status**、**insuranceCompany**、**ownerName**、**validFrom**、**validTo**；**`vehicle`** 含 **brand**、**model**、**year** 等。
+
+### 标头
 
 | Name | Value |
 | --- | --- |
 | Accept | `application/json` |
 | Authorization | `Bearer <token>` |
 
-### Parameters
+### 参数
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `plate` | string | Yes | Chilean license plate (4–6 chars). |
-| `force` | string | No | `true` to bypass cache. |
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Yes** | 智利号牌（Patente），4–6 位字母数字。 | `HTRT86` |
+| `force` | string | No | `true` 跳过缓存并实时查询。 | `true` |
 
-### Request
+### 请求
 
 <Tabs>
-  <TabItem value="javascript" label="JavaScript">
+  <TabItem value="node" label="Node.js">
 
 ```javascript
 const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plate", {
   params: { plate: "HTRT86" },
-  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
 });
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cl/vehicle-soap-plate"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "HTRT86"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
 ```
 
   </TabItem>
 </Tabs>
 
-### Response
+### 响应
 
 <Tabs>
-  <TabItem value="200-soap" label="200 SOAP found">
+  <TabItem value="200-soap" label="200 找到 SOAP">
 
 ```json
 {
   "data": {
     "plate": "HTRT86",
     "message": "",
-    "soap": { "status": "CERTIFICADO VALIDO", "policyNumber": "94596506" },
-    "vehicle": { "brand": "MITSUBISHI", "model": "L200 KATANA 2.4", "year": "2016" }
+    "soap": {
+      "status": "CERTIFICADO VALIDO",
+      "policyNumber": "94596506",
+      "insuranceCompany": "MUTUAL DE SEGUROS DE CHILE",
+      "validFrom": "01/04/2026",
+      "validTo": "31/03/2027",
+      "folioNumber": "FOL789",
+      "ownerName": "JUAN PEREZ LOPEZ",
+      "ownerRut": "12.345.678-9",
+      "premium": "$50.000"
+    },
+    "vehicle": {
+      "brand": "MITSUBISHI",
+      "model": "L200 KATANA 2.4",
+      "year": "2016",
+      "type": "CAMIONETA",
+      "engineNumber": "ENG123456"
+    }
   },
-  "signature": { "message": "Certified by Verifik.co" }
+  "signature": {
+    "dateTime": "July 7, 2026 11:00 AM",
+    "message": "Certified by Verifik.co"
+  }
 }
 ```
 
   </TabItem>
-  <TabItem value="200-no-soap" label="200 No active SOAP">
+  <TabItem value="200-no-soap" label="200 无有效 SOAP">
 
 ```json
 {
@@ -77,7 +124,17 @@ const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plat
     "plate": "CSXZ27",
     "message": "No_active_SOAP_certificate_found_for_this_plate",
     "soap": {},
-    "vehicle": { "brand": "MAHINDRA", "model": "PIK UP", "year": "2011" }
+    "vehicle": {
+      "brand": "MAHINDRA",
+      "model": "PIK UP",
+      "year": "2011",
+      "type": "",
+      "engineNumber": ""
+    }
+  },
+  "signature": {
+    "dateTime": "July 7, 2026 11:00 AM",
+    "message": "Certified by Verifik.co"
   }
 }
 ```
@@ -86,21 +143,29 @@ const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plat
   <TabItem value="404" label="404">
 
 ```json
-{ "code": "NotFound", "message": "Vehicle_not_found_for_this_plate" }
+{
+  "code": "NotFound",
+  "message": "Vehicle_not_found_for_this_plate"
+}
 ```
 
   </TabItem>
   <TabItem value="409" label="409">
 
 ```json
-{ "code": "MissingParameter", "message": "missing plate\n" }
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
 ```
 
   </TabItem>
 </Tabs>
 
-### Notes
+### 说明
 
-- **No active SOAP** returns **HTTP 200** with empty **`soap`**, not 404.
-- Live plates: `CLTK27`, `HTRT86`, `RRWX51`, `THHV64`, `CSXZ52`, `CSXZ57`; `CSXZ27` has no active SOAP.
-- See [Vehicle SOAP (plate + policy)](/verifik-zh/vehicle-validation/chile/vehicle-soap).
+- **无有效 SOAP** 返回 **HTTP 200**、空 **`soap`** 及 **`message: No_active_SOAP_certificate_found_for_this_plate`** — 不是 404。
+- **Live 车牌：** `CLTK27`、`HTRT86`、`RRWX51`、`THHV64`、`CSXZ52`、`CSXZ57` 有有效 SOAP；`CSXZ27` 仅有车辆无 SOAP。
+- **沙盒：** **`AB1001`**–**`AB1010`**、**`HTRT86`** 返回稳定嵌套配置；**`ERR404`** → **404**。
+- 车牌+保单查询见 [车辆 SOAP（车牌+保单）](/verifik-zh/vehicle-validation/chile/vehicle-soap)。
+- 登记**可用性**因环境而异；故障可能返回 **409** 超时。

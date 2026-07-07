@@ -1,9 +1,12 @@
 ---
 id: vehicle-validation-chile-vehicle-soap
-title: 🇨🇱 チリ — 車両 SOAP
-description: GET /v2/cl/vehicle-soap でナンバープレートと保険証券番号によりチリ車両 SOAP 証明書を照会します。
+title: "🇨🇱 チリ — 車両 SOAP"
+description: "ナンバープレートと保険証券番号でチリ車両 SOAP 証明書を照会します：ステータス、保険会社、所有者、有効期間、車両情報。"
 slug: /vehicle-validation/chile/vehicle-soap
-sidebar_label: 🇨🇱 チリ — 車両 SOAP
+sidebar_label: "🇨🇱 チリ — 車両 SOAP"
+keywords:
+  - v2/cl/vehicle-soap
+  - GET v2/cl/vehicle-soap
 ---
 
 import Tabs from "@theme/Tabs";
@@ -11,7 +14,7 @@ import TabItem from "@theme/TabItem";
 
 # 🇨🇱 チリ — 車両 SOAP
 
-チリ登録車両の **SOAP**（人身事故強制保険）証明書を **ナンバープレート** と **保険証券番号**（AACH レジストリ）で照会します。
+チリ登録車両の **SOAP**（*Seguro Obligatorio de Accidentes Personales*、人身事故強制保険）照会は、車両の義務的個人事故保険を検証します。**ナンバープレート**と**保険証券番号**で AACH レジストリから保険会社、所有者、有効期間、車両属性を取得します。
 
 ## 車両 SOAP 照会
 
@@ -20,6 +23,8 @@ import TabItem from "@theme/TabItem";
 ```
 GET https://api.verifik.co/v2/cl/vehicle-soap
 ```
+
+**ナンバープレート**（`plate`）と**保険証券番号**（`policyNumber`；サービスは AACH レジストリで下 4 桁を使用）で照会します。一般的なフィールド：**status**、**insuranceCompany**、**ownerName**、**ownerRut**、**validFrom**、**validTo**、**brand**、**model**、**manufactureYear**、**engineNumber**、**premium** — **保険コンプライアンス**、**フリートオンボーディング**、**クレーム**ワークフローに使用します。
 
 ### ヘッダー
 
@@ -30,27 +35,40 @@ GET https://api.verifik.co/v2/cl/vehicle-soap
 
 ### パラメータ
 
-| name | type | required | description |
-| --- | --- | --- | --- |
-| `plate` | string | yes | チリナンバー（4–6 文字）。 |
-| `policyNumber` | string | yes | 保険証券番号（下 4 桁を使用）。 |
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Yes** | チリナンバー（Patente）、4–6 文字の英数字。 | `HTRT86` |
+| `policyNumber` | string | **Yes** | 保険証券番号；AACH SOAP 照会では下 4 桁を使用。 | `94596506` |
 
 ### リクエスト
 
 <Tabs>
-  <TabItem value="javascript" label="JavaScript">
+  <TabItem value="node" label="Node.js">
 
 ```javascript
 import axios from "axios";
 
 const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap", {
-	params: { plate: "HTRT86", policyNumber: "94596506" },
-	headers: {
-		Accept: "application/json",
-		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
-	},
+  params: { plate: "HTRT86", policyNumber: "94596506" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
 });
 console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/cl/vehicle-soap"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "HTRT86", "policyNumber": "94596506"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
 ```
 
   </TabItem>
@@ -63,15 +81,27 @@ console.log(data);
 
 ```json
 {
-	"data": {
-		"status": "VIGENTE",
-		"plate": "HTRT86",
-		"policyNumber": "94596506",
-		"brand": "TOYOTA",
-		"model": "COROLLA",
-		"insuranceCompany": "MAPFRE"
-	},
-	"signature": { "message": "Certified by Verifik.co" }
+  "data": {
+    "status": "VIGENTE",
+    "plate": "HTRT86",
+    "policyNumber": "94596506",
+    "vehicleType": "AUTOMOVIL",
+    "brand": "TOYOTA",
+    "model": "COROLLA",
+    "manufactureYear": "2019",
+    "engineNumber": "ENG123456",
+    "folioNumber": "FOL789",
+    "insuranceCompany": "MAPFRE",
+    "ownerName": "JUAN PEREZ LOPEZ",
+    "ownerRut": "12.345.678-9",
+    "validFrom": "01/01/2026",
+    "validTo": "31/12/2026",
+    "premium": "$50.000"
+  },
+  "signature": {
+    "dateTime": "June 30, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
 }
 ```
 
@@ -79,7 +109,20 @@ console.log(data);
   <TabItem value="404" label="404">
 
 ```json
-{ "code": "NotFound", "message": "Record not found." }
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
 ```
 
   </TabItem>
@@ -87,4 +130,7 @@ console.log(data);
 
 ### 注意
 
-- サンドボックス: `AB1001`–`AB1010`（AB1004 = VENCIDO）; `HTRT86`/`94596506` デモ; `ERR404` → 404。
+- **サンドボックスモード:** プレート **`AB1001`**–**`AB1010`** は固定 SOAP プロフィール（`AB1004` = **VENCIDO**）；**`HTRT86`** + **`policyNumber=94596506`** はデモプロフィール；**`ERR404`** → **404**；未マップのプレートはランダム **200**。
+- **サンドボックス例:** `AB1001`/`94590001`（セダン、MAPFRE）、`AB1007`/`94590007`（ピックアップ、CHUBB）、`HTRT86`/`94596506`（TOYOTA COROLLA デモ）。
+- チリの一般**車両**照会は [🇨🇱 チリ — 車両](/verifik-ja/vehicle-validation/chile) を参照。
+- レジストリの**可用性**は環境依存；障害時は **409** タイムアウトの可能性があります。

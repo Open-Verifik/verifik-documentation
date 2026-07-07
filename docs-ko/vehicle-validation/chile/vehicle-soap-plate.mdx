@@ -1,9 +1,9 @@
 ---
 id: vehicle-validation-chile-vehicle-soap-plate
-title: "🇨🇱 Chile - Vehicle SOAP (by plate)"
-description: "Query Chile vehicular SOAP by license plate only. Returns nested soap and vehicle objects."
+title: "🇨🇱 칠레 — 차량 SOAP (번호판)"
+description: "번호판만으로 칠레 차량 SOAP를 조회합니다. 중첩된 soap/vehicle 객체와 상태, 보험사, 소유자, 유효기간을 반환합니다."
 slug: /vehicle-validation/chile/vehicle-soap-plate
-sidebar_label: "🇨🇱 Chile - Vehicle SOAP (by plate)"
+sidebar_label: "🇨🇱 칠레 — 차량 SOAP (번호판)"
 keywords:
   - v2/cl/vehicle-soap-plate
   - GET v2/cl/vehicle-soap-plate
@@ -12,64 +12,111 @@ keywords:
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# 🇨🇱 Chile - Vehicle SOAP (by plate)
+# 🇨🇱 칠레 — 차량 SOAP (번호판)
 
-Query Chile vehicular **SOAP** using **license plate only**. Nested **`soap`** / **`vehicle`** response; empty **`message`** when SOAP is found, or `No_active_SOAP_certificate_found_for_this_plate` when the vehicle exists without active SOAP.
+**번호판만**으로 칠레 **SOAP**(*Seguro Obligatorio de Accidentes Personales*)를 조회합니다. Boostr로 SOAP를 조회하고, 증권 번호가 있으면 AACH로 보강하며, SOAP가 없으면 Carvuk에서 차량 속성을 반환합니다.
 
-### Endpoint
+소스가 응답할 때 **중첩** 페이로드:
+
+- **`plate`** — 칠레 번호판(Patente), **4–6**자 영숫자
+- **`message`** — SOAP 발견 시 빈 값; 활성 SOAP 없이 차량만 있으면 `No_active_SOAP_certificate_found_for_this_plate`
+- **`soap`** — 발견 시: **`status`**, **`policyNumber`**, **`insuranceCompany`**, **`validFrom`**, **`validTo`**, **`folioNumber`**, **`ownerName`**, **`ownerRut`**, **`premium`**
+- **`vehicle`** — **`brand`**, **`model`**, **`year`**, **`type`**, **`engineNumber`**
+- **`force`** — 선택; `true`면 캐시 무시
+- Verifik **서명** 응답
+
+번호판만 알려진 **보험 컴플라이언스**, **플릿 온보딩**, **클레임**에 사용합니다.
+
+### 엔드포인트
 
 ```
 GET v2/cl/vehicle-soap-plate
 ```
 
-### Headers
+**번호판**(`plate`)만으로 조회합니다. **`soap`**의 **status**, **insuranceCompany**, **ownerName**, **validFrom**, **validTo** 및 **`vehicle`**의 **brand**, **model**, **year** 등이 포함됩니다.
+
+### 헤더
 
 | Name | Value |
 | --- | --- |
 | Accept | `application/json` |
 | Authorization | `Bearer <token>` |
 
-### Parameters
+### 매개변수
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `plate` | string | Yes | Chilean license plate (4–6 chars). |
-| `force` | string | No | `true` to bypass cache. |
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Yes** | 칠레 번호판(Patente), 4–6자 영숫자. | `HTRT86` |
+| `force` | string | No | `true`면 캐시를 무시하고 실시간 조회. | `true` |
 
-### Request
+### 요청
 
 <Tabs>
-  <TabItem value="javascript" label="JavaScript">
+  <TabItem value="node" label="Node.js">
 
 ```javascript
 const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plate", {
   params: { plate: "HTRT86" },
-  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
 });
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cl/vehicle-soap-plate"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "HTRT86"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
 ```
 
   </TabItem>
 </Tabs>
 
-### Response
+### 응답
 
 <Tabs>
-  <TabItem value="200-soap" label="200 SOAP found">
+  <TabItem value="200-soap" label="200 SOAP 발견">
 
 ```json
 {
   "data": {
     "plate": "HTRT86",
     "message": "",
-    "soap": { "status": "CERTIFICADO VALIDO", "policyNumber": "94596506" },
-    "vehicle": { "brand": "MITSUBISHI", "model": "L200 KATANA 2.4", "year": "2016" }
+    "soap": {
+      "status": "CERTIFICADO VALIDO",
+      "policyNumber": "94596506",
+      "insuranceCompany": "MUTUAL DE SEGUROS DE CHILE",
+      "validFrom": "01/04/2026",
+      "validTo": "31/03/2027",
+      "folioNumber": "FOL789",
+      "ownerName": "JUAN PEREZ LOPEZ",
+      "ownerRut": "12.345.678-9",
+      "premium": "$50.000"
+    },
+    "vehicle": {
+      "brand": "MITSUBISHI",
+      "model": "L200 KATANA 2.4",
+      "year": "2016",
+      "type": "CAMIONETA",
+      "engineNumber": "ENG123456"
+    }
   },
-  "signature": { "message": "Certified by Verifik.co" }
+  "signature": {
+    "dateTime": "July 7, 2026 11:00 AM",
+    "message": "Certified by Verifik.co"
+  }
 }
 ```
 
   </TabItem>
-  <TabItem value="200-no-soap" label="200 No active SOAP">
+  <TabItem value="200-no-soap" label="200 활성 SOAP 없음">
 
 ```json
 {
@@ -77,7 +124,17 @@ const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plat
     "plate": "CSXZ27",
     "message": "No_active_SOAP_certificate_found_for_this_plate",
     "soap": {},
-    "vehicle": { "brand": "MAHINDRA", "model": "PIK UP", "year": "2011" }
+    "vehicle": {
+      "brand": "MAHINDRA",
+      "model": "PIK UP",
+      "year": "2011",
+      "type": "",
+      "engineNumber": ""
+    }
+  },
+  "signature": {
+    "dateTime": "July 7, 2026 11:00 AM",
+    "message": "Certified by Verifik.co"
   }
 }
 ```
@@ -86,21 +143,29 @@ const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-soap-plat
   <TabItem value="404" label="404">
 
 ```json
-{ "code": "NotFound", "message": "Vehicle_not_found_for_this_plate" }
+{
+  "code": "NotFound",
+  "message": "Vehicle_not_found_for_this_plate"
+}
 ```
 
   </TabItem>
   <TabItem value="409" label="409">
 
 ```json
-{ "code": "MissingParameter", "message": "missing plate\n" }
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
 ```
 
   </TabItem>
 </Tabs>
 
-### Notes
+### 참고
 
-- **No active SOAP** returns **HTTP 200** with empty **`soap`**, not 404.
-- Live plates: `CLTK27`, `HTRT86`, `RRWX51`, `THHV64`, `CSXZ52`, `CSXZ57` (active SOAP); `CSXZ27` (no SOAP).
-- See [Vehicle SOAP (plate + policy)](/verifik-ko/vehicle-validation/chile/vehicle-soap).
+- **활성 SOAP 없음**은 **HTTP 200**과 빈 **`soap`**, **`message: No_active_SOAP_certificate_found_for_this_plate`** — 404가 아닙니다.
+- **Live 번호판:** `CLTK27`, `HTRT86`, `RRWX51`, `THHV64`, `CSXZ52`, `CSXZ57`는 활성 SOAP; `CSXZ27`는 SOAP 없이 차량만.
+- **샌드박스:** **`AB1001`**–**`AB1010`**, **`HTRT86`**는 안정적 중첩 프로필; **`ERR404`** → **404**.
+- 번호판+증권 조회는 [차량 SOAP (번호판+증권)](/verifik-ko/vehicle-validation/chile/vehicle-soap) 참조.
+- 레지스트리 **가용성**은 환경에 따라 다르며 **409** 타임아웃 가능.
