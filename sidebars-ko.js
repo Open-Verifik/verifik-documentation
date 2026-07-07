@@ -20,6 +20,7 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-transport-vehicle", label: "🇨🇱 칠레 — 대중교통 차량" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-technical-review", label: "🇨🇱 칠레 — 차량 기술 검사" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap", label: "🇨🇱 칠레 — 차량 SOAP" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap-plate", label: "🇨🇱 칠레 — 차량 SOAP (번호판)" },
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 코스타리카 — 차량(번호판)" },
 				{
 					type: "doc",
