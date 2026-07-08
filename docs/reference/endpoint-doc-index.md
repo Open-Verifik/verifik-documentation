@@ -2565,7 +2565,7 @@ grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/c
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-07-08T16:36:06.080Z_
+_Last regenerated: 2026-07-08T19:27:26.176Z_
 
 ## Argentina
 
