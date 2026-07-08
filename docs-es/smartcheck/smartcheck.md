@@ -335,7 +335,7 @@ Verificación Inteligente ofrece una amplia gama de APIs que atienden diferentes
       title="Validación de licencia de conducir canadiense"
       description=""
       image="/img/smartcheck/canada-driver.png"
-      link="/verifik-es/validaciones-vehiculos/licencia-de-manejo-british-columbia"
+      link="/verifik-es/validaciones-vehiculos/licencia-de-manejo-ontario"
     />
   </div>
   <div className="col col--4">

@@ -66,11 +66,9 @@ const sidebars = {
 			label: "Permis de conduire",
 			collapsible: false,
 			items: [
-				{ type: "doc", id: "driver-validation/british-columbia-driver-license", label: "🇨🇦 Colombie-Britannique — Permis de conduire" },
 				{ type: "doc", id: "driver-validation/chile-driver-license", label: "🇨🇱 Chili — Permis de conduire" },
 				{ type: "doc", id: "driver-validation/peru-driver-license", label: "🇵🇪 Pérou — Permis de conduire" },
 				{ type: "doc", id: "driver-validation/ontario-driver-license", label: "🇨🇦 Ontario — Permis de conduire" },
-				{ type: "doc", id: "driver-validation/quebec-driver-license", label: "🇨🇦 Québec — Permis de conduire" },
 			],
 		},
 		{

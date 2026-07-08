@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-07-07T19:52:41.993Z
+Generated: 2026-07-08T04:23:52.019Z
 
-- **Files scanned:** 491
-- **Unique endpoint URLs:** 206
-- **Duplicate URL groups (SEO / aliases):** 57
-- **Docs without `### Endpoint` block:** 207
+- **Files scanned:** 487
+- **Unique endpoint URLs:** 205
+- **Duplicate URL groups (SEO / aliases):** 56
+- **Docs without `### Endpoint` block:** 205
 
 ## Summary by priority (canonical primary path only)
 
@@ -13,7 +13,7 @@ Generated: 2026-07-07T19:52:41.993Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 22 | vehicle-validation (other countries) |
-| P2 | 161 | identity, biometrics, resources, etc. |
+| P2 | 160 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -41,9 +41,6 @@ Generated: 2026-07-07T19:52:41.993Z
 - `v2/biometric-validations/validate`
   - `resources/app-logins/validate-an-app-login-biometric-validation.mdx`
   - `resources/biometric-validations/validate-an-app-login-biometric-validation.mdx`
-- `v2/ca/british-columbia/driver-license`
-  - `driver-validation/british-columbia-driver-license.md`
-  - `identity/canada.mdx`
 - `v2/clients/me`
   - `accounts/clients/account-information.mdx`
   - `clients/account-information.md`
@@ -258,10 +255,9 @@ Generated: 2026-07-07T19:52:41.993Z
 | P2 | `v2/br/cedula` | `identity/brazil.mdx` |
 | P2 | `v2/br/company` | `business-validation/brazil.mdx` |
 | P1 | `v2/br/vehicle` | `vehicle-validation/brazil.mdx` |
-| P2 | `v2/ca/british-columbia/driver-license` | `driver-validation/british-columbia-driver-license.md` |
+| P2 | `v2/ca/british-columbia/driver-license` | `identity/canada.mdx` |
 | P2 | `v2/ca/company` | `business-validation/canada.mdx` |
 | P2 | `v2/ca/ontario/driver-license` | `driver-validation/ontario-driver-license.md` |
-| P2 | `v2/ca/quebec/driver-license` | `driver-validation/quebec-driver-license.md` |
 | P2 | `v2/cl/cedula` | `identity/chile.mdx` |
 | P2 | `v2/cl/company` | `business-validation/chilean.mdx` |
 | P2 | `v2/cl/driver-license` | `driver-validation/chile-driver-license.mdx` |
@@ -466,10 +462,8 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `identity-validation.mdx`
 - `identity-validation/brazil.mdx`
 - `identity-validation/canada.mdx`
-- `identity-validation/canada/quebec-driver-license.mdx`
 - `identity-validation/chile.mdx`
 - `identity-validation/chile/chilean-citizen-information.mdx`
-- `identity-validation/chile/quebec-driver-license.mdx`
 - `identity-validation/chile/validate-chilean-document.mdx`
 - `identity-validation/colombia.mdx`
 - `identity-validation/colombia/colombia-identity-documents-guide.mdx`

@@ -547,20 +547,6 @@ keywords:
   - "https://api.verifik.co/v2/ca/ontario/driver-license"
   - "GET v2/ca/ontario/driver-license"
   - "GET /v2/ca/ontario/driver-license"
-  - "v2/ca/quebec/driver-license"
-  - "/v2/ca/quebec/driver-license"
-  - "v2 ca quebec driver-license"
-  - "ca/quebec/driver-license"
-  - "/ca/quebec/driver-license"
-  - "api/ca/quebec/driver-license"
-  - "/api/ca/quebec/driver-license"
-  - "api ca quebec driver-license"
-  - "quebec/driver-license"
-  - "/quebec/driver-license"
-  - "api.verifik.co/v2/ca/quebec/driver-license"
-  - "https://api.verifik.co/v2/ca/quebec/driver-license"
-  - "GET v2/ca/quebec/driver-license"
-  - "GET /v2/ca/quebec/driver-license"
   - "v2/cl/cedula"
   - "/v2/cl/cedula"
   - "v2 cl cedula"
@@ -2560,12 +2546,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (206 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (205 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-07-07T19:52:42.040Z_
+_Last regenerated: 2026-07-08T04:23:52.065Z_
 
 ## Argentina
 
@@ -2809,10 +2795,9 @@ _Last regenerated: 2026-07-07T19:52:42.040Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
-| `v2/ca/british-columbia/driver-license` | v2 ca british-columbia driver-license ca/british-columbia/driver-license /ca/british-columbia/driver-license api/ca/british-columbia/driver-license /api/ca/british-columbia/driver-license api ca british-columbia driver-license british-columbia/driver-license /british-columbia/driver-license api.verifik.co/v2/ca/british-columbia/driver-license https://api.verifik.co/v2/ca/british-columbia/driver-license GET v2/ca/british-columbia/driver-license GET /v2/ca/british-columbia/driver-license | [British Columbia Driver License](/driver-validation/british-columbia-driver-license) |
+| `v2/ca/british-columbia/driver-license` | v2 ca british-columbia driver-license ca/british-columbia/driver-license /ca/british-columbia/driver-license api/ca/british-columbia/driver-license /api/ca/british-columbia/driver-license api ca british-columbia driver-license british-columbia/driver-license /british-columbia/driver-license api.verifik.co/v2/ca/british-columbia/driver-license https://api.verifik.co/v2/ca/british-columbia/driver-license GET v2/ca/british-columbia/driver-license GET /v2/ca/british-columbia/driver-license | [Canadian Driver License Validation](/identity/canada) |
 | `v2/ca/company` | v2 ca company ca/company /ca/company api/ca/company /api/ca/company api ca company api.verifik.co/v2/ca/company https://api.verifik.co/v2/ca/company GET v2/ca/company GET /v2/ca/company | [Canadian Business Verification](/business-validation/canada) |
 | `v2/ca/ontario/driver-license` | v2 ca ontario driver-license ca/ontario/driver-license /ca/ontario/driver-license api/ca/ontario/driver-license /api/ca/ontario/driver-license api ca ontario driver-license ontario/driver-license /ontario/driver-license api.verifik.co/v2/ca/ontario/driver-license https://api.verifik.co/v2/ca/ontario/driver-license GET v2/ca/ontario/driver-license GET /v2/ca/ontario/driver-license | [Ontario Driver License](/driver-validation/ontario-driver-license) |
-| `v2/ca/quebec/driver-license` | v2 ca quebec driver-license ca/quebec/driver-license /ca/quebec/driver-license api/ca/quebec/driver-license /api/ca/quebec/driver-license api ca quebec driver-license quebec/driver-license /quebec/driver-license api.verifik.co/v2/ca/quebec/driver-license https://api.verifik.co/v2/ca/quebec/driver-license GET v2/ca/quebec/driver-license GET /v2/ca/quebec/driver-license | [Quebec Driver License](/driver-validation/quebec-driver-license) |
 
 ## Clients
 

@@ -69,13 +69,11 @@ const sidebars = {
 			label: "運転免許",
 			collapsible: false,
 			items: [
-				{ type: "doc", id: "driver-validation/british-columbia-driver-license", label: "🇨🇦 ブリティッシュコロンビア — 運転免許" },
 				{ type: "doc", id: "driver-validation/chile-driver-license", label: "🇨🇱 チリ — 運転免許" },
 				{ type: "doc", id: "driver-validation/peru-driver-license", label: "🇵🇪 ペルー — 運転免許" },
 				{ type: "doc", id: "driver-validation/florida-driver-license", label: "🇺🇸 フロリダ州 — 運転免許" },
 				{ type: "doc", id: "driver-validation/kansas-driver-license", label: "🇺🇸 カンザス州 — 運転免許" },
 				{ type: "doc", id: "driver-validation/ontario-driver-license", label: "🇨🇦 オンタリオ — 運転免許" },
-				{ type: "doc", id: "driver-validation/quebec-driver-license", label: "🇨🇦 ケベック — 運転免許" },
 			],
 		},
 		{

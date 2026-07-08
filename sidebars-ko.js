@@ -66,12 +66,10 @@ const sidebars = {
 			label: "운전면허",
 			collapsible: false,
 			items: [
-				{ type: "doc", id: "driver-validation/british-columbia-driver-license", label: "🇨🇦 브리티시컬럼비아 — 운전면허" },
 				{ type: "doc", id: "driver-validation/chile-driver-license", label: "🇨🇱 칠레 — 운전면허" },
 				{ type: "doc", id: "driver-validation/peru-driver-license", label: "🇵🇪 페루 — 운전면허" },
 				{ type: "doc", id: "driver-validation/kansas-driver-license", label: "🇺🇸 캔자스주 — 운전면허" },
 				{ type: "doc", id: "driver-validation/ontario-driver-license", label: "🇨🇦 온타리오 — 운전면허" },
-				{ type: "doc", id: "driver-validation/quebec-driver-license", label: "🇨🇦 퀘벡 — 운전면허" },
 			],
 		},
 		{

@@ -714,11 +714,6 @@ const sidebars = {
 			items: [
 				{
 					type: "doc",
-					id: "driver-validation/british-columbia-driver-license",
-					label: "🇨🇦 British Columbia - Driver License",
-				},
-				{
-					type: "doc",
 					id: "driver-validation/chile-driver-license",
 					label: "🇨🇱 Chile - Driver License",
 				},
@@ -741,11 +736,6 @@ const sidebars = {
 					type: "doc",
 					id: "driver-validation/ontario-driver-license",
 					label: "🇨🇦 Ontario - Driver License",
-				},
-				{
-					type: "doc",
-					id: "driver-validation/quebec-driver-license",
-					label: "🇨🇦 Quebec - Driver License",
 				},
 			],
 		},

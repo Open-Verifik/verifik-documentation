@@ -68,13 +68,11 @@ const sidebars = {
 			label: "Carteira de motorista",
 			collapsible: false,
 			items: [
-				{ type: "doc", id: "driver-validation/british-columbia-driver-license", label: "🇨🇦 Colúmbia Britânica — Carteira de motorista" },
 				{ type: "doc", id: "driver-validation/chile-driver-license", label: "🇨🇱 Chile — Carteira de motorista" },
 				{ type: "doc", id: "driver-validation/peru-driver-license", label: "🇵🇪 Peru — Carteira de motorista" },
 				{ type: "doc", id: "driver-validation/florida-driver-license", label: "🇺🇸 Flórida (EUA) — Carteira de motorista" },
 				{ type: "doc", id: "driver-validation/kansas-driver-license", label: "🇺🇸 Kansas (EUA) — Carteira de motorista" },
 				{ type: "doc", id: "driver-validation/ontario-driver-license", label: "🇨🇦 Ontário — Carteira de motorista" },
-				{ type: "doc", id: "driver-validation/quebec-driver-license", label: "🇨🇦 Quebec — Carteira de motorista" },
 			],
 		},
 		{

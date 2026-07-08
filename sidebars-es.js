@@ -260,11 +260,6 @@ const sidebars = {
 				},
 				{
 					type: "doc",
-					id: "validaciones-conductores/licencia-conducir-british-columbia",
-					label: "🇨🇦 Canadá - Licencia de Conducir British Columbia",
-				},
-				{
-					type: "doc",
 					id: "validaciones-vehiculos/licencia-de-manejo-florida",
 					label: "🇺🇸 Florida - Licencia de Manejo",
 				},

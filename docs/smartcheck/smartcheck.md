@@ -335,7 +335,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Canadian Driver License validation"
       description=""
       image="/img/smartcheck/canada-driver.png"
-      link="/driver-validation/british-columbia-driver-license"
+      link="/driver-validation/ontario-driver-license"
     />
   </div>
   <div className="col col--4">

@@ -67,11 +67,9 @@ const sidebars = {
 			label: "驾驶证",
 			collapsible: false,
 			items: [
-				{ type: "doc", id: "driver-validation/british-columbia-driver-license", label: "🇨🇦 不列颠哥伦比亚 — 驾驶证" },
 				{ type: "doc", id: "driver-validation/chile-driver-license", label: "🇨🇱 智利 — 驾驶证" },
 				{ type: "doc", id: "driver-validation/peru-driver-license", label: "🇵🇪 秘鲁 — 驾驶证" },
 				{ type: "doc", id: "driver-validation/ontario-driver-license", label: "🇨🇦 安大略 — 驾驶证" },
-				{ type: "doc", id: "driver-validation/quebec-driver-license", label: "🇨🇦 魁北克 — 驾驶证" },
 			],
 		},
 		{
