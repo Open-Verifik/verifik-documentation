@@ -127,6 +127,7 @@ const sidebars = {
 					],
 				},
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 코스타리카 — 차량(번호판)", key: "vehicle-costa-rica" },
+				{ type: "doc", id: "vehicle-validation/canada/ontario-plate", label: "🇨🇦 캐나다 — 온타리오 번호판 만료", key: "vehicle-canada-ontario-plate" },
 				{ type: "doc", id: "vehicle-validation/ecuador", label: "🇪🇨 에콰도르 — 차량 벌금", key: "vehicle-ecuador" },
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 파라과이 — 차량 정보", key: "vehicle-paraguay" },
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 스페인", key: "vehicle-spain" },

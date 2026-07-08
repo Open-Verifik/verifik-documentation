@@ -642,6 +642,12 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "vehicle-validation/canada/ontario-plate",
+					label: "🇨🇦 Canada - Ontario Plate Expiry",
+					key: "vehicle-canada-ontario-plate",
+				},
+				{
+					type: "doc",
 					id: "vehicle-validation/ecuador",
 					label: "🇪🇨 Ecuador",
 					key: "vehicle-ecuador",

@@ -130,6 +130,7 @@ const sidebars = {
 					],
 				},
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 Costa Rica — Veículo por placa", key: "vehicle-costa-rica" },
+				{ type: "doc", id: "vehicle-validation/canada/ontario-plate", label: "🇨🇦 Canadá — Vencimento placa Ontário", key: "vehicle-canada-ontario-plate" },
 				{ type: "doc", id: "vehicle-validation/ecuador", label: "🇪🇨 Equador — Multas de veículo", key: "vehicle-ecuador" },
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 Paraguai — Informações do veículo", key: "vehicle-paraguay" },
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 Espanha", key: "vehicle-spain" },

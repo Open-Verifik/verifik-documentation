@@ -131,6 +131,7 @@ const sidebars = {
 					],
 				},
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 コスタリカ — 車両（ナンバー）", key: "vehicle-costa-rica" },
+				{ type: "doc", id: "vehicle-validation/canada/ontario-plate", label: "🇨🇦 カナダ — オンタリオ ナンバー有効期限", key: "vehicle-canada-ontario-plate" },
 				{ type: "doc", id: "vehicle-validation/ecuador", label: "🇪🇨 エクアドル — 車両罰金", key: "vehicle-ecuador" },
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 パラグアイ — 車両情報", key: "vehicle-paraguay" },
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 スペイン", key: "vehicle-spain" },

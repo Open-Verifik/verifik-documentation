@@ -127,6 +127,7 @@ const sidebars = {
 					],
 				},
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 哥斯达黎加 — 车辆（号牌）", key: "vehicle-costa-rica" },
+				{ type: "doc", id: "vehicle-validation/canada/ontario-plate", label: "🇨🇦 加拿大 — 安大略车牌到期", key: "vehicle-canada-ontario-plate" },
 				{ type: "doc", id: "vehicle-validation/ecuador", label: "🇪🇨 厄瓜多尔 — 车辆罚单", key: "vehicle-ecuador" },
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 巴拉圭 — 车辆信息", key: "vehicle-paraguay" },
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 西班牙", key: "vehicle-spain" },

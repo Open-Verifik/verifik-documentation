@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-07-08T04:23:52.019Z
+Generated: 2026-07-08T16:36:06.034Z
 
-- **Files scanned:** 487
-- **Unique endpoint URLs:** 205
+- **Files scanned:** 488
+- **Unique endpoint URLs:** 206
 - **Duplicate URL groups (SEO / aliases):** 56
 - **Docs without `### Endpoint` block:** 205
 
@@ -12,7 +12,7 @@ Generated: 2026-07-08T04:23:52.019Z
 | Priority | Count | Scope |
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
-| P1 | 22 | vehicle-validation (other countries) |
+| P1 | 23 | vehicle-validation (other countries) |
 | P2 | 160 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
@@ -258,6 +258,7 @@ Generated: 2026-07-08T04:23:52.019Z
 | P2 | `v2/ca/british-columbia/driver-license` | `identity/canada.mdx` |
 | P2 | `v2/ca/company` | `business-validation/canada.mdx` |
 | P2 | `v2/ca/ontario/driver-license` | `driver-validation/ontario-driver-license.md` |
+| P1 | `v2/ca/ontario/plate` | `vehicle-validation/canada/ontario-plate.mdx` |
 | P2 | `v2/cl/cedula` | `identity/chile.mdx` |
 | P2 | `v2/cl/company` | `business-validation/chilean.mdx` |
 | P2 | `v2/cl/driver-license` | `driver-validation/chile-driver-license.mdx` |

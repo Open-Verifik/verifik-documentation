@@ -126,6 +126,7 @@ const sidebars = {
 					],
 				},
 				{ type: "doc", id: "vehicle-validation/costa-rica", label: "🇨🇷 Costa Rica — Véhicule par plaque", key: "vehicle-costa-rica" },
+				{ type: "doc", id: "vehicle-validation/canada/ontario-plate", label: "🇨🇦 Canada — Expiration plaque Ontario", key: "vehicle-canada-ontario-plate" },
 				{ type: "doc", id: "vehicle-validation/ecuador", label: "🇪🇨 Équateur — Amendes véhicule", key: "vehicle-ecuador" },
 				{ type: "doc", id: "vehicle-validation/paraguay", label: "🇵🇾 Paraguay — Informations véhicule", key: "vehicle-paraguay" },
 				{ type: "doc", id: "vehicle-validation/spain", label: "🇪🇸 Espagne", key: "vehicle-spain" },

@@ -495,6 +495,12 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "validacion-vehiculos/canada/placa-ontario",
+					label: "🇨🇦 Canadá - Vencimiento de Placa Ontario",
+					key: "vehiculos-canada-placa-ontario",
+				},
+				{
+					type: "doc",
 					id: "validacion-vehiculos/ecuador",
 					label: "🇪🇨 Ecuador",
 					key: "vehiculos-ecuador",

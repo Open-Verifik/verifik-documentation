@@ -46,7 +46,7 @@ Use this service to validate and verify the authenticity of Ontario driver's lic
 
 | Name           | Type   | Required | Description                                                                                    | Example              |
 | -------------- | ------ | -------- | ---------------------------------------------------------------------------------------------- | -------------------- |
-| documentNumber | String | Yes      | Driver's license to consult, all data must be entered exactly as found in this document. | `S123456789123456`   |
+| documentNumber | String | Yes      | Driver's license to consult, all data must be entered exactly as found in this document. | `M4596-07657-60824`   |
 
 ### Request
 
@@ -59,7 +59,7 @@ import axios from 'axios';
 const options = {
   method: 'GET',
   url: 'https://api.verifik.co/v2/ca/ontario/driver-license',
-  params: {documentNumber: 'S123456789123456'},
+  params: {documentNumber: 'M4596-07657-60824'},
   headers: {
     Accept: 'application/json',
     Authorization: 'jwt <tu_token>'
@@ -80,7 +80,7 @@ try {
 ```python
 import requests
 
-url = "https://api.verifik.co/v2/ca/ontario/driver-license?documentNumber=S123456789123456"
+url = "https://api.verifik.co/v2/ca/ontario/driver-license?documentNumber=M4596-07657-60824"
 
 payload = {}
 headers = {}
@@ -94,7 +94,7 @@ print(response.text)
   <TabItem value="swift" label="Swift">
 
 ```swift
-var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/ca/ontario/driver-license?documentNumber=S123456789123456")!,timeoutInterval: Double.infinity)
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/ca/ontario/driver-license?documentNumber=M4596-07657-60824")!,timeoutInterval: Double.infinity)
 request.httpMethod = "GET"
 
 let task = URLSession.shared.dataTask(with: request) { data, response, error in 
@@ -115,7 +115,7 @@ task.resume()
 <?php
 require_once 'HTTP/Request2.php';
 $request = new HTTP_Request2();
-$request->setUrl('https://api.verifik.co/v2/ca/ontario/driver-license?documentNumber=S123456789123456');
+$request->setUrl('https://api.verifik.co/v2/ca/ontario/driver-license?documentNumber=M4596-07657-60824');
 $request->setMethod(HTTP_Request2::METHOD_GET);
 $request->setConfig(array(
   'follow_redirects' => TRUE
@@ -146,7 +146,7 @@ catch(HTTP_Request2_Exception $e) {
 ```json
 {
   "data": {
-    "documentNumber": "S123456789123456",
+    "documentNumber": "M4596-07657-60824",
     "licenceStatus": "Valid",
     "verificationNumber": "123V5"
   },
