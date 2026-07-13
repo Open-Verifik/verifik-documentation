@@ -1910,6 +1910,18 @@ keywords:
   - "https://api.verifik.co/v2/hn/cedula"
   - "GET v2/hn/cedula"
   - "GET /v2/hn/cedula"
+  - "v2/hn/votacion"
+  - "/v2/hn/votacion"
+  - "v2 hn votacion"
+  - "hn/votacion"
+  - "/hn/votacion"
+  - "api/hn/votacion"
+  - "/api/hn/votacion"
+  - "api hn votacion"
+  - "api.verifik.co/v2/hn/votacion"
+  - "https://api.verifik.co/v2/hn/votacion"
+  - "GET v2/hn/votacion"
+  - "GET /v2/hn/votacion"
   - "v2/in/epic"
   - "/v2/in/epic"
   - "v2 in epic"
@@ -2560,12 +2572,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (206 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (207 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-07-08T19:27:26.176Z_
+_Last regenerated: 2026-07-13T21:11:38.031Z_
 
 ## Argentina
 
@@ -2717,6 +2729,7 @@ _Last regenerated: 2026-07-08T19:27:26.176Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/hn/cedula` | v2 hn cedula hn/cedula /hn/cedula api/hn/cedula /api/hn/cedula api hn cedula api.verifik.co/v2/hn/cedula https://api.verifik.co/v2/hn/cedula GET v2/hn/cedula GET /v2/hn/cedula | [Honduran Citizen](/identity/honduras) |
+| `v2/hn/votacion` | v2 hn votacion hn/votacion /hn/votacion api/hn/votacion /api/hn/votacion api hn votacion api.verifik.co/v2/hn/votacion https://api.verifik.co/v2/hn/votacion GET v2/hn/votacion GET /v2/hn/votacion | [Honduras - Voting Location](/identity/honduras/votacion) |
 
 ## India
 

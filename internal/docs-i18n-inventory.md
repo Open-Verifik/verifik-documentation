@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-07-08T19:27:26.130Z
+Generated: 2026-07-13T21:11:37.984Z
 
-- **Files scanned:** 488
-- **Unique endpoint URLs:** 206
+- **Files scanned:** 489
+- **Unique endpoint URLs:** 207
 - **Duplicate URL groups (SEO / aliases):** 56
 - **Docs without `### Endpoint` block:** 205
 
@@ -13,7 +13,7 @@ Generated: 2026-07-08T19:27:26.130Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 23 | vehicle-validation (other countries) |
-| P2 | 160 | identity, biometrics, resources, etc. |
+| P2 | 161 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -362,6 +362,7 @@ Generated: 2026-07-08T19:27:26.130Z
 | P2 | `v2/gt/cedula` | `identity-validation/guatemala.mdx` |
 | P2 | `v2/gt/cedula/extra` | `identity/guatemala-extra.mdx` |
 | P2 | `v2/hn/cedula` | `identity/honduras.mdx` |
+| P2 | `v2/hn/votacion` | `identity/honduras/votacion.mdx` |
 | P2 | `v2/in/epic` | `legal/epic-eci.mdx` |
 | P2 | `v2/in/epic/votacion` | `legal/voting-eci-epic.mdx` |
 | P2 | `v2/interpol` | `background-check/interpol-background-check.mdx` |

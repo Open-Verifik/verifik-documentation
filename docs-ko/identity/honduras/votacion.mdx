@@ -1,0 +1,144 @@
+---
+title: Honduras - 투표 장소
+description: DNIHN으로 온두라스 공식 선거 등록부(Donde Me Toca Votar)를 조회합니다. 투표소, JRV, 투표 자격 및 거주지 정보를 반환합니다.
+slug: /identity/honduras/votacion
+keywords:
+  - v2/hn/votacion
+  - GET /v2/hn/votacion
+  - api.verifik.co/v2/hn/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Honduras - 투표 장소
+
+Verifik는 **Donde Me Toca Votar** 국가 선거 조회 등록부에서 **DNIHN**(**13자리** 신분번호)으로 조회합니다. 온두라스 선거 데이터가 허용되는 **선거 검증**, **유권자 온보딩**, **컴플라이언스** 워크플로에 사용하세요.
+
+소스에서 제공할 때 선거 장소 세부 정보를 반환합니다:
+
+- **`documentType`** — 허용 값: **DNIHN**
+- **`documentNumber`** — 온두라스 신분증 번호 (**13**자리)
+- **`fullName`** — 선거 등록부의 시민 전체 이름
+- **`gender`** — 소스에서 제공하는 경우 성별
+- **`department`**, **`municipality`**, **`electoralSector`** — 거주지 및 선거 구역
+- **`pollingPlace`**, **`pollingTable`** (JRV), **`lineNumber`** — 투표 장소 세부 정보
+- **`enabled`** — 투표 가능 여부
+- **`fullAddress`** — 형식화된 투표소 주소
+- **선택 필드** — 소스에 포함된 경우 `latitude`, `longitude`
+- Verifik **서명** 응답
+
+### Endpoint
+
+```
+GET v2/hn/votacion
+```
+
+**`documentType`** `DNIHN`과 **13자리** **`documentNumber`**로 국가 등록부를 조회합니다. 성공 응답에는 **KYC**, **선거 검증**, **컴플라이언스** 워크플로에 필요한 투표소, JRV(테이블), 부서, 시 및 투표 자격이 포함됩니다.
+
+### Headers
+
+| Header | Value | Description |
+| --- | --- | --- |
+| Accept | application/json | 응답 형식 |
+| Authorization | Bearer \<token\> | Verifik JWT |
+
+### Parameters
+
+| Field | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| documentType | String | Yes | 문서 유형. 허용 값: `DNIHN`. | `DNIHN` |
+| documentNumber | String | Yes | 온두라스 신분증 번호 (**13**자리). | `0501199705651` |
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/hn/votacion", {
+  params: {
+    documentType: "DNIHN",
+    documentNumber: "0501199705651",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/hn/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "DNIHN", "documentNumber": "0501199705651"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "DNIHN",
+    "documentNumber": "0501199705651",
+    "fullName": "CHRISTOPHER ALEXANDER RUBIO ROMERO",
+    "gender": "MASCULINO",
+    "department": "ESPAÑA",
+    "municipality": "MADRID",
+    "electoralSector": "MADRID",
+    "pollingPlace": "CONSULADO DE MADRID EN ESPAÑA",
+    "pollingTable": "12",
+    "lineNumber": "42",
+    "enabled": true,
+    "fullAddress": "CONSULADO DE MADRID EN ESPAÑA, MADRID, ESPAÑA, Honduras"
+  },
+  "signature": {
+    "dateTime": "July 9, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`**는 **`DNIHN`**이어야 하며, **`documentNumber`**는 정확히 **13**자리 숫자여야 합니다.
+- **프로덕션 예시 ID:** `0501199705651`, `0828200300064`, `0801198000420`, `0801198000427`, `0801198000428`, `0801197302222`, `0801198000421`.
+- **샌드박스 모드:** 안정적인 성공 프로필에는 **`0000010000001`**~**`0000010000010`** 테스트 ID를 사용하세요. **`0000090040401`**은 **404**를 반환합니다.
+- **소스 제한:** 선거 등록부가 요청을 제한하면 Verifik은 **409** `Endpoint_out_of_service`를 반환할 수 있습니다(일시적; 나중에 재시도).
+- 응답을 **민감한 개인 데이터**로 취급하고 해당 개인정보 보호법을 준수하세요.
+- 참고: [온두라스 시민 신원 조회](/identity/honduras).

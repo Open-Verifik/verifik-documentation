@@ -1,0 +1,144 @@
+---
+title: Honduras - 投票地点
+description: 通过 DNIHN 查询洪都拉斯官方选举登记（Donde Me Toca Votar）。返回投票站、JRV、投票资格和居住信息。
+slug: /identity/honduras/votacion
+keywords:
+  - v2/hn/votacion
+  - GET /v2/hn/votacion
+  - api.verifik.co/v2/hn/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Honduras - 投票地点
+
+Verifik 通过 **DNIHN**（**13 位**身份证号）查询 **Donde Me Toca Votar** 国家选举咨询登记。在允许使用洪都拉斯选举数据的 **选举验证**、**选民入驻** 和 **合规** 流程中使用此端点。
+
+当数据源提供时，返回选举地点详情：
+
+- **`documentType`** — 允许值：**DNIHN**
+- **`documentNumber`** — 洪都拉斯身份证号（**13** 位）
+- **`fullName`** — 选举登记中的公民全名
+- **`gender`** — 数据源提供的性别
+- **`department`**、**`municipality`**、**`electoralSector`** — 居住地和选举区
+- **`pollingPlace`**、**`pollingTable`**（JRV）、**`lineNumber`** — 投票地点详情
+- **`enabled`** — 是否具备投票资格
+- **`fullAddress`** — 格式化的投票站地址
+- **可选字段** — 数据源包含时的 `latitude`、`longitude`
+- Verifik **签名** 响应
+
+### Endpoint
+
+```
+GET v2/hn/votacion
+```
+
+使用 **`documentType`** `DNIHN` 和 **13 位** **`documentNumber`** 查询国家登记。成功响应包含 **KYC**、**选举验证** 和 **合规** 流程所需的投票站、JRV（桌号）、省、市及投票资格。
+
+### Headers
+
+| Header | Value | Description |
+| --- | --- | --- |
+| Accept | application/json | 响应格式 |
+| Authorization | Bearer \<token\> | 您的 Verifik JWT |
+
+### Parameters
+
+| Field | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| documentType | String | Yes | 证件类型。允许值：`DNIHN`。 | `DNIHN` |
+| documentNumber | String | Yes | 洪都拉斯身份证号（**13** 位）。 | `0501199705651` |
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/hn/votacion", {
+  params: {
+    documentType: "DNIHN",
+    documentNumber: "0501199705651",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/hn/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "DNIHN", "documentNumber": "0501199705651"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "DNIHN",
+    "documentNumber": "0501199705651",
+    "fullName": "CHRISTOPHER ALEXANDER RUBIO ROMERO",
+    "gender": "MASCULINO",
+    "department": "ESPAÑA",
+    "municipality": "MADRID",
+    "electoralSector": "MADRID",
+    "pollingPlace": "CONSULADO DE MADRID EN ESPAÑA",
+    "pollingTable": "12",
+    "lineNumber": "42",
+    "enabled": true,
+    "fullAddress": "CONSULADO DE MADRID EN ESPAÑA, MADRID, ESPAÑA, Honduras"
+  },
+  "signature": {
+    "dateTime": "July 9, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`** 必须为 **`DNIHN`**；**`documentNumber`** 必须为 **13** 位数字。
+- **生产示例 ID：** `0501199705651`, `0828200300064`, `0801198000420`, `0801198000427`, `0801198000428`, `0801197302222`, `0801198000421`.
+- **沙盒模式：** 使用 **`0000010000001`** 至 **`0000010000010`** 测试 ID 获得稳定成功配置；**`0000090040401`** 返回 **404**。
+- **来源限流：** 若选举登记处限制请求，Verifik 可能返回 **409** `Endpoint_out_of_service`（临时；请稍后重试）。
+- 将响应视为 **敏感个人数据**；遵守适用的隐私法律。
+- 另见：[洪都拉斯公民身份查询](/identity/honduras).

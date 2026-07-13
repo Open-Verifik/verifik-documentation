@@ -28,6 +28,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/colombia-situacion-militar", label: "🇨🇴 Situation militaire" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Citoyen costaricien (CCCR)", key: "identity-costa-rica" },
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 Citoyen équatorien (CCEC)", key: "identity-ecuador" },
+				{ type: "doc", id: "identity/honduras/votacion", label: "🇭🇳 Honduras — Lieu de vote" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 Citoyen mexicain", key: "identity-mexico" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Citoyen panaméen (CCPA)", key: "identity-panama" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Citoyen paraguayen (CIC)", key: "identity-paraguay" },

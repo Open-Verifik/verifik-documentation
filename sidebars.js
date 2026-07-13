@@ -249,6 +249,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/honduras/votacion",
+					label: "🇭🇳 Honduras — Voting Location",
+				},
+				{
+					type: "doc",
 					id: "identity/mexico",
 					label: "🇲🇽 Mexico",
 					key: "identity-mexico",

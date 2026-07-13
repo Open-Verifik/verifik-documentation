@@ -1,0 +1,144 @@
+---
+title: Honduras - Local de votação
+description: Consulte o registro eleitoral hondurenho (Donde Me Toca Votar) por DNIHN. Retorna local de votação, JRV, elegibilidade e dados de residência.
+slug: /identity/honduras/votacion
+keywords:
+  - v2/hn/votacion
+  - GET /v2/hn/votacion
+  - api.verifik.co/v2/hn/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Honduras - Local de votação
+
+A Verifik consulta o registro nacional de consulta eleitoral **Donde Me Toca Votar** usando **DNIHN** (número de identidade com **13 dígitos**). Use este endpoint para **verificação eleitoral**, **integração de eleitores** e **conformidade** quando os dados eleitorais hondurenhos forem permitidos.
+
+Retorna detalhes do local de votação quando a fonte os fornece:
+
+- **`documentType`** — valor permitido: **DNIHN**
+- **`documentNumber`** — número de identidade hondurenho (**13** dígitos)
+- **`fullName`** — nome completo do cidadão no registro eleitoral
+- **`gender`** — sexo quando fornecido pela fonte
+- **`department`**, **`municipality`**, **`electoralSector`** — residência e setor eleitoral
+- **`pollingPlace`**, **`pollingTable`** (JRV), **`lineNumber`** — detalhes do local de votação
+- **`enabled`** — se o cidadão está habilitado a votar
+- **`fullAddress`** — endereço formatado do local de votação
+- **Campos opcionais** — `latitude`, `longitude` quando incluídos pela fonte
+- Resposta **assinada** pela Verifik
+
+### Endpoint
+
+```
+GET v2/hn/votacion
+```
+
+Consulte o registro nacional com **`documentType`** `DNIHN` e um **`documentNumber`** de **13 dígitos**. Respostas bem-sucedidas incluem local de votação, JRV (mesa), departamento, município e elegibilidade para fluxos de **KYC**, **verificação eleitoral** e **conformidade**.
+
+### Headers
+
+| Header | Valor | Descrição |
+| --- | --- | --- |
+| Accept | application/json | Formato de resposta |
+| Authorization | Bearer \<token\> | Seu JWT Verifik |
+
+### Parâmetros
+
+| Campo | Tipo | Obrigatório | Descrição | Exemplo |
+| --- | --- | --- | --- | --- |
+| documentType | String | Sim | Tipo de documento. Valor permitido: `DNIHN`. | `DNIHN` |
+| documentNumber | String | Sim | Número de identidade hondurenho (**13** dígitos). | `0501199705651` |
+
+### Requisição
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/hn/votacion", {
+  params: {
+    documentType: "DNIHN",
+    documentNumber: "0501199705651",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/hn/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "DNIHN", "documentNumber": "0501199705651"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "DNIHN",
+    "documentNumber": "0501199705651",
+    "fullName": "CHRISTOPHER ALEXANDER RUBIO ROMERO",
+    "gender": "MASCULINO",
+    "department": "ESPAÑA",
+    "municipality": "MADRID",
+    "electoralSector": "MADRID",
+    "pollingPlace": "CONSULADO DE MADRID EN ESPAÑA",
+    "pollingTable": "12",
+    "lineNumber": "42",
+    "enabled": true,
+    "fullAddress": "CONSULADO DE MADRID EN ESPAÑA, MADRID, ESPAÑA, Honduras"
+  },
+  "signature": {
+    "dateTime": "July 9, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notas
+
+- **`documentType`** deve ser **`DNIHN`**; **`documentNumber`** deve ter exatamente **13** dígitos numéricos.
+- **IDs de exemplo em produção:** `0501199705651`, `0828200300064`, `0801198000420`, `0801198000427`, `0801198000428`, `0801197302222`, `0801198000421`.
+- **Modo sandbox:** use IDs de teste **`0000010000001`** a **`0000010000010`** para perfis estáveis; **`0000090040401`** retorna **404**.
+- **Limites da fonte:** se o registro eleitoral limitar solicitações, a Verifik pode retornar **409** com `Endpoint_out_of_service` (temporário; tente novamente mais tarde).
+- Trate as respostas como **dados pessoais sensíveis**; cumpra as leis de privacidade aplicáveis.
+- Veja também: [Cidadão hondurenho](/identity/honduras).

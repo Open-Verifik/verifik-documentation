@@ -29,6 +29,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/colombia-situacion-militar", label: "🇨🇴 兵役状况" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 哥斯达黎加国民身份证（CCCR）", key: "identity-costa-rica" },
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 厄瓜多尔公民（CCEC）", key: "identity-ecuador" },
+				{ type: "doc", id: "identity/honduras/votacion", label: "🇭🇳 洪都拉斯 — 投票地点" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 墨西哥公民", key: "identity-mexico" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 巴拿马国民身份证（CCPA）", key: "identity-panama" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 巴拉圭公民（CIC）", key: "identity-paraguay" },
