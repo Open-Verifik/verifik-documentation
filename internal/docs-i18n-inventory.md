@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-07-13T21:11:37.984Z
+Generated: 2026-07-13T22:54:55.967Z
 
-- **Files scanned:** 489
-- **Unique endpoint URLs:** 207
+- **Files scanned:** 490
+- **Unique endpoint URLs:** 208
 - **Duplicate URL groups (SEO / aliases):** 56
 - **Docs without `### Endpoint` block:** 205
 
@@ -13,7 +13,7 @@ Generated: 2026-07-13T21:11:37.984Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 23 | vehicle-validation (other countries) |
-| P2 | 161 | identity, biometrics, resources, etc. |
+| P2 | 162 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -328,6 +328,7 @@ Generated: 2026-07-13T21:11:37.984Z
 | P2 | `v2/cr/cedula` | `identity/costa-rica.mdx` |
 | P2 | `v2/cr/company` | `business-validation/costa-rica.mdx` |
 | P1 | `v2/cr/vehicle` | `vehicle-validation/costa-rica.mdx` |
+| P2 | `v2/cr/votacion` | `identity/costa-rica/votacion.mdx` |
 | P2 | `v2/dea` | `background-check/dea-background-check.mdx` |
 | P2 | `v2/do/cedula` | `identity/dominican-republic.mdx` |
 | P2 | `v2/document-validations/app-registration` | `resources/app-registrations/create-an-app-registration-document-validation.mdx` |

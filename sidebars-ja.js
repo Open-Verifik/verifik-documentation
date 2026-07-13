@@ -27,6 +27,7 @@ const sidebars = {
 				{ type: "doc", id: "identity-validation/colombia/identity-validation-colombia-colombian-politically-exposed-persons", label: "🇨🇴 PEP 検索（AML）" },
 				{ type: "doc", id: "identity/colombia-situacion-militar", label: "🇨🇴 兵役状況" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 コスタリカ国民（CCCR）", key: "identity-costa-rica" },
+				{ type: "doc", id: "identity/costa-rica/votacion", label: "🇨🇷 コスタリカ — 投票所" },
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 エクアドル国民（CCEC）", key: "identity-ecuador" },
 				{ type: "doc", id: "identity/honduras/votacion", label: "🇭🇳 ホンジュラス — 投票所" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 メキシコ国民", key: "identity-mexico" },

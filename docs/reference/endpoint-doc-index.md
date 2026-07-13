@@ -1504,6 +1504,18 @@ keywords:
   - "https://api.verifik.co/v2/cr/vehicle"
   - "GET v2/cr/vehicle"
   - "GET /v2/cr/vehicle"
+  - "v2/cr/votacion"
+  - "/v2/cr/votacion"
+  - "v2 cr votacion"
+  - "cr/votacion"
+  - "/cr/votacion"
+  - "api/cr/votacion"
+  - "/api/cr/votacion"
+  - "api cr votacion"
+  - "api.verifik.co/v2/cr/votacion"
+  - "https://api.verifik.co/v2/cr/votacion"
+  - "GET v2/cr/votacion"
+  - "GET /v2/cr/votacion"
   - "v2/dea"
   - "/v2/dea"
   - "v2 dea"
@@ -2572,12 +2584,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (207 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (208 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-07-13T21:11:38.031Z_
+_Last regenerated: 2026-07-13T22:54:56.015Z_
 
 ## Argentina
 
@@ -2693,6 +2705,7 @@ _Last regenerated: 2026-07-13T21:11:38.031Z_
 | `v2/cr/cedula` | v2 cr cedula cr/cedula /cr/cedula api/cr/cedula /api/cr/cedula api cr cedula api.verifik.co/v2/cr/cedula https://api.verifik.co/v2/cr/cedula GET v2/cr/cedula GET /v2/cr/cedula | [Costa Rican Citizen (CCCR)](/identity/costa-rica) |
 | `v2/cr/company` | v2 cr company cr/company /cr/company api/cr/company /api/cr/company api cr company api.verifik.co/v2/cr/company https://api.verifik.co/v2/cr/company GET v2/cr/company GET /v2/cr/company | [Costa Rican Business Verification (NITE)](/business-validation/costa-rica) |
 | `v2/cr/vehicle` | v2 cr vehicle cr/vehicle /cr/vehicle api/cr/vehicle /api/cr/vehicle api cr vehicle api.verifik.co/v2/cr/vehicle https://api.verifik.co/v2/cr/vehicle GET v2/cr/vehicle GET /v2/cr/vehicle | [\U0001F1E8\U0001F1F7 Costa Rica - Vehicle Information](/vehicle-validation/costa-rica) |
+| `v2/cr/votacion` | v2 cr votacion cr/votacion /cr/votacion api/cr/votacion /api/cr/votacion api cr votacion api.verifik.co/v2/cr/votacion https://api.verifik.co/v2/cr/votacion GET v2/cr/votacion GET /v2/cr/votacion | [Costa Rica - Voting Location](/identity/costa-rica/votacion) |
 
 ## Dominican Republic
 

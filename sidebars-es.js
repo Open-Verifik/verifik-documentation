@@ -121,6 +121,7 @@ const sidebars = {
 				},
 				{ type: "doc", id: "identity/colombia-situacion-militar", label: "🇨🇴 Colombia - Situación militar" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Costa Rica", key: "identity-costa-rica" },
+				{ type: "doc", id: "identity/costa-rica/votacion", label: "🇨🇷 Costa Rica — Lugar de Votación" },
 				{ type: "doc", id: "identity/dominican-republic", label: "🇩🇴 República Dominicana", key: "identity-dominican-republic" },
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 Ecuador", key: "identity-ecuador" },
 				{ type: "doc", id: "identity/el-salvador", label: "🇸🇻 El Salvador" },

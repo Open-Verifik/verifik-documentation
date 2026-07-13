@@ -217,6 +217,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/costa-rica/votacion",
+					label: "🇨🇷 Costa Rica - Voting Location",
+				},
+				{
+					type: "doc",
 					id: "identity/dominican-republic",
 					label: "🇩🇴 Dominican Republic",
 					key: "identity-dominican-republic",

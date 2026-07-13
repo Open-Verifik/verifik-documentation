@@ -27,6 +27,7 @@ const sidebars = {
 				{ type: "doc", id: "identity-validation/colombia/identity-validation-colombia-colombian-politically-exposed-persons", label: "🇨🇴 Colômbia — PEP (AML)" },
 				{ type: "doc", id: "identity/colombia-situacion-militar", label: "🇨🇴 Situação militar" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 Cidadão costa-riquenho (CCCR)", key: "identity-costa-rica" },
+				{ type: "doc", id: "identity/costa-rica/votacion", label: "🇨🇷 Costa Rica — Local de votação" },
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 Cidadão equatoriano (CCEC)", key: "identity-ecuador" },
 				{ type: "doc", id: "identity/honduras/votacion", label: "🇭🇳 Honduras — Local de votação" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 Cidadão mexicano", key: "identity-mexico" },

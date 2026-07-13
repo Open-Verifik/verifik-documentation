@@ -1,0 +1,147 @@
+---
+title: Costa Rica - Voting Location
+description: Query official Costa Rican TSE Donde Votar registry by CCCR. Returns polling place, junta, province, canton, district, and map coordinates.
+slug: /identity/costa-rica/votacion
+keywords:
+  - v2/cr/votacion
+  - GET /v2/cr/votacion
+  - api.verifik.co/v2/cr/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Costa Rica - Voting Location
+
+Verifik queries the **TSE Donde Votar** electoral registry using **CCCR** (Costa Rican cédula, **9 to 13 digits**). Use this endpoint for **electoral verification**, **voter onboarding**, and **compliance** workflows where Costa Rican electoral data is permitted.
+
+Returns electoral location details when the source provides them:
+
+- **`documentType`** — allowed value: **CCCR**
+- **`documentNumber`** — Costa Rican cédula (**9 to 13** digits)
+- **`fullName`**, **`firstName`**, **`firstLastName`**, **`secondLastName`** — citizen name from the electoral registry
+- **`gender`** — gender code when provided by the source
+- **`province`**, **`canton`**, **`district`** — residence and electoral geography
+- **`pollingPlace`**, **`pollingTable`** — polling location details
+- **`electoralCode`**, **`electorNumber`**, **`schoolAddress`** — TSE junta metadata
+- **Optional fields** — `latitude`, `longitude` when included by the source
+- **Signed** Verifik response
+
+### Endpoint
+
+```
+GET v2/cr/votacion
+```
+
+Query the TSE Donde Votar registry with **`documentType`** `CCCR` and a **`documentNumber`** of **9 to 13 digits**. Typical successful responses include polling place, junta (table), province, canton, and district for **KYC**, **electoral verification**, and **compliance** workflows.
+
+### Headers
+
+| Header | Value | Description |
+| --- | --- | --- |
+| Accept | application/json | Response format |
+| Authorization | Bearer \<token\> | Your Verifik JWT |
+
+### Parameters
+
+| Field | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| documentType | String | Yes | Document type. Allowed value: `CCCR`. | `CCCR` |
+| documentNumber | String | Yes | Costa Rican cédula (**9 to 13** digits). | `401310036` |
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/cr/votacion", {
+  params: {
+    documentType: "CCCR",
+    documentNumber: "401310036",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cr/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CCCR", "documentNumber": "401310036"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CCCR",
+    "documentNumber": "401310036",
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "firstLastName": "LOPEZ",
+    "secondLastName": "GARCIA",
+    "gender": "1",
+    "province": "San José",
+    "canton": "Central",
+    "district": "Carmen",
+    "pollingPlace": "Escuela República de Chile",
+    "pollingTable": "12",
+    "electoralCode": "210011",
+    "electorNumber": "325",
+    "schoolAddress": "COSTADO NORTE DE LA PLAZA DE DEPORTES",
+    "latitude": 9.9281,
+    "longitude": -84.0907
+  },
+  "signature": {
+    "dateTime": "July 13, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`** must be **`CCCR`**; **`documentNumber`** must be **9 to 13** numeric digits.
+- **Live example IDs** (production registry): `401310036`, `401310030`, `401310039`, `402330708`, `114070037`.
+- **Sandbox mode:** use padded test IDs **`010000001`** through **`010000010`** for stable success profiles; **`090040401`** returns **404**.
+- Treat responses as **sensitive personal data**; comply with applicable privacy laws.
+- See also: [Costa Rican Citizen identity lookup](/identity/costa-rica).

@@ -1,0 +1,147 @@
+---
+title: コスタリカ — 投票所
+description: CCCRでTSE Donde Votar公式選挙登録を照会します。投票所、junta、州、cantón、district、地図座標を返します。
+slug: /identity/costa-rica/votacion
+keywords:
+  - v2/cr/votacion
+  - GET /v2/cr/votacion
+  - api.verifik.co/v2/cr/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# コスタリカ — 投票所
+
+Verifikは **TSE Donde Votar** 選挙登録を **CCCR**（コスタリカ cédula、**9〜13桁**）で照会します。コスタリカの選挙データが許可される **選挙検証**、**有権者オンボーディング**、**コンプライアンス** ワークフローに使用してください。
+
+ソースが提供する場合、選挙場所の詳細を返します：
+
+- **`documentType`** — 許可値: **CCCR**
+- **`documentNumber`** — コスタリカ cédula（**9〜13**桁）
+- **`fullName`**, **`firstName`**, **`firstLastName`**, **`secondLastName`** — 選挙登録上の氏名
+- **`gender`** — ソースが提供する場合の性別コード
+- **`province`**, **`canton`**, **`district`** — 居住地と選挙地理
+- **`pollingPlace`**, **`pollingTable`** — 投票所の詳細
+- **`electoralCode`**, **`electorNumber`**, **`schoolAddress`** — TSE junta メタデータ
+- **任意フィールド** — ソースに含まれる場合の `latitude`, `longitude`
+- Verifik **署名** 付きレスポンス
+
+### Endpoint
+
+```
+GET v2/cr/votacion
+```
+
+**`documentType`** `CCCR` と **9〜13桁** の **`documentNumber`** で TSE Donde Votar 登録を照会します。成功レスポンスには **KYC**、**選挙検証**、**コンプライアンス** ワークフロー向けに投票所、junta（テーブル）、province、canton、district が含まれます。
+
+### Headers
+
+| Header | Value | Description |
+| --- | --- | --- |
+| Accept | application/json | レスポンス形式 |
+| Authorization | Bearer \<token\> | Verifik JWT |
+
+### Parameters
+
+| Field | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| documentType | String | Yes | 書類種別。許可値: `CCCR`. | `CCCR` |
+| documentNumber | String | Yes | コスタリカ cédula（**9〜13**桁）. | `401310036` |
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/cr/votacion", {
+  params: {
+    documentType: "CCCR",
+    documentNumber: "401310036",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cr/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CCCR", "documentNumber": "401310036"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CCCR",
+    "documentNumber": "401310036",
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "firstLastName": "LOPEZ",
+    "secondLastName": "GARCIA",
+    "gender": "1",
+    "province": "San José",
+    "canton": "Central",
+    "district": "Carmen",
+    "pollingPlace": "Escuela República de Chile",
+    "pollingTable": "12",
+    "electoralCode": "210011",
+    "electorNumber": "325",
+    "schoolAddress": "COSTADO NORTE DE LA PLAZA DE DEPORTES",
+    "latitude": 9.9281,
+    "longitude": -84.0907
+  },
+  "signature": {
+    "dateTime": "July 13, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`** は **`CCCR`**、**`documentNumber`** は **9〜13**桁の数字である必要があります。
+- **本番の例 ID:** `401310036`, `401310030`, `401310039`, `402330708`, `114070037`.
+- **サンドボックスモード:** 安定プロフィールには **`010000001`**〜**`010000010`** のテストIDを使用。**`090040401`** は **404** を返します。
+- レスポンスは **機微な個人データ** として扱い、適用されるプライバシー法を遵守してください。
+- 関連: [コスタリカ — 国民身分証（CCCR）](/identity/costa-rica).

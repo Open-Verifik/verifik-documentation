@@ -27,6 +27,7 @@ const sidebars = {
 				{ type: "doc", id: "identity-validation/colombia/identity-validation-colombia-colombian-politically-exposed-persons", label: "🇨🇴 PEP 조회 (AML)" },
 				{ type: "doc", id: "identity/colombia-situacion-militar", label: "🇨🇴 군 복무 기록" },
 				{ type: "doc", id: "identity/costa-rica", label: "🇨🇷 코스타리카 국민 신분증(CCCR)", key: "identity-costa-rica" },
+				{ type: "doc", id: "identity/costa-rica/votacion", label: "🇨🇷 코스타리카 — 투표 장소" },
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 에콰도르 국민(CCEC)", key: "identity-ecuador" },
 				{ type: "doc", id: "identity/honduras/votacion", label: "🇭🇳 온두라스 — 투표 장소" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 멕시코 시민", key: "identity-mexico" },

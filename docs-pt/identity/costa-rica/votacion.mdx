@@ -1,0 +1,147 @@
+---
+title: Costa Rica - Local de votação
+description: Consulte o registro eleitoral oficial Donde Votar do TSE por CCCR. Retorna local de votação, junta, província, cantão, distrito e coordenadas no mapa.
+slug: /identity/costa-rica/votacion
+keywords:
+  - v2/cr/votacion
+  - GET /v2/cr/votacion
+  - api.verifik.co/v2/cr/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Costa Rica - Local de votação
+
+A Verifik consulta o registro eleitoral **Donde Votar do TSE** usando **CCCR** (cédula costarriquenha, **9 a 13 dígitos**). Use este endpoint para **verificação eleitoral**, **integração de eleitores** e **conformidade** quando os dados eleitorais costarriquenhos forem permitidos.
+
+Retorna detalhes do local de votação quando a fonte os fornece:
+
+- **`documentType`** — valor permitido: **CCCR**
+- **`documentNumber`** — cédula costarriquenha (**9 a 13** dígitos)
+- **`fullName`**, **`firstName`**, **`firstLastName`**, **`secondLastName`** — nome do cidadão no registro eleitoral
+- **`gender`** — código de sexo quando fornecido pela fonte
+- **`province`**, **`canton`**, **`district`** — residência e geografia eleitoral
+- **`pollingPlace`**, **`pollingTable`** — detalhes do local de votação
+- **`electoralCode`**, **`electorNumber`**, **`schoolAddress`** — metadados de junta do TSE
+- **Campos opcionais** — `latitude`, `longitude` quando incluídos pela fonte
+- Resposta **assinada** pela Verifik
+
+### Endpoint
+
+```
+GET v2/cr/votacion
+```
+
+Consulte o registro Donde Votar do TSE com **`documentType`** `CCCR` e um **`documentNumber`** de **9 a 13 dígitos**. Respostas bem-sucedidas incluem local de votação, junta (mesa), província, cantão e distrito para fluxos de **KYC**, **verificação eleitoral** e **conformidade**.
+
+### Headers
+
+| Header | Valor | Descrição |
+| --- | --- | --- |
+| Accept | application/json | Formato de resposta |
+| Authorization | Bearer \<token\> | Seu JWT Verifik |
+
+### Parâmetros
+
+| Campo | Tipo | Obrigatório | Descrição | Exemplo |
+| --- | --- | --- | --- | --- |
+| documentType | String | Sim | Tipo de documento. Valor permitido: `CCCR`. | `CCCR` |
+| documentNumber | String | Sim | Cédula costarriquenha (**9 a 13** dígitos). | `401310036` |
+
+### Requisição
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/cr/votacion", {
+  params: {
+    documentType: "CCCR",
+    documentNumber: "401310036",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cr/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CCCR", "documentNumber": "401310036"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CCCR",
+    "documentNumber": "401310036",
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "firstLastName": "LOPEZ",
+    "secondLastName": "GARCIA",
+    "gender": "1",
+    "province": "San José",
+    "canton": "Central",
+    "district": "Carmen",
+    "pollingPlace": "Escuela República de Chile",
+    "pollingTable": "12",
+    "electoralCode": "210011",
+    "electorNumber": "325",
+    "schoolAddress": "COSTADO NORTE DE LA PLAZA DE DEPORTES",
+    "latitude": 9.9281,
+    "longitude": -84.0907
+  },
+  "signature": {
+    "dateTime": "July 13, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notas
+
+- **`documentType`** deve ser **`CCCR`**; **`documentNumber`** deve ter **9 a 13** dígitos numéricos.
+- **IDs de exemplo em produção:** `401310036`, `401310030`, `401310039`, `402330708`, `114070037`.
+- **Modo sandbox:** use IDs de teste **`010000001`** a **`010000010`** para perfis estáveis; **`090040401`** retorna **404**.
+- Trate as respostas como **dados pessoais sensíveis**; cumpra as leis de privacidade aplicáveis.
+- Veja também: [Verificação de identidade na Costa Rica (CCCR)](/identity/costa-rica).

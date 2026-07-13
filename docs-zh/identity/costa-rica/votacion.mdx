@@ -1,0 +1,147 @@
+---
+title: 哥斯达黎加 - 投票地点
+description: 通过 CCCR 查询 TSE Donde Votar 官方选举登记。返回投票站、junta、省、cantón、区及地图坐标。
+slug: /identity/costa-rica/votacion
+keywords:
+  - v2/cr/votacion
+  - GET /v2/cr/votacion
+  - api.verifik.co/v2/cr/votacion
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 哥斯达黎加 - 投票地点
+
+Verifik 通过 **CCCR**（哥斯达黎加 cédula，**9 至 13 位**）查询 **TSE Donde Votar** 选举登记。在允许使用哥斯达黎加选举数据的场景下，用于 **选举验证**、**选民接入** 和 **合规** 工作流。
+
+当数据源提供时，返回选举地点详情：
+
+- **`documentType`** — 允许值：**CCCR**
+- **`documentNumber`** — 哥斯达黎加 cédula（**9 至 13** 位）
+- **`fullName`**, **`firstName`**, **`firstLastName`**, **`secondLastName`** — 选举登记中的公民姓名
+- **`gender`** — 数据源提供的性别代码
+- **`province`**, **`canton`**, **`district`** — 居住地与选举地理
+- **`pollingPlace`**, **`pollingTable`** — 投票站详情
+- **`electoralCode`**, **`electorNumber`**, **`schoolAddress`** — TSE junta 元数据
+- **可选字段** — 数据源包含时的 `latitude`, `longitude`
+- Verifik **签名** 响应
+
+### Endpoint
+
+```
+GET v2/cr/votacion
+```
+
+使用 **`documentType`** `CCCR` 和 **9 至 13 位** **`documentNumber`** 查询 TSE Donde Votar 登记。成功响应包含 **KYC**、**选举验证** 和 **合规** 工作流所需的投票站、junta（桌号）、province、canton 和 district。
+
+### Headers
+
+| Header | Value | Description |
+| --- | --- | --- |
+| Accept | application/json | 响应格式 |
+| Authorization | Bearer \<token\> | Verifik JWT |
+
+### Parameters
+
+| Field | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| documentType | String | Yes | 证件类型。允许值：`CCCR`. | `CCCR` |
+| documentNumber | String | Yes | 哥斯达黎加 cédula（**9 至 13** 位）. | `401310036` |
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/cr/votacion", {
+  params: {
+    documentType: "CCCR",
+    documentNumber: "401310036",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cr/votacion"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CCCR", "documentNumber": "401310036"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CCCR",
+    "documentNumber": "401310036",
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "firstLastName": "LOPEZ",
+    "secondLastName": "GARCIA",
+    "gender": "1",
+    "province": "San José",
+    "canton": "Central",
+    "district": "Carmen",
+    "pollingPlace": "Escuela República de Chile",
+    "pollingTable": "12",
+    "electoralCode": "210011",
+    "electorNumber": "325",
+    "schoolAddress": "COSTADO NORTE DE LA PLAZA DE DEPORTES",
+    "latitude": 9.9281,
+    "longitude": -84.0907
+  },
+  "signature": {
+    "dateTime": "July 13, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- **`documentType`** 必须为 **`CCCR`**；**`documentNumber`** 必须为 **9 至 13** 位数字。
+- **生产示例 ID：** `401310036`, `401310030`, `401310039`, `402330708`, `114070037`.
+- **沙盒模式：** 使用 **`010000001`** 至 **`010000010`** 测试 ID 获得稳定成功配置；**`090040401`** 返回 **404**。
+- 将响应视为 **敏感个人数据**；遵守适用的隐私法律。
+- 另见：[哥斯达黎加公民（CCCR）](/identity/costa-rica).
