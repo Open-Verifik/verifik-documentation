@@ -590,11 +590,6 @@ const sidebars = {
 				},
 				{
 					type: "doc",
-					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-policia",
-					label: "🇨🇴 Colombia - Antecedentes Policiales",
-				},
-				{
-					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-cumplimiento-policial",
 					label: "🇨🇴 Colombia - Cumplimiento Policial",
 				},

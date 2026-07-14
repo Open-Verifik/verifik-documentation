@@ -1,0 +1,190 @@
+---
+id: colombia-police-record-check
+draft: true
+title: コロンビア — 警察記録照会
+description: コロンビアの警察記録照会サービス。
+slug: /background-check/colombia-police-record-check
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# コロンビア — 警察記録照会
+
+## API リファレンス
+
+### エンドポイント
+
+```
+https://api.verifik.co/v2/co/policia/consultar
+```
+
+コロンビア警察記録照会サービスでは、ID 文書番号を指定することで、コロンビアにおける個人の犯罪歴を照会できます。コロンビア憲法第 248 条に従い、コロンビア司法当局における係属中の法的事項の有無を確認します。レスポンスには対象者の氏名、名、姓、その他法的状態に関する詳細が含まれます。採用やデューデリジェンス目的でバックグラウンド調査を行う企業・組織に最適です。
+
+### ヘッダー
+
+| 名前          | 値                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### パラメーター
+
+:::info
+対応する **文書タイプ** とそれぞれの必須パラメーターの一覧については、[文書タイプ](/background-check/document-types) ガイドをご参照ください。
+:::
+
+| 名前             | 型     | 必須 | 説明                                                                       |
+| ---------------- | ------ | ---- | -------------------------------------------------------------------------- |
+| `documentType`   | string | はい | 文書タイプ。許可される値: CC, CE。                                         |
+| `documentNumber` | string | はい | 照会対象者の文書番号。スペースやドットを含めずに入力してください。         |
+
+### リクエスト
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/policia/consultar",
+  params: { documentType: "CC", documentNumber: "123456789" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {}
+conn.request("GET", "/v2/co/policia/consultar?documentType=CC&documentNumber=123456789", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/co/policia/consultar?documentType=CC&documentNumber=123456789")!,timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
+
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/co/policia/consultar?documentType=CC&documentNumber=123456789');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+```
+
+</TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CCAR",
+    "documentNumber": "123456789",
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": [
+      "MATEO",
+      "VERIFIK"
+    ],
+    "details": "NO TIENE ASUNTOS PENDIENTES CON LAS AUTORIDADES JUDICIALES\\nde conformidad con lo establecido en el artículo 248 de la Constitución Política de Colombia. \\n\\nEn cumplimiento de la Sentencia SU-458 del 21 de junio de 2012, proferida por la Honorable Corte Constitucional, la leyenda \"NO TIENE ASUNTOS PENDIENTES CON LAS AUTORIDADES JUDICIALES\" aplica para todas aquellas personas que no registran antecedentes y para quienes la autoridad judicial competente haya decretado la extinción de la condena o la prescripción de la pena. "
+  },
+  "signature": {
+    "dateTime": "March 13, 2024 10:48 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "7QS69"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409-1" label="409 (パラメーター不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
+}
+```
+
+</TabItem>
+<TabItem value="409-2" label="409 (不正な文書タイプ)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [CC,CE]"
+}
+```
+
+</TabItem>
+</Tabs>

@@ -788,11 +788,6 @@ const sidebars = {
 				},
 				{
 					type: "doc",
-					id: "background-check/colombia-police-record-check",
-					label: "🇨🇴 Colombia - Colombian Police Record Check",
-				},
-				{
-					type: "doc",
 					id: "background-check/colombia-police-compliance-corrective-measures",
 					label: "🇨🇴 Colombia - Verify Police Compliance with Corrective Measures",
 				},

@@ -37,7 +37,6 @@ const ES_REL_PATH_TO_CANONICAL = {
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-sisben": "background-check/colombia-sisben-score",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-procuraduria":
 		"background-check/colombia-disciplinary-records-attorneys-office",
-	"verificacion-antecendentes/verificacion-antecendentes-colombia-policia": "background-check/colombia-police-record-check",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-cumplimiento-policial":
 		"background-check/colombia-police-compliance-corrective-measures",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-contratos-publicos":

@@ -168,7 +168,6 @@ const sidebars = {
 				{ type: "doc", id: "background-check/chile-certificate-verify", label: "🇨🇱 Registro Civil" },
 				{ type: "doc", id: "background-check/united-states-passport-entries", label: "🇺🇸 パスポート・米国入出国" },
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 公共契約" },
-				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 警察の犯罪経歴" },
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 RNMC 是正措置" },
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 会計検査院証明" },
 				{ type: "doc", id: "background-check/colombia-disciplinary-records-attorneys-office", label: "🇨🇴 懲戒記録" },

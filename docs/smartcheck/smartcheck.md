@@ -212,7 +212,7 @@ SmartCheck offers a vast range of APIs that cater to different verification need
       title="Colombian background check"
       description=""
       image="/img/smartcheck/colombia-background.png"
-      link="/background-check/colombia-police-record-check"
+      link="/background-check/colombia"
     />
   </div>
   <div className="col col--4">

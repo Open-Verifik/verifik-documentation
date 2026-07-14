@@ -166,7 +166,6 @@ const sidebars = {
 				{ type: "doc", id: "background-check/argentina-certificate-verify", label: "🇦🇷 Antecedentes criminais" },
 				{ type: "doc", id: "background-check/chile-certificate-verify", label: "🇨🇱 Registro Civil" },
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 Contratos públicos" },
-				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 Antecedentes policiais" },
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 RNMC / medidas corretivas" },
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 Contraloria" },
 				{ type: "doc", id: "background-check/colombia-disciplinary-records-attorneys-office", label: "🇨🇴 Disciplinares (Procuradoria)" },

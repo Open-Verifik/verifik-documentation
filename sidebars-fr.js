@@ -153,7 +153,6 @@ const sidebars = {
 				{ type: "doc", id: "background-check/argentina-certificate-verify", label: "🇦🇷 Casier judiciaire" },
 				{ type: "doc", id: "background-check/chile-certificate-verify", label: "🇨🇱 Registro Civil" },
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 Contrats publics" },
-				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 Casier police" },
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 Mesures correctives (RNMC)" },
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 Contraloría" },
 				{ type: "doc", id: "background-check/colombia-disciplinary-records-attorneys-office", label: "🇨🇴 Discipline (Procuraduría)" },

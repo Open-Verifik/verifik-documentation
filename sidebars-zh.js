@@ -154,7 +154,6 @@ const sidebars = {
 				{ type: "doc", id: "background-check/argentina-certificate-verify", label: "🇦🇷 犯罪记录证明" },
 				{ type: "doc", id: "background-check/chile-certificate-verify", label: "🇨🇱 民事登记证明" },
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 公共合同" },
-				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 警方犯罪记录" },
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 RNMC 纠正措施" },
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 审计署证明" },
 				{ type: "doc", id: "background-check/colombia-disciplinary-records-attorneys-office", label: "🇨🇴 纪律处分记录" },

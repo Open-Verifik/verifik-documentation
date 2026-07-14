@@ -213,11 +213,6 @@ const config = {
 	// Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
 	future: {
 		v4: true, // Improve compatibility with the upcoming Docusaurus v4
-		// Rspack dev bundler can panic on corrupted root-owned cache; webpack is stable for `npm start`.
-		faster: {
-			rspackBundler: false,
-			rspackPersistentCache: false,
-		},
 	},
 
 	// Set the production url of your site here

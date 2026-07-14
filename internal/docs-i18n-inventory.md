@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-07-13T22:54:55.967Z
+Generated: 2026-07-14T15:36:27.587Z
 
-- **Files scanned:** 490
-- **Unique endpoint URLs:** 208
-- **Duplicate URL groups (SEO / aliases):** 56
-- **Docs without `### Endpoint` block:** 205
+- **Files scanned:** 487
+- **Unique endpoint URLs:** 207
+- **Duplicate URL groups (SEO / aliases):** 55
+- **Docs without `### Endpoint` block:** 204
 
 ## Summary by priority (canonical primary path only)
 
@@ -13,7 +13,7 @@ Generated: 2026-07-13T22:54:55.967Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 23 | vehicle-validation (other countries) |
-| P2 | 162 | identity, biometrics, resources, etc. |
+| P2 | 161 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -60,9 +60,6 @@ Generated: 2026-07-13T22:54:55.967Z
 - `v2/co/foreigner-id/pep`
   - `identity-validation/colombia/special-stay-permit-pep.mdx`
   - `identity/colombia-pep-id.mdx`
-- `v2/co/policia/consultar`
-  - `background-check/colombia-police-record-check.mdx`
-  - `resources/information-validations/request-a-criminal-check.mdx`
 - `v2/co/runt/conductor`
   - `vehicle-validation/colombia/driver-s-license.mdx`
   - `vehicle-validation/colombia/drivers-license-verification.mdx`
@@ -293,7 +290,6 @@ Generated: 2026-07-13T22:54:55.967Z
 | P2 | `v2/co/foreigner-id/ppt` | `identity/colombia-ppt.mdx` |
 | P2 | `v2/co/inpec` | `background-check/colombia-inpec.mdx` |
 | P0 | `v2/co/medellin/vehicle/fines` | `vehicle-validation/colombia/medellin-vehicle-fines.mdx` |
-| P2 | `v2/co/policia/consultar` | `background-check/colombia-police-record-check.mdx` |
 | P2 | `v2/co/policia/rnmc` | `background-check/colombia-police-compliance-corrective-measures.mdx` |
 | P2 | `v2/co/politically-exposed-persons` | `identity-validation/colombia/colombian-politically-exposed-persons.mdx` |
 | P2 | `v2/co/procuraduria/antecedentes` | `background-check/colombia-disciplinary-records-attorneys-office.mdx` |
@@ -436,7 +432,6 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `authentication/create-new-token-and-revoke-previous-tokens.md`
 - `background-check.mdx`
 - `background-check/colombia.mdx`
-- `background-check/colombia/colombian-police-record-check.md`
 - `background-check/colombia/disciplinary-records-in-colombia-attorneys-office.md`
 - `background-check/colombia/verify-police-compliance-with-corrective-measures.mdx`
 - `background-check/document-types.mdx`

@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkverifik_documentation=globalThis.webpackChunkverifik_documentation||[]).push([[52483],{42820(i,a,o){o.r(a),o.d(a,{default:()=>r});var t=o(74848);o(96540);var e=o(56347);function r(){return(0,t.jsx)(e.rd,{to:"/verifik-es/validacion-vehiculos/colombia/runt-soat-rtm"})}}}]);
