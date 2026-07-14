@@ -1,0 +1,175 @@
+---
+id: mexico-ine-ocr
+title: Mexique — OCR INE
+description: Extrayez les champs personnels et de la carte à partir des images recto/verso de l'INE mexicaine via OCR.
+slug: /identity/mexico-ine-ocr
+keywords:
+  - v2/mx/ine/ocr
+  - /v2/mx/ine/ocr
+  - v2 mx ine ocr
+  - api/mx/ine/ocr
+  - /api/mx/ine/ocr
+  - api mx ine ocr
+  - api.verifik.co/v2/mx/ine/ocr
+  - 'https://api.verifik.co/v2/mx/ine/ocr'
+  - POST v2/mx/ine/ocr
+  - POST /v2/mx/ine/ocr
+  - mx/ine/ocr
+  - /mx/ine/ocr
+  - INE OCR
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Mexique — OCR INE
+
+Flux one-shot pour une **INE** mexicaine : OCR Gemini Verifik sur recto/verso, puis validation Nexcar avec les numéros extraits. La réponse contient `ocr`, `validation` et `validateParamsUsed`.
+
+- **`front`** (requis) — URL publique ou image en base64 du recto
+- **`back`** (optionnel) — URL publique ou base64 du verso ; recommandé pour CIC, OCR et MRZ
+
+Pour une validation numéros seuls, utilisez **[Mexique — Validation INE](/verifik-fr/identity/mexico-ine)** (`GET v2/mx/ine`). Pour le CURP, utilisez **[Citoyen mexicain (CURP)](/verifik-fr/identity/mexico)** (`v2/mx/curp`).
+
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/ine/ocr
+```
+
+Submit front (and optional back) images. Verifik runs Gemini OCR, then Nexcar number validation, and returns nested `ocr` + `validation` + `validateParamsUsed`.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `front` | string | Yes | Front image as a public URL or base64 string (with or without `data:` prefix). Supported: JPG, JPEG, PNG, GIF, PDF. | `https://example.com/ine-front.jpg` |
+| `back` | string | No | Back image as a public URL or base64 string. Improves OCR accuracy. | `https://example.com/ine-back.jpg` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+  "https://api.verifik.co/v2/mx/ine/ocr",
+  {
+    front: "https://example.com/ine-front.jpg",
+    back: "https://example.com/ine-back.jpg",
+  },
+  {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  }
+);
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/ine/ocr"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+payload = {
+    "front": "https://example.com/ine-front.jpg",
+    "back": "https://example.com/ine-back.jpg",
+}
+r = requests.post(url, headers=headers, json=payload)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "ocr": {
+      "cic": "187639699",
+      "citizenIdentifier": "031206745",
+      "curp": "MAFC760611MYNRLR03",
+      "documentType": "INE",
+      "electorKey": "CSFTGV76061131H400",
+      "fullName": "CARLA ISABEL MARTINEZ FERNANDEZ",
+      "ocr": "0276031206745",
+      "subType": "E",
+      "type": "INE"
+    },
+    "validation": {
+      "cic": "187639699",
+      "documentNumber": "187639699",
+      "documentType": "INE",
+      "status": "OK",
+      "validity": "31 de diciembre de 2030"
+    },
+    "validateParamsUsed": {
+      "documentType": "INE",
+      "documentNumber": "187639699",
+      "ocr": "0276031206745",
+      "citizenIdentifier": "031206745",
+      "model": "E"
+    }
+  },
+  "signature": {
+    "dateTime": "July 14, 2026 10:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "front is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `front` is required; `back` is optional but recommended for CIC, OCR, citizen identifier, and MRZ fields.
+- Images may be public URLs or base64 (with or without `data:` prefix). Supported formats: JPG, JPEG, PNG, GIF, PDF.
+- Allow client timeouts of at least 60 seconds; upstream OCR jobs typically finish in 5–30 seconds.
+- Sandbox: any valid `front` string returns a fixture; a `front` value containing `404` returns **404**.
+- Related: [Mexico — INE Validation](/verifik-fr/identity/mexico-ine), [Mexican Citizen (CURP)](/verifik-fr/identity/mexico).

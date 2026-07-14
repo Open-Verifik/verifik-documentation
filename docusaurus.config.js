@@ -387,6 +387,12 @@ const config = {
 				searchResultContextMaxLength: 60,
 				removeDefaultStopWordFilter: ["en"],
 				searchContextByPaths: ["verifik-es", "docs-es", "doc-es", "verifik-fr", "verifik-pt", "verifik-ko", "verifik-ja", "verifik-zh", "recursos"],
+				ignoreFiles: [
+					/colombia-police-record-check/,
+					/colombian-police-record-check/,
+					/verificacion-antecendentes-colombia-policia/,
+					/verificacion-de-antecedentes-policiales-en-colombia/,
+				],
 			},
 		],
 	],

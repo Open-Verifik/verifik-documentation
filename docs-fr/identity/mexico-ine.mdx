@@ -1,0 +1,161 @@
+---
+id: mexico-ine
+title: Mexique — Validation INE
+description: Validez une carte d'électeur mexicaine (INE) auprès du registre électoral à l'aide du CIC, de l'OCR ou de la clave de elector.
+slug: /identity/mexico-ine
+keywords:
+  - v2/mx/ine
+  - /v2/mx/ine
+  - v2 mx ine
+  - api/mx/ine
+  - /api/mx/ine
+  - api mx ine
+  - api.verifik.co/v2/mx/ine
+  - 'https://api.verifik.co/v2/mx/ine'
+  - GET v2/mx/ine
+  - GET /v2/mx/ine
+  - mx/ine
+  - /mx/ine
+  - INE validation
+  - clave de elector
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Mexique — Validation INE
+
+Validez une **INE** mexicaine (*Credencial para Votar*) auprès du registre électoral. Envoyez `documentType=INE` et un identifiant principal dans `documentNumber`. L'API détecte automatiquement s'il s'agit d'un **CIC** (9 chiffres), d'un **OCR** (13 chiffres) ou d'une **clave de elector** (18 caractères).
+
+Les champs optionnels couvrent les combinaisons par modèle de carte exigées par la source officielle :
+
+- **`citizenIdentifier`** — requis pour les modèles **E, F, G, H** avec le CIC
+- **`emissionNumber`** — requis pour le modèle **C** avec OCR et clave de elector
+- **`model`** — indice optionnel (`C`–`H`) pour sélectionner la combinaison correcte
+
+Pour une recherche nominative par **CURP**, utilisez **[Citoyen mexicain (CURP)](/verifik-fr/identity/mexico)** (`v2/mx/curp`). Pour extraire des champs depuis des images INE, utilisez **[Mexique — OCR INE](/verifik-fr/identity/mexico-ine-ocr)** (`v2/mx/ine/ocr`).
+
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/ine
+```
+
+Submit an INE identifier to obtain electoral **status**, **validity**, emission metadata, and related registry fields when the credential is recognized.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | Yes | Allowed value: `INE`. | `INE` |
+| `documentNumber` | string | Yes | CIC (9 digits), OCR (13 digits), or clave de elector (18 alphanumeric). | `187639699` |
+| `citizenIdentifier` | string | No | Citizen identifier from the back of the card. Needed for models E–H with CIC. | `031206745` |
+| `emissionNumber` | string | No | Emission number. Needed for model C. | `1` |
+| `model` | string | No | Optional card model hint: `C`, `D`, `E`, `F`, `G`, or `H`. | `E` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/ine", {
+  params: {
+    documentType: "INE",
+    documentNumber: "187639699",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/ine"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "INE", "documentNumber": "187639699"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "cic": "187639699",
+    "documentNumber": "187639699",
+    "documentType": "INE",
+    "electorKey": "CSFTGV76061131H400",
+    "emissionNumber": "1",
+    "emissionYear": "2018",
+    "federalDistrict": "04",
+    "identifierType": "cic",
+    "localDistrict": "03",
+    "message": "Vigente como medio de identificacion y puede votar",
+    "messageCode": "3",
+    "ocr": "0276031206745",
+    "registrationYear": "2010",
+    "status": "OK",
+    "validity": "31 de diciembre de 2030"
+  },
+  "signature": {
+    "dateTime": "July 14, 2026 10:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `documentType` must be `INE`.
+- `documentNumber` auto-detects CIC (9 digits), OCR (13 digits), or clave de elector (18 alphanumeric).
+- Models E–H typically need `citizenIdentifier` with CIC; model C needs `emissionNumber` with OCR and clave de elector.
+- Negative electoral verdicts (for example not vigente) still return HTTP **200** with `status` and `message` reflecting the registry result.
+- Sandbox fixtures: `187639699`, `0276031206745`, `CSFTGV76061131H400`. Document `900404019` returns **404**.
+- Related: [Mexican Citizen (CURP)](/verifik-fr/identity/mexico), [Mexico — INE OCR](/verifik-fr/identity/mexico-ine-ocr).

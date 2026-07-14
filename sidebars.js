@@ -265,6 +265,16 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/mexico-ine",
+					label: "🇲🇽 Mexico — INE Validation",
+				},
+				{
+					type: "doc",
+					id: "identity/mexico-ine-ocr",
+					label: "🇲🇽 Mexico — INE OCR",
+				},
+				{
+					type: "doc",
 					id: "identity/panama",
 					label: "🇵🇦 Panama",
 					key: "identity-panama",
@@ -788,11 +798,6 @@ const sidebars = {
 				},
 				{
 					type: "doc",
-					id: "background-check/colombia-police-record-check",
-					label: "🇨🇴 Colombia - Colombian Police Record Check",
-				},
-				{
-					type: "doc",
 					id: "background-check/colombia-police-compliance-corrective-measures",
 					label: "🇨🇴 Colombia - Verify Police Compliance with Corrective Measures",
 				},
@@ -852,7 +857,19 @@ const sidebars = {
 			type: "category",
 			label: "VOTING",
 			collapsible: false,
-			items: ["legal/voting"],
+			items: [
+				"legal/voting",
+				{
+					type: "doc",
+					id: "legal/epic-eci",
+					label: "🇮🇳 India - EPIC (Voter ID) name lookup",
+				},
+				{
+					type: "doc",
+					id: "legal/voting-eci-epic",
+					label: "🇮🇳 India - EPIC polling & voting location",
+				},
+			],
 		},
 		{
 			type: "category",

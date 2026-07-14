@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-07-13T22:54:55.967Z
+Generated: 2026-07-14T18:09:08.161Z
 
-- **Files scanned:** 490
-- **Unique endpoint URLs:** 208
+- **Files scanned:** 492
+- **Unique endpoint URLs:** 210
 - **Duplicate URL groups (SEO / aliases):** 56
 - **Docs without `### Endpoint` block:** 205
 
@@ -13,7 +13,7 @@ Generated: 2026-07-13T22:54:55.967Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 23 | vehicle-validation (other countries) |
-| P2 | 162 | identity, biometrics, resources, etc. |
+| P2 | 164 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -370,6 +370,8 @@ Generated: 2026-07-13T22:54:55.967Z
 | P2 | `v2/ip-lookup` | `identity/ip-lookup.mdx` |
 | P2 | `v2/mx/company` | `business-validation/mexican-companies.mdx` |
 | P2 | `v2/mx/curp` | `identity/mexico.mdx` |
+| P2 | `v2/mx/ine` | `identity/mexico-ine.mdx` |
+| P2 | `v2/mx/ine/ocr` | `identity/mexico-ine-ocr.mdx` |
 | P1 | `v2/mx/vehiculo/placa` | `vehicle-validation/mexico.md` |
 | P2 | `v2/ocr/scan-prompt` | `ocr-engines/scan-prompt.mdx` |
 | P2 | `v2/ocr/scan-prompt/template/:id` | `ocr-engines/scan-prompt/delete-a-scan-prompt-template.mdx` |
