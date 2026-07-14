@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-07-14T18:09:08.161Z
+Generated: 2026-07-14T18:24:28.916Z
 
-- **Files scanned:** 492
+- **Files scanned:** 489
 - **Unique endpoint URLs:** 209
-- **Duplicate URL groups (SEO / aliases):** 56
-- **Docs without `### Endpoint` block:** 205
+- **Duplicate URL groups (SEO / aliases):** 55
+- **Docs without `### Endpoint` block:** 204
 
 ## Summary by priority (canonical primary path only)
 
@@ -13,7 +13,7 @@ Generated: 2026-07-14T18:09:08.161Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 23 | vehicle-validation (other countries) |
-| P2 | 164 | identity, biometrics, resources, etc. |
+| P2 | 163 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -434,7 +434,6 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `authentication/create-new-token-and-revoke-previous-tokens.md`
 - `background-check.mdx`
 - `background-check/colombia.mdx`
-- `background-check/colombia/colombian-police-record-check.md`
 - `background-check/colombia/disciplinary-records-in-colombia-attorneys-office.md`
 - `background-check/colombia/verify-police-compliance-with-corrective-measures.mdx`
 - `background-check/document-types.mdx`
