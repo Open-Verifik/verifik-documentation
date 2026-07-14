@@ -2570,12 +2570,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (207 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (209 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-07-14T16:23:17.831Z_
+_Last regenerated: 2026-07-14T18:30:00.000Z_
 
 ## Argentina
 
@@ -2742,6 +2742,8 @@ _Last regenerated: 2026-07-14T16:23:17.831Z_
 | --- | --- | --- |
 | `v2/mx/company` | v2 mx company mx/company /mx/company api/mx/company /api/mx/company api mx company api.verifik.co/v2/mx/company https://api.verifik.co/v2/mx/company GET v2/mx/company GET /v2/mx/company | [mexican-companies](/business-validation/mexican-companies) |
 | `v2/mx/curp` | v2 mx curp mx/curp /mx/curp api/mx/curp /api/mx/curp api mx curp api.verifik.co/v2/mx/curp https://api.verifik.co/v2/mx/curp GET v2/mx/curp GET /v2/mx/curp | [mexico](/identity/mexico) |
+| `v2/mx/ine` | v2 mx ine mx/ine /mx/ine api/mx/ine /api/mx/ine api mx ine api.verifik.co/v2/mx/ine https://api.verifik.co/v2/mx/ine GET v2/mx/ine GET /v2/mx/ine | [Mexico — INE Validation](/identity/mexico-ine) |
+| `v2/mx/ine/ocr` | v2 mx ine ocr mx/ine/ocr /mx/ine/ocr api/mx/ine/ocr /api/mx/ine/ocr api mx ine ocr ine/ocr /ine/ocr api.verifik.co/v2/mx/ine/ocr https://api.verifik.co/v2/mx/ine/ocr GET v2/mx/ine/ocr GET /v2/mx/ine/ocr | [Mexico — INE OCR](/identity/mexico-ine-ocr) |
 | `v2/mx/vehiculo/placa` | v2 mx vehiculo placa mx/vehiculo/placa /mx/vehiculo/placa api/mx/vehiculo/placa /api/mx/vehiculo/placa api mx vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/mx/vehiculo/placa https://api.verifik.co/v2/mx/vehiculo/placa GET v2/mx/vehiculo/placa GET /v2/mx/vehiculo/placa | [mexico](/vehicle-validation/mexico) |
 
 ## Panama

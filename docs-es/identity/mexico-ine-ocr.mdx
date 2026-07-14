@@ -1,0 +1,187 @@
+---
+id: mexico-ine-ocr
+title: México — OCR INE
+description: Extrae campos del INE con OCR Gemini de Verifik y valida el estatus electoral con Nexcar (solo números) en una sola petición.
+slug: /identity/mexico-ine-ocr
+keywords:
+  - v2/mx/ine/ocr
+  - /v2/mx/ine/ocr
+  - v2 mx ine ocr
+  - api/mx/ine/ocr
+  - /api/mx/ine/ocr
+  - api mx ine ocr
+  - api.verifik.co/v2/mx/ine/ocr
+  - 'https://api.verifik.co/v2/mx/ine/ocr'
+  - POST v2/mx/ine/ocr
+  - POST /v2/mx/ine/ocr
+  - mx/ine/ocr
+  - /mx/ine/ocr
+  - INE OCR
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# México — OCR INE
+
+Flujo en un solo request para una **INE** mexicana (*Credencial para Votar*):
+
+1. **OCR Gemini de Verifik** extrae campos del frente (y opcionalmente el reverso)
+2. Verifik arma los identificadores a partir de esa extracción
+3. **Validación Nexcar** corre solo con números (sin OCR de imágenes del proveedor)
+4. La respuesta incluye **`ocr`**, **`validation`** y **`validateParamsUsed`**
+
+Envía JSON con:
+
+- **`front`** (requerido) — URL pública o imagen en base64 del frente
+- **`back`** (opcional) — URL pública o base64 del reverso; muy recomendado para CIC, OCR y MRZ
+
+Para validar solo con números (sin imágenes), usa **[México — Validación INE](/identity/mexico-ine)** (`GET v2/mx/ine`). Para CURP, usa **[Ciudadano mexicano (CURP)](/identity/mexico)** (`v2/mx/curp`).
+
+## Referencia de la API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/ine/ocr
+```
+
+Envía imágenes del frente (y opcionalmente del reverso). Verifik optimiza el tamaño, ejecuta Gemini OCR y valida los identificadores con Nexcar. Usa timeouts de cliente de al menos 60 segundos.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `front` | string | Yes | Imagen del frente como URL pública o base64. | `https://example.com/ine-front.jpg` |
+| `back` | string | No | Imagen del reverso como URL pública o base64. | `https://example.com/ine-back.jpg` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+  "https://api.verifik.co/v2/mx/ine/ocr",
+  {
+    front: "https://example.com/ine-front.jpg",
+    back: "https://example.com/ine-back.jpg",
+  },
+  {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  }
+);
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/ine/ocr"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+payload = {
+    "front": "https://example.com/ine-front.jpg",
+    "back": "https://example.com/ine-back.jpg",
+}
+r = requests.post(url, headers=headers, json=payload)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "ocr": {
+      "birthDate": "11/06/1976",
+      "cic": "187639699",
+      "citizenIdentifier": "031206745",
+      "curp": "MAFC760611MYNRLR03",
+      "documentType": "INE",
+      "electorKey": "CSFTGV76061131H400",
+      "firstName": "CARLA ISABEL",
+      "fullName": "CARLA ISABEL MARTINEZ FERNANDEZ",
+      "ocr": "0276031206745",
+      "subType": "E",
+      "type": "INE",
+      "validity": "2029"
+    },
+    "validation": {
+      "cic": "187639699",
+      "documentNumber": "187639699",
+      "documentType": "INE",
+      "electorKey": "CSFTGV76061131H400",
+      "ocr": "0276031206745",
+      "status": "OK",
+      "validity": "31 de diciembre de 2030"
+    },
+    "validateParamsUsed": {
+      "documentType": "INE",
+      "documentNumber": "187639699",
+      "ocr": "0276031206745",
+      "citizenIdentifier": "031206745",
+      "model": "E"
+    }
+  },
+  "signature": {
+    "dateTime": "July 14, 2026 10:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "front is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Se cobra **`mexico_api_ine_ocr`** una vez por el shot combinado (Gemini OCR + validación Nexcar).
+- `front` es requerido; `back` es opcional pero recomendado.
+- Las imágenes se redimensionan/comprimen antes de Gemini.
+- Si el OCR no obtiene un identificador usable, responde **409** y no llama a Nexcar.
+- Sandbox: cualquier `front` válido devuelve el fixture anidado; si contiene `404`, responde **404**.
+- Relacionado: [México — Validación INE](/identity/mexico-ine), [Ciudadano mexicano (CURP)](/identity/mexico).

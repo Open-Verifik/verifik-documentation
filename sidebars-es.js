@@ -130,6 +130,8 @@ const sidebars = {
 				{ type: "doc", id: "identity/honduras", label: "🇭🇳 Honduras" },
 				{ type: "doc", id: "identidad/honduras/votacion", label: "🇭🇳 Honduras — Lugar de Votación" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 México", key: "identity-mexico" },
+				{ type: "doc", id: "identity/mexico-ine", label: "🇲🇽 México — Validación INE" },
+				{ type: "doc", id: "identity/mexico-ine-ocr", label: "🇲🇽 México — OCR INE" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Panamá", key: "identity-panama" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Paraguay", key: "identity-paraguay" },
 				{ type: "doc", id: "identity/peru", label: "🇵🇪 Perú", key: "identity-peru" },
@@ -659,7 +661,19 @@ const sidebars = {
 			type: "category",
 			label: "VOTACIÓN",
 			collapsible: false,
-			items: ["legal/votacion"],
+			items: [
+				"legal/votacion",
+				{
+					type: "doc",
+					id: "legal/epic-eci",
+					label: "🇮🇳 India - Consulta de nombre EPIC (Voter ID)",
+				},
+				{
+					type: "doc",
+					id: "legal/votacion-eci-epic",
+					label: "🇮🇳 India - Ubicación de votación EPIC",
+				},
+			],
 		},
 		{
 			type: "category",

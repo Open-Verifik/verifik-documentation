@@ -31,6 +31,8 @@ const sidebars = {
 				{ type: "doc", id: "identity/ecuador", label: "🇪🇨 Cidadão equatoriano (CCEC)", key: "identity-ecuador" },
 				{ type: "doc", id: "identity/honduras/votacion", label: "🇭🇳 Honduras — Local de votação" },
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 Cidadão mexicano", key: "identity-mexico" },
+				{ type: "doc", id: "identity/mexico-ine", label: "🇲🇽 México — Validação INE" },
+				{ type: "doc", id: "identity/mexico-ine-ocr", label: "🇲🇽 México — OCR INE" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Cidadão panamenho (CCPA)", key: "identity-panama" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Cidadão paraguaio (CIC)", key: "identity-paraguay" },
 				{ type: "doc", id: "identity/peru", label: "🇵🇪 Peru — Cidadão (DNI)", key: "identity-peru" },
