@@ -1,0 +1,217 @@
+---
+id: epic-eci
+title: 印度 EPIC（选民证）— 姓名查询 | Verifik
+description: 通过 Verifik API，使用 10 位 EPIC（选民证）从印度选举委员会（ECI）相关来源检索选民姓名及相关字段。
+slug: /legal/epic-eci
+keywords:
+  - India
+  - EPIC
+  - Voter ID
+  - ECI
+  - Electoral Commission of India
+  - electoral verification
+  - KYC
+  - voter name lookup
+  - v2/in/epic
+  - /v2/in/epic
+  - v2 in epic
+  - api/in/epic
+  - /api/in/epic
+  - api in epic
+  - api.verifik.co/v2/in/epic
+  - 'https://api.verifik.co/v2/in/epic'
+  - GET v2/in/epic
+  - GET /v2/in/epic
+  - in/epic
+  - /in/epic
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "印度 EPIC（选民证）姓名查询 | Verifik API",
+	description:
+		"通过 Verifik 安全 API，使用 10 位 EPIC（选民证）从 ECI 数据检索登记选民姓名及亲属信息。",
+	articleSection: "API Documentation",
+	keywords: "India EPIC, Voter ID, ECI, electoral verification, KYC, Verifik API",
+	about: {
+		"@type": "Thing",
+		name: "选举身份核验",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import SearchKeywords from '@site/src/components/SearchKeywords';
+
+# 印度 — EPIC（选民证）姓名查询
+
+Verifik 提供单一 REST 端点，用于查询与印度 **EPIC**（*Elector's Photo Identity Card*）关联的 **选民姓名** 信息，数据来源与 **印度选举委员会（ECI）** 对齐。适用于需要确认选民证号码返回一致登记姓名的身份核验、入驻与合规流程。
+
+## 此 API 验证什么？
+
+API 连接官方选举数据并返回：
+
+- **选民姓名结构**：名与姓（在可用时包含本地文字变体）。
+- **全名与亲属姓名**：适合以拉丁字母与本地文字显示与匹配的字段。
+- **EPIC 匹配**：确认所提供的 **10 位** EPIC（字母与数字）被识别并返回相关记录。
+
+这可减少人工核查，并使选举相关验证与底层登记册保持一致。
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/in/epic
+```
+
+在查询参数 `documentNumber` 中发送 EPIC，发起 **GET** 请求。成功时服务返回结构化姓名字段、可选本地文字值，以及 Verifik **signature** 块。
+
+### Headers
+
+| 名称          | 值                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parameters
+
+| 名称             | 类型   | 必填     | 说明                                                                  | 示例        |
+| ---------------- | ------ | -------- | --------------------------------------------------------------------- | ----------- |
+| `documentNumber` | string | **是**   | EPIC / 选民证。必须为 **恰好 10 个字符**（按签发的字母数字）。     | `IHM2796746` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/in/epic", {
+  params: { documentNumber: "IHM2796746" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/in/epic"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentNumber": "IHM2796746"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "arrayName": ["SHREEYA", "JAISWAL"],
+    "arrayNameLocal": ["শ্রিয়া", "জয়সোয়াল"],
+    "documentNumber": "IHM2796746",
+    "documentType": "EPIC",
+    "firstName": "SHREEYA",
+    "firstNameLocal": "শ্রিয়া",
+    "fullName": "SHREEYA JAISWAL",
+    "fullNameLocal": "শ্রিয়া জয়সোয়াল",
+    "lastName": "JAISWAL",
+    "lastNameLocal": "জয়সোয়াল",
+    "relativeFullName": "AJAY JAISWAL",
+    "relativeFullNameLocal": "অজয় জয়সোয়াল"
+  },
+  "signature": {
+    "dateTime": "March 25, 2026 11:38 AM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "D4QMS"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `documentNumber` 必须为 **恰好 10 个字符**；长度或格式无效可能返回 `409`。
+- 数据 **通过 Verifik** 获取；覆盖范围遵循该 EPIC 的 ECI 可用性。
+- 如需 **投票站与选区位置** 详情，请使用配套端点 [**印度 — EPIC 投票/投票站信息**](/verifik-zh/legal/voting-eci-epic)（`GET /v2/in/epic/votacion`）。
+
+---
+
+## 常见用例
+
+- 需要用返回的姓名与亲属姓名核验选民证的 **KYC 与身份项目**。
+- 在发放凭证或访问前必须验证 EPIC 的 **政府与市民服务**。
+- 选举身份检查构成更广泛风险与欺诈策略一部分的 **金融科技与合规**。
+
+## 官方来源与可靠性
+
+Verifik 将请求路由至可信选举来源，使您获得与 ECI 公开查询行为一致的数据。所有调用在传输中使用 TLS；请在日志与存储策略中将 EPIC 视为 **敏感个人数据**。
+
+## 主要优势
+
+- **集成简单**：一次带 `documentNumber` 与标准 `Authorization` 头的 GET。
+- **结构化响应**：在来源提供时包含姓名数组与本地文字字段。
+- **Verifik 认证**：成功响应可包含用于审计追踪的 Verifik `signature` 块。
+
+## 合规与安全
+
+仅使用 HTTPS（上述 URL 受 TLS 保护）。安全存储令牌、轮换 API 密钥，并遵循您所在司法辖区对选举与身份数据的数据保护规则。Verifik 平台面向高可用与受监控访问而设计。
+
+## 关于 Verifik
+
+Verifik 在多国提供身份、合规与防欺诈 API，以单一集成模型将您的应用连接至官方与权威数据源。
+
+<SearchKeywords
+  countries={['IN']}
+  products={['KYC']}
+  documents={['EPIC']}
+  apiPaths={['v2/in/epic']}
+  extra={['voter id lookup', 'electoral identity', 'name lookup']}
+/>

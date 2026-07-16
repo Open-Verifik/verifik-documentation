@@ -180,6 +180,16 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "투표",
+			collapsible: false,
+			items: [
+				{ type: "doc", id: "legal/voting", label: "🇨🇴 콜롬비아 — 투표 장소 (Registraduría)" },
+				{ type: "doc", id: "legal/epic-eci", label: "🇮🇳 인도 — EPIC (Voter ID) 이름 조회" },
+				{ type: "doc", id: "legal/voting-eci-epic", label: "🇮🇳 인도 — EPIC 투표소/투표 위치" },
+			],
+		},
+		{
+			type: "category",
 			label: "VERIFIK LLC",
 			collapsible: false,
 			items: [

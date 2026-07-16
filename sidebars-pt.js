@@ -192,6 +192,16 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "VOTAÇÃO",
+			collapsible: false,
+			items: [
+				{ type: "doc", id: "legal/voting", label: "🇨🇴 Colômbia — Local de votação (Registraduría)" },
+				{ type: "doc", id: "legal/epic-eci", label: "🇮🇳 Índia — Consulta de nome EPIC (Voter ID)" },
+				{ type: "doc", id: "legal/voting-eci-epic", label: "🇮🇳 Índia — Local de votação EPIC" },
+			],
+		},
+		{
+			type: "category",
 			label: "VERIFIK LLC",
 			collapsible: false,
 			items: [

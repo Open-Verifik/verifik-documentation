@@ -1,0 +1,217 @@
+---
+id: epic-eci
+title: Inde EPIC (Voter ID) — Recherche de nom | Verifik
+description: Récupérez le nom de l'électeur et les champs associés auprès de la Commission électorale de l'Inde (ECI) à partir d'un EPIC (Voter ID) de 10 caractères via l'API Verifik.
+slug: /legal/epic-eci
+keywords:
+  - India
+  - EPIC
+  - Voter ID
+  - ECI
+  - Electoral Commission of India
+  - electoral verification
+  - KYC
+  - voter name lookup
+  - v2/in/epic
+  - /v2/in/epic
+  - v2 in epic
+  - api/in/epic
+  - /api/in/epic
+  - api in epic
+  - api.verifik.co/v2/in/epic
+  - 'https://api.verifik.co/v2/in/epic'
+  - GET v2/in/epic
+  - GET /v2/in/epic
+  - in/epic
+  - /in/epic
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Inde EPIC (Voter ID) — Recherche de nom | API Verifik",
+	description:
+		"Récupérez le nom d'électeur enregistré et les informations de parenté à partir des données ECI avec un EPIC (Voter ID) de 10 caractères via l'API sécurisée Verifik.",
+	articleSection: "API Documentation",
+	keywords: "India EPIC, Voter ID, ECI, electoral verification, KYC, Verifik API",
+	about: {
+		"@type": "Thing",
+		name: "Vérification d'identité électorale",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import SearchKeywords from '@site/src/components/SearchKeywords';
+
+# Inde — Recherche de nom EPIC (Voter ID)
+
+Verifik expose un endpoint REST unique pour consulter les **informations de nom** liées à un **EPIC** indien (*Elector's Photo Identity Card*) à partir de sources alignées sur la **Commission électorale de l'Inde (ECI)**. Utilisez-le pour les contrôles d'identité, l'onboarding et les flux de conformité qui doivent confirmer qu'un numéro de Voter ID renvoie des données de nom cohérentes.
+
+## Que valide cette API ?
+
+L'API se connecte aux données électorales officielles pour renvoyer :
+
+- **Structure du nom de l'électeur** : prénom et nom (y compris les variantes en écriture locale si disponibles).
+- **Nom complet et nom du parent** : champs adaptés à l'affichage et à la comparaison en alphabet latin et en écriture locale.
+- **Correspondance EPIC** : confirme que l'EPIC de **10 caractères** (lettres et chiffres) est reconnu et renvoie les enregistrements associés.
+
+Cela réduit les contrôles manuels et maintient la vérification électorale alignée sur le registre sous-jacent.
+
+## Référence de l'API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/in/epic
+```
+
+Envoyez une requête **GET** avec l'EPIC dans le paramètre de requête `documentNumber`. Le service renvoie des champs de nom structurés, des valeurs optionnelles en écriture locale, et un bloc **signature** Verifik en cas de succès.
+
+### En-têtes (Headers)
+
+| Nom           | Valeur             |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Paramètres
+
+| Nom              | Type   | Requis   | Description                                                                   | Exemple     |
+| ---------------- | ------ | -------- | ----------------------------------------------------------------------------- | ----------- |
+| `documentNumber` | string | **Oui**  | EPIC / Voter ID. Doit faire **exactement 10 caractères** (alphanumérique). | `IHM2796746` |
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/in/epic", {
+  params: { documentNumber: "IHM2796746" },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/in/epic"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentNumber": "IHM2796746"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "arrayName": ["SHREEYA", "JAISWAL"],
+    "arrayNameLocal": ["শ্রিয়া", "জয়সোয়াল"],
+    "documentNumber": "IHM2796746",
+    "documentType": "EPIC",
+    "firstName": "SHREEYA",
+    "firstNameLocal": "শ্রিয়া",
+    "fullName": "SHREEYA JAISWAL",
+    "fullNameLocal": "শ্রিয়া জয়সোয়াল",
+    "lastName": "JAISWAL",
+    "lastNameLocal": "জয়সোয়াল",
+    "relativeFullName": "AJAY JAISWAL",
+    "relativeFullNameLocal": "অজয় জয়সোয়াল"
+  },
+  "signature": {
+    "dateTime": "March 25, 2026 11:38 AM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "D4QMS"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "Server error."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `documentNumber` doit faire **exactement 10 caractères** ; une longueur ou un format invalide peut renvoyer `409`.
+- Les données sont obtenues **via Verifik** ; la couverture suit la disponibilité ECI pour l'EPIC donné.
+- Pour les détails de **bureau de vote et circonscription**, utilisez l'endpoint compagnon [**Inde — Informations de vote / bureau EPIC**](/verifik-fr/legal/voting-eci-epic) (`GET /v2/in/epic/votacion`).
+
+---
+
+## Cas d'usage courants
+
+- **Programmes KYC et d'identité** qui doivent corroborer un Voter ID avec les champs de nom et de parenté renvoyés.
+- **Services publics et citoyens** qui doivent vérifier un EPIC avant de délivrer des accès ou des identifiants.
+- **Fintech et conformité** où les contrôles d'identité électorale font partie d'une stratégie plus large anti-fraude.
+
+## Sources officielles et fiabilité
+
+Verifik achemine les requêtes vers des sources électorales de confiance afin que vous receviez des données cohérentes avec le comportement de recherche publié par l'ECI. Tous les appels utilisent TLS en transit ; traitez les EPIC comme des **données personnelles sensibles** dans vos politiques de journalisation et de stockage.
+
+## Avantages clés
+
+- **Intégration simple** : un seul GET avec `documentNumber` et un en-tête `Authorization` standard.
+- **Réponse structurée** : tableaux de noms et champs en écriture locale lorsque la source les fournit.
+- **Certification Verifik** : chaque réponse réussie peut inclure un bloc `signature` Verifik pour l'audit.
+
+## Conformité et sécurité
+
+Utilisez uniquement HTTPS (l'URL ci-dessus est protégée par TLS). Stockez les jetons de façon sécurisée, faites tourner les clés API, et respectez les règles de protection des données de votre juridiction pour les données électorales et d'identité. La plateforme Verifik est conçue pour une haute disponibilité et un accès surveillé.
+
+## À propos de Verifik
+
+Verifik fournit des API d'identité, de conformité et de prévention de la fraude dans de nombreux pays, en connectant vos applications à des sources de données officielles et faisant autorité avec un modèle d'intégration unique.
+
+<SearchKeywords
+  countries={['IN']}
+  products={['KYC']}
+  documents={['EPIC']}
+  apiPaths={['v2/in/epic']}
+  extra={['voter id lookup', 'electoral identity', 'name lookup']}
+/>

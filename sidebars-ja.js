@@ -194,6 +194,16 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "投票",
+			collapsible: false,
+			items: [
+				{ type: "doc", id: "legal/voting", label: "🇨🇴 コロンビア — 投票場所（Registraduría）" },
+				{ type: "doc", id: "legal/epic-eci", label: "🇮🇳 インド — EPIC（Voter ID）氏名照会" },
+				{ type: "doc", id: "legal/voting-eci-epic", label: "🇮🇳 インド — EPIC 投票所・投票場所" },
+			],
+		},
+		{
+			type: "category",
 			label: "VERIFIK LLC",
 			collapsible: false,
 			items: [

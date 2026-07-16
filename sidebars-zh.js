@@ -180,6 +180,16 @@ const sidebars = {
 		},
 		{
 			type: "category",
+			label: "投票",
+			collapsible: false,
+			items: [
+				{ type: "doc", id: "legal/voting", label: "🇨🇴 哥伦比亚 — 投票地点（Registraduría）" },
+				{ type: "doc", id: "legal/epic-eci", label: "🇮🇳 印度 — EPIC（选民证）姓名查询" },
+				{ type: "doc", id: "legal/voting-eci-epic", label: "🇮🇳 印度 — EPIC 投票站/投票地点" },
+			],
+		},
+		{
+			type: "category",
 			label: "VERIFIK LLC",
 			collapsible: false,
 			items: [
