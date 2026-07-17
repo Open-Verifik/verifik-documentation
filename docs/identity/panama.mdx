@@ -1,7 +1,7 @@
 ---
 id: panama
 title: Panamanian Citizen
-description: 'Verify Panamanian CCPA national ID data (document, name, date of birth) against official civil-registry sources for KYC and fraud prevention.'
+description: 'Verify Panamanian CCPA national ID data (document and name) for KYC and fraud prevention.'
 slug: /identity/panama
 keywords:
   - v2/pa/cedula
@@ -23,9 +23,9 @@ export const structuredData = {
 	"@type": "TechArticle",
 	headline: "Identity Verification in Panama | Verifik KYC API",
 	description:
-		"Verify Panamanian CCPA national ID data (document, name, date of birth) against official civil-registry sources for KYC and fraud prevention.",
+		"Verify Panamanian CCPA national ID data (document and name) for KYC and fraud prevention.",
 	articleSection: "API Documentation",
-	keywords: "identity verification, KYC API, Panama CCPA validation, official data source, fraud prevention",
+	keywords: "identity verification, KYC API, Panama CCPA validation, fraud prevention",
 	about: {
 		"@type": "Thing",
 		name: "Identity Verification API",
@@ -39,17 +39,16 @@ import TabItem from '@theme/TabItem';
 
 # Identity Verification in Panama
 
-Verifik's Identity Verification API helps you authenticate Panamanian citizens using official government data. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
+Verifik's Identity Verification API helps you authenticate Panamanian citizens. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 
 We built this integration for businesses that need a fast, secure, and automated way to confirm the true identity of users, employees, or customers.
 
 ## What does this API validate?
 
-Our API connects directly with official records to validate:
+Our API validates:
 
 -   **Full Name & CCPA Number**: Supports *Cédula de Identidad Personal* (CCPA) for citizens and residents.
 -   **Identity Match**: Confirms that the name provided matches the CCPA number.
--   **Date of Birth Verification**: Validates the date of birth matches the official records.
 
 By verifying these details, you can be confident that the person you're dealing with is real and holds a valid document, significantly lowering the risk of impersonation and fraud.
 
@@ -61,7 +60,7 @@ By verifying these details, you can be confident that the person you're dealing 
 https://api.verifik.co/v2/pa/cedula
 ```
 
-Verify Panamanian **CCPA** (*Cédula de Identidad Personal*) data against official civil-registry sources. Send **`documentType`** (`CCPA`), a normalized **`documentNumber`**, and **`dateOfBirth`** in **`DD/MM/YYYY`**; the response confirms that the identity record is consistent for **KYC**, customer onboarding, and fraud controls.
+Verify Panamanian **CCPA** (*Cédula de Identidad Personal*) data. Send **`documentType`** (`CCPA`) and a normalized **`documentNumber`**; the response confirms that the identity record is consistent for **KYC**, customer onboarding, and fraud controls.
 
 ### Headers
 
@@ -76,7 +75,6 @@ Verify Panamanian **CCPA** (*Cédula de Identidad Personal*) data against offici
 | -------------- | ------- | -------- | ---------------------------------------------- |
 | `documentType` | string  | Yes      | Document type. Allowed value: `CCPA`. |
 | `documentNumber` | string | Yes      | Full Panamanian cédula after normalization (see **[Accepted `documentNumber` formats](#accepted-documentnumber-formats)** below). |
-| `dateOfBirth` | string | Yes      | Date of birth in `DD/MM/YYYY` format. |
 
 ### Accepted `documentNumber` formats
 
@@ -93,16 +91,16 @@ The API accepts a **complete** cédula string. Values are **normalized** server-
 2. **Panamanian born abroad** — Prefix `PE`. Example: `PE-1234-12345`
 3. **Foreign national with cédula** — Prefix `E`. Examples: `E-1234-12345`, `E-8-102017`
 4. **Naturalized** — Prefix `N`. Example: `N-1234-12345`
-5. **Pre–2006 civil registry (AV)** — Province immediately followed by `AV`. Example: `10AV-1234-12345`
+5. **Pre–2006 AV series** — Province immediately followed by `AV`. Example: `10AV-1234-12345`
 6. **Indigenous (PI)** — Province immediately followed by `PI`. Example: `1PI-1234-12345`
 
-Official province codes are **1–13**. Invalid codes (e.g. `14`) are rejected.
+Province codes are **1–13**. Invalid codes (e.g. `14`) are rejected.
 
 **Query strings:** Send `documentNumber` so **hyphens are preserved**. Some clients or parsers mis-handle values like `E-8-197698` (e.g. scientific notation); use a raw query string, proper encoding, or a library that keeps the value as a string.
 
 **Validation error:** If `documentNumber` is not a complete valid cédula after normalization, the API responds with **409** and a message indicating incorrect format (e.g. `Format incorrect: documentNumber`).
 
-Format rules align with the open [cedula-panama](https://github.com/merlos/cedula-panama) validator (MIT).
+Format rules align with the [cedula-panama](https://github.com/merlos/cedula-panama) validator (MIT).
 
 ### Request
 
@@ -113,7 +111,7 @@ Format rules align with the open [cedula-panama](https://github.com/merlos/cedul
 import axios from "axios";
 
 const { data } = await axios.get("https://api.verifik.co/v2/pa/cedula", {
-  params: { documentType: "CCPA", documentNumber: "8-1251-1829", dateOfBirth: "02/03/1992" },
+  params: { documentType: "CCPA", documentNumber: "8-1251-1829" },
   headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
 });
 console.log(data);
@@ -131,8 +129,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 $query = http_build_query([
     "documentType" => "CCPA",
-    "documentNumber" => "8-1251-1829",
-    "dateOfBirth" => "02/03/1992"
+    "documentNumber" => "8-1251-1829"
 ]);
 curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/pa/cedula?".$query);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -149,7 +146,7 @@ import os, requests
 
 url = "https://api.verifik.co/v2/pa/cedula"
 headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"documentType": "CCPA", "documentNumber": "8-1251-1829", "dateOfBirth": "02/03/1992"}
+params = {"documentType": "CCPA", "documentNumber": "8-1251-1829"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
@@ -166,7 +163,7 @@ import (
 )
 
 func main() {
-    url := "https://api.verifik.co/v2/pa/cedula?documentType=CCPA&documentNumber=8-1251-1829&dateOfBirth=02/03/1992"
+    url := "https://api.verifik.co/v2/pa/cedula?documentType=CCPA&documentNumber=8-1251-1829"
     req, _ := http.NewRequest("GET", url, nil)
     req.Header.Set("Accept", "application/json")
     req.Header.Set("Authorization", "Bearer "+getenv("VERIFIK_TOKEN"))
@@ -192,7 +189,6 @@ func main() {
     "firstName": "Roberto",
     "lastName": "Martínez",
     "fullName": "Roberto Martínez",
-    "dateOfBirth": "1992-03-02",
     "status": "valid"
   },
   "signature": {"message": "Certified by Verifik.co", "dateTime": "January 16, 2024 3:44 PM"},
@@ -216,7 +212,7 @@ func main() {
 ```json
 {
   "code": "MissingParameter",
-  "message": "missing dateOfBirth"
+  "message": "missing documentNumber"
 }
 ```
 
@@ -245,7 +241,6 @@ func main() {
 
 ### Notes
 
-- Birth date is required and must match the identification holder.
 - See **[Accepted `documentNumber` formats](#accepted-documentnumber-formats)** for all supported cédula patterns and normalization behavior.
 
 ---
@@ -257,16 +252,16 @@ func main() {
 -   **HR & Recruitment**: Validate candidate documents as part of your hiring workflow.
 -   **Insurance & Healthcare**: Confirm identities before issuing policies or providing medical benefits.
 
-## Official Sources & Reliability
+## Reliability
 
-We connect directly with official Panamanian government sources to ensure you receive verified, up-to-the-minute information.
+We deliver verified, up-to-the-minute identity information for Panamanian CCPA checks.
 Every query is handled with strict adherence to security and regulatory standards.
 
 ## Key Benefits
 
 -   **Automated Compliance**: Streamline your KYC checks to prevent fraud without adding friction for your users.
 -   **Instant Results**: Process verifications in seconds, perfect for real-time digital onboarding.
--   **Trusted Data**: Rely on data sourced directly from official records.
+-   **Trusted Data**: Rely on verified identity records.
 -   **Easy Integration**: Connect easily via our REST API or use our compatible SDKs.
 
 ## Compliance & Security
@@ -277,5 +272,4 @@ Our service is monitored 24/7 for availability and offers role-based access cont
 ## About Verifik
 
 Verifik is a leading platform for identity verification, compliance, and fraud prevention across Latin America.
-Our APIs automate KYC, KYB, AML, and biometric validation processes, connecting businesses with official data sources in Colombia, Mexico, Peru, Chile, Uruguay, Argentina, Brazil, Panama, and beyond.
-
+Our APIs automate KYC, KYB, AML, and biometric validation processes, connecting businesses with identity verification coverage across Colombia, Mexico, Peru, Chile, Uruguay, Argentina, Brazil, Panama, and beyond.
