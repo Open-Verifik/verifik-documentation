@@ -1,14 +1,28 @@
 ---
 id: vehicle-validation-chile-vehicle-technical-review
 title: "🇨🇱 チリ - 車両技術検査"
-description: "GET /v3/cl/vehicle でナンバープレートからチリ車両の技術検査ステータスと履歴を照会します。"
+description: "GET /v3/cl/vehicle でナンバープレートからチリ車両の技術検査ステータス、検査履歴、および利用可能な場合の技術仕様データを照会します。"
 slug: /vehicle-validation/chile/vehicle-technical-review
 sidebar_label: "🇨🇱 チリ - 車両技術検査"
+keywords:
+  - v3/cl/vehicle
+  - /v3/cl/vehicle
+  - api.verifik.co/v3/cl/vehicle
+  - GET v3/cl/vehicle
 ---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 # 🇨🇱 チリ - 車両技術検査
 
-この endpoint は、チリ車両の **技術検査 / 検査履歴** をナンバープレートで取得します。一般的な登録情報は `v2/cl/vehicle`、SOAP 強制保険証明書は `v2/cl/vehicle-soap` を使用します。
+チリ車両の **技術検査 / 点検** データが必要なときにこの endpoint を使用します。ナンバープレートで車両詳細、検査場、証明書番号、有効期限、検査ステータス、および利用可能な場合の技術仕様フィールドを取得します。
+
+関連するチリ車両 endpoint:
+
+- **車両情報 (`v2/cl/vehicle`)**：メーカー、モデル、所有者 RUT、エンジン、シャシー、罰金、盗難フラグなどの一般登録データ。
+- **車両技術検査 (`v3/cl/vehicle`)**：技術検査ステータス、履歴、および利用可能な場合の技術仕様データ。
+- **車両 SOAP (`v2/cl/vehicle-soap`)**：ナンバーと証券番号による強制人身事故保険証明書。
 
 ### Endpoint
 
@@ -16,22 +30,59 @@ sidebar_label: "🇨🇱 チリ - 車両技術検査"
 GET https://api.verifik.co/v3/cl/vehicle
 ```
 
-### パラメータ
+ナンバープレートに対するチリ技術検査データを返します。車両属性、検査履歴、および利用可能な場合の任意の `technicalSheet`（`engine`、`performance`、`dimensions`）を含みます。フリートコンプライアンス、保険、クレーム、車両オンボーディングに利用できます。
 
-| 名前 | 型 | 必須 | 説明 | 例 |
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
 | --- | --- | --- | --- | --- |
-| `plate` | string | **はい** | v3 対応のチリ車両ナンバー形式。4文字+2数字、または2文字+4数字。 | `XH6640` |
+| `plate` | string | **Yes** | v3 対応のチリ車両ナンバー形式。例: 4文字+2数字、または2文字+4数字。 | `XH6640` |
 
-### リクエスト例
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
 
 ```javascript
+import axios from "axios";
+
 const { data } = await axios.get("https://api.verifik.co/v3/cl/vehicle", {
 	params: { plate: "XH6640" },
-	headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
 });
+console.log(data);
 ```
 
-### 200 レスポンス
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/cl/vehicle"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "XH6640"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
 
 ```json
 {
@@ -57,17 +108,66 @@ const { data } = await axios.get("https://api.verifik.co/v3/cl/vehicle", {
 				"expirationDate": "2027-01-12",
 				"status": "APROBADA"
 			}
-		]
+		],
+		"technicalSheet": {
+			"engine": {
+				"engineDescription": "1.6L",
+				"fuel": "Petrol (Gasoline)",
+				"powerHp": "110 Hp"
+			},
+			"performance": {
+				"cityConsumption": "8.2 l/100 km",
+				"highwayConsumption": "5.9 l/100 km"
+			},
+			"dimensions": {
+				"doors": "4",
+				"occupants": "5",
+				"length": "4300 mm"
+			}
+		}
+	},
+	"signature": {
+		"dateTime": "June 30, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
 	}
 }
 ```
 
-### エラー
+  </TabItem>
+  <TabItem value="404" label="404">
 
-- `404 NotFound`: レコードが見つかりません。
-- `409 Invalid_plate_format`: ナンバープレート形式が無効です。
-- `409 timeout_data_source`: 外部データソースが利用できないかタイムアウトしました。
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409-format" label="409 Invalid_plate_format">
+
+```json
+{
+	"code": "Invalid_plate_format",
+	"message": "Plate must match Chile vehicle format ABCD12 (4 letters and 2 digits) or XH6640 (2 letters and 4 digits)"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-timeout" label="409 timeout_data_source">
+
+```json
+{
+	"code": "timeout_data_source",
+	"message": "timeout_data_source"
+}
+```
+
+  </TabItem>
+</Tabs>
 
 ### Notes
 
-`XH6640`、`FHDJ31`、`DCCH18` は固定プロファイルを返します。`BB985` は `409 Invalid_plate_format` を返します。
+- 一致する技術データがない場合、`technicalSheet` は `null` または部分的にしか埋まらないことがあります。
+- `XH6640`、`FHDJ31`、`DCCH18` は安定した技術検査プロファイルを返します。
+- `BB985` は v3 ナンバー形式に一致しないため `409 Invalid_plate_format` を返します。

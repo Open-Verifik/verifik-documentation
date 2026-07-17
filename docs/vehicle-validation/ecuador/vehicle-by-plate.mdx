@@ -1,23 +1,18 @@
 ---
 id: vehicle-validation-ecuador-plate
-title: "\U0001F1EA\U0001F1E8 Ecuador - Vehicle Verification"
-description: Look up Ecuadorian vehicle registration details by license plate
+title: "🇪🇨 Ecuador - Vehicle Verification"
+description: Look up Ecuadorian vehicle registration details by license plate, including technical-sheet data when available via GET /v3/ec/vehiculo/placa.
 slug: /vehicle-validation/ecuador/vehicle-by-plate
 keywords:
-  - v2/ec/vehiculo/placa
-  - /v2/ec/vehiculo/placa
-  - v2 ec vehiculo placa
-  - api/ec/vehiculo/placa
-  - /api/ec/vehiculo/placa
-  - api ec vehiculo placa
-  - api.verifik.co/v2/ec/vehiculo/placa
-  - 'https://api.verifik.co/v2/ec/vehiculo/placa'
-  - GET v2/ec/vehiculo/placa
-  - GET /v2/ec/vehiculo/placa
+  - v3/ec/vehiculo/placa
+  - /v3/ec/vehiculo/placa
+  - v3 ec vehiculo placa
+  - api.verifik.co/v3/ec/vehiculo/placa
+  - 'https://api.verifik.co/v3/ec/vehiculo/placa'
+  - GET v3/ec/vehiculo/placa
+  - GET /v3/ec/vehiculo/placa
   - ec/vehiculo/placa
   - /ec/vehiculo/placa
-  - vehiculo/placa
-  - /vehiculo/placa
 ---
 
 import Tabs from '@theme/Tabs';
@@ -25,21 +20,21 @@ import TabItem from '@theme/TabItem';
 
 # 🇪🇨 Ecuador - Vehicle Verification
 
-This service returns vehicle information registered in Ecuador using the license plate (**`plate`**): make, model, year, type, and related registration-oriented fields (subject to source availability).
+This service returns vehicle information registered in Ecuador using the license plate (**`plate`**): make, model, year, type, VIN, engine number, revision metadata, and technical-sheet fields when available.
 
 ### Endpoint
 
 ```
-GET https://api.verifik.co/v2/ec/vehiculo/placa
+GET https://api.verifik.co/v3/ec/vehiculo/placa
 ```
 
-Query an Ecuadorian vehicle by **`plate`** (no spaces or periods). Use for **verification**, **insurance**, **fleet**, and **compliance** workflows.
+Query an Ecuadorian vehicle by **`plate`** (no spaces or periods). The response may include `brand`, `model`, `year`, `vin`, `engineNumber`, `vehicleClass`, `vehicleType`, `color`, `serviceType`, `revision`, and `technicalSheet` (`engine`, `performance`, `dimensions`) when available. Use for **verification**, **insurance**, **fleet**, and **compliance** workflows.
 
 ### Headers
 
 | Name          | Value              |
 | ------------- | ------------------ |
-| Content-Type  | `application/json` |
+| Accept | `application/json` |
 | Authorization | `Bearer <token>`   |
 
 ### Parameters
@@ -51,19 +46,33 @@ Query an Ecuadorian vehicle by **`plate`** (no spaces or periods). Use for **ver
 ### Request
 
 <Tabs>
-  <TabItem value="javascript" label="JavaScript">
+  <TabItem value="node" label="Node.js">
 
 ```javascript
 import axios from 'axios';
 
-const { data } = await axios.get('https://api.verifik.co/v2/ec/vehiculo/placa', {
+const { data } = await axios.get('https://api.verifik.co/v3/ec/vehiculo/placa', {
   params: { plate: 'PBB3239' },
   headers: {
     Accept: 'application/json',
-    Authorization: 'Bearer <token>',
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
   },
 });
 console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v3/ec/vehiculo/placa"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "PBB3239"}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
 ```
 
   </TabItem>
@@ -77,17 +86,47 @@ console.log(data);
 ```json
 {
   "data": {
+    "brand": "CHEVROLET",
+    "color": "BLANCO",
+    "engineNumber": "ENG10000001",
+    "manufactureCountry": "ECUADOR",
+    "model": "ONIX LTZ",
     "plate": "PBB3239",
-    "brand": "MAKE",
-    "model": "MODEL",
-    "year": "2020",
-    "vehicleType": "SEDAN"
+    "previousPlate": null,
+    "revision": {
+      "registrationFrom": "01-01-2023",
+      "registrationUntil": "01-01-2028",
+      "lastInspectionYear": "2024",
+      "lastInspectionFrom": "01-06-2024",
+      "lastInspectionTo": null,
+      "inspections": []
+    },
+    "serviceType": "USO PARTICULAR",
+    "technicalSheet": {
+      "engine": {
+        "engineDescription": "1.4L",
+        "fuel": "Petrol (Gasoline)",
+        "powerHp": "98 Hp"
+      },
+      "performance": {
+        "cityConsumption": "8.5 l/100 km",
+        "highwayConsumption": "6.2 l/100 km"
+      },
+      "dimensions": {
+        "doors": "4",
+        "occupants": "5",
+        "length": "4500 mm"
+      }
+    },
+    "vehicleClass": "AUTOMOVIL",
+    "vehicleType": "SEDAN",
+    "vin": "VIN10000001",
+    "year": "2019"
   },
   "signature": {
-    "dateTime": "April 8, 2026 11:00 PM",
+    "dateTime": "July 17, 2026 3:00 PM",
     "message": "Certified by Verifik.co"
-  },
-  "id": "VHCL1"
+  }
 }
 ```
 
@@ -113,3 +152,8 @@ console.log(data);
 
   </TabItem>
 </Tabs>
+
+### Notes
+
+- `technicalSheet` can be `null` or partially populated when matching technical data is unavailable.
+- `revision` may be `null` or partially populated depending on availability.
