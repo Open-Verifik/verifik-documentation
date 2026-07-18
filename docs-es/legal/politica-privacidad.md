@@ -422,7 +422,7 @@ Recopilado: Sí.
 
 Ejemplos: Imágenes faciales utilizadas para detección de vida y autenticación.
 
-Recopilado: **Sí, solo para detección de vida y autenticación.** Recopilamos información biométrica en forma de imágenes faciales (base64) únicamente para realizar detección de vida y autenticar al cliente en la plataforma. Esta información se envía directamente a los servidores de SeventhSense para su procesamiento. No retenemos, almacenamos, vendemos o comerciamos esta información biométrica para ningún otro propósito.
+Recopilado: **Sí, solo para detección de vida y autenticación.** Recopilamos información biométrica en forma de imágenes faciales (base64) únicamente para realizar detección de vida y autenticar al cliente en la plataforma. Esta información es procesada por los sistemas biométricos de Verifik. No retenemos, almacenamos, vendemos o comerciamos esta información biométrica para ningún otro propósito.
 
 * **Categoría F: Actividad de Internet u otra actividad de red similar.**
 

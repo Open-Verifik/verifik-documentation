@@ -92,7 +92,7 @@ sidebar_position: 4
 
 **Tecnología:**
 
--   Motor: OpenCV + Deep Learning
+-   Motor: Verifik Face Recognition + Deep Learning
 -   Velocidad: &lt;2 segundos
 -   Tolerancia: Iluminación variable, ángulos, accesorios
 

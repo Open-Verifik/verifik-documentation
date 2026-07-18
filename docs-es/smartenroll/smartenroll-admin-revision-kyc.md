@@ -317,12 +317,13 @@ La interfaz puede mostrar:
 
 ### Interpretación de Puntuaciones
 
-- **Puntuaciones Altas (85%+)**: Coincidencia fuerte, típicamente auto-aprobada
-- **Puntuaciones Medias (70-84%)**: Puede requerir revisión manual
-- **Puntuaciones Bajas (menos de 70%)**: Probable rechazo o requiere investigación
+- **Puntuaciones Altas (85%+)**: Coincidencia fuerte frente al umbral por defecto hospedado (`0.85`), típicamente auto-aprobada
+- **Puntuaciones Medias (70-84%)**: Puede requerir revisión manual; es común en caras de documentos impresos vs selfies en vivo aunque sea la misma persona
+- **Cerca del mínimo de la API (~67%)**: Permitido en APIs de face-recognition (`0.67`–`0.95`); solo apropiado si el umbral del proyecto se bajó tras probar el riesgo de falsos aceptados
+- **Puntuaciones Bajas (muy por debajo del umbral del proyecto)**: Probable rechazo o requiere investigación
 
 :::warning Guías de Revisión
-Las puntuaciones por debajo del umbral configurado deben ser cuidadosamente revisadas. Considera el contexto, calidad del documento y otros factores antes de tomar una decisión final.
+Las puntuaciones por debajo del umbral configurado deben ser cuidadosamente revisadas. Considera el contexto, calidad del documento y otros factores antes de tomar una decisión final. El historial FaceVerification está disponible vía populate del app registration (`compareFaceVerification`), no hay GET público por id de verificación; los registros expiran en unos 90 días en producción. Para la receta completa de integración, consulta la [Guía de API de SmartEnroll](/smartenroll/guia-api).
 :::
 
 ---

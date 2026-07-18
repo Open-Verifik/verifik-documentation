@@ -423,7 +423,7 @@ Collecté : Oui.
 
 Exemples : images faciales utilisées pour la détection et l'authentification de l'activité.
 
-Collecté : **Oui, uniquement pour la détection et l'authentification de l'activité.** Nous collectons des informations biométriques sous forme d'images faciales (base64) uniquement pour effectuer la détection de l'activité et authentifier le client sur la plateforme. Ces informations sont envoyées directement aux serveurs SeventhSense pour traitement. Nous ne conservons, ne stockons, ne vendons ni n’échangeons ces informations biométriques à d’autres fins.
+Collecté : **Oui, uniquement pour la détection et l'authentification de l'activité.** Nous collectons des informations biométriques sous forme d'images faciales (base64) uniquement pour effectuer la détection de l'activité et authentifier le client sur la plateforme. Ces informations sont traitées par les systèmes biométriques de Verifik. Nous ne conservons, ne stockons, ne vendons ni n’échangeons ces informations biométriques à d’autres fins.
 
 * **Catégorie F : Internet ou autre activité réseau similaire.**
 

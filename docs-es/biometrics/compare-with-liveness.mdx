@@ -31,8 +31,7 @@ Realiza la comparación primero y, si la comparación cumple con `compare_min_sc
 | `gallery` | string[] | Sí | Array de cadenas de imagen base64 para comparar. Se admiten URLs y serán descargadas y convertidas internamente. |
 | `search_mode` | string | Sí | Uno de `FAST` o `ACCURATE`. |
 | `liveness_min_score` | number | No | Umbral de vitalidad; por defecto 0.6 si no se proporciona. |
-| `compare_min_score` | number | No | Umbral de comparación opcional (0.67–0.95). |
-| `cropFace` | boolean | No | Si es `true`, intenta recortar caras en la galería antes de la comparación. |
+| `compare_min_score` | number | No | Umbral de comparación opcional (`0.67`–`0.95`). El valor por defecto en SmartEnroll hospedado es `0.85`. |
 
 ### Solicitud
 
@@ -54,8 +53,7 @@ async function run() {
       gallery: ["<base64>"],
       search_mode: "FAST",
       liveness_min_score: 0.6,
-      compare_min_score: 0.8,
-      cropFace: true
+      compare_min_score: 0.8
     }),
   });
   console.log(await res.json());
@@ -79,8 +77,7 @@ $body = json_encode([
     "gallery" => ["<base64>"],
     "search_mode" => "ACCURATE",
     "liveness_min_score" => 0.6,
-    "compare_min_score" => 0.8,
-    "cropFace" => true
+    "compare_min_score" => 0.8
 ]);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -105,8 +102,7 @@ payload = {
     "gallery": ["<base64>"],
     "search_mode": "FAST",
     "liveness_min_score": 0.6,
-    "compare_min_score": 0.8,
-    "cropFace": True
+    "compare_min_score": 0.8
 }
 r = requests.post(url, json=payload, headers=headers)
 print(r.json())
@@ -133,7 +129,6 @@ func main() {
         "search_mode": "FAST",
         "liveness_min_score": 0.6,
         "compare_min_score": 0.8,
-        "cropFace": true,
     }
     b, _ := json.Marshal(payload)
     req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/face-recognition/compare-with-liveness", bytes.NewBuffer(b))
@@ -227,9 +222,19 @@ o
   </TabItem>
 </Tabs>
 
+### Umbrales de comparación facial
+
+| Contexto | Valores típicos / permitidos |
+| --- | --- |
+| SmartEnroll hospedado / project flow (por defecto) | **`0.85`** |
+| API directa (`compare_min_score`) | **`0.67`–`0.95`** |
+
+Las caras de documentos impresos vs selfies en vivo suelen puntuar más bajo que en vivo vs en vivo. Valores cerca del mínimo de la API (`0.67`) pueden ser apropiados para galerías de CC impresa tras validar el riesgo de falsos aceptados. `cropFace` en servidor **no está soportado** en este endpoint (se ignora si se envía); envía imágenes enfocadas en el rostro.
+
 ### Notas
 
 - La comparación se ejecuta primero. Solo si `compare_min_score` no se proporciona o se cumple, se ejecuta la detección de vitalidad en `probe`.
 - `liveness_min_score` por defecto es 0.6 si no se proporciona.
-- La galería admite URLs `https` y serán descargadas y convertidas a base64 internamente; `cropFace` opcionalmente recorta caras antes de la comparación.
+- La galería admite URLs `https` y serán descargadas y convertidas a base64 internamente.
+- **No existe** `GET /v2/face-verifications/:id`. Para historial SmartEnroll, popula `compareFaceVerification` en el app registration (TTL ~**90 días** en producción).
 

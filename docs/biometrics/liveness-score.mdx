@@ -1,20 +1,20 @@
 ---
-id: liveness
-title: Liveness Detection
-description: Detect if a face is live or from a static image/video
+id: liveness-score
+title: Liveness Score
+description: Liveness score for a single face image (stable public API)
 keywords:
-  - v2/face-recognition/liveness
-  - /v2/face-recognition/liveness
-  - v2 face-recognition liveness
-  - api/face-recognition/liveness
-  - /api/face-recognition/liveness
-  - api face-recognition liveness
-  - api.verifik.co/v2/face-recognition/liveness
-  - 'https://api.verifik.co/v2/face-recognition/liveness'
-  - GET v2/face-recognition/liveness
-  - GET /v2/face-recognition/liveness
-  - face-recognition/liveness
-  - /face-recognition/liveness
+  - v2/face-recognition/liveness-score
+  - /v2/face-recognition/liveness-score
+  - v2 face-recognition liveness-score
+  - api/face-recognition/liveness-score
+  - /api/face-recognition/liveness-score
+  - api face-recognition liveness-score
+  - api.verifik.co/v2/face-recognition/liveness-score
+  - 'https://api.verifik.co/v2/face-recognition/liveness-score'
+  - POST v2/face-recognition/liveness-score
+  - POST /v2/face-recognition/liveness-score
+  - face-recognition/liveness-score
+  - /face-recognition/liveness-score
 ---
 
 import Tabs from '@theme/Tabs';
@@ -23,16 +23,24 @@ import TabItem from '@theme/TabItem';
 ### Endpoint
 
 ```
-POST https://api.verifik.co/v2/face-recognition/liveness
+POST https://api.verifik.co/v2/face-recognition/liveness-score
 ```
 
-Detects whether a submitted face image comes from a live person or a spoof (photo, screen replay, printed copy). Returns a liveness score and a pass/fail outcome based on a minimum score threshold.
+Returns a liveness score and pass/fail outcome for a single face image using Verifik’s presentation attack detection (PAD) stack. Use this when you need the score-focused liveness contract.
 
-For the score-focused endpoint, see [`POST /v2/face-recognition/liveness-score`](/biometrics/liveness-score).
+**API stability:** This is a **production public endpoint**. Request and response contracts follow Verifik’s standard API change and deprecation policy. Billing uses the same AppFeature as [`POST /v2/face-recognition/liveness`](/biometrics/liveness).
+
+### vs `/liveness`
+
+| | `POST .../liveness` | `POST .../liveness-score` |
+| --- | --- | --- |
+| Use | Standard liveness detection | Score-focused liveness response |
+| Billing | Liveness AppFeature | Same liveness AppFeature (path rewritten for credits) |
+| Body | `os`, `image`, optional `collection_id`, `liveness_min_score` | Same |
 
 ### Presentation attack detection (PAD)
 
-Verifik’s face liveness uses our biometric stack with presentation attack detection (PAD). Liveness is **iBeta Level 2 certified** and aligned with **ISO 30107 Level 1 and Level 2**. It is designed to detect common spoofing vectors such as **printed photos, video replay, and 3D masks**, using a single-image liveness check.
+Verifik’s face liveness (including this endpoint and [`/liveness`](/biometrics/liveness)) uses our biometric stack with presentation attack detection (PAD). Liveness is **iBeta Level 2 certified** and aligned with **ISO 30107 Level 1 and Level 2**. It is designed to detect common spoofing vectors such as **printed photos, video replay, and 3D masks**, using a single-image liveness check.
 
 ### Headers
 
@@ -59,7 +67,7 @@ Verifik’s face liveness uses our biometric stack with presentation attack dete
 const fetch = require("node-fetch");
 
 async function run() {
-  const res = await fetch("https://api.verifik.co/v2/face-recognition/liveness", {
+  const res = await fetch("https://api.verifik.co/v2/face-recognition/liveness-score", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -82,7 +90,7 @@ run();
 
 ```php
 <?php
-$ch = curl_init("https://api.verifik.co/v2/face-recognition/liveness");
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/liveness-score");
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Content-Type: application/json",
     "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
@@ -105,7 +113,7 @@ echo $response;
 ```python
 import os, requests
 
-url = "https://api.verifik.co/v2/face-recognition/liveness"
+url = "https://api.verifik.co/v2/face-recognition/liveness-score"
 headers = {
     "Content-Type": "application/json",
     "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
@@ -140,7 +148,7 @@ func main() {
         "liveness_min_score": 0.6,
     }
     b, _ := json.Marshal(payload)
-    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/face-recognition/liveness", bytes.NewBuffer(b))
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/face-recognition/liveness-score", bytes.NewBuffer(b))
     req.Header.Set("Content-Type", "application/json")
     req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
     resp, _ := http.DefaultClient.Do(req)
@@ -221,5 +229,5 @@ or
 - Ensure `Authorization: Bearer <token>` is present; otherwise you will receive 401/403.
 - `image` may be base64 or an `https` URL. If URL, the service fetches and converts it internally.
 - Pass/fail is determined by `liveness_score > min_score` (default `min_score` is 0.6, configurable via `liveness_min_score`).
+- Credits are charged against the same feature as [`/liveness`](/biometrics/liveness).
 - Optional `collection_id` is validated for the authenticated client.
-

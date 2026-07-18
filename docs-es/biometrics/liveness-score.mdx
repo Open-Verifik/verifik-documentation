@@ -1,8 +1,8 @@
 ---
-id: deteccion-vitalidad
-title: Detección de Vitalidad
-description: Detectar si una cara es en vivo o de una imagen/video estático
-slug: /deteccion-vitalidad
+id: puntaje-vitalidad
+title: Puntaje de Vitalidad
+description: Puntaje de vitalidad para una imagen facial (API pública estable)
+slug: /puntaje-vitalidad
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,16 +11,24 @@ import TabItem from '@theme/TabItem';
 ### Endpoint
 
 ```
-POST https://api.verifik.co/v2/face-recognition/liveness
+POST https://api.verifik.co/v2/face-recognition/liveness-score
 ```
 
-Detecta si una imagen facial enviada proviene de una persona en vivo o de un spoof (foto, reproducción de pantalla, copia impresa). Retorna un puntaje de vitalidad y un resultado de aprobado/rechazado basado en un umbral de puntaje mínimo.
+Devuelve un puntaje de vitalidad y un resultado de aprobado/rechazado para una imagen facial usando el stack de detección de ataques de presentación (PAD) de Verifik. Úsalo cuando necesites el contrato de vitalidad enfocado en el puntaje.
 
-Para el endpoint enfocado en el puntaje, consulta [`POST /v2/face-recognition/liveness-score`](/puntaje-vitalidad).
+**Estabilidad de la API:** Este es un **endpoint público de producción**. Los contratos de solicitud y respuesta siguen la política estándar de cambios y deprecación de Verifik. La facturación usa el mismo AppFeature que [`POST /v2/face-recognition/liveness`](/deteccion-vitalidad).
+
+### vs `/liveness`
+
+| | `POST .../liveness` | `POST .../liveness-score` |
+| --- | --- | --- |
+| Uso | Detección de vitalidad estándar | Respuesta de vitalidad enfocada en el puntaje |
+| Facturación | AppFeature de liveness | El mismo AppFeature (ruta reescrita para créditos) |
+| Cuerpo | `os`, `image`, opcionales `collection_id`, `liveness_min_score` | Igual |
 
 ### Detección de ataques de presentación (PAD)
 
-La vitalidad facial de Verifik usa nuestro stack biométrico con detección de ataques de presentación (PAD). La vitalidad está **certificada iBeta Level 2** y alineada con **ISO 30107 Level 1 y Level 2**. Está diseñada para detectar vectores de spoofing comunes como **fotos impresas, reproducción de video y máscaras 3D**, mediante una verificación de vitalidad de una sola imagen.
+La vitalidad facial de Verifik (incluido este endpoint y [`/liveness`](/deteccion-vitalidad)) usa nuestro stack biométrico con detección de ataques de presentación (PAD). La vitalidad está **certificada iBeta Level 2** y alineada con **ISO 30107 Level 1 y Level 2**. Está diseñada para detectar vectores de spoofing comunes como **fotos impresas, reproducción de video y máscaras 3D**, mediante una verificación de vitalidad de una sola imagen.
 
 ### Headers
 
@@ -47,7 +55,7 @@ La vitalidad facial de Verifik usa nuestro stack biométrico con detección de a
 const fetch = require("node-fetch");
 
 async function run() {
-  const res = await fetch("https://api.verifik.co/v2/face-recognition/liveness", {
+  const res = await fetch("https://api.verifik.co/v2/face-recognition/liveness-score", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -70,7 +78,7 @@ run();
 
 ```php
 <?php
-$ch = curl_init("https://api.verifik.co/v2/face-recognition/liveness");
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/liveness-score");
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Content-Type: application/json",
     "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
@@ -93,7 +101,7 @@ echo $response;
 ```python
 import os, requests
 
-url = "https://api.verifik.co/v2/face-recognition/liveness"
+url = "https://api.verifik.co/v2/face-recognition/liveness-score"
 headers = {
     "Content-Type": "application/json",
     "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
@@ -128,7 +136,7 @@ func main() {
         "liveness_min_score": 0.6,
     }
     b, _ := json.Marshal(payload)
-    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/face-recognition/liveness", bytes.NewBuffer(b))
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/face-recognition/liveness-score", bytes.NewBuffer(b))
     req.Header.Set("Content-Type", "application/json")
     req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
     resp, _ := http.DefaultClient.Do(req)
@@ -206,8 +214,8 @@ o
 
 ### Notas
 
-- Asegúrate de que `Authorization: Bearer <token>` esté presente; de lo contrario recibirás 401/403.
+- Asegura `Authorization: Bearer <token>`; de lo contrario recibirás 401/403.
 - `image` puede ser base64 o una URL `https`. Si es URL, el servicio la descarga y convierte internamente.
-- Aprobado/rechazado se determina por `liveness_score > min_score` (el `min_score` por defecto es 0.6, configurable via `liveness_min_score`).
+- Aprobado/rechazado se determina con `liveness_score > min_score` (por defecto `min_score` es 0.6, configurable con `liveness_min_score`).
+- Los créditos se cobran contra el mismo feature que [`/liveness`](/deteccion-vitalidad).
 - El `collection_id` opcional se valida para el cliente autenticado.
-

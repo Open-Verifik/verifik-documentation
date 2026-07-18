@@ -219,7 +219,7 @@ El primer paso establece la base de tu proyecto KYC. Esto incluye información b
 ### Lo que Configurarás
 
 -   **Nombre del Proyecto** - Un nombre descriptivo para tu proyecto KYC
--   **Países Permitidos** - Países donde los usuarios pueden completar la incorporación
+-   **Países Permitidos** - Países donde los usuarios pueden completar la incorporación. Usa nombres de país específicos o `"All"` para permitir todos. Esta lista es independiente de la aceptación de documentos (Paso 3).
 -   **Correo de Contacto** - Dirección de correo electrónico para comunicaciones relacionadas con el proyecto
 -   **URLs de Privacidad y Términos** - Enlaces a tu política de privacidad y términos de servicio
 -   **Información de Protección de Datos** - Detalles sobre tu Oficial de Protección de Datos (requerido para cumplimiento GDPR)
@@ -231,7 +231,7 @@ url="/v3/projects"
 method="POST"
 body={{
     name: "Customer Onboarding - North America",
-    allowedCountries: ["United States", "Canada", "Mexico"],
+    allowedCountries: ["All"],
     contactEmail: "compliance@example.com",
     privacyUrl: "https://example.com/privacy",
     termsAndConditionsUrl: "https://example.com/terms",
@@ -378,7 +378,15 @@ body={{
 />
 
 :::warning Tipos de Documentos por País
-Cada país debe tener al menos una configuración de documento activa cuando el paso de documento no se omite. Configura los tipos de documentos según lo que se usa comúnmente en cada país.
+Cada país debe tener al menos una configuración de documento activa cuando el paso de documento no se omite. Configura los tipos de documentos según lo que se usa comúnmente en cada país. `"All"` en `allowedCountries` **no** crea automáticamente filas de `documentTypes`: agrega un bloque por país.
+:::
+
+:::info Catálogo vacío vs configuración incompleta
+Un mensaje de catálogo vacío significa que no hay plantillas aprobadas para ese **país + categoría** (incluyendo plantillas globales `World`). Por ejemplo, **Estados Unidos** a menudo no tiene plantillas de `government_id`, pero sí muchas licencias de conducir estatales bajo `license`. Los errores de configuración incompleta significan que una fila tiene el país vacío o una categoría activa sin plantillas válidas: elige un país en cada fila y deja inactivas las categorías vacías.
+:::
+
+:::tip Idiomas y correos OTP
+Define `defaultLanguage` en el proyecto (por ejemplo `"es"`) para que los nuevos usuarios y los correos OTP usen ese idioma cuando se omita `language`. Al crear un registro de app o una validación de correo vía API, aún puedes enviar `language: "es"` explícitamente. El SDK usa el idioma predeterminado del proyecto y luego envía el idioma activo de la interfaz en las solicitudes OTP. Personalizar la copia en español en el editor de plantillas solo guarda overrides.
 :::
 
 ### Requisitos de Paso

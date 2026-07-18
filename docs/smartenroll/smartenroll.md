@@ -98,7 +98,7 @@ Follow these 7 steps to configure your SmartEnroll project:
 This section is where the core project settings are configured. Each field serves a specific purpose:
 
 -   **Project Name**: This is a required field where the user enters the name of their project. It will be used across all references to the project within the Verifik ecosystem.
--   **Allowed Countries**: This is where users specify which countries their KYC process will be applicable to. They can select from a predefined list (Canada, Colombia, Mexico, Panama, and the United States). Additional countries can be added by typing the country name in the input field.
+-   **Allowed Countries**: This is where users specify which countries their KYC process will be applicable to. You can select specific countries or choose **All** (World) to allow enrollment from every country. This allow-list is separate from document acceptance (configured in the Documents step).
 -   **Email**: The email address associated with the project. This is the contact point for all correspondence related to this project.
 -   **Privacy Policy (URL)**: A mandatory field where users provide a link to their Privacy Policy document. This ensures compliance with local and international data protection laws.
 -   **Terms and Conditions (URL)**: A field where the user provides a URL to their Terms and Conditions, which will be shown to the end users during the KYC process.
@@ -166,6 +166,14 @@ In this step, the user can configure document verification for identity validati
 This step is where the user sets up verification methods to authenticate documents with an additional layer of security via external checks.
 :::
 
+:::info Allowed countries vs document countries
+**Allowed countries** (Basic setup) control who can enroll. **Document countries** (this step) control which countries and document categories you accept. There is no single toggle that auto-creates document configurations for every country—add one country block at a time and enable only categories that have catalog templates.
+:::
+
+:::warning Empty catalog is per category
+“No documents found for this country in the catalog” applies to a **specific category** (Government ID, License, or Passport), not necessarily the whole country. For example, the **United States** may show no Government ID templates while many **state driver licenses** are available under **License**. Leave empty categories inactive; enable License (or Passport) when those templates appear. If a country row is incomplete or the country dropdown is blank, the setup form will block save until you pick a country and keep at least one valid active category.
+:::
+
 ---
 
 ### 4. Biometric Registration
@@ -176,11 +184,13 @@ This step is where the user sets up verification methods to authenticate documen
 
 -   **Set an Attempt Limit**: Specifies how many times a user can fail liveness detection before being blocked from continuing. The allowed attempts can be customized from 3 to 10.
 -   **Liveness Score:** Customize the threshold for liveness detection. This score determines how stringent the system is in verifying that the biometric input is from a live person, not a static image or video. The default recommendation is 50%, which ensures the liveness check works optimally on most devices.
--   **Compare Score:** This score sets the accuracy of comparing (1:1) the face of the end user to the document provided. A higher score means an more security, stricter matching criteria, and demands a higher resemblance to the user in order to gain access. The recommended score for optimal performance is 85%.
+-   **Compare Score:** This score sets the accuracy of comparing (1:1) the face of the end user to the document provided. A higher score means more security, stricter matching criteria, and demands a higher resemblance to the user in order to gain access. The hosted default / recommended value is **85% (`0.85`)**. The face-recognition API accepts **`0.67`–`0.95`**. Printed document photos (for example a Colombian CC) often match a live selfie at lower scores than live-vs-live; if genuine users fail around the mid‑0.7s, consider a lower project threshold after validating false-accept risk.
 
 :::warning Security Notice
-Higher scores provide better security but may increase false rejection rates. Test with your user base to find the optimal balance.
+Higher scores provide better security but may increase false rejection rates. Test with your user base to find the optimal balance. Server-side `cropFace` is not supported on face-recognition compare APIs—send face-focused images or crop client-side.
 :::
+
+For reading scores programmatically after enrollment (populates, webhooks, thresholds), see the [SmartEnroll API Companion](/smartenroll/api-companion).
 
 ---
 
@@ -275,6 +285,32 @@ Customization ensures that the Verifik Client App seamlessly aligns with the use
 
 :::tip Key Note
 This feature provides team collaboration and role management to enhance project efficiency.
+:::
+
+---
+
+## Language and emails
+
+### Enrollee UI language
+
+In **Basic setup**, set **Default language** on the project (for example Spanish). New enrollees who have not chosen a language yet open SmartEnroll / SmartAccess in that locale. Users can still switch anytime with the **language selector**; the choice is stored in the browser.
+
+Priority: saved browser preference → project default language → browser locale → English.
+
+### OTP / Verifik email language
+
+Selecting **Español** (or another language) in the email template editor lets you **customize copy for that locale**. It does **not** by itself force all emails to Spanish.
+
+Live OTP emails use:
+
+1. The `language` from the enrollee session / API request (SDK sends the active UI language), or
+2. The project **Default language** when `language` is omitted, or
+3. `en` as a last resort.
+
+System Spanish defaults exist when the resolved language is `es`; custom Spanish copy under the Español tab is optional. Use **Send Test** on the Español tab to preview—that does not change production send language by itself.
+
+:::note Client account language
+Changing the client account language in the Verifik admin does **not** drive SmartEnroll OTP email language.
 :::
 
 ---

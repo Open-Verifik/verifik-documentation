@@ -97,7 +97,7 @@ Sigue estos 7 pasos para configurar tu proyecto SmartEnroll:
 Esta sección es donde se configuran los ajustes principales del proyecto. Cada campo tiene un propósito específico:
 
 -   **Nombre del Proyecto**: Este es un campo requerido donde el usuario ingresa el nombre de su proyecto. Se usará en todas las referencias al proyecto dentro del ecosistema Verifik.
--   **Países Permitidos**: Aquí los usuarios especifican a qué países aplicará su proceso KYC. Pueden seleccionar de una lista predefinida (Canadá, Colombia, México, Panamá y Estados Unidos). Se pueden agregar países adicionales escribiendo el nombre del país en el campo de entrada.
+-   **Países Permitidos**: Aquí los usuarios especifican a qué países aplicará su proceso KYC. Pueden seleccionar países específicos o elegir **Todos** (World) para permitir el registro desde cualquier país. Esta lista de permitidos es independiente de la aceptación de documentos (que se configura en el paso de Documentos).
 -   **Correo Electrónico**: La dirección de correo electrónico asociada con el proyecto. Este es el punto de contacto para toda la correspondencia relacionada con este proyecto.
 -   **Política de Privacidad (URL)**: Un campo obligatorio donde los usuarios proporcionan un enlace a su documento de Política de Privacidad. Esto asegura el cumplimiento con las leyes locales e internacionales de protección de datos.
 -   **Términos y Condiciones (URL)**: Un campo donde el usuario proporciona una URL a sus Términos y Condiciones, que se mostrarán a los usuarios finales durante el proceso KYC.
@@ -165,6 +165,14 @@ En este paso, el usuario puede configurar la verificación de documentos para va
 Este paso es donde el usuario configura métodos de verificación para autenticar documentos con una capa adicional de seguridad mediante verificaciones externas.
 :::
 
+:::info Países permitidos vs países de documentos
+**Países permitidos** (configuración básica) controlan quién puede registrarse. **Países de documentos** (este paso) controlan qué países y categorías de documentos aceptas. No hay un interruptor único que cree configuraciones de documentos para todos los países: agrega un bloque por país y activa solo las categorías que tengan plantillas en el catálogo.
+:::
+
+:::warning El catálogo vacío es por categoría
+“No se encontraron documentos para este país en el catálogo” aplica a una **categoría específica** (Documento de identidad, Licencia o Pasaporte), no necesariamente a todo el país. Por ejemplo, **Estados Unidos** puede mostrar sin plantillas de identidad gubernamental, mientras que muchas **licencias de conducir estatales** están disponibles bajo **Licencia**. Deja inactivas las categorías vacías; activa Licencia (o Pasaporte) cuando aparezcan esas plantillas. Si una fila de país está incompleta o el país no está seleccionado, el formulario bloqueará el guardado hasta que elijas un país y mantengas al menos una categoría activa válida.
+:::
+
 ---
 
 ### 4. Registro Biométrico
@@ -175,11 +183,13 @@ Este paso es donde el usuario configura métodos de verificación para autentica
 
 -   **Establecer un Límite de Intentos**: Especifica cuántas veces un usuario puede fallar la detección de vivacidad antes de ser bloqueado de continuar. Los intentos permitidos se pueden personalizar de 3 a 10.
 -   **Puntuación de Vivacidad:** Personaliza el umbral para la detección de vivacidad. Esta puntuación determina qué tan estricto es el sistema al verificar que la entrada biométrica proviene de una persona viva, no de una imagen o video estático. La recomendación predeterminada es del 50%, lo que asegura que la verificación de vivacidad funcione óptimamente en la mayoría de los dispositivos.
--   **Puntuación de Comparación:** Esta puntuación establece la precisión de comparar (1:1) el rostro del usuario final con el documento proporcionado. Una puntuación más alta significa más seguridad, criterios de coincidencia más estrictos y exige un mayor parecido con el usuario para obtener acceso. La puntuación recomendada para un rendimiento óptimo es del 85%.
+-   **Puntuación de Comparación:** Esta puntuación establece la precisión de comparar (1:1) el rostro del usuario final con el documento proporcionado. Una puntuación más alta significa más seguridad, criterios de coincidencia más estrictos y exige un mayor parecido con el usuario para obtener acceso. El valor por defecto / recomendado en el flujo hospedado es **85% (`0.85`)**. La API de face-recognition acepta **`0.67`–`0.95`**. Las fotos de documentos impresos (por ejemplo una CC colombiana) suelen coincidir con un selfie en vivo a scores más bajos que en vivo vs en vivo; si usuarios genuinos fallan alrededor de 0.7, considera un umbral de proyecto más bajo tras validar el riesgo de falsos aceptados.
 
 :::warning Aviso de Seguridad
-Las puntuaciones más altas proporcionan mejor seguridad pero pueden aumentar las tasas de rechazo falso. Prueba con tu base de usuarios para encontrar el equilibrio óptimo.
+Las puntuaciones más altas proporcionan mejor seguridad pero pueden aumentar las tasas de rechazo falso. Prueba con tu base de usuarios para encontrar el equilibrio óptimo. `cropFace` en servidor no está soportado en las APIs de face-recognition compare: envía imágenes enfocadas en el rostro o recorta en el cliente.
 :::
+
+Para leer scores de forma programática tras el enrollment (populates, webhooks, umbrales), consulta la [Guía de API de SmartEnroll](/smartenroll/guia-api).
 
 ---
 
@@ -274,6 +284,32 @@ La personalización asegura que la Aplicación Cliente de Verifik se alinee perf
 
 :::tip Nota Clave
 Esta característica proporciona colaboración en equipo y gestión de roles para mejorar la eficiencia del proyecto.
+:::
+
+---
+
+## Idioma y correos
+
+### Idioma de la interfaz del usuario final
+
+En **Configuración básica**, define el **Idioma predeterminado** del proyecto (por ejemplo español). Los nuevos usuarios que aún no hayan elegido un idioma abren SmartEnroll / SmartAccess en ese idioma. Pueden cambiarlo en cualquier momento con el **selector de idioma**; la elección se guarda en el navegador.
+
+Prioridad: preferencia guardada en el navegador → idioma predeterminado del proyecto → idioma del navegador → inglés.
+
+### Idioma de los correos OTP / Verifik
+
+Seleccionar **Español** (u otro idioma) en el editor de plantillas de correo te permite **personalizar el texto de ese idioma**. **No** obliga por sí solo a que todos los correos se envíen en español.
+
+Los correos OTP en producción usan:
+
+1. El `language` de la sesión del usuario / solicitud API (el SDK envía el idioma activo de la interfaz), o
+2. El **idioma predeterminado** del proyecto si se omite `language`, o
+3. `en` como último recurso.
+
+Existen textos predeterminados en español cuando el idioma resuelto es `es`; la copia personalizada en la pestaña Español es opcional. Usa **Enviar prueba** en la pestaña Español para previsualizar—eso no cambia por sí solo el idioma de envío en producción.
+
+:::note Idioma de la cuenta del cliente
+Cambiar el idioma de la cuenta del cliente en el admin de Verifik **no** controla el idioma de los correos OTP de SmartEnroll.
 :::
 
 ---
