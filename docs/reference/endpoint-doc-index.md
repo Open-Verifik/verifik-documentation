@@ -1550,18 +1550,6 @@ keywords:
   - "https://api.verifik.co/v2/ec/cedula"
   - "GET v2/ec/cedula"
   - "GET /v2/ec/cedula"
-  - "v2/ec/company"
-  - "/v2/ec/company"
-  - "v2 ec company"
-  - "ec/company"
-  - "/ec/company"
-  - "api/ec/company"
-  - "/api/ec/company"
-  - "api ec company"
-  - "api.verifik.co/v2/ec/company"
-  - "https://api.verifik.co/v2/ec/company"
-  - "GET v2/ec/company"
-  - "GET /v2/ec/company"
   - "v2/ec/vehiculo/placa"
   - "/v2/ec/vehiculo/placa"
   - "v2 ec vehiculo placa"
@@ -1765,6 +1753,18 @@ keywords:
   - "https://api.verifik.co/v2/face-recognition/liveness"
   - "GET v2/face-recognition/liveness"
   - "GET /v2/face-recognition/liveness"
+  - "v2/face-recognition/liveness-score"
+  - "/v2/face-recognition/liveness-score"
+  - "v2 face-recognition liveness-score"
+  - "face-recognition/liveness-score"
+  - "/face-recognition/liveness-score"
+  - "api/face-recognition/liveness-score"
+  - "/api/face-recognition/liveness-score"
+  - "api face-recognition liveness-score"
+  - "api.verifik.co/v2/face-recognition/liveness-score"
+  - "https://api.verifik.co/v2/face-recognition/liveness-score"
+  - "GET v2/face-recognition/liveness-score"
+  - "GET /v2/face-recognition/liveness-score"
   - "v2/face-recognition/persons"
   - "/v2/face-recognition/persons"
   - "v2 face-recognition persons"
@@ -2513,6 +2513,18 @@ keywords:
   - "https://api.verifik.co/v3/co/rues-complete"
   - "GET v3/co/rues-complete"
   - "GET /v3/co/rues-complete"
+  - "v3/ec/company"
+  - "/v3/ec/company"
+  - "v3 ec company"
+  - "ec/company"
+  - "/ec/company"
+  - "api/ec/company"
+  - "/api/ec/company"
+  - "api ec company"
+  - "api.verifik.co/v3/ec/company"
+  - "https://api.verifik.co/v3/ec/company"
+  - "GET v3/ec/company"
+  - "GET /v3/ec/company"
   - "v3/ocr/scan-studio"
   - "/v3/ocr/scan-studio"
   - "v3 ocr scan-studio"
@@ -2596,12 +2608,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (209 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (210 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-07-17T20:45:07.707Z_
+_Last regenerated: 2026-07-18T02:04:54.537Z_
 
 ## Argentina
 
@@ -2729,7 +2741,6 @@ _Last regenerated: 2026-07-17T20:45:07.707Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/ec/cedula` | v2 ec cedula ec/cedula /ec/cedula api/ec/cedula /api/ec/cedula api ec cedula api.verifik.co/v2/ec/cedula https://api.verifik.co/v2/ec/cedula GET v2/ec/cedula GET /v2/ec/cedula | [Ecuadorian Citizen](/identity-validation/ecuador) |
-| `v2/ec/company` | v2 ec company ec/company /ec/company api/ec/company /api/ec/company api ec company api.verifik.co/v2/ec/company https://api.verifik.co/v2/ec/company GET v2/ec/company GET /v2/ec/company | [Ecuadorian Business Verification](/business-validation/ecuador) |
 | `v2/ec/vehiculo/placa` | v2 ec vehiculo placa ec/vehiculo/placa /ec/vehiculo/placa api/ec/vehiculo/placa /api/ec/vehiculo/placa api ec vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/ec/vehiculo/placa https://api.verifik.co/v2/ec/vehiculo/placa GET v2/ec/vehiculo/placa GET /v2/ec/vehiculo/placa | [\U0001F1EA\U0001F1E8 Ecuador - Vehicle Verification](/vehicle-validation/ecuador/vehicle-by-plate) |
 | `v2/ec/vehiculo/placa/multas` | v2 ec vehiculo placa multas ec/vehiculo/placa/multas /ec/vehiculo/placa/multas api/ec/vehiculo/placa/multas /api/ec/vehiculo/placa/multas api ec vehiculo placa multas vehiculo/placa/multas /vehiculo/placa/multas placa/multas /placa/multas api.verifik.co/v2/ec/vehiculo/placa/multas https://api.verifik.co/v2/ec/vehiculo/placa/multas GET v2/ec/vehiculo/placa/multas GET /v2/ec/vehiculo/placa/multas | [\U0001F1EA\U0001F1E8 Ecuador - Vehicle Fines](/vehicle-validation/ecuador) |
 
@@ -2897,6 +2908,7 @@ _Last regenerated: 2026-07-17T20:45:07.707Z_
 | `v2/face-recognition/compare-with-liveness` | v2 face-recognition compare-with-liveness face-recognition/compare-with-liveness /face-recognition/compare-with-liveness api/face-recognition/compare-with-liveness /api/face-recognition/compare-with-liveness api face-recognition compare-with-liveness api.verifik.co/v2/face-recognition/compare-with-liveness https://api.verifik.co/v2/face-recognition/compare-with-liveness GET v2/face-recognition/compare-with-liveness GET /v2/face-recognition/compare-with-liveness | [Compare with Liveness (Sequential)](/biometrics/compare-with-liveness) |
 | `v2/face-recognition/detect` | v2 face-recognition detect face-recognition/detect /face-recognition/detect api/face-recognition/detect /api/face-recognition/detect api face-recognition detect api.verifik.co/v2/face-recognition/detect https://api.verifik.co/v2/face-recognition/detect GET v2/face-recognition/detect GET /v2/face-recognition/detect | [Face Detection](/verifik-biometrics-apis/liveness/face-detection) |
 | `v2/face-recognition/liveness` | v2 face-recognition liveness face-recognition/liveness /face-recognition/liveness api/face-recognition/liveness /api/face-recognition/liveness api face-recognition liveness api.verifik.co/v2/face-recognition/liveness https://api.verifik.co/v2/face-recognition/liveness GET v2/face-recognition/liveness GET /v2/face-recognition/liveness | [Liveness Detection](/biometrics/liveness) |
+| `v2/face-recognition/liveness-score` | v2 face-recognition liveness-score face-recognition/liveness-score /face-recognition/liveness-score api/face-recognition/liveness-score /api/face-recognition/liveness-score api face-recognition liveness-score api.verifik.co/v2/face-recognition/liveness-score https://api.verifik.co/v2/face-recognition/liveness-score GET v2/face-recognition/liveness-score GET /v2/face-recognition/liveness-score | [Liveness Score](/biometrics/liveness-score) |
 | `v2/face-recognition/persons` | v2 face-recognition persons face-recognition/persons /face-recognition/persons api/face-recognition/persons /api/face-recognition/persons api face-recognition persons api.verifik.co/v2/face-recognition/persons https://api.verifik.co/v2/face-recognition/persons GET v2/face-recognition/persons GET /v2/face-recognition/persons | [Create a Person](/resources/create-a-person) |
 | `v2/face-recognition/persons/{id}` | v2/face-recognition/persons /v2/face-recognition/persons v2 face-recognition persons face-recognition/persons /face-recognition/persons api/face-recognition/persons /api/face-recognition/persons api face-recognition persons | [Delete a Person](/resources/persons/delete-a-person) |
 | `v2/face-recognition/persons/search-live-face` | v2 face-recognition persons search-live-face face-recognition/persons/search-live-face /face-recognition/persons/search-live-face api/face-recognition/persons/search-live-face /api/face-recognition/persons/search-live-face api face-recognition persons search-live-face persons/search-live-face /persons/search-live-face api.verifik.co/v2/face-recognition/persons/search-live-face https://api.verifik.co/v2/face-recognition/persons/search-live-face GET v2/face-recognition/persons/search-live-face GET /v2/face-recognition/persons/search-live-face | [Create a Person with Liveness](/resources/create-a-person-with-liveness) |
@@ -3024,6 +3036,7 @@ _Last regenerated: 2026-07-17T20:45:07.707Z_
 | `v3/co/ministerio-de-trabajo/certificados` | v3 co ministerio-de-trabajo certificados co/ministerio-de-trabajo/certificados /co/ministerio-de-trabajo/certificados api/co/ministerio-de-trabajo/certificados /api/co/ministerio-de-trabajo/certificados api co ministerio-de-trabajo certificados ministerio-de-trabajo/certificados /ministerio-de-trabajo/certificados api.verifik.co/v3/co/ministerio-de-trabajo/certificados https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados GET v3/co/ministerio-de-trabajo/certificados GET /v3/co/ministerio-de-trabajo/certificados | [Colombia — Ministry of Labor certificates (v3)](/certificates/colombia-ministerio-trabajo-certificados-v3) |
 | `v3/co/rues` | v3 co rues co/rues /co/rues api/co/rues /api/co/rues api co rues api.verifik.co/v3/co/rues https://api.verifik.co/v3/co/rues GET v3/co/rues GET /v3/co/rues | [Colombia — RUES business lookup (v3)](/business-validation/colombia-rues-v3) |
 | `v3/co/rues-complete` | v3 co rues-complete co/rues-complete /co/rues-complete api/co/rues-complete /api/co/rues-complete api co rues-complete api.verifik.co/v3/co/rues-complete https://api.verifik.co/v3/co/rues-complete GET v3/co/rues-complete GET /v3/co/rues-complete | [RUES Complete Business Validation (v3)](/business-validation/colombia-rues-business-information) |
+| `v3/ec/company` | v3 ec company ec/company /ec/company api/ec/company /api/ec/company api ec company api.verifik.co/v3/ec/company https://api.verifik.co/v3/ec/company GET v3/ec/company GET /v3/ec/company | [Ecuadorian Business Verification](/business-validation/ecuador) |
 | `v3/ocr/scan-studio` | v3 ocr scan-studio ocr/scan-studio /ocr/scan-studio api/ocr/scan-studio /api/ocr/scan-studio api ocr scan-studio api.verifik.co/v3/ocr/scan-studio https://api.verifik.co/v3/ocr/scan-studio GET v3/ocr/scan-studio GET /v3/ocr/scan-studio | [Scan Studio](/ocr-engines/scan-studio) |
 | `v3/pe/cedula` | v3 pe cedula pe/cedula /pe/cedula api/pe/cedula /api/pe/cedula api pe cedula api.verifik.co/v3/pe/cedula https://api.verifik.co/v3/pe/cedula GET v3/pe/cedula GET /v3/pe/cedula | [Peruvian Citizen v3](/identity-validation/peru/peru-citizen) |
 | `v3/pe/cedula/extra` | v3 pe cedula extra pe/cedula/extra /pe/cedula/extra api/pe/cedula/extra /api/pe/cedula/extra api pe cedula extra cedula/extra /cedula/extra api.verifik.co/v3/pe/cedula/extra https://api.verifik.co/v3/pe/cedula/extra GET v3/pe/cedula/extra GET /v3/pe/cedula/extra | [\U0001F1F5\U0001F1EA Peru - V3 Peruvian Citizen](/identity-validation/peru/v3-peruvian-citizen) |

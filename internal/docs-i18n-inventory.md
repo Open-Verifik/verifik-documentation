@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-07-17T20:45:07.656Z
+Generated: 2026-07-18T02:04:54.487Z
 
-- **Files scanned:** 489
-- **Unique endpoint URLs:** 209
+- **Files scanned:** 491
+- **Unique endpoint URLs:** 210
 - **Duplicate URL groups (SEO / aliases):** 55
-- **Docs without `### Endpoint` block:** 204
+- **Docs without `### Endpoint` block:** 205
 
 ## Summary by priority (canonical primary path only)
 
@@ -13,7 +13,7 @@ Generated: 2026-07-17T20:45:07.656Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 23 | vehicle-validation (other countries) |
-| P2 | 163 | identity, biometrics, resources, etc. |
+| P2 | 164 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -329,7 +329,6 @@ Generated: 2026-07-17T20:45:07.656Z
 | P2 | `v2/do/cedula` | `identity/dominican-republic.mdx` |
 | P2 | `v2/document-validations/app-registration` | `resources/app-registrations/create-an-app-registration-document-validation.mdx` |
 | P2 | `v2/ec/cedula` | `identity-validation/ecuador.mdx` |
-| P2 | `v2/ec/company` | `business-validation/ecuador.mdx` |
 | P1 | `v2/ec/vehiculo/placa` | `vehicle-validation/ecuador/vehicle-by-plate.mdx` |
 | P1 | `v2/ec/vehiculo/placa/multas` | `vehicle-validation/ecuador.mdx` |
 | P2 | `v2/email-validations` | `resources/email-validations/create-an-email-validation.mdx` |
@@ -347,6 +346,7 @@ Generated: 2026-07-17T20:45:07.656Z
 | P2 | `v2/face-recognition/compare-with-liveness` | `biometrics/compare-with-liveness.mdx` |
 | P2 | `v2/face-recognition/detect` | `verifik-biometrics-apis/liveness/face-detection.mdx` |
 | P2 | `v2/face-recognition/liveness` | `biometrics/liveness.mdx` |
+| P2 | `v2/face-recognition/liveness-score` | `biometrics/liveness-score.mdx` |
 | P2 | `v2/face-recognition/persons` | `resources/persons/create-a-person.mdx` |
 | P2 | `v2/face-recognition/persons/{id}` | `resources/persons/delete-a-person.mdx` |
 | P2 | `v2/face-recognition/persons/search-live-face` | `resources/persons/create-a-person-with-liveness.mdx` |
@@ -410,6 +410,7 @@ Generated: 2026-07-17T20:45:07.656Z
 | P2 | `v3/co/ministerio-de-trabajo/certificados` | `certificates/colombia-ministerio-trabajo-certificados-v3.mdx` |
 | P2 | `v3/co/rues` | `business-validation/colombia-rues-v3.mdx` |
 | P2 | `v3/co/rues-complete` | `business-validation/colombia-rues-business-information.mdx` |
+| P2 | `v3/ec/company` | `business-validation/ecuador.mdx` |
 | P2 | `v3/ocr/scan-studio` | `ocr-engines/scan-studio.mdx` |
 | P2 | `v3/pe/cedula` | `identity-validation/peru/peru-citizen.mdx` |
 | P2 | `v3/pe/cedula/extra` | `identity-validation/peru/v3-peruvian-citizen.mdx` |
@@ -592,6 +593,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `smartaccess/smartaccess.md`
 - `smartcheck/smartcheck.md`
 - `smartenroll/smartenroll-admin-kyc-review.md`
+- `smartenroll/smartenroll-api-companion.md`
 - `smartenroll/smartenroll-kyc-flow.md`
 - `smartenroll/smartenroll.md`
 - `vehicle-validation.mdx`

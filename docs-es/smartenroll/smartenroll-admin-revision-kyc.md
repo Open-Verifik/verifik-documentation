@@ -323,7 +323,7 @@ La interfaz puede mostrar:
 - **Puntuaciones Bajas (muy por debajo del umbral del proyecto)**: Probable rechazo o requiere investigación
 
 :::warning Guías de Revisión
-Las puntuaciones por debajo del umbral configurado deben ser cuidadosamente revisadas. Considera el contexto, calidad del documento y otros factores antes de tomar una decisión final. El historial FaceVerification está disponible vía populate del app registration (`compareFaceVerification`), no hay GET público por id de verificación; los registros expiran en unos 90 días en producción. Para la receta completa de integración, consulta la [Guía de API de SmartEnroll](/smartenroll/guia-api).
+Las puntuaciones por debajo del umbral configurado deben ser cuidadosamente revisadas. Considera el contexto, calidad del documento y otros factores antes de tomar una decisión final. El historial FaceVerification está disponible vía populate del app registration (`compareFaceVerification`), no hay GET público por id de verificación; los registros expiran en unos 90 días en producción. Para la receta completa de integración, consulta la [Guía de API de SmartEnroll](/verifik-es/smartenroll/guia-api).
 :::
 
 ---

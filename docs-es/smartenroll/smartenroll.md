@@ -189,7 +189,7 @@ Este paso es donde el usuario configura métodos de verificación para autentica
 Las puntuaciones más altas proporcionan mejor seguridad pero pueden aumentar las tasas de rechazo falso. Prueba con tu base de usuarios para encontrar el equilibrio óptimo. `cropFace` en servidor no está soportado en las APIs de face-recognition compare: envía imágenes enfocadas en el rostro o recorta en el cliente.
 :::
 
-Para leer scores de forma programática tras el enrollment (populates, webhooks, umbrales), consulta la [Guía de API de SmartEnroll](/smartenroll/guia-api).
+Para leer scores de forma programática tras el enrollment (populates, webhooks, umbrales), consulta la [Guía de API de SmartEnroll](/verifik-es/smartenroll/guia-api).
 
 ---
 

@@ -7,7 +7,7 @@ slug: /smartenroll/guia-api
 
 # SmartEnroll — Guía de API
 
-Tras completar el KYC de **SmartEnroll hospedado**, usa esta guía para integrar resultados en tu backend: scores de comparación facial, vitalidad, webhooks y los endpoints relevantes. Es un complemento a la documentación de producto—no sustituye la [API de SmartEnroll autoalojado](/smart-enroll-auto-alojado).
+Tras completar el KYC de **SmartEnroll hospedado**, usa esta guía para integrar resultados en tu backend: scores de comparación facial, vitalidad, webhooks y los endpoints relevantes. Es un complemento a la documentación de producto—no sustituye la [API de SmartEnroll autoalojado](/verifik-es/smart-enroll-auto-alojado).
 
 ## Resumen del flujo
 
@@ -59,17 +59,17 @@ Conjunto habitual para un snapshot completo del enrollment:
 
 | Endpoint | Propósito |
 | --- | --- |
-| [`POST /v2/face-recognition/liveness`](/deteccion-vitalidad) | Detección de vitalidad estándar |
-| [`POST /v2/face-recognition/liveness-score`](/puntaje-vitalidad) | Vitalidad enfocada en el puntaje (misma facturación que `/liveness`) |
-| [`POST /v2/face-recognition/compare`](/comparar) | Comparación facial 1:1 (API directa) |
-| [`POST /v2/face-recognition/compare-with-liveness`](/comparar-con-deteccion-vitalidad) | Comparar y luego vitalidad (secuencial) |
+| [`POST /v2/face-recognition/liveness`](/verifik-es/deteccion-vitalidad) | Detección de vitalidad estándar |
+| [`POST /v2/face-recognition/liveness-score`](/verifik-es/puntaje-vitalidad) | Vitalidad enfocada en el puntaje (misma facturación que `/liveness`) |
+| [`POST /v2/face-recognition/compare`](/verifik-es/comparar) | Comparación facial 1:1 (API directa) |
+| [`POST /v2/face-recognition/compare-with-liveness`](/verifik-es/comparar-con-deteccion-vitalidad) | Comparar y luego vitalidad (secuencial) |
 | `POST /v2/face-recognition/compare/app-registration` | Comparación del flujo hospedado: usa `appRegistrationId` de la sesión; gallery/probe desde caras guardadas; cuerpo vacío `{}` válido; umbral del project flow |
 | `GET /v2/app-registrations/:id` | Leer el enrollment + popular scores |
 | `POST /v2/biometric-validations/app-registration` | Paso biométrico / vitalidad en la sesión hospedada |
 | `POST /v2/document-validations/app-registration` | Captura / validación de documento en la sesión hospedada |
 | `POST /v2/identity-images/appRegistration` | Guardar imágenes de identidad (`face`, `documentFace`, …) |
 
-Para una UI totalmente personalizada, empieza por [SmartEnroll autoalojado](/smart-enroll-auto-alojado).
+Para una UI totalmente personalizada, empieza por [SmartEnroll autoalojado](/verifik-es/smart-enroll-auto-alojado).
 
 ## Umbrales de comparación facial
 
@@ -94,18 +94,18 @@ Cuando el project flow tiene webhook, la comparación facial emite un evento con
 
 Ejemplo: `onboarding_face_verification_compare`.
 
-El payload incluye campos del app registration más `compareResult` (resultado FaceVerification). Inventario completo: [Webhooks KYC de Smart Enroll](/resources/smart-enroll-kyc-webhooks).
+El payload incluye campos del app registration más `compareResult` (resultado FaceVerification). Inventario completo: [Webhooks KYC de Smart Enroll](/verifik-es/resources/smart-enroll-kyc-webhooks).
 
 ## Vitalidad / PAD (resumen de producto)
 
-La vitalidad facial de Verifik usa nuestro stack biométrico con detección de ataques de presentación (PAD). La vitalidad está **certificada iBeta Level 2** y alineada con **ISO 30107 Level 1 y Level 2**. Está diseñada para detectar vectores de spoofing comunes como **fotos impresas, reproducción de video y máscaras 3D**, mediante una verificación de una sola imagen. Detalles: [Detección de vitalidad](/deteccion-vitalidad) y [Puntaje de vitalidad](/puntaje-vitalidad).
+La vitalidad facial de Verifik usa nuestro stack biométrico con detección de ataques de presentación (PAD). La vitalidad está **certificada iBeta Level 2** y alineada con **ISO 30107 Level 1 y Level 2**. Está diseñada para detectar vectores de spoofing comunes como **fotos impresas, reproducción de video y máscaras 3D**, mediante una verificación de una sola imagen. Detalles: [Detección de vitalidad](/verifik-es/deteccion-vitalidad) y [Puntaje de vitalidad](/verifik-es/puntaje-vitalidad).
 
 ## Documentación de producto relacionada
 
-- [SmartEnroll](/smartenroll) — configuración del proyecto
-- [Flujo KYC SmartEnroll](/smartenroll-flujo-kyc) — experiencia del usuario final
-- [Revisión KYC admin](/smartenroll-admin-revision-kyc) — UI de revisión e interpretación de scores
-- [SmartEnroll autoalojado](/smart-enroll-auto-alojado) — APIs programáticas de proyecto/flujo
+- [SmartEnroll](/verifik-es/smartenroll) — configuración del proyecto
+- [Flujo KYC SmartEnroll](/verifik-es/smartenroll/smartenroll-flujo-kyc) — experiencia del usuario final
+- [Revisión KYC admin](/verifik-es/smartenroll/smartenroll-admin-revision-kyc) — UI de revisión e interpretación de scores
+- [SmartEnroll autoalojado](/verifik-es/smart-enroll-auto-alojado) — APIs programáticas de proyecto/flujo
 
 ## Receta rápida
 
