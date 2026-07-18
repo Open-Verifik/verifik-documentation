@@ -212,6 +212,12 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "validacion-empresarial/ecuador",
+					label: "🇪🇨 Ecuador",
+					key: "empresarial-ecuador",
+				},
+				{
+					type: "doc",
 					id: "validacion-empresarial/mexico",
 					label: "🇲🇽 México",
 					key: "empresarial-mexico",

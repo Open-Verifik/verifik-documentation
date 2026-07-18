@@ -60,6 +60,7 @@ const sidebars = {
 				{ type: "doc", id: "business-validation/business-validation-colombia-rues-v3", label: "🇨🇴 コロンビア — RUES 企業照会 (v3)" },
 				{ type: "doc", id: "business-validation/rues-complete-v3", label: "🇨🇴 コロンビア — RUES 企業フル" },
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 コスタリカ法人（NITE）", key: "business-costa-rica" },
+				{ type: "doc", id: "business-validation/ecuador", label: "🇪🇨 エクアドル法人（RUCEC）", key: "business-ecuador" },
 				{ type: "doc", id: "business-validation/mexico", label: "🇲🇽 メキシコ法人検証", key: "business-mexico" },
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 パナマ企業（RUC）", key: "business-panama" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 パラグアイ企業（RUC）", key: "business-paraguay" },
