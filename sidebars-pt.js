@@ -59,6 +59,7 @@ const sidebars = {
 				{ type: "doc", id: "business-validation/business-validation-colombia-rues-v3", label: "🇨🇴 Colômbia — Consulta RUES (v3)" },
 				{ type: "doc", id: "business-validation/rues-complete-v3", label: "🇨🇴 Colômbia — RUES empresa completa" },
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 Empresa na Costa Rica (NITE)", key: "business-costa-rica" },
+				{ type: "doc", id: "business-validation/ecuador", label: "🇪🇨 Equador — Empresa (RUCEC)", key: "business-ecuador" },
 				{ type: "doc", id: "business-validation/mexico", label: "🇲🇽 Verificação de empresas no México", key: "business-mexico" },
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 Empresa panamenha (RUC)", key: "business-panama" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 Empresa paraguaia (RUC)", key: "business-paraguay" },

@@ -58,6 +58,7 @@ const sidebars = {
 				{ type: "doc", id: "business-validation/business-validation-colombia-rues-v3", label: "🇨🇴 콜롬비아 — RUES 기업 조회 (v3)" },
 				{ type: "doc", id: "business-validation/rues-complete-v3", label: "🇨🇴 콜롬비아 — RUES 전체 검증" },
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 코스타리카 기업(NITE)", key: "business-costa-rica" },
+				{ type: "doc", id: "business-validation/ecuador", label: "🇪🇨 에콰도르 기업(RUCEC)", key: "business-ecuador" },
 				{ type: "doc", id: "business-validation/mexico", label: "🇲🇽 멕시코 기업 검증", key: "business-mexico" },
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 파나마 기업 (RUC)", key: "business-panama" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 파라과이 기업 (RUC)", key: "business-paraguay" },

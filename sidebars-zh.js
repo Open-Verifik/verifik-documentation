@@ -59,6 +59,7 @@ const sidebars = {
 				{ type: "doc", id: "business-validation/business-validation-colombia-rues-v3", label: "🇨🇴 RUES 企业查询 (v3)" },
 				{ type: "doc", id: "business-validation/rues-complete-v3", label: "🇨🇴 RUES 完整核验 (v3)" },
 				{ type: "doc", id: "business-validation/costa-rica", label: "🇨🇷 哥斯达黎加企业（NITE）", key: "business-costa-rica" },
+				{ type: "doc", id: "business-validation/ecuador", label: "🇪🇨 厄瓜多尔企业（RUCEC）", key: "business-ecuador" },
 				{ type: "doc", id: "business-validation/mexico", label: "🇲🇽 墨西哥企业核验", key: "business-mexico" },
 				{ type: "doc", id: "business-validation/panama", label: "🇵🇦 巴拿马企业（RUC）", key: "business-panama" },
 				{ type: "doc", id: "business-validation/paraguay", label: "🇵🇾 巴拉圭企业（RUC）", key: "business-paraguay" },

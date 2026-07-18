@@ -402,6 +402,12 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "business-validation/ecuador",
+					label: "🇪🇨 Ecuador",
+					key: "business-ecuador",
+				},
+				{
+					type: "doc",
 					id: "business-validation/mexico",
 					label: "🇲🇽 Mexico",
 					key: "business-mexico",
