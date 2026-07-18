@@ -7,6 +7,12 @@ const sidebars = {
 		{ type: "doc", id: "intro", label: "Accueil" },
 		{
 			type: "category",
+			label: "Services",
+			collapsible: false,
+			items: [{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll — Guide API" }],
+		},
+		{
+			type: "category",
 			label: "Identité",
 			collapsible: false,
 			items: [

@@ -43,6 +43,7 @@ const sidebars = {
 				"smartenroll/smartenroll",
 				"smartenroll/smartenroll-flujo-kyc",
 				"smartenroll/smartenroll-admin-revision-kyc",
+				"smartenroll/smartenroll-guia-api",
 				"smart-enroll-auto-alojado/smart-enroll-self-hosted",
 				"smart-scan/escaneo-inteligente",
 			],
@@ -53,6 +54,7 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				"biometrics/deteccion-vitalidad",
+				"biometrics/puntaje-vitalidad",
 				{
 					type: "category",
 					label: "Comparación Facial",

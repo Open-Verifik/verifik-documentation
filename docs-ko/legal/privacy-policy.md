@@ -423,7 +423,7 @@ Collected: Yes.
 
 Examples: Facial images used for liveness detection and authentication.
 
-Collected: **Yes, only for liveness detection and authentication.** We collect biometric information in the form of facial images (base64) solely for performing liveness detection and authenticating the customer on the platform. This information is sent directly to SeventhSense servers for processing. We do not retain, store, sell, or trade this biometric information for any other purpose.
+Collected: **Yes, only for liveness detection and authentication.** We collect biometric information in the form of facial images (base64) solely for performing liveness detection and authenticating the customer on the platform. This information is processed by Verifik’s biometric systems. We do not retain, store, sell, or trade this biometric information for any other purpose.
 
 * **Category F: Internet or other similar network activity.**
 

@@ -7,6 +7,12 @@ const sidebars = {
 		{ type: "doc", id: "intro", label: "主页" },
 		{
 			type: "category",
+			label: "服务",
+			collapsible: false,
+			items: [{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll API 指南" }],
+		},
+		{
+			type: "category",
 			label: "身份核验",
 			collapsible: false,
 			items: [

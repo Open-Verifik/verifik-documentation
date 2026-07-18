@@ -76,7 +76,7 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 
 **Tecnología:**
 
--   Motor de reconocimiento facial basado en OpenCV y deep learning
+-   Motor de reconocimiento facial de Verifik basado en deep learning
 -   Precisión: >99% en condiciones óptimas
 -   Velocidad: &lt;2 segundos por validación
 

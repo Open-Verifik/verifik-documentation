@@ -317,12 +317,13 @@ The interface may show:
 
 ### Score Interpretation
 
-- **High Scores (85%+)**: Strong match, typically auto-approved
-- **Medium Scores (70-84%)**: May require manual review
-- **Low Scores (less than 70%)**: Likely rejection or requires investigation
+- **High Scores (85%+)**: Strong match against the hosted default threshold (`0.85`), typically auto-approved
+- **Medium Scores (70-84%)**: May require manual review; common for printed-document faces vs live selfies even when the person is the same
+- **Near API minimum (~67%)**: Allowed on direct face-recognition APIs (`0.67`–`0.95`); only appropriate if the project threshold was lowered after testing false-accept risk
+- **Low Scores (well below your project threshold)**: Likely rejection or requires investigation
 
 :::warning Review Guidelines
-Scores below the configured threshold should be carefully reviewed. Consider the context, document quality, and other factors before making a final decision.
+Scores below the configured threshold should be carefully reviewed. Consider the context, document quality, and other factors before making a final decision. FaceVerification history is available via app-registration populate (`compareFaceVerification`), not a public GET-by-verification-id; records expire after about 90 days in production. For the full integrator recipe, see the [SmartEnroll API Companion](/smartenroll/api-companion).
 :::
 
 ---

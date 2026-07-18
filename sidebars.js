@@ -64,6 +64,7 @@ const sidebars = {
 				"smartenroll/smartenroll",
 				"smartenroll/smartenroll-kyc-flow",
 				"smartenroll/smartenroll-admin-kyc-review",
+				"smartenroll/smartenroll-api-companion",
 				"smart-enroll-self-hosted/smart-enroll-self-hosted",
 				"smart-scan/smart-scan",
 			],
@@ -75,6 +76,7 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				"biometrics/liveness",
+				"biometrics/liveness-score",
 				{
 					type: "category",
 					label: "Face Comparison",

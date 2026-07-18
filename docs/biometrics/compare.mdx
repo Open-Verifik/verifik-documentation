@@ -43,7 +43,7 @@ Compares a probe image against one or more gallery images and returns a similari
 | `probe` | string[] | Yes | Array with at least one base64 image string. |
 | `gallery` | string[] | Yes | Array of base64 image strings to compare against. |
 | `search_mode` | string | Yes | One of `FAST` or `ACCURATE`. |
-| `cropFace` | boolean | No | If supported, attempts to crop faces before comparison. |
+| `compare_min_score` | number | No | Pass threshold for the comparison score (`0.67`–`0.95`). Default: `0.85`. |
 
 ### Request
 
@@ -219,9 +219,19 @@ or
   </TabItem>
 </Tabs>
 
+### Face-match thresholds
+
+| Context | Typical / allowed values |
+| --- | --- |
+| Hosted SmartEnroll / project flow default | **`0.85`** (`compareMinScore`) |
+| Direct API (`compare_min_score`) | **`0.67`–`0.95`** (default `0.85` if omitted) |
+
+Printed document faces (for example a Colombian CC photo vs a live selfie) often score **lower** than live-vs-live matches. A score around **0.67–0.75** can still be a valid match for printed-document gallery images; lowering the threshold increases acceptance of genuine printed-doc matches and may raise false accepts. Prefer face-focused gallery/probe images; server-side `cropFace` is **not supported** on face-recognition compare endpoints (omit the field; prepare crops client-side if needed).
+
 ### Notes
 
 - `probe` and `gallery` must be base64 strings; images shorter than ~100 characters are rejected with `412:only_images_in_base64`.
 - `search_mode` must be `FAST` or `ACCURATE` (required by validation).
 - Response is wrapped with `id`, `data`, and `signature` per standard middleware.
+- There is **no** `GET /v2/face-verifications/:id`. To read a SmartEnroll face-compare result, use [`GET /v2/app-registrations/:id?populates[]=compareFaceVerification`](/resources/app-registrations/retrieve-an-app-registration). FaceVerification records expire after about **90 days** in production (shorter in development).
 

@@ -7,6 +7,12 @@ const sidebars = {
 		{ type: "doc", id: "intro", label: "홈" },
 		{
 			type: "category",
+			label: "서비스",
+			collapsible: false,
+			items: [{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll API 가이드" }],
+		},
+		{
+			type: "category",
 			label: "신원",
 			collapsible: false,
 			items: [

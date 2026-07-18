@@ -43,8 +43,7 @@ Performs comparison first and, if the comparison meets `compare_min_score` (or i
 | `gallery` | string[] | Yes | Array of base64 image strings to compare against. URLs are supported and will be fetched and converted internally. |
 | `search_mode` | string | Yes | One of `FAST` or `ACCURATE`. |
 | `liveness_min_score` | number | No | Liveness threshold; default 0.6 if not provided. |
-| `compare_min_score` | number | No | Optional comparison threshold (0.67–0.95). |
-| `cropFace` | boolean | No | If `true`, attempts to crop faces in gallery before comparison. |
+| `compare_min_score` | number | No | Optional comparison threshold (`0.67`–`0.95`). Hosted SmartEnroll default is `0.85`. |
 
 ### Request
 
@@ -66,8 +65,7 @@ async function run() {
       gallery: ["<base64>"],
       search_mode: "FAST",
       liveness_min_score: 0.6,
-      compare_min_score: 0.8,
-      cropFace: true
+      compare_min_score: 0.8
     }),
   });
   console.log(await res.json());
@@ -91,8 +89,7 @@ $body = json_encode([
     "gallery" => ["<base64>"],
     "search_mode" => "ACCURATE",
     "liveness_min_score" => 0.6,
-    "compare_min_score" => 0.8,
-    "cropFace" => true
+    "compare_min_score" => 0.8
 ]);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -117,8 +114,7 @@ payload = {
     "gallery": ["<base64>"],
     "search_mode": "FAST",
     "liveness_min_score": 0.6,
-    "compare_min_score": 0.8,
-    "cropFace": True
+    "compare_min_score": 0.8
 }
 r = requests.post(url, json=payload, headers=headers)
 print(r.json())
@@ -145,7 +141,6 @@ func main() {
         "search_mode": "FAST",
         "liveness_min_score": 0.6,
         "compare_min_score": 0.8,
-        "cropFace": true,
     }
     b, _ := json.Marshal(payload)
     req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/face-recognition/compare-with-liveness", bytes.NewBuffer(b))
@@ -239,9 +234,19 @@ or
   </TabItem>
 </Tabs>
 
+### Face-match thresholds
+
+| Context | Typical / allowed values |
+| --- | --- |
+| Hosted SmartEnroll / project flow default | **`0.85`** |
+| Direct API (`compare_min_score`) | **`0.67`–`0.95`** |
+
+Printed document faces vs live selfies often score lower than live-vs-live. Values near the API minimum (`0.67`) can be appropriate for printed-CC galleries after you validate false-accept risk. Server-side `cropFace` is **not supported** on this endpoint (ignored if sent); send face-focused images.
+
 ### Notes
 
 - Comparison is executed first. Only if `compare_min_score` is not provided or met, liveness is executed on `probe`.
 - `liveness_min_score` defaults to 0.6 if not provided.
-- Gallery supports `https` URLs and will be downloaded and converted to base64 internally; `cropFace` optionally crops faces before comparison.
+- Gallery supports `https` URLs and will be downloaded and converted to base64 internally.
+- There is **no** `GET /v2/face-verifications/:id`. For SmartEnroll history, populate `compareFaceVerification` on the app registration (records TTL ~**90 days** in production).
 

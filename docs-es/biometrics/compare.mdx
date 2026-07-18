@@ -30,7 +30,7 @@ Compara una imagen de prueba contra una o más imágenes de galería y retorna u
 | `probe` | string[] | Sí | Array con al menos una cadena de imagen base64. |
 | `gallery` | string[] | Sí | Array de cadenas de imagen base64 para comparar. |
 | `search_mode` | string | Sí | Uno de `FAST` o `ACCURATE`. |
-| `cropFace` | boolean | No | Si es compatible, intenta recortar caras antes de la comparación. |
+| `compare_min_score` | number | No | Umbral de aprobación del score de comparación (`0.67`–`0.95`). Por defecto: `0.85`. |
 
 ### Solicitud
 
@@ -206,9 +206,19 @@ o
   </TabItem>
 </Tabs>
 
+### Umbrales de comparación facial
+
+| Contexto | Valores típicos / permitidos |
+| --- | --- |
+| SmartEnroll hospedado / project flow (por defecto) | **`0.85`** (`compareMinScore`) |
+| API directa (`compare_min_score`) | **`0.67`–`0.95`** (por defecto `0.85` si se omite) |
+
+Las caras de documentos impresos (por ejemplo foto de CC colombiana vs selfie en vivo) suelen puntuar **más bajo** que coincidencias en vivo vs en vivo. Un score alrededor de **0.67–0.75** puede ser una coincidencia válida para galerías de documentos impresos; bajar el umbral aumenta la aceptación de coincidencias genuinas y puede subir falsos positivos. Prefiere imágenes enfocadas en el rostro; `cropFace` en servidor **no está soportado** en los endpoints de face-recognition compare (omite el campo; prepara recortes en el cliente si hace falta).
+
 ### Notas
 
 - `probe` y `gallery` deben ser cadenas base64; las imágenes más cortas que ~100 caracteres son rechazadas con `412:only_images_in_base64`.
 - `search_mode` debe ser `FAST` o `ACCURATE` (requerido por validación).
 - La respuesta está envuelta con `id`, `data`, y `signature` según el middleware estándar.
+- **No existe** `GET /v2/face-verifications/:id`. Para leer el resultado de comparación en SmartEnroll, usa `GET /v2/app-registrations/:id?populates[]=compareFaceVerification`. Los registros FaceVerification expiran en unos **90 días** en producción (menos en desarrollo).
 
