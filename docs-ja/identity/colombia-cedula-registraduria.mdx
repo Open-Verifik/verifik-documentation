@@ -1,0 +1,180 @@
+---
+id: colombia-cedula-registraduria
+title: コロンビア — Registraduría（SCCRC）市民照会
+description: GET /v2/co/cedula/registraduria（Registraduría SCCRC のみ）で文書番号によりコロンビア出生民事登録を照会します。
+slug: /identity/colombia-cedula-registraduria
+keywords:
+  - v2/co/cedula/registraduria
+  - /v2/co/cedula/registraduria
+  - v2 co cedula registraduria
+  - api/co/cedula/registraduria
+  - /api/co/cedula/registraduria
+  - api.verifik.co/v2/co/cedula/registraduria
+  - 'https://api.verifik.co/v2/co/cedula/registraduria'
+  - GET v2/co/cedula/registraduria
+  - GET /v2/co/cedula/registraduria
+  - co/cedula/registraduria
+  - cedula/registraduria
+  - registraduria sccrc document
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "コロンビア — Registraduría（SCCRC）市民照会 | Verifik API",
+	description:
+		"コロンビア CC の SCCRC 文書直接照会 — Procuraduría、DIAN、Olimpia は使用しません。",
+	articleSection: "API ドキュメント",
+	keywords: "コロンビア, Registraduría, SCCRC, 身分証明書, 文書照会, 本人確認 API",
+	about: {
+		"@type": "Thing",
+		name: "本人確認 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# コロンビア — Registraduría（SCCRC）市民照会
+
+**Registraduría Nacional del Estado Civil**（**SCCRC**）の**出生民事登録**（*registro civil de nacimiento*）を、コロンビアの **cédula（CC）** 番号で照会します。
+
+[文書による市民照会](/identity-validation/colombia/colombian-citizen)（`/v2/co/cedula`）と異なり、このエンドポイントは **Registraduría のみ**を使用し、Procuraduría / DIAN / Olimpia は試しません。
+
+## 返却内容
+
+- **`documentNumber`**, **`documentType`**
+- **`firstName`**, **`lastName`**, **`fullName`**, **`arrayName`**
+- **`sexo`**, **`serial`**
+- **`oficina`** / **`expeditionPlace`**, **`fecha`** / **`dateOfBirth`**（取得可能な場合）
+- **`recordType`** — `REGISTRO CIVIL DE NACIMIENTO`
+- **署名付き** Verifik レスポンス
+
+## API リファレンス
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/cedula/registraduria
+```
+
+**`POST`** も同一です。**`GET`** は以下の **query parameters** を使用します。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description | Examples |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | yes | 必ず **`CC`** | `CC` |
+| `documentNumber` | string | yes | コロンビア国民 ID 番号 | `1032386359` |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/cedula/registraduria", {
+	params: {
+		documentType: "CC",
+		documentNumber: "1032386359",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/cedula/registraduria"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1032386359"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CC",
+		"documentNumber": "1032386359",
+		"firstName": "LILIA MANUELA",
+		"lastName": "LESPORT FERNANDEZ",
+		"fullName": "LILIA MANUELA LESPORT FERNANDEZ",
+		"arrayName": ["LILIA", "MANUELA", "LESPORT", "FERNANDEZ"],
+		"sexo": "FEMENINO",
+		"serial": "0043721066",
+		"oficina": "NOTARIA 1 VILLANUEVA - LA GUAJIRA",
+		"expeditionPlace": "NOTARIA 1 VILLANUEVA - LA GUAJIRA",
+		"fecha": "29 DE DICIEMBRE DE 2009",
+		"dateOfBirth": "29 DE DICIEMBRE DE 2009",
+		"recordType": "REGISTRO CIVIL DE NACIMIENTO"
+	},
+	"signature": {
+		"dateTime": "July 22, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 機能
+
+- SCCRC **文書モード**照会（CC のみ）
+- Procuraduría / DIAN / Olimpia なし
+- 単一レコード応答
+- **GET** と **POST** は同一ハンドラ
+
+### 注意
+
+- **`documentType`** は **`CC`** である必要があります。
+- SCCRC の文書検索は、[名前照会](/identity-validation/colombia/colombian-citizen-by-name)で見つかっても **404** になることがあります。
+- 一時的な障害は **409**（`Endpoint_out_of_service`）として返る場合があります。
+- 関連: [文書照会](/identity-validation/colombia/colombian-citizen)、[名前照会](/identity-validation/colombia/colombian-citizen-by-name)、[シリアル照会](/identity/colombia-registraduria-serial)。

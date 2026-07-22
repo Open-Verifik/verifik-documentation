@@ -1,0 +1,180 @@
+---
+id: colombia-cedula-registraduria
+title: Colombie — Consultation citoyen via Registraduría (SCCRC)
+description: Recherchez un acte de naissance civil colombien par numéro de document via GET /v2/co/cedula/registraduria (Registraduría SCCRC uniquement).
+slug: /identity/colombia-cedula-registraduria
+keywords:
+  - v2/co/cedula/registraduria
+  - /v2/co/cedula/registraduria
+  - v2 co cedula registraduria
+  - api/co/cedula/registraduria
+  - /api/co/cedula/registraduria
+  - api.verifik.co/v2/co/cedula/registraduria
+  - 'https://api.verifik.co/v2/co/cedula/registraduria'
+  - GET v2/co/cedula/registraduria
+  - GET /v2/co/cedula/registraduria
+  - co/cedula/registraduria
+  - cedula/registraduria
+  - registraduria sccrc document
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombie — Consultation citoyen via Registraduría (SCCRC) | API Verifik",
+	description:
+		"Consultation directe SCCRC par document pour une CC colombienne — sans Procuraduría, DIAN ni Olimpia.",
+	articleSection: "Documentation API",
+	keywords: "Colombie, Registraduría, SCCRC, cédula, document, API d'identité",
+	about: {
+		"@type": "Thing",
+		name: "API de vérification d'identité",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Colombie — Consultation citoyen via Registraduría (SCCRC)
+
+Recherchez un acte de **naissance** du registre civil (*registro civil de nacimiento*) de la **Registraduría Nacional del Estado Civil** (**SCCRC**) à l’aide d’un numéro de **cédula (CC)**.
+
+Contrairement à [citoyen par document](/identity-validation/colombia/colombian-citizen) (`/v2/co/cedula`), cet endpoint interroge **uniquement la Registraduría** — il n’utilise **pas** Procuraduría, DIAN ni Olimpia.
+
+## Ce que renvoie cette API
+
+- **`documentNumber`**, **`documentType`**
+- **`firstName`**, **`lastName`**, **`fullName`**, **`arrayName`**
+- **`sexo`**, **`serial`**
+- **`oficina`** / **`expeditionPlace`**, **`fecha`** / **`dateOfBirth`** si disponibles
+- **`recordType`** — `REGISTRO CIVIL DE NACIMIENTO`
+- Réponse Verifik **signée**
+
+## Référence API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/cedula/registraduria
+```
+
+Disponible aussi en **`POST`**. **`GET`** utilise les **paramètres de requête** ci-dessous.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description | Examples |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | yes | Doit être **`CC`** | `CC` |
+| `documentNumber` | string | yes | Numéro de cédula colombienne | `1032386359` |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/cedula/registraduria", {
+	params: {
+		documentType: "CC",
+		documentNumber: "1032386359",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/cedula/registraduria"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "1032386359"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CC",
+		"documentNumber": "1032386359",
+		"firstName": "LILIA MANUELA",
+		"lastName": "LESPORT FERNANDEZ",
+		"fullName": "LILIA MANUELA LESPORT FERNANDEZ",
+		"arrayName": ["LILIA", "MANUELA", "LESPORT", "FERNANDEZ"],
+		"sexo": "FEMENINO",
+		"serial": "0043721066",
+		"oficina": "NOTARIA 1 VILLANUEVA - LA GUAJIRA",
+		"expeditionPlace": "NOTARIA 1 VILLANUEVA - LA GUAJIRA",
+		"fecha": "29 DE DICIEMBRE DE 2009",
+		"dateOfBirth": "29 DE DICIEMBRE DE 2009",
+		"recordType": "REGISTRO CIVIL DE NACIMIENTO"
+	},
+	"signature": {
+		"dateTime": "July 22, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing documentNumber"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Fonctionnalités
+
+- Recherche SCCRC en **mode document** (CC uniquement)
+- Sans Procuraduría, DIAN ni Olimpia
+- Réponse à un seul enregistrement
+- **GET** et **POST** partagent le même handler
+
+### Notes
+
+- **`documentType`** doit être **`CC`**.
+- La recherche SCCRC par document peut renvoyer **404** même si [par nom](/identity-validation/colombia/colombian-citizen-by-name) trouve la personne.
+- Les indisponibilités temporaires peuvent apparaître en **409** (`Endpoint_out_of_service`).
+- Voir aussi : [Citoyen par document](/identity-validation/colombia/colombian-citizen), [Par nom](/identity-validation/colombia/colombian-citizen-by-name), [Par serial](/identity/colombia-registraduria-serial).

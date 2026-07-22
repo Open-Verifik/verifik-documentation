@@ -188,6 +188,26 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity-validation/colombia/colombian-citizen-by-name",
+					label: "🇨🇴 Colombia — Citizen by name (SCCRC)",
+				},
+				{
+					type: "doc",
+					id: "identity/colombia-cedula-registraduria",
+					label: "🇨🇴 Colombia — Citizen via Registraduría (SCCRC)",
+				},
+				{
+					type: "doc",
+					id: "identity/colombia-registraduria-serial",
+					label: "🇨🇴 Colombia — Civil registry by serial",
+				},
+				{
+					type: "doc",
+					id: "identity/colombia-registraduria-matrimonio",
+					label: "🇨🇴 Colombia — Marriage civil registry",
+				},
+				{
+					type: "doc",
 					id: "identity/colombia-ce",
 					label: "🇨🇴 Colombia - CE",
 				},
