@@ -228,6 +228,14 @@ const sidebars = {
 			items: [
 				{
 					type: "category",
+					label: "人物",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "resources/persons/lookup-a-person", label: "名前で人物を検索" },
+					],
+				},
+				{
+					type: "category",
 					label: "電話認証",
 					collapsible: true,
 					items: [

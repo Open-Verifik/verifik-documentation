@@ -215,6 +215,14 @@ const sidebars = {
 			items: [
 				{
 					type: "category",
+					label: "사람",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "resources/persons/lookup-a-person", label: "이름으로 사람 조회" },
+					],
+				},
+				{
+					type: "category",
 					label: "전화 인증",
 					collapsible: true,
 					items: [

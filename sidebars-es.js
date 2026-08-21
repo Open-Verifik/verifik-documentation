@@ -832,6 +832,7 @@ const sidebars = {
 						"resources/personas/personas",
 						"resources/personas/el-objeto-persona",
 						"resources/personas/crear-una-persona",
+						"resources/persons/lookup-a-person",
 						"resources/personas/recuperar-una-persona",
 						"resources/personas/listar-todas-las-personas",
 					],

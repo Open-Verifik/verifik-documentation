@@ -1,0 +1,207 @@
+---
+id: lookup-a-person
+title: Buscar uma pessoa por nome
+description: Encontre registros de pessoas por nome e data de nascimento opcional (metadados Mongo, não busca facial 1:N)
+slug: /resources/lookup-a-person
+keywords:
+  - v2/face-recognition/persons/lookup
+  - /v2/face-recognition/persons/lookup
+  - v2 face-recognition persons lookup
+  - api/face-recognition/persons/lookup
+  - /api/face-recognition/persons/lookup
+  - api.verifik.co/v2/face-recognition/persons/lookup
+  - 'https://api.verifik.co/v2/face-recognition/persons/lookup'
+  - GET v2/face-recognition/persons/lookup
+  - GET /v2/face-recognition/persons/lookup
+  - face-recognition/persons/lookup
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/face-recognition/persons/lookup
+```
+
+Encontra pessoas já armazenadas para o seu cliente por **nome** (obrigatório) e **data de nascimento** opcional. Use quando a criação retornar `412 person_already_set`, ou antes do enroll, para obter o **`_id` da pessoa** e os **`code`** da coleção sem uma busca facial 1:N.
+
+Esta é uma consulta de **metadados Mongo**, não um match de rosto. Os dígitos em `name` são removidos como na criação (`"Maria 123"` vira `"Maria"`). A correspondência é **contains** e não diferencia maiúsculas (`Maria` encontra `Maria Perez Gonzalez`). Use pelo menos 3 caracteres.
+
+Use `collections[].code` (UUID de 36 caracteres) como `collection_id` na busca facial. Não envie o `_id` Mongo da coleção.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `name` | string | Yes | Nome parcial ou completo (mínimo 3 caracteres após remover dígitos). Contains, sem diferenciar maiúsculas. |
+| `date_of_birth` | string | No | `YYYY-MM-DD`. Se enviado, restringe àquele dia. |
+| `page` | number | No | Número da página (padrão: `1`). |
+| `limit` | number | No | Tamanho da página (padrão: `20`, máximo: `100`). |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const params = new URLSearchParams({
+    name: "Maria Perez",
+    date_of_birth: "1994-02-07",
+    page: "1",
+    limit: "20",
+  });
+
+  const res = await fetch(`https://api.verifik.co/v2/face-recognition/persons/lookup?${params}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "name" => "Maria Perez",
+    "date_of_birth" => "1994-02-07",
+    "page" => 1,
+    "limit" => 20,
+]);
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/persons/lookup?" . $query);
+curl_setopt($ch, CURLOPT_HTTPGET, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/face-recognition/persons/lookup"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+params = {"name": "Maria Perez", "date_of_birth": "1994-02-07", "page": 1, "limit": 20}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "io"
+    "net/http"
+    "os"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/face-recognition/persons/lookup?name=Maria%20Perez&date_of_birth=1994-02-07&page=1&limit=20"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    res, err := http.DefaultClient.Do(req)
+    if err != nil {
+        panic(err)
+    }
+    defer res.Body.Close()
+    body, _ := io.ReadAll(res.Body)
+    fmt.Println(string(body))
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": [
+    {
+      "_id": "693c646dfd68b59e4e8d1d58",
+      "name": "Maria Perez",
+      "date_of_birth": "1994-02-07",
+      "gender": "F",
+      "collections": [
+        {
+          "_id": "6612a020a55c329bfb3f62e6",
+          "code": "ed27d231-b437-42c5-94c5-a2130c447d1e",
+          "name": "CholloApp"
+        }
+      ]
+    }
+  ],
+  "total": 1
+}
+```
+
+Um nome desconhecido retorna `200` com `"data": []` e `"total": 0`. Isso não é um 404.
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "name is required",
+  "code": "MissingParameter"
+}
+```
+
+ou `"message": "name_too_short"` quando o nome tem menos de 3 caracteres após remover dígitos.
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Prefira este helper (ou o objeto `data` de `412 person_already_set`) a uma busca 1:N quando você conhece parte do nome e, opcionalmente, a data de nascimento.
+- Só o primeiro nome já basta (`name=Maria`). Adicione `date_of_birth` quando muitas pessoas compartilham esse nome.
+- A unicidade de `POST /v2/face-recognition/persons` também é **nome + data de nascimento** em uma coleção, não similaridade facial.
+- `collections[].code` é o valor que o OpenCV espera como `collection_id`.

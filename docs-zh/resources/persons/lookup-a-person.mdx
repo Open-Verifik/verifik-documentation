@@ -1,0 +1,207 @@
+---
+id: lookup-a-person
+title: 按姓名查找人员
+description: 按姓名和可选出生日期查找人员记录（Mongo 元数据，不是 1:N 人脸搜索）
+slug: /resources/lookup-a-person
+keywords:
+  - v2/face-recognition/persons/lookup
+  - /v2/face-recognition/persons/lookup
+  - v2 face-recognition persons lookup
+  - api/face-recognition/persons/lookup
+  - /api/face-recognition/persons/lookup
+  - api.verifik.co/v2/face-recognition/persons/lookup
+  - 'https://api.verifik.co/v2/face-recognition/persons/lookup'
+  - GET v2/face-recognition/persons/lookup
+  - GET /v2/face-recognition/persons/lookup
+  - face-recognition/persons/lookup
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/face-recognition/persons/lookup
+```
+
+按**姓名**（必填）和可选的**出生日期**查找已为你的客户存储的人员。当创建返回 `412 person_already_set`，或在注册前需要拿到**人员 `_id`** 和集合 **`code`** 且不想做 1:N 人脸搜索时使用。
+
+这是 **Mongo 元数据** 查询，不是人脸匹配。`name` 中的数字会像创建时一样被去掉（`"Maria 123"` 变成 `"Maria"`）。姓名匹配是不区分大小写的 **包含（contains）**（`Maria` 能找到 `Maria Perez Gonzalez`）。至少使用 3 个字符。
+
+人脸搜索请把 `collections[].code`（36 位 UUID）作为 `collection_id`。不要发送集合的 Mongo `_id`。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `name` | string | Yes | 部分或完整姓名（去掉数字后至少 3 个字符）。不区分大小写的 contains。 |
+| `date_of_birth` | string | No | `YYYY-MM-DD`。传入后只匹配该日。 |
+| `page` | number | No | 页码（默认：`1`）。 |
+| `limit` | number | No | 每页条数（默认：`20`，最大：`100`）。 |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const params = new URLSearchParams({
+    name: "Maria Perez",
+    date_of_birth: "1994-02-07",
+    page: "1",
+    limit: "20",
+  });
+
+  const res = await fetch(`https://api.verifik.co/v2/face-recognition/persons/lookup?${params}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "name" => "Maria Perez",
+    "date_of_birth" => "1994-02-07",
+    "page" => 1,
+    "limit" => 20,
+]);
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/persons/lookup?" . $query);
+curl_setopt($ch, CURLOPT_HTTPGET, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/face-recognition/persons/lookup"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+params = {"name": "Maria Perez", "date_of_birth": "1994-02-07", "page": 1, "limit": 20}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "io"
+    "net/http"
+    "os"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/face-recognition/persons/lookup?name=Maria%20Perez&date_of_birth=1994-02-07&page=1&limit=20"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    res, err := http.DefaultClient.Do(req)
+    if err != nil {
+        panic(err)
+    }
+    defer res.Body.Close()
+    body, _ := io.ReadAll(res.Body)
+    fmt.Println(string(body))
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": [
+    {
+      "_id": "693c646dfd68b59e4e8d1d58",
+      "name": "Maria Perez",
+      "date_of_birth": "1994-02-07",
+      "gender": "F",
+      "collections": [
+        {
+          "_id": "6612a020a55c329bfb3f62e6",
+          "code": "ed27d231-b437-42c5-94c5-a2130c447d1e",
+          "name": "CholloApp"
+        }
+      ]
+    }
+  ],
+  "total": 1
+}
+```
+
+未知姓名返回 `200`，`"data": []` 且 `"total": 0`。不是 404。
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "name is required",
+  "code": "MissingParameter"
+}
+```
+
+或去掉数字后姓名不足 3 个字符时返回 `"message": "name_too_short"`。
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 已知部分姓名和可选出生日期时，优先用此接口（或 `412 person_already_set` 的 `data`），而不是 1:N 搜索。
+- 仅名字即可（`name=Maria`）。同名很多时再加 `date_of_birth`。
+- `POST /v2/face-recognition/persons` 的唯一性也是集合内的 **姓名 + 出生日期**，不是人脸相似度。
+- `collections[].code` 才是 OpenCV 搜索期望的 `collection_id`。

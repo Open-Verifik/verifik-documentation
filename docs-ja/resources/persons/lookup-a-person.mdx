@@ -1,0 +1,207 @@
+---
+id: lookup-a-person
+title: 名前で人物を検索
+description: 名前と任意の生年月日で人物レコードを検索します（Mongo メタデータ。1:N 顔検索ではありません）
+slug: /resources/lookup-a-person
+keywords:
+  - v2/face-recognition/persons/lookup
+  - /v2/face-recognition/persons/lookup
+  - v2 face-recognition persons lookup
+  - api/face-recognition/persons/lookup
+  - /api/face-recognition/persons/lookup
+  - api.verifik.co/v2/face-recognition/persons/lookup
+  - 'https://api.verifik.co/v2/face-recognition/persons/lookup'
+  - GET v2/face-recognition/persons/lookup
+  - GET /v2/face-recognition/persons/lookup
+  - face-recognition/persons/lookup
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/face-recognition/persons/lookup
+```
+
+クライアントに保存済みの人物を **名前**（必須）と任意の **生年月日** で検索します。作成が `412 person_already_set` を返す場合、または登録前に **人物 `_id`** とコレクション **`code`** を 1:N 顔検索なしで取得したいときに使います。
+
+これは **Mongo メタデータ** の検索であり、顔マッチではありません。`name` の数字は作成時と同じく除去されます（`"Maria 123"` は `"Maria"` になります）。名前一致は大文字小文字を区別しない **部分一致（contains）** です（`Maria` は `Maria Perez Gonzalez` を見つけます）。3 文字以上を指定してください。
+
+顔検索の `collection_id` には `collections[].code`（36 文字 UUID）を使います。Mongo のコレクション `_id` は送らないでください。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `name` | string | Yes | 部分またはフルネーム（数字除去後、最短 3 文字）。大文字小文字を区別しない contains。 |
+| `date_of_birth` | string | No | `YYYY-MM-DD`。指定するとその日に絞ります。 |
+| `page` | number | No | ページ番号（デフォルト: `1`）。 |
+| `limit` | number | No | ページサイズ（デフォルト: `20`、最大: `100`）。 |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const params = new URLSearchParams({
+    name: "Maria Perez",
+    date_of_birth: "1994-02-07",
+    page: "1",
+    limit: "20",
+  });
+
+  const res = await fetch(`https://api.verifik.co/v2/face-recognition/persons/lookup?${params}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  });
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "name" => "Maria Perez",
+    "date_of_birth" => "1994-02-07",
+    "page" => 1,
+    "limit" => 20,
+]);
+$ch = curl_init("https://api.verifik.co/v2/face-recognition/persons/lookup?" . $query);
+curl_setopt($ch, CURLOPT_HTTPGET, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/face-recognition/persons/lookup"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+params = {"name": "Maria Perez", "date_of_birth": "1994-02-07", "page": 1, "limit": 20}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "fmt"
+    "io"
+    "net/http"
+    "os"
+)
+
+func main() {
+    url := "https://api.verifik.co/v2/face-recognition/persons/lookup?name=Maria%20Perez&date_of_birth=1994-02-07&page=1&limit=20"
+    req, _ := http.NewRequest("GET", url, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    res, err := http.DefaultClient.Do(req)
+    if err != nil {
+        panic(err)
+    }
+    defer res.Body.Close()
+    body, _ := io.ReadAll(res.Body)
+    fmt.Println(string(body))
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": [
+    {
+      "_id": "693c646dfd68b59e4e8d1d58",
+      "name": "Maria Perez",
+      "date_of_birth": "1994-02-07",
+      "gender": "F",
+      "collections": [
+        {
+          "_id": "6612a020a55c329bfb3f62e6",
+          "code": "ed27d231-b437-42c5-94c5-a2130c447d1e",
+          "name": "CholloApp"
+        }
+      ]
+    }
+  ],
+  "total": 1
+}
+```
+
+未知の名前は `200` で `"data": []` と `"total": 0` を返します。404 ではありません。
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "name is required",
+  "code": "MissingParameter"
+}
+```
+
+または数字除去後の名前が 3 文字未満の場合は `"message": "name_too_short"`。
+
+  </TabItem>
+  <TabItem value="401-403" label="401/403">
+
+```json
+{
+  "message": "Authentication required",
+  "code": "UNAUTHORIZED"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 名前の一部と任意の生年月日が分かっているときは、1:N 検索よりこのヘルパー（または `412 person_already_set` の `data`）を使ってください。
+- 名だけでも十分です（`name=Maria`）。同名が多い場合は `date_of_birth` を追加します。
+- `POST /v2/face-recognition/persons` の一意性も顔類似度ではなく、コレクション内の **名前 + 生年月日** です。
+- `collections[].code` が OpenCV 検索の `collection_id` です。
