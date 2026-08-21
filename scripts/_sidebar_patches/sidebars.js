@@ -1092,6 +1092,7 @@ const sidebars = {
 						"resources/persons/persons",
 						"resources/persons/the-person-object",
 						"resources/persons/create-a-person",
+						"resources/persons/lookup-a-person",
 						"resources/persons/retrieve-a-person",
 						"resources/persons/list-all-persons",
 					],
