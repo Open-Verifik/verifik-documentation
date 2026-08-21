@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-08-19T20:15:38.133Z
+Generated: 2026-08-21T19:03:47.980Z
 
-- **Files scanned:** 500
-- **Unique endpoint URLs:** 215
+- **Files scanned:** 501
+- **Unique endpoint URLs:** 216
 - **Duplicate URL groups (SEO / aliases):** 55
 - **Docs without `### Endpoint` block:** 208
 
@@ -13,7 +13,7 @@ Generated: 2026-08-19T20:15:38.133Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 23 | vehicle-validation (other countries) |
-| P2 | 169 | identity, biometrics, resources, etc. |
+| P2 | 170 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -355,6 +355,7 @@ Generated: 2026-08-19T20:15:38.133Z
 | P2 | `v2/face-recognition/liveness-score` | `biometrics/liveness-score.mdx` |
 | P2 | `v2/face-recognition/persons` | `resources/persons/create-a-person.mdx` |
 | P2 | `v2/face-recognition/persons/{id}` | `resources/persons/delete-a-person.mdx` |
+| P2 | `v2/face-recognition/persons/lookup` | `resources/persons/lookup-a-person.mdx` |
 | P2 | `v2/face-recognition/persons/search-live-face` | `resources/persons/create-a-person-with-liveness.mdx` |
 | P2 | `v2/face-recognition/search` | `biometrics/search.mdx` |
 | P2 | `v2/face-recognition/search-active-user` | `biometrics/search-active-user.mdx` |

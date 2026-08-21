@@ -1852,6 +1852,20 @@ keywords:
   - "https://api.verifik.co/v2/face-recognition/persons/{id}"
   - "GET v2/face-recognition/persons/{id}"
   - "GET /v2/face-recognition/persons/{id}"
+  - "v2/face-recognition/persons/lookup"
+  - "/v2/face-recognition/persons/lookup"
+  - "v2 face-recognition persons lookup"
+  - "face-recognition/persons/lookup"
+  - "/face-recognition/persons/lookup"
+  - "api/face-recognition/persons/lookup"
+  - "/api/face-recognition/persons/lookup"
+  - "api face-recognition persons lookup"
+  - "persons/lookup"
+  - "/persons/lookup"
+  - "api.verifik.co/v2/face-recognition/persons/lookup"
+  - "https://api.verifik.co/v2/face-recognition/persons/lookup"
+  - "GET v2/face-recognition/persons/lookup"
+  - "GET /v2/face-recognition/persons/lookup"
   - "v2/face-recognition/persons/search-live-face"
   - "/v2/face-recognition/persons/search-live-face"
   - "v2 face-recognition persons search-live-face"
@@ -2673,12 +2687,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (215 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (216 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-08-19T20:15:38.181Z_
+_Last regenerated: 2026-08-21T19:03:48.033Z_
 
 ## Argentina
 
@@ -2981,6 +2995,7 @@ _Last regenerated: 2026-08-19T20:15:38.181Z_
 | `v2/face-recognition/liveness-score` | v2 face-recognition liveness-score face-recognition/liveness-score /face-recognition/liveness-score api/face-recognition/liveness-score /api/face-recognition/liveness-score api face-recognition liveness-score api.verifik.co/v2/face-recognition/liveness-score https://api.verifik.co/v2/face-recognition/liveness-score GET v2/face-recognition/liveness-score GET /v2/face-recognition/liveness-score | [Liveness Score](/biometrics/liveness-score) |
 | `v2/face-recognition/persons` | v2 face-recognition persons face-recognition/persons /face-recognition/persons api/face-recognition/persons /api/face-recognition/persons api face-recognition persons api.verifik.co/v2/face-recognition/persons https://api.verifik.co/v2/face-recognition/persons GET v2/face-recognition/persons GET /v2/face-recognition/persons | [Create a Person](/resources/create-a-person) |
 | `v2/face-recognition/persons/{id}` | v2/face-recognition/persons /v2/face-recognition/persons v2 face-recognition persons face-recognition/persons /face-recognition/persons api/face-recognition/persons /api/face-recognition/persons api face-recognition persons | [Delete a Person](/resources/persons/delete-a-person) |
+| `v2/face-recognition/persons/lookup` | v2 face-recognition persons lookup face-recognition/persons/lookup /face-recognition/persons/lookup api/face-recognition/persons/lookup /api/face-recognition/persons/lookup api face-recognition persons lookup persons/lookup /persons/lookup api.verifik.co/v2/face-recognition/persons/lookup https://api.verifik.co/v2/face-recognition/persons/lookup GET v2/face-recognition/persons/lookup GET /v2/face-recognition/persons/lookup | [Lookup a Person by Name](/resources/lookup-a-person) |
 | `v2/face-recognition/persons/search-live-face` | v2 face-recognition persons search-live-face face-recognition/persons/search-live-face /face-recognition/persons/search-live-face api/face-recognition/persons/search-live-face /api/face-recognition/persons/search-live-face api face-recognition persons search-live-face persons/search-live-face /persons/search-live-face api.verifik.co/v2/face-recognition/persons/search-live-face https://api.verifik.co/v2/face-recognition/persons/search-live-face GET v2/face-recognition/persons/search-live-face GET /v2/face-recognition/persons/search-live-face | [Create a Person with Liveness](/resources/create-a-person-with-liveness) |
 | `v2/face-recognition/search` | v2 face-recognition search face-recognition/search /face-recognition/search api/face-recognition/search /api/face-recognition/search api face-recognition search api.verifik.co/v2/face-recognition/search https://api.verifik.co/v2/face-recognition/search GET v2/face-recognition/search GET /v2/face-recognition/search | ['Face Search (1:N)'](/biometrics/search) |
 | `v2/face-recognition/search-active-user` | v2 face-recognition search-active-user face-recognition/search-active-user /face-recognition/search-active-user api/face-recognition/search-active-user /api/face-recognition/search-active-user api face-recognition search-active-user api.verifik.co/v2/face-recognition/search-active-user https://api.verifik.co/v2/face-recognition/search-active-user GET v2/face-recognition/search-active-user GET /v2/face-recognition/search-active-user | ['Face Search 1:N (Active User)'](/biometrics/search-active-user) |
