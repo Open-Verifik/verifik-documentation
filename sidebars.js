@@ -304,7 +304,7 @@ const sidebars = {
 				{
 					type: "doc",
 					id: "identity/mexico",
-					label: "🇲🇽 Mexico",
+					label: "🇲🇽 Mexico — CURP",
 					key: "identity-mexico",
 				},
 				{
