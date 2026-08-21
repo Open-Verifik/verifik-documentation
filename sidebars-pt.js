@@ -226,6 +226,14 @@ const sidebars = {
 			items: [
 				{
 					type: "category",
+					label: "Pessoas",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "resources/persons/lookup-a-person", label: "Buscar uma pessoa por nome" },
+					],
+				},
+				{
+					type: "category",
 					label: "Validações de telefone",
 					collapsible: true,
 					items: [

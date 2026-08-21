@@ -215,6 +215,14 @@ const sidebars = {
 			items: [
 				{
 					type: "category",
+					label: "人员",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "resources/persons/lookup-a-person", label: "按姓名查找人员" },
+					],
+				},
+				{
+					type: "category",
 					label: "电话验证",
 					collapsible: true,
 					items: [
