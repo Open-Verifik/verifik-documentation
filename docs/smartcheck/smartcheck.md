@@ -15,6 +15,8 @@ import { Card } from '@site/src/components/Card';
 
 **SmartCheck** is a comprehensive API solution designed to facilitate a wide range of verification processes. With a focus on data from Latin America, this platform allows businesses to validate identities, conduct background checks, verify vehicle information, validate professional licenses and certificates, check business details, and much more. SmartCheck aggregates multiple sources, providing reliable and accurate information to help businesses make informed decisions.
 
+Need background lookups? Use [SmartBatch](/smart-batch) (Async on [ai.verifik.co](https://ai.verifik.co) or `type=queue` on [async.verifik.co](https://async.verifik.co)).
+
 ### **Key Features**
 
 #### **1. Extensive API Coverage**

@@ -59,7 +59,12 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				"smartcheck/smartcheck",
-				"smartcheck/smart-batch-queue",
+				{
+					type: "category",
+					label: "SmartBatch",
+					collapsible: true,
+					items: ["smart-batch/smart-batch", "smart-batch/async-queue"],
+				},
 				"smartaccess/smartaccess",
 				"access/access",
 				"smartenroll/smartenroll",

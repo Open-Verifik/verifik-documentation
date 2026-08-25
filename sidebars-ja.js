@@ -9,7 +9,18 @@ const sidebars = {
 			type: "category",
 			label: "サービス",
 			collapsible: false,
-			items: [{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll API コンパニオン" }],
+			items: [
+				{
+					type: "category",
+					label: "SmartBatch",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "smart-batch/smart-batch", label: "SmartBatch" },
+						{ type: "doc", id: "smart-batch/async-queue", label: "エンドポイントをキューとして呼び出す (async)" },
+					],
+				},
+				{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll API コンパニオン" },
+			],
 		},
 		{
 			type: "category",

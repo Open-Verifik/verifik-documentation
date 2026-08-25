@@ -9,7 +9,18 @@ const sidebars = {
 			type: "category",
 			label: "服务",
 			collapsible: false,
-			items: [{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll API 指南" }],
+			items: [
+				{
+					type: "category",
+					label: "SmartBatch",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "smart-batch/smart-batch", label: "SmartBatch" },
+						{ type: "doc", id: "smart-batch/async-queue", label: "以队列方式调用接口 (async)" },
+					],
+				},
+				{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll API 指南" },
+			],
 		},
 		{
 			type: "category",

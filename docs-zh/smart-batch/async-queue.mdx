@@ -1,0 +1,329 @@
+---
+id: async-queue
+title: 以队列方式调用接口 (async)
+description: 在 async.verifik.co 上使用 type=queue 将目录查询入队，并在 worker 执行端点期间收到 202
+slug: /smart-batch/async-queue
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 以队列方式调用接口 (async)
+
+任何目录查询都可以等待结果（**sync**），或立即返回（**queue** / **Async**）。队列模式会创建一个单行 Smart Batch。worker 稍后调用同一端点并记录尝试。积分在该 worker 调用时扣除，而不是在入队时扣除。
+
+本页是从后端以队列方式调用端点的 A–Z 指南。产品、向导和仪表盘请从 [SmartBatch](/verifik-zh/smart-batch) 开始。
+
+## 何时使用 async
+
+当你不希望 HTTP 客户端等待慢查询时，使用 `type=queue`：
+
+- 稍后通过 webhook 或邮件处理结果。
+- 在 [ai.verifik.co](https://ai.verifik.co) 打开批次并查看仪表盘。
+- 在 [api.verifik.co](https://api.verifik.co) 轮询 `GET /v2/smart-batches/:id`。
+
+需要在同一响应中拿到身份载荷时，使用 sync（省略 `type`，或发送 `type=sync`）。
+
+## 身份验证
+
+使用你已经发送给 `api.verifik.co` 的 **同一客户 JWT**。
+
+```
+Authorization: Bearer <client JWT>
+```
+
+`async.verifik.co` 会转发该标头。Node 验证令牌、存储批次，然后签发短时 JWT，让 worker 以你的客户身份调用功能。你无需为队列保存第二把密钥。
+
+## 基础 URL
+
+```
+https://async.verifik.co
+```
+
+附上该功能文档中的 **同一目录路径**。例如：
+
+| 功能 | 路径 |
+| --- | --- |
+| 哥伦比亚身份证 | `/v2/co/cedula` |
+| 哥伦比亚参保（SISPRO） | `/v2/co/afiliaciones` |
+| 秘鲁 DNI | `/v2/pe/cedula` |
+
+没有目录 URL 的 passwordless 和 PDF 功能无法入队。
+
+## queue 参数
+
+在你已发送的同一查询（GET）或正文（POST）中加入 `type=queue`。
+
+| `type` | 发生什么 | 响应 |
+| --- | --- | --- |
+| 省略或 `sync` | 等待功能并返回该正文 | `200` / `401` / `404` / `409` / `504` |
+| `queue` | 创建单行 Smart Batch。此请求不调用功能 | `202` |
+
+`type` 必须省略、为 `sync` 或 `queue`。其他值会验证失败。
+
+## Request
+
+### 哥伦比亚身份证
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/co/cedula?documentType=CC&documentNumber=1032386359&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/co/cedula',
+  {
+    params: {
+      documentType: 'CC',
+      documentNumber: '1032386359',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/co/cedula",
+    params={
+        "documentType": "CC",
+        "documentNumber": "1032386359",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 哥伦比亚参保（SISPRO）
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/co/afiliaciones?documentType=CC&documentNumber=1007463534&date=09/05/2008&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/co/afiliaciones',
+  {
+    params: {
+      documentType: 'CC',
+      documentNumber: '1007463534',
+      date: '09/05/2008',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/co/afiliaciones",
+    params={
+        "documentType": "CC",
+        "documentNumber": "1007463534",
+        "date": "09/05/2008",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 秘鲁 DNI
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/pe/cedula?documentType=DNI&documentNumber=12345678&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/pe/cedula',
+  {
+    params: {
+      documentType: 'DNI',
+      documentNumber: '12345678',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/pe/cedula",
+    params={
+        "documentType": "DNI",
+        "documentNumber": "12345678",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+在 POST 端点上，将 `type` 与其余字段一起放在 JSON 正文中。不要把它当作要存储的输入字段发送 — 服务在保存 `inputData` 之前会去掉 `type`。
+
+## Response
+
+`202`
+
+```json
+{
+  "status": "queued",
+  "batchId": "665f0c2e2c1a4a0012ab3456",
+  "rowIndex": 0,
+  "attemptCount": 0
+}
+```
+
+| 字段 | 含义 |
+| --- | --- |
+| `status` | 成功入队时始终为 `queued` |
+| `batchId` | Smart Batch id。在 [ai.verifik.co](https://ai.verifik.co) 打开或轮询 Node |
+| `rowIndex` | 该批次中的行（单行 API 调用使用 `0`） |
+| `attemptCount` | 已记录的尝试次数（入队时为 `0`） |
+
+## 接下来会发生什么
+
+1. 请求为你的客户和 queue key 创建或复用 Async 配置。
+2. 你立即收到 `202`。JWT 不会存储在行上。
+3. worker 领取该行、调用功能 URL 并追加一次尝试。
+4. 当行或批次进入终态时，Node 会向配置的 webhook 发送 POST，并在你配置了邮件时发送完成邮件。
+
+Queue keys：
+
+| 功能 | Queue key | 配置名称 |
+| --- | --- | --- |
+| 哥伦比亚身份证 | `co.cedula.queue` | Queue Cedula |
+| 哥伦比亚参保 | `co.sispro.queue` | Queue SISPRO |
+| 其他所有目录功能 | `{featureCode}.queue` | `Queue {feature name}` |
+
+编辑一次自动创建的 `Queue …` 配置（webhook、邮件）。之后的 `type=queue` 调用会复用它。
+
+积分在 worker 调用时扣除，而不是在 `202` 时扣除。
+
+## 如何获取结果
+
+### Webhook 或邮件
+
+在 [ai.verifik.co](https://ai.verifik.co) 的批处理配置上设置 **Webhook URL** 和 **完成时发送邮件**（创建向导 → 检查并创建，或编辑配置）。它们不是查询参数。
+
+Smart Monitor 的 webhook 列表和详情会显示关联了哪些批处理配置。
+
+### Smart-Agent 仪表盘
+
+打开 [https://ai.verifik.co](https://ai.verifik.co)，进入批次（`202` 中的 `batchId`），查看状态、尝试、每行费用和关联 webhook。
+
+你也可以先创建配置（运行模式 **Async**），再从 API 入队，让行落到该配方上。
+
+### 轮询批次
+
+```http
+GET https://api.verifik.co/v2/smart-batches/{batchId}
+Authorization: Bearer <same client JWT>
+```
+
+行详情包含尝试时间线。已完成的尝试中有功能载荷。
+
+## 限制
+
+- passwordless 和 PDF 生成器功能没有目录 URL，因此无法入队。
+- `404` 和验证错误（`MissingParameter` 等）**不会**重试。
+- 可重试的结果是 `429`、`5xx` 以及 timeout / upstream-unavailable 代码。
+- `type` 只能是 `sync`、`queue` 或省略。
+
+## 可选的显式入队
+
+优先在目录路径上使用 `type=queue`。如果你已经知道 queue key，可以直接创建该行：
+
+```http
+POST https://api.verifik.co/v2/smart-batches/from-queue
+Authorization: Bearer <client JWT>
+Content-Type: application/json
+
+{
+  "queueKey": "peru_identity_lookup.queue",
+  "name": "Queue Peru - National ID Verification",
+  "featureCode": "peru_identity_lookup",
+  "inputData": {
+    "documentType": "DNI",
+    "documentNumber": "12345678"
+  }
+}
+```
+
+除非需要此显式正文，否则请使用 `https://async.verifik.co/{path}?type=queue`。
+
+## 相关
+
+- [SmartBatch](/verifik-zh/smart-batch) — UI 向导、Async vs Sync、通知
+- [秘鲁 — 公民 (DNI)](/verifik-zh/identity/peru)

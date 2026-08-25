@@ -1,0 +1,329 @@
+---
+id: async-queue
+title: エンドポイントをキューとして呼び出す (async)
+description: async.verifik.co で type=queue を付けてカタログ照会をキューに入れ、ワーカーがエンドポイントを実行している間に 202 を受け取ります
+slug: /smart-batch/async-queue
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# エンドポイントをキューとして呼び出す (async)
+
+カタログ照会は結果を待つか（**sync**）、すぐに返すか（**queue** / **Async**）を選べます。キューモードは 1 行の Smart Batch を作成します。ワーカーが後で同じエンドポイントを呼び出し、試行を記録します。クレジットはenqueue時ではなく、そのワーカー呼び出しで課金されます。
+
+このページは、バックエンドからエンドポイントをキューとして呼ぶ A–Z ガイドです。製品、ウィザード、ダッシュボードは [SmartBatch](/verifik-ja/smart-batch) から始めてください。
+
+## async を使うとき
+
+HTTP クライアントに遅い照会を待たせたくない場合は `type=queue` を使います。
+
+- Webhook またはメールで後から結果を処理する。
+- [ai.verifik.co](https://ai.verifik.co) でバッチを開き、ダッシュボードを見る。
+- [api.verifik.co](https://api.verifik.co) で `GET /v2/smart-batches/:id` をポーリングする。
+
+同じ応答で身分ペイロードが必要な場合は sync を使います（`type` を省略、または `type=sync`）。
+
+## 認証
+
+すでに `api.verifik.co` に送っている **同じクライアント JWT** を使います。
+
+```
+Authorization: Bearer <client JWT>
+```
+
+`async.verifik.co` はそのヘッダーを転送します。Node がトークンを検証してバッチを保存し、ワーカーがあなたのクライアントとして機能を呼べるよう短命 JWT を発行します。キュー用の 2 つ目のキーは保存しません。
+
+## ベース URL
+
+```
+https://async.verifik.co
+```
+
+機能に文書化された **同じカタログパス** を付けます。例:
+
+| 機能 | パス |
+| --- | --- |
+| コロンビア身分証 | `/v2/co/cedula` |
+| コロンビア加入（SISPRO） | `/v2/co/afiliaciones` |
+| ペルー DNI | `/v2/pe/cedula` |
+
+カタログ URL がない passwordless および PDF 機能はキューに入れられません。
+
+## queue パラメータ
+
+すでに送っている同じクエリ（GET）またはボディ（POST）に `type=queue` を追加します。
+
+| `type` | 動作 | 応答 |
+| --- | --- | --- |
+| 省略または `sync` | 機能を待ち、そのボディを返す | `200` / `401` / `404` / `409` / `504` |
+| `queue` | 1 行の Smart Batch を作成。このリクエストでは機能を呼ばない | `202` |
+
+`type` は省略、`sync`、または `queue` のみです。それ以外は検証エラーです。
+
+## Request
+
+### コロンビア身分証
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/co/cedula?documentType=CC&documentNumber=1032386359&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/co/cedula',
+  {
+    params: {
+      documentType: 'CC',
+      documentNumber: '1032386359',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/co/cedula",
+    params={
+        "documentType": "CC",
+        "documentNumber": "1032386359",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### コロンビア加入（SISPRO）
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/co/afiliaciones?documentType=CC&documentNumber=1007463534&date=09/05/2008&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/co/afiliaciones',
+  {
+    params: {
+      documentType: 'CC',
+      documentNumber: '1007463534',
+      date: '09/05/2008',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/co/afiliaciones",
+    params={
+        "documentType": "CC",
+        "documentNumber": "1007463534",
+        "date": "09/05/2008",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### ペルー DNI
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/pe/cedula?documentType=DNI&documentNumber=12345678&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/pe/cedula',
+  {
+    params: {
+      documentType: 'DNI',
+      documentNumber: '12345678',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/pe/cedula",
+    params={
+        "documentType": "DNI",
+        "documentNumber": "12345678",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+POST エンドポイントでは、残りのフィールドと一緒に JSON ボディで `type` を送ります。保存する入力フィールドとしては送らないでください。サービスは `inputData` を保存する前に `type` を取り除きます。
+
+## Response
+
+`202`
+
+```json
+{
+  "status": "queued",
+  "batchId": "665f0c2e2c1a4a0012ab3456",
+  "rowIndex": 0,
+  "attemptCount": 0
+}
+```
+
+| フィールド | 意味 |
+| --- | --- |
+| `status` | 成功した enqueue では常に `queued` |
+| `batchId` | Smart Batch の id。[ai.verifik.co](https://ai.verifik.co) で開くか Node をポーリング |
+| `rowIndex` | そのバッチ内の行（1 行 API 呼び出しは `0`） |
+| `attemptCount` | すでに記録された試行数（enqueue 時は `0`） |
+
+## 次に起きること
+
+1. リクエストは、クライアントと queue key 向けの Async 設定を作成または再利用します。
+2. すぐに `202` を受け取ります。JWT は行に保存されません。
+3. ワーカーが行を取得し、機能 URL を呼び出し、試行を追加します。
+4. 行またはバッチが終端になると、Node は設定の Webhook に POST し、設定していれば完了メールを送ります。
+
+Queue keys:
+
+| 機能 | Queue key | 設定名 |
+| --- | --- | --- |
+| コロンビア身分証 | `co.cedula.queue` | Queue Cedula |
+| コロンビア加入 | `co.sispro.queue` | Queue SISPRO |
+| その他すべてのカタログ機能 | `{featureCode}.queue` | `Queue {feature name}` |
+
+自動作成された `Queue …` 設定を一度編集します（Webhook、メール）。以降の `type=queue` 呼び出しはそれを再利用します。
+
+クレジットは `202` ではなくワーカー呼び出しで課金されます。
+
+## 結果の取得方法
+
+### Webhook またはメール
+
+[ai.verifik.co](https://ai.verifik.co) のバッチ設定で **Webhook URL** と **完了時のメール** を設定します（作成ウィザード → 確認と作成、または設定の編集）。クエリパラメータではありません。
+
+Smart Monitor の Webhook 一覧と詳細には、リンク済みバッチ設定が表示されます。
+
+### Smart-Agent ダッシュボード
+
+[https://ai.verifik.co](https://ai.verifik.co) を開き、`202` の `batchId` に移動して、ステータス、試行、行あたりのコスト、リンク済み Webhook を確認します。
+
+先に設定（実行モード **Async**）を作り、その後 API からキューに入れて行をそのレシピに載せることもできます。
+
+### バッチのポーリング
+
+```http
+GET https://api.verifik.co/v2/smart-batches/{batchId}
+Authorization: Bearer <same client JWT>
+```
+
+行詳細には試行タイムラインが含まれます。完了した試行には機能ペイロードが入っています。
+
+## 制限
+
+- passwordless および PDF ジェネレーター機能にはカタログ URL がないため、キューに入れられません。
+- `404` と検証エラー（`MissingParameter` など）は **再試行されません**。
+- 再試行可能な結果は `429`、`5xx`、timeout / upstream-unavailable コードです。
+- `type` は `sync`、`queue`、または省略のみです。
+
+## 任意の明示的 enqueue
+
+カタログパスの `type=queue` を優先してください。queue key が分かっている場合は、行を直接作成できます。
+
+```http
+POST https://api.verifik.co/v2/smart-batches/from-queue
+Authorization: Bearer <client JWT>
+Content-Type: application/json
+
+{
+  "queueKey": "peru_identity_lookup.queue",
+  "name": "Queue Peru - National ID Verification",
+  "featureCode": "peru_identity_lookup",
+  "inputData": {
+    "documentType": "DNI",
+    "documentNumber": "12345678"
+  }
+}
+```
+
+この明示ボディが必要でない限り、`https://async.verifik.co/{path}?type=queue` を使ってください。
+
+## 関連
+
+- [SmartBatch](/verifik-ja/smart-batch) — UI ウィザード、Async vs Sync、通知
+- [ペルー — 市民 (DNI)](/verifik-ja/identity/peru)

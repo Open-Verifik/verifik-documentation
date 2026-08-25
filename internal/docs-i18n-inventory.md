@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-08-21T19:03:47.980Z
+Generated: 2026-08-25T17:29:29.430Z
 
-- **Files scanned:** 501
+- **Files scanned:** 504
 - **Unique endpoint URLs:** 216
 - **Duplicate URL groups (SEO / aliases):** 55
-- **Docs without `### Endpoint` block:** 208
+- **Docs without `### Endpoint` block:** 211
 
 ## Summary by priority (canonical primary path only)
 
@@ -598,9 +598,12 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `roadmap/roadmap-2026.md`
 - `scandocs/scan-prompt.mdx`
 - `services/verifik-enroll-code-solution-via-api/full-api-tutorial.md`
+- `smart-batch/async-queue.mdx`
+- `smart-batch/smart-batch.md`
 - `smart-enroll-self-hosted/smart-enroll-self-hosted.md`
 - `smart-scan/smart-scan.md`
 - `smartaccess/smartaccess.md`
+- `smartcheck/smart-batch-queue.md`
 - `smartcheck/smartcheck.md`
 - `smartenroll/smartenroll-admin-kyc-review.md`
 - `smartenroll/smartenroll-api-companion.md`

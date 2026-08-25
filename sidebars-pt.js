@@ -9,7 +9,18 @@ const sidebars = {
 			type: "category",
 			label: "Serviços",
 			collapsible: false,
-			items: [{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll — Guia da API" }],
+			items: [
+				{
+					type: "category",
+					label: "SmartBatch",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "smart-batch/smart-batch", label: "SmartBatch" },
+						{ type: "doc", id: "smart-batch/async-queue", label: "Chamar endpoints como fila (async)" },
+					],
+				},
+				{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll — Guia da API" },
+			],
 		},
 		{
 			type: "category",

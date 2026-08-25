@@ -9,7 +9,18 @@ const sidebars = {
 			type: "category",
 			label: "서비스",
 			collapsible: false,
-			items: [{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll API 가이드" }],
+			items: [
+				{
+					type: "category",
+					label: "SmartBatch",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "smart-batch/smart-batch", label: "SmartBatch" },
+						{ type: "doc", id: "smart-batch/async-queue", label: "엔드포인트를 큐로 호출 (async)" },
+					],
+				},
+				{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll API 가이드" },
+			],
 		},
 		{
 			type: "category",

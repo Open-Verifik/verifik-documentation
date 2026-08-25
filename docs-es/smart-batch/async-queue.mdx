@@ -1,0 +1,331 @@
+---
+id: async-queue
+title: Llamar endpoints como cola (async)
+description: Encola cualquier consulta del catálogo en async.verifik.co con type=queue y recibe un 202 mientras el worker ejecuta el endpoint
+slug: /smart-batch/async-queue
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Llamar endpoints como cola (async)
+
+Cualquier consulta del catálogo puede esperar el resultado (**sync**) o responder de inmediato (**queue** / **Async**). El modo cola crea un Smart Batch de una fila. Un worker llama después el mismo endpoint y registra el intento. Los créditos se cobran en esa llamada del worker, no al encolar.
+
+Esta página es la guía de la A a la Z para llamar endpoints como cola desde tu backend. Para el producto, el asistente y el dashboard, empieza por [SmartBatch](/verifik-es/smart-batch).
+
+## Cuándo usar async
+
+Usa `type=queue` cuando no quieras que tu cliente HTTP espere una consulta lenta:
+
+- Manejarás el resultado después con un webhook o un correo.
+- Abrirás el lote en [ai.verifik.co](https://ai.verifik.co) y vigilarás el dashboard.
+- Harás poll a `GET /v2/smart-batches/:id` en [api.verifik.co](https://api.verifik.co).
+
+Usa sync (omite `type`, o envía `type=sync`) cuando necesites el payload de identidad en la misma respuesta.
+
+## Autenticación
+
+Usa el **mismo JWT de cliente** que ya envías a `api.verifik.co`.
+
+```
+Authorization: Bearer <client JWT>
+```
+
+`async.verifik.co` reenvía ese header. Node valida el token, guarda el lote y después emite un JWT de corta duración para que el worker llame el feature como tu cliente. No guardas una segunda llave para la cola.
+
+## URL base
+
+```
+https://async.verifik.co
+```
+
+Agrega el **mismo path de catálogo** documentado para el feature. Ejemplos:
+
+| Feature | Path |
+| --- | --- |
+| Cédula colombiana | `/v2/co/cedula` |
+| Afiliaciones colombianas (SISPRO) | `/v2/co/afiliaciones` |
+| DNI peruano | `/v2/pe/cedula` |
+
+Consulta [SmartCheck](/verifik-es/verificacion-inteligente) para el resto del catálogo. Los features passwordless y PDF sin URL de catálogo no se pueden encolar.
+
+## El parámetro queue
+
+Agrega `type=queue` a la misma query (GET) o body (POST) que ya envías.
+
+| `type` | Qué ocurre | Respuesta |
+| --- | --- | --- |
+| omitido o `sync` | Espera el feature y devuelve ese body | `200` / `401` / `404` / `409` / `504` |
+| `queue` | Crea un Smart Batch de una fila. No llama el feature en esta petición | `202` |
+
+`type` debe omitirse, ser `sync` o `queue`. Cualquier otro valor es un error de validación.
+
+## Request
+
+### Cédula colombiana
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/co/cedula?documentType=CC&documentNumber=1032386359&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/co/cedula',
+  {
+    params: {
+      documentType: 'CC',
+      documentNumber: '1032386359',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/co/cedula",
+    params={
+        "documentType": "CC",
+        "documentNumber": "1032386359",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Afiliaciones colombianas (SISPRO)
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/co/afiliaciones?documentType=CC&documentNumber=1007463534&date=09/05/2008&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/co/afiliaciones',
+  {
+    params: {
+      documentType: 'CC',
+      documentNumber: '1007463534',
+      date: '09/05/2008',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/co/afiliaciones",
+    params={
+        "documentType": "CC",
+        "documentNumber": "1007463534",
+        "date": "09/05/2008",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### DNI peruano
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/pe/cedula?documentType=DNI&documentNumber=12345678&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/pe/cedula',
+  {
+    params: {
+      documentType: 'DNI',
+      documentNumber: '12345678',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/pe/cedula",
+    params={
+        "documentType": "DNI",
+        "documentNumber": "12345678",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+En endpoints POST, envía `type` en el JSON junto con el resto de los campos. No lo guardes como campo de entrada: el servicio quita `type` antes de guardar `inputData`.
+
+## Response
+
+`202`
+
+```json
+{
+  "status": "queued",
+  "batchId": "665f0c2e2c1a4a0012ab3456",
+  "rowIndex": 0,
+  "attemptCount": 0
+}
+```
+
+| Campo | Significado |
+| --- | --- |
+| `status` | Siempre `queued` en un enqueue exitoso |
+| `batchId` | Id del Smart Batch. Ábrelo en [ai.verifik.co](https://ai.verifik.co) o haz poll a Node |
+| `rowIndex` | Fila en ese lote (las llamadas API de una fila usan `0`) |
+| `attemptCount` | Intentos ya registrados (`0` al encolar) |
+
+## Qué ocurre después
+
+1. La petición crea o reutiliza una configuración Async para tu cliente y queue key.
+2. Recibes `202` de inmediato. Tu JWT no se guarda en la fila.
+3. Un worker reclama la fila, llama la URL del feature y agrega un intento.
+4. Cuando la fila o el lote es terminal, Node hace POST al webhook de la configuración y envía correos si los configuraste.
+
+Queue keys:
+
+| Feature | Queue key | Nombre de la config |
+| --- | --- | --- |
+| Cédula colombiana | `co.cedula.queue` | Queue Cedula |
+| Afiliaciones colombianas | `co.sispro.queue` | Queue SISPRO |
+| Cualquier otro feature del catálogo | `{featureCode}.queue` | `Queue {feature name}` |
+
+Edita una vez la configuración automática `Queue …` (webhook, correos). Las llamadas posteriores con `type=queue` la reutilizan.
+
+Los créditos se cobran en la llamada del worker, no en el `202`.
+
+## Cómo obtener el resultado
+
+### Webhook o correo
+
+Configura **URL del webhook** y **Correos al completar** en la configuración de lote en [ai.verifik.co](https://ai.verifik.co) (asistente Crear → Revisar y crear, o edita la config). No son parámetros de consulta.
+
+La lista y el detalle de webhooks en Smart Monitor muestran qué configuraciones de lote están vinculadas.
+
+### Dashboard de Smart-Agent
+
+Abre [https://ai.verifik.co](https://ai.verifik.co), ve al lote (`batchId` del `202`) y vigila el estado, los intentos, el costo por fila y el webhook vinculado.
+
+También puedes crear primero la configuración (Modo de ejecución **Async**) y luego encolar desde la API para que las filas caigan en esa receta.
+
+### Poll del lote
+
+```http
+GET https://api.verifik.co/v2/smart-batches/{batchId}
+Authorization: Bearer <same client JWT>
+```
+
+El detalle de la fila incluye la línea de tiempo de intentos. Un intento completado contiene el payload del feature.
+
+## Límites
+
+- Los features passwordless y generadores PDF no tienen URL de catálogo, así que no se pueden encolar.
+- `404` y errores de validación (`MissingParameter` y similares) **no** se reintentan.
+- Los resultados reintentables son `429`, `5xx` y códigos de timeout / upstream no disponible.
+- `type` solo puede ser `sync`, `queue` u omitirse.
+
+## Enqueue explícito opcional
+
+Prefiere `type=queue` en el path del catálogo. Si ya conoces el queue key, puedes crear la fila directamente:
+
+```http
+POST https://api.verifik.co/v2/smart-batches/from-queue
+Authorization: Bearer <client JWT>
+Content-Type: application/json
+
+{
+  "queueKey": "peru_identity_lookup.queue",
+  "name": "Queue Peru - National ID Verification",
+  "featureCode": "peru_identity_lookup",
+  "inputData": {
+    "documentType": "DNI",
+    "documentNumber": "12345678"
+  }
+}
+```
+
+Usa `https://async.verifik.co/{path}?type=queue` salvo que necesites este body explícito.
+
+## Relacionado
+
+- [SmartBatch](/verifik-es/smart-batch) — asistente de UI, Async vs Sync, notificaciones
+- [SmartCheck](/verifik-es/verificacion-inteligente) — endpoints del catálogo
+- [Ciudadano colombiano](/verifik-es/identidad/colombia) — `/v2/co/cedula`
+- [Ciudadano peruano](/verifik-es/identidad/peru) — DNI de Perú

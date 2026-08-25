@@ -1,0 +1,331 @@
+---
+id: async-queue
+title: Call endpoints as queue (async)
+description: Enqueue any catalog lookup on async.verifik.co with type=queue and receive a 202 while the worker runs the endpoint
+slug: /smart-batch/async-queue
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Call endpoints as queue (async)
+
+Any catalog lookup can wait for the result (**sync**) or return immediately (**queue** / **Async**). Queue mode creates a one-row Smart Batch. A worker later calls the same endpoint and records the attempt. Credits are charged on that worker call, not on the enqueue.
+
+This page is the A–Z for calling endpoints as a queue from your backend. For the product, wizard, and dashboard, start with [SmartBatch](/smart-batch).
+
+## When to use async
+
+Use `type=queue` when you do not want your HTTP client to wait on a slow lookup:
+
+- You will handle the result later with a webhook or email.
+- You will open the batch on [ai.verifik.co](https://ai.verifik.co) and watch the dashboard.
+- You will poll `GET /v2/smart-batches/:id` on [api.verifik.co](https://api.verifik.co).
+
+Use sync (omit `type`, or send `type=sync`) when you need the identity payload on the same response.
+
+## Authentication
+
+Use the **same client JWT** you already send to `api.verifik.co`.
+
+```
+Authorization: Bearer <client JWT>
+```
+
+`async.verifik.co` forwards that header. Node validates the token, stores the batch, and later mints a short-lived JWT so the worker can call the feature as your client. You never store a second key for the queue.
+
+## Base URL
+
+```
+https://async.verifik.co
+```
+
+Append the **same catalog path** documented for the feature. Examples:
+
+| Feature | Path |
+| --- | --- |
+| Colombian cédula | `/v2/co/cedula` |
+| Colombian affiliations (SISPRO) | `/v2/co/afiliaciones` |
+| Peruvian DNI | `/v2/pe/cedula` |
+
+See [SmartCheck](/smartcheck) for the rest of the catalog. Passwordless and PDF features with no catalog URL cannot be queued.
+
+## The queue param
+
+Add `type=queue` to the same query (GET) or body (POST) you already send.
+
+| `type` | What happens | Response |
+| --- | --- | --- |
+| omitted or `sync` | Wait on the feature, return that body | `200` / `401` / `404` / `409` / `504` |
+| `queue` | Create a one-row Smart Batch. Do not call the feature on this request | `202` |
+
+`type` must be omitted, `sync`, or `queue`. Any other value is a validation error.
+
+## Request
+
+### Colombian cédula
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/co/cedula?documentType=CC&documentNumber=1032386359&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/co/cedula',
+  {
+    params: {
+      documentType: 'CC',
+      documentNumber: '1032386359',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/co/cedula",
+    params={
+        "documentType": "CC",
+        "documentNumber": "1032386359",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Colombian affiliations (SISPRO)
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/co/afiliaciones?documentType=CC&documentNumber=1007463534&date=09/05/2008&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/co/afiliaciones',
+  {
+    params: {
+      documentType: 'CC',
+      documentNumber: '1007463534',
+      date: '09/05/2008',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/co/afiliaciones",
+    params={
+        "documentType": "CC",
+        "documentNumber": "1007463534",
+        "date": "09/05/2008",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Peruvian DNI
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+
+```bash
+curl -sS -H "Authorization: Bearer $JWT" \
+  "https://async.verifik.co/v2/pe/cedula?documentType=DNI&documentNumber=12345678&type=queue"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from 'axios';
+
+const { data, status } = await axios.get(
+  'https://async.verifik.co/v2/pe/cedula',
+  {
+    params: {
+      documentType: 'DNI',
+      documentNumber: '12345678',
+      type: 'queue',
+    },
+    headers: {
+      Authorization: `Bearer ${process.env.JWT}`,
+    },
+  },
+);
+
+console.log(status, data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://async.verifik.co/v2/pe/cedula",
+    params={
+        "documentType": "DNI",
+        "documentNumber": "12345678",
+        "type": "queue",
+    },
+    headers={"Authorization": f"Bearer {os.environ['JWT']}"},
+)
+print(response.status_code, response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+On POST endpoints, send `type` in the JSON body with the rest of the fields. Do not also send it as a stored input field — the service strips `type` before it saves `inputData`.
+
+## Response
+
+`202`
+
+```json
+{
+  "status": "queued",
+  "batchId": "665f0c2e2c1a4a0012ab3456",
+  "rowIndex": 0,
+  "attemptCount": 0
+}
+```
+
+| Field | Meaning |
+| --- | --- |
+| `status` | Always `queued` on a successful enqueue |
+| `batchId` | Smart Batch id. Open it on [ai.verifik.co](https://ai.verifik.co) or poll Node |
+| `rowIndex` | Row in that batch (one-row API calls use `0`) |
+| `attemptCount` | Attempts already recorded (`0` at enqueue time) |
+
+## What happens next
+
+1. The request creates or reuses an Async configuration for your client and queue key.
+2. You receive `202` immediately. Your JWT is not stored on the row.
+3. A worker claims the row, calls the feature URL, and appends an attempt.
+4. When the row or batch is terminal, Node POSTs the configuration webhook and sends completion emails if you configured them.
+
+Queue keys:
+
+| Feature | Queue key | Config name |
+| --- | --- | --- |
+| Colombian cédula | `co.cedula.queue` | Queue Cedula |
+| Colombian affiliations | `co.sispro.queue` | Queue SISPRO |
+| Every other catalog feature | `{featureCode}.queue` | `Queue {feature name}` |
+
+Edit the auto-created `Queue …` configuration once (webhook, emails). Later `type=queue` calls reuse it.
+
+Credits are charged on the worker call, not on the `202`.
+
+## How to get the result
+
+### Webhook or email
+
+Set **Webhook URL** and **Emails on completion** on the batch configuration in [ai.verifik.co](https://ai.verifik.co) (Create wizard → Review & Create, or edit the config). They are not query parameters.
+
+The webhook list and detail pages in Smart Monitor show which batch configurations are linked.
+
+### Smart-Agent dashboard
+
+Open [https://ai.verifik.co](https://ai.verifik.co), go to the batch (`batchId` from the `202`), and watch status, attempts, cost per row, and the linked webhook.
+
+You can also create the configuration first (Run mode **Async**), then enqueue from the API so rows land on that recipe.
+
+### Poll the batch
+
+```http
+GET https://api.verifik.co/v2/smart-batches/{batchId}
+Authorization: Bearer <same client JWT>
+```
+
+Row detail includes the attempt timeline. A completed attempt holds the feature payload.
+
+## Limits
+
+- Passwordless and PDF generator features have no catalog URL, so they cannot be queued.
+- `404` and validation errors (`MissingParameter`, and similar) are **not** retried.
+- Retryable outcomes are `429`, `5xx`, and timeout / upstream-unavailable codes.
+- `type` is only `sync`, `queue`, or omitted.
+
+## Optional explicit enqueue
+
+Prefer `type=queue` on the catalog path. If you already know the queue key, you can create the row directly:
+
+```http
+POST https://api.verifik.co/v2/smart-batches/from-queue
+Authorization: Bearer <client JWT>
+Content-Type: application/json
+
+{
+  "queueKey": "peru_identity_lookup.queue",
+  "name": "Queue Peru - National ID Verification",
+  "featureCode": "peru_identity_lookup",
+  "inputData": {
+    "documentType": "DNI",
+    "documentNumber": "12345678"
+  }
+}
+```
+
+Lead with `https://async.verifik.co/{path}?type=queue` unless you need this explicit body.
+
+## Related
+
+- [SmartBatch](/smart-batch) — UI wizard, Async vs Sync, notifications
+- [SmartCheck](/smartcheck) — catalog endpoints
+- [Colombian citizen](/identity/colombia) — `/v2/co/cedula`
+- [Peruvian citizen](/identity/peru) — Peru DNI

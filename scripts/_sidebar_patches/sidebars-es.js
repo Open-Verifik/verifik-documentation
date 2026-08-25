@@ -38,6 +38,15 @@ const sidebars = {
 			collapsible: false,
 			items: [
 				"smartcheck/verificacion-inteligente",
+				{
+					type: "category",
+					label: "SmartBatch",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "smart-batch/smart-batch", label: "SmartBatch" },
+						{ type: "doc", id: "smart-batch/async-queue", label: "Llamar endpoints como cola (async)" },
+					],
+				},
 				"smartaccess/acceso-inteligente",
 				"access/acceso",
 				"smartenroll/smartenroll",
