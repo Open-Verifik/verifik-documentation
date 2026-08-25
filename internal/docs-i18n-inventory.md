@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-08-25T17:29:29.430Z
+Generated: 2026-08-25T20:28:24.058Z
 
-- **Files scanned:** 504
-- **Unique endpoint URLs:** 216
+- **Files scanned:** 505
+- **Unique endpoint URLs:** 217
 - **Duplicate URL groups (SEO / aliases):** 55
 - **Docs without `### Endpoint` block:** 211
 
@@ -13,7 +13,7 @@ Generated: 2026-08-25T17:29:29.430Z
 | --- | ---: | --- |
 | P0 | 23 | vehicle-validation/colombia |
 | P1 | 23 | vehicle-validation (other countries) |
-| P2 | 170 | identity, biometrics, resources, etc. |
+| P2 | 171 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -296,6 +296,7 @@ Generated: 2026-08-25T17:29:29.430Z
 | P0 | `v2/co/medellin/vehicle/fines` | `vehicle-validation/colombia/medellin-vehicle-fines.mdx` |
 | P2 | `v2/co/policia/rnmc` | `background-check/colombia-police-compliance-corrective-measures.mdx` |
 | P2 | `v2/co/politically-exposed-persons` | `identity-validation/colombia/colombian-politically-exposed-persons.mdx` |
+| P2 | `v2/co/procuraduria` | `identity/colombia-procuraduria.mdx` |
 | P2 | `v2/co/procuraduria/antecedentes` | `background-check/colombia-disciplinary-records-attorneys-office.mdx` |
 | P2 | `v2/co/rama/abogados` | `legal/lawyer-verification.mdx` |
 | P2 | `v2/co/rama/certificado/vigencia` | `legal/certificate-of-validity-for-legal-professionals.mdx` |

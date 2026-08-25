@@ -1,0 +1,179 @@
+---
+id: colombia-procuraduria
+title: Colombia — Consulta de ciudadano vía Procuraduría
+description: Valida un documento colombiano y extrae nombres mediante GET/POST /v2/co/procuraduria (solo Procuraduría, sin antecedentes disciplinarios).
+slug: /identity/colombia-procuraduria
+keywords:
+  - v2/co/procuraduria
+  - /v2/co/procuraduria
+  - v2 co procuraduria
+  - api/co/procuraduria
+  - /api/co/procuraduria
+  - api.verifik.co/v2/co/procuraduria
+  - 'https://api.verifik.co/v2/co/procuraduria'
+  - GET v2/co/procuraduria
+  - GET /v2/co/procuraduria
+  - co/procuraduria
+  - procuraduria nombres
+  - cedula extranjeria
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombia — Consulta de ciudadano vía Procuraduría | API Verifik",
+	description:
+		"Consulta de nombres en Procuraduría para CC, CE, PPT, NIT y PEP — sin antecedentes disciplinarios.",
+	articleSection: "Documentación API",
+	keywords: "Colombia, Procuraduría, cédula, extranjería, NIT, PEP, API de identidad",
+	about: {
+		"@type": "Thing",
+		name: "API de Verificación de Identidad",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Colombia — Consulta de ciudadano vía Procuraduría
+
+Valida un número de documento colombiano y extrae **nombres** de la **Procuraduría General de la Nación**. Esta fuente oficial soporta *Cédula de ciudadanía* (**CC**), *Cédula de extranjería* (**CE**), *Permiso Especial de Permanencia* (**PEP**), *NIT* y *Permiso por Protección Temporal* (**PPT**).
+
+A diferencia de [ciudadano por documento](/identity-validation/colombia/colombian-citizen) (`/v2/co/cedula`), este endpoint usa **solo Procuraduría** — **no** intenta DIAN, ADRES ni Registraduría. A diferencia de [antecedentes disciplinarios](/background-check/colombia-disciplinary-records-attorneys-office) (`/v2/co/procuraduria/antecedentes`), **no** devuelve `antecedentes` ni `legend`.
+
+## Qué devuelve esta API
+
+- **`documentNumber`**, **`documentType`**
+- **`firstName`**, **`lastName`**, **`fullName`**, **`arrayName`**
+- Respuesta Verifik **firmada**
+
+## Referencia API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/procuraduria
+```
+
+Usa este endpoint cuando necesitas **solo extracción de nombres** desde Procuraduría, incluidos tipos de documento que otras fuentes de `/cedula` no cubren. La misma integración está disponible como **`POST`** con cuerpo JSON. **`GET`** usa **parámetros de consulta**.
+
+Campos típicos: `documentType`, `documentNumber`, `firstName`, `lastName`, `fullName`, `arrayName`. Usa `/v2/co/cedula` cuando quieras que Verifik intente varias fuentes oficiales. Usa `/v2/co/procuraduria/antecedentes` cuando necesites historial disciplinario.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description | Examples |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | yes | Uno de **`CC`**, **`CE`**, **`PPT`**, **`NIT`**, **`PEP`** | `CE` |
+| `documentNumber` | string | yes | Número de documento, solo dígitos | `688925` |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/procuraduria", {
+	params: {
+		documentType: "CE",
+		documentNumber: "688925",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/procuraduria"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CE", "documentNumber": "688925"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CE",
+		"documentNumber": "688925",
+		"firstName": "JUAN SEBASTIAN",
+		"lastName": "RAIGOSA GALLEGO",
+		"fullName": "JUAN SEBASTIAN RAIGOSA GALLEGO",
+		"arrayName": ["JUAN", "SEBASTIAN", "RAIGOSA", "GALLEGO"]
+	},
+	"signature": {
+		"dateTime": "August 25, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of: [CC,CE,PPT,NIT,PEP]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Características
+
+- Consulta de **nombres** directa en Procuraduría
+- Soporta **CC**, **CE**, **PPT**, **NIT**, **PEP**
+- Sin antecedentes disciplinarios (`antecedentes`, `legend`)
+- **GET** y **POST** comparten el mismo handler
+
+## Casos de uso
+
+- Validar una cédula de extranjería o un NIT cuando solo necesitas el nombre registrado
+- Aislar Procuraduría de la consolidación multi-fuente de `/cedula`
+- Preferir un producto dedicado cuando no quieres facturar antecedentes por separado
+
+### Notes
+
+- Solo extracción de nombres — la respuesta **no** incluye `antecedentes` ni `legend`.
+- Para antecedentes disciplinarios usa [antecedentes en Colombia](/verifik-es/verificacion-antecendentes/verificacion-antecendentes-colombia-procuraduria).
+- `/v2/co/cedula` sigue consolidando Procuraduría con otras fuentes para los mismos tipos de documento.
+- El documento sandbox reservado `90040401` devuelve **404**.
+- Relacionado: [Ciudadano por documento](/verifik-es/validacion-identidad/colombia/ciudadano-colombiano), [Guía de documentos](/verifik-es/validacion-identidad/colombia/guia-documentos-identidad-colombia).

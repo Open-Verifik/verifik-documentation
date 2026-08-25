@@ -1,0 +1,179 @@
+---
+id: colombia-procuraduria
+title: コロンビア — Procuraduría による市民照会
+description: GET/POST /v2/co/procuraduria でコロンビアの書類を検証し氏名を抽出します（Procuraduría のみ、懲戒記録なし）。
+slug: /identity/colombia-procuraduria
+keywords:
+  - v2/co/procuraduria
+  - /v2/co/procuraduria
+  - v2 co procuraduria
+  - api/co/procuraduria
+  - /api/co/procuraduria
+  - api.verifik.co/v2/co/procuraduria
+  - 'https://api.verifik.co/v2/co/procuraduria'
+  - GET v2/co/procuraduria
+  - GET /v2/co/procuraduria
+  - co/procuraduria
+  - procuraduria names
+  - cedula extranjeria
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "コロンビア — Procuraduría による市民照会 | Verifik API",
+	description:
+		"CC、CE、PPT、NIT、PEP の Procuraduría 氏名照会 — 懲戒記録なし。",
+	articleSection: "API ドキュメント",
+	keywords: "コロンビア, Procuraduría, cédula, extranjería, NIT, PEP, 本人確認 API",
+	about: {
+		"@type": "Thing",
+		name: "本人確認 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# コロンビア — Procuraduría による市民照会
+
+コロンビアの書類番号を検証し、**Procuraduría General de la Nación** から**氏名**を抽出します。この公式ソースは *Cédula de ciudadanía*（**CC**）、*Cédula de extranjería*（**CE**）、*Permiso Especial de Permanencia*（**PEP**）、*NIT*、*Permiso por Protección Temporal*（**PPT**）をサポートします。
+
+[書類番号による市民照会](/identity-validation/colombia/colombian-citizen)（`/v2/co/cedula`）と異なり、このエンドポイントは **Procuraduría のみ**を呼び出し、DIAN、ADRES、Registraduría は試しません。[懲戒記録](/verifik-ja/background-check/colombia-disciplinary-records-attorneys-office)（`/v2/co/procuraduria/antecedentes`）と異なり、`antecedentes` や `legend` は返し**ません**。
+
+## この API が返すもの
+
+- **`documentNumber`**、**`documentType`**
+- **`firstName`**、**`lastName`**、**`fullName`**、**`arrayName`**
+- **署名付き** Verifik レスポンス
+
+## API リファレンス
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/procuraduria
+```
+
+Procuraduría から**氏名だけ**が必要な場合、`/cedula` の他ソースが扱わない書類種別を含める場合にこのエンドポイントを使います。同じ連携は JSON 本文の **`POST`** でも利用できます。**`GET`** は**クエリパラメータ**を使います。
+
+典型的なフィールド: `documentType`、`documentNumber`、`firstName`、`lastName`、`fullName`、`arrayName`。複数の政府ソースを統合する場合は `/v2/co/cedula` を使います。懲戒履歴が必要な場合は `/v2/co/procuraduria/antecedentes` を使います。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description | Examples |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | yes | **`CC`**、**`CE`**、**`PPT`**、**`NIT`**、**`PEP`** のいずれか | `CE` |
+| `documentNumber` | string | yes | 書類番号（数字のみ） | `688925` |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/procuraduria", {
+	params: {
+		documentType: "CE",
+		documentNumber: "688925",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/procuraduria"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CE", "documentNumber": "688925"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CE",
+		"documentNumber": "688925",
+		"firstName": "JUAN SEBASTIAN",
+		"lastName": "RAIGOSA GALLEGO",
+		"fullName": "JUAN SEBASTIAN RAIGOSA GALLEGO",
+		"arrayName": ["JUAN", "SEBASTIAN", "RAIGOSA", "GALLEGO"]
+	},
+	"signature": {
+		"dateTime": "August 25, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of: [CC,CE,PPT,NIT,PEP]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 機能
+
+- Procuraduría の**氏名**直接照会
+- **CC**、**CE**、**PPT**、**NIT**、**PEP** をサポート
+- 懲戒記録なし（`antecedentes`、`legend`）
+- **GET** と **POST** は同じハンドラ
+
+## ユースケース
+
+- 登録名だけが必要な外国人証（CE）または NIT の検証
+- 複数ソースの `/cedula` 統合から Procuraduría だけを切り出す
+- 懲戒記録を別請求したくない場合の専用プロダクト
+
+### Notes
+
+- 氏名抽出のみ — レスポンスに `antecedentes` や `legend` は**含まれません**。
+- 懲戒記録は [コロンビア懲戒記録](/verifik-ja/background-check/colombia-disciplinary-records-attorneys-office) を使ってください。
+- `/v2/co/cedula` は同じ書類種別について Procuraduría とその他ソースを引き続き統合します。
+- サンドボックス予約番号 `90040401` は **404** を返します。
+- 関連: [書類番号による市民照会](/identity-validation/colombia/colombian-citizen)。

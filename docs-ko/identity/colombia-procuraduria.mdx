@@ -1,0 +1,179 @@
+---
+id: colombia-procuraduria
+title: 콜롬비아 — Procuraduría 시민 조회
+description: GET/POST /v2/co/procuraduria로 콜롬비아 문서를 검증하고 이름을 추출합니다(Procuraduría만, 징계 기록 없음).
+slug: /identity/colombia-procuraduria
+keywords:
+  - v2/co/procuraduria
+  - /v2/co/procuraduria
+  - v2 co procuraduria
+  - api/co/procuraduria
+  - /api/co/procuraduria
+  - api.verifik.co/v2/co/procuraduria
+  - 'https://api.verifik.co/v2/co/procuraduria'
+  - GET v2/co/procuraduria
+  - GET /v2/co/procuraduria
+  - co/procuraduria
+  - procuraduria names
+  - cedula extranjeria
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "콜롬비아 — Procuraduría 시민 조회 | Verifik API",
+	description:
+		"CC, CE, PPT, NIT, PEP에 대한 Procuraduría 이름 조회 — 징계 기록 없음.",
+	articleSection: "API 문서",
+	keywords: "콜롬비아, Procuraduría, cédula, extranjería, NIT, PEP, 신원 API",
+	about: {
+		"@type": "Thing",
+		name: "신원 확인 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 콜롬비아 — Procuraduría 시민 조회
+
+콜롬비아 문서 번호를 검증하고 **Procuraduría General de la Nación**에서 **이름**을 추출합니다. 이 공식 출처는 *Cédula de ciudadanía* (**CC**), *Cédula de extranjería* (**CE**), *Permiso Especial de Permanencia* (**PEP**), *NIT*, *Permiso por Protección Temporal* (**PPT**)를 지원합니다.
+
+[문서 번호로 시민 조회](/verifik-ko/identity-validation/colombia/colombian-citizen) (`/v2/co/cedula`)와 달리 이 엔드포인트는 **Procuraduría만** 호출하며 DIAN, ADRES, Registraduría는 시도하지 않습니다. [징계 기록](/verifik-ko/background-check/colombia-disciplinary-records-attorneys-office) (`/v2/co/procuraduria/antecedentes`)과 달리 `antecedentes`나 `legend`를 반환하지 **않습니다**.
+
+## 이 API가 반환하는 값
+
+- **`documentNumber`**, **`documentType`**
+- **`firstName`**, **`lastName`**, **`fullName`**, **`arrayName`**
+- **서명된** Verifik 응답
+
+## API 참조
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/procuraduria
+```
+
+Procuraduría에서 **이름만** 필요할 때, `/cedula`의 다른 출처가 다루지 않는 문서 유형을 포함할 때 이 엔드포인트를 사용하세요. 동일한 연동은 JSON 본문의 **`POST`**로도 가능합니다. **`GET`**은 **쿼리 매개변수**를 사용합니다.
+
+일반 필드: `documentType`, `documentNumber`, `firstName`, `lastName`, `fullName`, `arrayName`. 여러 정부 출처를 통합하려면 `/v2/co/cedula`를 사용하세요. 징계 이력이 필요하면 `/v2/co/procuraduria/antecedentes`를 사용하세요.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description | Examples |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | yes | **`CC`**, **`CE`**, **`PPT`**, **`NIT`**, **`PEP`** 중 하나 | `CE` |
+| `documentNumber` | string | yes | 문서 번호, 숫자만 | `688925` |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/procuraduria", {
+	params: {
+		documentType: "CE",
+		documentNumber: "688925",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/procuraduria"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CE", "documentNumber": "688925"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CE",
+		"documentNumber": "688925",
+		"firstName": "JUAN SEBASTIAN",
+		"lastName": "RAIGOSA GALLEGO",
+		"fullName": "JUAN SEBASTIAN RAIGOSA GALLEGO",
+		"arrayName": ["JUAN", "SEBASTIAN", "RAIGOSA", "GALLEGO"]
+	},
+	"signature": {
+		"dateTime": "August 25, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of: [CC,CE,PPT,NIT,PEP]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 기능
+
+- Procuraduría **이름** 직접 조회
+- **CC**, **CE**, **PPT**, **NIT**, **PEP** 지원
+- 징계 기록 없음 (`antecedentes`, `legend`)
+- **GET**과 **POST**가 같은 핸들러를 공유
+
+## 사용 사례
+
+- 등록된 이름만 필요할 때 외국인 신분증(CE) 또는 NIT 검증
+- 다중 소스 `/cedula` 통합에서 Procuraduría만 분리
+- 징계 기록을 별도 과금하고 싶지 않을 때 전용 상품 사용
+
+### Notes
+
+- 이름 추출만 — 응답에 `antecedentes`나 `legend`가 **없습니다**.
+- 징계 기록은 [콜롬비아 징계 기록](/verifik-ko/background-check/colombia-disciplinary-records-attorneys-office)을 사용하세요.
+- `/v2/co/cedula`는 동일한 문서 유형에 대해 Procuraduría와 다른 출처를 계속 통합합니다.
+- 샌드박스 예약 문서 `90040401`은 **404**를 반환합니다.
+- 관련: [문서 번호로 시민 조회](/verifik-ko/identity-validation/colombia/colombian-citizen).

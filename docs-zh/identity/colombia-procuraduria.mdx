@@ -1,0 +1,179 @@
+---
+id: colombia-procuraduria
+title: 哥伦比亚 — 通过 Procuraduría 查询公民
+description: 通过 GET/POST /v2/co/procuraduria 验证哥伦比亚证件并提取姓名（仅 Procuraduría，不含纪律记录）。
+slug: /identity/colombia-procuraduria
+keywords:
+  - v2/co/procuraduria
+  - /v2/co/procuraduria
+  - v2 co procuraduria
+  - api/co/procuraduria
+  - /api/co/procuraduria
+  - api.verifik.co/v2/co/procuraduria
+  - 'https://api.verifik.co/v2/co/procuraduria'
+  - GET v2/co/procuraduria
+  - GET /v2/co/procuraduria
+  - co/procuraduria
+  - procuraduria names
+  - cedula extranjeria
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "哥伦比亚 — 通过 Procuraduría 查询公民 | Verifik API",
+	description:
+		"针对 CC、CE、PPT、NIT、PEP 的 Procuraduría 姓名查询 — 不含纪律记录。",
+	articleSection: "API 文档",
+	keywords: "哥伦比亚, Procuraduría, cédula, extranjería, NIT, PEP, 身份 API",
+	about: {
+		"@type": "Thing",
+		name: "身份验证 API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 哥伦比亚 — 通过 Procuraduría 查询公民
+
+验证哥伦比亚证件号码，并从 **Procuraduría General de la Nación** 提取**姓名**。该官方来源支持 *Cédula de ciudadanía*（**CC**）、*Cédula de extranjería*（**CE**）、*Permiso Especial de Permanencia*（**PEP**）、*NIT* 和 *Permiso por Protección Temporal*（**PPT**）。
+
+与[按证件查询公民](/verifik-zh/identity-validation/colombia/colombian-citizen)（`/v2/co/cedula`）不同，此端点**仅调用 Procuraduría**，不会尝试 DIAN、ADRES 或 Registraduría。与[纪律记录](/verifik-zh/background-check/colombia-disciplinary-records-attorneys-office)（`/v2/co/procuraduria/antecedentes`）不同，它**不**返回 `antecedentes` 或 `legend`。
+
+## 此 API 返回的内容
+
+- **`documentNumber`**、**`documentType`**
+- **`firstName`**、**`lastName`**、**`fullName`**、**`arrayName`**
+- **已签名**的 Verifik 响应
+
+## API 参考
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/procuraduria
+```
+
+当您只需从 Procuraduría **提取姓名**，或需要 `/cedula` 其他来源未覆盖的证件类型时，使用此端点。同一集成也支持带 JSON 正文的 **`POST`**。**`GET`** 使用**查询参数**。
+
+典型字段：`documentType`、`documentNumber`、`firstName`、`lastName`、`fullName`、`arrayName`。若要合并多个政府来源，请使用 `/v2/co/cedula`。若需要纪律历史，请使用 `/v2/co/procuraduria/antecedentes`。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| name | type | required | description | Examples |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | yes | **`CC`**、**`CE`**、**`PPT`**、**`NIT`**、**`PEP`** 之一 | `CE` |
+| `documentNumber` | string | yes | 证件号码，仅数字 | `688925` |
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/procuraduria", {
+	params: {
+		documentType: "CE",
+		documentNumber: "688925",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/procuraduria"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CE", "documentNumber": "688925"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CE",
+		"documentNumber": "688925",
+		"firstName": "JUAN SEBASTIAN",
+		"lastName": "RAIGOSA GALLEGO",
+		"fullName": "JUAN SEBASTIAN RAIGOSA GALLEGO",
+		"arrayName": ["JUAN", "SEBASTIAN", "RAIGOSA", "GALLEGO"]
+	},
+	"signature": {
+		"dateTime": "August 25, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of: [CC,CE,PPT,NIT,PEP]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 功能
+
+- 直接查询 Procuraduría **姓名**
+- 支持 **CC**、**CE**、**PPT**、**NIT**、**PEP**
+- 不含纪律记录（`antecedentes`、`legend`）
+- **GET** 与 **POST** 共用同一处理程序
+
+## 使用场景
+
+- 只需登记姓名时验证外国人身份证（CE）或 NIT
+- 从多源 `/cedula` 合并中单独使用 Procuraduría
+- 不想单独计费纪律记录时使用专用产品
+
+### Notes
+
+- 仅提取姓名 — 响应中**不包含** `antecedentes` 或 `legend`。
+- 纪律记录请使用[哥伦比亚纪律记录](/verifik-zh/background-check/colombia-disciplinary-records-attorneys-office)。
+- `/v2/co/cedula` 仍会为相同证件类型将 Procuraduría 与其他来源合并。
+- 沙箱保留证件号 `90040401` 返回 **404**。
+- 相关：[按证件查询公民](/verifik-zh/identity-validation/colombia/colombian-citizen)。

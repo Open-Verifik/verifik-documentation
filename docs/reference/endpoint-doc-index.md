@@ -1088,6 +1088,18 @@ keywords:
   - "https://api.verifik.co/v2/co/politically-exposed-persons"
   - "GET v2/co/politically-exposed-persons"
   - "GET /v2/co/politically-exposed-persons"
+  - "v2/co/procuraduria"
+  - "/v2/co/procuraduria"
+  - "v2 co procuraduria"
+  - "co/procuraduria"
+  - "/co/procuraduria"
+  - "api/co/procuraduria"
+  - "/api/co/procuraduria"
+  - "api co procuraduria"
+  - "api.verifik.co/v2/co/procuraduria"
+  - "https://api.verifik.co/v2/co/procuraduria"
+  - "GET v2/co/procuraduria"
+  - "GET /v2/co/procuraduria"
   - "v2/co/procuraduria/antecedentes"
   - "/v2/co/procuraduria/antecedentes"
   - "v2 co procuraduria antecedentes"
@@ -2687,12 +2699,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (216 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (217 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-08-25T17:29:29.484Z_
+_Last regenerated: 2026-08-25T20:28:24.149Z_
 
 ## Argentina
 
@@ -2773,6 +2785,7 @@ _Last regenerated: 2026-08-25T17:29:29.484Z_
 | `v2/co/medellin/vehicle/fines` | v2 co medellin vehicle fines co/medellin/vehicle/fines /co/medellin/vehicle/fines api/co/medellin/vehicle/fines /api/co/medellin/vehicle/fines api co medellin vehicle fines medellin/vehicle/fines /medellin/vehicle/fines vehicle/fines /vehicle/fines api.verifik.co/v2/co/medellin/vehicle/fines https://api.verifik.co/v2/co/medellin/vehicle/fines GET v2/co/medellin/vehicle/fines GET /v2/co/medellin/vehicle/fines | [Medellín - Transit Fines](/vehicle-validation/colombia/medellin-vehicle-fines) |
 | `v2/co/policia/rnmc` | v2 co policia rnmc co/policia/rnmc /co/policia/rnmc api/co/policia/rnmc /api/co/policia/rnmc api co policia rnmc policia/rnmc /policia/rnmc api.verifik.co/v2/co/policia/rnmc https://api.verifik.co/v2/co/policia/rnmc GET v2/co/policia/rnmc GET /v2/co/policia/rnmc | [Colombia - Verify Police Compliance with Corrective Measures](/background-check/colombia-police-compliance-corrective-measures) |
 | `v2/co/politically-exposed-persons` | v2 co politically-exposed-persons co/politically-exposed-persons /co/politically-exposed-persons api/co/politically-exposed-persons /api/co/politically-exposed-persons api co politically-exposed-persons api.verifik.co/v2/co/politically-exposed-persons https://api.verifik.co/v2/co/politically-exposed-persons GET v2/co/politically-exposed-persons GET /v2/co/politically-exposed-persons | [Colombia — Politically exposed persons (PEP) lookup](/identity-validation/colombia/colombian-politically-exposed-persons) |
+| `v2/co/procuraduria` | v2 co procuraduria co/procuraduria /co/procuraduria api/co/procuraduria /api/co/procuraduria api co procuraduria api.verifik.co/v2/co/procuraduria https://api.verifik.co/v2/co/procuraduria GET v2/co/procuraduria GET /v2/co/procuraduria | [Colombia — Citizen lookup via Procuraduría](/identity/colombia-procuraduria) |
 | `v2/co/procuraduria/antecedentes` | v2 co procuraduria antecedentes co/procuraduria/antecedentes /co/procuraduria/antecedentes api/co/procuraduria/antecedentes /api/co/procuraduria/antecedentes api co procuraduria antecedentes procuraduria/antecedentes /procuraduria/antecedentes api.verifik.co/v2/co/procuraduria/antecedentes https://api.verifik.co/v2/co/procuraduria/antecedentes GET v2/co/procuraduria/antecedentes GET /v2/co/procuraduria/antecedentes | [Colombia - Disciplinary Records in Colombia (attorney's office)](/background-check/colombia-disciplinary-records-attorneys-office) |
 | `v2/co/rama/abogados` | v2 co rama abogados co/rama/abogados /co/rama/abogados api/co/rama/abogados /api/co/rama/abogados api co rama abogados rama/abogados /rama/abogados api.verifik.co/v2/co/rama/abogados https://api.verifik.co/v2/co/rama/abogados GET v2/co/rama/abogados GET /v2/co/rama/abogados | [Colombia — Lawyer lookup](/legal/lawyer-verification) |
 | `v2/co/rama/certificado/vigencia` | v2 co rama certificado vigencia co/rama/certificado/vigencia /co/rama/certificado/vigencia api/co/rama/certificado/vigencia /api/co/rama/certificado/vigencia api co rama certificado vigencia rama/certificado/vigencia /rama/certificado/vigencia certificado/vigencia /certificado/vigencia api.verifik.co/v2/co/rama/certificado/vigencia https://api.verifik.co/v2/co/rama/certificado/vigencia GET v2/co/rama/certificado/vigencia GET /v2/co/rama/certificado/vigencia | [Certificate of Validity for Legal Professionals](/legal/certificate-of-validity-for-legal-professionals) |
