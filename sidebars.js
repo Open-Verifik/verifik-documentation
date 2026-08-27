@@ -879,7 +879,7 @@ const sidebars = {
 				{
 					type: "doc",
 					id: "background-check/onu-background-check",
-					label: "🌐 ONU Background Check",
+					label: "🌐 UN Background Check",
 				},
 			],
 		},
