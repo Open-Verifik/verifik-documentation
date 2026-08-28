@@ -448,7 +448,12 @@ const sidebars = {
 						{
 							type: "doc",
 							id: "validacion-vehiculos/colombia/licencia-conducir-runt",
-							label: "Licencia de Conducir",
+							label: "Licencia de Conducir (Premium)",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/colombia/licencia-conducir-runt-basico",
+							label: "Licencia de Conducir (Básico)",
 						},
 						{
 							type: "doc",

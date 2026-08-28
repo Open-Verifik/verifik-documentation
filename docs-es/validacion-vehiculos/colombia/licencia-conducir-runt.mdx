@@ -1,8 +1,8 @@
 ---
 id: licencia-conducir-runt
-title: Consulta de Licencia de Conducción por Cédula en RUNT | Verifik API Colombia
-description: Valida licencias de conducción en Colombia mediante el número de cédula con la API de Verifik. Accede a datos oficiales del RUNT, incluyendo estado, categorías y vigencia.
-sidebar_label: RUNT - Licencia de Conducir
+title: Consulta de Licencia de Conducción por Cédula en RUNT (Premium) | Verifik API Colombia
+description: Valida licencias de conducción en Colombia mediante el número de cédula. Omite primerApellido para pagar Premium (incluye consulta de nombre) o envíalo para pagar la tarifa Básica.
+sidebar_label: RUNT - Licencia de Conducir (Premium)
 slug: /validacion-vehiculos/colombia/licencia-conducir-runt
 ---
 
@@ -21,11 +21,20 @@ export const structuredData = {
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# Validación de Licencia de Conducir en RUNT
+# Validación de Licencia de Conducir en RUNT (Premium)
 
 La API de validación de licencias de Verifik permite consultar información oficial registrada en el Registro Único Nacional de Tránsito (RUNT) de Colombia, utilizando el número de documento de identidad del conductor.
 
 Esta integración es esencial para empresas de transporte, agencias de alquiler de vehículos, aseguradoras y plataformas logísticas que necesitan verificar el estado legal y la idoneidad de los conductores antes de la contratación o autorización de uso de vehículos.
+
+RUNT ahora autentica al conductor con el primer apellido (`primerApellido`) y puede devolver nombres enmascarados. Esta ruta **v2** sigue funcionando sin cambios de integración.
+
+**Tarifa desde el 1 de septiembre de 2026 (America/Bogota):**
+
+- Omita `primerApellido` — Verifik resuelve el apellido internamente — **Premium** (conductor + consulta de nombre). Una fila en el historial.
+- Envíe `primerApellido` — se omite la consulta de nombre — tarifa **Básica** (igual que [`/v3/co/runt/conductor`](/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt-basico)). Una fila en el historial.
+
+Use la ruta [Básica v3](/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt-basico) si siempre envía `primerApellido` y quiere que sea obligatorio.
 
 ## ¿Qué información devuelve la API?
 
@@ -59,8 +68,20 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 | Name             | Type   | Required | Description                                                            |
 | ---------------- | ------ | -------- | ---------------------------------------------------------------------- |
-| `documentType`   | string | Yes      | Tipo de documento. Valores permitidos por la API: `CC`, `CE`, `PA`, `PPT`. |
+| `documentType`   | string | Yes      | Uno de **`CC`**, **`CE`**, **`PA`**, **`PPT`**. Vea la tabla — **`PA` es pasaporte, `PPT` no lo es**. |
 | `documentNumber` | string | Yes      | Número de documento del conductor, sin espacios ni puntos.             |
+| `primerApellido` | string | Condicional | Primer apellido. **Obligatorio para `PA`**. Opcional para `CC`, `CE` y `PPT`. Omítalo para **Premium** (Verifik resuelve el nombre). Envíelo para omitir la consulta de nombre y pagar **Básico**. Procuraduría y `/v2/co/cedula` no consultan pasaportes. |
+
+### Tipos de documento
+
+No envíe `PPT` cuando RUNT muestra **`P.`** — eso es **pasaporte (`PA`)**. `PPT` es un permiso migratorio.
+
+| Código | Nombre completo | Quién lo tiene | Etiqueta RUNT | `primerApellido` |
+| --- | --- | --- | --- | --- |
+| **`CC`** | *Cédula de Ciudadanía* | Ciudadanos colombianos (cédula nacional) | `C.` | Opcional |
+| **`CE`** | *Cédula de Extranjería* | Extranjeros residentes en Colombia | `E.` | Opcional |
+| **`PA`** | *Pasaporte* | Titulares de pasaporte | `P.` | **Obligatorio** |
+| **`PPT`** | *Permiso por Protección Temporal* | Permiso temporal venezolano — **no es pasaporte** | `Y.` | Opcional |
 
 ### Solicitud
 
@@ -303,6 +324,7 @@ print(r.json())
 -   Las categorías de licencia incluyen B1 (autos), A2 (motocicletas), C1 (camiones), etc.
 -   El estado "ACTIVA" indica que la licencia está actualmente válida.
 -   Múltiples categorías de licencia pueden estar asociadas con un conductor.
+-   `PA` es pasaporte, no PPT. Envíe `primerApellido` al consultar un pasaporte; RUNT autentica al conductor con el primer apellido y enmascara el nombre completo en la interfaz oficial.
 
 ---
 

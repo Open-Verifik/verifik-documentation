@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-08-25T21:37:46.987Z
+Generated: 2026-08-28T20:58:13.917Z
 
-- **Files scanned:** 505
-- **Unique endpoint URLs:** 217
+- **Files scanned:** 506
+- **Unique endpoint URLs:** 218
 - **Duplicate URL groups (SEO / aliases):** 55
 - **Docs without `### Endpoint` block:** 211
 
@@ -11,7 +11,7 @@ Generated: 2026-08-25T21:37:46.987Z
 
 | Priority | Count | Scope |
 | --- | ---: | --- |
-| P0 | 23 | vehicle-validation/colombia |
+| P0 | 24 | vehicle-validation/colombia |
 | P1 | 23 | vehicle-validation (other countries) |
 | P2 | 171 | identity, biometrics, resources, etc. |
 
@@ -368,6 +368,10 @@ Generated: 2026-08-25T21:37:46.987Z
 | P2 | `v2/gt/cedula/extra` | `identity/guatemala-extra.mdx` |
 | P2 | `v2/hn/cedula` | `identity/honduras.mdx` |
 | P2 | `v2/hn/votacion` | `identity/honduras/votacion.mdx` |
+| P2 | `v2/human-id/decrypt` | `biometrics/zero-knowledge-face-proofs-decrypt.mdx` |
+| P2 | `v2/human-id/encrypt` | `biometrics/zero-knowledge-face-proofs-encrypt.mdx` |
+| P2 | `v2/human-id/encrypt-qr-code` | `biometrics/zero-knowledge-face-proofs-encrypt-qr-code.mdx` |
+| P2 | `v2/human-id/preview` | `biometrics/zero-knowledge-face-proofs-preview.mdx` |
 | P2 | `v2/in/epic` | `legal/epic-eci.mdx` |
 | P2 | `v2/in/epic/votacion` | `legal/voting-eci-epic.mdx` |
 | P2 | `v2/interpol` | `background-check/interpol-background-check.mdx` |
@@ -409,15 +413,12 @@ Generated: 2026-08-25T21:37:46.987Z
 | P2 | `v2/uy/cedula` | `identity-validation/uruguay-citizen.mdx` |
 | P2 | `v2/ve/cedula` | `identity-validation/venezuela.mdx` |
 | P2 | `v2/ve/foreigner-id` | `identity/venezuela-foreigner-id.mdx` |
-| P2 | `v2/zelf-proof/decrypt` | `biometrics/zero-knowledge-face-proofs-decrypt.mdx` |
-| P2 | `v2/zelf-proof/encrypt` | `biometrics/zero-knowledge-face-proofs-encrypt.mdx` |
-| P2 | `v2/zelf-proof/encrypt-qr-code` | `biometrics/zero-knowledge-face-proofs-encrypt-qr-code.mdx` |
-| P2 | `v2/zelf-proof/preview` | `biometrics/zero-knowledge-face-proofs-preview.mdx` |
 | P1 | `v3/ar/vehicle` | `vehicle-validation/argentina/vehicle-v3.mdx` |
 | P1 | `v3/cl/vehicle` | `vehicle-validation/chile/vehicle-technical-review.mdx` |
 | P2 | `v3/co/ministerio-de-trabajo/certificados` | `certificates/colombia-ministerio-trabajo-certificados-v3.mdx` |
 | P2 | `v3/co/rues` | `business-validation/colombia-rues-v3.mdx` |
 | P2 | `v3/co/rues-complete` | `business-validation/colombia-rues-business-information.mdx` |
+| P0 | `v3/co/runt/conductor` | `vehicle-validation/colombia/runt-drivers-license-basic.mdx` |
 | P2 | `v3/ec/company` | `business-validation/ecuador.mdx` |
 | P2 | `v3/ocr/scan-studio` | `ocr-engines/scan-studio.mdx` |
 | P2 | `v3/pe/cedula` | `identity-validation/peru/peru-citizen.mdx` |

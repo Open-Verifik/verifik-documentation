@@ -2014,6 +2014,54 @@ keywords:
   - "https://api.verifik.co/v2/hn/votacion"
   - "GET v2/hn/votacion"
   - "GET /v2/hn/votacion"
+  - "v2/human-id/decrypt"
+  - "/v2/human-id/decrypt"
+  - "v2 human-id decrypt"
+  - "human-id/decrypt"
+  - "/human-id/decrypt"
+  - "api/human-id/decrypt"
+  - "/api/human-id/decrypt"
+  - "api human-id decrypt"
+  - "api.verifik.co/v2/human-id/decrypt"
+  - "https://api.verifik.co/v2/human-id/decrypt"
+  - "GET v2/human-id/decrypt"
+  - "GET /v2/human-id/decrypt"
+  - "v2/human-id/encrypt"
+  - "/v2/human-id/encrypt"
+  - "v2 human-id encrypt"
+  - "human-id/encrypt"
+  - "/human-id/encrypt"
+  - "api/human-id/encrypt"
+  - "/api/human-id/encrypt"
+  - "api human-id encrypt"
+  - "api.verifik.co/v2/human-id/encrypt"
+  - "https://api.verifik.co/v2/human-id/encrypt"
+  - "GET v2/human-id/encrypt"
+  - "GET /v2/human-id/encrypt"
+  - "v2/human-id/encrypt-qr-code"
+  - "/v2/human-id/encrypt-qr-code"
+  - "v2 human-id encrypt-qr-code"
+  - "human-id/encrypt-qr-code"
+  - "/human-id/encrypt-qr-code"
+  - "api/human-id/encrypt-qr-code"
+  - "/api/human-id/encrypt-qr-code"
+  - "api human-id encrypt-qr-code"
+  - "api.verifik.co/v2/human-id/encrypt-qr-code"
+  - "https://api.verifik.co/v2/human-id/encrypt-qr-code"
+  - "GET v2/human-id/encrypt-qr-code"
+  - "GET /v2/human-id/encrypt-qr-code"
+  - "v2/human-id/preview"
+  - "/v2/human-id/preview"
+  - "v2 human-id preview"
+  - "human-id/preview"
+  - "/human-id/preview"
+  - "api/human-id/preview"
+  - "/api/human-id/preview"
+  - "api human-id preview"
+  - "api.verifik.co/v2/human-id/preview"
+  - "https://api.verifik.co/v2/human-id/preview"
+  - "GET v2/human-id/preview"
+  - "GET /v2/human-id/preview"
   - "v2/in/epic"
   - "/v2/in/epic"
   - "v2 in epic"
@@ -2519,44 +2567,6 @@ keywords:
   - "https://api.verifik.co/v2/ve/foreigner-id"
   - "GET v2/ve/foreigner-id"
   - "GET /v2/ve/foreigner-id"
-  - "v2/zelf-proof/decrypt"
-  - "/v2/zelf-proof/decrypt"
-  - "v2 zelf-proof decrypt"
-  - "api.verifik.co/v2/zelf-proof/decrypt"
-  - "https://api.verifik.co/v2/zelf-proof/decrypt"
-  - "GET v2/zelf-proof/decrypt"
-  - "GET /v2/zelf-proof/decrypt"
-  - "v2/zelf-proof/encrypt"
-  - "/v2/zelf-proof/encrypt"
-  - "v2 zelf-proof encrypt"
-  - "api.verifik.co/v2/zelf-proof/encrypt"
-  - "https://api.verifik.co/v2/zelf-proof/encrypt"
-  - "GET v2/zelf-proof/encrypt"
-  - "GET /v2/zelf-proof/encrypt"
-  - "v2/zelf-proof/encrypt-qr-code"
-  - "/v2/zelf-proof/encrypt-qr-code"
-  - "v2 zelf-proof encrypt-qr-code"
-  - "zelf-proof/encrypt-qr-code"
-  - "/zelf-proof/encrypt-qr-code"
-  - "api/zelf-proof/encrypt-qr-code"
-  - "/api/zelf-proof/encrypt-qr-code"
-  - "api zelf-proof encrypt-qr-code"
-  - "api.verifik.co/v2/zelf-proof/encrypt-qr-code"
-  - "https://api.verifik.co/v2/zelf-proof/encrypt-qr-code"
-  - "GET v2/zelf-proof/encrypt-qr-code"
-  - "GET /v2/zelf-proof/encrypt-qr-code"
-  - "v2/zelf-proof/preview"
-  - "/v2/zelf-proof/preview"
-  - "v2 zelf-proof preview"
-  - "zelf-proof/preview"
-  - "/zelf-proof/preview"
-  - "api/zelf-proof/preview"
-  - "/api/zelf-proof/preview"
-  - "api zelf-proof preview"
-  - "api.verifik.co/v2/zelf-proof/preview"
-  - "https://api.verifik.co/v2/zelf-proof/preview"
-  - "GET v2/zelf-proof/preview"
-  - "GET /v2/zelf-proof/preview"
   - "v3/ar/vehicle"
   - "/v3/ar/vehicle"
   - "v3 ar vehicle"
@@ -2604,6 +2614,13 @@ keywords:
   - "https://api.verifik.co/v3/co/rues-complete"
   - "GET v3/co/rues-complete"
   - "GET /v3/co/rues-complete"
+  - "v3/co/runt/conductor"
+  - "/v3/co/runt/conductor"
+  - "v3 co runt conductor"
+  - "api.verifik.co/v3/co/runt/conductor"
+  - "https://api.verifik.co/v3/co/runt/conductor"
+  - "GET v3/co/runt/conductor"
+  - "GET /v3/co/runt/conductor"
   - "v3/ec/company"
   - "/v3/ec/company"
   - "v3 ec company"
@@ -2699,12 +2716,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (217 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (218 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-08-25T21:37:47.035Z_
+_Last regenerated: 2026-08-28T20:58:13.964Z_
 
 ## Argentina
 
@@ -3022,6 +3039,15 @@ _Last regenerated: 2026-08-25T21:37:47.035Z_
 | --- | --- | --- |
 | `v2/fbi` | v2 fbi fbi /fbi api/fbi /api/fbi api fbi api.verifik.co/v2/fbi https://api.verifik.co/v2/fbi GET v2/fbi GET /v2/fbi | [FBI Background Check](/background-check/international/fbi-background-check) |
 
+## Human Id
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/human-id/decrypt` | v2 human-id decrypt human-id/decrypt /human-id/decrypt api/human-id/decrypt /api/human-id/decrypt api human-id decrypt api.verifik.co/v2/human-id/decrypt https://api.verifik.co/v2/human-id/decrypt GET v2/human-id/decrypt GET /v2/human-id/decrypt | [Decrypt HumanID](/biometrics/humanID-decrypt) |
+| `v2/human-id/encrypt` | v2 human-id encrypt human-id/encrypt /human-id/encrypt api/human-id/encrypt /api/human-id/encrypt api human-id encrypt api.verifik.co/v2/human-id/encrypt https://api.verifik.co/v2/human-id/encrypt GET v2/human-id/encrypt GET /v2/human-id/encrypt | [Encrypt HumanID](/biometrics/humanID-encrypt) |
+| `v2/human-id/encrypt-qr-code` | v2 human-id encrypt-qr-code human-id/encrypt-qr-code /human-id/encrypt-qr-code api/human-id/encrypt-qr-code /api/human-id/encrypt-qr-code api human-id encrypt-qr-code api.verifik.co/v2/human-id/encrypt-qr-code https://api.verifik.co/v2/human-id/encrypt-qr-code GET v2/human-id/encrypt-qr-code GET /v2/human-id/encrypt-qr-code | [Encrypt HumanID QR Code](/biometrics/humanID-encrypt-qr-code) |
+| `v2/human-id/preview` | v2 human-id preview human-id/preview /human-id/preview api/human-id/preview /api/human-id/preview api human-id preview api.verifik.co/v2/human-id/preview https://api.verifik.co/v2/human-id/preview GET v2/human-id/preview GET /v2/human-id/preview | [Preview HumanID](/biometrics/humanID-preview) |
+
 ## Interpol
 
 | Endpoint | Aliases | Page |
@@ -3093,15 +3119,6 @@ _Last regenerated: 2026-08-25T21:37:47.035Z_
 | `v2/usa/vehicle` | v2 usa vehicle usa/vehicle /usa/vehicle api/usa/vehicle /api/usa/vehicle api usa vehicle api.verifik.co/v2/usa/vehicle https://api.verifik.co/v2/usa/vehicle GET v2/usa/vehicle GET /v2/usa/vehicle | [🇺🇸 United States - Vehicle Information](/vehicle-validation/united-states) |
 | `v2/usa/vehicle-by-vin` | v2 usa vehicle-by-vin usa/vehicle-by-vin /usa/vehicle-by-vin api/usa/vehicle-by-vin /api/usa/vehicle-by-vin api usa vehicle-by-vin api.verifik.co/v2/usa/vehicle-by-vin https://api.verifik.co/v2/usa/vehicle-by-vin GET v2/usa/vehicle-by-vin GET /v2/usa/vehicle-by-vin | [United States - Vehicle by VIN](/vehicle-validation/united-states/vehicle-by-vin) |
 
-## Zelf Proof
-
-| Endpoint | Aliases | Page |
-| --- | --- | --- |
-| `v2/zelf-proof/decrypt` | v2 zelf-proof decrypt zelf-proof/decrypt /zelf-proof/decrypt api/zelf-proof/decrypt /api/zelf-proof/decrypt api zelf-proof decrypt api.verifik.co/v2/zelf-proof/decrypt https://api.verifik.co/v2/zelf-proof/decrypt GET v2/zelf-proof/decrypt GET /v2/zelf-proof/decrypt | [Decrypt HumanID](/biometrics/humanID-decrypt) |
-| `v2/zelf-proof/encrypt` | v2 zelf-proof encrypt zelf-proof/encrypt /zelf-proof/encrypt api/zelf-proof/encrypt /api/zelf-proof/encrypt api zelf-proof encrypt api.verifik.co/v2/zelf-proof/encrypt https://api.verifik.co/v2/zelf-proof/encrypt GET v2/zelf-proof/encrypt GET /v2/zelf-proof/encrypt | [Encrypt HumanID](/biometrics/humanID-encrypt) |
-| `v2/zelf-proof/encrypt-qr-code` | v2 zelf-proof encrypt-qr-code zelf-proof/encrypt-qr-code /zelf-proof/encrypt-qr-code api/zelf-proof/encrypt-qr-code /api/zelf-proof/encrypt-qr-code api zelf-proof encrypt-qr-code api.verifik.co/v2/zelf-proof/encrypt-qr-code https://api.verifik.co/v2/zelf-proof/encrypt-qr-code GET v2/zelf-proof/encrypt-qr-code GET /v2/zelf-proof/encrypt-qr-code | [Encrypt HumanID QR Code](/biometrics/humanID-encrypt-qr-code) |
-| `v2/zelf-proof/preview` | v2 zelf-proof preview zelf-proof/preview /zelf-proof/preview api/zelf-proof/preview /api/zelf-proof/preview api zelf-proof preview api.verifik.co/v2/zelf-proof/preview https://api.verifik.co/v2/zelf-proof/preview GET v2/zelf-proof/preview GET /v2/zelf-proof/preview | [Preview HumanID](/biometrics/humanID-preview) |
-
 ## Zelf / API
 
 | Endpoint | Aliases | Page |
@@ -3134,6 +3151,7 @@ _Last regenerated: 2026-08-25T21:37:47.035Z_
 | `v3/co/ministerio-de-trabajo/certificados` | v3 co ministerio-de-trabajo certificados co/ministerio-de-trabajo/certificados /co/ministerio-de-trabajo/certificados api/co/ministerio-de-trabajo/certificados /api/co/ministerio-de-trabajo/certificados api co ministerio-de-trabajo certificados ministerio-de-trabajo/certificados /ministerio-de-trabajo/certificados api.verifik.co/v3/co/ministerio-de-trabajo/certificados https://api.verifik.co/v3/co/ministerio-de-trabajo/certificados GET v3/co/ministerio-de-trabajo/certificados GET /v3/co/ministerio-de-trabajo/certificados | [Colombia — Ministry of Labor certificates (v3)](/certificates/colombia-ministerio-trabajo-certificados-v3) |
 | `v3/co/rues` | v3 co rues co/rues /co/rues api/co/rues /api/co/rues api co rues api.verifik.co/v3/co/rues https://api.verifik.co/v3/co/rues GET v3/co/rues GET /v3/co/rues | [Colombia — RUES business lookup (v3)](/business-validation/colombia-rues-v3) |
 | `v3/co/rues-complete` | v3 co rues-complete co/rues-complete /co/rues-complete api/co/rues-complete /api/co/rues-complete api co rues-complete api.verifik.co/v3/co/rues-complete https://api.verifik.co/v3/co/rues-complete GET v3/co/rues-complete GET /v3/co/rues-complete | [RUES Complete Business Validation (v3)](/business-validation/colombia-rues-business-information) |
+| `v3/co/runt/conductor` | v3 co runt conductor co/runt/conductor /co/runt/conductor api/co/runt/conductor /api/co/runt/conductor api co runt conductor runt/conductor /runt/conductor api.verifik.co/v3/co/runt/conductor https://api.verifik.co/v3/co/runt/conductor GET v3/co/runt/conductor GET /v3/co/runt/conductor | [RUNT - Driver's License (Basic)](/vehicle-validation/colombia/runt-drivers-license-basic) |
 | `v3/ec/company` | v3 ec company ec/company /ec/company api/ec/company /api/ec/company api ec company api.verifik.co/v3/ec/company https://api.verifik.co/v3/ec/company GET v3/ec/company GET /v3/ec/company | [Ecuadorian Business Verification](/business-validation/ecuador) |
 | `v3/ocr/scan-studio` | v3 ocr scan-studio ocr/scan-studio /ocr/scan-studio api/ocr/scan-studio /api/ocr/scan-studio api ocr scan-studio api.verifik.co/v3/ocr/scan-studio https://api.verifik.co/v3/ocr/scan-studio GET v3/ocr/scan-studio GET /v3/ocr/scan-studio | [Scan Studio](/ocr-engines/scan-studio) |
 | `v3/pe/cedula` | v3 pe cedula pe/cedula /pe/cedula api/pe/cedula /api/pe/cedula api pe cedula api.verifik.co/v3/pe/cedula https://api.verifik.co/v3/pe/cedula GET v3/pe/cedula GET /v3/pe/cedula | [Peruvian Citizen v3](/identity-validation/peru/peru-citizen) |

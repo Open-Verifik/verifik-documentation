@@ -619,7 +619,12 @@ const sidebars = {
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license",
-							label: "RUNT - Driver's License",
+							label: "RUNT - Driver's License (Premium)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license-basic",
+							label: "RUNT - Driver's License (Basic)",
 						},
 						{
 							type: "doc",
