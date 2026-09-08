@@ -1,0 +1,179 @@
+---
+id: validacion-vehiculos-chile-vehicle-stolen
+title: "🇨🇱 Chile - Vehículo Robado"
+description: "Consulta si un vehículo chileno tiene un encargo vigente por robo o hurto."
+slug: /validacion-vehiculos/chile/vehicle-stolen
+sidebar_label: "🇨🇱 Chile - Vehículo Robado"
+keywords:
+  - v2/cl/vehicle-stolen
+  - GET v2/cl/vehicle-stolen
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇱 Chile - Vehículo Robado
+
+Consulta si un vehículo chileno tiene un **encargo vigente por robo o hurto**.
+
+Devuelve un payload firmado cuando la consulta responde:
+
+- **`plate`** — patente chilena, **4–7** caracteres alfanuméricos
+- **`hasTheftReport`** — `true` cuando hay un encargo vigente; `false` en caso contrario
+- **`description`** — texto de estado (p. ej. `NO REGISTRA ENCARGO Vigentes`)
+- **`theftReport`** — objeto del reporte: **`typeCode`**, **`plateOriginal`**, **`plateFormatted`**, **`reportDate`**, **`partiallyResolved`**, **`items`**
+- **`items[]`** — especies robadas: **`name`**, **`description`**, **`serial`**, **`resolvedDate`**, **`delivered`**, **`deliveryDate`**, **`type`**
+- Respuesta **firmada** por Verifik
+
+Útil para **suscripción de seguros**, **onboarding de flotas** y **due diligence** antes de registrar o financiar un vehículo chileno.
+
+### Endpoint
+
+```
+GET v2/cl/vehicle-stolen
+```
+
+Campos típicos: **`plate`**, **`hasTheftReport`**, **`description`** y **`theftReport`**. Un vehículo sin encargo vigente igual responde **HTTP 200**.
+
+### Encabezados
+
+| Nombre | Valor |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Descripción | Ejemplo |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Sí** | Patente chilena, 4–7 caracteres alfanuméricos. | `PTKX93` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-stolen", {
+  params: { plate: "PTKX93" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cl/vehicle-stolen"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "PTKX93"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200-no-report" label="200 Sin encargo vigente">
+
+```json
+{
+  "data": {
+    "description": "NO REGISTRA ENCARGO Vigentes",
+    "hasTheftReport": false,
+    "plate": "PTKX93",
+    "theftReport": {
+      "typeCode": 0,
+      "plateOriginal": "PTKX93",
+      "plateFormatted": null,
+      "reportDate": "",
+      "partiallyResolved": false,
+      "items": []
+    }
+  },
+  "signature": {
+    "dateTime": "September 3, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-stolen" label="200 Encargo por robo">
+
+```json
+{
+  "data": {
+    "description": "REGISTRA ENCARGO Vigentes",
+    "hasTheftReport": true,
+    "plate": "NG8245",
+    "theftReport": {
+      "typeCode": 1,
+      "plateOriginal": "NG8245",
+      "plateFormatted": "NG☆82·45",
+      "reportDate": "22-07-2026 11:40:45",
+      "partiallyResolved": false,
+      "items": [
+        {
+          "name": null,
+          "description": "Patente Delantera",
+          "serial": "NG.8245",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 1
+        },
+        {
+          "name": null,
+          "description": "VIN",
+          "serial": "KMHVF21NPSU188119",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 3
+        },
+        {
+          "name": null,
+          "description": "MOTOR",
+          "serial": "G4EKS443358",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 4
+        }
+      ]
+    }
+  },
+  "signature": {
+    "dateTime": "September 3, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **Sin encargo vigente** devuelve **HTTP 200** con **`hasTheftReport: false`** — no es un 404.
+- **Modo sandbox:** la placa **`PTKX93`** devuelve un perfil estable sin encargo; **`NG8245`** devuelve un encargo por robo.
+- Formato de patente inválido devuelve **409** `invalid_plate_format`.
+- La **disponibilidad** del registro depende del entorno; caídas pueden devolver **409** por timeout.

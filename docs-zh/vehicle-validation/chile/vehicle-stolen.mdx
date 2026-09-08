@@ -1,0 +1,179 @@
+---
+id: vehicle-validation-chile-vehicle-stolen
+title: "🇨🇱 智利 — 被盗车辆"
+description: "查询智利车辆是否有有效的被盗或盗窃报案（encargo por robo o hurto）。"
+slug: /vehicle-validation/chile/vehicle-stolen
+sidebar_label: "🇨🇱 智利 — 被盗车辆"
+keywords:
+  - v2/cl/vehicle-stolen
+  - GET v2/cl/vehicle-stolen
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇱 智利 — 被盗车辆
+
+查询智利车辆是否有有效的**被盗或盗窃报案**（*encargo por robo o hurto*）。
+
+查询成功时返回签名载荷：
+
+- **`plate`** — 智利号牌（Patente），**4–7** 位字母数字
+- **`hasTheftReport`** — 有有效报案时为 `true`，否则为 `false`
+- **`description`** — 状态文本（例如 `NO REGISTRA ENCARGO Vigentes`）
+- **`theftReport`** — 报案对象：**`typeCode`**、**`plateOriginal`**、**`plateFormatted`**、**`reportDate`**、**`partiallyResolved`**、**`items`**
+- **`items[]`** — 被盗部件：**`name`**、**`description`**、**`serial`**、**`resolvedDate`**、**`delivered`**、**`deliveryDate`**、**`type`**
+- Verifik **签名**响应
+
+用于智利车辆登记或融资前的**保险核保**、**车队接入**和**尽职调查**。
+
+### 端点
+
+```
+GET v2/cl/vehicle-stolen
+```
+
+典型字段：**`plate`**、**`hasTheftReport`**、**`description`** 以及嵌套 **`theftReport`**。无有效报案仍返回 **HTTP 200**。
+
+### 标头
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Yes** | 智利号牌（Patente），4–7 位字母数字。 | `PTKX93` |
+
+### 请求
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-stolen", {
+  params: { plate: "PTKX93" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cl/vehicle-stolen"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "PTKX93"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200-no-report" label="200 无有效报案">
+
+```json
+{
+  "data": {
+    "description": "NO REGISTRA ENCARGO Vigentes",
+    "hasTheftReport": false,
+    "plate": "PTKX93",
+    "theftReport": {
+      "typeCode": 0,
+      "plateOriginal": "PTKX93",
+      "plateFormatted": null,
+      "reportDate": "",
+      "partiallyResolved": false,
+      "items": []
+    }
+  },
+  "signature": {
+    "dateTime": "September 3, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-stolen" label="200 发现被盗报案">
+
+```json
+{
+  "data": {
+    "description": "REGISTRA ENCARGO Vigentes",
+    "hasTheftReport": true,
+    "plate": "NG8245",
+    "theftReport": {
+      "typeCode": 1,
+      "plateOriginal": "NG8245",
+      "plateFormatted": "NG☆82·45",
+      "reportDate": "22-07-2026 11:40:45",
+      "partiallyResolved": false,
+      "items": [
+        {
+          "name": null,
+          "description": "Patente Delantera",
+          "serial": "NG.8245",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 1
+        },
+        {
+          "name": null,
+          "description": "VIN",
+          "serial": "KMHVF21NPSU188119",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 3
+        },
+        {
+          "name": null,
+          "description": "MOTOR",
+          "serial": "G4EKS443358",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 4
+        }
+      ]
+    }
+  },
+  "signature": {
+    "dateTime": "September 3, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 备注
+
+- **无有效被盗报案**返回 **HTTP 200** 且 **`hasTheftReport: false`** — 不是 404。
+- **沙箱模式：** 号牌 **`PTKX93`** 返回无报案档案；**`NG8245`** 返回被盗报案档案。
+- 无效号牌格式返回 **409** `invalid_plate_format`。
+- 登记系统**可用性**取决于环境；中断可能返回 **409** 超时。

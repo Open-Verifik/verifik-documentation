@@ -556,6 +556,12 @@ const sidebars = {
 					key: "vehicle-chile-vehicle-soap-plate",
 				},
 				{
+					type: "doc",
+					id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-stolen",
+					label: "🇨🇱 Chile - Stolen Vehicle",
+					key: "vehicle-chile-vehicle-stolen",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 Colombia",
 					collapsible: true,

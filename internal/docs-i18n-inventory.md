@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-08-28T20:58:13.917Z
+Generated: 2026-09-08T23:20:31.921Z
 
-- **Files scanned:** 506
-- **Unique endpoint URLs:** 218
+- **Files scanned:** 507
+- **Unique endpoint URLs:** 219
 - **Duplicate URL groups (SEO / aliases):** 55
 - **Docs without `### Endpoint` block:** 211
 
@@ -12,7 +12,7 @@ Generated: 2026-08-28T20:58:13.917Z
 | Priority | Count | Scope |
 | --- | ---: | --- |
 | P0 | 24 | vehicle-validation/colombia |
-| P1 | 23 | vehicle-validation (other countries) |
+| P1 | 24 | vehicle-validation (other countries) |
 | P2 | 171 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
@@ -267,6 +267,7 @@ Generated: 2026-08-28T20:58:13.917Z
 | P1 | `v2/cl/vehicle` | `vehicle-validation/chile.mdx` |
 | P1 | `v2/cl/vehicle-soap` | `vehicle-validation/chile/vehicle-soap.mdx` |
 | P1 | `v2/cl/vehicle-soap-plate` | `vehicle-validation/chile/vehicle-soap-plate.mdx` |
+| P1 | `v2/cl/vehicle-stolen` | `vehicle-validation/chile/vehicle-stolen.mdx` |
 | P2 | `v2/clients/me` | `accounts/clients/account-information.mdx` |
 | P2 | `v2/co/adres` | `legal/colombia-adres.mdx` |
 | P2 | `v2/co/afiliaciones` | `legal/verify-colombian-affiliations.mdx` |

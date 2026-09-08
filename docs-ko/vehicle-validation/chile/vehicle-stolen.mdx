@@ -1,0 +1,179 @@
+---
+id: vehicle-validation-chile-vehicle-stolen
+title: "🇨🇱 칠레 — 도난 차량"
+description: "칠레 차량에 활성 도난·절도 신고(encargo por robo o hurto)가 있는지 조회합니다."
+slug: /vehicle-validation/chile/vehicle-stolen
+sidebar_label: "🇨🇱 칠레 — 도난 차량"
+keywords:
+  - v2/cl/vehicle-stolen
+  - GET v2/cl/vehicle-stolen
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇱 칠레 — 도난 차량
+
+칠레 차량에 활성 **도난·절도 신고**(*encargo por robo o hurto*)가 있는지 조회합니다.
+
+조회가 성공하면 서명된 페이로드를 반환합니다.
+
+- **`plate`** — 칠레 번호판(Patente), **4–7**자 영숫자
+- **`hasTheftReport`** — 활성 신고가 있으면 `true`, 아니면 `false`
+- **`description`** — 상태 텍스트(예: `NO REGISTRA ENCARGO Vigentes`)
+- **`theftReport`** — 신고 객체: **`typeCode`**, **`plateOriginal`**, **`plateFormatted`**, **`reportDate`**, **`partiallyResolved`**, **`items`**
+- **`items[]`** — 도난 부품: **`name`**, **`description`**, **`serial`**, **`resolvedDate`**, **`delivered`**, **`deliveryDate`**, **`type`**
+- Verifik **서명** 응답
+
+칠레 차량을 등록하거나 금융하기 전 **보험 인수**, **플릿 온보딩**, **실사**에 사용합니다.
+
+### 엔드포인트
+
+```
+GET v2/cl/vehicle-stolen
+```
+
+일반 필드: **`plate`**, **`hasTheftReport`**, **`description`**, 중첩 **`theftReport`**. 활성 신고가 없어도 **HTTP 200**을 반환합니다.
+
+### 헤더
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Yes** | 칠레 번호판(Patente), 4–7자 영숫자. | `PTKX93` |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-stolen", {
+  params: { plate: "PTKX93" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cl/vehicle-stolen"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "PTKX93"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200-no-report" label="200 활성 신고 없음">
+
+```json
+{
+  "data": {
+    "description": "NO REGISTRA ENCARGO Vigentes",
+    "hasTheftReport": false,
+    "plate": "PTKX93",
+    "theftReport": {
+      "typeCode": 0,
+      "plateOriginal": "PTKX93",
+      "plateFormatted": null,
+      "reportDate": "",
+      "partiallyResolved": false,
+      "items": []
+    }
+  },
+  "signature": {
+    "dateTime": "September 3, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-stolen" label="200 도난 신고">
+
+```json
+{
+  "data": {
+    "description": "REGISTRA ENCARGO Vigentes",
+    "hasTheftReport": true,
+    "plate": "NG8245",
+    "theftReport": {
+      "typeCode": 1,
+      "plateOriginal": "NG8245",
+      "plateFormatted": "NG☆82·45",
+      "reportDate": "22-07-2026 11:40:45",
+      "partiallyResolved": false,
+      "items": [
+        {
+          "name": null,
+          "description": "Patente Delantera",
+          "serial": "NG.8245",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 1
+        },
+        {
+          "name": null,
+          "description": "VIN",
+          "serial": "KMHVF21NPSU188119",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 3
+        },
+        {
+          "name": null,
+          "description": "MOTOR",
+          "serial": "G4EKS443358",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 4
+        }
+      ]
+    }
+  },
+  "signature": {
+    "dateTime": "September 3, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- **활성 도난 신고 없음**은 **`hasTheftReport: false`**와 함께 **HTTP 200**을 반환합니다. 404가 아닙니다.
+- **샌드박스 모드:** 번호판 **`PTKX93`**은 신고 없음 프로필, **`NG8245`**는 도난 신고 프로필을 반환합니다.
+- 잘못된 번호판 형식은 **409** `invalid_plate_format`을 반환합니다.
+- 레지스트리 **가용성**은 환경에 따라 다르며, 장애 시 **409** 타임아웃이 발생할 수 있습니다.

@@ -135,6 +135,7 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-technical-review", label: "🇨🇱 Chile — Revisão técnica", key: "vehicle-chile-vehicle-technical-review" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap", label: "🇨🇱 Chile — SOAP veicular", key: "vehicle-chile-vehicle-soap" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap-plate", label: "🇨🇱 Chile — SOAP veicular (por placa)", key: "vehicle-chile-vehicle-soap-plate" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-stolen", label: "🇨🇱 Chile — Veículo roubado", key: "vehicle-chile-vehicle-stolen" },
 				{
 					type: "category",
 					label: "🇨🇴 Colombia",

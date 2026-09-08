@@ -132,6 +132,7 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-technical-review", label: "🇨🇱 智利 — 车辆技术检验", key: "vehicle-chile-vehicle-technical-review" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap", label: "🇨🇱 智利 — 车辆 SOAP", key: "vehicle-chile-vehicle-soap" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap-plate", label: "🇨🇱 智利 — 车辆 SOAP（仅车牌）", key: "vehicle-chile-vehicle-soap-plate" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-stolen", label: "🇨🇱 智利 — 被盗车辆", key: "vehicle-chile-vehicle-stolen" },
 				{
 					type: "category",
 					label: "🇨🇴 Colombia",

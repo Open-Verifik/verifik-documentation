@@ -136,6 +136,7 @@ const sidebars = {
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-technical-review", label: "🇨🇱 チリ — 車両技術検査", key: "vehicle-chile-vehicle-technical-review" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap", label: "🇨🇱 チリ — 車両 SOAP", key: "vehicle-chile-vehicle-soap" },
 				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-soap-plate", label: "🇨🇱 チリ — 車両 SOAP（番号のみ）", key: "vehicle-chile-vehicle-soap-plate" },
+				{ type: "doc", id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-stolen", label: "🇨🇱 チリ — 盗難車両", key: "vehicle-chile-vehicle-stolen" },
 				{
 					type: "category",
 					label: "🇨🇴 Colombia",

@@ -685,6 +685,18 @@ keywords:
   - "https://api.verifik.co/v2/cl/vehicle-soap-plate"
   - "GET v2/cl/vehicle-soap-plate"
   - "GET /v2/cl/vehicle-soap-plate"
+  - "v2/cl/vehicle-stolen"
+  - "/v2/cl/vehicle-stolen"
+  - "v2 cl vehicle-stolen"
+  - "cl/vehicle-stolen"
+  - "/cl/vehicle-stolen"
+  - "api/cl/vehicle-stolen"
+  - "/api/cl/vehicle-stolen"
+  - "api cl vehicle-stolen"
+  - "api.verifik.co/v2/cl/vehicle-stolen"
+  - "https://api.verifik.co/v2/cl/vehicle-stolen"
+  - "GET v2/cl/vehicle-stolen"
+  - "GET /v2/cl/vehicle-stolen"
   - "v2/clients/me"
   - "/v2/clients/me"
   - "v2 clients me"
@@ -2716,12 +2728,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (218 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (219 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-08-28T20:58:13.964Z_
+_Last regenerated: 2026-09-08T23:20:31.973Z_
 
 ## Argentina
 
@@ -2769,6 +2781,7 @@ _Last regenerated: 2026-08-28T20:58:13.964Z_
 | `v2/cl/vehicle` | v2 cl vehicle cl/vehicle /cl/vehicle api/cl/vehicle /api/cl/vehicle api cl vehicle api.verifik.co/v2/cl/vehicle https://api.verifik.co/v2/cl/vehicle GET v2/cl/vehicle GET /v2/cl/vehicle | [\U0001F1E8\U0001F1F1 Chile - Vehicle Information](/vehicle-validation/chile) |
 | `v2/cl/vehicle-soap` | v2 cl vehicle-soap cl/vehicle-soap /cl/vehicle-soap api/cl/vehicle-soap /api/cl/vehicle-soap api cl vehicle-soap api.verifik.co/v2/cl/vehicle-soap https://api.verifik.co/v2/cl/vehicle-soap GET v2/cl/vehicle-soap GET /v2/cl/vehicle-soap | [\U0001F1E8\U0001F1F1 Chile - Vehicle SOAP](/vehicle-validation/chile/vehicle-soap) |
 | `v2/cl/vehicle-soap-plate` | v2 cl vehicle-soap-plate cl/vehicle-soap-plate /cl/vehicle-soap-plate api/cl/vehicle-soap-plate /api/cl/vehicle-soap-plate api cl vehicle-soap-plate api.verifik.co/v2/cl/vehicle-soap-plate https://api.verifik.co/v2/cl/vehicle-soap-plate GET v2/cl/vehicle-soap-plate GET /v2/cl/vehicle-soap-plate | [🇨🇱 Chile - Vehicle SOAP (by plate)](/vehicle-validation/chile/vehicle-soap-plate) |
+| `v2/cl/vehicle-stolen` | v2 cl vehicle-stolen cl/vehicle-stolen /cl/vehicle-stolen api/cl/vehicle-stolen /api/cl/vehicle-stolen api cl vehicle-stolen api.verifik.co/v2/cl/vehicle-stolen https://api.verifik.co/v2/cl/vehicle-stolen GET v2/cl/vehicle-stolen GET /v2/cl/vehicle-stolen | [🇨🇱 Chile - Stolen Vehicle](/vehicle-validation/chile/vehicle-stolen) |
 
 ## Colombia
 
