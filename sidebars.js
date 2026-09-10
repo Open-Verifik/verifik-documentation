@@ -69,6 +69,7 @@ const sidebars = {
 				"access/access",
 				"smartenroll/smartenroll",
 				"smartenroll/smartenroll-kyc-flow",
+				"smartenroll/smartenroll-resume",
 				"smartenroll/smartenroll-admin-kyc-review",
 				"smartenroll/smartenroll-api-companion",
 				"smart-enroll-self-hosted/smart-enroll-self-hosted",
@@ -650,6 +651,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners",
+							label: "RUNT - Vehicle owners by plate",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin",
 							label: "RUNT - Vehicle records by VIN",
 						},
@@ -1019,6 +1025,7 @@ const sidebars = {
 						"resources/app-registrations/the-app-registration-object",
 						"resources/app-registrations/create-an-app-registration",
 						"resources/app-registrations/retrieve-an-app-registration",
+						"resources/app-registrations/resend-an-app-registration-link",
 						"resources/app-registrations/list-all-app-registrations",
 						"resources/app-registrations/create-an-app-registration-biometric-validation",
 						"resources/app-registrations/create-an-app-registration-document-validation",

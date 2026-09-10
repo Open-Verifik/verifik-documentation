@@ -1,0 +1,140 @@
+---
+id: vehicle-validation-colombia-runt-vehicle-owners
+title: RUNT — 번호판별 차량 소유자
+description: 번호판만으로 콜롬비아 차량과 소유권 기록을 조회합니다.
+sidebar_label: RUNT — 번호판별 소유자
+slug: /vehicle-validation/colombia/runt-vehicle-owners
+keywords:
+  - colombia_api_vehicle_owners
+  - GET /v2/co/runt/vehiculo/owners
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+번호판만으로 콜롬비아 차량의 기본 정보와 소유권 기록을 조회합니다. 소유권 확인, 차량 등록 절차 및 차량 실사에 사용할 수 있습니다.
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v2/co/runt/vehiculo/owners
+```
+
+응답에는 `plate`, `brand`, `line`, `model`과 `owners` 배열이 포함됩니다. 소유자별 신원, 소유 기간, 금융, 담보 및 등록 정보가 있는 경우 함께 반환됩니다. **`GET /v2/co/runt/propietarios`**와 달리 이 엔드포인트는 번호판으로 조회하며 정규화된 차량·소유자 정보를 반환합니다.
+
+### 헤더
+
+| 이름 | 값 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| 이름 | 형식 | 필수 | 설명 | 예시 |
+| --- | --- | --- | --- | --- |
+| `plate` | string | 예 | 5~9자의 영문자와 숫자로 구성된 콜롬비아 번호판입니다. | `CRL299` |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/runt/vehiculo/owners", {
+	params: { plate: "CRL299" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/runt/vehiculo/owners"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+response = requests.get(url, headers=headers, params={"plate": "CRL299"})
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"plate": "CRL299",
+		"brand": "CHEVROLET",
+		"line": "CRUZE",
+		"model": "2012",
+		"owners": [
+			{
+				"documentIssueDate": null,
+				"documentNumber": "********",
+				"documentType": "CC",
+				"entity": "ENTIDAD FINANCIERA",
+				"financingTime": 42.03,
+				"financingType": "Prenda",
+				"firstName": "OWNER",
+				"fullName": "OWNER EXAMPLE",
+				"lastName": "EXAMPLE",
+				"ownerId": 10000001,
+				"ownershipDuration": { "days": 23, "months": 6, "years": 8 },
+				"ownershipEndDate": "2020-02-13T05:00:00.000+0000",
+				"ownershipStartDate": "2011-07-21T05:00:00.000+0000",
+				"pledge": "Prenda levantada",
+				"registraduriaStatus": null,
+				"vehicleRegistryNumber": "15514772"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "September 8, 2026 11:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- AppFeature 코드는 **`colombia_api_vehicle_owners`**입니다.
+- 샌드박스에서는 **`CRL299`**를 사용하세요.
+- 사용할 수 없는 소유자 필드는 `null`일 수 있으며 `owners`에는 여러 과거 기록이 포함될 수 있습니다.
+- **`GET /v2/co/runt/propietarios`**는 별도의 조회 흐름이며 이 번호판 기반 엔드포인트의 별칭이 아닙니다.

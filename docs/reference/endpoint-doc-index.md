@@ -232,6 +232,21 @@ keywords:
   - "https://api.verifik.co/v2/app-registrations/{id}"
   - "GET v2/app-registrations/{id}"
   - "GET /v2/app-registrations/{id}"
+  - "v2/app-registrations/{id}/resend-link"
+  - "/v2/app-registrations/{id}/resend-link"
+  - "v2/app-registrations/resend-link"
+  - "/v2/app-registrations/resend-link"
+  - "v2 app-registrations resend-link"
+  - "v2 app-registrations {id} resend-link"
+  - "app-registrations/resend-link"
+  - "/app-registrations/resend-link"
+  - "api/app-registrations/resend-link"
+  - "/api/app-registrations/resend-link"
+  - "api app-registrations resend-link"
+  - "api.verifik.co/v2/app-registrations/{id}/resend-link"
+  - "https://api.verifik.co/v2/app-registrations/{id}/resend-link"
+  - "GET v2/app-registrations/{id}/resend-link"
+  - "GET /v2/app-registrations/{id}/resend-link"
   - "v2/app-registrations/{id}/sync"
   - "/v2/app-registrations/{id}/sync"
   - "v2/app-registrations/sync"
@@ -1364,6 +1379,22 @@ keywords:
   - "https://api.verifik.co/v2/co/runt/vehiculo"
   - "GET v2/co/runt/vehiculo"
   - "GET /v2/co/runt/vehiculo"
+  - "v2/co/runt/vehiculo/owners"
+  - "/v2/co/runt/vehiculo/owners"
+  - "v2 co runt vehiculo owners"
+  - "co/runt/vehiculo/owners"
+  - "/co/runt/vehiculo/owners"
+  - "api/co/runt/vehiculo/owners"
+  - "/api/co/runt/vehiculo/owners"
+  - "api co runt vehiculo owners"
+  - "runt/vehiculo/owners"
+  - "/runt/vehiculo/owners"
+  - "vehiculo/owners"
+  - "/vehiculo/owners"
+  - "api.verifik.co/v2/co/runt/vehiculo/owners"
+  - "https://api.verifik.co/v2/co/runt/vehiculo/owners"
+  - "GET v2/co/runt/vehiculo/owners"
+  - "GET /v2/co/runt/vehiculo/owners"
   - "v2/co/sena/certificados"
   - "/v2/co/sena/certificados"
   - "v2 co sena certificados"
@@ -2728,12 +2759,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (219 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (221 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-09-08T23:20:31.973Z_
+_Last regenerated: 2026-09-10T01:03:25.609Z_
 
 ## Argentina
 
@@ -2834,6 +2865,7 @@ _Last regenerated: 2026-09-08T23:20:31.973Z_
 | `v2/co/runt/vehicle-by-plate-simplified` | v2 co runt vehicle-by-plate-simplified co/runt/vehicle-by-plate-simplified /co/runt/vehicle-by-plate-simplified api/co/runt/vehicle-by-plate-simplified /api/co/runt/vehicle-by-plate-simplified api co runt vehicle-by-plate-simplified runt/vehicle-by-plate-simplified /runt/vehicle-by-plate-simplified api.verifik.co/v2/co/runt/vehicle-by-plate-simplified https://api.verifik.co/v2/co/runt/vehicle-by-plate-simplified GET v2/co/runt/vehicle-by-plate-simplified GET /v2/co/runt/vehicle-by-plate-simplified | [Simplified Vehicle Records by Plate in RUNT](/vehicle-validation/colombia/runt-vehicle-by-plate-simplified) |
 | `v2/co/runt/vehicle-by-vin` | v2 co runt vehicle-by-vin co/runt/vehicle-by-vin /co/runt/vehicle-by-vin api/co/runt/vehicle-by-vin /api/co/runt/vehicle-by-vin api co runt vehicle-by-vin runt/vehicle-by-vin /runt/vehicle-by-vin api.verifik.co/v2/co/runt/vehicle-by-vin https://api.verifik.co/v2/co/runt/vehicle-by-vin GET v2/co/runt/vehicle-by-vin GET /v2/co/runt/vehicle-by-vin | [Vehicle Records by VIN](/vehicle-validation/colombia/runt-vehicle-by-vin) |
 | `v2/co/runt/vehiculo` | v2 co runt vehiculo co/runt/vehiculo /co/runt/vehiculo api/co/runt/vehiculo /api/co/runt/vehiculo api co runt vehiculo runt/vehiculo /runt/vehiculo api.verifik.co/v2/co/runt/vehiculo https://api.verifik.co/v2/co/runt/vehiculo GET v2/co/runt/vehiculo GET /v2/co/runt/vehiculo | [SOAT and RTM Validation in RUNT](/vehicle-validation/colombia/runt-vehicle-soat-rtm) |
+| `v2/co/runt/vehiculo/owners` | v2 co runt vehiculo owners co/runt/vehiculo/owners /co/runt/vehiculo/owners api/co/runt/vehiculo/owners /api/co/runt/vehiculo/owners api co runt vehiculo owners runt/vehiculo/owners /runt/vehiculo/owners vehiculo/owners /vehiculo/owners api.verifik.co/v2/co/runt/vehiculo/owners https://api.verifik.co/v2/co/runt/vehiculo/owners GET v2/co/runt/vehiculo/owners GET /v2/co/runt/vehiculo/owners | [RUNT - Vehicle owners by plate](/vehicle-validation/colombia/runt-vehicle-owners) |
 | `v2/co/sena/certificados` | v2 co sena certificados co/sena/certificados /co/sena/certificados api/co/sena/certificados /api/co/sena/certificados api co sena certificados sena/certificados /sena/certificados api.verifik.co/v2/co/sena/certificados https://api.verifik.co/v2/co/sena/certificados GET v2/co/sena/certificados GET /v2/co/sena/certificados | [Colombia — SENA Certificates](/certificates/sena-certificates) |
 | `v2/co/sigep/name` | v2 co sigep name co/sigep/name /co/sigep/name api/co/sigep/name /api/co/sigep/name api co sigep name sigep/name /sigep/name api.verifik.co/v2/co/sigep/name https://api.verifik.co/v2/co/sigep/name GET v2/co/sigep/name GET /v2/co/sigep/name | [Colombia — SIGEP lookup by full name](/legal/sigep-public-servant-by-name) |
 | `v2/co/sigep/number` | v2 co sigep number co/sigep/number /co/sigep/number api/co/sigep/number /api/co/sigep/number api co sigep number sigep/number /sigep/number api.verifik.co/v2/co/sigep/number https://api.verifik.co/v2/co/sigep/number GET v2/co/sigep/number GET /v2/co/sigep/number | [Colombia — SIGEP lookup by document](/legal/sigep-public-servant-by-number) |
@@ -2966,6 +2998,7 @@ _Last regenerated: 2026-09-08T23:20:31.973Z_
 | --- | --- | --- |
 | `v2/app-registrations` | v2 app-registrations app-registrations /app-registrations api/app-registrations /api/app-registrations api app-registrations api.verifik.co/v2/app-registrations https://api.verifik.co/v2/app-registrations GET v2/app-registrations GET /v2/app-registrations | [Create an App Registration](/resources/app-registrations/create-an-app-registration) |
 | `v2/app-registrations/{id}` | v2/app-registrations /v2/app-registrations v2 app-registrations app-registrations /app-registrations api/app-registrations /api/app-registrations api app-registrations | [Get App Registration](/resources/app-registrations/retrieve-an-app-registration) |
+| `v2/app-registrations/{id}/resend-link` | v2/app-registrations/resend-link /v2/app-registrations/resend-link v2 app-registrations resend-link app-registrations/resend-link /app-registrations/resend-link api/app-registrations/resend-link /api/app-registrations/resend-link api app-registrations resend-link | [Resend an App Registration Link](/resources/app-registrations/resend-an-app-registration-link) |
 | `v2/app-registrations/{id}/sync` | v2/app-registrations/sync /v2/app-registrations/sync v2 app-registrations sync app-registrations/sync /app-registrations/sync api/app-registrations/sync /api/app-registrations/sync api app-registrations sync | [Sync App Registration Status](/resources/app-registrations/sync-app-registration-status) |
 
 ## Auth

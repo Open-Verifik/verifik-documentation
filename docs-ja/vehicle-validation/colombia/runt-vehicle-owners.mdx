@@ -1,0 +1,140 @@
+---
+id: vehicle-validation-colombia-runt-vehicle-owners
+title: RUNT — ナンバー別の車両所有者
+description: ナンバーのみでコロンビア車両と所有履歴を取得します。
+sidebar_label: RUNT — ナンバー別所有者
+slug: /vehicle-validation/colombia/runt-vehicle-owners
+keywords:
+  - colombia_api_vehicle_owners
+  - GET /v2/co/runt/vehiculo/owners
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+ナンバーのみでコロンビア車両の基本情報と所有履歴を取得します。所有権の確認、車両登録、デューデリジェンスに利用できます。
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/co/runt/vehiculo/owners
+```
+
+レスポンスには `plate`、`brand`、`line`、`model` と `owners` 配列が含まれます。利用可能な場合は、所有者の身元、所有期間、融資、担保、登録情報も返されます。**`GET /v2/co/runt/propietarios`** とは異なり、このエンドポイントはナンバーを起点に正規化された車両・所有者情報を返します。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| 名前 | 型 | 必須 | 説明 | 例 |
+| --- | --- | --- | --- | --- |
+| `plate` | string | はい | 5〜9文字の英数字で構成されるコロンビアのナンバーです。 | `CRL299` |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/runt/vehiculo/owners", {
+	params: { plate: "CRL299" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/runt/vehiculo/owners"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+response = requests.get(url, headers=headers, params={"plate": "CRL299"})
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"plate": "CRL299",
+		"brand": "CHEVROLET",
+		"line": "CRUZE",
+		"model": "2012",
+		"owners": [
+			{
+				"documentIssueDate": null,
+				"documentNumber": "********",
+				"documentType": "CC",
+				"entity": "ENTIDAD FINANCIERA",
+				"financingTime": 42.03,
+				"financingType": "Prenda",
+				"firstName": "OWNER",
+				"fullName": "OWNER EXAMPLE",
+				"lastName": "EXAMPLE",
+				"ownerId": 10000001,
+				"ownershipDuration": { "days": 23, "months": 6, "years": 8 },
+				"ownershipEndDate": "2020-02-13T05:00:00.000+0000",
+				"ownershipStartDate": "2011-07-21T05:00:00.000+0000",
+				"pledge": "Prenda levantada",
+				"registraduriaStatus": null,
+				"vehicleRegistryNumber": "15514772"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "September 8, 2026 11:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注記
+
+- AppFeature コードは **`colombia_api_vehicle_owners`** です。
+- サンドボックスでは **`CRL299`** を使用してください。
+- 利用できない所有者フィールドは `null` になることがあり、`owners` には複数の履歴が含まれる場合があります。
+- **`GET /v2/co/runt/propietarios`** は別の照会フローであり、このナンバー基準エンドポイントの別名ではありません。

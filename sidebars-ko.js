@@ -153,6 +153,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — 차량 확인" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — 차량 확인(간편)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — 차량 확인(기본)" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — 번호판별 소유자" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin", label: "🇨🇴 RUNT — VIN 차량 확인" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-fines", label: "🇨🇴 SIMIT - 과태료" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-comparendo-details", label: "🇨🇴 SIMIT - 범칙금 상세" },

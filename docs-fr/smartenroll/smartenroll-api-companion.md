@@ -65,6 +65,7 @@ Jeu courant pour un snapshot complet :
 | [`POST /v2/face-recognition/compare-with-liveness`](https://docs.verifik.co/biometrics/compare-with-liveness) | Comparer puis liveness (séquentiel) |
 | `POST /v2/face-recognition/compare/app-registration` | Comparaison du parcours hébergé : JWT avec `appRegistrationId` ; gallery/probe depuis les visages stockés ; corps `{}` valide ; seuil du project flow |
 | [`GET /v2/app-registrations/:id`](https://docs.verifik.co/resources/app-registrations/retrieve-an-app-registration) | Lire l’enrollment + peupler les scores |
+| [`POST /v2/app-registrations/:id/resend-link`](https://docs.verifik.co/resources/app-registrations/resend-an-app-registration-link) | Générer une URL hébergée de reprise pour un enrollment incomplet |
 | `POST /v2/biometric-validations/app-registration` | Étape biométrique / liveness en session hébergée |
 | `POST /v2/document-validations/app-registration` | Capture / validation document en session hébergée |
 | `POST /v2/identity-images/appRegistration` | Stocker les images d’identité (`face`, `documentFace`, …) |
@@ -104,6 +105,7 @@ La liveness faciale Verifik utilise notre stack biométrique avec détection d�
 
 - [SmartEnroll](https://docs.verifik.co/smartenroll) — configuration du projet
 - [SmartEnroll KYC Flow](https://docs.verifik.co/smartenroll/smartenroll-kyc-flow) — expérience utilisateur
+- [Resume an Incomplete Enrollment](https://docs.verifik.co/smartenroll/resume) — reprendre le KYC hébergé après une interruption
 - [SmartEnroll Admin KYC Review](https://docs.verifik.co/smartenroll/smartenroll-admin-kyc-review) — UI de revue et interprétation des scores
 - [SmartEnroll Self Hosted](https://docs.verifik.co/smart-enroll-self-hosted) — APIs projet/flux
 

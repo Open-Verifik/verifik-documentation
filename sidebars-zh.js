@@ -153,6 +153,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — 按车牌车辆(完整)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — 按车牌车辆(简化)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — 车辆(基本)" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — 按车牌查询所有人" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin", label: "🇨🇴 RUNT — 车辆(VIN)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-fines", label: "🇨🇴 SIMIT - 罚款" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-comparendo-details", label: "🇨🇴 SIMIT - 罚单详情" },

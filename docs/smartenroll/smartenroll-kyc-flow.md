@@ -629,6 +629,10 @@ Yes, the SmartEnroll KYC Flow is designed to work on both desktop and mobile dev
 
 ---
 
+:::tip Left mid-flow?
+Partners should not send the user back through the sign-up form. Store the App Registration id and mint a continuation URL with [Resend an App Registration Link](/resources/app-registrations/resend-an-app-registration-link). See [Resume an Incomplete Enrollment](/smartenroll/resume).
+:::
+
 :::tip Pro Tip
 Complete the process in one session to avoid having to restart. Make sure you have all required documents and a good internet connection before beginning.
 :::

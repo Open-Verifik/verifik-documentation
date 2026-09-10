@@ -152,6 +152,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — véhicule par plaque (complet)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — véhicule par plaque (simplifié)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — véhicule (base)" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — propriétaires par plaque" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin", label: "🇨🇴 RUNT — par NIV" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-fines", label: "🇨🇴 SIMIT - Amendes" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-comparendo-details", label: "🇨🇴 SIMIT - Détail comparendo" },

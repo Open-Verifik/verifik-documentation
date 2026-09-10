@@ -157,6 +157,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — 車両（ナンバー・詳細）" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — 車両（ナンバー・簡易）" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — 車両(基本)" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — ナンバー別所有者" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-vin", label: "🇨🇴 RUNT — VIN" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-fines", label: "🇨🇴 SIMIT - 反則金" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-simit-comparendo-details", label: "🇨🇴 SIMIT - 違反切符詳細" },

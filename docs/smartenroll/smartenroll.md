@@ -315,6 +315,14 @@ Changing the client account language in the Verifik admin does **not** drive Sma
 
 ---
 
+## Resume an incomplete enrollment
+
+If a user starts hosted SmartEnroll and leaves before finishing, store the App Registration `_id` and later call `POST /v2/app-registrations/{id}/resend-link`. Redirect them to `data.link`. Do not reuse an expired create token or submit the sign-up form again with the same email — that shows **already registered**.
+
+Full guide: [Resume an Incomplete Enrollment](/smartenroll/resume). API: [Resend an App Registration Link](/resources/app-registrations/resend-an-app-registration-link).
+
+---
+
 ## Best Practices
 
 ### Security Recommendations

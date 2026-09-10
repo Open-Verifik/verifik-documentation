@@ -65,6 +65,7 @@ populate된 객체의 주요 필드:
 | [`POST /v2/face-recognition/compare-with-liveness`](https://docs.verifik.co/biometrics/compare-with-liveness) | 비교 후 라이브니스 (순차) |
 | `POST /v2/face-recognition/compare/app-registration` | 호스팅 경로 비교: 세션 `appRegistrationId` 사용; gallery/probe는 저장된 얼굴; 빈 body `{}` 가능; 임계값은 project flow |
 | [`GET /v2/app-registrations/:id`](https://docs.verifik.co/resources/app-registrations/retrieve-an-app-registration) | enrollment 조회 + 점수 populate |
+| [`POST /v2/app-registrations/:id/resend-link`](https://docs.verifik.co/resources/app-registrations/resend-an-app-registration-link) | 미완료 enrollment용 호스팅 이어가기 URL 발급 |
 | `POST /v2/biometric-validations/app-registration` | 호스팅 세션의 생체/라이브니스 단계 |
 | `POST /v2/document-validations/app-registration` | 호스팅 세션의 문서 캡처/검증 |
 | `POST /v2/identity-images/appRegistration` | 신원 이미지 저장 (`face`, `documentFace` 등) |
@@ -104,6 +105,7 @@ Verifik 얼굴 라이브니스는 제시 공격 탐지(PAD)가 포함된 생체 
 
 - [SmartEnroll](https://docs.verifik.co/smartenroll) — 프로젝트 설정
 - [SmartEnroll KYC Flow](https://docs.verifik.co/smartenroll/smartenroll-kyc-flow) — 최종 사용자 경험
+- [Resume an Incomplete Enrollment](https://docs.verifik.co/smartenroll/resume) — 사용자가 중간에 떠난 뒤 호스팅 KYC 이어가기
 - [SmartEnroll Admin KYC Review](https://docs.verifik.co/smartenroll/smartenroll-admin-kyc-review) — 검토 UI 및 점수 해석
 - [SmartEnroll Self Hosted](https://docs.verifik.co/smart-enroll-self-hosted) — 프로젝트/플로우 API
 

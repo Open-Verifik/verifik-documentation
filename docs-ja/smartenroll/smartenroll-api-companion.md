@@ -65,6 +65,7 @@ populate 後の主なフィールド:
 | [`POST /v2/face-recognition/compare-with-liveness`](https://docs.verifik.co/biometrics/compare-with-liveness) | 照合のあとライブネス（順次） |
 | `POST /v2/face-recognition/compare/app-registration` | ホスト経路の照合: セッションの `appRegistrationId`、保存済み顔を gallery/probe に使用、空 body `{}` 可、しきい値は project flow |
 | [`GET /v2/app-registrations/:id`](https://docs.verifik.co/resources/app-registrations/retrieve-an-app-registration) | エンロール取得＋スコアの populate |
+| [`POST /v2/app-registrations/:id/resend-link`](https://docs.verifik.co/resources/app-registrations/resend-an-app-registration-link) | 未完了エンロール向けのホスト継続 URL を発行 |
 | `POST /v2/biometric-validations/app-registration` | ホストセッションの生体／ライブネス手順 |
 | `POST /v2/document-validations/app-registration` | ホストセッションの書類キャプチャ／検証 |
 | `POST /v2/identity-images/appRegistration` | 本人確認画像の保存（`face`、`documentFace` など） |
@@ -104,6 +105,7 @@ Verifik の顔ライブネスは、プレゼンテーション攻撃検知（PAD
 
 - [SmartEnroll](https://docs.verifik.co/smartenroll) — プロジェクト設定
 - [SmartEnroll KYC Flow](https://docs.verifik.co/smartenroll/smartenroll-kyc-flow) — エンドユーザー体験
+- [Resume an Incomplete Enrollment](https://docs.verifik.co/smartenroll/resume) — 途中離脱後にホスト型 KYC を再開
 - [SmartEnroll Admin KYC Review](https://docs.verifik.co/smartenroll/smartenroll-admin-kyc-review) — 審査 UI とスコア解釈
 - [SmartEnroll Self Hosted](https://docs.verifik.co/smart-enroll-self-hosted) — プロジェクト／フロー API
 

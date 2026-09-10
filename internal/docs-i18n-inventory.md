@@ -1,19 +1,19 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-09-08T23:20:31.921Z
+Generated: 2026-09-10T01:03:25.535Z
 
-- **Files scanned:** 507
-- **Unique endpoint URLs:** 219
+- **Files scanned:** 510
+- **Unique endpoint URLs:** 221
 - **Duplicate URL groups (SEO / aliases):** 55
-- **Docs without `### Endpoint` block:** 211
+- **Docs without `### Endpoint` block:** 212
 
 ## Summary by priority (canonical primary path only)
 
 | Priority | Count | Scope |
 | --- | ---: | --- |
-| P0 | 24 | vehicle-validation/colombia |
+| P0 | 25 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 171 | identity, biometrics, resources, etc. |
+| P2 | 172 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -231,6 +231,7 @@ Generated: 2026-09-08T23:20:31.921Z
 | P2 | `v2/app-logins/{id}` | `resources/app-logins/retrieve-an-app-login.mdx` |
 | P2 | `v2/app-registrations` | `resources/app-registrations/create-an-app-registration.mdx` |
 | P2 | `v2/app-registrations/{id}` | `resources/app-registrations/retrieve-an-app-registration.mdx` |
+| P2 | `v2/app-registrations/{id}/resend-link` | `resources/app-registrations/resend-an-app-registration-link.mdx` |
 | P2 | `v2/app-registrations/{id}/sync` | `resources/app-registrations/sync-app-registration-status.mdx` |
 | P1 | `v2/ar/buenos-aires/technical-inspection` | `vehicle-validation/argentina/buenos-aires-technical-inspection.mdx` |
 | P1 | `v2/ar/buenos-aires/traffic-infractions` | `vehicle-validation/argentina/buenos-aires-traffic-infractions.mdx` |
@@ -316,6 +317,7 @@ Generated: 2026-09-08T23:20:31.921Z
 | P0 | `v2/co/runt/vehicle-by-plate-simplified` | `vehicle-validation/colombia/runt-vehicle-by-plate-simplified.mdx` |
 | P0 | `v2/co/runt/vehicle-by-vin` | `vehicle-validation/colombia/runt-vehicle-by-vin.mdx` |
 | P0 | `v2/co/runt/vehiculo` | `vehicle-validation/colombia/runt-vehicle-soat-rtm.md` |
+| P0 | `v2/co/runt/vehiculo/owners` | `vehicle-validation/colombia/runt-vehicle-owners.mdx` |
 | P2 | `v2/co/sena/certificados` | `certificates/sena-certificates.mdx` |
 | P2 | `v2/co/sigep/name` | `legal/sigep-public-servant-by-name.mdx` |
 | P2 | `v2/co/sigep/number` | `legal/sigep-public-servant-by-number.mdx` |
@@ -611,6 +613,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `smartenroll/smartenroll-admin-kyc-review.md`
 - `smartenroll/smartenroll-api-companion.md`
 - `smartenroll/smartenroll-kyc-flow.md`
+- `smartenroll/smartenroll-resume.md`
 - `smartenroll/smartenroll.md`
 - `vehicle-validation.mdx`
 - `vehicle-validation/chile/driver-license.md`

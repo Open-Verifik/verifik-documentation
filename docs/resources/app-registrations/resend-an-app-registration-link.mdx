@@ -1,0 +1,237 @@
+---
+id: resend-an-app-registration-link
+title: Resend an App Registration Link
+description: Generate a fresh hosted SmartEnroll continuation URL for an incomplete App Registration
+keywords:
+  - 'v2/app-registrations/{id}/resend-link'
+  - '/v2/app-registrations/{id}/resend-link'
+  - v2/app-registrations/resend-link
+  - /v2/app-registrations/resend-link
+  - v2 app-registrations resend-link
+  - 'v2 app-registrations {id} resend-link'
+  - api/app-registrations/resend-link
+  - /api/app-registrations/resend-link
+  - api app-registrations resend-link
+  - 'api.verifik.co/v2/app-registrations/{id}/resend-link'
+  - 'https://api.verifik.co/v2/app-registrations/{id}/resend-link'
+  - 'POST v2/app-registrations/{id}/resend-link'
+  - 'POST /v2/app-registrations/{id}/resend-link'
+  - app-registrations/resend-link
+  - /app-registrations/resend-link
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/app-registrations/{id}/resend-link
+```
+
+Mint a new hosted SmartEnroll continuation URL for an existing, incomplete App Registration. Redirect the end user to `data.link` so they resume from the current step instead of starting a new sign-up.
+
+This is the partner API behind the Verifik admin **Resend link** action (copy link or send email). Product walkthrough: [Resume an Incomplete Enrollment](/smartenroll/resume).
+
+Authenticate with the **project owner's client API token**. Do not use the enrollee session JWT from create or from a previous `link`.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Params
+
+| Name             | Type    | Required | Description                                                                                                                                 |
+| ---------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`             | string  | Yes      | App Registration `_id` to resume. Path parameter.                                                                                           |
+| `sendEmail`      | boolean | No       | If `true` (or `"true"`), email the continuation link to the enrollee. If omitted or `false`, only return `token` and `link`.                |
+| `recipientEmail` | string  | No       | Override the email recipient. **Super-admin only.** Client tokens must omit this field; the enrollee email on the registration is used.     |
+
+The continuation JWT expires in **30 minutes**. `expiresInMinutes` is not a client-facing parameter on this endpoint.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+	const appRegistrationId = "6a98727a47eb5690a7f0b68f";
+	const res = await fetch(`https://api.verifik.co/v2/app-registrations/${appRegistrationId}/resend-link`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+		},
+		body: JSON.stringify({
+			sendEmail: false,
+		}),
+	});
+	console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$appRegistrationId = "6a98727a47eb5690a7f0b68f";
+$ch = curl_init("https://api.verifik.co/v2/app-registrations/" . $appRegistrationId . "/resend-link");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "sendEmail" => false
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+app_registration_id = "6a98727a47eb5690a7f0b68f"
+url = f"https://api.verifik.co/v2/app-registrations/{app_registration_id}/resend-link"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {"sendEmail": False}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    appRegistrationId := "6a98727a47eb5690a7f0b68f"
+    url := fmt.Sprintf("https://api.verifik.co/v2/app-registrations/%s/resend-link", appRegistrationId)
+    payload := map[string]interface{}{
+        "sendEmail": false,
+    }
+    b, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", url, bytes.NewBuffer(b))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+		"link": "https://access.verifik.co/sign-up/6266193db77ccc8111730c90?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+		"firstName": "Robert",
+		"lastName": "Sánchez",
+		"fullName": "Robert Sánchez",
+		"email": "robert_196@verifik.co",
+		"step": "signUpForm",
+		"steps": {
+			"signUpForm": "mandatory",
+			"basicInformation": "skip",
+			"document": "optional",
+			"liveness": "optional",
+			"form": "skip"
+		},
+		"appRegistrationId": "6a98727a47eb5690a7f0b68f",
+		"status": "ONGOING",
+		"expiresAt": "2026-09-09 22:14:14",
+		"accessType": "app_registration_initiated",
+		"issuedAt": 1788990254,
+		"emailSent": null
+	}
+}
+```
+
+When `sendEmail` is `true` and the enrollee has an email, `emailSent` looks like:
+
+```json
+{
+	"sent": true,
+	"email": "robert_196@verifik.co",
+	"mailgunId": "<message-id>"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+	"code": "access_denied",
+	"message": "403:access_denied"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "AppRegistration_not_found",
+	"message": "404:AppRegistration_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "cannot_resend_link_for_this_status",
+	"message": "409:cannot_resend_link_for_this_status"
+}
+```
+
+Client tokens receive this when status is `COMPLETED`, `COMPLETED_WITHOUT_KYC`, or `FAILED`. A `409` with `MissingParameter` is also returned when `sendEmail` is true but no enrollee email can be resolved.
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **Hosted URL**: `data.link` is `{accessAppUrl}/sign-up/{projectId}?token={token}`. Production host is `https://access.verifik.co`.
+- **Resume, do not recreate**: Do not call `POST /v2/app-registrations` again with the same email or phone. That returns `409:email_is_registered_already` or `409:phone_is_registered_already`.
+- **Create token window**: The JWT from create is valid for **120 minutes**. After it expires, mint a new link here instead of reusing the original URL.
+- **Not a resume URL**: [`GET /v2/app-registrations/{id}`](/resources/app-registrations/retrieve-an-app-registration) and [`PUT /{id}/sync`](/resources/app-registrations/sync-app-registration-status) do not generate a hosted continuation URL. `smartLink` on the App Registration object is the OneTimeLink product (`link.verifik.co`), not this flow.
+- **Authorization**: Enrollee session tokens cannot call this endpoint. Use the client API token that owns the project.

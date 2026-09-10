@@ -51,6 +51,7 @@ const sidebars = {
 				"access/acceso",
 				"smartenroll/smartenroll",
 				"smartenroll/smartenroll-flujo-kyc",
+				"smartenroll/smartenroll-reanudar",
 				"smartenroll/smartenroll-admin-revision-kyc",
 				"smartenroll/smartenroll-guia-api",
 				"smart-enroll-auto-alojado/smart-enroll-self-hosted",
@@ -478,6 +479,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "validacion-vehiculos/colombia/runt-propietarios-vehiculo",
+							label: "RUNT - Propietarios por placa",
+						},
+						{
+							type: "doc",
 							id: "validacion-vehiculos/colombia/registros-vehiculos-por-vin-runt",
 							label: "Registros de Vehículos por VIN",
 						},
@@ -783,6 +789,7 @@ const sidebars = {
 						"resources/registros-aplicacion/el-objeto-registro-aplicacion",
 						"resources/registros-aplicacion/crear-un-registro-aplicacion",
 						"resources/registros-aplicacion/recuperar-un-registro-aplicacion",
+						"resources/registros-aplicacion/reenviar-enlace-registro-aplicacion",
 						"resources/registros-aplicacion/listar-todos-los-registros-aplicacion",
 						"resources/registros-aplicacion/crear-una-validacion-biometrica-registro-aplicacion",
 						"resources/registros-aplicacion/crear-una-validacion-documento-registro-aplicacion",

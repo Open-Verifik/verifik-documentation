@@ -1,0 +1,140 @@
+---
+id: vehicle-validation-colombia-runt-vehicle-owners
+title: RUNT — Propriétaires du véhicule par plaque
+description: Consultez un véhicule colombien et ses historiques de propriété uniquement avec la plaque.
+sidebar_label: RUNT — Propriétaires par plaque
+slug: /vehicle-validation/colombia/runt-vehicle-owners
+keywords:
+  - colombia_api_vehicle_owners
+  - GET /v2/co/runt/vehiculo/owners
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Consultez les données de base d’un véhicule colombien et ses historiques de propriété uniquement avec sa plaque. Ce service convient à la vérification de propriété, à l’intégration et aux contrôles préalables.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/runt/vehiculo/owners
+```
+
+La réponse contient `plate`, `brand`, `line`, `model` et un tableau `owners` avec l’identité, la période de propriété, le financement, le gage et l’immatriculation lorsqu’ils sont disponibles. Contrairement à **`GET /v2/co/runt/propietarios`**, cet endpoint part d’une plaque et renvoie des données normalisées sur le véhicule et ses propriétaires.
+
+### En-têtes
+
+| Nom | Valeur |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Paramètres
+
+| Nom | Type | Obligatoire | Description | Exemple |
+| --- | --- | --- | --- | --- |
+| `plate` | string | Oui | Plaque colombienne composée de 5 à 9 caractères alphanumériques. | `CRL299` |
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/runt/vehiculo/owners", {
+	params: { plate: "CRL299" },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/runt/vehiculo/owners"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+response = requests.get(url, headers=headers, params={"plate": "CRL299"})
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"plate": "CRL299",
+		"brand": "CHEVROLET",
+		"line": "CRUZE",
+		"model": "2012",
+		"owners": [
+			{
+				"documentIssueDate": null,
+				"documentNumber": "********",
+				"documentType": "CC",
+				"entity": "ENTITE FINANCIERE",
+				"financingTime": 42.03,
+				"financingType": "Prenda",
+				"firstName": "PROPRIETAIRE",
+				"fullName": "PROPRIETAIRE EXEMPLE",
+				"lastName": "EXEMPLE",
+				"ownerId": 10000001,
+				"ownershipDuration": { "days": 23, "months": 6, "years": 8 },
+				"ownershipEndDate": "2020-02-13T05:00:00.000+0000",
+				"ownershipStartDate": "2011-07-21T05:00:00.000+0000",
+				"pledge": "Prenda levantada",
+				"registraduriaStatus": null,
+				"vehicleRegistryNumber": "15514772"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "September 8, 2026 11:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "missing plate"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Le code AppFeature est **`colombia_api_vehicle_owners`**.
+- Utilisez **`CRL299`** dans le sandbox.
+- Les propriétés d’un propriétaire peuvent être `null` et `owners` peut contenir plusieurs historiques.
+- **`GET /v2/co/runt/propietarios`** suit un autre flux de recherche ; ce n’est pas un alias de cet endpoint par plaque.

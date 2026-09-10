@@ -53,6 +53,9 @@ const ES_REL_PATH_TO_CANONICAL = {
 	"validacion-empresarial/validacion-empresarial-rues-completa-v3": "business-validation/rues-complete-v3",
 	"validacion-empresarial/verificacion-dian": "business-validation/colombia-dian-verification",
 	"validacion-empresarial/verificacion-facturador-legal": "business-validation/colombia-legal-invoicer-verification",
+	"smartenroll/smartenroll-reanudar": "smartenroll/smartenroll-resume",
+	"resources/registros-aplicacion/reenviar-enlace-registro-aplicacion":
+		"resources/app-registrations/resend-an-app-registration-link",
 };
 
 /**
