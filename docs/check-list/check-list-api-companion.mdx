@@ -1,0 +1,72 @@
+---
+id: check-list-api-companion
+title: Check List API companion
+description: Save and load Check Lists with GET, POST, PUT, and DELETE /v2/check-lists
+slug: /check-list/api-companion
+---
+
+# Check List API companion
+
+Use this page when your **backend** should save the same playbook the Smart-Agent UI stores. For the product walkthrough, see [Check List](/check-list).
+
+Check List CRUD does **not** run lookups and does **not** spend credits. Running a service is a normal catalog call (the same URL you already use in SmartCheck or Postman).
+
+## Auth
+
+Every route needs a **client JWT** (`Authorization: Bearer …`). A token without `clientId` returns `403` (`Client context required`). Lists are scoped to that client.
+
+## Endpoints
+
+| Method | Path | Reference |
+| --- | --- | --- |
+| `GET` | `/v2/check-lists` | [List checklists](/check-list/list-all-check-lists) |
+| `POST` | `/v2/check-lists` | [Create a checklist](/check-list/create-a-check-list) |
+| `GET` | `/v2/check-lists/{id}` | [Get a checklist](/check-list/retrieve-a-check-list) |
+| `PUT` | `/v2/check-lists/{id}` | [Update a checklist](/check-list/update-a-check-list) |
+| `DELETE` | `/v2/check-lists/{id}` | [Delete a checklist](/check-list/delete-a-check-list) |
+
+List query params: `page`, `perPage` (or `limit`), and `search` (or `text`) to filter by name. See [List checklists](/check-list/list-all-check-lists) for the two `200` shapes (with and without `page`).
+
+## Body fields
+
+| Field | Meaning |
+| --- | --- |
+| `name` | Required on create. Max 150 characters. |
+| `countries` | Country names you operate in (for example `Colombia`). |
+| `domains` | Optional tabs: `people`, `vehicles`, `businesses`. |
+| `featureCodes` | AppFeature `code` values for the services on the list. |
+| `status` | `draft` (default) or `active`. Organizer label only — both work the same. |
+
+Unknown `featureCodes` fail. A service whose country does not match the list fails unless the service is worldwide (or the list has no countries yet).
+
+## Create example
+
+```
+POST https://api.verifik.co/v2/check-lists
+Authorization: Bearer <client-jwt>
+Content-Type: application/json
+```
+
+```json
+{
+  "name": "KYC Colombia",
+  "countries": ["Colombia"],
+  "domains": [],
+  "featureCodes": [],
+  "status": "draft"
+}
+```
+
+Response is `{ "data": { …checklist } }`. Store `data._id`. When the user adds services in your app, `PUT` the same id with the new `featureCodes`.
+
+## Run a saved service
+
+There is **no** “execute checklist” endpoint. For each code on the list, call that feature’s catalog URL the same way you would from SmartCheck. Credits apply on those calls.
+
+To send the mix as a file or queue, use [SmartBatch](/smart-batch) (country + feature codes + name). Check List does not start the batch for you.
+
+## Related
+
+- [Check List](/check-list) — Smart-Agent walkthrough
+- [SmartCheck](/smartcheck) — catalog APIs
+- [SmartBatch](/smart-batch) — batch the saved services

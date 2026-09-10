@@ -1,0 +1,250 @@
+---
+id: update-a-check-list
+title: チェックリストを更新
+description: Check List を更新する。省略したフィールドは現在の値のまま
+slug: /check-list/update-a-check-list
+keywords:
+  - 'v2/check-lists/{id}'
+  - '/v2/check-lists/{id}'
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - 'v2 check-lists {id}'
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - 'api.verifik.co/v2/check-lists/{id}'
+  - 'https://api.verifik.co/v2/check-lists/{id}'
+  - 'PUT v2/check-lists/{id}'
+  - 'PUT /v2/check-lists/{id}'
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+自分が所有する Check List を更新します。変えたいフィールドだけ送ってください。省略したフィールドは現在の値のままです。マージ後のドキュメントは再バリデーションされるため、マージ後も `name` が必要です。
+
+変更の保存は照会を実行せず、クレジットも消費しません。Smart-Agent では作成後に国はロックされますが、この API は新しい `countries` 配列を送れば受け付けます。
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v2/check-lists/{id}
+```
+
+更新後のリストを返します。ユーザーがサービス（`featureCodes`）を追加・削除するとき、名前を変えるとき、`status` を設定するときに使います。無効な id と他のクライアントのリストは `404` です。
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+トークンは **クライアント JWT** である必要があります。`clientId` のないトークンは `403` を返します。
+
+### Parameters
+
+| Name | Type   | Required | Description                          |
+| ---- | ------ | -------- | ------------------------------------ |
+| `id` | string | Yes      | 作成または一覧から得た Check List の ObjectId。 |
+
+### Body
+
+リクエスト上のフィールドはすべて任意です。マージ後は、`name` が依然として必須です。
+
+| Name           | Type     | Required | Description                                                                 |
+| -------------- | -------- | -------- | --------------------------------------------------------------------------- |
+| `name`         | string   | No       | 表示名。トリム済み、1〜150 文字。                                    |
+| `countries`    | string[] | No       | 国名。送ると保存済みリストを置き換えます。                          |
+| `domains`      | string[] | No       | `people`、`vehicles`、および/または `businesses`。送ると保存済みリストを置き換えます。 |
+| `featureCodes` | string[] | No       | AppFeature の `code`。送ると保存済みリストを置き換えます。               |
+| `status`       | string   | No       | `draft` または `active`。整理用ラベルのみ。                                  |
+
+不明な `featureCodes` は失敗します。国がマージ後の `countries` と一致しないサービスは、そのサービスが世界向けであるか `countries` が空でない限り失敗します。
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const id = "6aa224c87034a338385c28c0";
+    const res = await fetch(`https://api.verifik.co/v2/check-lists/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+        body: JSON.stringify({
+            featureCodes: ["co-cedula", "cl-rut"],
+            domains: ["people"],
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6aa224c87034a338385c28c0";
+$ch = curl_init("https://api.verifik.co/v2/check-lists/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "featureCodes" => ["co-cedula", "cl-rut"],
+    "domains" => ["people"]
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+echo curl_exec($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+check_list_id = "6aa224c87034a338385c28c0"
+url = f"https://api.verifik.co/v2/check-lists/{check_list_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "featureCodes": ["co-cedula", "cl-rut"],
+    "domains": ["people"],
+}
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "6aa224c87034a338385c28c0"
+    body, _ := json.Marshal(map[string]interface{}{
+        "featureCodes": []string{"co-cedula", "cl-rut"},
+        "domains":      []string{"people"},
+    })
+    req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/check-lists/"+id, bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "6aa224c87034a338385c28c0",
+        "client": "507f1f77bcf86cd799439013",
+        "name": "KYC Colombia",
+        "countries": ["Colombia", "Chile"],
+        "domains": ["people"],
+        "featureCodes": ["co-cedula", "cl-rut"],
+        "status": "draft",
+        "createdAt": "2026-09-10T03:32:00.000Z",
+        "updatedAt": "2026-09-10T03:33:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "check_list_not_found",
+    "code": "check_list_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "\"name\" is required",
+    "code": "ValidationError"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-feature" label="409 invalid feature">
+
+```json
+{
+    "message": "check_list_invalid_feature",
+    "code": "check_list_invalid_feature"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-country" label="409 country mismatch">
+
+```json
+{
+    "message": "check_list_feature_country_mismatch",
+    "code": "check_list_feature_country_mismatch"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 省略したフィールドは現在の値のままです。`featureCodes` を送ると配列全体が置き換わります。コードのパッチマージではありません。
+- マージ後、Joi は依然として `name` を要求します。名前を空にすると `ValidationError` で失敗します。
+- 不明な `featureCodes` は `409`（`check_list_invalid_feature`）です。
+- マージ後の `countries` の外にあるフィーチャーは、世界向けであるか `countries` が空でない限り `409`（`check_list_feature_country_mismatch`）です。
+- 更新はクレジットを消費しません。保存したコードの実行はカタログ呼び出しです。SmartBatch は別製品です。
+- 製品の手順: [Check List](/verifik-ja/check-list)。

@@ -1,0 +1,71 @@
+---
+id: check-list-api-companion
+title: Check List API ガイド
+description: GET、POST、PUT、DELETE /v2/check-lists で Check List を保存・取得する
+slug: /check-list/api-companion
+---
+
+# Check List API ガイド
+
+Smart-Agent UI が保存するのと同じプレイブックを **バックエンド** に置くときはこのページを使います。製品の手順は [Check List](/verifik-ja/check-list) を見てください。
+
+Check List の CRUD は照会を**実行せず**、クレジットも**消費しません**。サービスの実行は通常のカタログ呼び出しです（SmartCheck や Postman と同じ URL）。
+
+## 認証
+
+すべてのルートに **クライアント JWT**（`Authorization: Bearer …`）が必要です。`clientId` のないトークンは `403`（`Client context required`）です。リストはそのクライアントに限定されます。
+
+## エンドポイント
+
+| メソッド | パス | 用途 |
+| --- | --- | --- |
+| `GET` | `/v2/check-lists` | [チェックリスト一覧](/verifik-ja/check-list/list-all-check-lists) |
+| `POST` | `/v2/check-lists` | [チェックリストを作成](/verifik-ja/check-list/create-a-check-list) |
+| `GET` | `/v2/check-lists/{id}` | [チェックリストを取得](/verifik-ja/check-list/retrieve-a-check-list) |
+| `PUT` | `/v2/check-lists/{id}` | [チェックリストを更新](/verifik-ja/check-list/update-a-check-list) |
+| `DELETE` | `/v2/check-lists/{id}` | [チェックリストを削除](/verifik-ja/check-list/delete-a-check-list) |
+
+一覧のクエリ: `page`、`perPage`（または `limit`）、名前検索の `search`（または `text`）。`page` の有無による 2 つの `200` 応答の形は、[チェックリスト一覧](/verifik-ja/check-list/list-all-check-lists) を参照してください。
+
+## 本文フィールド
+
+| フィールド | 意味 |
+| --- | --- |
+| `name` | 作成時必須。最大 150 文字。 |
+| `countries` | 事業国名（例: `Colombia`）。 |
+| `domains` | 任意のタブ: `people`、`vehicles`、`businesses`。 |
+| `featureCodes` | リスト上のサービスの AppFeature `code`。 |
+| `status` | `draft`（既定）または `active`。整理用ラベルで、どちらも同じです。 |
+
+不明な `featureCodes` は失敗します。リストの国と一致しないサービスは失敗します。世界向けサービス、またはリストにまだ国がない場合は許可されます。
+
+## 作成例
+
+```
+POST https://api.verifik.co/v2/check-lists
+Authorization: Bearer <client-jwt>
+Content-Type: application/json
+```
+
+```json
+{
+  "name": "KYC Colombia",
+  "countries": ["Colombia"],
+  "domains": [],
+  "featureCodes": [],
+  "status": "draft"
+}
+```
+
+応答は `{ "data": { …checklist } }` です。`data._id` を保存してください。サービスを追加したら、同じ id に新しい `featureCodes` で `PUT` します。
+
+## 保存したサービスを実行する
+
+「チェックリスト実行」エンドポイントは**ありません**。リストの各コードについて、SmartCheck と同じようにその機能のカタログ URL を呼び出します。クレジットはそれらの呼び出しにかかります。
+
+ファイルやキューで送るには [SmartBatch](/verifik-ja/smart-batch) を使います（国 + コード + 名前）。Check List はバッチを開始しません。
+
+## 関連
+
+- [Check List](/verifik-ja/check-list) — Smart-Agent の手順
+- [SmartBatch](/verifik-ja/smart-batch) — 保存したサービスをバッチ実行

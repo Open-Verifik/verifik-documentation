@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-09-10T01:03:25.535Z
+Generated: 2026-09-10T04:29:07.121Z
 
-- **Files scanned:** 510
-- **Unique endpoint URLs:** 221
-- **Duplicate URL groups (SEO / aliases):** 55
-- **Docs without `### Endpoint` block:** 212
+- **Files scanned:** 517
+- **Unique endpoint URLs:** 223
+- **Duplicate URL groups (SEO / aliases):** 57
+- **Docs without `### Endpoint` block:** 214
 
 ## Summary by priority (canonical primary path only)
 
@@ -13,7 +13,7 @@ Generated: 2026-09-10T01:03:25.535Z
 | --- | ---: | --- |
 | P0 | 25 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 172 | identity, biometrics, resources, etc. |
+| P2 | 174 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -41,6 +41,13 @@ Generated: 2026-09-10T01:03:25.535Z
 - `v2/biometric-validations/validate`
   - `resources/app-logins/validate-an-app-login-biometric-validation.mdx`
   - `resources/biometric-validations/validate-an-app-login-biometric-validation.mdx`
+- `v2/check-lists`
+  - `check-list/create-a-check-list.mdx`
+  - `check-list/list-all-check-lists.mdx`
+- `v2/check-lists/{id}`
+  - `check-list/delete-a-check-list.mdx`
+  - `check-list/retrieve-a-check-list.mdx`
+  - `check-list/update-a-check-list.mdx`
 - `v2/clients/me`
   - `accounts/clients/account-information.mdx`
   - `clients/account-information.md`
@@ -258,6 +265,8 @@ Generated: 2026-09-10T01:03:25.535Z
 | P2 | `v2/ca/company` | `business-validation/canada.mdx` |
 | P2 | `v2/ca/ontario/driver-license` | `driver-validation/ontario-driver-license.md` |
 | P1 | `v2/ca/ontario/plate` | `vehicle-validation/canada/ontario-plate.mdx` |
+| P2 | `v2/check-lists` | `check-list/create-a-check-list.mdx` |
+| P2 | `v2/check-lists/{id}` | `check-list/delete-a-check-list.mdx` |
 | P2 | `v2/cl/cedula` | `identity/chile.mdx` |
 | P2 | `v2/cl/company` | `business-validation/chilean.mdx` |
 | P2 | `v2/cl/driver-license` | `driver-validation/chile-driver-license.mdx` |
@@ -456,6 +465,8 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `business-validation/business-verification.mdx`
 - `business-validation/chile.mdx`
 - `business-validation/colombia.mdx`
+- `check-list/check-list-api-companion.mdx`
+- `check-list/check-list.mdx`
 - `compensar/COMPENSAR_API_REFERENCE.md`
 - `compensar/COMPENSAR_COMPLIANCE_MATRIX.md`
 - `compensar/COMPENSAR_EXECUTIVE_SUMMARY.md`
@@ -613,7 +624,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `smartenroll/smartenroll-admin-kyc-review.md`
 - `smartenroll/smartenroll-api-companion.md`
 - `smartenroll/smartenroll-kyc-flow.md`
-- `smartenroll/smartenroll-resume.md`
+- `smartenroll/smartenroll-resume.mdx`
 - `smartenroll/smartenroll.md`
 - `vehicle-validation.mdx`
 - `vehicle-validation/chile/driver-license.md`

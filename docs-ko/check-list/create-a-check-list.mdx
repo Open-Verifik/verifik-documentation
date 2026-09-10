@@ -1,0 +1,237 @@
+---
+id: create-a-check-list
+title: 체크리스트 만들기
+description: 이름, 국가, 선택적 서비스로 Check List를 만듭니다
+slug: /check-list/create-a-check-list
+keywords:
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - api.verifik.co/v2/check-lists
+  - 'https://api.verifik.co/v2/check-lists'
+  - POST v2/check-lists
+  - POST /v2/check-lists
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+인증된 클라이언트에 Check List를 만듭니다. `name`은 필수입니다. 국가, 도메인, feature 코드는 생성 시 선택 사항입니다. 서비스는 나중에 [체크리스트 수정](/verifik-ko/check-list/update-a-check-list)으로 추가할 수 있습니다.
+
+목록을 저장해도 조회가 실행되지 않으며 크레딧이 차감되지 않습니다. Smart-Agent에서는 생성 후 대시보드로 돌아갑니다. 이 API는 새 문서를 즉시 반환합니다.
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/check-lists
+```
+
+JWT의 클라이언트가 소유한 목록을 만듭니다. 응답 `data` 객체에 `_id`가 포함됩니다. 이후 GET, PUT, DELETE에 사용하려면 저장하세요. 기본 `status`는 `draft`입니다.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+토큰은 **클라이언트 JWT**여야 합니다. `clientId`가 없는 토큰은 `403`을 반환합니다.
+
+### Body
+
+| Name           | Type     | Required | Description                                                                 |
+| -------------- | -------- | -------- | --------------------------------------------------------------------------- |
+| `name`         | string   | Yes      | 표시 이름. 앞뒤 공백 제거, 1–150자.                                    |
+| `countries`    | string[] | No       | 운영 국가 이름 (예: `Colombia`). 중복은 제거됩니다. 기본값 `[]`. |
+| `domains`      | string[] | No       | 선택 탭: `people`, `vehicles`, `businesses`. 기본값 `[]`.            |
+| `featureCodes` | string[] | No       | 목록에 저장할 AppFeature `code` 값. 기본값 `[]`.                 |
+| `status`       | string   | No       | `draft`(기본) 또는 `active`. 정리용 라벨이며 동작은 같습니다.   |
+
+알 수 없는 `featureCodes`는 실패합니다. 서비스의 국가가 `countries`와 맞지 않으면 실패합니다. 다만 해당 서비스가 전 세계이거나 `countries`가 비어 있으면 허용됩니다.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/check-lists", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+        body: JSON.stringify({
+            name: "KYC Colombia",
+            countries: ["Colombia"],
+            domains: [],
+            featureCodes: [],
+            status: "draft",
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/check-lists");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "KYC Colombia",
+    "countries" => ["Colombia"],
+    "domains" => [],
+    "featureCodes" => [],
+    "status" => "draft"
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+echo curl_exec($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/check-lists"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "name": "KYC Colombia",
+    "countries": ["Colombia"],
+    "domains": [],
+    "featureCodes": [],
+    "status": "draft",
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    body, _ := json.Marshal(map[string]interface{}{
+        "name":         "KYC Colombia",
+        "countries":    []string{"Colombia"},
+        "domains":      []string{},
+        "featureCodes": []string{},
+        "status":       "draft",
+    })
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/check-lists", bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "6aa224c87034a338385c28c0",
+        "client": "507f1f77bcf86cd799439013",
+        "name": "KYC Colombia",
+        "countries": ["Colombia"],
+        "domains": [],
+        "featureCodes": [],
+        "status": "draft",
+        "createdAt": "2026-09-10T03:32:00.000Z",
+        "updatedAt": "2026-09-10T03:32:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "\"name\" is required",
+    "code": "ValidationError"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-feature" label="409 invalid feature">
+
+```json
+{
+    "message": "check_list_invalid_feature",
+    "code": "check_list_invalid_feature"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-country" label="409 country mismatch">
+
+```json
+{
+    "message": "check_list_feature_country_mismatch",
+    "code": "check_list_feature_country_mismatch"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `name`만 필수입니다. 빈 목록을 만든 뒤 나중에 `featureCodes`를 추가할 수 있습니다.
+- 국가는 보낸 그대로 저장됩니다 (예: `Colombia`). ISO 코드가 아닙니다.
+- `status`는 서버 동작을 바꾸지 않습니다. 초안과 활성 목록 모두 동일하게 동작합니다.
+- 알 수 없는 `domains` 값은 검증에 실패합니다. 허용 값: `people`, `vehicles`, `businesses`.
+- 목록 생성은 크레딧을 쓰지 않습니다. 저장된 서비스를 실행하는 것은 일반 카탈로그 호출입니다.
+- 체크리스트 실행 엔드포인트는 없습니다. [Check List](/verifik-ko/check-list)와 [SmartBatch](/verifik-ko/smart-batch)를 보세요.

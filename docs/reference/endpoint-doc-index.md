@@ -576,6 +576,25 @@ keywords:
   - "https://api.verifik.co/v2/ca/ontario/plate"
   - "GET v2/ca/ontario/plate"
   - "GET /v2/ca/ontario/plate"
+  - "v2/check-lists"
+  - "/v2/check-lists"
+  - "v2 check-lists"
+  - "check-lists"
+  - "/check-lists"
+  - "api/check-lists"
+  - "/api/check-lists"
+  - "api check-lists"
+  - "api.verifik.co/v2/check-lists"
+  - "https://api.verifik.co/v2/check-lists"
+  - "GET v2/check-lists"
+  - "GET /v2/check-lists"
+  - "v2/check-lists/{id}"
+  - "/v2/check-lists/{id}"
+  - "v2 check-lists {id}"
+  - "api.verifik.co/v2/check-lists/{id}"
+  - "https://api.verifik.co/v2/check-lists/{id}"
+  - "GET v2/check-lists/{id}"
+  - "GET /v2/check-lists/{id}"
   - "v2/cl/cedula"
   - "/v2/cl/cedula"
   - "v2 cl cedula"
@@ -2759,12 +2778,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (221 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (223 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-09-10T01:03:25.609Z_
+_Last regenerated: 2026-09-10T04:29:07.182Z_
 
 ## Argentina
 
@@ -3023,6 +3042,13 @@ _Last regenerated: 2026-09-10T01:03:25.609Z_
 | `v2/ca/company` | v2 ca company ca/company /ca/company api/ca/company /api/ca/company api ca company api.verifik.co/v2/ca/company https://api.verifik.co/v2/ca/company GET v2/ca/company GET /v2/ca/company | [Canadian Business Verification](/business-validation/canada) |
 | `v2/ca/ontario/driver-license` | v2 ca ontario driver-license ca/ontario/driver-license /ca/ontario/driver-license api/ca/ontario/driver-license /api/ca/ontario/driver-license api ca ontario driver-license ontario/driver-license /ontario/driver-license api.verifik.co/v2/ca/ontario/driver-license https://api.verifik.co/v2/ca/ontario/driver-license GET v2/ca/ontario/driver-license GET /v2/ca/ontario/driver-license | [Ontario Driver License](/driver-validation/ontario-driver-license) |
 | `v2/ca/ontario/plate` | v2 ca ontario plate ca/ontario/plate /ca/ontario/plate api/ca/ontario/plate /api/ca/ontario/plate api ca ontario plate ontario/plate /ontario/plate api.verifik.co/v2/ca/ontario/plate https://api.verifik.co/v2/ca/ontario/plate GET v2/ca/ontario/plate GET /v2/ca/ontario/plate | [\U0001F1E8\U0001F1E6 Canada - Ontario Plate Expiry](/vehicle-validation/canada/ontario-plate) |
+
+## Check Lists
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/check-lists` | v2 check-lists check-lists /check-lists api/check-lists /api/check-lists api check-lists api.verifik.co/v2/check-lists https://api.verifik.co/v2/check-lists GET v2/check-lists GET /v2/check-lists | [Create a checklist](/check-list/create-a-check-list) |
+| `v2/check-lists/{id}` | v2/check-lists /v2/check-lists v2 check-lists check-lists /check-lists api/check-lists /api/check-lists api check-lists | [Delete a checklist](/check-list/delete-a-check-list) |
 
 ## Clients
 

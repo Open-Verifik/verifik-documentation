@@ -1,0 +1,237 @@
+---
+id: create-a-check-list
+title: 创建清单
+description: 用名称、国家和可选服务创建一份 Check List
+slug: /check-list/create-a-check-list
+keywords:
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - api.verifik.co/v2/check-lists
+  - 'https://api.verifik.co/v2/check-lists'
+  - POST v2/check-lists
+  - POST /v2/check-lists
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+在已认证客户上创建一份 Check List。`name` 为必填。国家、领域和功能代码在创建时可选 — 之后可用 [更新清单](/verifik-zh/check-list/update-a-check-list) 添加服务。
+
+保存列表不会执行查询，也不会消耗积分。在 Smart-Agent 中，创建后会回到仪表盘；此 API 会立即返回新文档。
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/check-lists
+```
+
+创建由 JWT 上客户拥有的列表。响应的 `data` 对象包含 `_id` — 请保存它，供之后的 GET、PUT 和 DELETE 使用。默认 `status` 为 `draft`。
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+令牌必须是**客户 JWT**。没有 `clientId` 的令牌返回 `403`。
+
+### Body
+
+| Name           | Type     | Required | Description                                                                 |
+| -------------- | -------- | -------- | --------------------------------------------------------------------------- |
+| `name`         | string   | Yes      | 显示名称。去首尾空格，1–150 个字符。                                    |
+| `countries`    | string[] | No       | 你运营的国家名称（例如 `Colombia`）。重复项会被去掉。默认 `[]`。 |
+| `domains`      | string[] | No       | 可选页签：`people`、`vehicles`、`businesses`。默认 `[]`。            |
+| `featureCodes` | string[] | No       | 要保存在列表上的 AppFeature `code` 值。默认 `[]`。                 |
+| `status`       | string   | No       | `draft`（默认）或 `active`。仅整理标签 — 两者行为相同。   |
+
+未知的 `featureCodes` 会失败。国家与 `countries` 不符的服务会失败，除非该服务是全球范围或 `countries` 为空。
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/check-lists", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+        body: JSON.stringify({
+            name: "KYC Colombia",
+            countries: ["Colombia"],
+            domains: [],
+            featureCodes: [],
+            status: "draft",
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/check-lists");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "KYC Colombia",
+    "countries" => ["Colombia"],
+    "domains" => [],
+    "featureCodes" => [],
+    "status" => "draft"
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+echo curl_exec($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/check-lists"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "name": "KYC Colombia",
+    "countries": ["Colombia"],
+    "domains": [],
+    "featureCodes": [],
+    "status": "draft",
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    body, _ := json.Marshal(map[string]interface{}{
+        "name":         "KYC Colombia",
+        "countries":    []string{"Colombia"},
+        "domains":      []string{},
+        "featureCodes": []string{},
+        "status":       "draft",
+    })
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/check-lists", bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "6aa224c87034a338385c28c0",
+        "client": "507f1f77bcf86cd799439013",
+        "name": "KYC Colombia",
+        "countries": ["Colombia"],
+        "domains": [],
+        "featureCodes": [],
+        "status": "draft",
+        "createdAt": "2026-09-10T03:32:00.000Z",
+        "updatedAt": "2026-09-10T03:32:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "\"name\" is required",
+    "code": "ValidationError"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-feature" label="409 invalid feature">
+
+```json
+{
+    "message": "check_list_invalid_feature",
+    "code": "check_list_invalid_feature"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-country" label="409 country mismatch">
+
+```json
+{
+    "message": "check_list_feature_country_mismatch",
+    "code": "check_list_feature_country_mismatch"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `name` 是唯一必填字段。你可以创建空列表，稍后再添加 `featureCodes`。
+- 国家按你发送的原文存储（例如 `Colombia`）。它们不是 ISO 代码。
+- `status` 不会改变服务器行为。草稿和启用的列表都能用。
+- 未知的 `domains` 值会校验失败。允许的值：`people`、`vehicles`、`businesses`。
+- 创建列表不消耗积分。执行已保存的服务是普通的目录调用。
+- 没有“执行清单”接口。见 [Check List](/verifik-zh/check-list) 和 [SmartBatch](/verifik-zh/smart-batch)。

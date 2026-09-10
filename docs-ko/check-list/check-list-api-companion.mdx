@@ -1,0 +1,71 @@
+---
+id: check-list-api-companion
+title: Check List API 가이드
+description: GET, POST, PUT, DELETE /v2/check-lists로 Check List를 저장하고 불러오기
+slug: /check-list/api-companion
+---
+
+# Check List API 가이드
+
+Smart-Agent UI가 저장하는 것과 같은 플레이북을 **백엔드**에 둘 때 이 페이지를 사용하세요. 제품 안내는 [Check List](/verifik-ko/check-list)를 보세요.
+
+Check List CRUD는 조회를 **실행하지 않으며** 크레딧을 **쓰지 않습니다**. 서비스를 실행하는 것은 일반 카탈로그 호출입니다 (SmartCheck 또는 Postman과 같은 URL).
+
+## 인증
+
+모든 경로에 **클라이언트 JWT** (`Authorization: Bearer …`)가 필요합니다. `clientId`가 없는 토큰은 `403` (`Client context required`)입니다. 목록은 그 클라이언트에 한정됩니다.
+
+## 엔드포인트
+
+| 메서드 | 경로 | 용도 |
+| --- | --- | --- |
+| `GET` | `/v2/check-lists` | [체크리스트 목록](/verifik-ko/check-list/list-all-check-lists) |
+| `POST` | `/v2/check-lists` | [체크리스트 만들기](/verifik-ko/check-list/create-a-check-list) |
+| `GET` | `/v2/check-lists/{id}` | [체크리스트 조회](/verifik-ko/check-list/retrieve-a-check-list) |
+| `PUT` | `/v2/check-lists/{id}` | [체크리스트 수정](/verifik-ko/check-list/update-a-check-list) |
+| `DELETE` | `/v2/check-lists/{id}` | [체크리스트 삭제](/verifik-ko/check-list/delete-a-check-list) |
+
+목록 쿼리: `page`, `perPage`(또는 `limit`), 이름 검색용 `search`(또는 `text`). `page`가 있을 때와 없을 때의 두 가지 `200` 응답 형태는 [체크리스트 목록](/verifik-ko/check-list/list-all-check-lists)을 보세요.
+
+## 본문 필드
+
+| 필드 | 의미 |
+| --- | --- |
+| `name` | 생성 시 필수. 최대 150자. |
+| `countries` | 운영 국가 이름 (예: `Colombia`). |
+| `domains` | 선택 탭: `people`, `vehicles`, `businesses`. |
+| `featureCodes` | 목록에 있는 서비스의 AppFeature `code`. |
+| `status` | `draft`(기본) 또는 `active`. 정리용 라벨이며 동작은 같습니다. |
+
+알 수 없는 `featureCodes`는 실패합니다. 목록 국가와 맞지 않는 서비스는 실패합니다. 전 세계 서비스이거나 목록에 국가가 아직 없으면 허용됩니다.
+
+## 생성 예
+
+```
+POST https://api.verifik.co/v2/check-lists
+Authorization: Bearer <client-jwt>
+Content-Type: application/json
+```
+
+```json
+{
+  "name": "KYC Colombia",
+  "countries": ["Colombia"],
+  "domains": [],
+  "featureCodes": [],
+  "status": "draft"
+}
+```
+
+응답은 `{ "data": { …checklist } }`입니다. `data._id`를 저장하세요. 서비스를 추가하면 같은 id에 새 `featureCodes`로 `PUT`합니다.
+
+## 저장한 서비스 실행
+
+“체크리스트 실행” 엔드포인트는 **없습니다**. 목록의 각 코드에 대해 SmartCheck와 같이 해당 기능의 카탈로그 URL을 호출하세요. 크레딧은 그 호출에 적용됩니다.
+
+파일이나 큐로 보내려면 [SmartBatch](/verifik-ko/smart-batch)를 사용하세요 (국가 + 코드 + 이름). Check List가 배치를 시작하지는 않습니다.
+
+## 관련
+
+- [Check List](/verifik-ko/check-list) — Smart-Agent 안내
+- [SmartBatch](/verifik-ko/smart-batch) — 저장한 서비스를 배치로 실행

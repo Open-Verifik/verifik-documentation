@@ -154,5 +154,6 @@ SmartBatch は、すでに使っている SmartCheck カタログの上にあり
 
 ## 関連
 
+- [Check List](/verifik-ja/check-list) — バッチする前にカタログサービスの組み合わせを保存
 - [エンドポイントをキューとして呼び出す (async)](/verifik-ja/smart-batch/async-queue)
 - [ペルー — 市民 (DNI)](/verifik-ja/identity/peru)

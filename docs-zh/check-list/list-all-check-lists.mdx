@@ -1,0 +1,205 @@
+---
+id: list-all-check-lists
+title: 列出清单
+description: 列出客户账号上已保存的 Check List，最新的在前
+slug: /check-list/list-all-check-lists
+keywords:
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - api.verifik.co/v2/check-lists
+  - 'https://api.verifik.co/v2/check-lists'
+  - GET v2/check-lists
+  - GET /v2/check-lists
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+列出已认证客户上保存的 Check List。结果只属于该客户，并按 `updatedAt` 降序排列（最新的在前）。此调用不会执行查询，也不会消耗积分。
+
+使用 `search`（或 `text`）按名称筛选。需要分页元数据时发送 `page`。省略 `page` 时，匹配的数组放在 `data` 中，不包含 `total` / `pages` 字段。
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/check-lists
+```
+
+返回该客户已保存的列表。每条包含 `name`、`countries`、`domains`、`featureCodes` 和 `status`。当带有 `page` 时，响应还会包含 `total`、`limit`、`page` 和 `pages`。
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+令牌必须是**客户 JWT**。没有 `clientId` 的令牌返回 `403`。
+
+### Parameters
+
+| Name      | Type    | Required | Description                                                                 |
+| --------- | ------- | -------- | --------------------------------------------------------------------------- |
+| `page`    | integer | No       | 设置后，API 会分页并返回 `total`、`limit`、`page` 和 `pages`。省略则只返回匹配的数组。 |
+| `perPage` | integer | No       | 每页条数。`limit` 的别名。即使省略 `page` 也会生效。           |
+| `limit`   | integer | No       | 每页条数。`perPage` 的别名。                                              |
+| `search`  | string  | No       | 不区分大小写的名称筛选。                                               |
+| `text`    | string  | No       | `search` 的别名。                                                          |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/check-lists"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+params = {"page": 1, "perPage": 20, "search": "Colombia"}
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia", nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200-page" label="200 with page">
+
+```json
+{
+    "data": [
+        {
+            "_id": "6aa224c87034a338385c28c0",
+            "client": "507f1f77bcf86cd799439013",
+            "name": "KYC Colombia",
+            "countries": ["Colombia", "Chile"],
+            "domains": ["people"],
+            "featureCodes": ["co-cedula"],
+            "status": "draft",
+            "createdAt": "2026-09-10T03:32:00.000Z",
+            "updatedAt": "2026-09-10T03:33:00.000Z"
+        }
+    ],
+    "total": 1,
+    "limit": 20,
+    "page": 1,
+    "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200" label="200 without page">
+
+```json
+{
+    "data": [
+        {
+            "_id": "6aa224c87034a338385c28c0",
+            "client": "507f1f77bcf86cd799439013",
+            "name": "KYC Colombia",
+            "countries": ["Colombia", "Chile"],
+            "domains": ["people"],
+            "featureCodes": ["co-cedula"],
+            "status": "draft",
+            "createdAt": "2026-09-10T03:32:00.000Z",
+            "updatedAt": "2026-09-10T03:33:00.000Z"
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 列表属于 JWT 上的客户。你无法读取其他客户的列表。
+- 排序始终按最新的 `updatedAt` 在前。
+- `search` 和 `text` 做同样的不区分大小写名称匹配。
+- `perPage` 和 `limit` 是别名。如果发送 `limit` 而不发送 `page`，数组仍会被截断。
+- 此接口不消耗积分，也不会执行已保存的服务。
+- 产品说明：[Check List](/verifik-zh/check-list)。创建：[创建清单](/verifik-zh/check-list/create-a-check-list)。

@@ -1,0 +1,199 @@
+---
+id: listar-check-lists
+title: Listar checklists
+description: Lista las Check Lists guardadas en tu cuenta de cliente, las más recientes primero
+slug: /check-list/listar-check-lists
+keywords:
+  - v2/check-lists
+  - /v2/check-lists
+  - GET v2/check-lists
+  - GET /v2/check-lists
+  - api.verifik.co/v2/check-lists
+  - 'https://api.verifik.co/v2/check-lists'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Lista las Check Lists guardadas en el cliente autenticado. Los resultados pertenecen a ese cliente y se ordenan por `updatedAt` descendente (la más reciente primero). Esta llamada no ejecuta consultas y no gasta créditos.
+
+Usa `search` (o `text`) para filtrar por nombre. Envía `page` cuando quieras metadatos de paginación. Omite `page` para recibir el arreglo coincidente en `data` sin campos `total` / `pages`.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/check-lists
+```
+
+Devuelve las listas guardadas del cliente. Cada ítem incluye `name`, `countries`, `domains`, `featureCodes` y `status`. Cuando viene `page`, la respuesta también incluye `total`, `limit`, `page` y `pages`.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+El token debe ser un **JWT de cliente**. Un token sin `clientId` responde `403`.
+
+### Parameters
+
+| Name      | Type    | Required | Description                                                                 |
+| --------- | ------- | -------- | --------------------------------------------------------------------------- |
+| `page`    | integer | No       | Si se envía, la API pagina y devuelve `total`, `limit`, `page` y `pages`. Omítelo para recibir solo el arreglo coincidente. |
+| `perPage` | integer | No       | Tamaño de página. Alias de `limit`. Se aplica aunque no envíes `page`.      |
+| `limit`   | integer | No       | Tamaño de página. Alias de `perPage`.                                       |
+| `search`  | string  | No       | Filtro de nombre, sin distinguir mayúsculas.                                |
+| `text`    | string  | No       | Alias de `search`.                                                          |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/check-lists"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+params = {"page": 1, "perPage": 20, "search": "Colombia"}
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia", nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200-page" label="200 with page">
+
+```json
+{
+    "data": [
+        {
+            "_id": "6aa224c87034a338385c28c0",
+            "client": "507f1f77bcf86cd799439013",
+            "name": "KYC Colombia",
+            "countries": ["Colombia", "Chile"],
+            "domains": ["people"],
+            "featureCodes": ["co-cedula"],
+            "status": "draft",
+            "createdAt": "2026-09-10T03:32:00.000Z",
+            "updatedAt": "2026-09-10T03:33:00.000Z"
+        }
+    ],
+    "total": 1,
+    "limit": 20,
+    "page": 1,
+    "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200" label="200 without page">
+
+```json
+{
+    "data": [
+        {
+            "_id": "6aa224c87034a338385c28c0",
+            "client": "507f1f77bcf86cd799439013",
+            "name": "KYC Colombia",
+            "countries": ["Colombia", "Chile"],
+            "domains": ["people"],
+            "featureCodes": ["co-cedula"],
+            "status": "draft",
+            "createdAt": "2026-09-10T03:32:00.000Z",
+            "updatedAt": "2026-09-10T03:33:00.000Z"
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Las listas pertenecen al cliente del JWT. No puedes leer las de otro cliente.
+- El orden es siempre el `updatedAt` más reciente primero.
+- `search` y `text` hacen el mismo filtro de nombre, sin distinguir mayúsculas.
+- `perPage` y `limit` son alias. Si envías `limit` sin `page`, el arreglo igual se recorta.
+- Este endpoint no gasta créditos y no ejecuta los servicios guardados.
+- Recorrido de producto: [Check List](/verifik-es/check-list). Crear: [Crear una checklist](/verifik-es/check-list/crear-un-check-list).

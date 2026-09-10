@@ -15,7 +15,7 @@ import { Card } from '@site/src/components/Card';
 
 **Verificación Inteligente** es una solución API integral diseñada para facilitar una amplia gama de procesos de verificación. Con un enfoque en datos de América Latina, esta plataforma permite a las empresas validar identidades, realizar verificaciones de antecedentes, verificar información de vehículos, validar licencias profesionales y certificados, verificar detalles comerciales y mucho más. Verificación Inteligente agrega múltiples fuentes, proporcionando información confiable y precisa para ayudar a las empresas a tomar decisiones informadas.
 
-¿Necesitas consultas en segundo plano? Usa [SmartBatch](/verifik-es/smart-batch) (Async en [ai.verifik.co](https://ai.verifik.co) o `type=queue` en [async.verifik.co](https://async.verifik.co)).
+¿Necesitas consultas en segundo plano? Usa [SmartBatch](/verifik-es/smart-batch) (Async en [ai.verifik.co](https://ai.verifik.co) o `type=queue` en [async.verifik.co](https://async.verifik.co)). Para guardar una mezcla de servicios del catálogo antes de lotearlos o llamarlos, usa [Check List](/verifik-es/check-list).
 
 ### **Características Principales**
 

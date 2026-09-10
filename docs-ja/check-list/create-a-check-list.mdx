@@ -1,0 +1,237 @@
+---
+id: create-a-check-list
+title: チェックリストを作成
+description: 名前、国、任意のサービスで Check List を作成する
+slug: /check-list/create-a-check-list
+keywords:
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - api.verifik.co/v2/check-lists
+  - 'https://api.verifik.co/v2/check-lists'
+  - POST v2/check-lists
+  - POST /v2/check-lists
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+認証済みクライアントに Check List を作成します。`name` は必須です。国、ドメイン、フィーチャーコードは作成時は任意です。あとから [チェックリストを更新](/verifik-ja/check-list/update-a-check-list) でサービスを追加できます。
+
+リストの保存は照会を実行せず、クレジットも消費しません。Smart-Agent では作成後にダッシュボードに戻ります。この API は新しいドキュメントをすぐ返します。
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/check-lists
+```
+
+JWT 上のクライアントが所有するリストを作成します。応答の `data` オブジェクトには `_id` が含まれます。後の GET、PUT、DELETE のために保存してください。既定の `status` は `draft` です。
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+トークンは **クライアント JWT** である必要があります。`clientId` のないトークンは `403` を返します。
+
+### Body
+
+| Name           | Type     | Required | Description                                                                 |
+| -------------- | -------- | -------- | --------------------------------------------------------------------------- |
+| `name`         | string   | Yes      | 表示名。トリム済み、1〜150 文字。                                    |
+| `countries`    | string[] | No       | 事業国名（例: `Colombia`）。重複は削除されます。既定は `[]`。 |
+| `domains`      | string[] | No       | 任意のタブ: `people`、`vehicles`、`businesses`。既定は `[]`。            |
+| `featureCodes` | string[] | No       | リストに保存する AppFeature の `code`。既定は `[]`。                 |
+| `status`       | string   | No       | `draft`（既定）または `active`。整理用ラベルのみで、どちらも同じです。   |
+
+不明な `featureCodes` は失敗します。国が `countries` と一致しないサービスは、そのサービスが世界向けであるか `countries` が空でない限り失敗します。
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/check-lists", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+        body: JSON.stringify({
+            name: "KYC Colombia",
+            countries: ["Colombia"],
+            domains: [],
+            featureCodes: [],
+            status: "draft",
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/check-lists");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "KYC Colombia",
+    "countries" => ["Colombia"],
+    "domains" => [],
+    "featureCodes" => [],
+    "status" => "draft"
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+echo curl_exec($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/check-lists"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "name": "KYC Colombia",
+    "countries": ["Colombia"],
+    "domains": [],
+    "featureCodes": [],
+    "status": "draft",
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    body, _ := json.Marshal(map[string]interface{}{
+        "name":         "KYC Colombia",
+        "countries":    []string{"Colombia"},
+        "domains":      []string{},
+        "featureCodes": []string{},
+        "status":       "draft",
+    })
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/check-lists", bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "6aa224c87034a338385c28c0",
+        "client": "507f1f77bcf86cd799439013",
+        "name": "KYC Colombia",
+        "countries": ["Colombia"],
+        "domains": [],
+        "featureCodes": [],
+        "status": "draft",
+        "createdAt": "2026-09-10T03:32:00.000Z",
+        "updatedAt": "2026-09-10T03:32:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "\"name\" is required",
+    "code": "ValidationError"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-feature" label="409 invalid feature">
+
+```json
+{
+    "message": "check_list_invalid_feature",
+    "code": "check_list_invalid_feature"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-country" label="409 country mismatch">
+
+```json
+{
+    "message": "check_list_feature_country_mismatch",
+    "code": "check_list_feature_country_mismatch"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 必須フィールドは `name` だけです。空のリストを作成して、あとから `featureCodes` を追加できます。
+- 国は送ったとおりに保存されます（例: `Colombia`）。ISO コードではありません。
+- `status` はサーバーの動作を変えません。下書きも有効も同じように動きます。
+- 不明な `domains` の値はバリデーションに失敗します。許可される値: `people`、`vehicles`、`businesses`。
+- リストの作成はクレジットを消費しません。保存したサービスの実行は通常のカタログ呼び出しです。
+- チェックリスト実行エンドポイントはありません。[Check List](/verifik-ja/check-list) と [SmartBatch](/verifik-ja/smart-batch) を見てください。
