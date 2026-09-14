@@ -1,6 +1,6 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-09-10T04:29:07.121Z
+Generated: 2026-09-10T22:24:57.281Z
 
 - **Files scanned:** 517
 - **Unique endpoint URLs:** 223
@@ -322,11 +322,11 @@ Generated: 2026-09-10T04:29:07.121Z
 | P2 | `v2/co/rues/complete` | `business-validation/colombia-rues-complete-v2.mdx` |
 | P2 | `v2/co/rui` | `background-check/colombia-rui.mdx` |
 | P0 | `v2/co/runt/conductor` | `vehicle-validation/colombia/driver-s-license.mdx` |
+| P0 | `v2/co/runt/propietarios` | `vehicle-validation/colombia/runt-vehicle-owners.mdx` |
 | P0 | `v2/co/runt/vehicle-by-plate` | `vehicle-validation/colombia/runt-vehicle-by-plate.mdx` |
 | P0 | `v2/co/runt/vehicle-by-plate-simplified` | `vehicle-validation/colombia/runt-vehicle-by-plate-simplified.mdx` |
 | P0 | `v2/co/runt/vehicle-by-vin` | `vehicle-validation/colombia/runt-vehicle-by-vin.mdx` |
 | P0 | `v2/co/runt/vehiculo` | `vehicle-validation/colombia/runt-vehicle-soat-rtm.md` |
-| P0 | `v2/co/runt/vehiculo/owners` | `vehicle-validation/colombia/runt-vehicle-owners.mdx` |
 | P2 | `v2/co/sena/certificados` | `certificates/sena-certificates.mdx` |
 | P2 | `v2/co/sigep/name` | `legal/sigep-public-servant-by-name.mdx` |
 | P2 | `v2/co/sigep/number` | `legal/sigep-public-servant-by-number.mdx` |
