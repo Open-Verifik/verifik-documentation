@@ -44,6 +44,8 @@ const COUNTRY_SEGMENTS = new Map([
 	["in", "India"],
 ]);
 
+const TOPIC_LABELS = new Map([["onu", "UN"]]);
+
 const readFrontMatter = (absPath) => {
 	if (!fs.existsSync(absPath)) return {};
 	const raw = fs.readFileSync(absPath, "utf8");
@@ -70,7 +72,8 @@ const groupFor = (endpointUrl) => {
 		const seg = parts[1].toLowerCase();
 		const country = COUNTRY_SEGMENTS.get(seg);
 		if (country) return { key: `country-${seg}`, label: country, sort: `1-${seg}` };
-		return { key: `topic-${seg}`, label: titleCase(seg.replace(/-/g, " ")), sort: `2-${seg}` };
+		const topicLabel = TOPIC_LABELS.get(seg) || titleCase(seg.replace(/-/g, " "));
+		return { key: `topic-${seg}`, label: topicLabel, sort: `2-${seg}` };
 	}
 	if (parts[0] === "api") return { key: "api-zelf", label: "Zelf / API", sort: "3-api" };
 	return { key: parts[0], label: titleCase(parts[0]), sort: `4-${parts[0]}` };
