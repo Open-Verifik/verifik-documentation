@@ -1,0 +1,205 @@
+---
+id: list-all-check-lists
+title: 체크리스트 목록
+description: 클라이언트 계정에 저장된 Check List를 최신순으로 조회합니다
+slug: /check-list/list-all-check-lists
+keywords:
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - api.verifik.co/v2/check-lists
+  - 'https://api.verifik.co/v2/check-lists'
+  - GET v2/check-lists
+  - GET /v2/check-lists
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+인증된 클라이언트에 저장된 Check List를 조회합니다. 결과는 해당 클라이언트에 한정되며 `updatedAt` 내림차순(최신순)으로 정렬됩니다. 이 호출은 조회를 실행하지 않으며 크레딧을 쓰지 않습니다.
+
+`search`(또는 `text`)로 이름을 필터하세요. 페이지네이션 메타데이터가 필요하면 `page`를 보내세요. `page`를 생략하면 `data`에 일치하는 배열만 반환되며 `total` / `pages` 필드는 없습니다.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/check-lists
+```
+
+클라이언트의 저장된 목록을 반환합니다. 각 항목에는 `name`, `countries`, `domains`, `featureCodes`, `status`가 포함됩니다. `page`가 있으면 응답에 `total`, `limit`, `page`, `pages`도 포함됩니다.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+토큰은 **클라이언트 JWT**여야 합니다. `clientId`가 없는 토큰은 `403`을 반환합니다.
+
+### Parameters
+
+| Name      | Type    | Required | Description                                                                 |
+| --------- | ------- | -------- | --------------------------------------------------------------------------- |
+| `page`    | integer | No       | 설정하면 API가 페이지네이션을 적용하고 `total`, `limit`, `page`, `pages`를 반환합니다. 생략하면 일치하는 배열만 받습니다. |
+| `perPage` | integer | No       | 페이지 크기. `limit`의 별칭. `page`를 생략해도 적용됩니다.           |
+| `limit`   | integer | No       | 페이지 크기. `perPage`의 별칭.                                              |
+| `search`  | string  | No       | 대소문자를 구분하지 않는 이름 필터.                                               |
+| `text`    | string  | No       | `search`의 별칭.                                                          |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/check-lists"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+params = {"page": 1, "perPage": 20, "search": "Colombia"}
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia", nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200-page" label="200 with page">
+
+```json
+{
+    "data": [
+        {
+            "_id": "6aa224c87034a338385c28c0",
+            "client": "507f1f77bcf86cd799439013",
+            "name": "KYC Colombia",
+            "countries": ["Colombia", "Chile"],
+            "domains": ["people"],
+            "featureCodes": ["co-cedula"],
+            "status": "draft",
+            "createdAt": "2026-09-10T03:32:00.000Z",
+            "updatedAt": "2026-09-10T03:33:00.000Z"
+        }
+    ],
+    "total": 1,
+    "limit": 20,
+    "page": 1,
+    "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200" label="200 without page">
+
+```json
+{
+    "data": [
+        {
+            "_id": "6aa224c87034a338385c28c0",
+            "client": "507f1f77bcf86cd799439013",
+            "name": "KYC Colombia",
+            "countries": ["Colombia", "Chile"],
+            "domains": ["people"],
+            "featureCodes": ["co-cedula"],
+            "status": "draft",
+            "createdAt": "2026-09-10T03:32:00.000Z",
+            "updatedAt": "2026-09-10T03:33:00.000Z"
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 목록은 JWT의 클라이언트에 속합니다. 다른 클라이언트의 목록은 읽을 수 없습니다.
+- 정렬은 항상 최신 `updatedAt`이 먼저입니다.
+- `search`와 `text`는 동일한 대소문자 구분 없는 이름 일치입니다.
+- `perPage`와 `limit`는 별칭입니다. `page` 없이 `limit`만 보내도 배열은 제한됩니다.
+- 이 엔드포인트는 크레딧을 쓰지 않으며 저장된 서비스를 실행하지 않습니다.
+- 제품 안내: [Check List](/verifik-ko/check-list). 생성: [체크리스트 만들기](/verifik-ko/check-list/create-a-check-list).

@@ -1,0 +1,187 @@
+---
+id: delete-a-check-list
+title: 删除清单
+description: 删除你拥有的 Check List，并返回被删除的文档
+slug: /check-list/delete-a-check-list
+keywords:
+  - 'v2/check-lists/{id}'
+  - '/v2/check-lists/{id}'
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - 'v2 check-lists {id}'
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - 'api.verifik.co/v2/check-lists/{id}'
+  - 'https://api.verifik.co/v2/check-lists/{id}'
+  - 'DELETE v2/check-lists/{id}'
+  - 'DELETE /v2/check-lists/{id}'
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+删除你拥有的 Check List。API 在 `{ data }` 中返回被删除的文档。无效的 ObjectId、不存在的列表，或其他客户拥有的列表返回 `404`。
+
+删除不会执行查询，也不会消耗积分。使用过相同功能代码的目录历史和 SmartBatch 任务不会被移除。
+
+### Endpoint
+
+```
+DELETE https://api.verifik.co/v2/check-lists/{id}
+```
+
+从该客户的集合中移除列表，并返回被删除的文档。此调用之后，对同一 id 的 GET / PUT / DELETE 返回 `404`。
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+令牌必须是**客户 JWT**。没有 `clientId` 的令牌返回 `403`。
+
+### Parameters
+
+| Name | Type   | Required | Description                          |
+| ---- | ------ | -------- | ------------------------------------ |
+| `id` | string | Yes      | 创建或列表接口返回的 Check List ObjectId。 |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const id = "6aa224c87034a338385c28c0";
+    const res = await fetch(`https://api.verifik.co/v2/check-lists/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6aa224c87034a338385c28c0";
+$ch = curl_init("https://api.verifik.co/v2/check-lists/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+echo curl_exec($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+check_list_id = "6aa224c87034a338385c28c0"
+url = f"https://api.verifik.co/v2/check-lists/{check_list_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+r = requests.delete(url, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "6aa224c87034a338385c28c0"
+    req, _ := http.NewRequest("DELETE", "https://api.verifik.co/v2/check-lists/"+id, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "6aa224c87034a338385c28c0",
+        "client": "507f1f77bcf86cd799439013",
+        "name": "KYC Colombia",
+        "countries": ["Colombia", "Chile"],
+        "domains": ["people"],
+        "featureCodes": ["co-cedula"],
+        "status": "draft",
+        "createdAt": "2026-09-10T03:32:00.000Z",
+        "updatedAt": "2026-09-10T03:33:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "check_list_not_found",
+    "code": "check_list_not_found"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `200` 响应体是被删除的文档，不是空对象。
+- 无效的 ObjectId 和其他客户的列表都返回 `404`（`check_list_not_found`）。
+- 删除不消耗积分，也不会取消目录或 SmartBatch 工作。
+- 没有“执行清单”接口。见 [Check List](/verifik-zh/check-list) 和 [SmartBatch](/verifik-zh/smart-batch)。

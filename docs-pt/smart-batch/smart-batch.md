@@ -154,5 +154,6 @@ Quando a configuração é **Async**, os dois caminhos usam o mesmo worker em se
 
 ## Relacionado
 
+- [Check List](/verifik-pt/check-list) — salve um conjunto de serviços do catálogo antes de lotear
 - [Chamar endpoints como fila (async)](/verifik-pt/smart-batch/async-queue)
 - [Peru — Cidadão (DNI)](/verifik-pt/identity/peru)

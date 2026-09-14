@@ -629,6 +629,10 @@ Sí, el Flujo KYC de SmartEnroll está diseñado para funcionar tanto en escrito
 
 ---
 
+:::tip ¿Abandonó el flujo a mitad de camino?
+Los integradores no deben devolver al usuario al formulario de alta. Guarda el id del App Registration y genera una URL de continuación con [Reenviar enlace de registro de aplicación](/verifik-es/resources/registros-aplicacion/reenviar-enlace-registro-aplicacion). Ver [Reanudar un enrollment incompleto](/verifik-es/smartenroll/reanudar).
+:::
+
 :::tip Consejo Profesional
 Completa el proceso en una sesión para evitar tener que reiniciar. Asegúrate de tener todos los documentos requeridos y una buena conexión a internet antes de comenzar.
 :::

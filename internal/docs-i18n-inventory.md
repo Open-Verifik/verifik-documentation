@@ -1,19 +1,19 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-08-25T20:28:24.058Z
+Generated: 2026-09-10T22:24:57.281Z
 
-- **Files scanned:** 505
-- **Unique endpoint URLs:** 217
-- **Duplicate URL groups (SEO / aliases):** 55
-- **Docs without `### Endpoint` block:** 211
+- **Files scanned:** 517
+- **Unique endpoint URLs:** 223
+- **Duplicate URL groups (SEO / aliases):** 57
+- **Docs without `### Endpoint` block:** 214
 
 ## Summary by priority (canonical primary path only)
 
 | Priority | Count | Scope |
 | --- | ---: | --- |
-| P0 | 23 | vehicle-validation/colombia |
-| P1 | 23 | vehicle-validation (other countries) |
-| P2 | 171 | identity, biometrics, resources, etc. |
+| P0 | 25 | vehicle-validation/colombia |
+| P1 | 24 | vehicle-validation (other countries) |
+| P2 | 174 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -41,6 +41,13 @@ Generated: 2026-08-25T20:28:24.058Z
 - `v2/biometric-validations/validate`
   - `resources/app-logins/validate-an-app-login-biometric-validation.mdx`
   - `resources/biometric-validations/validate-an-app-login-biometric-validation.mdx`
+- `v2/check-lists`
+  - `check-list/create-a-check-list.mdx`
+  - `check-list/list-all-check-lists.mdx`
+- `v2/check-lists/{id}`
+  - `check-list/delete-a-check-list.mdx`
+  - `check-list/retrieve-a-check-list.mdx`
+  - `check-list/update-a-check-list.mdx`
 - `v2/clients/me`
   - `accounts/clients/account-information.mdx`
   - `clients/account-information.md`
@@ -231,6 +238,7 @@ Generated: 2026-08-25T20:28:24.058Z
 | P2 | `v2/app-logins/{id}` | `resources/app-logins/retrieve-an-app-login.mdx` |
 | P2 | `v2/app-registrations` | `resources/app-registrations/create-an-app-registration.mdx` |
 | P2 | `v2/app-registrations/{id}` | `resources/app-registrations/retrieve-an-app-registration.mdx` |
+| P2 | `v2/app-registrations/{id}/resend-link` | `resources/app-registrations/resend-an-app-registration-link.mdx` |
 | P2 | `v2/app-registrations/{id}/sync` | `resources/app-registrations/sync-app-registration-status.mdx` |
 | P1 | `v2/ar/buenos-aires/technical-inspection` | `vehicle-validation/argentina/buenos-aires-technical-inspection.mdx` |
 | P1 | `v2/ar/buenos-aires/traffic-infractions` | `vehicle-validation/argentina/buenos-aires-traffic-infractions.mdx` |
@@ -257,6 +265,8 @@ Generated: 2026-08-25T20:28:24.058Z
 | P2 | `v2/ca/company` | `business-validation/canada.mdx` |
 | P2 | `v2/ca/ontario/driver-license` | `driver-validation/ontario-driver-license.md` |
 | P1 | `v2/ca/ontario/plate` | `vehicle-validation/canada/ontario-plate.mdx` |
+| P2 | `v2/check-lists` | `check-list/create-a-check-list.mdx` |
+| P2 | `v2/check-lists/{id}` | `check-list/delete-a-check-list.mdx` |
 | P2 | `v2/cl/cedula` | `identity/chile.mdx` |
 | P2 | `v2/cl/company` | `business-validation/chilean.mdx` |
 | P2 | `v2/cl/driver-license` | `driver-validation/chile-driver-license.mdx` |
@@ -267,6 +277,7 @@ Generated: 2026-08-25T20:28:24.058Z
 | P1 | `v2/cl/vehicle` | `vehicle-validation/chile.mdx` |
 | P1 | `v2/cl/vehicle-soap` | `vehicle-validation/chile/vehicle-soap.mdx` |
 | P1 | `v2/cl/vehicle-soap-plate` | `vehicle-validation/chile/vehicle-soap-plate.mdx` |
+| P1 | `v2/cl/vehicle-stolen` | `vehicle-validation/chile/vehicle-stolen.mdx` |
 | P2 | `v2/clients/me` | `accounts/clients/account-information.mdx` |
 | P2 | `v2/co/adres` | `legal/colombia-adres.mdx` |
 | P2 | `v2/co/afiliaciones` | `legal/verify-colombian-affiliations.mdx` |
@@ -311,6 +322,7 @@ Generated: 2026-08-25T20:28:24.058Z
 | P2 | `v2/co/rues/complete` | `business-validation/colombia-rues-complete-v2.mdx` |
 | P2 | `v2/co/rui` | `background-check/colombia-rui.mdx` |
 | P0 | `v2/co/runt/conductor` | `vehicle-validation/colombia/driver-s-license.mdx` |
+| P0 | `v2/co/runt/propietarios` | `vehicle-validation/colombia/runt-vehicle-owners.mdx` |
 | P0 | `v2/co/runt/vehicle-by-plate` | `vehicle-validation/colombia/runt-vehicle-by-plate.mdx` |
 | P0 | `v2/co/runt/vehicle-by-plate-simplified` | `vehicle-validation/colombia/runt-vehicle-by-plate-simplified.mdx` |
 | P0 | `v2/co/runt/vehicle-by-vin` | `vehicle-validation/colombia/runt-vehicle-by-vin.mdx` |
@@ -368,6 +380,10 @@ Generated: 2026-08-25T20:28:24.058Z
 | P2 | `v2/gt/cedula/extra` | `identity/guatemala-extra.mdx` |
 | P2 | `v2/hn/cedula` | `identity/honduras.mdx` |
 | P2 | `v2/hn/votacion` | `identity/honduras/votacion.mdx` |
+| P2 | `v2/human-id/decrypt` | `biometrics/zero-knowledge-face-proofs-decrypt.mdx` |
+| P2 | `v2/human-id/encrypt` | `biometrics/zero-knowledge-face-proofs-encrypt.mdx` |
+| P2 | `v2/human-id/encrypt-qr-code` | `biometrics/zero-knowledge-face-proofs-encrypt-qr-code.mdx` |
+| P2 | `v2/human-id/preview` | `biometrics/zero-knowledge-face-proofs-preview.mdx` |
 | P2 | `v2/in/epic` | `legal/epic-eci.mdx` |
 | P2 | `v2/in/epic/votacion` | `legal/voting-eci-epic.mdx` |
 | P2 | `v2/interpol` | `background-check/interpol-background-check.mdx` |
@@ -409,15 +425,12 @@ Generated: 2026-08-25T20:28:24.058Z
 | P2 | `v2/uy/cedula` | `identity-validation/uruguay-citizen.mdx` |
 | P2 | `v2/ve/cedula` | `identity-validation/venezuela.mdx` |
 | P2 | `v2/ve/foreigner-id` | `identity/venezuela-foreigner-id.mdx` |
-| P2 | `v2/zelf-proof/decrypt` | `biometrics/zero-knowledge-face-proofs-decrypt.mdx` |
-| P2 | `v2/zelf-proof/encrypt` | `biometrics/zero-knowledge-face-proofs-encrypt.mdx` |
-| P2 | `v2/zelf-proof/encrypt-qr-code` | `biometrics/zero-knowledge-face-proofs-encrypt-qr-code.mdx` |
-| P2 | `v2/zelf-proof/preview` | `biometrics/zero-knowledge-face-proofs-preview.mdx` |
 | P1 | `v3/ar/vehicle` | `vehicle-validation/argentina/vehicle-v3.mdx` |
 | P1 | `v3/cl/vehicle` | `vehicle-validation/chile/vehicle-technical-review.mdx` |
 | P2 | `v3/co/ministerio-de-trabajo/certificados` | `certificates/colombia-ministerio-trabajo-certificados-v3.mdx` |
 | P2 | `v3/co/rues` | `business-validation/colombia-rues-v3.mdx` |
 | P2 | `v3/co/rues-complete` | `business-validation/colombia-rues-business-information.mdx` |
+| P0 | `v3/co/runt/conductor` | `vehicle-validation/colombia/runt-drivers-license-basic.mdx` |
 | P2 | `v3/ec/company` | `business-validation/ecuador.mdx` |
 | P2 | `v3/ocr/scan-studio` | `ocr-engines/scan-studio.mdx` |
 | P2 | `v3/pe/cedula` | `identity-validation/peru/peru-citizen.mdx` |
@@ -452,6 +465,8 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `business-validation/business-verification.mdx`
 - `business-validation/chile.mdx`
 - `business-validation/colombia.mdx`
+- `check-list/check-list-api-companion.mdx`
+- `check-list/check-list.mdx`
 - `compensar/COMPENSAR_API_REFERENCE.md`
 - `compensar/COMPENSAR_COMPLIANCE_MATRIX.md`
 - `compensar/COMPENSAR_EXECUTIVE_SUMMARY.md`
@@ -609,6 +624,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `smartenroll/smartenroll-admin-kyc-review.md`
 - `smartenroll/smartenroll-api-companion.md`
 - `smartenroll/smartenroll-kyc-flow.md`
+- `smartenroll/smartenroll-resume.mdx`
 - `smartenroll/smartenroll.md`
 - `vehicle-validation.mdx`
 - `vehicle-validation/chile/driver-license.md`

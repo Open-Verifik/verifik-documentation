@@ -389,6 +389,12 @@ const sidebars = {
 					key: "vehiculos-chile-vehicle-soap-plate",
 				},
 				{
+					type: "doc",
+					id: "validacion-vehiculos/chile/validacion-vehiculos-chile-vehicle-stolen",
+					label: "🇨🇱 Chile - Vehículo Robado",
+					key: "vehiculos-chile-vehicle-stolen",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 Colombia",
 					collapsible: true,
@@ -447,7 +453,12 @@ const sidebars = {
 						{
 							type: "doc",
 							id: "validacion-vehiculos/colombia/licencia-conducir-runt",
-							label: "Licencia de Conducir",
+							label: "Licencia de Conducir (Premium)",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/colombia/licencia-conducir-runt-basico",
+							label: "Licencia de Conducir (Básico)",
 						},
 						{
 							type: "doc",

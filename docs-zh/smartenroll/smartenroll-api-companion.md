@@ -65,6 +65,7 @@ populate 后的常用字段：
 | [`POST /v2/face-recognition/compare-with-liveness`](https://docs.verifik.co/biometrics/compare-with-liveness) | 先比对再活体（顺序） |
 | `POST /v2/face-recognition/compare/app-registration` | 托管路径比对：使用会话 `appRegistrationId`；gallery/probe 来自已存人脸；空 body `{}` 有效；阈值来自 project flow |
 | [`GET /v2/app-registrations/:id`](https://docs.verifik.co/resources/app-registrations/retrieve-an-app-registration) | 读取 enrollment 并 populate 分数 |
+| [`POST /v2/app-registrations/:id/resend-link`](https://docs.verifik.co/resources/app-registrations/resend-an-app-registration-link) | 为未完成的 enrollment 签发托管续办 URL |
 | `POST /v2/biometric-validations/app-registration` | 托管会话中的生物识别 / 活体步骤 |
 | `POST /v2/document-validations/app-registration` | 托管会话中的证件采集 / 校验 |
 | `POST /v2/identity-images/appRegistration` | 存储身份图像（`face`、`documentFace` 等） |
@@ -104,6 +105,7 @@ Verifik 人脸活体使用带演示攻击检测（PAD）的生物识别技术栈
 
 - [SmartEnroll](https://docs.verifik.co/smartenroll) — 项目配置
 - [SmartEnroll KYC Flow](https://docs.verifik.co/smartenroll/smartenroll-kyc-flow) — 终端用户体验
+- [Resume an Incomplete Enrollment](https://docs.verifik.co/smartenroll/resume) — 用户中途离开后继续托管 KYC
 - [SmartEnroll Admin KYC Review](https://docs.verifik.co/smartenroll/smartenroll-admin-kyc-review) — 审核 UI 与分数解读
 - [SmartEnroll Self Hosted](https://docs.verifik.co/smart-enroll-self-hosted) — 项目/流程 API
 

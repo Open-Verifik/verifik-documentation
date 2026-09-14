@@ -1,0 +1,71 @@
+---
+id: check-list-api-companion
+title: Check List — Guia da API
+description: Salve e carregue Check Lists com GET, POST, PUT e DELETE /v2/check-lists
+slug: /check-list/api-companion
+---
+
+# Check List — Guia da API
+
+Use esta página quando o seu **backend** deve guardar o mesmo playbook que a UI do Smart-Agent. Para o percurso de produto, veja [Check List](/verifik-pt/check-list).
+
+O CRUD da Check List **não** executa consultas e **não** gasta créditos. Executar um serviço é uma chamada normal ao catálogo (a mesma URL que você já usa no SmartCheck ou no Postman).
+
+## Autenticação
+
+Todas as rotas precisam de um **JWT de cliente** (`Authorization: Bearer …`). Um token sem `clientId` devolve `403` (`Client context required`). As listas pertencem a esse cliente.
+
+## Endpoints
+
+| Método | Caminho | Função |
+| --- | --- | --- |
+| `GET` | `/v2/check-lists` | [Listar checklists](/verifik-pt/check-list/list-all-check-lists) |
+| `POST` | `/v2/check-lists` | [Criar uma checklist](/verifik-pt/check-list/create-a-check-list) |
+| `GET` | `/v2/check-lists/{id}` | [Obter uma checklist](/verifik-pt/check-list/retrieve-a-check-list) |
+| `PUT` | `/v2/check-lists/{id}` | [Atualizar uma checklist](/verifik-pt/check-list/update-a-check-list) |
+| `DELETE` | `/v2/check-lists/{id}` | [Apagar uma checklist](/verifik-pt/check-list/delete-a-check-list) |
+
+Parâmetros de lista: `page`, `perPage` (ou `limit`) e `search` (ou `text`) para filtrar por nome. Veja [Listar checklists](/verifik-pt/check-list/list-all-check-lists) para as duas formas de `200` (com e sem `page`).
+
+## Campos do corpo
+
+| Campo | Significado |
+| --- | --- |
+| `name` | Obrigatório na criação. Máx. 150 caracteres. |
+| `countries` | Países onde você opera (por exemplo `Colombia`). |
+| `domains` | Abas opcionais: `people`, `vehicles`, `businesses`. |
+| `featureCodes` | Valores `code` de AppFeature dos serviços da lista. |
+| `status` | `draft` (padrão) ou `active`. Só rótulo — as duas funcionam igual. |
+
+`featureCodes` desconhecidos falham. Um serviço cujo país não coincide com a lista falha, salvo se for mundial (ou se a lista ainda não tiver países).
+
+## Exemplo de criação
+
+```
+POST https://api.verifik.co/v2/check-lists
+Authorization: Bearer <client-jwt>
+Content-Type: application/json
+```
+
+```json
+{
+  "name": "KYC Colombia",
+  "countries": ["Colombia"],
+  "domains": [],
+  "featureCodes": [],
+  "status": "draft"
+}
+```
+
+A resposta é `{ "data": { …checklist } }`. Guarde `data._id`. Quando o utilizador adicionar serviços, faça `PUT` nesse id com os novos `featureCodes`.
+
+## Executar um serviço guardado
+
+**Não** existe um endpoint “executar checklist”. Para cada código da lista, chame a URL de catálogo dessa feature como no SmartCheck. Os créditos entram nessas chamadas.
+
+Para enviar a combinação como arquivo ou fila, use [SmartBatch](/verifik-pt/smart-batch) (país + códigos + nome). A Check List não inicia o lote.
+
+## Relacionado
+
+- [Check List](/verifik-pt/check-list) — percurso no Smart-Agent
+- [SmartBatch](/verifik-pt/smart-batch) — lotar os serviços guardados

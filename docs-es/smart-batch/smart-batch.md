@@ -154,5 +154,6 @@ Cuando la configuración es **Async**, ambos caminos usan el mismo worker en seg
 
 ## Relacionado
 
+- [Check List](/verifik-es/check-list) — guarda una mezcla de servicios del catálogo antes de lotearlos
 - [SmartCheck](/verifik-es/verificacion-inteligente) — catálogo de APIs de identidad y datos
 - [Llamar endpoints como cola (async)](/verifik-es/smart-batch/async-queue)

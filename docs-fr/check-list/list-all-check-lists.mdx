@@ -1,0 +1,205 @@
+---
+id: list-all-check-lists
+title: Lister les checklists
+description: Lister les Check Lists enregistrées sur votre compte client, les plus récentes d’abord
+slug: /check-list/list-all-check-lists
+keywords:
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - api.verifik.co/v2/check-lists
+  - 'https://api.verifik.co/v2/check-lists'
+  - GET v2/check-lists
+  - GET /v2/check-lists
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Listez les Check Lists enregistrées sur le client authentifié. Les résultats sont limités à ce client et triés par `updatedAt` décroissant (plus récentes d’abord). Cet appel n’exécute pas de consultations et ne consomme pas de crédits.
+
+Utilisez `search` (ou `text`) pour filtrer par nom. Envoyez `page` lorsque vous voulez les métadonnées de pagination. Omettez `page` pour recevoir le tableau correspondant dans `data` sans les champs `total` / `pages`.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/check-lists
+```
+
+Renvoie les listes enregistrées du client. Chaque élément inclut `name`, `countries`, `domains`, `featureCodes` et `status`. Lorsque `page` est présent, la réponse inclut aussi `total`, `limit`, `page` et `pages`.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+Le jeton doit être un **JWT client**. Un jeton sans `clientId` renvoie `403`.
+
+### Parameters
+
+| Name      | Type    | Required | Description                                                                 |
+| --------- | ------- | -------- | --------------------------------------------------------------------------- |
+| `page`    | integer | No       | Lorsque défini, l’API pagine et renvoie `total`, `limit`, `page` et `pages`. Omettez-le pour obtenir uniquement le tableau correspondant. |
+| `perPage` | integer | No       | Taille de page. Alias de `limit`. Appliqué même lorsque `page` est omis.    |
+| `limit`   | integer | No       | Taille de page. Alias de `perPage`.                                         |
+| `search`  | string  | No       | Filtre de nom insensible à la casse.                                        |
+| `text`    | string  | No       | Alias de `search`.                                                          |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/check-lists"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+params = {"page": 1, "perPage": 20, "search": "Colombia"}
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/check-lists?page=1&perPage=20&search=Colombia", nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200-page" label="200 with page">
+
+```json
+{
+    "data": [
+        {
+            "_id": "6aa224c87034a338385c28c0",
+            "client": "507f1f77bcf86cd799439013",
+            "name": "KYC Colombia",
+            "countries": ["Colombia", "Chile"],
+            "domains": ["people"],
+            "featureCodes": ["co-cedula"],
+            "status": "draft",
+            "createdAt": "2026-09-10T03:32:00.000Z",
+            "updatedAt": "2026-09-10T03:33:00.000Z"
+        }
+    ],
+    "total": 1,
+    "limit": 20,
+    "page": 1,
+    "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200" label="200 without page">
+
+```json
+{
+    "data": [
+        {
+            "_id": "6aa224c87034a338385c28c0",
+            "client": "507f1f77bcf86cd799439013",
+            "name": "KYC Colombia",
+            "countries": ["Colombia", "Chile"],
+            "domains": ["people"],
+            "featureCodes": ["co-cedula"],
+            "status": "draft",
+            "createdAt": "2026-09-10T03:32:00.000Z",
+            "updatedAt": "2026-09-10T03:33:00.000Z"
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Les listes appartiennent au client du JWT. Vous ne pouvez pas lire les listes d’un autre client.
+- Le tri est toujours par `updatedAt` le plus récent d’abord.
+- `search` et `text` font le même filtrage de nom insensible à la casse.
+- `perPage` et `limit` sont des alias. Si vous envoyez `limit` sans `page`, le tableau est quand même plafonné.
+- Cet endpoint ne consomme pas de crédits et n’exécute pas les services enregistrés.
+- Parcours produit : [Check List](/verifik-fr/check-list). Création : [Créer une checklist](/verifik-fr/check-list/create-a-check-list).

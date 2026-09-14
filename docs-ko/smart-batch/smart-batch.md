@@ -154,5 +154,6 @@ SmartBatch는 이미 사용하는 SmartCheck 카탈로그 위에 있습니다. S
 
 ## 관련
 
+- [Check List](/verifik-ko/check-list) — 배치하기 전에 카탈로그 서비스 조합을 저장
 - [엔드포인트를 큐로 호출 (async)](/verifik-ko/smart-batch/async-queue)
 - [페루 — 시민 (DNI)](/verifik-ko/identity/peru)

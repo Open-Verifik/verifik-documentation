@@ -1,0 +1,105 @@
+---
+id: licencia-conducir-runt-basico
+title: Consulta de Licencia de Conducción en RUNT (Básico) | Verifik API Colombia
+description: Valida licencias de conducción en Colombia en /v3/co/runt/conductor. primerApellido es obligatorio. Se cobra la tarifa Básica de conductor.
+sidebar_label: RUNT - Licencia de Conducir (Básico)
+slug: /validacion-vehiculos/colombia/licencia-conducir-runt-basico
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Validación de Licencia de Conducir en RUNT (Básico)
+
+La misma consulta RUNT que [Premium v2](/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt), cobrada a la **tarifa actual de conductor**. Debe enviar `primerApellido`. Si lo omite, la API responde `409 MissingParameter`.
+
+Use esta ruta cuando ya conoce el primer apellido. Si se queda en v2 y envía `primerApellido`, también paga esta tarifa Básica sin cambiar la URL.
+
+### Service URL
+
+```
+GET https://api.verifik.co/v3/co/runt/conductor
+```
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parámetros
+
+| Name             | Type   | Required | Description |
+| ---------------- | ------ | -------- | ----------- |
+| `documentType`   | string | Yes      | Uno de **`CC`**, **`CE`**, **`PA`**, **`PPT`**. **`PA` es pasaporte, `PPT` no lo es**. |
+| `documentNumber` | string | Yes      | Número de documento del conductor, sin espacios ni puntos. |
+| `primerApellido` | string | **Yes**  | Primer apellido (mínimo 2 caracteres). Obligatorio para todos los tipos de documento. |
+
+### Tipos de documento
+
+| Código | Nombre completo | Quién lo tiene | Etiqueta RUNT | `primerApellido` |
+| --- | --- | --- | --- | --- |
+| **`CC`** | *Cédula de Ciudadanía* | Ciudadanos colombianos | `C.` | **Obligatorio** |
+| **`CE`** | *Cédula de Extranjería* | Extranjeros residentes | `E.` | **Obligatorio** |
+| **`PA`** | *Pasaporte* | Titulares de pasaporte | `P.` | **Obligatorio** |
+| **`PPT`** | *Permiso por Protección Temporal* | Permiso temporal venezolano — **no es pasaporte** | `Y.` | **Obligatorio** |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/co/runt/conductor", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+		primerApellido: "GARCIA",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/runt/conductor"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789", "primerApellido": "GARCIA"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "\"primerApellido\" is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Una solicitud API y una fila de créditos a la tarifa Básica de conductor.
+- Sin `primerApellido` este endpoint no consulta el nombre del ciudadano.
+- Para resolución automática del apellido (Premium), use [`/v2/co/runt/conductor`](/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt).

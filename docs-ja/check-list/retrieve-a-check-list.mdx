@@ -1,0 +1,186 @@
+---
+id: retrieve-a-check-list
+title: チェックリストを取得
+description: クライアントアカウント上の Check List を id で 1 件取得する
+slug: /check-list/retrieve-a-check-list
+keywords:
+  - 'v2/check-lists/{id}'
+  - '/v2/check-lists/{id}'
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - 'v2 check-lists {id}'
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - 'api.verifik.co/v2/check-lists/{id}'
+  - 'https://api.verifik.co/v2/check-lists/{id}'
+  - 'GET v2/check-lists/{id}'
+  - 'GET /v2/check-lists/{id}'
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+id で Check List を 1 件読み込みます。リストは JWT 上のクライアントに属している必要があります。無効な ObjectId、存在しないリスト、他のクライアントのリストは `404` を返します。
+
+この呼び出しは照会を実行せず、クレジットも消費しません。ドキュメントの `featureCodes` を使って、各カタログ API を自分で呼び出してください。
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/check-lists/{id}
+```
+
+保存済みリストを返します: `name`、`countries`、`domains`、`featureCodes`、`status`。これらのコードを、対応する SmartCheck / カタログ URL と一緒に使います。このパスにチェックリスト実行アクションはありません。
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+トークンは **クライアント JWT** である必要があります。`clientId` のないトークンは `403` を返します。
+
+### Parameters
+
+| Name | Type   | Required | Description                          |
+| ---- | ------ | -------- | ------------------------------------ |
+| `id` | string | Yes      | 作成または一覧から得た Check List の ObjectId。 |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const id = "6aa224c87034a338385c28c0";
+    const res = await fetch(`https://api.verifik.co/v2/check-lists/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6aa224c87034a338385c28c0";
+$ch = curl_init("https://api.verifik.co/v2/check-lists/" . $id);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+echo curl_exec($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+check_list_id = "6aa224c87034a338385c28c0"
+url = f"https://api.verifik.co/v2/check-lists/{check_list_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+r = requests.get(url, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "6aa224c87034a338385c28c0"
+    req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/check-lists/"+id, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "6aa224c87034a338385c28c0",
+        "client": "507f1f77bcf86cd799439013",
+        "name": "KYC Colombia",
+        "countries": ["Colombia", "Chile"],
+        "domains": ["people", "vehicles"],
+        "featureCodes": ["co-cedula", "cl-rut"],
+        "status": "draft",
+        "createdAt": "2026-09-10T03:32:00.000Z",
+        "updatedAt": "2026-09-10T03:33:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "check_list_not_found",
+    "code": "check_list_not_found"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 無効な ObjectId と他のクライアントのリストは、どちらも `404`（`check_list_not_found`）です。
+- 応答にはホスト型の再開 URL やバッチ URL は含まれません。Check List は組み合わせだけを保存します。
+- フィールドを変えるには [チェックリストを更新](/verifik-ja/check-list/update-a-check-list) を使います。削除するには [チェックリストを削除](/verifik-ja/check-list/delete-a-check-list) を使います。
+- `featureCodes` のコードを実行するのは通常のカタログ呼び出しで、そこでクレジットが消費されます。

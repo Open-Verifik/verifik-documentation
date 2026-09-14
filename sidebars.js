@@ -65,10 +65,25 @@ const sidebars = {
 					collapsible: true,
 					items: ["smart-batch/smart-batch", "smart-batch/async-queue"],
 				},
+				{
+					type: "category",
+					label: "Check List",
+					collapsible: true,
+					items: [
+						"check-list/check-list",
+						"check-list/check-list-api-companion",
+						"check-list/list-all-check-lists",
+						"check-list/create-a-check-list",
+						"check-list/retrieve-a-check-list",
+						"check-list/update-a-check-list",
+						"check-list/delete-a-check-list",
+					],
+				},
 				"smartaccess/smartaccess",
 				"access/access",
 				"smartenroll/smartenroll",
 				"smartenroll/smartenroll-kyc-flow",
+				"smartenroll/smartenroll-resume",
 				"smartenroll/smartenroll-admin-kyc-review",
 				"smartenroll/smartenroll-api-companion",
 				"smart-enroll-self-hosted/smart-enroll-self-hosted",
@@ -557,6 +572,12 @@ const sidebars = {
 					key: "vehicle-chile-vehicle-soap-plate",
 				},
 				{
+					type: "doc",
+					id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-stolen",
+					label: "🇨🇱 Chile - Stolen Vehicle",
+					key: "vehicle-chile-vehicle-stolen",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 Colombia",
 					collapsible: true,
@@ -620,7 +641,12 @@ const sidebars = {
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license",
-							label: "RUNT - Driver's License",
+							label: "RUNT - Driver's License (Premium)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license-basic",
+							label: "RUNT - Driver's License (Basic)",
 						},
 						{
 							type: "doc",
@@ -636,6 +662,11 @@ const sidebars = {
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo",
 							label: "RUNT - Vehicle by plate (basic)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners",
+							label: "RUNT - Vehicle owners by plate",
 						},
 						{
 							type: "doc",
@@ -1008,6 +1039,7 @@ const sidebars = {
 						"resources/app-registrations/the-app-registration-object",
 						"resources/app-registrations/create-an-app-registration",
 						"resources/app-registrations/retrieve-an-app-registration",
+						"resources/app-registrations/resend-an-app-registration-link",
 						"resources/app-registrations/list-all-app-registrations",
 						"resources/app-registrations/create-an-app-registration-biometric-validation",
 						"resources/app-registrations/create-an-app-registration-document-validation",

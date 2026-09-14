@@ -1,0 +1,231 @@
+---
+id: crear-un-check-list
+title: Crear una checklist
+description: Crea una Check List con nombre, países y servicios opcionales
+slug: /check-list/crear-un-check-list
+keywords:
+  - v2/check-lists
+  - /v2/check-lists
+  - POST v2/check-lists
+  - POST /v2/check-lists
+  - api.verifik.co/v2/check-lists
+  - 'https://api.verifik.co/v2/check-lists'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Crea una Check List en el cliente autenticado. `name` es obligatorio. Países, dominios y códigos de feature son opcionales al crear — puedes agregar servicios después con [Actualizar una checklist](/verifik-es/check-list/actualizar-un-check-list).
+
+Guardar la lista no ejecuta consultas y no gasta créditos. En Smart-Agent, crear te deja en el tablero; esta API devuelve el documento nuevo de inmediato.
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/check-lists
+```
+
+Crea una lista del cliente del JWT. El objeto `data` de la respuesta incluye `_id` — guárdalo para GET, PUT y DELETE. El `status` predeterminado es `draft`.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+El token debe ser un **JWT de cliente**. Un token sin `clientId` responde `403`.
+
+### Body
+
+| Name           | Type     | Required | Description                                                                 |
+| -------------- | -------- | -------- | --------------------------------------------------------------------------- |
+| `name`         | string   | Yes      | Nombre visible. Recortado, 1–150 caracteres.                                |
+| `countries`    | string[] | No       | Países donde operas (por ejemplo `Colombia`). Se eliminan duplicados. Predeterminado `[]`. |
+| `domains`      | string[] | No       | Pestañas opcionales: `people`, `vehicles`, `businesses`. Predeterminado `[]`. |
+| `featureCodes` | string[] | No       | Valores `code` de AppFeature a guardar. Predeterminado `[]`.                |
+| `status`       | string   | No       | `draft` (predeterminado) o `active`. Solo etiqueta — ambas funcionan igual. |
+
+Los `featureCodes` desconocidos fallan. Un servicio cuyo país no coincide con `countries` falla, salvo que el servicio sea mundial o `countries` esté vacío.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/check-lists", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+        body: JSON.stringify({
+            name: "KYC Colombia",
+            countries: ["Colombia"],
+            domains: [],
+            featureCodes: [],
+            status: "draft",
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/check-lists");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "KYC Colombia",
+    "countries" => ["Colombia"],
+    "domains" => [],
+    "featureCodes" => [],
+    "status" => "draft"
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+echo curl_exec($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/check-lists"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "name": "KYC Colombia",
+    "countries": ["Colombia"],
+    "domains": [],
+    "featureCodes": [],
+    "status": "draft",
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    body, _ := json.Marshal(map[string]interface{}{
+        "name":         "KYC Colombia",
+        "countries":    []string{"Colombia"},
+        "domains":      []string{},
+        "featureCodes": []string{},
+        "status":       "draft",
+    })
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/check-lists", bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "6aa224c87034a338385c28c0",
+        "client": "507f1f77bcf86cd799439013",
+        "name": "KYC Colombia",
+        "countries": ["Colombia"],
+        "domains": [],
+        "featureCodes": [],
+        "status": "draft",
+        "createdAt": "2026-09-10T03:32:00.000Z",
+        "updatedAt": "2026-09-10T03:32:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "\"name\" is required",
+    "code": "ValidationError"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-feature" label="409 invalid feature">
+
+```json
+{
+    "message": "check_list_invalid_feature",
+    "code": "check_list_invalid_feature"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-country" label="409 country mismatch">
+
+```json
+{
+    "message": "check_list_feature_country_mismatch",
+    "code": "check_list_feature_country_mismatch"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `name` es el único campo obligatorio. Puedes crear una lista vacía y agregar `featureCodes` después.
+- Los países se guardan como los envías (por ejemplo `Colombia`). No son códigos ISO.
+- `status` no cambia el comportamiento del servidor. Las listas en borrador y activas funcionan igual.
+- Valores de `domains` desconocidos fallan la validación. Permitidos: `people`, `vehicles`, `businesses`.
+- Crear una lista no gasta créditos. Ejecutar un servicio guardado es una llamada normal al catálogo.
+- No hay un endpoint para ejecutar la checklist. Ver [Check List](/verifik-es/check-list) y [SmartBatch](/verifik-es/smart-batch).

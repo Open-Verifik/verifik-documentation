@@ -154,5 +154,6 @@ SmartBatch 建立在你已使用的 SmartCheck 目录之上。Sync 在当前请�
 
 ## 相关
 
+- [Check List](/verifik-zh/check-list) — 在批量运行前保存一组目录服务
 - [以队列方式调用接口 (async)](/verifik-zh/smart-batch/async-queue)
 - [秘鲁 — 公民 (DNI)](/verifik-zh/identity/peru)

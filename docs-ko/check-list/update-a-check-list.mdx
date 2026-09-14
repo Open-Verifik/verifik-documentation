@@ -1,0 +1,250 @@
+---
+id: update-a-check-list
+title: 체크리스트 수정
+description: Check List를 수정합니다. 보내지 않은 필드는 기존 값을 유지합니다
+slug: /check-list/update-a-check-list
+keywords:
+  - 'v2/check-lists/{id}'
+  - '/v2/check-lists/{id}'
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - 'v2 check-lists {id}'
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - 'api.verifik.co/v2/check-lists/{id}'
+  - 'https://api.verifik.co/v2/check-lists/{id}'
+  - 'PUT v2/check-lists/{id}'
+  - 'PUT /v2/check-lists/{id}'
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+소유한 Check List를 수정합니다. 바꾸고 싶은 필드만 보내세요. 보내지 않은 필드는 기존 값을 유지합니다. 병합된 문서는 다시 검증되므로, 병합 후에도 `name`이 있어야 합니다.
+
+저장은 조회를 실행하지 않으며 크레딧을 쓰지 않습니다. Smart-Agent에서는 생성 후 국가가 잠깁니다. 이 API는 `countries` 배열을 보내면 새 국가를 그대로 받습니다.
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v2/check-lists/{id}
+```
+
+수정된 목록을 반환합니다. 사용자가 서비스를 추가·제거하거나 (`featureCodes`), 이름을 바꾸거나, `status`를 설정할 때 사용하세요. 잘못된 id와 다른 클라이언트의 목록은 `404`를 반환합니다.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+토큰은 **클라이언트 JWT**여야 합니다. `clientId`가 없는 토큰은 `403`을 반환합니다.
+
+### Parameters
+
+| Name | Type   | Required | Description                          |
+| ---- | ------ | -------- | ------------------------------------ |
+| `id` | string | Yes      | 생성 또는 목록에서 받은 Check List ObjectId. |
+
+### Body
+
+요청에서 모든 필드는 선택 사항입니다. 병합 후에도 `name`은 필수입니다.
+
+| Name           | Type     | Required | Description                                                                 |
+| -------------- | -------- | -------- | --------------------------------------------------------------------------- |
+| `name`         | string   | No       | 표시 이름. 앞뒤 공백 제거, 1–150자.                                    |
+| `countries`    | string[] | No       | 국가 이름. 보내면 저장된 목록을 대체합니다.                          |
+| `domains`      | string[] | No       | `people`, `vehicles`, 그리고/또는 `businesses`. 보내면 저장된 목록을 대체합니다. |
+| `featureCodes` | string[] | No       | AppFeature `code` 값. 보내면 저장된 목록을 대체합니다.               |
+| `status`       | string   | No       | `draft` 또는 `active`. 정리용 라벨입니다.                                  |
+
+알 수 없는 `featureCodes`는 실패합니다. 서비스의 국가가 병합된 `countries`와 맞지 않으면 실패합니다. 다만 해당 서비스가 전 세계이거나 `countries`가 비어 있으면 허용됩니다.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const id = "6aa224c87034a338385c28c0";
+    const res = await fetch(`https://api.verifik.co/v2/check-lists/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+        body: JSON.stringify({
+            featureCodes: ["co-cedula", "cl-rut"],
+            domains: ["people"],
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6aa224c87034a338385c28c0";
+$ch = curl_init("https://api.verifik.co/v2/check-lists/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "featureCodes" => ["co-cedula", "cl-rut"],
+    "domains" => ["people"]
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+echo curl_exec($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+check_list_id = "6aa224c87034a338385c28c0"
+url = f"https://api.verifik.co/v2/check-lists/{check_list_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "featureCodes": ["co-cedula", "cl-rut"],
+    "domains": ["people"],
+}
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "6aa224c87034a338385c28c0"
+    body, _ := json.Marshal(map[string]interface{}{
+        "featureCodes": []string{"co-cedula", "cl-rut"},
+        "domains":      []string{"people"},
+    })
+    req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/check-lists/"+id, bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "6aa224c87034a338385c28c0",
+        "client": "507f1f77bcf86cd799439013",
+        "name": "KYC Colombia",
+        "countries": ["Colombia", "Chile"],
+        "domains": ["people"],
+        "featureCodes": ["co-cedula", "cl-rut"],
+        "status": "draft",
+        "createdAt": "2026-09-10T03:32:00.000Z",
+        "updatedAt": "2026-09-10T03:33:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "check_list_not_found",
+    "code": "check_list_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "\"name\" is required",
+    "code": "ValidationError"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-feature" label="409 invalid feature">
+
+```json
+{
+    "message": "check_list_invalid_feature",
+    "code": "check_list_invalid_feature"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-country" label="409 country mismatch">
+
+```json
+{
+    "message": "check_list_feature_country_mismatch",
+    "code": "check_list_feature_country_mismatch"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 보내지 않은 필드는 기존 값을 유지합니다. `featureCodes`를 보내면 배열 전체가 교체됩니다. 코드의 부분 병합이 아닙니다.
+- 병합 후에도 Joi는 `name`을 요구합니다. 이름을 비우면 `ValidationError`로 실패합니다.
+- 알 수 없는 `featureCodes`는 `409` (`check_list_invalid_feature`)를 반환합니다.
+- 병합된 `countries` 밖에 있는 기능은 `409` (`check_list_feature_country_mismatch`)를 반환합니다. 다만 기능이 전 세계이거나 `countries`가 비어 있으면 허용됩니다.
+- 수정은 크레딧을 쓰지 않습니다. 저장된 코드를 실행하는 것은 카탈로그 호출입니다. SmartBatch는 별도 제품입니다.
+- 제품 안내: [Check List](/verifik-ko/check-list).

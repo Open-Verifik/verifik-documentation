@@ -314,6 +314,14 @@ Cambiar el idioma de la cuenta del cliente en el admin de Verifik **no** control
 
 ---
 
+## Reanudar un enrollment incompleto
+
+Si un usuario inicia SmartEnroll hospedado y se va antes de terminar, guarda el `_id` del App Registration y más tarde llama `POST /v2/app-registrations/{id}/resend-link`. Redirígelo a `data.link`. No reutilices un token de creación caducado ni envíes de nuevo el formulario de alta con el mismo correo: eso muestra **already registered**.
+
+Guía completa: [Reanudar un enrollment incompleto](/verifik-es/smartenroll/reanudar). API: [Reenviar enlace de registro de aplicación](/verifik-es/resources/registros-aplicacion/reenviar-enlace-registro-aplicacion).
+
+---
+
 ## Mejores Prácticas
 
 ### Recomendaciones de Seguridad

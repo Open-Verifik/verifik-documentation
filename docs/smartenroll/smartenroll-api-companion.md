@@ -65,6 +65,7 @@ Common set for a full enrollment snapshot:
 | [`POST /v2/face-recognition/compare-with-liveness`](/biometrics/compare-with-liveness) | Compare then liveness (sequential) |
 | `POST /v2/face-recognition/compare/app-registration` | Hosted-path compare: uses session `appRegistrationId`; gallery/probe from stored faces; empty body `{}` is valid; threshold from project flow |
 | [`GET /v2/app-registrations/:id`](/resources/app-registrations/retrieve-an-app-registration) | Read enrollment + populate scores |
+| [`POST /v2/app-registrations/:id/resend-link`](/resources/app-registrations/resend-an-app-registration-link) | Mint a hosted continuation URL for an incomplete enrollment |
 | `POST /v2/biometric-validations/app-registration` | SmartEnroll biometric / liveness step in the hosted session |
 | `POST /v2/document-validations/app-registration` | Document capture / validation in the hosted session |
 | `POST /v2/identity-images/appRegistration` | Store identity images (`face`, `documentFace`, …) |
@@ -104,6 +105,7 @@ Verifik’s face liveness uses our biometric stack with presentation attack dete
 
 - [SmartEnroll](/smartenroll) — project configuration
 - [SmartEnroll KYC Flow](/smartenroll/smartenroll-kyc-flow) — end-user experience
+- [Resume an Incomplete Enrollment](/smartenroll/resume) — continue hosted KYC after the user leaves mid-flow
 - [SmartEnroll Admin KYC Review](/smartenroll/smartenroll-admin-kyc-review) — reviewer UI and score interpretation
 - [SmartEnroll: Self Hosted](/smart-enroll-self-hosted) — programmatic project/flow APIs
 

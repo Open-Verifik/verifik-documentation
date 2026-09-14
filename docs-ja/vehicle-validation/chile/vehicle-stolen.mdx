@@ -1,0 +1,179 @@
+---
+id: vehicle-validation-chile-vehicle-stolen
+title: "🇨🇱 チリ — 盗難車両"
+description: "チリ車両に有効な盗難・窃盗届出（encargo por robo o hurto）があるかを照会します。"
+slug: /vehicle-validation/chile/vehicle-stolen
+sidebar_label: "🇨🇱 チリ — 盗難車両"
+keywords:
+  - v2/cl/vehicle-stolen
+  - GET v2/cl/vehicle-stolen
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 🇨🇱 チリ — 盗難車両
+
+チリ車両に有効な **盗難・窃盗届出**（*encargo por robo o hurto*）があるかを照会します。
+
+照会が成功すると署名付きペイロードを返します。
+
+- **`plate`** — チリナンバー（Patente）、**4–7** 文字の英数字
+- **`hasTheftReport`** — 有効な届出がある場合 `true`、それ以外は `false`
+- **`description`** — ステータス文言（例: `NO REGISTRA ENCARGO Vigentes`）
+- **`theftReport`** — 届出オブジェクト: **`typeCode`**, **`plateOriginal`**, **`plateFormatted`**, **`reportDate`**, **`partiallyResolved`**, **`items`**
+- **`items[]`** — 盗難部品: **`name`**, **`description`**, **`serial`**, **`resolvedDate`**, **`delivered`**, **`deliveryDate`**, **`type`**
+- Verifik **署名**付きレスポンス
+
+チリ車両の登録・融資前の**保険引受**、**フリートオンボーディング**、**デューデリジェンス**に使用します。
+
+### エンドポイント
+
+```
+GET v2/cl/vehicle-stolen
+```
+
+主なフィールド: **`plate`**, **`hasTheftReport`**, **`description`**, ネストされた **`theftReport`**。有効な届出がなくても **HTTP 200** を返します。
+
+### ヘッダー
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメータ
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | **Yes** | チリナンバー（Patente）、4–7 文字の英数字。 | `PTKX93` |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const { data } = await axios.get("https://api.verifik.co/v2/cl/vehicle-stolen", {
+  params: { plate: "PTKX93" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+url = "https://api.verifik.co/v2/cl/vehicle-stolen"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "PTKX93"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200-no-report" label="200 届出なし">
+
+```json
+{
+  "data": {
+    "description": "NO REGISTRA ENCARGO Vigentes",
+    "hasTheftReport": false,
+    "plate": "PTKX93",
+    "theftReport": {
+      "typeCode": 0,
+      "plateOriginal": "PTKX93",
+      "plateFormatted": null,
+      "reportDate": "",
+      "partiallyResolved": false,
+      "items": []
+    }
+  },
+  "signature": {
+    "dateTime": "September 3, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-stolen" label="200 盗難届出あり">
+
+```json
+{
+  "data": {
+    "description": "REGISTRA ENCARGO Vigentes",
+    "hasTheftReport": true,
+    "plate": "NG8245",
+    "theftReport": {
+      "typeCode": 1,
+      "plateOriginal": "NG8245",
+      "plateFormatted": "NG☆82·45",
+      "reportDate": "22-07-2026 11:40:45",
+      "partiallyResolved": false,
+      "items": [
+        {
+          "name": null,
+          "description": "Patente Delantera",
+          "serial": "NG.8245",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 1
+        },
+        {
+          "name": null,
+          "description": "VIN",
+          "serial": "KMHVF21NPSU188119",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 3
+        },
+        {
+          "name": null,
+          "description": "MOTOR",
+          "serial": "G4EKS443358",
+          "resolvedDate": null,
+          "delivered": "No",
+          "deliveryDate": null,
+          "type": 4
+        }
+      ]
+    }
+  },
+  "signature": {
+    "dateTime": "September 3, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注記
+
+- **有効な盗難届出なし**は **`hasTheftReport: false`** の **HTTP 200** です。404 ではありません。
+- **サンドボックス:** **`PTKX93`** は届出なし、**`NG8245`** は盗難届出の安定プロファイルを返します。
+- 無効なナンバー形式は **409** `invalid_plate_format` を返します。
+- レジストリの**可用性**は環境依存です。障害時は **409** タイムアウトになる場合があります。

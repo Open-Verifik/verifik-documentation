@@ -47,10 +47,25 @@ const sidebars = {
 						{ type: "doc", id: "smart-batch/async-queue", label: "Llamar endpoints como cola (async)" },
 					],
 				},
+				{
+					type: "category",
+					label: "Check List",
+					collapsible: true,
+					items: [
+						{ type: "doc", id: "check-list/check-list", label: "Check List" },
+						{ type: "doc", id: "check-list/check-list-guia-api", label: "Check List — Guía de API" },
+						{ type: "doc", id: "check-list/listar-check-lists", label: "Listar checklists" },
+						{ type: "doc", id: "check-list/crear-un-check-list", label: "Crear una checklist" },
+						{ type: "doc", id: "check-list/obtener-un-check-list", label: "Obtener una checklist" },
+						{ type: "doc", id: "check-list/actualizar-un-check-list", label: "Actualizar una checklist" },
+						{ type: "doc", id: "check-list/eliminar-un-check-list", label: "Eliminar una checklist" },
+					],
+				},
 				"smartaccess/acceso-inteligente",
 				"access/acceso",
 				"smartenroll/smartenroll",
 				"smartenroll/smartenroll-flujo-kyc",
+				"smartenroll/smartenroll-reanudar",
 				"smartenroll/smartenroll-admin-revision-kyc",
 				"smartenroll/smartenroll-guia-api",
 				"smart-enroll-auto-alojado/smart-enroll-self-hosted",
@@ -390,6 +405,12 @@ const sidebars = {
 					key: "vehiculos-chile-vehicle-soap-plate",
 				},
 				{
+					type: "doc",
+					id: "validacion-vehiculos/chile/validacion-vehiculos-chile-vehicle-stolen",
+					label: "🇨🇱 Chile - Vehículo Robado",
+					key: "vehiculos-chile-vehicle-stolen",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 Colombia",
 					collapsible: true,
@@ -448,7 +469,12 @@ const sidebars = {
 						{
 							type: "doc",
 							id: "validacion-vehiculos/colombia/licencia-conducir-runt",
-							label: "Licencia de Conducir",
+							label: "Licencia de Conducir (Premium)",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/colombia/licencia-conducir-runt-basico",
+							label: "Licencia de Conducir (Básico)",
 						},
 						{
 							type: "doc",
@@ -464,6 +490,11 @@ const sidebars = {
 							type: "doc",
 							id: "validacion-vehiculos/colombia/runt-vehiculo",
 							label: "RUNT - Vehículo (básico)",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/colombia/runt-propietarios-vehiculo",
+							label: "RUNT - Propietarios por placa",
 						},
 						{
 							type: "doc",
@@ -772,6 +803,7 @@ const sidebars = {
 						"resources/registros-aplicacion/el-objeto-registro-aplicacion",
 						"resources/registros-aplicacion/crear-un-registro-aplicacion",
 						"resources/registros-aplicacion/recuperar-un-registro-aplicacion",
+						"resources/registros-aplicacion/reenviar-enlace-registro-aplicacion",
 						"resources/registros-aplicacion/listar-todos-los-registros-aplicacion",
 						"resources/registros-aplicacion/crear-una-validacion-biometrica-registro-aplicacion",
 						"resources/registros-aplicacion/crear-una-validacion-documento-registro-aplicacion",

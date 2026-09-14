@@ -556,6 +556,12 @@ const sidebars = {
 					key: "vehicle-chile-vehicle-soap-plate",
 				},
 				{
+					type: "doc",
+					id: "vehicle-validation/chile/vehicle-validation-chile-vehicle-stolen",
+					label: "🇨🇱 Chile - Stolen Vehicle",
+					key: "vehicle-chile-vehicle-stolen",
+				},
+				{
 					type: "category",
 					label: "🇨🇴 Colombia",
 					collapsible: true,
@@ -619,7 +625,12 @@ const sidebars = {
 						{
 							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license",
-							label: "RUNT - Driver's License",
+							label: "RUNT - Driver's License (Premium)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license-basic",
+							label: "RUNT - Driver's License (Basic)",
 						},
 						{
 							type: "doc",

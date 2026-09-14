@@ -1,0 +1,71 @@
+---
+id: check-list-api-companion
+title: Check List API 指南
+description: 使用 GET、POST、PUT、DELETE /v2/check-lists 保存和读取 Check List
+slug: /check-list/api-companion
+---
+
+# Check List API 指南
+
+当你的**后端**需要保存与 Smart-Agent 界面相同的那套清单时，用本页。产品说明见 [Check List](/verifik-zh/check-list)。
+
+Check List 的增删改查**不会**执行查询，也**不会**扣积分。执行某项服务是普通的目录调用（与 SmartCheck 或 Postman 相同的 URL）。
+
+## 鉴权
+
+每条路由都需要**客户 JWT**（`Authorization: Bearer …`）。没有 `clientId` 的令牌返回 `403`（`Client context required`）。列表只属于该客户。
+
+## 接口
+
+| 方法 | 路径 | 用途 |
+| --- | --- | --- |
+| `GET` | `/v2/check-lists` | [列出清单](/verifik-zh/check-list/list-all-check-lists) |
+| `POST` | `/v2/check-lists` | [创建清单](/verifik-zh/check-list/create-a-check-list) |
+| `GET` | `/v2/check-lists/{id}` | [获取清单](/verifik-zh/check-list/retrieve-a-check-list) |
+| `PUT` | `/v2/check-lists/{id}` | [更新清单](/verifik-zh/check-list/update-a-check-list) |
+| `DELETE` | `/v2/check-lists/{id}` | [删除清单](/verifik-zh/check-list/delete-a-check-list) |
+
+列表查询参数：`page`、`perPage`（或 `limit`），以及按名称过滤的 `search`（或 `text`）。两种 `200` 响应形状（带 `page` 和不带 `page`）见 [列出清单](/verifik-zh/check-list/list-all-check-lists)。
+
+## 请求体字段
+
+| 字段 | 含义 |
+| --- | --- |
+| `name` | 创建时必填。最多 150 个字符。 |
+| `countries` | 运营国家名称（例如 `Colombia`）。 |
+| `domains` | 可选页签：`people`、`vehicles`、`businesses`。 |
+| `featureCodes` | 列表上服务的 AppFeature `code`。 |
+| `status` | `draft`（默认）或 `active`。仅整理标签，两者行为相同。 |
+
+未知的 `featureCodes` 会失败。国家与列表不符的服务会失败，除非该服务是全球范围（或列表还没有国家）。
+
+## 创建示例
+
+```
+POST https://api.verifik.co/v2/check-lists
+Authorization: Bearer <client-jwt>
+Content-Type: application/json
+```
+
+```json
+{
+  "name": "KYC Colombia",
+  "countries": ["Colombia"],
+  "domains": [],
+  "featureCodes": [],
+  "status": "draft"
+}
+```
+
+响应为 `{ "data": { …checklist } }`。保存 `data._id`。用户添加服务后，对同一 id `PUT` 新的 `featureCodes`。
+
+## 执行已保存的服务
+
+**没有**“执行清单”接口。对列表中的每个 code，像 SmartCheck 一样调用该功能的目录 URL。积分在这些调用上扣除。
+
+若要以文件或队列发送这套组合，使用 [SmartBatch](/verifik-zh/smart-batch)（国家 + 功能代码 + 名称）。Check List 不会替你启动批次。
+
+## 相关
+
+- [Check List](/verifik-zh/check-list) — Smart-Agent 说明
+- [SmartBatch](/verifik-zh/smart-batch) — 批量运行已保存的服务

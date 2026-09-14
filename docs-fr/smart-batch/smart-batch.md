@@ -154,5 +154,6 @@ Lorsque la configuration est **Async**, les deux chemins utilisent le même work
 
 ## Voir aussi
 
+- [Check List](/verifik-fr/check-list) — enregistrer un mélange de services catalogue avant de les loter
 - [Appeler les endpoints en file (async)](/verifik-fr/smart-batch/async-queue)
 - [Pérou — Citoyen (DNI)](/verifik-fr/identity/peru)

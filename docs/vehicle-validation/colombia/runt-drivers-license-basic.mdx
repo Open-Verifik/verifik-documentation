@@ -1,0 +1,137 @@
+---
+id: vehicle-validation-colombia-runt-drivers-license-basic
+title: RUNT - Driver's License (Basic)
+description: 'Verify Colombian driver licenses via RUNT on /v3/co/runt/conductor. primerApellido is required. Billed at the Basic conductor rate.'
+sidebar_label: RUNT - Driver's License (Basic)
+slug: /vehicle-validation/colombia/runt-drivers-license-basic
+keywords:
+  - v3/co/runt/conductor
+  - /v3/co/runt/conductor
+  - GET /v3/co/runt/conductor
+  - colombia_api_driver_basic
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Driver's License Validation in RUNT (Basic)
+
+Same RUNT driver lookup as [Premium v2](/vehicle-validation/colombia/runt-drivers-license), billed at the **current conductor price**. You must send `primerApellido`. Omitting it returns `409 MissingParameter`.
+
+Use this path when you already know the first last name. If you stay on v2 and send `primerApellido`, you also pay this Basic rate without changing the URL.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v3/co/runt/conductor
+```
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parameters
+
+| Name             | Type   | Required | Description                                                    |
+| ---------------- | ------ | -------- | -------------------------------------------------------------- |
+| `documentType`   | string | Yes      | One of **`CC`**, **`CE`**, **`PA`**, **`PPT`**. **`PA` is passport, `PPT` is not**. |
+| `documentNumber` | string | Yes      | Driver's document number, without spaces or periods.           |
+| `primerApellido` | string | **Yes**  | First last name (min 2 characters). Required for every document type. |
+
+### Document types
+
+| Code | Full name | Who holds it | RUNT label | `primerApellido` |
+| --- | --- | --- | --- | --- |
+| **`CC`** | *Cédula de Ciudadanía* | Colombian citizens (national ID) | `C.` | **Required** |
+| **`CE`** | *Cédula de Extranjería* | Foreign residents in Colombia | `E.` | **Required** |
+| **`PA`** | *Pasaporte* (passport) | Passport holders | `P.` | **Required** |
+| **`PPT`** | *Permiso por Protección Temporal* | Venezuelan temporary-protection permit — **not a passport** | `Y.` | **Required** |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v3/co/runt/conductor", {
+	params: {
+		documentType: "CC",
+		documentNumber: "123456789",
+		primerApellido: "GARCIA",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/co/runt/conductor"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "123456789", "primerApellido": "GARCIA"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"documentType": "CC",
+		"documentNumber": "63535709",
+		"fullName": "ARLETH PATRICIA RUEDA CORREA",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "B1",
+				"status": "ACTIVA",
+				"dueDate": "19/09/2034",
+				"expeditionDate": "19/09/2024"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "October 10, 2025 7:29 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "\"primerApellido\" is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- One API request and one credit row at the Basic conductor price.
+- Without `primerApellido` this endpoint does not fall back to a name lookup.
+- For automatic last-name resolution (Premium), use [`/v2/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license).

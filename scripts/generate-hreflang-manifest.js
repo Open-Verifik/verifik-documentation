@@ -53,6 +53,15 @@ const ES_REL_PATH_TO_CANONICAL = {
 	"validacion-empresarial/validacion-empresarial-rues-completa-v3": "business-validation/rues-complete-v3",
 	"validacion-empresarial/verificacion-dian": "business-validation/colombia-dian-verification",
 	"validacion-empresarial/verificacion-facturador-legal": "business-validation/colombia-legal-invoicer-verification",
+	"smartenroll/smartenroll-reanudar": "smartenroll/smartenroll-resume",
+	"check-list/check-list-guia-api": "check-list/check-list-api-companion",
+	"check-list/listar-check-lists": "check-list/list-all-check-lists",
+	"check-list/crear-un-check-list": "check-list/create-a-check-list",
+	"check-list/obtener-un-check-list": "check-list/retrieve-a-check-list",
+	"check-list/actualizar-un-check-list": "check-list/update-a-check-list",
+	"check-list/eliminar-un-check-list": "check-list/delete-a-check-list",
+	"resources/registros-aplicacion/reenviar-enlace-registro-aplicacion":
+		"resources/app-registrations/resend-an-app-registration-link",
 };
 
 /**

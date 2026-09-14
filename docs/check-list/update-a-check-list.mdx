@@ -1,0 +1,250 @@
+---
+id: update-a-check-list
+title: Update a checklist
+description: Update a Check List. Omitted fields keep their current values
+slug: /check-list/update-a-check-list
+keywords:
+  - 'v2/check-lists/{id}'
+  - '/v2/check-lists/{id}'
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - 'v2 check-lists {id}'
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - 'api.verifik.co/v2/check-lists/{id}'
+  - 'https://api.verifik.co/v2/check-lists/{id}'
+  - 'PUT v2/check-lists/{id}'
+  - 'PUT /v2/check-lists/{id}'
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Update a Check List you own. Send only the fields you want to change. Omitted fields keep their current values. The merged document is then re-validated, so `name` must still be present after the merge.
+
+Saving changes does not run lookups and does not spend credits. In Smart-Agent, countries are locked after create — this API still accepts a new `countries` array if you send one.
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v2/check-lists/{id}
+```
+
+Returns the updated list. Use this when the user adds or removes services (`featureCodes`), changes the name, or sets `status`. Invalid ids and other clients' lists return `404`.
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+The token must be a **client JWT**. A token without `clientId` returns `403`.
+
+### Parameters
+
+| Name | Type   | Required | Description                          |
+| ---- | ------ | -------- | ------------------------------------ |
+| `id` | string | Yes      | Check List ObjectId from create or list. |
+
+### Body
+
+All fields are optional on the request. After merge, `name` is still required.
+
+| Name           | Type     | Required | Description                                                                 |
+| -------------- | -------- | -------- | --------------------------------------------------------------------------- |
+| `name`         | string   | No       | Display name. Trimmed, 1–150 characters.                                    |
+| `countries`    | string[] | No       | Country names. Replaces the stored list when sent.                          |
+| `domains`      | string[] | No       | `people`, `vehicles`, and/or `businesses`. Replaces the stored list when sent. |
+| `featureCodes` | string[] | No       | AppFeature `code` values. Replaces the stored list when sent.               |
+| `status`       | string   | No       | `draft` or `active`. Organizer label only.                                  |
+
+Unknown `featureCodes` fail. A service whose country does not match the merged `countries` fails unless that service is worldwide or `countries` is empty.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const id = "6aa224c87034a338385c28c0";
+    const res = await fetch(`https://api.verifik.co/v2/check-lists/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+        body: JSON.stringify({
+            featureCodes: ["co-cedula", "cl-rut"],
+            domains: ["people"],
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6aa224c87034a338385c28c0";
+$ch = curl_init("https://api.verifik.co/v2/check-lists/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "featureCodes" => ["co-cedula", "cl-rut"],
+    "domains" => ["people"]
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+echo curl_exec($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+check_list_id = "6aa224c87034a338385c28c0"
+url = f"https://api.verifik.co/v2/check-lists/{check_list_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+payload = {
+    "featureCodes": ["co-cedula", "cl-rut"],
+    "domains": ["people"],
+}
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "6aa224c87034a338385c28c0"
+    body, _ := json.Marshal(map[string]interface{}{
+        "featureCodes": []string{"co-cedula", "cl-rut"},
+        "domains":      []string{"people"},
+    })
+    req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/check-lists/"+id, bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "6aa224c87034a338385c28c0",
+        "client": "507f1f77bcf86cd799439013",
+        "name": "KYC Colombia",
+        "countries": ["Colombia", "Chile"],
+        "domains": ["people"],
+        "featureCodes": ["co-cedula", "cl-rut"],
+        "status": "draft",
+        "createdAt": "2026-09-10T03:32:00.000Z",
+        "updatedAt": "2026-09-10T03:33:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "check_list_not_found",
+    "code": "check_list_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "\"name\" is required",
+    "code": "ValidationError"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-feature" label="409 invalid feature">
+
+```json
+{
+    "message": "check_list_invalid_feature",
+    "code": "check_list_invalid_feature"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-country" label="409 country mismatch">
+
+```json
+{
+    "message": "check_list_feature_country_mismatch",
+    "code": "check_list_feature_country_mismatch"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Omitted fields keep current values. Sending `featureCodes` replaces the whole array — it is not a patch-merge of codes.
+- After merge, Joi still requires `name`. Clearing the name fails with `ValidationError`.
+- Unknown `featureCodes` return `409` (`check_list_invalid_feature`).
+- A feature whose country is outside the merged `countries` returns `409` (`check_list_feature_country_mismatch`) unless the feature is worldwide or `countries` is empty.
+- Updates do not spend credits. Running a saved code is a catalog call. SmartBatch is a separate product.
+- Product walkthrough: [Check List](/check-list).

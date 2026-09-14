@@ -1,0 +1,186 @@
+---
+id: retrieve-a-check-list
+title: 获取清单
+description: 按 id 获取客户账号上的一份 Check List
+slug: /check-list/retrieve-a-check-list
+keywords:
+  - 'v2/check-lists/{id}'
+  - '/v2/check-lists/{id}'
+  - v2/check-lists
+  - /v2/check-lists
+  - v2 check-lists
+  - 'v2 check-lists {id}'
+  - api/check-lists
+  - /api/check-lists
+  - api check-lists
+  - 'api.verifik.co/v2/check-lists/{id}'
+  - 'https://api.verifik.co/v2/check-lists/{id}'
+  - 'GET v2/check-lists/{id}'
+  - 'GET /v2/check-lists/{id}'
+  - check-lists
+  - /check-lists
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+按 id 加载一份 Check List。该列表必须属于 JWT 上的客户。无效的 ObjectId、不存在的列表，或其他客户拥有的列表返回 `404`。
+
+此调用不会执行查询，也不会消耗积分。使用文档上的 `featureCodes` 自行调用各目录 API。
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/check-lists/{id}
+```
+
+返回已保存的列表：`name`、`countries`、`domains`、`featureCodes` 和 `status`。用这些代码调用对应的 SmartCheck / 目录 URL。此路径上没有执行清单的操作。
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+令牌必须是**客户 JWT**。没有 `clientId` 的令牌返回 `403`。
+
+### Parameters
+
+| Name | Type   | Required | Description                          |
+| ---- | ------ | -------- | ------------------------------------ |
+| `id` | string | Yes      | 创建或列表接口返回的 Check List ObjectId。 |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const id = "6aa224c87034a338385c28c0";
+    const res = await fetch(`https://api.verifik.co/v2/check-lists/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6aa224c87034a338385c28c0";
+$ch = curl_init("https://api.verifik.co/v2/check-lists/" . $id);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+echo curl_exec($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+check_list_id = "6aa224c87034a338385c28c0"
+url = f"https://api.verifik.co/v2/check-lists/{check_list_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+r = requests.get(url, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "6aa224c87034a338385c28c0"
+    req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/check-lists/"+id, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_TOKEN"))
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "6aa224c87034a338385c28c0",
+        "client": "507f1f77bcf86cd799439013",
+        "name": "KYC Colombia",
+        "countries": ["Colombia", "Chile"],
+        "domains": ["people", "vehicles"],
+        "featureCodes": ["co-cedula", "cl-rut"],
+        "status": "draft",
+        "createdAt": "2026-09-10T03:32:00.000Z",
+        "updatedAt": "2026-09-10T03:33:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Client context required",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "check_list_not_found",
+    "code": "check_list_not_found"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 无效的 ObjectId 和其他客户的列表都返回 `404`（`check_list_not_found`）。
+- 响应不包含托管的恢复 URL 或批次 URL。Check List 只存储组合。
+- 要修改字段，使用 [更新清单](/verifik-zh/check-list/update-a-check-list)。要删除，使用 [删除清单](/verifik-zh/check-list/delete-a-check-list)。
+- 执行 `featureCodes` 中的某个代码是普通的目录调用，并在该调用上扣除积分。

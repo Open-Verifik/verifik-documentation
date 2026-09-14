@@ -17,6 +17,8 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 **RUNT** に登録された運転免許情報を、**`documentType`** と **`documentNumber`** で照会します。ステータス、カテゴリ、適性証明・申請履歴、違反の有無などが含まれる場合があります。
 
+`primerApellido` なし: **Premium**（氏名解決込み）。`primerApellido` あり: **Basic** — [`/v3/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license-basic)。
+
 ### ヘッダー
 
 | 名前 | 値 |
@@ -28,8 +30,20 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 | 名前 | 型 | 必須 | 説明 |
 | --- | --- | --- | --- |
-| `documentType` | string | はい | 証明書種別。API 許可: **`CC`**, **`CE`**, **`PA`**, **`PPT`**. |
+| `documentType` | string | はい | **`CC`**、**`CE`**、**`PA`**、**`PPT`** のいずれか。下表を参照 — **`PA` は旅券、`PPT` は旅券ではありません**。 |
 | `documentNumber` | string | はい | 証番号（スペース・句点なし）。 |
+| `primerApellido` | string | 条件付き | 第一姓。**`PA` では必須**。`CC` / `CE` / `PPT` では任意。Procuraduría と `/v2/co/cedula` は旅券を照会しません。 |
+
+### 文書種別
+
+RUNT に **`P.`** と表示されている場合は `PPT` を送らないでください。それは **旅券（`PA`）** です。`PPT` は移民許可です。
+
+| コード | 正式名称 | 対象 | RUNT 表示 | `primerApellido` |
+| --- | --- | --- | --- | --- |
+| **`CC`** | *Cédula de Ciudadanía* | コロンビア国民（国民ID） | `C.` | 任意 |
+| **`CE`** | *Cédula de Extranjería* | コロンビア在住の外国人 | `E.` | 任意 |
+| **`PA`** | *Pasaporte*（旅券） | 旅券保持者 | `P.` | **必須** |
+| **`PPT`** | *Permiso por Protección Temporal* | ベネズエラ一時保護許可 — **旅券ではない** | `Y.` | 任意 |
 
 ### リクエスト
 
@@ -124,4 +138,5 @@ print(r.json())
 ### 注記
 
 - フィールド構成は **RUNT** の返却内容に依存します。
-- 本エンドポイントで検証される文書種別は **`CC`**, **`CE`**, **`PA`**, **`PPT`** です。
+- 本エンドポイントで検証される文書種別は **`CC`**, **`CE`**, **`PA`**（旅券）、**`PPT`** です。
+- `primerApellido` は **`PA` では必須**、**`CC`** / **`CE`** / **`PPT`** では任意です。

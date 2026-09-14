@@ -65,6 +65,7 @@ Conjunto habitual para un snapshot completo del enrollment:
 | [`POST /v2/face-recognition/compare-with-liveness`](/verifik-es/comparar-con-deteccion-vitalidad) | Comparar y luego vitalidad (secuencial) |
 | `POST /v2/face-recognition/compare/app-registration` | Comparación del flujo hospedado: usa `appRegistrationId` de la sesión; gallery/probe desde caras guardadas; cuerpo vacío `{}` válido; umbral del project flow |
 | `GET /v2/app-registrations/:id` | Leer el enrollment + popular scores |
+| [`POST /v2/app-registrations/:id/resend-link`](/verifik-es/resources/registros-aplicacion/reenviar-enlace-registro-aplicacion) | Generar una URL hospedada de continuación para un enrollment incompleto |
 | `POST /v2/biometric-validations/app-registration` | Paso biométrico / vitalidad en la sesión hospedada |
 | `POST /v2/document-validations/app-registration` | Captura / validación de documento en la sesión hospedada |
 | `POST /v2/identity-images/appRegistration` | Guardar imágenes de identidad (`face`, `documentFace`, …) |
@@ -104,6 +105,7 @@ La vitalidad facial de Verifik usa nuestro stack biométrico con detección de a
 
 - [SmartEnroll](/verifik-es/smartenroll) — configuración del proyecto
 - [Flujo KYC SmartEnroll](/verifik-es/smartenroll/smartenroll-flujo-kyc) — experiencia del usuario final
+- [Reanudar un enrollment incompleto](/verifik-es/smartenroll/reanudar) — continuar el KYC hospedado si el usuario abandonó el flujo
 - [Revisión KYC admin](/verifik-es/smartenroll/smartenroll-admin-revision-kyc) — UI de revisión e interpretación de scores
 - [SmartEnroll autoalojado](/verifik-es/smart-enroll-auto-alojado) — APIs programáticas de proyecto/flujo
 

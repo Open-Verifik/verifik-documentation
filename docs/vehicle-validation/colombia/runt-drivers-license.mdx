@@ -1,8 +1,8 @@
 ---
 id: vehicle-validation-colombia-runt-drivers-license
-title: RUNT - Driver's License
-description: 'Verify driver''s licenses in Colombia using the document number with the Verifik API. Access official RUNT data, including license status, categories, and expiration dates.'
-sidebar_label: RUNT - Driver's License
+title: RUNT - Driver's License (Premium)
+description: 'Verify driver''s licenses in Colombia using the document number with the Verifik API. Omit primerApellido to pay Premium (name lookup included) or send it to pay the Basic rate.'
+sidebar_label: RUNT - Driver's License (Premium)
 slug: /vehicle-validation/colombia/runt-drivers-license
 keywords:
   - v2/co/runt/conductor
@@ -36,11 +36,20 @@ export const structuredData = {
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# Driver's License Validation in RUNT
+# Driver's License Validation in RUNT (Premium)
 
 Verifik's Driver's License Validation API allows you to query official information registered in Colombia's Registro Único Nacional de Tránsito (RUNT) using the driver's identification document number.
 
 This integration is essential for transport companies, car rental agencies, insurers, and logistics platforms that need to verify the legal status and eligibility of drivers before hiring or authorizing vehicle use.
+
+RUNT now authenticates drivers with the first last name (`primerApellido`) and may return masked names. This **v2** path still works without an integration change.
+
+**Pricing from 1 September 2026 (America/Bogota):**
+
+- Omit `primerApellido` — Verifik resolves the last name internally — **Premium** (conductor + name lookup). One history row.
+- Send `primerApellido` — name lookup is skipped — **Basic** price (same as [`/v3/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license-basic)). One history row.
+
+Use the dedicated [Basic v3](/vehicle-validation/colombia/runt-drivers-license-basic) path if you always send `primerApellido` and want that requirement enforced.
 
 ## What information does the API return?
 
@@ -74,8 +83,20 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 | Name             | Type   | Required | Description                                                    |
 | ---------------- | ------ | -------- | -------------------------------------------------------------- |
-| `documentType`   | string | Yes      | Document type. Allowed values: `CC`, `CE`, `PA`, `PPT` (validated by the API). |
+| `documentType`   | string | Yes      | One of **`CC`**, **`CE`**, **`PA`**, **`PPT`**. See the table below — **`PA` is passport, `PPT` is not**. |
 | `documentNumber` | string | Yes      | Driver's document number, without spaces or periods.           |
+| `primerApellido` | string | Conditional | First last name. **Required for `PA`**. Optional for `CC`, `CE`, and `PPT`. Omit it for **Premium** (Verifik resolves the name). Send it to skip the name lookup and pay **Basic**. Procuraduría and `/v2/co/cedula` cannot look up passport names. |
+
+### Document types
+
+Do not send `PPT` when RUNT shows **`P.`** — that is a **passport (`PA`)**. `PPT` is an immigration permit.
+
+| Code | Full name | Who holds it | RUNT label | `primerApellido` |
+| --- | --- | --- | --- | --- |
+| **`CC`** | *Cédula de Ciudadanía* | Colombian citizens (national ID) | `C.` | Optional |
+| **`CE`** | *Cédula de Extranjería* | Foreign residents in Colombia | `E.` | Optional |
+| **`PA`** | *Pasaporte* (passport) | Passport holders | `P.` | **Required** |
+| **`PPT`** | *Permiso por Protección Temporal* | Venezuelan temporary-protection permit — **not a passport** | `Y.` | Optional |
 
 ### Request
 
@@ -89,6 +110,7 @@ const { data } = await axios.get("https://api.verifik.co/v2/co/runt/conductor", 
 	params: {
 		documentType: "CC",
 		documentNumber: "123456789",
+		// primerApellido: "GARCIA", // send this to pay the Basic rate
 	},
 	headers: {
 		Accept: "application/json",
@@ -106,7 +128,7 @@ import os, requests
 
 url = "https://api.verifik.co/v2/co/runt/conductor"
 headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"documentType": "CC", "documentNumber": "123456789"}
+params = {"documentType": "CC", "documentNumber": "123456789"}  # add primerApellido to pay Basic
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
@@ -323,6 +345,7 @@ The API connects directly to official sources such as RUNT, ensuring:
 -   License categories include B1 (cars), A2 (motorcycles), C1 (trucks), etc.
 -   Status "ACTIVA" indicates the license is currently valid.
 -   Multiple license categories can be associated with one driver.
+-   `PA` is passport, not PPT. Send `primerApellido` when querying a passport; RUNT authenticates drivers with the first last name and masks the full name in the official UI.
 
 ## About Verifik
 

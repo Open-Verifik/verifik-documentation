@@ -154,5 +154,6 @@ When the configuration is **Async**, both paths use the same background worker. 
 
 ## Related
 
+- [Check List](/check-list) — save a mix of catalog services before you batch them
 - [SmartCheck](/smartcheck) — catalog of identity and data APIs
 - [Call endpoints as queue (async)](/smart-batch/async-queue)
