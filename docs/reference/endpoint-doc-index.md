@@ -986,6 +986,32 @@ keywords:
   - "https://api.verifik.co/v2/co/contraloria/certificado"
   - "GET v2/co/contraloria/certificado"
   - "GET /v2/co/contraloria/certificado"
+  - "v2/co/copnia"
+  - "/v2/co/copnia"
+  - "v2 co copnia"
+  - "co/copnia"
+  - "/co/copnia"
+  - "api/co/copnia"
+  - "/api/co/copnia"
+  - "api co copnia"
+  - "api.verifik.co/v2/co/copnia"
+  - "https://api.verifik.co/v2/co/copnia"
+  - "GET v2/co/copnia"
+  - "GET /v2/co/copnia"
+  - "v2/co/copnia/matricula"
+  - "/v2/co/copnia/matricula"
+  - "v2 co copnia matricula"
+  - "co/copnia/matricula"
+  - "/co/copnia/matricula"
+  - "api/co/copnia/matricula"
+  - "/api/co/copnia/matricula"
+  - "api co copnia matricula"
+  - "copnia/matricula"
+  - "/copnia/matricula"
+  - "api.verifik.co/v2/co/copnia/matricula"
+  - "https://api.verifik.co/v2/co/copnia/matricula"
+  - "GET v2/co/copnia/matricula"
+  - "GET /v2/co/copnia/matricula"
   - "v2/co/deudoresmorosos"
   - "/v2/co/deudoresmorosos"
   - "v2 co deudoresmorosos"
@@ -1342,6 +1368,20 @@ keywords:
   - "https://api.verifik.co/v2/co/runt/conductor"
   - "GET v2/co/runt/conductor"
   - "GET /v2/co/runt/conductor"
+  - "v2/co/runt/placas"
+  - "/v2/co/runt/placas"
+  - "v2 co runt placas"
+  - "co/runt/placas"
+  - "/co/runt/placas"
+  - "api/co/runt/placas"
+  - "/api/co/runt/placas"
+  - "api co runt placas"
+  - "runt/placas"
+  - "/runt/placas"
+  - "api.verifik.co/v2/co/runt/placas"
+  - "https://api.verifik.co/v2/co/runt/placas"
+  - "GET v2/co/runt/placas"
+  - "GET /v2/co/runt/placas"
   - "v2/co/runt/propietarios"
   - "/v2/co/runt/propietarios"
   - "v2 co runt propietarios"
@@ -2776,12 +2816,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (223 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (226 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-09-14T22:36:41.350Z_
+_Last regenerated: 2026-09-17T03:09:59.893Z_
 
 ## Argentina
 
@@ -2852,6 +2892,8 @@ _Last regenerated: 2026-09-14T22:36:41.350Z_
 | `v2/co/company/dian/invoicer` | v2 co company dian invoicer co/company/dian/invoicer /co/company/dian/invoicer api/co/company/dian/invoicer /api/co/company/dian/invoicer api co company dian invoicer company/dian/invoicer /company/dian/invoicer dian/invoicer /dian/invoicer api.verifik.co/v2/co/company/dian/invoicer https://api.verifik.co/v2/co/company/dian/invoicer GET v2/co/company/dian/invoicer GET /v2/co/company/dian/invoicer | [Colombia Legal Invoicer Verification](/business-validation/colombia-legal-invoicer-verification) |
 | `v2/co/contracts` | v2 co contracts co/contracts /co/contracts api/co/contracts /api/co/contracts api co contracts api.verifik.co/v2/co/contracts https://api.verifik.co/v2/co/contracts GET v2/co/contracts GET /v2/co/contracts | [Colombia - Public Contracts](/background-check/colombia-public-contracts) |
 | `v2/co/contraloria/certificado` | v2 co contraloria certificado co/contraloria/certificado /co/contraloria/certificado api/co/contraloria/certificado /api/co/contraloria/certificado api co contraloria certificado contraloria/certificado /contraloria/certificado api.verifik.co/v2/co/contraloria/certificado https://api.verifik.co/v2/co/contraloria/certificado GET v2/co/contraloria/certificado GET /v2/co/contraloria/certificado | [Colombia - Contraloría Certificate](/background-check/colombia-comptroller-certificate) |
+| `v2/co/copnia` | v2 co copnia co/copnia /co/copnia api/co/copnia /api/co/copnia api co copnia api.verifik.co/v2/co/copnia https://api.verifik.co/v2/co/copnia GET v2/co/copnia GET /v2/co/copnia | [Colombia — COPNIA professional licenses by document](/legal/colombia-copnia) |
+| `v2/co/copnia/matricula` | v2 co copnia matricula co/copnia/matricula /co/copnia/matricula api/co/copnia/matricula /api/co/copnia/matricula api co copnia matricula copnia/matricula /copnia/matricula api.verifik.co/v2/co/copnia/matricula https://api.verifik.co/v2/co/copnia/matricula GET v2/co/copnia/matricula GET /v2/co/copnia/matricula | [Colombia — COPNIA professional license by matrícula](/legal/colombia-copnia-license) |
 | `v2/co/deudoresmorosos` | v2 co deudoresmorosos co/deudoresmorosos /co/deudoresmorosos api/co/deudoresmorosos /api/co/deudoresmorosos api co deudoresmorosos api.verifik.co/v2/co/deudoresmorosos https://api.verifik.co/v2/co/deudoresmorosos GET v2/co/deudoresmorosos GET /v2/co/deudoresmorosos | [Colombia — Delinquent debtors (BDME)](/finance/delinquent-debtors) |
 | `v2/co/fasecolda/sinister` | v2 co fasecolda sinister co/fasecolda/sinister /co/fasecolda/sinister api/co/fasecolda/sinister /api/co/fasecolda/sinister api co fasecolda sinister fasecolda/sinister /fasecolda/sinister api.verifik.co/v2/co/fasecolda/sinister https://api.verifik.co/v2/co/fasecolda/sinister GET v2/co/fasecolda/sinister GET /v2/co/fasecolda/sinister | [Claims Verification](/vehicle-validation/colombia-fasecolda-claims-verification) |
 | `v2/co/fasecolda/values-by-code` | v2 co fasecolda values-by-code co/fasecolda/values-by-code /co/fasecolda/values-by-code api/co/fasecolda/values-by-code /api/co/fasecolda/values-by-code api co fasecolda values-by-code fasecolda/values-by-code /fasecolda/values-by-code api.verifik.co/v2/co/fasecolda/values-by-code https://api.verifik.co/v2/co/fasecolda/values-by-code GET v2/co/fasecolda/values-by-code GET /v2/co/fasecolda/values-by-code | [Vehicle Values by Code](/vehicle-validation/colombia-fasecolda-vehicle-by-code) |
@@ -2878,6 +2920,7 @@ _Last regenerated: 2026-09-14T22:36:41.350Z_
 | `v2/co/rues/complete` | v2 co rues complete co/rues/complete /co/rues/complete api/co/rues/complete /api/co/rues/complete api co rues complete rues/complete /rues/complete api.verifik.co/v2/co/rues/complete https://api.verifik.co/v2/co/rues/complete GET v2/co/rues/complete GET /v2/co/rues/complete | [Colombia — RUES complete lookup (v2, legacy)](/business-validation/colombia-rues-complete-v2) |
 | `v2/co/rui` | v2 co rui co/rui /co/rui api/co/rui /api/co/rui api co rui api.verifik.co/v2/co/rui https://api.verifik.co/v2/co/rui GET v2/co/rui GET /v2/co/rui | [Colombia — RUI Classification](/background-check/colombia-rui) |
 | `v2/co/runt/conductor` | v2 co runt conductor co/runt/conductor /co/runt/conductor api/co/runt/conductor /api/co/runt/conductor api co runt conductor runt/conductor /runt/conductor api.verifik.co/v2/co/runt/conductor https://api.verifik.co/v2/co/runt/conductor GET v2/co/runt/conductor GET /v2/co/runt/conductor | [Driver's License](/vehicle-validation/colombia/driver-s-license) |
+| `v2/co/runt/placas` | v2 co runt placas co/runt/placas /co/runt/placas api/co/runt/placas /api/co/runt/placas api co runt placas runt/placas /runt/placas api.verifik.co/v2/co/runt/placas https://api.verifik.co/v2/co/runt/placas GET v2/co/runt/placas GET /v2/co/runt/placas | [RUNT — Vehicle by plate only](/vehicle-validation/colombia/runt-placas) |
 | `v2/co/runt/propietarios` | v2 co runt propietarios co/runt/propietarios /co/runt/propietarios api/co/runt/propietarios /api/co/runt/propietarios api co runt propietarios runt/propietarios /runt/propietarios api.verifik.co/v2/co/runt/propietarios https://api.verifik.co/v2/co/runt/propietarios GET v2/co/runt/propietarios GET /v2/co/runt/propietarios | [RUNT - Vehicle owners by plate](/vehicle-validation/colombia/runt-vehicle-owners) |
 | `v2/co/runt/vehicle-by-plate` | v2 co runt vehicle-by-plate co/runt/vehicle-by-plate /co/runt/vehicle-by-plate api/co/runt/vehicle-by-plate /api/co/runt/vehicle-by-plate api co runt vehicle-by-plate runt/vehicle-by-plate /runt/vehicle-by-plate api.verifik.co/v2/co/runt/vehicle-by-plate https://api.verifik.co/v2/co/runt/vehicle-by-plate GET v2/co/runt/vehicle-by-plate GET /v2/co/runt/vehicle-by-plate | [Vehicle Records by Plate](/vehicle-validation/colombia/runt-vehicle-by-plate) |
 | `v2/co/runt/vehicle-by-plate-simplified` | v2 co runt vehicle-by-plate-simplified co/runt/vehicle-by-plate-simplified /co/runt/vehicle-by-plate-simplified api/co/runt/vehicle-by-plate-simplified /api/co/runt/vehicle-by-plate-simplified api co runt vehicle-by-plate-simplified runt/vehicle-by-plate-simplified /runt/vehicle-by-plate-simplified api.verifik.co/v2/co/runt/vehicle-by-plate-simplified https://api.verifik.co/v2/co/runt/vehicle-by-plate-simplified GET v2/co/runt/vehicle-by-plate-simplified GET /v2/co/runt/vehicle-by-plate-simplified | [Simplified Vehicle Records by Plate in RUNT](/vehicle-validation/colombia/runt-vehicle-by-plate-simplified) |
