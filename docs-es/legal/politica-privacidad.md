@@ -184,6 +184,8 @@ Podemos compartir Su información personal en las siguientes situaciones:
 
 * **Con Su consentimiento:** Podemos divulgar Su información personal para cualquier otro propósito con Su consentimiento.
 
+Lo anterior excluye los datos de suscripción y el consentimiento del originador de mensajes de texto; esta información no se compartirá con terceros.
+
 ### **Retención de Sus Datos Personales**
 
 La Compañía retendrá Sus Datos Personales solo durante el tiempo que sea necesario para los propósitos establecidos en esta Política de Privacidad. Retendremos y utilizaremos Sus Datos Personales en la medida necesaria para cumplir con nuestras obligaciones legales (por ejemplo, si estamos obligados a retener sus datos para cumplir con las leyes aplicables), resolver disputas y hacer cumplir nuestros acuerdos y políticas legales.
