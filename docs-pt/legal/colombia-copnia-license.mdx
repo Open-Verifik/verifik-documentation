@@ -1,0 +1,148 @@
+---
+id: colombia-copnia-license
+title: Colômbia — Licença COPNIA por matrícula
+description: Consulte uma matrícula profissional do COPNIA pelo número de registro via GET /v2/co/copnia/matricula.
+slug: /legal/colombia-copnia-license
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colômbia — Licença COPNIA por matrícula
+
+A Verifik consulta o **COPNIA** (*Consejo Profesional Nacional de Ingeniería*) com um único **`licenseNumber`** (matrícula). Use quando você já tem o número de registro e precisa do titular e do status.
+
+## O que a API retorna
+
+- Campos de **identidade**: `documentType`, `documentNumber`, `firstName`, `lastName`, `fullName`, `arrayName`
+- Campos da licença no mesmo objeto: **`licenseNumber`**, **`licenseStatus`**, **`licenseType`**, **`profession`**, **`resolutionDate`**, **`resolutionNumber`**
+- Resposta Verifik **assinada** (sem array `licenses[]`)
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/copnia/matricula
+```
+
+Envie **`licenseNumber`** como **query**. O handler devolve a pessoa e os seis campos da licença no mesmo objeto. Um valor típico é `091132-0839078 CNDC` (6–40 caracteres).
+
+### Cabeçalhos
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parâmetros
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `licenseNumber` | string | Sim | Número de matrícula COPNIA, **6–40** caracteres. Espaços são permitidos. | `091132-0839078 CNDC` |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/copnia/matricula", {
+	params: {
+		licenseNumber: "091132-0839078 CNDC",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/copnia/matricula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"licenseNumber": "091132-0839078 CNDC"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["HENRY", "ANDRES", "CASTANEDA", "ACOSTA"],
+		"documentNumber": "80176161",
+		"documentType": "CC",
+		"firstName": "HENRY ANDRES",
+		"fullName": "HENRY ANDRES CASTANEDA ACOSTA",
+		"lastName": "CASTANEDA ACOSTA",
+		"licenseNumber": "091132-0839078 CNDC",
+		"licenseStatus": "VIGENTE",
+		"licenseType": "MATRICULA PROFESIONAL",
+		"profession": "INGENIERIA DE SOFTWARE",
+		"resolutionDate": "2026-07-27",
+		"resolutionNumber": "RN2026NALA032094"
+	},
+	"signature": {
+		"dateTime": "September 15, 2026 9:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "licenseNumber length must be at least 6 characters long"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Recursos
+
+- Consulta por **matrícula** sem número de documento
+- Apenas **GET** com parâmetros de consulta
+- O **sandbox** devolve um payload COPNIA fixo para a licença de exemplo
+- Respostas **assinadas**, cobradas como feature híbrida `apiRequest`
+
+## Casos de uso
+
+- Confirmar uma matrícula **impressa ou enviada**
+- Revalidar o **status** (`VIGENTE` ou outro valor da fonte) no onboarding
+- Cruzar uma licença encontrada em [COPNIA por documento](/verifik-pt/legal/colombia-copnia)
+
+### Observações
+
+- Exemplo sandbox: **`091132-0839078 CNDC`**. A pessoa associada é **`CC` / `80176161`**.
+- Valor que normaliza para vazio retorna **`409`** (`invalid_license_number`).
+- Falha de sessão ou da fonte pode devolver **`409`** com `timeout_data_source`.
+- Trate a resposta como **dado pessoal sensível**.

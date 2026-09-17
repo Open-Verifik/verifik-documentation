@@ -168,6 +168,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license", label: "🇨🇴 RUNT — CNH (Premium)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license-basic", label: "🇨🇴 RUNT — CNH (Basic)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — veículo por placa (completo)" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-placas", label: "🇨🇴 RUNT — veículo somente pela placa" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — veículo por placa (simplificado)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — veículo (básico)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — proprietários por placa" },
@@ -235,6 +236,15 @@ const sidebars = {
 			items: [
 				{ type: "doc", id: "certificates/certificates-colombia-ministerio-trabajo-v3", label: "🇨🇴 Ministério do Trabalho (v3)" },
 				{ type: "doc", id: "certificates/certificates-sena-certificates", label: "🇨🇴 Certificados SENA" },
+			],
+		},
+		{
+			type: "category",
+			label: "VERIFICAÇÕES LEGAIS",
+			collapsible: false,
+			items: [
+				{ type: "doc", id: "legal/colombia-copnia", label: "🇨🇴 Colômbia — COPNIA por documento" },
+				{ type: "doc", id: "legal/colombia-copnia-license", label: "🇨🇴 Colômbia — COPNIA por matrícula" },
 			],
 		},
 		{

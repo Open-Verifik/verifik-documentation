@@ -77,9 +77,10 @@ Para uma UI totalmente customizada: [SmartEnroll Self Hosted](https://docs.verif
 | Contexto | Valores |
 | --- | --- |
 | SmartEnroll hospedado / project flow (padrão) | **`0.85`** (`compareMinScore`) |
+| SmartEnroll hospedado / project flow (intervalo permitido) | **`0.65`–`0.95`** |
 | API face-recognition (`compare_min_score`) | **`0.67`–`0.95`** (padrão `0.85` se omitido) |
 
-Fotos de documentos impressos costumam corresponder a um selfie ao vivo com scores **mais baixos** do que live vs live. Se usuários genuínos falham perto de 0,7, considere reduzir o limiar do projeto após validar o risco de falsos aceites.
+Retratos impressos em documentos costumam estar desbotados, riscados ou em baixa resolução. Algumas cédulas colombianas são especialmente ruins, e o mesmo problema de qualidade pode aparecer em outros países. Selfie ao vivo vs foto impressa pontua **mais baixo** do que live vs live. Reduzir o limiar do projeto para **`0.65`** diminui rejeições falsas de usuários genuínos com documentos ruins; também aumenta o risco de falsos aceites. Mantenha `0.85` salvo se usuários reais falharem.
 
 ## `cropFace`
 

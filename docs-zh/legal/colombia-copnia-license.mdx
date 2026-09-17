@@ -1,0 +1,148 @@
+---
+id: colombia-copnia-license
+title: 哥伦比亚 — 按注册号查询 COPNIA 执照
+description: 通过 GET /v2/co/copnia/matricula 按注册号（matrícula）查询单条 COPNIA 专业执照。
+slug: /legal/colombia-copnia-license
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 哥伦比亚 — 按注册号查询 COPNIA 执照
+
+Verifik 使用单个 **`licenseNumber`**（matrícula）查询 **COPNIA**（*Consejo Profesional Nacional de Ingeniería*）。已有注册号、需要持有人和状态时使用。
+
+## 本 API 返回的内容
+
+- **身份** 字段：`documentType`、`documentNumber`、`firstName`、`lastName`、`fullName`、`arrayName`
+- 展平的执照字段：**`licenseNumber`**、**`licenseStatus`**、**`licenseType`**、**`profession`**、**`resolutionDate`**、**`resolutionNumber`**
+- **已签名** 的 Verifik 响应（无 `licenses[]` 数组）
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/copnia/matricula
+```
+
+以 **查询参数** 发送 **`licenseNumber`**。处理程序在同一对象中返回人员和六个执照字段。典型值形如 `091132-0839078 CNDC`（6–40 个字符）。
+
+### 请求头
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `licenseNumber` | string | 是 | COPNIA 注册号（matrícula），**6–40** 个字符。允许空格。 | `091132-0839078 CNDC` |
+
+### 请求
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/copnia/matricula", {
+	params: {
+		licenseNumber: "091132-0839078 CNDC",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/copnia/matricula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"licenseNumber": "091132-0839078 CNDC"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["HENRY", "ANDRES", "CASTANEDA", "ACOSTA"],
+		"documentNumber": "80176161",
+		"documentType": "CC",
+		"firstName": "HENRY ANDRES",
+		"fullName": "HENRY ANDRES CASTANEDA ACOSTA",
+		"lastName": "CASTANEDA ACOSTA",
+		"licenseNumber": "091132-0839078 CNDC",
+		"licenseStatus": "VIGENTE",
+		"licenseType": "MATRICULA PROFESIONAL",
+		"profession": "INGENIERIA DE SOFTWARE",
+		"resolutionDate": "2026-07-27",
+		"resolutionNumber": "RN2026NALA032094"
+	},
+	"signature": {
+		"dateTime": "September 15, 2026 9:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "licenseNumber length must be at least 6 characters long"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 功能
+
+- 无需证件号，按 **注册号** 查询
+- 仅支持 **GET** 查询参数
+- **沙箱** 会为示例执照返回固定的 COPNIA 载荷
+- 响应已 **签名**，按 `apiRequest` 混合功能计费
+
+## 使用场景
+
+- 核对 **已打印或已提交** 的 COPNIA 注册号
+- 入职时复查 **状态**（如 `VIGENTE`）
+- 与 [按证件查询 COPNIA](/verifik-zh/legal/colombia-copnia) 的结果交叉核对
+
+### 备注
+
+- 沙箱示例：**`091132-0839078 CNDC`**。对应人员为 **`CC` / `80176161`**。
+- 规范化后为空字符串时返回 **`409`**（`invalid_license_number`）。
+- 来源或会话失败可能返回带 `timeout_data_source` 的 **`409`**。
+- 请将响应视为 **敏感个人数据**。

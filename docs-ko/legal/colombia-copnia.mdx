@@ -1,0 +1,156 @@
+---
+id: colombia-copnia
+title: 콜롬비아 — 서류로 COPNIA 전문 면허 조회
+description: GET /v2/co/copnia로 COPNIA(Consejo Profesional Nacional de Ingeniería) 전문 면허를 신분증으로 조회합니다.
+slug: /legal/colombia-copnia
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 콜롬비아 — 서류로 COPNIA 전문 면허 조회
+
+Verifik는 **`documentType`**과 **`documentNumber`**로 **COPNIA**(*Consejo Profesional Nacional de Ingeniería*)를 조회합니다. 실시간 소스는 COPNIA 유효 증명 포털입니다. 콜롬비아 엔지니어의 **채용**, **자격 확인**, **컴플라이언스**에 사용하세요.
+
+## 이 API가 반환하는 내용
+
+- **신원** 필드: `documentType`, `documentNumber`, `firstName`, `lastName`, `fullName`, `arrayName`
+- **`licenses[]`** — 해당 인물의 전문 등록 목록
+- 각 면허는 **`licenseNumber`**, **`licenseStatus`**, **`licenseType`**, **`profession`**, **`resolutionDate`**, **`resolutionNumber`**를 포함할 수 있습니다
+- **서명된** Verifik 응답
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/copnia
+```
+
+**`documentType`**과 **`documentNumber`**를 **쿼리**로 보내세요. 핸들러는 인물과 `licenses` 배열을 반환합니다. 상세 필드(`licenseStatus`, `licenseType`, `resolutionDate`, `resolutionNumber`)는 최대 **10**건만 채웁니다. 나머지 행은 `licenseNumber`와 `profession`만 유지합니다.
+
+### 헤더
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | 예 | **`CC`**, **`CE`**, **`PA`**, **`PEP`**, **`PE`**, **`PPT`**, **`TI`**, **`NIT`** 중 하나. | `CC` |
+| `documentNumber` | string | 예 | 공백·구두점 없는 서류 번호(최소 **5**자). | `80176161` |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/copnia", {
+	params: {
+		documentType: "CC",
+		documentNumber: "80176161",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/copnia"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "80176161"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["HENRY", "ANDRES", "CASTANEDA", "ACOSTA"],
+		"documentNumber": "80176161",
+		"documentType": "CC",
+		"firstName": "HENRY ANDRES",
+		"fullName": "HENRY ANDRES CASTANEDA ACOSTA",
+		"lastName": "CASTANEDA ACOSTA",
+		"licenses": [
+			{
+				"licenseNumber": "091132-0839078 CNDC",
+				"licenseStatus": "VIGENTE",
+				"licenseType": "MATRICULA PROFESIONAL",
+				"profession": "INGENIERIA DE SOFTWARE",
+				"resolutionDate": "2026-07-27",
+				"resolutionNumber": "RN2026NALA032094"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "September 15, 2026 9:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, CE, PA, PEP, PE, PPT, TI, NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 기능
+
+- 허용 서류 유형: **CC**, **CE**, **PA**, **PEP**, **PE**, **PPT**, **TI**, **NIT**
+- **GET** 쿼리만 지원
+- **샌드박스**는 테스트 서류에 COPNIA 형태의 페이로드를 반환합니다
+- 응답은 **서명**되며 `apiRequest` 하이브리드 기능으로 과금됩니다
+
+## 사용 사례
+
+- 엔지니어 **채용** 및 자격 확인
+- 계약 전 **컴플라이언스**
+- COPNIA 등록이 필요한 **온보딩**
+
+### 참고
+
+- 샌드박스 예: **`CC` / `80176161`**. 샌드박스 면허 번호는 **`091132-0839078 CNDC`**입니다.
+- 상세 조회는 최대 **10**건입니다. 추가 행은 `licenseNumber`와 `profession`만 유지합니다. 상세 조회 실패는 조용히 무시됩니다(목록 행은 유지).
+- 소스 또는 세션 실패는 `timeout_data_source`와 함께 **`409`**를 반환할 수 있습니다.
+- 응답은 **민감한 개인정보**로 취급하세요.
+- 등록 번호로 한 건을 조회하려면 [면허 번호로 COPNIA 조회](/verifik-ko/legal/colombia-copnia-license)를 사용하세요.

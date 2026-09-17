@@ -1,0 +1,148 @@
+---
+id: colombia-copnia-license
+title: コロンビア — 登録番号で COPNIA 免許を照会
+description: GET /v2/co/copnia/matricula で COPNIA 専門免許を登録番号（matrícula）から照会します。
+slug: /legal/colombia-copnia-license
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# コロンビア — 登録番号で COPNIA 免許を照会
+
+Verifik は単一の **`licenseNumber`**（matrícula）で **COPNIA**（*Consejo Profesional Nacional de Ingeniería*）を照会します。登録番号が既にあり、名義人と状態が必要なときに使います。
+
+## この API が返す内容
+
+- **身元** フィールド: `documentType`, `documentNumber`, `firstName`, `lastName`, `fullName`, `arrayName`
+- 平坦化した免許フィールド: **`licenseNumber`**, **`licenseStatus`**, **`licenseType`**, **`profession`**, **`resolutionDate`**, **`resolutionNumber`**
+- **署名付き** Verifik レスポンス（`licenses[]` 配列なし）
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/copnia/matricula
+```
+
+**`licenseNumber`** を **クエリ** で送ってください。ハンドラは人物と 6 つの免許フィールドを同じオブジェクトで返します。典型値は `091132-0839078 CNDC`（6–40 文字）です。
+
+### ヘッダー
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### パラメーター
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `licenseNumber` | string | はい | COPNIA 登録番号（matrícula）、**6–40** 文字。空白可。 | `091132-0839078 CNDC` |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/copnia/matricula", {
+	params: {
+		licenseNumber: "091132-0839078 CNDC",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/copnia/matricula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"licenseNumber": "091132-0839078 CNDC"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["HENRY", "ANDRES", "CASTANEDA", "ACOSTA"],
+		"documentNumber": "80176161",
+		"documentType": "CC",
+		"firstName": "HENRY ANDRES",
+		"fullName": "HENRY ANDRES CASTANEDA ACOSTA",
+		"lastName": "CASTANEDA ACOSTA",
+		"licenseNumber": "091132-0839078 CNDC",
+		"licenseStatus": "VIGENTE",
+		"licenseType": "MATRICULA PROFESIONAL",
+		"profession": "INGENIERIA DE SOFTWARE",
+		"resolutionDate": "2026-07-27",
+		"resolutionNumber": "RN2026NALA032094"
+	},
+	"signature": {
+		"dateTime": "September 15, 2026 9:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "licenseNumber length must be at least 6 characters long"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 機能
+
+- 書類番号なしで **登録番号** から照会
+- **GET** クエリのみ
+- **サンドボックス** はサンプル免許に固定の COPNIA ペイロードを返します
+- レスポンスは **署名** され、`apiRequest` ハイブリッド機能として課金されます
+
+## ユースケース
+
+- **印刷・提出済み** の COPNIA 登録番号を確認
+- オンボーディング中に **状態**（`VIGENTE` など）を再確認
+- [書類番号で COPNIA を照会](/verifik-ja/legal/colombia-copnia) で見つけた免許と突合
+
+### 備考
+
+- サンドボックス例: **`091132-0839078 CNDC`**。対応する人物は **`CC` / `80176161`** です。
+- 正規化後が空文字になると **`409`**（`invalid_license_number`）になります。
+- ソースまたはセッション障害は `timeout_data_source` の **`409`** になることがあります。
+- レスポンスは **機微な個人データ** として扱ってください。

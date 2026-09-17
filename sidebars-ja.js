@@ -169,6 +169,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license", label: "🇨🇴 RUNT — 運転免許 (Premium)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license-basic", label: "🇨🇴 RUNT — 運転免許 (Basic)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — 車両（ナンバー・詳細）" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-placas", label: "🇨🇴 RUNT — ナンバーのみの車両" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — 車両（ナンバー・簡易）" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — 車両(基本)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — ナンバー別所有者" },
@@ -237,6 +238,15 @@ const sidebars = {
 			items: [
 				{ type: "doc", id: "certificates/certificates-colombia-ministerio-trabajo-v3", label: "🇨🇴 労働省証明書（v3）" },
 				{ type: "doc", id: "certificates/certificates-sena-certificates", label: "🇨🇴 SENA 証明書" },
+			],
+		},
+		{
+			type: "category",
+			label: "法的検証",
+			collapsible: false,
+			items: [
+				{ type: "doc", id: "legal/colombia-copnia", label: "🇨🇴 コロンビア — 書類で COPNIA 照会" },
+				{ type: "doc", id: "legal/colombia-copnia-license", label: "🇨🇴 コロンビア — 登録番号で COPNIA 照会" },
 			],
 		},
 		{

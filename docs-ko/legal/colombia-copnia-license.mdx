@@ -1,0 +1,148 @@
+---
+id: colombia-copnia-license
+title: 콜롬비아 — 등록 번호로 COPNIA 면허 조회
+description: GET /v2/co/copnia/matricula로 COPNIA 전문 면허를 등록 번호(matrícula)로 조회합니다.
+slug: /legal/colombia-copnia-license
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 콜롬비아 — 등록 번호로 COPNIA 면허 조회
+
+Verifik는 단일 **`licenseNumber`**(matrícula)로 **COPNIA**(*Consejo Profesional Nacional de Ingeniería*)를 조회합니다. 이미 등록 번호가 있고 소지자와 상태가 필요할 때 사용하세요.
+
+## 이 API가 반환하는 내용
+
+- **신원** 필드: `documentType`, `documentNumber`, `firstName`, `lastName`, `fullName`, `arrayName`
+- 평탄화된 면허 필드: **`licenseNumber`**, **`licenseStatus`**, **`licenseType`**, **`profession`**, **`resolutionDate`**, **`resolutionNumber`**
+- **서명된** Verifik 응답 (`licenses[]` 배열 없음)
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/copnia/matricula
+```
+
+**`licenseNumber`**를 **쿼리**로 보내세요. 핸들러는 인물과 여섯 개 면허 필드를 같은 객체에 반환합니다. 전형적인 값은 `091132-0839078 CNDC`(6–40자)입니다.
+
+### 헤더
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 매개변수
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `licenseNumber` | string | 예 | COPNIA 등록 번호(matrícula), **6–40**자. 공백 허용. | `091132-0839078 CNDC` |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/copnia/matricula", {
+	params: {
+		licenseNumber: "091132-0839078 CNDC",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/copnia/matricula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"licenseNumber": "091132-0839078 CNDC"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["HENRY", "ANDRES", "CASTANEDA", "ACOSTA"],
+		"documentNumber": "80176161",
+		"documentType": "CC",
+		"firstName": "HENRY ANDRES",
+		"fullName": "HENRY ANDRES CASTANEDA ACOSTA",
+		"lastName": "CASTANEDA ACOSTA",
+		"licenseNumber": "091132-0839078 CNDC",
+		"licenseStatus": "VIGENTE",
+		"licenseType": "MATRICULA PROFESIONAL",
+		"profession": "INGENIERIA DE SOFTWARE",
+		"resolutionDate": "2026-07-27",
+		"resolutionNumber": "RN2026NALA032094"
+	},
+	"signature": {
+		"dateTime": "September 15, 2026 9:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "licenseNumber length must be at least 6 characters long"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 기능
+
+- 서류 번호 없이 **등록 번호**로 조회
+- **GET** 쿼리만 지원
+- **샌드박스**는 예제 면허에 고정 COPNIA 페이로드를 반환합니다
+- 응답은 **서명**되며 `apiRequest` 하이브리드 기능으로 과금됩니다
+
+## 사용 사례
+
+- **인쇄·제출된** COPNIA 등록 번호 확인
+- 온보딩 중 **상태**(`VIGENTE` 등) 재확인
+- [서류로 COPNIA 조회](/verifik-ko/legal/colombia-copnia)에서 찾은 면허와 교차 확인
+
+### 참고
+
+- 샌드박스 예: **`091132-0839078 CNDC`**. 연결된 인물은 **`CC` / `80176161`**입니다.
+- 정규화 후 빈 문자열이면 **`409`** (`invalid_license_number`)를 반환합니다.
+- 소스 또는 세션 실패는 `timeout_data_source`와 함께 **`409`**를 반환할 수 있습니다.
+- 응답은 **민감한 개인정보**로 취급하세요.

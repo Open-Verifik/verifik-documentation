@@ -5,6 +5,33 @@ sidebar_label: 📋 Propuesta Completa
 sidebar_position: 3
 ---
 
+## HumanAuthn: el primitivo de identidad
+
+Verifik no centra esta oferta en un motor facial genérico ni en una galería de plantillas. El diferenciador es **HumanAuthn**: el rostro vivo regenera una clave efímera, descifra el contenedor **HumanID** y produce una prueba de identidad. No hay plantillas biométricas almacenadas ni llaves privadas persistentes. El detalle técnico está en [HumanAuthn vs UR Codes](/biometrics/humanauthn-vs-ur-codes).
+
+```
+presencia humana → regeneración de clave → descifrado → prueba de identidad
+```
+
+**HumanID** es el contenedor portable. Se amarra al dispositivo en Secure Enclave / TEE. El ciclo de vida se opera con `/v2/human-id/encrypt`, `/v2/human-id/decrypt` y `/v2/human-id/preview`.
+
+**PAD certificado.** Liveness con iBeta **ISO/IEC 30107-3 Level 1 y Level 2**. El SDK nativo iOS/Android ejecuta liveness + encrypt/decrypt HumanAuthn **100 % offline** (gimnasio, sede, contingencia). En web, Smart Enroll y Smart Access orquestan el mismo primitivo.
+
+### Orquestación: Smart Enroll, Smart Access, Smart Check
+
+HumanAuthn es el núcleo. Los productos Smart son la capa de orquestación, no un sustituto:
+
+| Flujo RFP | Producto | Qué hace |
+| --- | --- | --- |
+| F1 Onboarding | **Smart Enroll** | Documento + selfie + liveness + emisión de HumanID |
+| F2 Amarre de dispositivo | **HumanID** | Binding en Secure Enclave / TEE |
+| F3 Autenticación | **Smart Access** + HumanAuthn decrypt | Online o 100 % offline en sede |
+| Scoring / fuentes | **Smart Check** | Consultas y reglas de negocio alrededor de la identidad ya probada |
+
+Los **Project Flows** siguen diferenciando un crédito HARDENED (documento + liveness + fuentes) de un acceso a gimnasio más laxo (HumanAuthn decrypt + PAD). Privacidad: Ley 1581, consentimiento y ARCO. ISO 27001 y SOC 2 Type II están **en curso** (no se reclaman certificados). Operación: SLA y on-call 24/7. La POC debe incluir sede offline, enroll y decrypt solo con selfie.
+
+---
+
 ## 🎯 Alineación con Objetivos de COMPENSAR
 
 ### Objetivo Principal
@@ -72,11 +99,20 @@ Implementar una **Plataforma Omnicanal de verificación y autenticación de iden
 
 ### 2. Autenticación Biométrica ✅
 
+El centro de este bloque es **HumanAuthn + HumanID** (sin galería de plantillas). El reconocimiento 1:1 / 1:N y el liveness clásico quedan como capa complementaria cuando Compensar necesita matching contra documento o colección, no como el modelo de reutilización de identidad.
+
+#### 2.0 HumanAuthn (primitivo)
+
+-   Rostro vivo → clave efímera → decrypt de HumanID → prueba de identidad
+-   PAD iBeta ISO/IEC 30107-3 Level 1 y Level 2
+-   SDK iOS/Android 100 % offline; web vía Smart Enroll / Smart Access
+-   Endpoints: `/v2/human-id/encrypt`, `/v2/human-id/decrypt`, `/v2/human-id/preview`
+
 #### 2.1 Reconocimiento Facial
 
 **Tecnología:**
 
--   Motor de reconocimiento facial de Verifik basado en deep learning
+-   Motor de reconocimiento facial de Verifik basado en deep learning (complemento de HumanAuthn, no el repositorio de identidad)
 -   Precisión: >99% en condiciones óptimas
 -   Velocidad: &lt;2 segundos por validación
 

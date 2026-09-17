@@ -165,6 +165,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license", label: "🇨🇴 RUNT — 운전면허 (Premium)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license-basic", label: "🇨🇴 RUNT — 운전면허 (Basic)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — 차량 확인" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-placas", label: "🇨🇴 RUNT — 번호판만 차량 조회" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — 차량 확인(간편)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — 차량 확인(기본)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — 번호판별 소유자" },
@@ -224,6 +225,15 @@ const sidebars = {
 			items: [
 				{ type: "doc", id: "certificates/certificates-colombia-ministerio-trabajo-v3", label: "🇨🇴 노동부 증명서（v3）" },
 				{ type: "doc", id: "certificates/certificates-sena-certificates", label: "🇨🇴 SENA 증명서" },
+			],
+		},
+		{
+			type: "category",
+			label: "법률 검증",
+			collapsible: false,
+			items: [
+				{ type: "doc", id: "legal/colombia-copnia", label: "🇨🇴 콜롬비아 — 서류로 COPNIA 조회" },
+				{ type: "doc", id: "legal/colombia-copnia-license", label: "🇨🇴 콜롬비아 — 등록 번호로 COPNIA 조회" },
 			],
 		},
 		{

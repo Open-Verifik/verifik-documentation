@@ -639,6 +639,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-placas",
+							label: "RUNT - Vehicle by plate only",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified",
 							label: "RUNT - Vehicle records by plate number (simplified)",
 						},
@@ -951,6 +956,16 @@ const sidebars = {
 					type: "doc",
 					id: "legal/certificate-of-validity-for-legal-professionals",
 					label: "🇨🇴 Colombian Legal Professional Validity",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-copnia",
+					label: "🇨🇴 Colombia — COPNIA licenses by document",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-copnia-license",
+					label: "🇨🇴 Colombia — COPNIA license by matrícula",
 				},
 				{
 					type: "doc",

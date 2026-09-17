@@ -61,7 +61,7 @@ Cette route retourne les données d'identité des **ressortissants vénézuélie
 
 | Nom              | Type   | Requis  | Description                                                                                                  |
 | ---------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------ |
-| `documentNumber` | string | **Oui** | Numéro de cédula nationale (CCVE). Aucun paramètre `documentType` n'est requis — le service applique **CCVE** pour cet endpoint. |
+| `documentNumber` | string | **Oui** | Numéro de cédula nationale (CCVE). Les points et espaces sont retirés. N'envoyez pas `documentType` — cette route applique toujours **CCVE**. |
 
 ### Requête (Request)
 
@@ -72,7 +72,7 @@ Cette route retourne les données d'identité des **ressortissants vénézuélie
 import axios from "axios";
 
 const { data } = await axios.get("https://api.verifik.co/v2/ve/cedula", {
-  params: { documentNumber: "123456789" },
+  params: { documentNumber: "10000001" },
   headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
 });
 console.log(data);
@@ -89,7 +89,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
 ]);
 $query = http_build_query([
-    "documentNumber" => "123456789"
+    "documentNumber" => "10000001"
 ]);
 curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/ve/cedula?".$query);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -106,7 +106,7 @@ import os, requests
 
 url = "https://api.verifik.co/v2/ve/cedula"
 headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"documentNumber": "123456789"}
+params = {"documentNumber": "10000001"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
@@ -123,7 +123,7 @@ import (
 )
 
 func main() {
-    url := "https://api.verifik.co/v2/ve/cedula?documentNumber=123456789"
+    url := "https://api.verifik.co/v2/ve/cedula?documentNumber=10000001"
     req, _ := http.NewRequest("GET", url, nil)
     req.Header.Set("Accept", "application/json")
     req.Header.Set("Authorization", "Bearer "+getenv("VERIFIK_TOKEN"))
@@ -233,6 +233,16 @@ func main() {
 ```
 
   </TabItem>
+  <TabItem value="409-out-of-service" label="409 (hors service)">
+
+```json
+{
+  "code": "Endpoint_out_of_service",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
   <TabItem value="500" label="500">
 
 ```json
@@ -247,9 +257,10 @@ func main() {
 
 ### Notes
 
-- `documentNumber` est requis.
-- Certains champs peuvent figurer dans la réponse en fonction de la disponibilité des données : `birthDate`, `gender` et `maritalStatus`. Leur présence n'est pas garantie pour toutes les réponses.
-- Lorsqu'il est présent, `birthDate` suit le format `AAAA-MM-JJ` (par ex. "1998-03-01").
+- `documentNumber` est requis. Les points et espaces sont retirés. N'envoyez pas `documentType`.
+- La réponse inclut les champs de nom (`arrayName`, `firstName`, `lastName`, `fullName`). `birthDate`, `gender` et `maritalStatus` apparaissent lorsqu'ils sont disponibles.
+- Sandbox : `10000001`–`10000010` sont stables. `90040401` renvoie 404. `90050001` renvoie 500.
+- Si le service est temporairement indisponible, l'API renvoie `409` avec `code: "Endpoint_out_of_service"`.
 
 ---
 
@@ -260,9 +271,8 @@ func main() {
 -   **RH et recrutement** : validez les documents des candidats dans le cadre de votre processus d'embauche.
 -   **Assurance et santé** : confirmez les identités avant d'émettre des polices ou d'accorder des prestations médicales.
 
-## Sources officielles et fiabilité
+## Fiabilité
 
-Nous nous connectons directement aux sources officielles du gouvernement vénézuélien afin de vous garantir des informations vérifiées et à jour.
 Chaque requête est traitée dans le strict respect des normes de sécurité et de réglementation.
 
 ## Avantages clés

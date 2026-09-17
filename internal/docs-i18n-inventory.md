@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-09-14T22:36:41.302Z
+Generated: 2026-09-17T02:11:42.007Z
 
-- **Files scanned:** 517
-- **Unique endpoint URLs:** 223
+- **Files scanned:** 520
+- **Unique endpoint URLs:** 226
 - **Duplicate URL groups (SEO / aliases):** 57
 - **Docs without `### Endpoint` block:** 214
 
@@ -11,9 +11,9 @@ Generated: 2026-09-14T22:36:41.302Z
 
 | Priority | Count | Scope |
 | --- | ---: | --- |
-| P0 | 25 | vehicle-validation/colombia |
+| P0 | 26 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 174 | identity, biometrics, resources, etc. |
+| P2 | 176 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -296,6 +296,8 @@ Generated: 2026-09-14T22:36:41.302Z
 | P2 | `v2/co/company/dian/invoicer` | `business-validation/colombia-legal-invoicer-verification.mdx` |
 | P2 | `v2/co/contracts` | `background-check/colombia-public-contracts.mdx` |
 | P2 | `v2/co/contraloria/certificado` | `background-check/colombia-comptroller-certificate.mdx` |
+| P2 | `v2/co/copnia` | `legal/colombia-copnia.mdx` |
+| P2 | `v2/co/copnia/matricula` | `legal/colombia-copnia-license.mdx` |
 | P2 | `v2/co/deudoresmorosos` | `finance/delinquent-debtors.mdx` |
 | P0 | `v2/co/fasecolda/sinister` | `vehicle-validation/colombia/fasecolda-sinister-verification.mdx` |
 | P0 | `v2/co/fasecolda/values-by-code` | `vehicle-validation/colombia/fasecolda-vehicle-by-code.mdx` |
@@ -322,6 +324,7 @@ Generated: 2026-09-14T22:36:41.302Z
 | P2 | `v2/co/rues/complete` | `business-validation/colombia-rues-complete-v2.mdx` |
 | P2 | `v2/co/rui` | `background-check/colombia-rui.mdx` |
 | P0 | `v2/co/runt/conductor` | `vehicle-validation/colombia/driver-s-license.mdx` |
+| P0 | `v2/co/runt/placas` | `vehicle-validation/colombia/runt-placas.mdx` |
 | P0 | `v2/co/runt/propietarios` | `vehicle-validation/colombia/runt-vehicle-owners.mdx` |
 | P0 | `v2/co/runt/vehicle-by-plate` | `vehicle-validation/colombia/runt-vehicle-by-plate.mdx` |
 | P0 | `v2/co/runt/vehicle-by-plate-simplified` | `vehicle-validation/colombia/runt-vehicle-by-plate-simplified.mdx` |

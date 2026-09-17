@@ -1,0 +1,156 @@
+---
+id: colombia-copnia-license
+title: Colombia — COPNIA matrícula profesional por número
+description: Consulta una matrícula profesional del COPNIA por número de registro mediante GET /v2/co/copnia/matricula.
+slug: /legal/colombia-copnia-license
+keywords:
+  - colombia_api_copnia_license
+  - v2/co/copnia/matricula
+  - GET /v2/co/copnia/matricula
+  - COPNIA
+  - matrícula profesional
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — COPNIA matrícula profesional por número
+
+Verifik consulta **COPNIA** (*Consejo Profesional Nacional de Ingeniería*) con un solo **`licenseNumber`** (matrícula). Úsalo cuando ya tienes el número de registro y necesitas el titular y el estado.
+
+## Qué devuelve la API
+
+- Campos de **identidad**: `documentType`, `documentNumber`, `firstName`, `lastName`, `fullName`, `arrayName`
+- Campos de matrícula en el mismo objeto: **`licenseNumber`**, **`licenseStatus`**, **`licenseType`**, **`profession`**, **`resolutionDate`**, **`resolutionNumber`**
+- Respuesta **firmada** por Verifik (sin arreglo `licenses[]`)
+
+## Referencia de API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/copnia/matricula
+```
+
+Envía **`licenseNumber`** como **parámetro de consulta**. El manejador devuelve la persona y los seis campos de la matrícula en el mismo objeto. Un valor típico es `091132-0839078 CNDC` (6–40 caracteres).
+
+### Encabezados
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `licenseNumber` | string | Sí | Número de matrícula COPNIA, **6–40** caracteres. Se permiten espacios. | `091132-0839078 CNDC` |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/copnia/matricula", {
+	params: {
+		licenseNumber: "091132-0839078 CNDC",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/copnia/matricula"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"licenseNumber": "091132-0839078 CNDC"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["HENRY", "ANDRES", "CASTANEDA", "ACOSTA"],
+		"documentNumber": "80176161",
+		"documentType": "CC",
+		"firstName": "HENRY ANDRES",
+		"fullName": "HENRY ANDRES CASTANEDA ACOSTA",
+		"lastName": "CASTANEDA ACOSTA",
+		"licenseNumber": "091132-0839078 CNDC",
+		"licenseStatus": "VIGENTE",
+		"licenseType": "MATRICULA PROFESIONAL",
+		"profession": "INGENIERIA DE SOFTWARE",
+		"resolutionDate": "2026-07-27",
+		"resolutionNumber": "RN2026NALA032094"
+	},
+	"signature": {
+		"dateTime": "September 15, 2026 9:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "licenseNumber length must be at least 6 characters long"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Características
+
+- Consulta por **matrícula** sin enviar número de documento
+- Solo **GET** con parámetros de consulta
+- **Sandbox** devuelve un payload COPNIA fijo para la matrícula de ejemplo
+- Respuestas **firmadas** y facturadas como feature híbrido `apiRequest`
+
+## Casos de uso
+
+- Confirmar una matrícula **impresa o enviada**
+- Revisar el **estado** (`VIGENTE` u otros valores de la fuente) en el onboarding
+- Contrastar una matrícula hallada antes con [COPNIA por documento](/verifik-es/legal/colombia-copnia)
+
+### Notas
+
+- Ejemplo sandbox: **`091132-0839078 CNDC`**. La persona asociada es **`CC` / `80176161`**.
+- Si el valor se normaliza a vacío, la API responde **`409`** (`invalid_license_number`).
+- Una falla de sesión o de la fuente puede devolver **`409`** con `timeout_data_source`.
+- Trata la respuesta como **dato personal sensible** y cumple habeas data.

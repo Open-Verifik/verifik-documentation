@@ -406,7 +406,7 @@ Configura la verificación biométrica para asegurar que los usuarios estén fí
 -   **Requisito del Paso de Vivacidad** - Si la verificación biométrica es obligatoria, opcional u omitida
 -   **Límite de Intentos** - Número máximo de intentos de verificación de vivacidad (1-5)
 -   **Puntuación de Vivacidad** - Puntuación mínima para confirmar que el usuario está vivo (0.52 - 0.90)
--   **Puntuación de Comparación** - Puntuación mínima para hacer coincidir el rostro con la foto del documento (0.70 - 0.95)
+-   **Puntuación de Comparación** - Puntuación mínima para hacer coincidir el rostro con la foto del documento (`0.65`–`0.95`; por defecto `0.85`). Los retratos impresos (cédulas colombianas desgastadas y documentos similares en otros países) suelen puntuar más bajo frente a un selfie en vivo; `0.65` es el mínimo hospedado si aceptas más riesgo de falsos aceptados.
 -   **Modo de Búsqueda** - Equilibrio entre velocidad y precisión (FAST o ACCURATE)
 
 ### Ejemplo: Configurar Detección de Vivacidad

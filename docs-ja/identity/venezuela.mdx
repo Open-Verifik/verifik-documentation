@@ -72,7 +72,7 @@ https://api.verifik.co/v2/ve/cedula
 import axios from "axios";
 
 const { data } = await axios.get("https://api.verifik.co/v2/ve/cedula", {
-  params: { documentNumber: "123456789" },
+  params: { documentNumber: "10000001" },
   headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
 });
 console.log(data);
@@ -89,7 +89,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Authorization: Bearer " . getenv("VERIFIK_TOKEN")
 ]);
 $query = http_build_query([
-    "documentNumber" => "123456789"
+    "documentNumber" => "10000001"
 ]);
 curl_setopt($ch, CURLOPT_URL, "https://api.verifik.co/v2/ve/cedula?".$query);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -106,7 +106,7 @@ import os, requests
 
 url = "https://api.verifik.co/v2/ve/cedula"
 headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"documentNumber": "123456789"}
+params = {"documentNumber": "10000001"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
@@ -123,7 +123,7 @@ import (
 )
 
 func main() {
-    url := "https://api.verifik.co/v2/ve/cedula?documentNumber=123456789"
+    url := "https://api.verifik.co/v2/ve/cedula?documentNumber=10000001"
     req, _ := http.NewRequest("GET", url, nil)
     req.Header.Set("Accept", "application/json")
     req.Header.Set("Authorization", "Bearer "+getenv("VERIFIK_TOKEN"))
@@ -233,6 +233,16 @@ func main() {
 ```
 
   </TabItem>
+  <TabItem value="409-out-of-service" label="409 (out of service)">
+
+```json
+{
+  "code": "Endpoint_out_of_service",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
   <TabItem value="500" label="500">
 
 ```json
@@ -247,9 +257,10 @@ func main() {
 
 ### 注意事項
 
-- `documentNumber` は必須です。
-- データの可用性に応じて、レスポンスに `birthDate`、`gender`、`maritalStatus` が含まれることがあります。これらのフィールドはすべてのレスポンスに含まれることが保証されていません。
-- 含まれる場合、`birthDate` は `YYYY-MM-DD` 形式（例: "1998-03-01"）に従います。
+- `documentNumber` は必須です。ドットとスペースは除去されます。`documentType` は送らないでください。
+- 応答には氏名フィールド（`arrayName`、`firstName`、`lastName`、`fullName`）が含まれます。`birthDate`、`gender`、`maritalStatus` は利用可能な場合に含まれます。
+- サンドボックス: `10000001`–`10000010` は固定です。`90040401` は 404、`90050001` は 500 です。
+- サービスが一時的に利用できない場合、API は `409` と `code: "Endpoint_out_of_service"` を返します。
 
 ---
 
@@ -260,9 +271,8 @@ func main() {
 -   **HR と採用**: 採用ワークフローの一部として候補者の文書を検証します。
 -   **保険と医療**: 保険契約や医療給付の前に本人を確認します。
 
-## 公式ソースと信頼性
+## 信頼性
 
-ベネズエラの公的な政府ソースと直接接続し、検証済みかつ最新の情報を提供します。
 すべての照会は厳格なセキュリティおよび規制基準に基づいて処理されます。
 
 ## 主な利点

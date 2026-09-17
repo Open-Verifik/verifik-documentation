@@ -390,7 +390,7 @@ Configure biometric verification to ensure users are physically present during o
 -   **Liveness Step Requirement** - Whether biometric verification is mandatory, optional, or skipped
 -   **Attempt Limit** - Maximum number of liveness verification attempts (1-5)
 -   **Liveness Score** - Minimum score to confirm the user is live (0.52 - 0.90)
--   **Comparison Score** - Minimum score to match face with document photo (0.70 - 0.95)
+-   **Comparison Score** - Minimum score to match face with document photo (`0.65`–`0.95`; default `0.85`). Printed ID portraits (worn Colombian cédulas and similar documents in other countries) often score lower against a live selfie; `0.65` is the lowest hosted floor after you accept more false-accept risk.
 -   **Search Mode** - Speed vs accuracy trade-off (FAST or ACCURATE)
 
 ### Example: Configure Liveness Detection

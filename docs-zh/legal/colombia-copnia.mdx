@@ -1,0 +1,156 @@
+---
+id: colombia-copnia
+title: 哥伦比亚 — 按证件查询 COPNIA 专业执照
+description: 通过 GET /v2/co/copnia 按哥伦比亚证件查询 COPNIA（Consejo Profesional Nacional de Ingeniería）专业执照。
+slug: /legal/colombia-copnia
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 哥伦比亚 — 按证件查询 COPNIA 专业执照
+
+Verifik 使用 **`documentType`** 和 **`documentNumber`** 查询 **COPNIA**（*Consejo Profesional Nacional de Ingeniería*）。实时来源是 COPNIA 有效证明门户。用于哥伦比亚工程师的 **招聘**、**资质核验** 和 **合规**。
+
+## 本 API 返回的内容
+
+- **身份** 字段：`documentType`、`documentNumber`、`firstName`、`lastName`、`fullName`、`arrayName`
+- **`licenses[]`** — 该人员的专业注册记录
+- 每条执照可包含 **`licenseNumber`**、**`licenseStatus`**、**`licenseType`**、**`profession`**、**`resolutionDate`**、**`resolutionNumber`**
+- **已签名** 的 Verifik 响应
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/copnia
+```
+
+以 **查询参数** 发送 **`documentType`** 和 **`documentNumber`**。处理程序返回人员信息和 `licenses` 数组。详情字段（`licenseStatus`、`licenseType`、`resolutionDate`、`resolutionNumber`）最多补全 **10** 条；其余行仅保留 `licenseNumber` 和 `profession`。
+
+### 请求头
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### 参数
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | 是 | **`CC`**、**`CE`**、**`PA`**、**`PEP`**、**`PE`**、**`PPT`**、**`TI`**、**`NIT`** 之一。 | `CC` |
+| `documentNumber` | string | 是 | 不含空格或标点的证件号码（至少 **5** 个字符）。 | `80176161` |
+
+### 请求
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/copnia", {
+	params: {
+		documentType: "CC",
+		documentNumber: "80176161",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/copnia"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "80176161"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["HENRY", "ANDRES", "CASTANEDA", "ACOSTA"],
+		"documentNumber": "80176161",
+		"documentType": "CC",
+		"firstName": "HENRY ANDRES",
+		"fullName": "HENRY ANDRES CASTANEDA ACOSTA",
+		"lastName": "CASTANEDA ACOSTA",
+		"licenses": [
+			{
+				"licenseNumber": "091132-0839078 CNDC",
+				"licenseStatus": "VIGENTE",
+				"licenseType": "MATRICULA PROFESIONAL",
+				"profession": "INGENIERIA DE SOFTWARE",
+				"resolutionDate": "2026-07-27",
+				"resolutionNumber": "RN2026NALA032094"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "September 15, 2026 9:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, CE, PA, PEP, PE, PPT, TI, NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## 功能
+
+- 接受的证件类型：**CC**、**CE**、**PA**、**PEP**、**PE**、**PPT**、**TI**、**NIT**
+- 仅支持 **GET** 查询参数
+- **沙箱** 会为测试证件返回 COPNIA 形状的载荷
+- 响应已 **签名**，按 `apiRequest` 混合功能计费
+
+## 使用场景
+
+- 工程师 **招聘** 与资质核验
+- 签约前的 **合规** 检查
+- 需要 COPNIA 注册时的 **入职** 流程
+
+### 备注
+
+- 沙箱示例：**`CC` / `80176161`**。沙箱执照号为 **`091132-0839078 CNDC`**。
+- 最多补全 **10** 条执照详情。其余行仅保留 `licenseNumber` 和 `profession`。详情抓取失败会被静默忽略（列表行仍保留）。
+- 来源或会话失败可能返回带 `timeout_data_source` 的 **`409`**。
+- 请将响应视为 **敏感个人数据**。
+- 若要按注册号查询单条执照，请使用 [按执照号查询 COPNIA](/verifik-zh/legal/colombia-copnia-license)。

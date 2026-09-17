@@ -165,6 +165,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license", label: "🇨🇴 RUNT — 驾驶证 (Premium)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license-basic", label: "🇨🇴 RUNT — 驾驶证 (Basic)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — 按车牌车辆(完整)" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-placas", label: "🇨🇴 RUNT — 仅凭车牌查询车辆" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — 按车牌车辆(简化)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — 车辆(基本)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — 按车牌查询所有人" },
@@ -224,6 +225,15 @@ const sidebars = {
 			items: [
 				{ type: "doc", id: "certificates/certificates-colombia-ministerio-trabajo-v3", label: "🇨🇴 劳动部证书 (v3)" },
 				{ type: "doc", id: "certificates/certificates-sena-certificates", label: "🇨🇴 SENA 证书" },
+			],
+		},
+		{
+			type: "category",
+			label: "法律核验",
+			collapsible: false,
+			items: [
+				{ type: "doc", id: "legal/colombia-copnia", label: "🇨🇴 哥伦比亚 — 按证件查询 COPNIA" },
+				{ type: "doc", id: "legal/colombia-copnia-license", label: "🇨🇴 哥伦比亚 — 按注册号查询 COPNIA" },
 			],
 		},
 		{

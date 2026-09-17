@@ -77,9 +77,10 @@ For building a fully custom UI, start with [SmartEnroll: Self Hosted](/smart-enr
 | Context | Values |
 | --- | --- |
 | Hosted SmartEnroll / project flow default | **`0.85`** (`compareMinScore`) |
+| Hosted SmartEnroll / project flow allowed range | **`0.65`–`0.95`** |
 | Direct face-recognition API (`compare_min_score`) | **`0.67`–`0.95`** (default `0.85` if omitted) |
 
-Printed document photos (for example a Colombian CC) often match a live selfie at **lower** scores than live-vs-live. If genuine users fail around the mid‑0.7s, consider lowering the project threshold after validating false-accept risk.
+Printed ID portraits are often faded, scratched, or low-resolution. Some Colombian cédulas are especially poor, and the same document-quality problem can appear in other countries. Live selfie vs printed photo scores **lower** than live-vs-live. Lowering the project threshold toward **`0.65`** reduces false rejects of genuine users with bad document photos; it also raises false-accept risk. Keep `0.85` unless you see real users failing.
 
 ## `cropFace`
 

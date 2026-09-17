@@ -1,0 +1,164 @@
+---
+id: colombia-copnia
+title: Colombia — COPNIA matrículas profesionales por documento
+description: Consulta matrículas profesionales del COPNIA (Consejo Profesional Nacional de Ingeniería) por cédula mediante GET /v2/co/copnia.
+slug: /legal/colombia-copnia
+keywords:
+  - colombia_api_copnia
+  - v2/co/copnia
+  - GET /v2/co/copnia
+  - COPNIA
+  - matrícula profesional
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — COPNIA matrículas profesionales por documento
+
+Verifik consulta **COPNIA** (*Consejo Profesional Nacional de Ingeniería*) con **`documentType`** y **`documentNumber`**. La fuente en vivo es el portal de Certificado de Vigencia de COPNIA. Úsalo para **contratación**, **habilitación** y **cumplimiento** de profesionales de ingeniería en Colombia.
+
+## Qué devuelve la API
+
+- Campos de **identidad**: `documentType`, `documentNumber`, `firstName`, `lastName`, `fullName`, `arrayName`
+- **`licenses[]`** — matrículas profesionales asociadas a esa persona
+- Cada matrícula puede incluir **`licenseNumber`**, **`licenseStatus`**, **`licenseType`**, **`profession`**, **`resolutionDate`**, **`resolutionNumber`**
+- Respuesta **firmada** por Verifik
+
+## Referencia de API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/copnia
+```
+
+Envía **`documentType`** y **`documentNumber`** como **parámetros de consulta**. El manejador devuelve la persona y un arreglo `licenses`. Los campos de detalle (`licenseStatus`, `licenseType`, `resolutionDate`, `resolutionNumber`) se hidratan para un máximo de **10** matrículas; las filas adicionales conservan solo datos de lista (`licenseNumber` y `profession`).
+
+### Encabezados
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | Sí | Uno de **`CC`**, **`CE`**, **`PA`**, **`PEP`**, **`PE`**, **`PPT`**, **`TI`**, **`NIT`**. | `CC` |
+| `documentNumber` | string | Sí | Número de documento sin espacios ni signos (mínimo **5** caracteres). | `80176161` |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/copnia", {
+	params: {
+		documentType: "CC",
+		documentNumber: "80176161",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/copnia"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "80176161"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["HENRY", "ANDRES", "CASTANEDA", "ACOSTA"],
+		"documentNumber": "80176161",
+		"documentType": "CC",
+		"firstName": "HENRY ANDRES",
+		"fullName": "HENRY ANDRES CASTANEDA ACOSTA",
+		"lastName": "CASTANEDA ACOSTA",
+		"licenses": [
+			{
+				"licenseNumber": "091132-0839078 CNDC",
+				"licenseStatus": "VIGENTE",
+				"licenseType": "MATRICULA PROFESIONAL",
+				"profession": "INGENIERIA DE SOFTWARE",
+				"resolutionDate": "2026-07-27",
+				"resolutionNumber": "RN2026NALA032094"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "September 15, 2026 9:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, CE, PA, PEP, PE, PPT, TI, NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Características
+
+- Tipos aceptados: **CC**, **CE**, **PA**, **PEP**, **PE**, **PPT**, **TI**, **NIT**
+- Solo **GET** con parámetros de consulta
+- **Sandbox** devuelve un payload con la forma COPNIA para documentos de prueba
+- Respuestas **firmadas** y facturadas como feature híbrido `apiRequest`
+
+## Casos de uso
+
+- **Contratación** y habilitación de ingenieros
+- **Cumplimiento** antes de adjudicar contratos
+- **Onboarding** cuando se exige matrícula COPNIA
+
+### Notas
+
+- Ejemplo sandbox: **`CC` / `80176161`**. La matrícula sandbox es **`091132-0839078 CNDC`**.
+- Como máximo se hidratan **10** matrículas. Las filas extra conservan `licenseNumber` y `profession`. Si falla el detalle, la fila de lista se mantiene.
+- Una falla de sesión o de la fuente puede devolver **`409`** con `timeout_data_source`.
+- Trata la respuesta como **dato personal sensible** y cumple habeas data.
+- Para consultar una matrícula por número, usa [COPNIA por matrícula](/verifik-es/legal/colombia-copnia-license).

@@ -77,9 +77,10 @@ Pour une UI entièrement personnalisée : [SmartEnroll Self Hosted](https://docs
 | Contexte | Valeurs |
 | --- | --- |
 | SmartEnroll hébergé / project flow (défaut) | **`0.85`** (`compareMinScore`) |
+| SmartEnroll hébergé / project flow (plage autorisée) | **`0.65`–`0.95`** |
 | API face-recognition (`compare_min_score`) | **`0.67`–`0.95`** (défaut `0.85` si omis) |
 
-Les photos de documents imprimés correspondent souvent à un selfie live avec des scores **plus bas** qu’un live vs live. Si des utilisateurs légitimes échouent autour de 0,7, envisagez d’abaisser le seuil du projet après validation du risque de faux acceptés.
+Les portraits imprimés sur les documents sont souvent fanés, rayés ou en basse résolution. Certaines cédulas colombiennes sont particulièrement médiocres, et le même problème de qualité peut apparaître dans d’autres pays. Un selfie live vs une photo imprimée obtient un score **plus bas** qu’un live vs live. Abaisser le seuil du projet vers **`0.65`** réduit les faux rejets d’utilisateurs légitimes avec de mauvais documents ; cela augmente aussi le risque de faux acceptés. Conservez `0.85` sauf si de vrais utilisateurs échouent.
 
 ## `cropFace`
 

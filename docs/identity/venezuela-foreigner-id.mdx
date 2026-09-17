@@ -74,7 +74,7 @@ Use this endpoint for **foreign nationals** registered with a **CEVE** cédula. 
 
 | Name           | Type    | Required | Description                                    |
 | -------------- | ------- | -------- | ---------------------------------------------- |
-| `documentNumber` | string | Yes      | CEVE cédula number for the foreign resident. No `documentType` query is required—the service applies **CEVE** for this endpoint. |
+| `documentNumber` | string | Yes      | CEVE cédula number. Dots and spaces are stripped. Do not send `documentType`—this route always uses **CEVE**. |
 
 ### Request
 
@@ -85,7 +85,7 @@ Use this endpoint for **foreign nationals** registered with a **CEVE** cédula. 
 import axios from "axios";
 
 const { data } = await axios.get("https://api.verifik.co/v2/ve/foreigner-id", {
-  params: { documentNumber: "123456789" },
+  params: { documentNumber: "10000001" },
   headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
 });
 console.log(data);
@@ -104,7 +104,7 @@ headers = {
     'Authorization': "Bearer <your_token>"
 }
 
-conn.request("GET", "/v2/ve/foreigner-id?documentNumber=123456789", headers=headers)
+conn.request("GET", "/v2/ve/foreigner-id?documentNumber=10000001", headers=headers)
 
 res = conn.getresponse()
 data = res.read()
@@ -120,7 +120,7 @@ print(data.decode("utf-8"))
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.verifik.co/v2/ve/foreigner-id?documentNumber=123456789', [
+$response = $client->request('GET', 'https://api.verifik.co/v2/ve/foreigner-id?documentNumber=10000001', [
   'headers' => [
     'Accept' => 'application/json',
     'Authorization' => 'Bearer <your_token>',
@@ -141,7 +141,7 @@ let headers = [
   "Authorization": "Bearer <your_token>"
 ]
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/ve/foreigner-id?documentNumber=123456789")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.verifik.co/v2/ve/foreigner-id?documentNumber=10000001")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
@@ -172,7 +172,7 @@ dataTask.resume()
 {
   "data": {
     "documentType": "CEVE",
-    "documentNumber": "123456789",
+    "documentNumber": "10000001",
     "fullName": "MATEO VENEZUELA VERIFIK",
     "lastName": "MATEO",
     "firstName": "VENEZUELA VERIFIK",
@@ -231,7 +231,24 @@ dataTask.resume()
 ```
 
   </TabItem>
+  <TabItem value="409-out-of-service" label="409 (out of service)">
+
+```json
+{
+  "code": "Endpoint_out_of_service",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
 </Tabs>
+
+### Notes
+
+- `documentNumber` is required. Dots and spaces are stripped. Do not send `documentType`.
+- Responses include name fields (`arrayName`, `firstName`, `lastName`, `fullName`).
+- Sandbox fixtures: `10000001`–`10000010` are stable. `90040401` returns 404. `90050001` returns 500.
+- If the service is temporarily unavailable, the API returns `409` with `code: "Endpoint_out_of_service"`.
 
 ---
 
@@ -243,9 +260,8 @@ dataTask.resume()
 -   **Document Authentication**: Authenticate foreigner documents for official purposes.
 -   **Identity Verification**: Streamline identity verification processes for foreign nationals.
 
-## Official Sources & Reliability
+## Reliability
 
-We connect directly with official Venezuelan government sources to ensure you receive verified, up-to-the-minute information.
 Every query is handled with strict adherence to security and regulatory standards.
 
 ## Key Benefits

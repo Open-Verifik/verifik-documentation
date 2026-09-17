@@ -1,0 +1,185 @@
+---
+id: colombia-copnia
+title: Colombia — COPNIA professional licenses by document
+description: Query COPNIA (Consejo Profesional Nacional de Ingeniería) professional licenses by Colombian ID via GET /v2/co/copnia.
+slug: /legal/colombia-copnia
+keywords:
+  - colombia_api_copnia
+  - v2/co/copnia
+  - /v2/co/copnia
+  - GET /v2/co/copnia
+  - COPNIA
+  - Consejo Profesional Nacional de Ingeniería
+  - Colombia professional license
+  - matrícula profesional
+  - api.verifik.co/v2/co/copnia
+  - 'https://api.verifik.co/v2/co/copnia'
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "Colombia COPNIA Professional Licenses by Document | Verifik API",
+	description:
+		"Look up COPNIA professional engineering licenses with document type and number. Returns identity fields and up to ten hydrated license rows.",
+	articleSection: "API Documentation",
+	keywords: "Colombia, COPNIA, engineering license, matrícula profesional, Verifik API",
+	about: {
+		"@type": "Thing",
+		name: "Professional License Verification API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — COPNIA professional licenses by document
+
+Verifik queries **COPNIA** (*Consejo Profesional Nacional de Ingeniería*) using **`documentType`** and **`documentNumber`**. The live source is the COPNIA Certificate of Good Standing portal. Use this endpoint for **credentialing**, **hiring**, and **compliance** checks on Colombian engineering professionals.
+
+## What this API returns
+
+- **Identity** fields: `documentType`, `documentNumber`, `firstName`, `lastName`, `fullName`, `arrayName`
+- **`licenses[]`** — professional registrations found for that person
+- Each license may include **`licenseNumber`**, **`licenseStatus`**, **`licenseType`**, **`profession`**, **`resolutionDate`**, **`resolutionNumber`**
+- A **signed** Verifik response
+
+## API reference
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/copnia
+```
+
+Send **`documentType`** and **`documentNumber`** as **query** parameters. The handler returns the person plus a `licenses` array. Detail fields (`licenseStatus`, `licenseType`, `resolutionDate`, `resolutionNumber`) are hydrated for at most **10** licenses; additional rows keep list data (`licenseNumber` and `profession`) only.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | Yes | One of **`CC`**, **`CE`**, **`PA`**, **`PEP`**, **`PE`**, **`PPT`**, **`TI`**, **`NIT`**. | `CC` |
+| `documentNumber` | string | Yes | Document number without spaces or punctuation (minimum **5** characters). | `80176161` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/copnia", {
+	params: {
+		documentType: "CC",
+		documentNumber: "80176161",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/copnia"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CC", "documentNumber": "80176161"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"arrayName": ["HENRY", "ANDRES", "CASTANEDA", "ACOSTA"],
+		"documentNumber": "80176161",
+		"documentType": "CC",
+		"firstName": "HENRY ANDRES",
+		"fullName": "HENRY ANDRES CASTANEDA ACOSTA",
+		"lastName": "CASTANEDA ACOSTA",
+		"licenses": [
+			{
+				"licenseNumber": "091132-0839078 CNDC",
+				"licenseStatus": "VIGENTE",
+				"licenseType": "MATRICULA PROFESIONAL",
+				"profession": "INGENIERIA DE SOFTWARE",
+				"resolutionDate": "2026-07-27",
+				"resolutionNumber": "RN2026NALA032094"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "September 15, 2026 9:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "documentType must be one of [CC, CE, PA, PEP, PE, PPT, TI, NIT]"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Features
+
+- **Document types** accepted by validation: **CC**, **CE**, **PA**, **PEP**, **PE**, **PPT**, **TI**, **NIT**
+- **GET** query parameters only
+- **Sandbox** returns a fixed COPNIA-shaped payload for known test documents
+- Responses are **signed** and billed as an `apiRequest` hybrid feature
+
+## Use cases
+
+- **Hiring** and **contractor** credentialing for engineering roles
+- **Compliance** checks before awarding public or private contracts
+- **Workforce** onboarding when a COPNIA matrícula is required
+
+### Notes
+
+- Sandbox document example: **`CC` / `80176161`**. The sandbox license number is **`091132-0839078 CNDC`**.
+- At most **10** licenses are detail-hydrated. Extra rows keep `licenseNumber` and `profession` only. A failed detail fetch is omitted silently (the list row remains).
+- A source or session failure can return **`409`** with `timeout_data_source`.
+- Treat responses as **sensitive personal data** and follow Colombian habeas data rules.
+- To look up one matrícula by registration number, use [COPNIA by license](/legal/colombia-copnia-license).

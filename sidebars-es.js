@@ -483,6 +483,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "validacion-vehiculos/colombia/runt-placas",
+							label: "RUNT - Vehículo solo por placa",
+						},
+						{
+							type: "doc",
 							id: "validacion-vehiculos/colombia/registros-vehiculos-por-placa-simplificado-runt",
 							label: "Registros de Vehículos por Placa (Simplificado)",
 						},
@@ -762,6 +767,16 @@ const sidebars = {
 					type: "doc",
 					id: "legal/certificado-vigencia-profesionales-legales",
 					label: "🇨🇴 Vigencia de Profesionales Legales Colombianos",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-copnia",
+					label: "🇨🇴 Colombia — COPNIA por cédula",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-copnia-license",
+					label: "🇨🇴 Colombia — COPNIA por matrícula",
 				},
 				{
 					type: "doc",

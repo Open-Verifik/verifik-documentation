@@ -77,9 +77,10 @@ Para una UI totalmente personalizada, empieza por [SmartEnroll autoalojado](/ver
 | Contexto | Valores |
 | --- | --- |
 | SmartEnroll hospedado / project flow (por defecto) | **`0.85`** (`compareMinScore`) |
+| SmartEnroll hospedado / project flow (rango permitido) | **`0.65`–`0.95`** |
 | API directa de face-recognition (`compare_min_score`) | **`0.67`–`0.95`** (por defecto `0.85` si se omite) |
 
-Las fotos de documentos impresos (por ejemplo una CC colombiana) suelen coincidir con un selfie en vivo a scores **más bajos** que en vivo vs en vivo. Si usuarios genuinos fallan alrededor de 0.7, considera bajar el umbral del proyecto tras validar el riesgo de falsos aceptados.
+Los retratos impresos en documentos suelen estar desgastados, rayados o a baja resolución. Algunas cédulas colombianas son especialmente pobres, y el mismo problema de calidad puede aparecer en otros países. Un selfie en vivo vs una foto impresa puntúa **más bajo** que en vivo vs en vivo. Bajar el umbral del proyecto hacia **`0.65`** reduce rechazos falsos de usuarios genuinos con documentos de mala calidad; también sube el riesgo de falsos aceptados. Conserva `0.85` salvo que veas fallos reales.
 
 ## `cropFace`
 
