@@ -164,7 +164,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license", label: "🇨🇴 RUNT — Permis (Premium)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license-basic", label: "🇨🇴 RUNT — Permis (Basic)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — véhicule par plaque (complet)" },
-						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-placas", label: "🇨🇴 RUNT — véhicule par plaque uniquement" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-only", label: "🇨🇴 RUNT — véhicule par plaque uniquement" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — véhicule par plaque (simplifié)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — véhicule (base)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — propriétaires par plaque" },

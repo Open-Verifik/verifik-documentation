@@ -467,7 +467,7 @@ const sidebars = {
 						},
 						{
 							type: "doc",
-							id: "validacion-vehiculos/colombia/runt-placas",
+							id: "validacion-vehiculos/colombia/runt-vehicle-by-plate-only",
 							label: "RUNT - Vehículo solo por placa",
 						},
 						{

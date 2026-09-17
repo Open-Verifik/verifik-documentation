@@ -1,6 +1,6 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-09-17T03:09:59.845Z
+Generated: 2026-09-17T04:39:15.283Z
 
 - **Files scanned:** 520
 - **Unique endpoint URLs:** 226
@@ -324,9 +324,9 @@ Generated: 2026-09-17T03:09:59.845Z
 | P2 | `v2/co/rues/complete` | `business-validation/colombia-rues-complete-v2.mdx` |
 | P2 | `v2/co/rui` | `background-check/colombia-rui.mdx` |
 | P0 | `v2/co/runt/conductor` | `vehicle-validation/colombia/driver-s-license.mdx` |
-| P0 | `v2/co/runt/placas` | `vehicle-validation/colombia/runt-placas.mdx` |
 | P0 | `v2/co/runt/propietarios` | `vehicle-validation/colombia/runt-vehicle-owners.mdx` |
 | P0 | `v2/co/runt/vehicle-by-plate` | `vehicle-validation/colombia/runt-vehicle-by-plate.mdx` |
+| P0 | `v2/co/runt/vehicle-by-plate-only` | `vehicle-validation/colombia/runt-vehicle-by-plate-only.mdx` |
 | P0 | `v2/co/runt/vehicle-by-plate-simplified` | `vehicle-validation/colombia/runt-vehicle-by-plate-simplified.mdx` |
 | P0 | `v2/co/runt/vehicle-by-vin` | `vehicle-validation/colombia/runt-vehicle-by-vin.mdx` |
 | P0 | `v2/co/runt/vehiculo` | `vehicle-validation/colombia/runt-vehicle-soat-rtm.md` |

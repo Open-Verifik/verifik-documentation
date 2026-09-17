@@ -639,7 +639,7 @@ const sidebars = {
 						},
 						{
 							type: "doc",
-							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-placas",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-only",
 							label: "RUNT - Vehicle by plate only",
 						},
 						{

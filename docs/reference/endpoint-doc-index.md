@@ -1368,20 +1368,6 @@ keywords:
   - "https://api.verifik.co/v2/co/runt/conductor"
   - "GET v2/co/runt/conductor"
   - "GET /v2/co/runt/conductor"
-  - "v2/co/runt/placas"
-  - "/v2/co/runt/placas"
-  - "v2 co runt placas"
-  - "co/runt/placas"
-  - "/co/runt/placas"
-  - "api/co/runt/placas"
-  - "/api/co/runt/placas"
-  - "api co runt placas"
-  - "runt/placas"
-  - "/runt/placas"
-  - "api.verifik.co/v2/co/runt/placas"
-  - "https://api.verifik.co/v2/co/runt/placas"
-  - "GET v2/co/runt/placas"
-  - "GET /v2/co/runt/placas"
   - "v2/co/runt/propietarios"
   - "/v2/co/runt/propietarios"
   - "v2 co runt propietarios"
@@ -1410,6 +1396,20 @@ keywords:
   - "https://api.verifik.co/v2/co/runt/vehicle-by-plate"
   - "GET v2/co/runt/vehicle-by-plate"
   - "GET /v2/co/runt/vehicle-by-plate"
+  - "v2/co/runt/vehicle-by-plate-only"
+  - "/v2/co/runt/vehicle-by-plate-only"
+  - "v2 co runt vehicle-by-plate-only"
+  - "co/runt/vehicle-by-plate-only"
+  - "/co/runt/vehicle-by-plate-only"
+  - "api/co/runt/vehicle-by-plate-only"
+  - "/api/co/runt/vehicle-by-plate-only"
+  - "api co runt vehicle-by-plate-only"
+  - "runt/vehicle-by-plate-only"
+  - "/runt/vehicle-by-plate-only"
+  - "api.verifik.co/v2/co/runt/vehicle-by-plate-only"
+  - "https://api.verifik.co/v2/co/runt/vehicle-by-plate-only"
+  - "GET v2/co/runt/vehicle-by-plate-only"
+  - "GET /v2/co/runt/vehicle-by-plate-only"
   - "v2/co/runt/vehicle-by-plate-simplified"
   - "/v2/co/runt/vehicle-by-plate-simplified"
   - "v2 co runt vehicle-by-plate-simplified"
@@ -2821,7 +2821,7 @@ grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/c
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-09-17T03:09:59.893Z_
+_Last regenerated: 2026-09-17T04:39:15.334Z_
 
 ## Argentina
 
@@ -2920,9 +2920,9 @@ _Last regenerated: 2026-09-17T03:09:59.893Z_
 | `v2/co/rues/complete` | v2 co rues complete co/rues/complete /co/rues/complete api/co/rues/complete /api/co/rues/complete api co rues complete rues/complete /rues/complete api.verifik.co/v2/co/rues/complete https://api.verifik.co/v2/co/rues/complete GET v2/co/rues/complete GET /v2/co/rues/complete | [Colombia — RUES complete lookup (v2, legacy)](/business-validation/colombia-rues-complete-v2) |
 | `v2/co/rui` | v2 co rui co/rui /co/rui api/co/rui /api/co/rui api co rui api.verifik.co/v2/co/rui https://api.verifik.co/v2/co/rui GET v2/co/rui GET /v2/co/rui | [Colombia — RUI Classification](/background-check/colombia-rui) |
 | `v2/co/runt/conductor` | v2 co runt conductor co/runt/conductor /co/runt/conductor api/co/runt/conductor /api/co/runt/conductor api co runt conductor runt/conductor /runt/conductor api.verifik.co/v2/co/runt/conductor https://api.verifik.co/v2/co/runt/conductor GET v2/co/runt/conductor GET /v2/co/runt/conductor | [Driver's License](/vehicle-validation/colombia/driver-s-license) |
-| `v2/co/runt/placas` | v2 co runt placas co/runt/placas /co/runt/placas api/co/runt/placas /api/co/runt/placas api co runt placas runt/placas /runt/placas api.verifik.co/v2/co/runt/placas https://api.verifik.co/v2/co/runt/placas GET v2/co/runt/placas GET /v2/co/runt/placas | [RUNT — Vehicle by plate only](/vehicle-validation/colombia/runt-placas) |
 | `v2/co/runt/propietarios` | v2 co runt propietarios co/runt/propietarios /co/runt/propietarios api/co/runt/propietarios /api/co/runt/propietarios api co runt propietarios runt/propietarios /runt/propietarios api.verifik.co/v2/co/runt/propietarios https://api.verifik.co/v2/co/runt/propietarios GET v2/co/runt/propietarios GET /v2/co/runt/propietarios | [RUNT - Vehicle owners by plate](/vehicle-validation/colombia/runt-vehicle-owners) |
 | `v2/co/runt/vehicle-by-plate` | v2 co runt vehicle-by-plate co/runt/vehicle-by-plate /co/runt/vehicle-by-plate api/co/runt/vehicle-by-plate /api/co/runt/vehicle-by-plate api co runt vehicle-by-plate runt/vehicle-by-plate /runt/vehicle-by-plate api.verifik.co/v2/co/runt/vehicle-by-plate https://api.verifik.co/v2/co/runt/vehicle-by-plate GET v2/co/runt/vehicle-by-plate GET /v2/co/runt/vehicle-by-plate | [Vehicle Records by Plate](/vehicle-validation/colombia/runt-vehicle-by-plate) |
+| `v2/co/runt/vehicle-by-plate-only` | v2 co runt vehicle-by-plate-only co/runt/vehicle-by-plate-only /co/runt/vehicle-by-plate-only api/co/runt/vehicle-by-plate-only /api/co/runt/vehicle-by-plate-only api co runt vehicle-by-plate-only runt/vehicle-by-plate-only /runt/vehicle-by-plate-only api.verifik.co/v2/co/runt/vehicle-by-plate-only https://api.verifik.co/v2/co/runt/vehicle-by-plate-only GET v2/co/runt/vehicle-by-plate-only GET /v2/co/runt/vehicle-by-plate-only | [RUNT — Vehicle by plate only](/vehicle-validation/colombia/runt-vehicle-by-plate-only) |
 | `v2/co/runt/vehicle-by-plate-simplified` | v2 co runt vehicle-by-plate-simplified co/runt/vehicle-by-plate-simplified /co/runt/vehicle-by-plate-simplified api/co/runt/vehicle-by-plate-simplified /api/co/runt/vehicle-by-plate-simplified api co runt vehicle-by-plate-simplified runt/vehicle-by-plate-simplified /runt/vehicle-by-plate-simplified api.verifik.co/v2/co/runt/vehicle-by-plate-simplified https://api.verifik.co/v2/co/runt/vehicle-by-plate-simplified GET v2/co/runt/vehicle-by-plate-simplified GET /v2/co/runt/vehicle-by-plate-simplified | [Simplified Vehicle Records by Plate in RUNT](/vehicle-validation/colombia/runt-vehicle-by-plate-simplified) |
 | `v2/co/runt/vehicle-by-vin` | v2 co runt vehicle-by-vin co/runt/vehicle-by-vin /co/runt/vehicle-by-vin api/co/runt/vehicle-by-vin /api/co/runt/vehicle-by-vin api co runt vehicle-by-vin runt/vehicle-by-vin /runt/vehicle-by-vin api.verifik.co/v2/co/runt/vehicle-by-vin https://api.verifik.co/v2/co/runt/vehicle-by-vin GET v2/co/runt/vehicle-by-vin GET /v2/co/runt/vehicle-by-vin | [Vehicle Records by VIN](/vehicle-validation/colombia/runt-vehicle-by-vin) |
 | `v2/co/runt/vehiculo` | v2 co runt vehiculo co/runt/vehiculo /co/runt/vehiculo api/co/runt/vehiculo /api/co/runt/vehiculo api co runt vehiculo runt/vehiculo /runt/vehiculo api.verifik.co/v2/co/runt/vehiculo https://api.verifik.co/v2/co/runt/vehiculo GET v2/co/runt/vehiculo GET /v2/co/runt/vehiculo | [SOAT and RTM Validation in RUNT](/vehicle-validation/colombia/runt-vehicle-soat-rtm) |

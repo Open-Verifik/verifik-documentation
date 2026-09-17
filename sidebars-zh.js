@@ -165,7 +165,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license", label: "🇨🇴 RUNT — 驾驶证 (Premium)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license-basic", label: "🇨🇴 RUNT — 驾驶证 (Basic)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — 按车牌车辆(完整)" },
-						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-placas", label: "🇨🇴 RUNT — 仅凭车牌查询车辆" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-only", label: "🇨🇴 RUNT — 仅凭车牌查询车辆" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — 按车牌车辆(简化)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — 车辆(基本)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — 按车牌查询所有人" },

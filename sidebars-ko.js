@@ -165,7 +165,7 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license", label: "🇨🇴 RUNT — 운전면허 (Premium)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-drivers-license-basic", label: "🇨🇴 RUNT — 운전면허 (Basic)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate", label: "🇨🇴 RUNT — 차량 확인" },
-						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-placas", label: "🇨🇴 RUNT — 번호판만 차량 조회" },
+						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-only", label: "🇨🇴 RUNT — 번호판만 차량 조회" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified", label: "🇨🇴 RUNT — 차량 확인(간편)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehiculo", label: "🇨🇴 RUNT — 차량 확인(기본)" },
 						{ type: "doc", id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-owners", label: "🇨🇴 RUNT — 번호판별 소유자" },
