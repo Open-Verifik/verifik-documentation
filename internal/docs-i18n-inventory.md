@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-09-17T04:54:16.342Z
+Generated: 2026-09-18T02:47:21.508Z
 
-- **Files scanned:** 520
-- **Unique endpoint URLs:** 226
+- **Files scanned:** 521
+- **Unique endpoint URLs:** 227
 - **Duplicate URL groups (SEO / aliases):** 57
 - **Docs without `### Endpoint` block:** 214
 
@@ -13,7 +13,7 @@ Generated: 2026-09-17T04:54:16.342Z
 | --- | ---: | --- |
 | P0 | 26 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 176 | identity, biometrics, resources, etc. |
+| P2 | 177 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -307,6 +307,7 @@ Generated: 2026-09-17T04:54:16.342Z
 | P2 | `v2/co/foreigner-id/ppt` | `identity/colombia-ppt.mdx` |
 | P2 | `v2/co/inpec` | `background-check/colombia-inpec.mdx` |
 | P0 | `v2/co/medellin/vehicle/fines` | `vehicle-validation/colombia/medellin-vehicle-fines.mdx` |
+| P2 | `v2/co/policia/consultar` | `background-check/colombia-police-record-check.mdx` |
 | P2 | `v2/co/policia/rnmc` | `background-check/colombia-police-compliance-corrective-measures.mdx` |
 | P2 | `v2/co/politically-exposed-persons` | `identity-validation/colombia/colombian-politically-exposed-persons.mdx` |
 | P2 | `v2/co/procuraduria` | `identity/colombia-procuraduria.mdx` |

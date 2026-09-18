@@ -1134,6 +1134,20 @@ keywords:
   - "https://api.verifik.co/v2/co/medellin/vehicle/fines"
   - "GET v2/co/medellin/vehicle/fines"
   - "GET /v2/co/medellin/vehicle/fines"
+  - "v2/co/policia/consultar"
+  - "/v2/co/policia/consultar"
+  - "v2 co policia consultar"
+  - "co/policia/consultar"
+  - "/co/policia/consultar"
+  - "api/co/policia/consultar"
+  - "/api/co/policia/consultar"
+  - "api co policia consultar"
+  - "policia/consultar"
+  - "/policia/consultar"
+  - "api.verifik.co/v2/co/policia/consultar"
+  - "https://api.verifik.co/v2/co/policia/consultar"
+  - "GET v2/co/policia/consultar"
+  - "GET /v2/co/policia/consultar"
   - "v2/co/policia/rnmc"
   - "/v2/co/policia/rnmc"
   - "v2 co policia rnmc"
@@ -2816,12 +2830,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (226 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (227 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-09-17T04:54:16.393Z_
+_Last regenerated: 2026-09-18T02:47:21.561Z_
 
 ## Argentina
 
@@ -2903,6 +2917,7 @@ _Last regenerated: 2026-09-17T04:54:16.393Z_
 | `v2/co/foreigner-id/ppt` | v2 co foreigner-id ppt co/foreigner-id/ppt /co/foreigner-id/ppt api/co/foreigner-id/ppt /api/co/foreigner-id/ppt api co foreigner-id ppt foreigner-id/ppt /foreigner-id/ppt api.verifik.co/v2/co/foreigner-id/ppt https://api.verifik.co/v2/co/foreigner-id/ppt GET v2/co/foreigner-id/ppt GET /v2/co/foreigner-id/ppt | [Colombia — PPT (Temporary Protection Permit)](/identity/colombia-ppt) |
 | `v2/co/inpec` | v2 co inpec co/inpec /co/inpec api/co/inpec /api/co/inpec api co inpec api.verifik.co/v2/co/inpec https://api.verifik.co/v2/co/inpec GET v2/co/inpec GET /v2/co/inpec | [Colombia - INPEC Prison Records Check](/background-check/colombia-inpec) |
 | `v2/co/medellin/vehicle/fines` | v2 co medellin vehicle fines co/medellin/vehicle/fines /co/medellin/vehicle/fines api/co/medellin/vehicle/fines /api/co/medellin/vehicle/fines api co medellin vehicle fines medellin/vehicle/fines /medellin/vehicle/fines vehicle/fines /vehicle/fines api.verifik.co/v2/co/medellin/vehicle/fines https://api.verifik.co/v2/co/medellin/vehicle/fines GET v2/co/medellin/vehicle/fines GET /v2/co/medellin/vehicle/fines | [Medellín - Transit Fines](/vehicle-validation/colombia/medellin-vehicle-fines) |
+| `v2/co/policia/consultar` | v2 co policia consultar co/policia/consultar /co/policia/consultar api/co/policia/consultar /api/co/policia/consultar api co policia consultar policia/consultar /policia/consultar api.verifik.co/v2/co/policia/consultar https://api.verifik.co/v2/co/policia/consultar GET v2/co/policia/consultar GET /v2/co/policia/consultar | [Colombia - Colombian Police Record Check](/background-check/colombia-police-record-check) |
 | `v2/co/policia/rnmc` | v2 co policia rnmc co/policia/rnmc /co/policia/rnmc api/co/policia/rnmc /api/co/policia/rnmc api co policia rnmc policia/rnmc /policia/rnmc api.verifik.co/v2/co/policia/rnmc https://api.verifik.co/v2/co/policia/rnmc GET v2/co/policia/rnmc GET /v2/co/policia/rnmc | [Colombia - Verify Police Compliance with Corrective Measures](/background-check/colombia-police-compliance-corrective-measures) |
 | `v2/co/politically-exposed-persons` | v2 co politically-exposed-persons co/politically-exposed-persons /co/politically-exposed-persons api/co/politically-exposed-persons /api/co/politically-exposed-persons api co politically-exposed-persons api.verifik.co/v2/co/politically-exposed-persons https://api.verifik.co/v2/co/politically-exposed-persons GET v2/co/politically-exposed-persons GET /v2/co/politically-exposed-persons | [Colombia — Politically exposed persons (PEP) lookup](/identity-validation/colombia/colombian-politically-exposed-persons) |
 | `v2/co/procuraduria` | v2 co procuraduria co/procuraduria /co/procuraduria api/co/procuraduria /api/co/procuraduria api co procuraduria api.verifik.co/v2/co/procuraduria https://api.verifik.co/v2/co/procuraduria GET v2/co/procuraduria GET /v2/co/procuraduria | [Colombia — Citizen lookup via Procuraduría](/identity/colombia-procuraduria) |

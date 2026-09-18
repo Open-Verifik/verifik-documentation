@@ -1,0 +1,209 @@
+---
+id: colombia-police-record-check
+title: コロンビア — 警察記録照会
+description: GET または POST /v2/co/policia/consultar でコロンビアの警察記録を照会します。
+slug: /background-check/colombia-police-record-check
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# コロンビア — 警察記録照会
+
+## API リファレンス
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/co/policia/consultar
+```
+
+コロンビア警察記録照会は、憲法第248条に基づき、司法当局との未決事項があるかを確認します。**`documentType`** と **`documentNumber`** を **GET**（クエリ）または **POST**（JSON 本文）で送信します。成功時の `data` には `documentType`、`documentNumber`、`firstName`、`lastName`、`fullName`、`arrayName`、`details` が含まれます。採用、オンボーディング、デューデリジェンスの背景調査に利用できます。
+
+### ヘッダー (Headers)
+
+| 名前          | 値                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### パラメーター (Parameters)
+
+:::info
+対応する **文書タイプ** とそれぞれの必須パラメーターの一覧については、[文書タイプ](/background-check/document-types) ガイドをご参照ください。
+:::
+
+| 名前             | 型     | 必須 | 説明                                                                       |
+| ---------------- | ------ | ---- | -------------------------------------------------------------------------- |
+| `documentType`   | string | はい | 文書タイプ。許可値: **CC**、**CE**、**PPT**、**PA**、**DP**。**DP** は Documento Diplomático（外交文書）です。**PPT** は受け付けられ、警察ポータルではパスポートと同様に扱われます。 |
+| `documentNumber` | string | はい | 照会対象者の文書番号。スペースやドットを含めずに入力してください。         |
+
+このエンドポイントは `date` パラメーターを**受け付けません**（[RNMC](/verifik-ja/background-check/colombia-police-compliance-corrective-measures) とは異なります）。
+
+### リクエスト (Request)
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/policia/consultar",
+  params: { documentType: "CC", documentNumber: "1032386359" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ''
+headers = {}
+conn.request("GET", "/v2/co/policia/consultar?documentType=CC&documentNumber=1032386359", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(url: URL(string: "https://api.verifik.co/v2/co/policia/consultar?documentType=CC&documentNumber=1032386359")!,timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
+  guard let data = data else {
+    print(String(describing: error))
+    return
+  }
+  print(String(data: data, encoding: .utf8)!)
+}
+
+task.resume()
+
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/co/policia/consultar?documentType=CC&documentNumber=1032386359');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setConfig(array(
+  'follow_redirects' => TRUE
+));
+try {
+  $response = $request->send();
+  if ($response->getStatus() == 200) {
+    echo $response->getBody();
+  }
+  else {
+    echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+    $response->getReasonPhrase();
+  }
+}
+catch(HTTP_Request2_Exception $e) {
+  echo 'Error: ' . $e->getMessage();
+}
+```
+
+</TabItem>
+</Tabs>
+
+### レスポンス (Response)
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "1032386359",
+    "firstName": "LILIA MANUELA",
+    "lastName": "LESPORT FERNANDEZ",
+    "fullName": "LILIA MANUELA LESPORT FERNANDEZ",
+    "arrayName": ["LILIA", "MANUELA", "LESPORT", "FERNANDEZ"],
+    "details": "NO TIENE ASUNTOS PENDIENTES CON LAS AUTORIDADES JUDICIALES de conformidad con lo establecido en el artículo 248 de la Constitución Política de Colombia."
+  },
+  "signature": {
+    "dateTime": "March 13, 2024 10:48 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "7QS69"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409-1" label="409 (パラメーター不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentType\n. missing documentNumber\n"
+}
+```
+
+</TabItem>
+<TabItem value="409-2" label="409 (無効な文書タイプ)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType must be one of: [CC,CE,PPT,PA,DP]"
+}
+```
+
+</TabItem>
+<TabItem value="409-3" label="409 (上流サービス停止)">
+
+```json
+{
+  "code": "Endpoint_out_of_service",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 注意事項 (Notes)
+
+- **GET** と **POST** の両方に対応しています。POST は同じフィールドを JSON 本文で送ります。
+- 警察ポータルは **apellidos（姓）の後に nombres（名）** を表示します。Verifik は名を先に返します: `firstName` `LILIA MANUELA`、`lastName` `LESPORT FERNANDEZ`、`fullName` `LILIA MANUELA LESPORT FERNANDEZ`、`arrayName` は名の後に姓です。
+- 本番の `data.details` は **NO TIENE** / **REGISTRA ASUNTOS** の一文のみです。憲法上の説明文は除去されます。
+- サンドボックスは `legend` を含む場合があります。`legend` を本番の保証フィールドとして扱わないでください。
+- 許可される `documentType` は **CC**、**CE**、**PPT**、**PA**、**DP**（Documento Diplomático）です。**PPT** は受け付けられ、ポータルではパスポートと同様に扱われます。
+- このルートは発行 `date` を必要としません（RNMC は必要です）。
+- 上流または captcha の一時障害は **409** と `Endpoint_out_of_service` または `captcha_failed` を返します。
+- 未履行の是正措置は [コロンビア — RNMC 是正措置](/verifik-ja/background-check/colombia-police-compliance-corrective-measures)（`GET /v2/co/policia/rnmc`）を使用してください。

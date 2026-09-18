@@ -206,6 +206,7 @@ const sidebars = {
 				{ type: "doc", id: "background-check/argentina-certificate-verify", label: "🇦🇷 범죄 경력 증명" },
 				{ type: "doc", id: "background-check/chile-certificate-verify", label: "🇨🇱 Registro Civil" },
 				{ type: "doc", id: "background-check/colombia-public-contracts", label: "🇨🇴 공공 계약" },
+				{ type: "doc", id: "background-check/colombia-police-record-check", label: "🇨🇴 경찰 기록 조회" },
 				{ type: "doc", id: "background-check/colombia-police-compliance-corrective-measures", label: "🇨🇴 RNMC 시정 조치" },
 				{ type: "doc", id: "background-check/colombia-comptroller-certificate", label: "🇨🇴 감사원 증명" },
 				{ type: "doc", id: "background-check/colombia-disciplinary-records-attorneys-office", label: "🇨🇴 징계 기록" },

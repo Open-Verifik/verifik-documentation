@@ -38,6 +38,8 @@ const ES_REL_PATH_TO_CANONICAL = {
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-rui": "background-check/colombia-rui",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-procuraduria":
 		"background-check/colombia-disciplinary-records-attorneys-office",
+	"verificacion-antecendentes/verificacion-antecendentes-colombia-policia":
+		"background-check/colombia-police-record-check",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-cumplimiento-policial":
 		"background-check/colombia-police-compliance-corrective-measures",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-contratos-publicos":
