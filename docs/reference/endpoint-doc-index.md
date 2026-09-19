@@ -2226,6 +2226,18 @@ keywords:
   - "https://api.verifik.co/v2/ip-lookup"
   - "GET v2/ip-lookup"
   - "GET /v2/ip-lookup"
+  - "v2/look-ups/phone"
+  - "/v2/look-ups/phone"
+  - "v2 look-ups phone"
+  - "look-ups/phone"
+  - "/look-ups/phone"
+  - "api/look-ups/phone"
+  - "/api/look-ups/phone"
+  - "api look-ups phone"
+  - "api.verifik.co/v2/look-ups/phone"
+  - "https://api.verifik.co/v2/look-ups/phone"
+  - "GET v2/look-ups/phone"
+  - "GET /v2/look-ups/phone"
   - "v2/mx/company"
   - "/v2/mx/company"
   - "v2 mx company"
@@ -2830,12 +2842,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (227 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (228 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-09-18T02:47:21.561Z_
+_Last regenerated: 2026-09-19T03:58:12.647Z_
 
 ## Argentina
 
@@ -3187,6 +3199,12 @@ _Last regenerated: 2026-09-18T02:47:21.561Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/ip-lookup` | v2 ip-lookup ip-lookup /ip-lookup api/ip-lookup /api/ip-lookup api ip-lookup api.verifik.co/v2/ip-lookup https://api.verifik.co/v2/ip-lookup GET v2/ip-lookup GET /v2/ip-lookup | [🌐 IP Geolocation Lookup](/identity/ip-lookup) |
+
+## Look Ups
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/look-ups/phone` | v2 look-ups phone look-ups/phone /look-ups/phone api/look-ups/phone /api/look-ups/phone api look-ups phone api.verifik.co/v2/look-ups/phone https://api.verifik.co/v2/look-ups/phone GET v2/look-ups/phone GET /v2/look-ups/phone | [Global - Phone Lookup](/identity/phone-lookup) |
 
 ## Ocr
 
