@@ -178,6 +178,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/venezuela", label: "🇻🇪 Venezuela" },
 				{ type: "doc", id: "identity/venezuela-foreigner-id", label: "🇻🇪 Venezuela - Cédula de Extranjero" },
 				{ type: "doc", id: "identity/identity-ip-lookup", label: "🌐 Consulta de Geoubicación IP", key: "identity-ip-lookup" },
+				{ type: "doc", id: "identity/identity-phone-lookup", label: "🌐 Consulta de Teléfono", key: "identity-phone-lookup" },
 			],
 		},
 		{

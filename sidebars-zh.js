@@ -88,6 +88,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/venezuela", label: "🇻🇪 委内瑞拉国民（CCVE）" },
 				{ type: "doc", id: "identity/venezuela-foreigner-id", label: "🇻🇪 委内瑞拉 — 外国人身份证（CEVE）" },
 				{ type: "doc", id: "identity/identity-ip-lookup", label: "🌐 IP 地理定位", key: "identity-ip-lookup" },
+				{ type: "doc", id: "identity/identity-phone-lookup", label: "🌐 电话号码查询", key: "identity-phone-lookup" },
 			],
 		},
 		{

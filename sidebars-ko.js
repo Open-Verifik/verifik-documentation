@@ -87,6 +87,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/venezuela", label: "🇻🇪 베네수엘라 국민(CCVE)" },
 				{ type: "doc", id: "identity/venezuela-foreigner-id", label: "🇻🇪 베네수엘라 — 외국인 신분증(CEVE)" },
 				{ type: "doc", id: "identity/identity-ip-lookup", label: "🌐 IP 지리적 위치", key: "identity-ip-lookup" },
+				{ type: "doc", id: "identity/identity-phone-lookup", label: "🌐 전화번호 조회", key: "identity-phone-lookup" },
 			],
 		},
 		{

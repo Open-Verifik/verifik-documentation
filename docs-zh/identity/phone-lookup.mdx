@@ -1,0 +1,155 @@
+---
+id: identity-phone-lookup
+title: 🌐 全球 — 电话号码查询
+description: 通过 GET 或 POST /v2/look-ups/phone 查询全球电话号码。返回名册上的机主姓名及相关资料字段（如有）。
+sidebar_label: 🌐 电话号码查询
+slug: /identity/phone-lookup
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 全球 — 电话号码查询
+
+## API 参考
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/look-ups/phone
+```
+
+电话号码查询服务将全球手机或固话号码解析为 **名册上的机主姓名** 及相关资料字段（源有匹配时）。通过 **GET**（查询参数）或 **POST**（JSON 正文）发送 **`countryCode`**（数字国际区号）和 **`phone`**（不含国家前缀的国内号码）。成功的 `data` 包含 `name`、`phone`、`countryCode`，还可能包含 `score`、`gender`、`about`、`jobTitle`、`companyName`、`phones`、`addresses`、`internetAddresses`、`imId`、`access`、`enhanced`。适用于入职、反欺诈和联系人核验，不能作为 OTP 持机证明。
+
+如需通过短信或 WhatsApp 发送一次性验证码，请参阅 [电话验证](/verifik-zh/resources/phone-validations)。
+
+### 请求头（Headers）
+
+| 名称           | 取值                |
+| -------------- | ------------------- |
+| Content-Type   | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 参数（Parameters）
+
+| 名称            | 类型    | 必填 | 描述                                                       |
+| --------------- | ------- | ---- | ---------------------------------------------------------- |
+| `countryCode`   | string  | 是   | 数字国际区号，不是 ISO2。例如哥伦比亚 `57`、美国 `1`。 |
+| `phone`         | string  | 是   | 待查询线路的国内号码，不含国家前缀、空格或标点。 |
+
+### 请求（Request）
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/look-ups/phone",
+  params: { countryCode: "57", phone: "3006094511" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ""
+headers = {}
+conn.request("GET", "/v2/look-ups/phone?countryCode=57&phone=3006094511", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "about": "",
+    "access": "",
+    "addresses": [],
+    "companyName": {},
+    "countryCode": "57",
+    "enhanced": "",
+    "gender": "",
+    "imId": "",
+    "internetAddresses": [],
+    "jobTitle": "",
+    "name": "JANE DOE",
+    "phone": "3006094511",
+    "phones": [],
+    "score": 0.9
+  },
+  "signature": {
+    "dateTime": "March 13, 2024 10:48 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409-1" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "countryCode|phone is missing"
+}
+```
+
+</TabItem>
+<TabItem value="409-2" label="409（上游不可用）">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint out of service."
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 备注（Notes）
+
+- 同时支持 **GET** 和 **POST**。POST 在 JSON 正文中发送相同字段。
+- `countryCode` 是 **数字国际区号**（例如 `57`），不是 `CO` 这类 ISO2。
+- `phone` 只发送 **国内号码**，不要再次加上国家区号。
+- 除 `name`、`phone`、`countryCode` 外的资料字段为可选；源可能省略。
+- 此路由没有沙箱固定数据。查询会打到线上源。临时故障返回 **409**，消息为 `Endpoint out of service.`
+- **404** 表示没有名册（或区号未知）。付费客户的 404 **不扣费**。
+- 此接口 **不能** 证明呼叫方持有该手机。OTP 验证请使用 [电话验证](/verifik-zh/resources/phone-validations)。

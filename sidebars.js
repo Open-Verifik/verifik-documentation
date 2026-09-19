@@ -377,6 +377,12 @@ const sidebars = {
 					label: "🌐 IP Geolocation Lookup",
 					key: "identity-ip-lookup",
 				},
+				{
+					type: "doc",
+					id: "identity/identity-phone-lookup",
+					label: "🌐 Global - Phone Lookup",
+					key: "identity-phone-lookup",
+				},
 			],
 		},
 		{

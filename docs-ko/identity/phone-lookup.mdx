@@ -1,0 +1,155 @@
+---
+id: identity-phone-lookup
+title: 🌐 글로벌 — 전화번호 조회
+description: GET 또는 POST /v2/look-ups/phone 으로 전 세계 전화번호를 조회합니다. 목록에 있는 소유자 이름과 관련 프로필 필드를 반환합니다.
+sidebar_label: 🌐 전화번호 조회
+slug: /identity/phone-lookup
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 글로벌 — 전화번호 조회
+
+## API 레퍼런스
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/look-ups/phone
+```
+
+전화번호 조회 서비스는 전 세계 휴대폰 또는 유선 번호를 **목록상 소유자 이름** 및 관련 프로필 필드와 매칭합니다. **`countryCode`**(숫자 국가번호)와 **`phone`**(국가 접두사 없는 국내 번호)를 **GET**(쿼리) 또는 **POST**(JSON 본문)으로 보냅니다. 성공 시 `data`에는 `name`, `phone`, `countryCode`가 포함되며 `score`, `gender`, `about`, `jobTitle`, `companyName`, `phones`, `addresses`, `internetAddresses`, `imId`, `access`, `enhanced`가 올 수 있습니다. 온보딩, 사기 탐지, 연락처 확인에 사용하세요. OTP로 단말기 소유를 증명하는 용도가 아닙니다.
+
+SMS 또는 WhatsApp 일회용 코드를 보내려면 [전화번호 검증](/verifik-ko/resources/phone-validations)을 참고하세요.
+
+### 헤더(Headers)
+
+| 이름           | 값                  |
+| -------------- | ------------------- |
+| Content-Type   | `application/json`  |
+| Authorization  | `Bearer <token>`    |
+
+### 매개변수(Parameters)
+
+| 이름            | 형식    | 필수 | 설명                                                                       |
+| --------------- | ------- | ---- | -------------------------------------------------------------------------- |
+| `countryCode`   | string  | 예   | 숫자 국가번호이며 ISO2가 아닙니다. 예: 콜롬비아 `57`, 미국 `1`. |
+| `phone`         | string  | 예   | 조회할 회선의 국내 번호. 국가 접두사, 공백, 문장 부호 없이 입력합니다. |
+
+### 요청(Request)
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/look-ups/phone",
+  params: { countryCode: "57", phone: "3006094511" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ""
+headers = {}
+conn.request("GET", "/v2/look-ups/phone?countryCode=57&phone=3006094511", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+</Tabs>
+
+### 응답(Response)
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "about": "",
+    "access": "",
+    "addresses": [],
+    "companyName": {},
+    "countryCode": "57",
+    "enhanced": "",
+    "gender": "",
+    "imId": "",
+    "internetAddresses": [],
+    "jobTitle": "",
+    "name": "JANE DOE",
+    "phone": "3006094511",
+    "phones": [],
+    "score": 0.9
+  },
+  "signature": {
+    "dateTime": "March 13, 2024 10:48 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409-1" label="409 (누락된 매개변수)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "countryCode|phone is missing"
+}
+```
+
+</TabItem>
+<TabItem value="409-2" label="409 (업스트림 불가)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint out of service."
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 참고 (Notes)
+
+- **GET**과 **POST**를 모두 지원합니다. POST는 동일한 필드를 JSON 본문으로 보냅니다.
+- `countryCode`는 **숫자 국가번호**(예: `57`)이며 `CO` 같은 ISO2가 아닙니다.
+- `phone`은 **국내 번호만** 보내세요. 국가번호를 다시 붙이지 마세요.
+- `name`, `phone`, `countryCode` 외 프로필 필드는 선택 사항이며 소스가 생략할 수 있습니다.
+- 이 경로에는 샌드박스 픽스처가 없습니다. 조회는 라이브 소스를 호출합니다. 일시 장애는 **409**와 `Endpoint out of service.`를 반환합니다.
+- **404**는 목록이 없거나 국가번호를 알 수 없음을 뜻합니다. 유료 클라이언트는 404에 **과금되지 않습니다**.
+- 이 엔드포인트는 호출자가 단말기를 소유했음을 **증명하지 않습니다**. OTP 검증은 [전화번호 검증](/verifik-ko/resources/phone-validations)을 사용하세요.

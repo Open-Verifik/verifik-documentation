@@ -1,0 +1,155 @@
+---
+id: identity-phone-lookup
+title: Global - Consulta de telefone
+description: Consulte um número de telefone no mundo via GET ou POST /v2/look-ups/phone. Devolve o nome do titular listado e campos de perfil relacionados quando disponíveis.
+sidebar_label: 🌐 Consulta de telefone
+slug: /identity/phone-lookup
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Global - Consulta de telefone
+
+## Referência da API
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/look-ups/phone
+```
+
+O serviço de consulta de telefone associa um número móvel ou fixo em qualquer país ao **nome do titular listado** e a campos de perfil relacionados quando a fonte tem correspondência. Envie **`countryCode`** (código de chamada numérico) e **`phone`** (número nacional, sem prefixo do país) por **GET** (query) ou **POST** (corpo JSON). Um `data` bem-sucedido inclui `name`, `phone`, `countryCode` e pode incluir `score`, `gender`, `about`, `jobTitle`, `companyName`, `phones`, `addresses`, `internetAddresses`, `imId`, `access` e `enhanced`. Use para onboarding, detecção de fraude e verificação de contactos — não como prova OTP de posse do aparelho.
+
+Para enviar um código de uso único por SMS ou WhatsApp, veja [Validações de telefone](/verifik-pt/resources/phone-validations).
+
+### Cabeçalhos (Headers)
+
+| Nome          | Valor              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parâmetros
+
+| Nome            | Tipo   | Obrigatório | Descrição                                                                 |
+| --------------- | ------ | ----------- | ------------------------------------------------------------------------- |
+| `countryCode`   | string | Sim         | Código de chamada numérico, não ISO2. Exemplo: `57` para a Colômbia, `1` para os Estados Unidos. |
+| `phone`         | string | Sim         | Número nacional da linha a consultar, sem prefixo do país, espaços ou pontuação. |
+
+### Requisição (Request)
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/look-ups/phone",
+  params: { countryCode: "57", phone: "3006094511" },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <seu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+payload = ""
+headers = {}
+conn.request("GET", "/v2/look-ups/phone?countryCode=57&phone=3006094511", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</TabItem>
+</Tabs>
+
+### Resposta (Response)
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "about": "",
+    "access": "",
+    "addresses": [],
+    "companyName": {},
+    "countryCode": "57",
+    "enhanced": "",
+    "gender": "",
+    "imId": "",
+    "internetAddresses": [],
+    "jobTitle": "",
+    "name": "JANE DOE",
+    "phone": "3006094511",
+    "phones": [],
+    "score": 0.9
+  },
+  "signature": {
+    "dateTime": "March 13, 2024 10:48 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409-1" label="409 (Parâmetros ausentes)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "countryCode|phone is missing"
+}
+```
+
+</TabItem>
+<TabItem value="409-2" label="409 (Origem indisponível)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint out of service."
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Observações (Notes)
+
+- **GET** e **POST** são suportados. O POST envia os mesmos campos no corpo JSON.
+- `countryCode` é o **código de chamada numérico** (por exemplo `57`), não um código ISO2 como `CO`.
+- Envie `phone` como **número nacional apenas** — não anteponha de novo o código do país.
+- Os campos de perfil além de `name`, `phone` e `countryCode` são opcionais; a fonte pode omiti-los.
+- Esta rota não tem fixtures de sandbox. As consultas vão à fonte ao vivo. Indisponibilidades temporárias devolvem **409** com `Endpoint out of service.`
+- Um **404** significa que não há listagem (ou o código de chamada é desconhecido). Clientes pagantes **não são cobrados** pelo 404.
+- Este endpoint **não** prova que quem chama possui o aparelho. Para verificação OTP, use [Validações de telefone](/verifik-pt/resources/phone-validations).

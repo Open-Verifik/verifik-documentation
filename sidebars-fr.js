@@ -87,6 +87,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/venezuela", label: "🇻🇪 Citoyen vénézuélien (CCVE)" },
 				{ type: "doc", id: "identity/venezuela-foreigner-id", label: "🇻🇪 Venezuela — Cédula d'étranger (CEVE)" },
 				{ type: "doc", id: "identity/identity-ip-lookup", label: "🌐 Géolocalisation IP", key: "identity-ip-lookup" },
+				{ type: "doc", id: "identity/identity-phone-lookup", label: "🌐 Recherche de téléphone", key: "identity-phone-lookup" },
 			],
 		},
 		{
