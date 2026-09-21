@@ -167,6 +167,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/mexico", label: "🇲🇽 México", key: "identity-mexico" },
 				{ type: "doc", id: "identity/mexico-ine", label: "🇲🇽 México — Validación INE" },
 				{ type: "doc", id: "identity/mexico-ine-ocr", label: "🇲🇽 México — OCR INE" },
+				{ type: "doc", id: "identity/mexico-siged-certificado", label: "🇲🇽 México — Certificado SIGED" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Panamá", key: "identity-panama" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Paraguay", key: "identity-paraguay" },
 				{ type: "doc", id: "identity/peru", label: "🇵🇪 Perú", key: "identity-peru" },
