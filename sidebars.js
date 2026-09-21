@@ -319,6 +319,16 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/mexico-cedula-profesional",
+					label: "🇲🇽 Mexico — Professional License",
+				},
+				{
+					type: "doc",
+					id: "identity/mexico-siged-certificado",
+					label: "🇲🇽 Mexico — SIGED Certificate",
+				},
+				{
+					type: "doc",
 					id: "identity/panama",
 					label: "🇵🇦 Panama",
 					key: "identity-panama",
@@ -856,6 +866,11 @@ const sidebars = {
 					type: "doc",
 					id: "background-check/colombia-public-contracts",
 					label: "🇨🇴 Colombia - Public Contracts",
+				},
+				{
+					type: "doc",
+					id: "background-check/colombia-police-record-check",
+					label: "🇨🇴 Colombia - Police Record Check",
 				},
 				{
 					type: "doc",
