@@ -1,0 +1,70 @@
+---
+id: mexico-cedula-profesional
+title: Mexico — Professional License
+draft: true
+description: Look up a Mexican professional license in the SEP Registro Nacional de Profesionistas by CURP, cédula number, or name.
+slug: /identity/mexico-cedula-profesional
+keywords:
+  - v2/mx/cedula-profesional
+  - cédula profesional
+  - SEP
+  - Registro Nacional de Profesionistas
+---
+
+# Mexico — Professional License
+
+Confirm that a person has a **cédula profesional** registered with the Secretaría de Educación Pública (SEP). The source is the public [Registro Nacional de Profesionistas](https://cedulaprofesional.sep.gob.mx/cedula/).
+
+This is credential verification, not identity proofing and not a criminal check. Pair it with [Mexican Citizen (CURP)](/identity/mexico) or [INE Validation](/identity/mexico-ine).
+
+SEP publishes these results as preliminary open data. A certified paper is still the “Antecedentes Profesionales” issued by the Dirección General de Profesiones.
+
+## API reference
+
+```
+GET https://api.verifik.co/v2/mx/cedula-profesional
+```
+
+### Query
+
+| Name | Required | Description |
+| --- | --- | --- |
+| `documentType` | With `documentNumber` | `CURP` or `CEDULA`. |
+| `documentNumber` | With `documentType` | CURP (18 characters) or cédula number. |
+| `firstName` | Name search | Given names. Send with `lastName` when `documentType` is omitted. |
+| `lastName` | Name search | Surnames. |
+
+`CURP` resolves the person first, then searches the registry. If the person exists and has no license, the response is **200** with `cedulas: []`. A cédula number or name with no hit is **404**.
+
+### Example
+
+```bash
+curl "https://api.verifik.co/v2/mx/cedula-profesional?documentType=CURP&documentNumber=NUHA930929HSLXRL02" \
+  -H "Authorization: Bearer <token>"
+```
+
+```json
+{
+  "data": {
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "fullName": "ANA LOPEZ RUIZ",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "licenseNumber": "12812181",
+        "licenseType": "C1",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA EN DERECHO"
+      }
+    ],
+    "curp": "NUHA930929HSLXRL02",
+    "documentNumber": "NUHA930929HSLXRL02",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ"
+  }
+}
+```
+
+One person can have several licenses (for example a bachelor's degree and a master's degree). Name-only search can return homonyms, so prefer `documentType=CURP`.
