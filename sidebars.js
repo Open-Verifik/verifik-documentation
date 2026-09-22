@@ -319,6 +319,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/mexico-siged-certificado",
+					label: "🇲🇽 Mexico — SIGED Certificate",
+				},
+				{
+					type: "doc",
 					id: "identity/panama",
 					label: "🇵🇦 Panama",
 					key: "identity-panama",
