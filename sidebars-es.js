@@ -660,6 +660,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-cumplimiento-policial-premium",
+					label: "🇨🇴 Colombia - RNMC de la Policía premium",
+				},
+				{
+					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-contraloria",
 					label: "🇨🇴 Colombia - Contraloría",
 				},

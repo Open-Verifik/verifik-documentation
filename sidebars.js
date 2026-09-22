@@ -880,6 +880,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/colombia-police-compliance-corrective-measures-premium",
+					label: "🇨🇴 Colombia - Police RNMC premium",
+				},
+				{
+					type: "doc",
 					id: "background-check/colombia-comptroller-certificate",
 					label: "🇨🇴 Colombia - Comptroller Certificate",
 				},
