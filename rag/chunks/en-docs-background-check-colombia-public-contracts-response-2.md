@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "co"
   - "background-check"
-endpoints:
-  - "/v2/co/contracts"
-  - "/v2/co/contracts?documenttype=cc&documentnumber=63535790"
+endpoint: "/v2/co/contracts"
 sourceAnchor: "Response"
 slug: "/background-check/colombia-public-contracts"
 url: "https://docs.verifik.co/background-check/colombia-public-contracts"
 ---
 
 # Colombia - Public Contracts
-**API path(s):** /v2/co/contracts, /v2/co/contracts?documenttype=cc&documentnumber=63535790
+**API path(s):** /v2/co/contracts
 
 ## Response
 

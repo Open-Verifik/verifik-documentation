@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "cl"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/cl/driver-license"
-  - "/v2/cl/driver-license?documentnumber="
+endpoint: "/v2/cl/driver-license"
 sourceAnchor: "Licencia de conducir chilena"
 slug: "/validacion-de-vehiculo/chile/licencia-de-conducir"
 url: "https://docs.verifik.co/verifik-es/validacion-de-vehiculo/chile/licencia-de-conducir"
 ---
 
 # Licencia de Conducir
-**API path(s):** /v2/cl/driver-license, /v2/cl/driver-license?documentnumber=
+**API path(s):** /v2/cl/driver-license
 
 ## Licencia de conducir chilena
 

@@ -7,16 +7,14 @@ category: "validaciones-de-identidad"
 tags:
   - "usa"
   - "validaciones-de-identidad"
-endpoints:
-  - "/v2/usa/ssn"
-  - "/v2/usa/ssn?documentnumber=123-45-678"
+endpoint: "/v2/usa/ssn"
 sourceAnchor: "Encabezados"
 slug: "/validaciones-de-identidad/estados-unidos"
 url: "https://docs.verifik.co/verifik-es/validaciones-de-identidad/estados-unidos"
 ---
 
 # Verificación de SSN en Estados Unidos
-**API path(s):** /v2/usa/ssn, /v2/usa/ssn?documentnumber=123-45-678
+**API path(s):** /v2/usa/ssn
 
 La API de Verificación de SSN de Verifik te ayuda a autenticar Números de Seguro Social (SSN) emitidos en Estados Unidos usando datos oficiales del gobierno. Está diseñada para agilizar tus procesos de KYC (Conozca a su Cliente), prevenir fraudes y asegurar el cumplimiento normativo sin complicaciones.
 Creamos esta integración para empresas que necesitan una forma rápida, segura y automatizada de confirmar la validez de Números de Seguro Social.

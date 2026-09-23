@@ -7,16 +7,14 @@ category: "validaciones-vehiculos"
 tags:
   - "ca"
   - "validaciones-vehiculos"
-endpoints:
-  - "/v2/ca/ontario/driver-license"
-  - "/v2/ca/ontario/driver-license?documentnumber=s123456789123456"
+endpoint: "/v2/ca/ontario/driver-license"
 sourceAnchor: "Endpoint"
 slug: "/validaciones-vehiculos/licencia-de-manejo-ontario"
 url: "https://docs.verifik.co/verifik-es/validaciones-vehiculos/licencia-de-manejo-ontario"
 ---
 
 # Licencia de Manejo Ontario
-**API path(s):** /v2/ca/ontario/driver-license, /v2/ca/ontario/driver-license?documentnumber=s123456789123456
+**API path(s):** /v2/ca/ontario/driver-license
 
 ## Endpoint
 

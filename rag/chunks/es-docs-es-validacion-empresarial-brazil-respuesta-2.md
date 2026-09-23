@@ -7,15 +7,12 @@ category: "validacion-empresarial"
 tags:
   - "br"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/br/company"
-  - "/v2/br/company?"
-  - "/v2/br/company?documenttype=cnpj&documentnumber=09159197000180"
+endpoint: "/v2/br/company"
 sourceAnchor: "Respuesta"
 ---
 
 # Verificación empresarial (CNPJ)
-**API path(s):** /v2/br/company, /v2/br/company?, /v2/br/company?documenttype=cnpj&documentnumber=09159197000180
+**API path(s):** /v2/br/company
 
 ## Respuesta
 

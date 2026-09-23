@@ -10,15 +10,13 @@ tags:
 endpoints:
   - "/v2/ec/company"
   - "/v3/ec/company"
-  - "/v3/ec/company?"
-  - "/v3/ec/company?documenttype=rucec&documentnumber=1793197955001"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/ecuador"
 url: "https://docs.verifik.co/business-validation/ecuador"
 ---
 
 # Ecuadorian Business Verification
-**API path(s):** /v2/ec/company, /v3/ec/company, /v3/ec/company?, /v3/ec/company?documenttype=rucec&documentnumber=1793197955001
+**API path(s):** /v2/ec/company, /v3/ec/company
 
 ## What does this API validate?
 

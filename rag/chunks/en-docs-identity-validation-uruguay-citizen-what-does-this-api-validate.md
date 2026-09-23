@@ -7,17 +7,14 @@ category: "identity-validation"
 tags:
   - "uy"
   - "identity-validation"
-endpoints:
-  - "/v2/uy/cedula"
-  - "/v2/uy/cedula?"
-  - "/v2/uy/cedula?documenttype=ccuy&documentnumber=123456789&dateofbirth=20/02/1978"
+endpoint: "/v2/uy/cedula"
 sourceAnchor: "What does this API validate?"
 slug: "/identity-validation/uruguay-citizen"
 url: "https://docs.verifik.co/identity-validation/uruguay-citizen"
 ---
 
 # Uruguayan Citizen
-**API path(s):** /v2/uy/cedula, /v2/uy/cedula?, /v2/uy/cedula?documenttype=ccuy&documentnumber=123456789&dateofbirth=20/02/1978
+**API path(s):** /v2/uy/cedula
 
 ## What does this API validate?
 

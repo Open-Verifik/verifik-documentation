@@ -7,15 +7,12 @@ category: "validacion-empresarial"
 tags:
   - "py"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/py/company"
-  - "/v2/py/company?"
-  - "/v2/py/company?documenttype=ruc&documentnumber=80033331"
+endpoint: "/v2/py/company"
 sourceAnchor: "Respuesta"
 ---
 
 # Verificación Empresarial Paraguaya
-**API path(s):** /v2/py/company, /v2/py/company?, /v2/py/company?documenttype=ruc&documentnumber=80033331
+**API path(s):** /v2/py/company
 
 ## Respuesta
 

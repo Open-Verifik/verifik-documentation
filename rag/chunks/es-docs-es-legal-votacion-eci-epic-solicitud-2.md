@@ -10,14 +10,14 @@ tags:
 endpoints:
   - "/v2/in/epic"
   - "/v2/in/epic/votacion"
-  - "/v2/in/epic](../epic-eci)."
+  - "/v2/in/epic](../epic-eci"
 sourceAnchor: "Solicitud"
 slug: "/legal/votacion-eci-epic"
 url: "https://docs.verifik.co/verifik-es/legal/votacion-eci-epic"
 ---
 
 # India — EPIC: mesa y lugar de votación | Verifik
-**API path(s):** /v2/in/epic, /v2/in/epic/votacion, /v2/in/epic](../epic-eci).
+**API path(s):** /v2/in/epic, /v2/in/epic/votacion, /v2/in/epic](../epic-eci
 
 Este endpoint devuelve **dónde vota** el elector: asignación a **asamblea (AC)**, **distrito**, **parte** (sección de votación), **edificio** y datos de ubicación asociados a un **EPIC** válido de **10 caracteres**. Complementa la [API de solo nombres](../epic-eci) cuando necesitas **logística, soporte o comprobación de padrón** por lugar de votación.
 

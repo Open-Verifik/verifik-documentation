@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "face-recognition"
   - "resources"
-endpoints:
-  - "/v2/face-recognition/persons"
-  - "/v2/face-recognition/persons?page=1&limit=10&status=active&populates[]=collections"
+endpoint: "/v2/face-recognition/persons"
 sourceAnchor: "Endpoint"
 slug: "/resources/persons-personas/list-all-persons-listar-todas-las-personas"
 url: "https://docs.verifik.co/verifik-es/resources/persons-personas/list-all-persons-listar-todas-las-personas"
 ---
 
 # Listar Todas las Personas
-**API path(s):** /v2/face-recognition/persons, /v2/face-recognition/persons?page=1&limit=10&status=active&populates[]=collections
+**API path(s):** /v2/face-recognition/persons
 
 ## Endpoint
 

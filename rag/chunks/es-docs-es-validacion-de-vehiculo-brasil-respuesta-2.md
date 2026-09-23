@@ -7,16 +7,14 @@ category: "validacion-de-vehiculo"
 tags:
   - "br"
   - "validacion-de-vehiculo"
-endpoints:
-  - "/v2/br/vehicle"
-  - "/v2/br/vehicle?"
+endpoint: "/v2/br/vehicle"
 sourceAnchor: "Respuesta"
 slug: "/validacion-de-vehiculo/brasil"
 url: "https://docs.verifik.co/verifik-es/validacion-de-vehiculo/brasil"
 ---
 
 # Información de vehículos
-**API path(s):** /v2/br/vehicle, /v2/br/vehicle?
+**API path(s):** /v2/br/vehicle
 
 ## Respuesta
 

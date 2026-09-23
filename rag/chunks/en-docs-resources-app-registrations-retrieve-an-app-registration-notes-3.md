@@ -9,17 +9,16 @@ tags:
   - "face-verifications"
   - "resources"
 endpoints:
-  - "/v2/app-registrations/${appregistrationid}?populates[]=project&populates[]=projectflow&populates[]=emailvalidation"
-  - "/v2/app-registrations/%s?populates[]=project&populates[]=projectflow"
+  - "/v2/app-registrations/${appregistrationid}"
+  - "/v2/app-registrations/%s"
   - "/v2/app-registrations/{app_registration_id}"
   - "/v2/app-registrations/{id}"
-  - "/v2/app-registrations/{id}?populates[]=comparefaceverification"
   - "/v2/face-verifications/:id"
 sourceAnchor: "Notes"
 ---
 
 # Get App Registration
-**API path(s):** /v2/app-registrations/${appregistrationid}?populates[]=project&populates[]=projectflow&populates[]=emailvalidation, /v2/app-registrations/%s?populates[]=project&populates[]=projectflow, /v2/app-registrations/{app_registration_id}, /v2/app-registrations/{id}, /v2/app-registrations/{id}?populates[]=comparefaceverification, /v2/face-verifications/:id
+**API path(s):** /v2/app-registrations/${appregistrationid}, /v2/app-registrations/%s, /v2/app-registrations/{app_registration_id}, /v2/app-registrations/{id}, /v2/face-verifications/:id
 
 ## Notes
 

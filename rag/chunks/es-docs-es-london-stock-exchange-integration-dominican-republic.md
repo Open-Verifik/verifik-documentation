@@ -7,14 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "do"
   - "london-stock-exchange-integration"
-endpoint: "/v2/do/cedula?documenttype=cie&documentnumber=00112851662"
+endpoint: "/v2/do/cedula"
 sourceAnchor: "87. Cedula Republica Dominicana"
 slug: "/london-stock-exchange-integration/dominican-republic"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/dominican-republic"
 ---
 
 # República Dominicana — API pública Verifik
-**API path(s):** /v2/do/cedula?documenttype=cie&documentnumber=00112851662
+**API path(s):** /v2/do/cedula
 
 ## 87. Cedula Republica Dominicana
 

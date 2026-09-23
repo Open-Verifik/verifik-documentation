@@ -10,7 +10,6 @@ tags:
   - "resources"
 endpoints:
   - "/v2/app-logins/app_login_id"
-  - "/v2/app-logins/app_login_id?populates[]=emailvalidation"
   - "/v2/app-logins/{apploginid}"
   - "/v2/email-validations"
   - "/v2/email-validations/validate"
@@ -20,7 +19,7 @@ url: "https://docs.verifik.co/verifik-es/resources/ejemplo-acceso-por-email"
 ---
 
 # Ejemplo de Acceso por Email
-**API path(s):** /v2/app-logins/app_login_id, /v2/app-logins/app_login_id?populates[]=emailvalidation, /v2/app-logins/{apploginid}, /v2/email-validations, /v2/email-validations/validate
+**API path(s):** /v2/app-logins/app_login_id, /v2/app-logins/{apploginid}, /v2/email-validations, /v2/email-validations/validate
 
 ## Paso 2: Validar Validación de Correo Electrónico
 

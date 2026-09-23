@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "br"
   - "business-validation"
-endpoints:
-  - "/v2/br/company"
-  - "/v2/br/company?"
-  - "/v2/br/company?documenttype=cnpj&documentnumber=09159197000180"
+endpoint: "/v2/br/company"
 sourceAnchor: "Notes"
 slug: "/business-validation/brazil"
 url: "https://docs.verifik.co/business-validation/brazil"
 ---
 
 # Business Verification (CNPJ)
-**API path(s):** /v2/br/company, /v2/br/company?, /v2/br/company?documenttype=cnpj&documentnumber=09159197000180
+**API path(s):** /v2/br/company
 
 Verifik's Business Verification API helps you authenticate Brazilian companies using official government data. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the legitimacy of companies, partners, or vendors.

@@ -7,14 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "hn"
   - "london-stock-exchange-integration"
-endpoint: "/v2/hn/cedula?documenttype=dnihn&documentnumber=0501199705651"
+endpoint: "/v2/hn/cedula"
 sourceAnchor: "97. Cedula Honduras"
 slug: "/london-stock-exchange-integration/honduras"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/honduras"
 ---
 
 # Honduras — API pública Verifik
-**API path(s):** /v2/hn/cedula?documenttype=dnihn&documentnumber=0501199705651
+**API path(s):** /v2/hn/cedula
 
 ## 97. Cedula Honduras
 

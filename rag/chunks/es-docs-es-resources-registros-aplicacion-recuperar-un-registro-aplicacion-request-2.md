@@ -8,15 +8,15 @@ tags:
   - "app-registrations"
   - "resources"
 endpoints:
-  - "/v2/app-registrations/${appregistrationid}?populates[]=project&populates[]=projectflow&populates[]=emailvalidation"
-  - "/v2/app-registrations/%s?populates[]=project&populates[]=projectflow"
+  - "/v2/app-registrations/${appregistrationid}"
+  - "/v2/app-registrations/%s"
   - "/v2/app-registrations/{app_registration_id}"
   - "/v2/app-registrations/{id}"
 sourceAnchor: "Request"
 ---
 
 # Obtener Registro de Aplicación
-**API path(s):** /v2/app-registrations/${appregistrationid}?populates[]=project&populates[]=projectflow&populates[]=emailvalidation, /v2/app-registrations/%s?populates[]=project&populates[]=projectflow, /v2/app-registrations/{app_registration_id}, /v2/app-registrations/{id}
+**API path(s):** /v2/app-registrations/${appregistrationid}, /v2/app-registrations/%s, /v2/app-registrations/{app_registration_id}, /v2/app-registrations/{id}
 
 ## Request
 

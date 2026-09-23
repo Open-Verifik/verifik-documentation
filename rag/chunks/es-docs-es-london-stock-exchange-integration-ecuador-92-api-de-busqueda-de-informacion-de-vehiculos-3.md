@@ -8,17 +8,17 @@ tags:
   - "ec"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/ec/cedula?documenttype=ccec&documentnumber=0102260098"
-  - "/v2/ec/company?documenttype=rucec&documentnumber=1790008959001"
-  - "/v2/ec/vehiculo/placa/multas?plate=abb4568"
-  - "/v2/ec/vehiculo/placa?plate=pbb3239"
+  - "/v2/ec/cedula"
+  - "/v2/ec/company"
+  - "/v2/ec/vehiculo/placa"
+  - "/v2/ec/vehiculo/placa/multas"
 sourceAnchor: "92. API de Búsqueda de Información de Vehículos"
 slug: "/london-stock-exchange-integration/ecuador"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/ecuador"
 ---
 
 # Ecuador — API pública Verifik
-**API path(s):** /v2/ec/cedula?documenttype=ccec&documentnumber=0102260098, /v2/ec/company?documenttype=rucec&documentnumber=1790008959001, /v2/ec/vehiculo/placa/multas?plate=abb4568, /v2/ec/vehiculo/placa?plate=pbb3239
+**API path(s):** /v2/ec/cedula, /v2/ec/company, /v2/ec/vehiculo/placa, /v2/ec/vehiculo/placa/multas
 
 ## 92. API de Búsqueda de Información de Vehículos
 

@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "cr"
   - "business-validation"
-endpoints:
-  - "/v2/cr/company"
-  - "/v2/cr/company?"
-  - "/v2/cr/company?documenttype=nite&documentnumber=3101122876"
+endpoint: "/v2/cr/company"
 sourceAnchor: "Notes"
 slug: "/business-validation/costa-rica"
 url: "https://docs.verifik.co/business-validation/costa-rica"
 ---
 
 # Costa Rican Business Verification (NITE)
-**API path(s):** /v2/cr/company, /v2/cr/company?, /v2/cr/company?documenttype=nite&documentnumber=3101122876
+**API path(s):** /v2/cr/company
 
 Verifik's Business Verification API helps you authenticate Costa Rican companies using official government data. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the legitimacy of companies, partners, or vendors.

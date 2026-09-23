@@ -10,15 +10,13 @@ tags:
 endpoints:
   - "/v2/ec/company"
   - "/v3/ec/company"
-  - "/v3/ec/company?"
-  - "/v3/ec/company?documenttype=rucec&documentnumber=1793197955001"
 sourceAnchor: "Request"
 slug: "/business-validation/ecuador"
 url: "https://docs.verifik.co/business-validation/ecuador"
 ---
 
 # Ecuadorian Business Verification
-**API path(s):** /v2/ec/company, /v3/ec/company, /v3/ec/company?, /v3/ec/company?documenttype=rucec&documentnumber=1793197955001
+**API path(s):** /v2/ec/company, /v3/ec/company
 
 Verifik's Business Verification API helps you authenticate Ecuadorian companies using official government data. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet regulatory requirements.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the legitimacy of companies, partners, or vendors.

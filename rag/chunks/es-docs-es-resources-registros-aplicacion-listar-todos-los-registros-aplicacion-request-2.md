@@ -6,16 +6,13 @@ locale: "es"
 category: "resources"
 tags:
   - "app-registrations"
-  - "app-registrations?page=1&limit=10&where_status=ongoing"
   - "resources"
-endpoints:
-  - "/v2/app-registrations"
-  - "/v2/app-registrations?page=1&limit=10&where_status=ongoing"
+endpoint: "/v2/app-registrations"
 sourceAnchor: "Request"
 ---
 
 # Listar Registros de Aplicación
-**API path(s):** /v2/app-registrations, /v2/app-registrations?page=1&limit=10&where_status=ongoing
+**API path(s):** /v2/app-registrations
 
 ## Request
 

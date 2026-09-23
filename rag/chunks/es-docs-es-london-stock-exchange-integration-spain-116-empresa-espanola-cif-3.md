@@ -8,16 +8,16 @@ tags:
   - "es"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/es/cedula?documenttype=dnies&documentnumber=29731290h&expirationdate=27/03/2025"
-  - "/v2/es/company?documenttype=nif&documentnumber=a29268166"
-  - "/v2/es/vehicle?plate=5684ccd"
+  - "/v2/es/cedula"
+  - "/v2/es/company"
+  - "/v2/es/vehicle"
 sourceAnchor: "116. empresa española (CIF)"
 slug: "/london-stock-exchange-integration/spain"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/spain"
 ---
 
 # España — API pública Verifik
-**API path(s):** /v2/es/cedula?documenttype=dnies&documentnumber=29731290h&expirationdate=27/03/2025, /v2/es/company?documenttype=nif&documentnumber=a29268166, /v2/es/vehicle?plate=5684ccd
+**API path(s):** /v2/es/cedula, /v2/es/company, /v2/es/vehicle
 
 ## 116. empresa española (CIF)
 

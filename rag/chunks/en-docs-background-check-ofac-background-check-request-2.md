@@ -6,20 +6,15 @@ locale: "en"
 category: "background-check"
 tags:
   - "ofac"
-  - "ofac?fullname=mateo"
-  - "ofac?fullname=mateo%20verifik"
   - "background-check"
-endpoints:
-  - "/v2/ofac"
-  - "/v2/ofac?fullname=mateo"
-  - "/v2/ofac?fullname=mateo%20verifik"
+endpoint: "/v2/ofac"
 sourceAnchor: "Request"
 slug: "/background-check/international/ofac-background-check"
 url: "https://docs.verifik.co/background-check/international/ofac-background-check"
 ---
 
 # OFAC Background Check
-**API path(s):** /v2/ofac, /v2/ofac?fullname=mateo, /v2/ofac?fullname=mateo%20verifik
+**API path(s):** /v2/ofac
 
 ## Request
 

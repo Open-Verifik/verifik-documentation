@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "hn"
   - "identity"
-endpoints:
-  - "/v2/hn/cedula"
-  - "/v2/hn/cedula?"
-  - "/v2/hn/cedula?documenttype=dnihn&documentnumber=123456789"
+endpoint: "/v2/hn/cedula"
 sourceAnchor: "Respuesta"
 slug: "/identidad/honduras"
 url: "https://docs.verifik.co/verifik-es/identidad/honduras"
 ---
 
 # Ciudadano Hondureño
-**API path(s):** /v2/hn/cedula, /v2/hn/cedula?, /v2/hn/cedula?documenttype=dnihn&documentnumber=123456789
+**API path(s):** /v2/hn/cedula
 
 La API de Verificación de Identidad de Verifik te ayuda a autenticar ciudadanos hondureños usando datos oficiales del gobierno. Está diseñada para agilizar tus procesos de KYC (Conozca a su Cliente), prevenir fraudes y asegurar el cumplimiento normativo sin complicaciones.
 Creamos esta integración para empresas que necesitan una forma rápida, segura y automatizada de confirmar la verdadera identidad de usuarios, empleados o clientes.

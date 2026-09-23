@@ -8,16 +8,14 @@ tags:
   - "us"
   - "usa"
   - "vehicle-validation"
-endpoints:
-  - "/v2/usa/vehicle-by-vin"
-  - "/v2/usa/vehicle-by-vin?vin=1g3ak47a7cm535209"
+endpoint: "/v2/usa/vehicle-by-vin"
 sourceAnchor: "Response"
 slug: "/vehicle-validation/united-states/vehicle-by-vin"
 url: "https://docs.verifik.co/vehicle-validation/united-states/vehicle-by-vin"
 ---
 
 # United States - Vehicle by VIN
-**API path(s):** /v2/usa/vehicle-by-vin, /v2/usa/vehicle-by-vin?vin=1g3ak47a7cm535209
+**API path(s):** /v2/usa/vehicle-by-vin
 
 This service decodes a **17-character vehicle identification number (VIN)** for a U.S. market vehicle and returns structured vehicle attributes (make, model, model year, engine, body class, and related fields) sourced from NHTSA VPIC-style data.
 

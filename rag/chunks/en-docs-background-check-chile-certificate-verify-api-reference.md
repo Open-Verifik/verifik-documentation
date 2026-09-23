@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "cl"
   - "background-check"
-endpoints:
-  - "/v2/cl/registro-civil/certificado"
-  - "/v2/cl/registro-civil/certificado?folio=50070080804&verificationcode=2aacbb9a636a"
+endpoint: "/v2/cl/registro-civil/certificado"
 sourceAnchor: "API Reference"
 slug: "/background-check/chile-certificate-verify"
 url: "https://docs.verifik.co/background-check/chile-certificate-verify"
 ---
 
 # Chile - Civil Registry Certificate Verification
-**API path(s):** /v2/cl/registro-civil/certificado, /v2/cl/registro-civil/certificado?folio=50070080804&verificationcode=2aacbb9a636a
+**API path(s):** /v2/cl/registro-civil/certificado
 
 ## API Reference
 

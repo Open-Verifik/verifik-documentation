@@ -8,16 +8,16 @@ tags:
   - "pa"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/pa/cedula?documenttype=ccpa&documentnumber=9-718-196&dateofbirth=25/06/1983"
-  - "/v2/pa/company?documenttype=ru&documentnumber=155703400-2-2021&dv=39"
-  - "/v2/pa/vehiculo/placa?plate=am5240"
+  - "/v2/pa/cedula"
+  - "/v2/pa/company"
+  - "/v2/pa/vehiculo/placa"
 sourceAnchor: "102. Identificación de Ciudadanos Panameños con Datos Adicionales"
 slug: "/london-stock-exchange-integration/panama"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/panama"
 ---
 
 # Panamá — API pública Verifik
-**API path(s):** /v2/pa/cedula?documenttype=ccpa&documentnumber=9-718-196&dateofbirth=25/06/1983, /v2/pa/company?documenttype=ru&documentnumber=155703400-2-2021&dv=39, /v2/pa/vehiculo/placa?plate=am5240
+**API path(s):** /v2/pa/cedula, /v2/pa/company, /v2/pa/vehiculo/placa
 
 ## 102. Identificación de Ciudadanos Panameños con Datos Adicionales
 

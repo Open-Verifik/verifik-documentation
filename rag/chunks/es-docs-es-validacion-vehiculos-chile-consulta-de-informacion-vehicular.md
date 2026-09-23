@@ -11,14 +11,13 @@ endpoints:
   - "/v2/cl/vehicle"
   - "/v2/cl/vehicle-soap"
   - "/v2/cl/vehicle/v3"
-  - "/v2/cl/vehicle?plate=bbcc12"
 sourceAnchor: "Consulta de Información Vehicular"
 slug: "/validacion-vehiculos/chile"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/chile"
 ---
 
 # 🇨🇱 Chile - Información de Vehículos
-**API path(s):** /v2/cl/vehicle, /v2/cl/vehicle-soap, /v2/cl/vehicle/v3, /v2/cl/vehicle?plate=bbcc12
+**API path(s):** /v2/cl/vehicle, /v2/cl/vehicle-soap, /v2/cl/vehicle/v3
 
 ## Consulta de Información Vehicular
 

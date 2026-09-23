@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "ec"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/ec/vehiculo/placa/multas"
-  - "/v2/ec/vehiculo/placa/multas?plate=abc1234"
+endpoint: "/v2/ec/vehiculo/placa/multas"
 sourceAnchor: "Endpoint"
 slug: "/validacion-de-vehiculo/ecuador/consulta-de-informacion-de-vehiculo"
 url: "https://docs.verifik.co/verifik-es/validacion-de-vehiculo/ecuador/consulta-de-informacion-de-vehiculo"
 ---
 
 # 🇪🇨 Ecuador - Multas de Vehículos
-**API path(s):** /v2/ec/vehiculo/placa/multas, /v2/ec/vehiculo/placa/multas?plate=abc1234
+**API path(s):** /v2/ec/vehiculo/placa/multas
 
 ## Endpoint
 

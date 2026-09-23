@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "pa"
   - "business-validation"
-endpoints:
-  - "/v2/pa/company"
-  - "/v2/pa/company?"
-  - "/v2/pa/company?documenttype=ruc&documentnumber=155703400-2-2021&dv=39"
+endpoint: "/v2/pa/company"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/panama"
 url: "https://docs.verifik.co/business-validation/panama"
 ---
 
 # Panamanian Business Verification
-**API path(s):** /v2/pa/company, /v2/pa/company?, /v2/pa/company?documenttype=ruc&documentnumber=155703400-2-2021&dv=39
+**API path(s):** /v2/pa/company
 
 ## What does this API validate?
 

@@ -7,17 +7,14 @@ category: "identity-validation"
 tags:
   - "co"
   - "identity-validation"
-endpoints:
-  - "/v2/co/foreigner-id/pep"
-  - "/v2/co/foreigner-id/pep?documentnumber=123456789&expeditiondate=10%2f10%2f2024"
-  - "/v2/co/foreigner-id/pep?documentnumber=123456789&expeditiondate=10/10/2024"
+endpoint: "/v2/co/foreigner-id/pep"
 sourceAnchor: "What does this API validate?"
 slug: "/identity-validation/colombia/special-stay-permit-pep"
 url: "https://docs.verifik.co/identity-validation/colombia/special-stay-permit-pep"
 ---
 
 # \U0001F1E8\U0001F1F4 Colombia - Special Stay Permit (PEP)
-**API path(s):** /v2/co/foreigner-id/pep, /v2/co/foreigner-id/pep?documentnumber=123456789&expeditiondate=10%2f10%2f2024, /v2/co/foreigner-id/pep?documentnumber=123456789&expeditiondate=10/10/2024
+**API path(s):** /v2/co/foreigner-id/pep
 
 ## What does this API validate?
 

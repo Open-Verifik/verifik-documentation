@@ -8,16 +8,16 @@ tags:
   - "py"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/py/cic?documentnumber=5316480"
-  - "/v2/py/company?documenttype=ruc&documentnumber=80033331"
-  - "/v2/py/vehicle?plate=bgr850"
+  - "/v2/py/cic"
+  - "/v2/py/company"
+  - "/v2/py/vehicle"
 sourceAnchor: "107. Paraguay Vehicle"
 slug: "/london-stock-exchange-integration/paraguay"
 url: "https://docs.verifik.co/london-stock-exchange-integration/paraguay"
 ---
 
 # Paraguay — Verifik public API
-**API path(s):** /v2/py/cic?documentnumber=5316480, /v2/py/company?documenttype=ruc&documentnumber=80033331, /v2/py/vehicle?plate=bgr850
+**API path(s):** /v2/py/cic, /v2/py/company, /v2/py/vehicle
 
 ## 107. Paraguay Vehicle
 

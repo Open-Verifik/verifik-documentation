@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "es"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/es/vehicle"
-  - "/v2/es/vehicle?plate=5684ccd"
+endpoint: "/v2/es/vehicle"
 sourceAnchor: "Referencia de API"
 slug: "/validacion-vehiculos/espana"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/espana"
 ---
 
 # 🇪🇸 España — Vehículo por matrícula
-**API path(s):** /v2/es/vehicle, /v2/es/vehicle?plate=5684ccd
+**API path(s):** /v2/es/vehicle
 
 ## Referencia de API
 

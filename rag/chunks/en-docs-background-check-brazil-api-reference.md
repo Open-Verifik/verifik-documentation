@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "br"
   - "background-check"
-endpoints:
-  - "/v2/br/background-check"
-  - "/v2/br/background-check?documenttype=cpf&documentnumber=012.345.678-01&dateofbirth=17/02/2002"
+endpoint: "/v2/br/background-check"
 sourceAnchor: "API Reference"
 slug: "/background-check/brazil"
 url: "https://docs.verifik.co/background-check/brazil"
 ---
 
 # Background Check (CPF)
-**API path(s):** /v2/br/background-check, /v2/br/background-check?documenttype=cpf&documentnumber=012.345.678-01&dateofbirth=17/02/2002
+**API path(s):** /v2/br/background-check
 
 ## API Reference
 

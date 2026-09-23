@@ -7,17 +7,14 @@ category: "validacion-empresarial"
 tags:
   - "cr"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/cr/company"
-  - "/v2/cr/company?"
-  - "/v2/cr/company?documenttype=nite&documentnumber=3101122876"
+endpoint: "/v2/cr/company"
 sourceAnchor: "Referencia de API"
 slug: "/validacion-empresarial/costa-rica"
 url: "https://docs.verifik.co/verifik-es/validacion-empresarial/costa-rica"
 ---
 
 # Costa Rica — Verificación empresarial (NITE)
-**API path(s):** /v2/cr/company, /v2/cr/company?, /v2/cr/company?documenttype=nite&documentnumber=3101122876
+**API path(s):** /v2/cr/company
 
 ## Referencia de API
 

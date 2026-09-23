@@ -8,16 +8,16 @@ tags:
   - "ar"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/ar/cedula?documenttype=dniar&documentnumber=33016244"
-  - "/v2/ar/company?documenttype=cuit&documentnumber=30703088534"
-  - "/v2/ar/vehicle?plate=aa123bb"
+  - "/v2/ar/cedula"
+  - "/v2/ar/company"
+  - "/v2/ar/vehicle"
 sourceAnchor: "1. Cedula Argentina"
 slug: "/london-stock-exchange-integration/argentina"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/argentina"
 ---
 
 # Argentina — API pública Verifik
-**API path(s):** /v2/ar/cedula?documenttype=dniar&documentnumber=33016244, /v2/ar/company?documenttype=cuit&documentnumber=30703088534, /v2/ar/vehicle?plate=aa123bb
+**API path(s):** /v2/ar/cedula, /v2/ar/company, /v2/ar/vehicle
 
 ## 1. Cedula Argentina
 

@@ -8,15 +8,15 @@ tags:
   - "in"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/in/epic/votacion?documentnumber=ihm2796746"
-  - "/v2/in/epic?documentnumber=ihm2796746"
+  - "/v2/in/epic"
+  - "/v2/in/epic/votacion"
 sourceAnchor: "88. Cedula India"
 slug: "/london-stock-exchange-integration/india"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/india"
 ---
 
 # India — API pública Verifik
-**API path(s):** /v2/in/epic/votacion?documentnumber=ihm2796746, /v2/in/epic?documentnumber=ihm2796746
+**API path(s):** /v2/in/epic, /v2/in/epic/votacion
 
 ## 88. Cedula India
 

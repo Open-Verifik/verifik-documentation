@@ -8,16 +8,16 @@ tags:
   - "ca"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/ca/british-columbia/driver-license?documentnumber=7793458&lastname=jiwa"
-  - "/v2/ca/company?business=bai"
-  - "/v2/ca/ontario/driver-license?documentnumber=s62912794485721"
+  - "/v2/ca/british-columbia/driver-license"
+  - "/v2/ca/company"
+  - "/v2/ca/ontario/driver-license"
 sourceAnchor: "16. Empresas Canada"
 slug: "/london-stock-exchange-integration/canada"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/canada"
 ---
 
 # Canadá — API pública Verifik
-**API path(s):** /v2/ca/british-columbia/driver-license?documentnumber=7793458&lastname=jiwa, /v2/ca/company?business=bai, /v2/ca/ontario/driver-license?documentnumber=s62912794485721
+**API path(s):** /v2/ca/british-columbia/driver-license, /v2/ca/company, /v2/ca/ontario/driver-license
 
 ## 16. Empresas Canada
 

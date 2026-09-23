@@ -6,18 +6,15 @@ locale: "es"
 category: "resources"
 tags:
   - "credits"
-  - "credits?page=1&perpage=20&populates[]=client&where_status=approved&where_category=purchase"
   - "resources"
-endpoints:
-  - "/v2/credits"
-  - "/v2/credits?page=1&perpage=20&populates[]=client&where_status=approved&where_category=purchase"
+endpoint: "/v2/credits"
 sourceAnchor: "Respuesta"
 slug: "/resources/listar-todos-los-registros-credito"
 url: "https://docs.verifik.co/verifik-es/resources/listar-todos-los-registros-credito"
 ---
 
 # Listar Todos los Registros de Crédito
-**API path(s):** /v2/credits, /v2/credits?page=1&perpage=20&populates[]=client&where_status=approved&where_category=purchase
+**API path(s):** /v2/credits
 
 ## Respuesta
 

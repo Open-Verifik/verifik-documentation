@@ -8,16 +8,14 @@ tags:
   - "us"
   - "usa"
   - "identity-validation"
-endpoints:
-  - "/v2/usa/ssn"
-  - "/v2/usa/ssn?documentnumber=123-45-678"
+endpoint: "/v2/usa/ssn"
 sourceAnchor: "Headers"
 slug: "/identity-validation/united-states/ssn-verification-social-security-number"
 url: "https://docs.verifik.co/identity-validation/united-states/ssn-verification-social-security-number"
 ---
 
 # SSN Verification (Social Security Number)
-**API path(s):** /v2/usa/ssn, /v2/usa/ssn?documentnumber=123-45-678
+**API path(s):** /v2/usa/ssn
 
 Verifik's SSN Verification API helps you authenticate Social Security Numbers (SSN) issued in the United States using official government data. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the validity of Social Security Numbers.

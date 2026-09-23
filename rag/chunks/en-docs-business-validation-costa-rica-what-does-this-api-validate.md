@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "cr"
   - "business-validation"
-endpoints:
-  - "/v2/cr/company"
-  - "/v2/cr/company?"
-  - "/v2/cr/company?documenttype=nite&documentnumber=3101122876"
+endpoint: "/v2/cr/company"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/costa-rica"
 url: "https://docs.verifik.co/business-validation/costa-rica"
 ---
 
 # Costa Rican Business Verification (NITE)
-**API path(s):** /v2/cr/company, /v2/cr/company?, /v2/cr/company?documenttype=nite&documentnumber=3101122876
+**API path(s):** /v2/cr/company
 
 ## What does this API validate?
 

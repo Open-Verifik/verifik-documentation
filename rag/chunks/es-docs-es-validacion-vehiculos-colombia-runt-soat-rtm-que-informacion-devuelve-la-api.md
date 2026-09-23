@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/runt/vehiculo"
-  - "/v2/co/runt/vehiculo?documenttype=cc&documentnumber=123456789&plate=abc123"
+endpoint: "/v2/co/runt/vehiculo"
 sourceAnchor: "¿Qué información devuelve la API?"
 slug: "/validacion-vehiculos/colombia/runt-soat-rtm"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/runt-soat-rtm"
 ---
 
 # SOAT y RTM
-**API path(s):** /v2/co/runt/vehiculo, /v2/co/runt/vehiculo?documenttype=cc&documentnumber=123456789&plate=abc123
+**API path(s):** /v2/co/runt/vehiculo
 
 ## ¿Qué información devuelve la API?
 

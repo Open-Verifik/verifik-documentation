@@ -6,18 +6,15 @@ locale: "es"
 category: "resources"
 tags:
   - "phone-validations"
-  - "phone-validations?page=1&limit=10&status=validated&type=validation&countrycode=%2b1&populates[]=client&populates[]=project"
   - "resources"
-endpoints:
-  - "/v2/phone-validations"
-  - "/v2/phone-validations?page=1&limit=10&status=validated&type=validation&countrycode=%2b1&populates[]=client&populates[]=project"
+endpoint: "/v2/phone-validations"
 sourceAnchor: "Endpoint"
 slug: "/resources/listar-todas-las-validaciones-telefono"
 url: "https://docs.verifik.co/verifik-es/resources/listar-todas-las-validaciones-telefono"
 ---
 
 # Listar todas las Validaciones de Teléfono
-**API path(s):** /v2/phone-validations, /v2/phone-validations?page=1&limit=10&status=validated&type=validation&countrycode=%2b1&populates[]=client&populates[]=project
+**API path(s):** /v2/phone-validations
 
 ## Endpoint
 

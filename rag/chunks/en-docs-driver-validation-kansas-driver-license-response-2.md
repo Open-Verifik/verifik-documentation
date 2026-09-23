@@ -7,16 +7,14 @@ category: "driver-validation"
 tags:
   - "usa"
   - "driver-validation"
-endpoints:
-  - "/v2/usa/kansas/driver-license"
-  - "/v2/usa/kansas/driver-license?documentnumber=k12345678&dateofbirth=29/01/1974&firstname=mateo&lastname=verifik"
+endpoint: "/v2/usa/kansas/driver-license"
 sourceAnchor: "Response"
 slug: "/driver-validation/kansas-driver-license"
 url: "https://docs.verifik.co/driver-validation/kansas-driver-license"
 ---
 
 # Kansas Driver License
-**API path(s):** /v2/usa/kansas/driver-license, /v2/usa/kansas/driver-license?documentnumber=k12345678&dateofbirth=29/01/1974&firstname=mateo&lastname=verifik
+**API path(s):** /v2/usa/kansas/driver-license
 
 ## Response
 

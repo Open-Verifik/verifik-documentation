@@ -8,16 +8,15 @@ tags:
   - "co"
   - "vehicle-validation"
 endpoints:
-  - "/v2/co/runt/consultarvehiculo?documenttype=cc&documentnumber=98622259&plate=kbu003"
+  - "/v2/co/runt/consultarvehiculo"
   - "/v2/co/runt/vehiculo"
-  - "/v2/co/runt/vehiculo?documenttype=cc&documentnumber=&plate="
 sourceAnchor: "What information does the API return?"
 slug: "/vehicle-validation/colombia/runt-vehicle-soat-rtm"
 url: "https://docs.verifik.co/vehicle-validation/colombia/runt-vehicle-soat-rtm"
 ---
 
 # SOAT and RTM Validation in RUNT
-**API path(s):** /v2/co/runt/consultarvehiculo?documenttype=cc&documentnumber=98622259&plate=kbu003, /v2/co/runt/vehiculo, /v2/co/runt/vehiculo?documenttype=cc&documentnumber=&plate=
+**API path(s):** /v2/co/runt/consultarvehiculo, /v2/co/runt/vehiculo
 
 ## What information does the API return?
 

@@ -7,17 +7,14 @@ category: "identity-validation"
 tags:
   - "co"
   - "identity-validation"
-endpoints:
-  - "/v2/co/cedula/extra"
-  - "/v2/co/cedula/extra?documenttype=cc&documentnumber=123456789&date=10%2f10%2f2020"
-  - "/v2/co/cedula/extra?documenttype=cc&documentnumber=123456789&date=10/10/2020"
+endpoint: "/v2/co/cedula/extra"
 sourceAnchor: "Endpoint"
 slug: "/validacion-identidad/colombia/ciudadano-colombiano-con-datos-extra"
 url: "https://docs.verifik.co/verifik-es/validacion-identidad/colombia/ciudadano-colombiano-con-datos-extra"
 ---
 
 # Ciudadano Colombiano con Datos Extendidos
-**API path(s):** /v2/co/cedula/extra, /v2/co/cedula/extra?documenttype=cc&documentnumber=123456789&date=10%2f10%2f2020, /v2/co/cedula/extra?documenttype=cc&documentnumber=123456789&date=10/10/2020
+**API path(s):** /v2/co/cedula/extra
 
 ## Endpoint
 

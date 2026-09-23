@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "ar"
   - "identity"
-endpoints:
-  - "/v2/ar/cedula/extra"
-  - "/v2/ar/cedula/extra?documenttype=dniar&documentnumber=44768756"
+endpoint: "/v2/ar/cedula/extra"
 sourceAnchor: "Response"
 slug: "/identity/argentina-extra"
 url: "https://docs.verifik.co/identity/argentina-extra"
 ---
 
 # Argentina - Complete Argentine Citizen
-**API path(s):** /v2/ar/cedula/extra, /v2/ar/cedula/extra?documenttype=dniar&documentnumber=44768756
+**API path(s):** /v2/ar/cedula/extra
 
 Verifik's Identity Verification API helps you authenticate Argentine citizens using official government data. This endpoint returns extended identity fields beyond the standard cédula response, including **date of birth**, **gender**, structured name tokens, and **life status** (`isAlive`).
 

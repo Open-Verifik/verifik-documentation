@@ -8,16 +8,14 @@ tags:
   - "us"
   - "usa"
   - "identity-validation"
-endpoints:
-  - "/v2/usa/ssn"
-  - "/v2/usa/ssn?documentnumber=123-45-678"
+endpoint: "/v2/usa/ssn"
 sourceAnchor: "What does this API validate?"
 slug: "/identity-validation/united-states/ssn-verification-social-security-number"
 url: "https://docs.verifik.co/identity-validation/united-states/ssn-verification-social-security-number"
 ---
 
 # SSN Verification (Social Security Number)
-**API path(s):** /v2/usa/ssn, /v2/usa/ssn?documentnumber=123-45-678
+**API path(s):** /v2/usa/ssn
 
 ## What does this API validate?
 

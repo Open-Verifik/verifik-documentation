@@ -6,20 +6,15 @@ locale: "es"
 category: "verificacion-antecendentes"
 tags:
   - "dea"
-  - "dea?fullname=mateo"
-  - "dea?fullname=mateo%20verifik"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/dea"
-  - "/v2/dea?fullname=mateo"
-  - "/v2/dea?fullname=mateo%20verifik"
+endpoint: "/v2/dea"
 sourceAnchor: "Referencia de API"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-dea"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-dea"
 ---
 
 # Verificación de Antecedentes DEA
-**API path(s):** /v2/dea, /v2/dea?fullname=mateo, /v2/dea?fullname=mateo%20verifik
+**API path(s):** /v2/dea
 
 ## Referencia de API
 

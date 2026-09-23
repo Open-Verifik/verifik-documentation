@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/juzgado/expedientes"
-  - "/v2/co/rama/juzgado/expedientes?documenttype=cc&documentnumber=1234567890&city=bogota"
+endpoint: "/v2/co/rama/juzgado/expedientes"
 sourceAnchor: "Response"
 slug: "/legal/colombia-judicial-records"
 url: "https://docs.verifik.co/legal/colombia-judicial-records"
 ---
 
 # Colombia — Judicial records (court files / expedientes)
-**API path(s):** /v2/co/rama/juzgado/expedientes, /v2/co/rama/juzgado/expedientes?documenttype=cc&documentnumber=1234567890&city=bogota
+**API path(s):** /v2/co/rama/juzgado/expedientes
 
 Verifik’s **Judicial records** endpoint returns **court file (expediente)** details from Colombia’s judicial system for a **cédula de ciudadanía (CC)** holder in a given **city** (circuit). Typical fields include court office (**EPMS**), receipt date, municipality, filing number, and party names when returned by the source.
 

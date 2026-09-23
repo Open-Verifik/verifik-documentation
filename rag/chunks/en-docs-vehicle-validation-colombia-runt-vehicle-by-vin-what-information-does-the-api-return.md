@@ -7,16 +7,14 @@ category: "vehicle-validation"
 tags:
   - "co"
   - "vehicle-validation"
-endpoints:
-  - "/v2/co/runt/vehicle-by-vin"
-  - "/v2/co/runt/vehicle-by-vin?vin=3mvdm2wlaml234946"
+endpoint: "/v2/co/runt/vehicle-by-vin"
 sourceAnchor: "What information does the API return?"
 slug: "/vehicle-validation/colombia/runt-vehicle-by-vin"
 url: "https://docs.verifik.co/vehicle-validation/colombia/runt-vehicle-by-vin"
 ---
 
 # Vehicle Records by VIN
-**API path(s):** /v2/co/runt/vehicle-by-vin, /v2/co/runt/vehicle-by-vin?vin=3mvdm2wlaml234946
+**API path(s):** /v2/co/runt/vehicle-by-vin
 
 ## What information does the API return?
 

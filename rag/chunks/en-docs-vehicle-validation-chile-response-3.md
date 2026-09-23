@@ -11,14 +11,13 @@ endpoints:
   - "/v2/cl/vehicle"
   - "/v2/cl/vehicle-soap"
   - "/v2/cl/vehicle/v3"
-  - "/v2/cl/vehicle?plate=bbcc12"
 sourceAnchor: "Response"
 slug: "/vehicle-validation/chile"
 url: "https://docs.verifik.co/vehicle-validation/chile"
 ---
 
 # \U0001F1E8\U0001F1F1 Chile - Vehicle Information
-**API path(s):** /v2/cl/vehicle, /v2/cl/vehicle-soap, /v2/cl/vehicle/v3, /v2/cl/vehicle?plate=bbcc12
+**API path(s):** /v2/cl/vehicle, /v2/cl/vehicle-soap, /v2/cl/vehicle/v3
 
 Chilean vehicle validation service provides comprehensive verification capabilities for vehicle information. This service allows you to retrieve detailed information about vehicles registered in Chile.
 Related Chile vehicle endpoints:

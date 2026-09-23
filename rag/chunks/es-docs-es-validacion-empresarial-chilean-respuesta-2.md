@@ -7,16 +7,14 @@ category: "validacion-empresarial"
 tags:
   - "cl"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/cl/company"
-  - "/v2/cl/company?documenttype=rut&documentnumber=212957739"
+endpoint: "/v2/cl/company"
 sourceAnchor: "Respuesta"
 slug: "/validacion-empresarial/chilean"
 url: "https://docs.verifik.co/verifik-es/validacion-empresarial/chilean"
 ---
 
 # 🇨🇱 Chile - Validación Empresarial
-**API path(s):** /v2/cl/company, /v2/cl/company?documenttype=rut&documentnumber=212957739
+**API path(s):** /v2/cl/company
 
 Este servicio te permite recuperar información sobre una empresa en Chile proporcionando su tipo de documento y número. La respuesta del servicio contendrá el nombre de la empresa, su categoría comercial, subcategoría y actividad. Además, este servicio te proporcionará una lista de servicios para los cuales la empresa está autorizada a trabajar.
 

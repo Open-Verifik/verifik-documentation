@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "pe"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/pe/vehiculo/soat"
-  - "/v2/pe/vehiculo/soat?plate=abc123"
+endpoint: "/v2/pe/vehiculo/soat"
 sourceAnchor: "Endpoint"
 slug: "/validacion-de-vehiculo/peru/seguro-de-vehiculos-en-peru"
 url: "https://docs.verifik.co/verifik-es/validacion-de-vehiculo/peru/seguro-de-vehiculos-en-peru"
 ---
 
 # Perú - Seguro de Vehículo
-**API path(s):** /v2/pe/vehiculo/soat, /v2/pe/vehiculo/soat?plate=abc123
+**API path(s):** /v2/pe/vehiculo/soat
 
 ## Endpoint
 

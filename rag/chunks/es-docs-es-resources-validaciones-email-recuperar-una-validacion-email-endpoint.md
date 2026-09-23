@@ -9,7 +9,6 @@ tags:
   - "resources"
 endpoints:
   - "/v2/email-validations/email_validation_123456789"
-  - "/v2/email-validations/email_validation_123456789?populates[]=client&populates[]=project&populates[]=projectflow"
   - "/v2/email-validations/{id}"
 sourceAnchor: "Endpoint"
 slug: "/resources/recuperar-una-validacion-email"
@@ -17,7 +16,7 @@ url: "https://docs.verifik.co/verifik-es/resources/recuperar-una-validacion-emai
 ---
 
 # Recuperar una Validación de Email
-**API path(s):** /v2/email-validations/email_validation_123456789, /v2/email-validations/email_validation_123456789?populates[]=client&populates[]=project&populates[]=projectflow, /v2/email-validations/{id}
+**API path(s):** /v2/email-validations/email_validation_123456789, /v2/email-validations/{id}
 
 ## Endpoint
 

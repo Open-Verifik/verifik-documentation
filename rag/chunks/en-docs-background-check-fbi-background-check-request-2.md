@@ -6,18 +6,15 @@ locale: "en"
 category: "background-check"
 tags:
   - "fbi"
-  - "fbi?fullname="
   - "background-check"
-endpoints:
-  - "/v2/fbi"
-  - "/v2/fbi?fullname="
+endpoint: "/v2/fbi"
 sourceAnchor: "Request"
 slug: "/background-check/international/fbi-background-check"
 url: "https://docs.verifik.co/background-check/international/fbi-background-check"
 ---
 
 # FBI Background Check
-**API path(s):** /v2/fbi, /v2/fbi?fullname=
+**API path(s):** /v2/fbi
 
 ## Request
 

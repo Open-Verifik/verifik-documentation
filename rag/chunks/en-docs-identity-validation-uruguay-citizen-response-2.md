@@ -7,17 +7,14 @@ category: "identity-validation"
 tags:
   - "uy"
   - "identity-validation"
-endpoints:
-  - "/v2/uy/cedula"
-  - "/v2/uy/cedula?"
-  - "/v2/uy/cedula?documenttype=ccuy&documentnumber=123456789&dateofbirth=20/02/1978"
+endpoint: "/v2/uy/cedula"
 sourceAnchor: "Response"
 slug: "/identity-validation/uruguay-citizen"
 url: "https://docs.verifik.co/identity-validation/uruguay-citizen"
 ---
 
 # Uruguayan Citizen
-**API path(s):** /v2/uy/cedula, /v2/uy/cedula?, /v2/uy/cedula?documenttype=ccuy&documentnumber=123456789&dateofbirth=20/02/1978
+**API path(s):** /v2/uy/cedula
 
 Verifik's Identity Verification API helps you authenticate Uruguayan citizens using official government data. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the true identity of users, employees, or customers.

@@ -7,15 +7,12 @@ category: "validacion-empresarial"
 tags:
   - "pe"
   - "validacion-empresarial"
-endpoints:
-  - "/v3/pe/company"
-  - "/v3/pe/company?"
-  - "/v3/pe/company?documenttype=ruc&documentnumber=20605980008"
+endpoint: "/v3/pe/company"
 sourceAnchor: "Respuesta"
 ---
 
 # Verificación Empresarial Peruana v3
-**API path(s):** /v3/pe/company, /v3/pe/company?, /v3/pe/company?documenttype=ruc&documentnumber=20605980008
+**API path(s):** /v3/pe/company
 
 ## Respuesta
 

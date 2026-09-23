@@ -7,16 +7,14 @@ category: "vehicle-validation"
 tags:
   - "ec"
   - "vehicle-validation"
-endpoints:
-  - "/v2/ec/vehiculo/placa/multas"
-  - "/v2/ec/vehiculo/placa/multas?plate=abc1234"
+endpoint: "/v2/ec/vehiculo/placa/multas"
 sourceAnchor: "Features"
 slug: "/vehicle-validation/ecuador"
 url: "https://docs.verifik.co/vehicle-validation/ecuador"
 ---
 
 # \U0001F1EA\U0001F1E8 Ecuador - Vehicle Fines
-**API path(s):** /v2/ec/vehiculo/placa/multas, /v2/ec/vehiculo/placa/multas?plate=abc1234
+**API path(s):** /v2/ec/vehiculo/placa/multas
 
 The Ecuador Vehicle License Plate Fines service allows you to retrieve information about fines associated with a vehicle's license plate in Ecuador. You can access details such as the vehicle's registration information, including the plate number, class, and model. The service also provides the current status, service type, and registration expiration date, along with any outstanding fines linked to the license plate.
 This service is useful for individuals and businesses aiming to stay informed about fines associated with their vehicles and ensure compliance with Ecuadorian traffic laws.

@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "ar"
   - "identity"
-endpoints:
-  - "/v2/ar/cedula/extra"
-  - "/v2/ar/cedula/extra?documenttype=dniar&documentnumber=44768756"
+endpoint: "/v2/ar/cedula/extra"
 sourceAnchor: "¿Qué valida esta API?"
 slug: "/identidad/argentina-extra"
 url: "https://docs.verifik.co/verifik-es/identidad/argentina-extra"
 ---
 
 # Argentina - Ciudadano Argentino Completo
-**API path(s):** /v2/ar/cedula/extra, /v2/ar/cedula/extra?documenttype=dniar&documentnumber=44768756
+**API path(s):** /v2/ar/cedula/extra
 
 ## ¿Qué valida esta API?
 

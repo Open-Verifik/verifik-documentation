@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "cl"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/cl/vehicle"
-  - "/v2/cl/vehicle?plate="
+endpoint: "/v2/cl/vehicle"
 sourceAnchor: "Implementación"
 slug: "/validacion-vehiculos/chile/informacion-vehiculo"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/chile/informacion-vehiculo"
 ---
 
 # Información de Vehículo
-**API path(s):** /v2/cl/vehicle, /v2/cl/vehicle?plate=
+**API path(s):** /v2/cl/vehicle
 
 ## Implementación
 

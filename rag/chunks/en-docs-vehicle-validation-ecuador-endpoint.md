@@ -7,16 +7,14 @@ category: "vehicle-validation"
 tags:
   - "ec"
   - "vehicle-validation"
-endpoints:
-  - "/v2/ec/vehiculo/placa/multas"
-  - "/v2/ec/vehiculo/placa/multas?plate=abc1234"
+endpoint: "/v2/ec/vehiculo/placa/multas"
 sourceAnchor: "Endpoint"
 slug: "/vehicle-validation/ecuador"
 url: "https://docs.verifik.co/vehicle-validation/ecuador"
 ---
 
 # \U0001F1EA\U0001F1E8 Ecuador - Vehicle Fines
-**API path(s):** /v2/ec/vehiculo/placa/multas, /v2/ec/vehiculo/placa/multas?plate=abc1234
+**API path(s):** /v2/ec/vehiculo/placa/multas
 
 ## Endpoint
 

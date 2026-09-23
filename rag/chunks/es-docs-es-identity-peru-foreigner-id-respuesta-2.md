@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "pe"
   - "identity"
-endpoints:
-  - "/v2/pe/foreigner-id/ce"
-  - "/v2/pe/foreigner-id/ce?documentnumber=005015372&dateofbirth=16/08/1993"
+endpoint: "/v2/pe/foreigner-id/ce"
 sourceAnchor: "Respuesta"
 slug: "/identidad/peru-cedula-extranjero"
 url: "https://docs.verifik.co/verifik-es/identidad/peru-cedula-extranjero"
 ---
 
 # 🇵🇪 Perú - Cédula de Extranjero
-**API path(s):** /v2/pe/foreigner-id/ce, /v2/pe/foreigner-id/ce?documentnumber=005015372&dateofbirth=16/08/1993
+**API path(s):** /v2/pe/foreigner-id/ce
 
 El servicio de Verificación de Identidad Peruano te permite verificar la identidad de un individuo en Perú por su número de cédula de extranjero. El servicio devuelve el nombre completo y otra información relacionada del individuo, incluyendo estado migratorio, nacionalidad, vencimiento de residencia y detalles de la cédula de extranjero, junto con una firma para certificar la autenticidad de la respuesta.
 Este servicio es útil para verificar residentes extranjeros en Perú y acceder a su estado migratorio y validez de documentos.

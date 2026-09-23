@@ -7,17 +7,14 @@ category: "validacion-empresarial"
 tags:
   - "es"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/es/company"
-  - "/v2/es/company?"
-  - "/v2/es/company?documenttype=cif&documentnumber=33011826"
+endpoint: "/v2/es/company"
 sourceAnchor: "Referencia de API"
 slug: "/validacion-empresarial/espana"
 url: "https://docs.verifik.co/verifik-es/validacion-empresarial/espana"
 ---
 
 # España — Verificación empresarial (CIF/NIF)
-**API path(s):** /v2/es/company, /v2/es/company?, /v2/es/company?documenttype=cif&documentnumber=33011826
+**API path(s):** /v2/es/company
 
 ## Referencia de API
 

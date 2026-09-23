@@ -7,16 +7,14 @@ category: "driver-validation"
 tags:
   - "cl"
   - "driver-validation"
-endpoints:
-  - "/v2/cl/driver-license"
-  - "/v2/cl/driver-license?documentnumber=12345678"
+endpoint: "/v2/cl/driver-license"
 sourceAnchor: "Endpoint"
 slug: "/driver-validation/chile-driver-license"
 url: "https://docs.verifik.co/driver-validation/chile-driver-license"
 ---
 
 # \U0001F1E8\U0001F1F1 Chile - Driver License
-**API path(s):** /v2/cl/driver-license, /v2/cl/driver-license?documentnumber=12345678
+**API path(s):** /v2/cl/driver-license
 
 ## Endpoint
 

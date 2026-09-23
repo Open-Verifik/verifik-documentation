@@ -10,7 +10,7 @@ tags:
 endpoints:
   - "/v2/co/rama/proceso"
   - "/v2/co/rama/proceso/${processnumber}"
-  - "/v2/co/rama/proceso/\\(processnumber)"
+  - "/v2/co/rama/proceso/\\(processnumber"
   - "/v2/co/rama/proceso/{$processnumber}"
   - "/v2/co/rama/proceso/{process_number}"
 sourceAnchor: "Endpoint"
@@ -19,7 +19,7 @@ url: "https://docs.verifik.co/legal/retrieve-details-of-a-legal-process-by-numbe
 ---
 
 # Retrieve Details of a Legal Process by Number
-**API path(s):** /v2/co/rama/proceso, /v2/co/rama/proceso/${processnumber}, /v2/co/rama/proceso/\(processnumber), /v2/co/rama/proceso/{$processnumber}, /v2/co/rama/proceso/{process_number}
+**API path(s):** /v2/co/rama/proceso, /v2/co/rama/proceso/${processnumber}, /v2/co/rama/proceso/\(processnumber, /v2/co/rama/proceso/{$processnumber}, /v2/co/rama/proceso/{process_number}
 
 ## Endpoint
 

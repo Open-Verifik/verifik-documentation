@@ -6,20 +6,15 @@ locale: "es"
 category: "verificacion-antecendentes"
 tags:
   - "ofac"
-  - "ofac?fullname=mateo"
-  - "ofac?fullname=mateo%20verifik"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/ofac"
-  - "/v2/ofac?fullname=mateo"
-  - "/v2/ofac?fullname=mateo%20verifik"
+endpoint: "/v2/ofac"
 sourceAnchor: "Características"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-ofac"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-ofac"
 ---
 
 # Verificación de Antecedentes OFAC
-**API path(s):** /v2/ofac, /v2/ofac?fullname=mateo, /v2/ofac?fullname=mateo%20verifik
+**API path(s):** /v2/ofac
 
 ## Características
 

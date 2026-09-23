@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "co"
   - "identity"
-endpoints:
-  - "/v2/co/situacion-militar"
-  - "/v2/co/situacion-militar?documenttype=cc&documentnumber=1121329661"
+endpoint: "/v2/co/situacion-militar"
 sourceAnchor: "Response"
 slug: "/identity/colombia-situacion-militar"
 url: "https://docs.verifik.co/identity/colombia-situacion-militar"
 ---
 
 # Colombia — Military service status
-**API path(s):** /v2/co/situacion-militar, /v2/co/situacion-militar?documenttype=cc&documentnumber=1121329661
+**API path(s):** /v2/co/situacion-militar
 
 Verifik’s **Military service status** endpoint retrieves a person’s **situación militar** (military situation) for Colombian citizens identified by **Cédula de Ciudadanía (CC)**. Use it for onboarding, workforce eligibility, or compliance checks where military obligation status is required.
 The integration queries official Colombian military sources. Only **`documentType=CC`** is supported; other ID types are rejected at validation.

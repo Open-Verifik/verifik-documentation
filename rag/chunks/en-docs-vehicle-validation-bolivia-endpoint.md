@@ -7,16 +7,14 @@ category: "vehicle-validation"
 tags:
   - "bo"
   - "vehicle-validation"
-endpoints:
-  - "/v2/bo/vehicle"
-  - "/v2/bo/vehicle?plate=abc1234"
+endpoint: "/v2/bo/vehicle"
 sourceAnchor: "Endpoint"
 slug: "/vehicle-validation/bolivia"
 url: "https://docs.verifik.co/vehicle-validation/bolivia"
 ---
 
 # \U0001F1E7\U0001F1F4 Bolivia - Vehicle Information
-**API path(s):** /v2/bo/vehicle, /v2/bo/vehicle?plate=abc1234
+**API path(s):** /v2/bo/vehicle
 
 ## Endpoint
 

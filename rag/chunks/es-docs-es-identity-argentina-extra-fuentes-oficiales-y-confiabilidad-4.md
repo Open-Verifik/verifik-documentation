@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "ar"
   - "identity"
-endpoints:
-  - "/v2/ar/cedula/extra"
-  - "/v2/ar/cedula/extra?documenttype=dniar&documentnumber=44768756"
+endpoint: "/v2/ar/cedula/extra"
 sourceAnchor: "Fuentes oficiales y confiabilidad"
 slug: "/identidad/argentina-extra"
 url: "https://docs.verifik.co/verifik-es/identidad/argentina-extra"
 ---
 
 # Argentina - Ciudadano Argentino Completo
-**API path(s):** /v2/ar/cedula/extra, /v2/ar/cedula/extra?documenttype=dniar&documentnumber=44768756
+**API path(s):** /v2/ar/cedula/extra
 
 La API de Verificación de Identidad de Verifik te ayuda a autenticar ciudadanos argentinos usando datos oficiales del gobierno. Este endpoint devuelve campos ampliados respecto a la cédula estándar, entre ellos **fecha de nacimiento**, **género**, partes del nombre e **indicador de vida** (`isAlive`).
 

@@ -6,18 +6,15 @@ locale: "es"
 category: "resources"
 tags:
   - "email-validations"
-  - "email-validations?page=1&limit=10&status=validated&type=validation&populates[]=client&populates[]=project"
   - "resources"
-endpoints:
-  - "/v2/email-validations"
-  - "/v2/email-validations?page=1&limit=10&status=validated&type=validation&populates[]=client&populates[]=project"
+endpoint: "/v2/email-validations"
 sourceAnchor: "Respuesta"
 slug: "/resources/validaciones-de-correo-electronico/lista-de-validaciones-de-correo-electronico"
 url: "https://docs.verifik.co/verifik-es/resources/validaciones-de-correo-electronico/lista-de-validaciones-de-correo-electronico"
 ---
 
 # Lista de Validaciones de Correo Electrónico
-**API path(s):** /v2/email-validations, /v2/email-validations?page=1&limit=10&status=validated&type=validation&populates[]=client&populates[]=project
+**API path(s):** /v2/email-validations
 
 ## Respuesta
 

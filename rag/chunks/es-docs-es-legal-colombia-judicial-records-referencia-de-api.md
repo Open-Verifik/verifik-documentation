@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/juzgado/expedientes"
-  - "/v2/co/rama/juzgado/expedientes?documenttype=cc&documentnumber=1234567890&city=bogota"
+endpoint: "/v2/co/rama/juzgado/expedientes"
 sourceAnchor: "Referencia de API"
 slug: "/legal/antecedentes-judiciales-colombia"
 url: "https://docs.verifik.co/verifik-es/legal/antecedentes-judiciales-colombia"
 ---
 
 # Colombia — Antecedentes judiciales (expedientes)
-**API path(s):** /v2/co/rama/juzgado/expedientes, /v2/co/rama/juzgado/expedientes?documenttype=cc&documentnumber=1234567890&city=bogota
+**API path(s):** /v2/co/rama/juzgado/expedientes
 
 ## Referencia de API
 

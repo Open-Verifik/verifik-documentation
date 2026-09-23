@@ -7,16 +7,14 @@ category: "validacion-empresarial"
 tags:
   - "cl"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/cl/company"
-  - "/v2/cl/company?documenttype=rut&documentnumber=212957739"
+endpoint: "/v2/cl/company"
 sourceAnchor: "Endpoint"
 slug: "/validacion-empresarial/chilean"
 url: "https://docs.verifik.co/verifik-es/validacion-empresarial/chilean"
 ---
 
 # 🇨🇱 Chile - Validación Empresarial
-**API path(s):** /v2/cl/company, /v2/cl/company?documenttype=rut&documentnumber=212957739
+**API path(s):** /v2/cl/company
 
 ## Endpoint
 

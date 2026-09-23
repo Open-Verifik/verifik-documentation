@@ -9,16 +9,14 @@ tags:
   - "identity"
 endpoints:
   - "/v2/ca/british-columbia/driver-license"
-  - "/v2/ca/british-columbia/driver-license?documentnumber=1123456&lastname=hello"
   - "/v2/ca/ontario/driver-license"
-  - "/v2/ca/ontario/driver-license?documentnumber=s123456789123456"
 sourceAnchor: "Compliance & Security"
 slug: "/identity/canada"
 url: "https://docs.verifik.co/identity/canada"
 ---
 
 # Canadian Driver License Validation
-**API path(s):** /v2/ca/british-columbia/driver-license, /v2/ca/british-columbia/driver-license?documentnumber=1123456&lastname=hello, /v2/ca/ontario/driver-license, /v2/ca/ontario/driver-license?documentnumber=s123456789123456
+**API path(s):** /v2/ca/british-columbia/driver-license, /v2/ca/ontario/driver-license
 
 Verifik's Driver License Verification API helps you authenticate Canadian driver licenses using official government data. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the validity of driver's licenses issued in British Columbia and Ontario provinces.

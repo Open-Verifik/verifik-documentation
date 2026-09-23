@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "co"
   - "background-check"
-endpoints:
-  - "/v2/co/contraloria/certificado"
-  - "/v2/co/contraloria/certificado?documenttype=cc&documentnumber=123456789"
+endpoint: "/v2/co/contraloria/certificado"
 sourceAnchor: "API Reference"
 slug: "/background-check/colombia-comptroller-certificate"
 url: "https://docs.verifik.co/background-check/colombia-comptroller-certificate"
 ---
 
 # Colombia - Contraloría Certificate
-**API path(s):** /v2/co/contraloria/certificado, /v2/co/contraloria/certificado?documenttype=cc&documentnumber=123456789
+**API path(s):** /v2/co/contraloria/certificado
 
 ## API Reference
 

@@ -10,16 +10,13 @@ tags:
 endpoints:
   - "/v2/face-recognition/persons"
   - "/v2/face-recognition/persons/lookup"
-  - "/v2/face-recognition/persons/lookup?"
-  - "/v2/face-recognition/persons/lookup?${params}"
-  - "/v2/face-recognition/persons/lookup?name=maria%20perez&date_of_birth=1994-02-07&page=1&limit=20"
 sourceAnchor: "Response"
 slug: "/resources/lookup-a-person"
 url: "https://docs.verifik.co/resources/lookup-a-person"
 ---
 
 # Lookup a Person by Name
-**API path(s):** /v2/face-recognition/persons, /v2/face-recognition/persons/lookup, /v2/face-recognition/persons/lookup?, /v2/face-recognition/persons/lookup?${params}, /v2/face-recognition/persons/lookup?name=maria%20perez&date_of_birth=1994-02-07&page=1&limit=20
+**API path(s):** /v2/face-recognition/persons, /v2/face-recognition/persons/lookup
 
 ## Response
 

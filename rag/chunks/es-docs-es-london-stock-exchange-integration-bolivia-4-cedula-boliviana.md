@@ -8,16 +8,16 @@ tags:
   - "bo"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/bo/cedula?documenttype=ci&documentnumber=4511200&dateofbirth=27/03/1978"
-  - "/v2/bo/company?documenttype=nit&documentnumber=5287278014"
-  - "/v2/bo/vehicle?plate=1852phd"
+  - "/v2/bo/cedula"
+  - "/v2/bo/company"
+  - "/v2/bo/vehicle"
 sourceAnchor: "4. Cedula Boliviana"
 slug: "/london-stock-exchange-integration/bolivia"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/bolivia"
 ---
 
 # Bolivia — API pública Verifik
-**API path(s):** /v2/bo/cedula?documenttype=ci&documentnumber=4511200&dateofbirth=27/03/1978, /v2/bo/company?documenttype=nit&documentnumber=5287278014, /v2/bo/vehicle?plate=1852phd
+**API path(s):** /v2/bo/cedula, /v2/bo/company, /v2/bo/vehicle
 
 ## 4. Cedula Boliviana
 

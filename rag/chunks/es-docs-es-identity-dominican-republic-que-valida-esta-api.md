@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "do"
   - "identity"
-endpoints:
-  - "/v2/do/cedula"
-  - "/v2/do/cedula?"
-  - "/v2/do/cedula?documentnumber=123456789&documenttype=cie"
+endpoint: "/v2/do/cedula"
 sourceAnchor: "¿Qué valida esta API?"
 slug: "/identidad/republica-dominicana"
 url: "https://docs.verifik.co/verifik-es/identidad/republica-dominicana"
 ---
 
 # Ciudadano Dominicano
-**API path(s):** /v2/do/cedula, /v2/do/cedula?, /v2/do/cedula?documentnumber=123456789&documenttype=cie
+**API path(s):** /v2/do/cedula
 
 ## ¿Qué valida esta API?
 

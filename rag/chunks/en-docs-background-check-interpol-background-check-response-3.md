@@ -6,20 +6,15 @@ locale: "en"
 category: "background-check"
 tags:
   - "interpol"
-  - "interpol?fullname=ivan"
-  - "interpol?fullname=ivan%20luciano%20marquez%20marin%20arango"
   - "background-check"
-endpoints:
-  - "/v2/interpol"
-  - "/v2/interpol?fullname=ivan"
-  - "/v2/interpol?fullname=ivan%20luciano%20marquez%20marin%20arango"
+endpoint: "/v2/interpol"
 sourceAnchor: "Response"
 slug: "/background-check/international/interpol-background-check"
 url: "https://docs.verifik.co/background-check/international/interpol-background-check"
 ---
 
 # Interpol Background Check
-**API path(s):** /v2/interpol, /v2/interpol?fullname=ivan, /v2/interpol?fullname=ivan%20luciano%20marquez%20marin%20arango
+**API path(s):** /v2/interpol
 
 ## Response
 

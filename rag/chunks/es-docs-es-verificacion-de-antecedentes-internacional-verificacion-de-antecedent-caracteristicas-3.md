@@ -6,18 +6,15 @@ locale: "es"
 category: "verificacion-de-antecedentes"
 tags:
   - "onu"
-  - "onu?fullname="
   - "verificacion-de-antecedentes"
-endpoints:
-  - "/v2/onu"
-  - "/v2/onu?fullname="
+endpoint: "/v2/onu"
 sourceAnchor: "Características"
 slug: "/verificacion-de-antecedentes/internacional/verificacion-de-antecedentes-onu"
 url: "https://docs.verifik.co/verifik-es/verificacion-de-antecedentes/internacional/verificacion-de-antecedentes-onu"
 ---
 
 # Verificación de Antecedentes ONU
-**API path(s):** /v2/onu, /v2/onu?fullname=
+**API path(s):** /v2/onu
 
 ## Características
 

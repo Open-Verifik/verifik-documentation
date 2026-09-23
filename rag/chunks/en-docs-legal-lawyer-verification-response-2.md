@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/abogados"
-  - "/v2/co/rama/abogados?documenttype=cc&documentnumber=123456789"
+endpoint: "/v2/co/rama/abogados"
 sourceAnchor: "Response"
 slug: "/legal/lawyer-verification"
 url: "https://docs.verifik.co/legal/lawyer-verification"
 ---
 
 # Colombia — Lawyer lookup
-**API path(s):** /v2/co/rama/abogados, /v2/co/rama/abogados?documenttype=cc&documentnumber=123456789
+**API path(s):** /v2/co/rama/abogados
 
 Verifik’s **Lawyer lookup** endpoint queries Colombia’s **public lawyer registry** (Rama Judicial integration) using **`documentType`** and **`documentNumber`**. Use it to confirm whether a person appears as a registered lawyer and to read registration-related fields returned by the source.
 **Accepted `documentType` values:** **`CC`**, **`CE`**, or **`NIT`** (see parameters below).

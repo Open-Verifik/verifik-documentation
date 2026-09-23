@@ -6,18 +6,15 @@ locale: "en"
 category: "resources"
 tags:
   - "document-liveness"
-  - "document-liveness?page=1&limit=10&status=completed&populates[]=client&populates[]=appregistration"
   - "resources"
-endpoints:
-  - "/v2/document-liveness"
-  - "/v2/document-liveness?page=1&limit=10&status=completed&populates[]=client&populates[]=appregistration"
+endpoint: "/v2/document-liveness"
 sourceAnchor: "Endpoint"
 slug: "/resources/list-all-document-liveness"
 url: "https://docs.verifik.co/resources/list-all-document-liveness"
 ---
 
 # List All Document Liveness Validations
-**API path(s):** /v2/document-liveness, /v2/document-liveness?page=1&limit=10&status=completed&populates[]=client&populates[]=appregistration
+**API path(s):** /v2/document-liveness
 
 ## Endpoint
 

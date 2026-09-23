@@ -9,7 +9,6 @@ tags:
   - "resources"
 endpoints:
   - "/v2/email-validations/email_validation_123456789"
-  - "/v2/email-validations/email_validation_123456789?populates[]=client&populates[]=project&populates[]=projectflow"
   - "/v2/email-validations/{id}"
 sourceAnchor: "Respuesta"
 slug: "/resources/email-validations-validaciones-de-correo-electronico/retrieve-an-email-validation-recuperar-una-validacion-de-correo-electronico"
@@ -17,7 +16,7 @@ url: "https://docs.verifik.co/verifik-es/resources/email-validations-validacione
 ---
 
 # Recuperar una Validación de Correo Electrónico
-**API path(s):** /v2/email-validations/email_validation_123456789, /v2/email-validations/email_validation_123456789?populates[]=client&populates[]=project&populates[]=projectflow, /v2/email-validations/{id}
+**API path(s):** /v2/email-validations/email_validation_123456789, /v2/email-validations/{id}
 
 ## Respuesta
 

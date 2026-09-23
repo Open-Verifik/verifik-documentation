@@ -7,16 +7,14 @@ category: "verificacion-antecendentes"
 tags:
   - "co"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/co/contraloria/certificado"
-  - "/v2/co/contraloria/certificado?documenttype=cc&documentnumber=123456789"
+endpoint: "/v2/co/contraloria/certificado"
 sourceAnchor: "Referencia de API"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-colombia-contraloria"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-colombia-contraloria"
 ---
 
 # Colombia - Certificado de Contraloría
-**API path(s):** /v2/co/contraloria/certificado, /v2/co/contraloria/certificado?documenttype=cc&documentnumber=123456789
+**API path(s):** /v2/co/contraloria/certificado
 
 ## Referencia de API
 

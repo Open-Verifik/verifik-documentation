@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "ca"
   - "business-validation"
-endpoints:
-  - "/v2/ca/company"
-  - "/v2/ca/company?"
-  - "/v2/ca/company?business=bai%20heng%20packaging%20supplies%20inc&province=on"
+endpoint: "/v2/ca/company"
 sourceAnchor: "Notes"
 slug: "/business-validation/canada"
 url: "https://docs.verifik.co/business-validation/canada"
 ---
 
 # Canadian Business Verification
-**API path(s):** /v2/ca/company, /v2/ca/company?, /v2/ca/company?business=bai%20heng%20packaging%20supplies%20inc&province=on
+**API path(s):** /v2/ca/company
 
 Verifik's Business Verification API helps you authenticate Canadian companies using official government data. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the legitimacy of companies, partners, or vendors.

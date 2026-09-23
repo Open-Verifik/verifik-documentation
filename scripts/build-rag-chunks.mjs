@@ -186,15 +186,28 @@ const cleanMdx = (content) => {
 	return next.trim();
 };
 
-const normalizeEndpoint = (raw) =>
-	raw
+const normalizeEndpoint = (raw) => {
+	if (!raw) return "";
+	let next = raw
 		.trim()
 		.replace(/`/g, "")
 		.replace(/^(get|post|put|patch|delete|head|options)\s+/i, "")
 		.replace(/^https?:\/\/[^/]+\//, "")
-		.replace(/^\/+/, "")
+		.replace(/^\/+/, "");
+
+	const hashIdx = next.indexOf("#");
+	if (hashIdx !== -1) next = next.slice(0, hashIdx);
+	const queryIdx = next.indexOf("?");
+	if (queryIdx !== -1) next = next.slice(0, queryIdx);
+
+	next = next
 		.replace(/\/+$/, "")
+		.replace(/\/{2,}/g, "/")
+		.replace(/[.,;)]+$/, "")
 		.toLowerCase();
+
+	return next;
+};
 
 const extractEndpoints = (text) => {
 	const found = new Set();
@@ -539,6 +552,17 @@ const main = () => {
 
 	fs.mkdirSync(OUT_DIR, { recursive: true });
 	fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+
+	const badEndpoints = manifestChunks
+		.flatMap((chunk) => chunk.endpoints ?? [])
+		.filter((endpoint) => /[?&=]/.test(endpoint));
+	if (badEndpoints.length) {
+		console.error(
+			`Endpoint metadata must not contain query strings (${badEndpoints.length} bad value(s)):`,
+			[...new Set(badEndpoints)].slice(0, 10)
+		);
+		process.exit(1);
+	}
 
 	console.log(`Generated ${manifest.totalChunks} chunks -> ${path.relative(ROOT, CHUNKS_DIR)}`);
 	for (const [locale, count] of Object.entries(localeCounts)) {

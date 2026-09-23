@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/registraduria/votacion"
-  - "/v2/co/registraduria/votacion?documentnumber=123456789"
+endpoint: "/v2/co/registraduria/votacion"
 sourceAnchor: "Recuperar Información de Votación para Ciudadanos Colombianos"
 slug: "/legal/votacion"
 url: "https://docs.verifik.co/verifik-es/legal/votacion"
 ---
 
 # Recuperar Información de Votación para Ciudadanos Colombianos
-**API path(s):** /v2/co/registraduria/votacion, /v2/co/registraduria/votacion?documentnumber=123456789
+**API path(s):** /v2/co/registraduria/votacion
 
 ## Recuperar Información de Votación para Ciudadanos Colombianos
 

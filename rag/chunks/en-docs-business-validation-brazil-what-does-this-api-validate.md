@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "br"
   - "business-validation"
-endpoints:
-  - "/v2/br/company"
-  - "/v2/br/company?"
-  - "/v2/br/company?documenttype=cnpj&documentnumber=09159197000180"
+endpoint: "/v2/br/company"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/brazil"
 url: "https://docs.verifik.co/business-validation/brazil"
 ---
 
 # Business Verification (CNPJ)
-**API path(s):** /v2/br/company, /v2/br/company?, /v2/br/company?documenttype=cnpj&documentnumber=09159197000180
+**API path(s):** /v2/br/company
 
 ## What does this API validate?
 

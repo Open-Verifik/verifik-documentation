@@ -6,18 +6,15 @@ locale: "es"
 category: "resources"
 tags:
   - "email-validations"
-  - "email-validations?page=1&limit=10&status=validated&type=validation&populates[]=client&populates[]=project"
   - "resources"
-endpoints:
-  - "/v2/email-validations"
-  - "/v2/email-validations?page=1&limit=10&status=validated&type=validation&populates[]=client&populates[]=project"
+endpoint: "/v2/email-validations"
 sourceAnchor: "Endpoint"
 slug: "/resources/listar-todas-las-validaciones-email"
 url: "https://docs.verifik.co/verifik-es/resources/listar-todas-las-validaciones-email"
 ---
 
 # Listar todas las Validaciones de Email
-**API path(s):** /v2/email-validations, /v2/email-validations?page=1&limit=10&status=validated&type=validation&populates[]=client&populates[]=project
+**API path(s):** /v2/email-validations
 
 ## Endpoint
 

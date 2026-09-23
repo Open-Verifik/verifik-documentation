@@ -7,16 +7,14 @@ category: "accounts"
 tags:
   - "clients"
   - "accounts"
-endpoints:
-  - "/v2/clients/me"
-  - "/v2/clients/me?populates[]=clientsubscriptionplan.subscriptionplan"
+endpoint: "/v2/clients/me"
 sourceAnchor: "Response"
 slug: "/accounts/clients/account-information"
 url: "https://docs.verifik.co/accounts/clients/account-information"
 ---
 
 # Account Information
-**API path(s):** /v2/clients/me, /v2/clients/me?populates[]=clientsubscriptionplan.subscriptionplan
+**API path(s):** /v2/clients/me
 
 ## Response
 

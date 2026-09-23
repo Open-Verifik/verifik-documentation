@@ -6,20 +6,15 @@ locale: "en"
 category: "background-check"
 tags:
   - "europol"
-  - "europol?fullname=mateo"
-  - "europol?fullname=mateo%20verifik"
   - "background-check"
-endpoints:
-  - "/v2/europol"
-  - "/v2/europol?fullname=mateo"
-  - "/v2/europol?fullname=mateo%20verifik"
+endpoint: "/v2/europol"
 sourceAnchor: "Response"
 slug: "/background-check/international/europol-background-check"
 url: "https://docs.verifik.co/background-check/international/europol-background-check"
 ---
 
 # Europol Background Check
-**API path(s):** /v2/europol, /v2/europol?fullname=mateo, /v2/europol?fullname=mateo%20verifik
+**API path(s):** /v2/europol
 
 ## Response
 

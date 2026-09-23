@@ -6,18 +6,15 @@ locale: "en"
 category: "resources"
 tags:
   - "credits"
-  - "credits?page=1&perpage=20&populates[]=client&where_status=approved&where_category=purchase"
   - "resources"
-endpoints:
-  - "/v2/credits"
-  - "/v2/credits?page=1&perpage=20&populates[]=client&where_status=approved&where_category=purchase"
+endpoint: "/v2/credits"
 sourceAnchor: "Response"
 slug: "/resources/list-all-credit-records"
 url: "https://docs.verifik.co/resources/list-all-credit-records"
 ---
 
 # List All Credit Records
-**API path(s):** /v2/credits, /v2/credits?page=1&perpage=20&populates[]=client&where_status=approved&where_category=purchase
+**API path(s):** /v2/credits
 
 ## Response
 

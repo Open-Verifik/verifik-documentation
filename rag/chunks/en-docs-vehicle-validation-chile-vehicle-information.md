@@ -7,14 +7,12 @@ category: "vehicle-validation"
 tags:
   - "cl"
   - "vehicle-validation"
-endpoints:
-  - "/v2/cl/vehicle"
-  - "/v2/cl/vehicle?plate="
+endpoint: "/v2/cl/vehicle"
 sourceAnchor: "Implementation"
 ---
 
 # Vehicle Information
-**API path(s):** /v2/cl/vehicle, /v2/cl/vehicle?plate=
+**API path(s):** /v2/cl/vehicle
 
 ## Implementation
 

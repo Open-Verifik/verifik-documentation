@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "gt"
   - "identity"
-endpoints:
-  - "/v2/gt/cedula/extra"
-  - "/v2/gt/cedula/extra?"
-  - "/v2/gt/cedula/extra?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984"
+endpoint: "/v2/gt/cedula/extra"
 sourceAnchor: "Respuesta"
 slug: "/identidad/guatemala-extra"
 url: "https://docs.verifik.co/verifik-es/identidad/guatemala-extra"
 ---
 
 # Guatemala Extra
-**API path(s):** /v2/gt/cedula/extra, /v2/gt/cedula/extra?, /v2/gt/cedula/extra?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984
+**API path(s):** /v2/gt/cedula/extra
 
 La API de Verificación de Identidad de Verifik te ayuda a autenticar ciudadanos guatemaltecos usando datos oficiales del gobierno. Este endpoint proporciona detalles adicionales como fecha de nacimiento y género.
 

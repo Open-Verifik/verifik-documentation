@@ -9,7 +9,6 @@ tags:
   - "verificacion-antecendentes"
 endpoints:
   - "/v2/co/policia/consultar"
-  - "/v2/co/policia/consultar?documenttype=cc&documentnumber=1032386359"
   - "/v2/co/policia/rnmc"
 sourceAnchor: "Referencia de API"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-colombia-policia"
@@ -17,7 +16,7 @@ url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion
 ---
 
 # Colombia - Verificación de Antecedentes Policiales
-**API path(s):** /v2/co/policia/consultar, /v2/co/policia/consultar?documenttype=cc&documentnumber=1032386359, /v2/co/policia/rnmc
+**API path(s):** /v2/co/policia/consultar, /v2/co/policia/rnmc
 
 ## Referencia de API
 

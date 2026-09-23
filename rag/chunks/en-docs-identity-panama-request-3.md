@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "pa"
   - "identity"
-endpoints:
-  - "/v2/pa/cedula"
-  - "/v2/pa/cedula?"
-  - "/v2/pa/cedula?documenttype=ccpa&documentnumber=8-1251-1829"
+endpoint: "/v2/pa/cedula"
 sourceAnchor: "Request"
 slug: "/identity/panama"
 url: "https://docs.verifik.co/identity/panama"
 ---
 
 # Panamanian Citizen
-**API path(s):** /v2/pa/cedula, /v2/pa/cedula?, /v2/pa/cedula?documenttype=ccpa&documentnumber=8-1251-1829
+**API path(s):** /v2/pa/cedula
 
 Verifik's Identity Verification API helps you authenticate Panamanian citizens. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the true identity of users, employees, or customers.

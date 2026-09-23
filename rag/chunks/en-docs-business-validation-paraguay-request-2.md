@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "py"
   - "business-validation"
-endpoints:
-  - "/v2/py/company"
-  - "/v2/py/company?"
-  - "/v2/py/company?documenttype=ruc&documentnumber=80033331"
+endpoint: "/v2/py/company"
 sourceAnchor: "Request"
 slug: "/business-validation/paraguay"
 url: "https://docs.verifik.co/business-validation/paraguay"
 ---
 
 # Paraguayan Business Verification
-**API path(s):** /v2/py/company, /v2/py/company?, /v2/py/company?documenttype=ruc&documentnumber=80033331
+**API path(s):** /v2/py/company
 
 Verifik's Business Verification API helps you authenticate Paraguayan companies using official government data. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the legitimacy of companies, partners, or vendors.

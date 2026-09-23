@@ -7,14 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "sv"
   - "london-stock-exchange-integration"
-endpoint: "/v2/sv/dui?documentnumber=055765964&dateofbirth=06/07/1997"
+endpoint: "/v2/sv/dui"
 sourceAnchor: "94. El Salvador DUI Information Lookup"
 slug: "/london-stock-exchange-integration/el-salvador"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/el-salvador"
 ---
 
 # El Salvador — API pública Verifik
-**API path(s):** /v2/sv/dui?documentnumber=055765964&dateofbirth=06/07/1997
+**API path(s):** /v2/sv/dui
 
 ## 94. El Salvador DUI Information Lookup
 

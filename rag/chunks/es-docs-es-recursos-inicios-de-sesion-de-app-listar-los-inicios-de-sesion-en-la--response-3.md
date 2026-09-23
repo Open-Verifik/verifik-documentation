@@ -6,18 +6,15 @@ locale: "es"
 category: "recursos"
 tags:
   - "app-logins"
-  - "app-logins?page=1&populates[]=emailvalidation&populates[]=phonevalidation&populates[]=biometricvalidation&sort=-createdat"
   - "recursos"
-endpoints:
-  - "/v2/app-logins"
-  - "/v2/app-logins?page=1&populates[]=emailvalidation&populates[]=phonevalidation&populates[]=biometricvalidation&sort=-createdat"
+endpoint: "/v2/app-logins"
 sourceAnchor: "Response"
 slug: "/recursos/inicios-de-sesion-de-app/listar-los-inicios-de-sesion-en-la-app"
 url: "https://docs.verifik.co/verifik-es/recursos/inicios-de-sesion-de-app/listar-los-inicios-de-sesion-en-la-app"
 ---
 
 # Listar Todos los Inicios de Sesión de Aplicación
-**API path(s):** /v2/app-logins, /v2/app-logins?page=1&populates[]=emailvalidation&populates[]=phonevalidation&populates[]=biometricvalidation&sort=-createdat
+**API path(s):** /v2/app-logins
 
 ## Response
 

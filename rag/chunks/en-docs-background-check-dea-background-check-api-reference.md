@@ -6,18 +6,15 @@ locale: "en"
 category: "background-check"
 tags:
   - "dea"
-  - "dea?fullname="
   - "background-check"
-endpoints:
-  - "/v2/dea"
-  - "/v2/dea?fullname="
+endpoint: "/v2/dea"
 sourceAnchor: "API Reference"
 slug: "/background-check/international/dea-background-check"
 url: "https://docs.verifik.co/background-check/international/dea-background-check"
 ---
 
 # DEA Background Check
-**API path(s):** /v2/dea, /v2/dea?fullname=
+**API path(s):** /v2/dea
 
 ## API Reference
 

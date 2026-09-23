@@ -10,14 +10,13 @@ tags:
 endpoints:
   - "/v2/ve/cedula"
   - "/v2/ve/foreigner-id"
-  - "/v2/ve/foreigner-id?documentnumber=10000001"
 sourceAnchor: "Beneficios clave"
 slug: "/identidad/venezuela-foreigner-id"
 url: "https://docs.verifik.co/verifik-es/identidad/venezuela-foreigner-id"
 ---
 
 # 🇻🇪 Venezuela - Cédula de extranjero (CEVE)
-**API path(s):** /v2/ve/cedula, /v2/ve/foreigner-id, /v2/ve/foreigner-id?documentnumber=10000001
+**API path(s):** /v2/ve/cedula, /v2/ve/foreigner-id
 
 La API de Verificación de Identidad de Verifik te permite autenticar a personas extranjeras en Venezuela usando datos oficiales. Está pensada para agilizar el **KYC**, reducir fraude y apoyar el cumplimiento normativo.
 

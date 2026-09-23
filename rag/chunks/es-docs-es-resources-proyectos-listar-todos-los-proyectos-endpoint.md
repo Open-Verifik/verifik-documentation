@@ -6,16 +6,14 @@ locale: "es"
 category: "resources"
 tags:
   - "resources"
-endpoints:
-  - "/v3/projects"
-  - "/v3/projects?page=1&limit=10"
+endpoint: "/v3/projects"
 sourceAnchor: "Endpoint"
 slug: "/resources/proyectos/listar-todos-los-proyectos"
 url: "https://docs.verifik.co/verifik-es/resources/proyectos/listar-todos-los-proyectos"
 ---
 
 # Listar proyectos
-**API path(s):** /v3/projects, /v3/projects?page=1&limit=10
+**API path(s):** /v3/projects
 
 ## Endpoint
 

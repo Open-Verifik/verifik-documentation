@@ -7,16 +7,14 @@ category: "vehicle-validation"
 tags:
   - "cr"
   - "vehicle-validation"
-endpoints:
-  - "/v2/cr/vehicle"
-  - "/v2/cr/vehicle?plate=aa123ba"
+endpoint: "/v2/cr/vehicle"
 sourceAnchor: "API Reference"
 slug: "/vehicle-validation/costa-rica"
 url: "https://docs.verifik.co/vehicle-validation/costa-rica"
 ---
 
 # \U0001F1E8\U0001F1F7 Costa Rica - Vehicle Information
-**API path(s):** /v2/cr/vehicle, /v2/cr/vehicle?plate=aa123ba
+**API path(s):** /v2/cr/vehicle
 
 ## API Reference
 

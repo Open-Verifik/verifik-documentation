@@ -7,16 +7,14 @@ category: "business-validation"
 tags:
   - "cl"
   - "business-validation"
-endpoints:
-  - "/v2/cl/company"
-  - "/v2/cl/company?documenttype=rut&documentnumber=212957739"
+endpoint: "/v2/cl/company"
 sourceAnchor: "Common Use Cases"
 slug: "/business-validation/chilean"
 url: "https://docs.verifik.co/business-validation/chilean"
 ---
 
 # \U0001F1E8\U0001F1F1 Chile - Business Validation
-**API path(s):** /v2/cl/company, /v2/cl/company?documenttype=rut&documentnumber=212957739
+**API path(s):** /v2/cl/company
 
 Verifik's Business Verification API helps you authenticate Chilean companies using official government data. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the legitimacy of companies, partners, or vendors.

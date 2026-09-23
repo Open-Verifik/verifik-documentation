@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "ca"
   - "business-validation"
-endpoints:
-  - "/v2/ca/company"
-  - "/v2/ca/company?"
-  - "/v2/ca/company?business=bai%20heng%20packaging%20supplies%20inc&province=on"
+endpoint: "/v2/ca/company"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/canada"
 url: "https://docs.verifik.co/business-validation/canada"
 ---
 
 # Canadian Business Verification
-**API path(s):** /v2/ca/company, /v2/ca/company?, /v2/ca/company?business=bai%20heng%20packaging%20supplies%20inc&province=on
+**API path(s):** /v2/ca/company
 
 ## What does this API validate?
 

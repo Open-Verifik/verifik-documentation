@@ -7,14 +7,12 @@ category: "vehicle-validation"
 tags:
   - "cl"
   - "vehicle-validation"
-endpoints:
-  - "/v2/cl/driver-license"
-  - "/v2/cl/driver-license?documentnumber="
+endpoint: "/v2/cl/driver-license"
 sourceAnchor: "Chilean driver license"
 ---
 
 # Driver License
-**API path(s):** /v2/cl/driver-license, /v2/cl/driver-license?documentnumber=
+**API path(s):** /v2/cl/driver-license
 
 ## Chilean driver license
 

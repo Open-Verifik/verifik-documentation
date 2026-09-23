@@ -8,17 +8,16 @@ tags:
   - "mx"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/mx/company?documenttype=fme&documentnumber=n-2021007300"
-  - "/v2/mx/curp?documentnumber=nuha930929hslxrl02&documenttype=curp"
-  - "/v2/mx/vehiculo/placa?plate=338er"
-  - "/v2/mx/vehiculo/placa?plate=mse9670"
+  - "/v2/mx/company"
+  - "/v2/mx/curp"
+  - "/v2/mx/vehiculo/placa"
 sourceAnchor: "99. Identification of Mexican Citizen with CURP"
 slug: "/london-stock-exchange-integration/mexico"
 url: "https://docs.verifik.co/london-stock-exchange-integration/mexico"
 ---
 
 # Mexico — Verifik public API
-**API path(s):** /v2/mx/company?documenttype=fme&documentnumber=n-2021007300, /v2/mx/curp?documentnumber=nuha930929hslxrl02&documenttype=curp, /v2/mx/vehiculo/placa?plate=338er, /v2/mx/vehiculo/placa?plate=mse9670
+**API path(s):** /v2/mx/company, /v2/mx/curp, /v2/mx/vehiculo/placa
 
 ## 99. Identification of Mexican Citizen with CURP
 

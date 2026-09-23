@@ -7,16 +7,14 @@ category: "driver-validation"
 tags:
   - "pe"
   - "driver-validation"
-endpoints:
-  - "/v2/pe/driver-license"
-  - "/v2/pe/driver-license?documenttype=dni&documentnumber=10000001"
+endpoint: "/v2/pe/driver-license"
 sourceAnchor: "Endpoint"
 slug: "/driver-validation/peru-driver-license"
 url: "https://docs.verifik.co/driver-validation/peru-driver-license"
 ---
 
 # Peru - Driver License
-**API path(s):** /v2/pe/driver-license, /v2/pe/driver-license?documenttype=dni&documentnumber=10000001
+**API path(s):** /v2/pe/driver-license
 
 ## Endpoint
 

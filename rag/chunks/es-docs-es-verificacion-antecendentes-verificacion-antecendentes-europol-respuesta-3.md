@@ -6,20 +6,15 @@ locale: "es"
 category: "verificacion-antecendentes"
 tags:
   - "europol"
-  - "europol?fullname=mateo"
-  - "europol?fullname=mateo%20verifik"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/europol"
-  - "/v2/europol?fullname=mateo"
-  - "/v2/europol?fullname=mateo%20verifik"
+endpoint: "/v2/europol"
 sourceAnchor: "Respuesta"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-europol"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-europol"
 ---
 
 # Verificación de Antecedentes Europol
-**API path(s):** /v2/europol, /v2/europol?fullname=mateo, /v2/europol?fullname=mateo%20verifik
+**API path(s):** /v2/europol
 
 ## Respuesta
 

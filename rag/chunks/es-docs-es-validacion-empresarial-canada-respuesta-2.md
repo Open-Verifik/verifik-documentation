@@ -7,15 +7,12 @@ category: "validacion-empresarial"
 tags:
   - "ca"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/ca/company"
-  - "/v2/ca/company?"
-  - "/v2/ca/company?business=bai%20heng%20packaging%20supplies%20inc&province=on"
+endpoint: "/v2/ca/company"
 sourceAnchor: "Respuesta"
 ---
 
 # Verificación Empresarial Canadiense
-**API path(s):** /v2/ca/company, /v2/ca/company?, /v2/ca/company?business=bai%20heng%20packaging%20supplies%20inc&province=on
+**API path(s):** /v2/ca/company
 
 ## Respuesta
 

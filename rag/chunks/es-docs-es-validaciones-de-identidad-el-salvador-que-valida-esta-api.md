@@ -7,17 +7,14 @@ category: "validaciones-de-identidad"
 tags:
   - "sv"
   - "validaciones-de-identidad"
-endpoints:
-  - "/v2/sv/dui"
-  - "/v2/sv/dui?"
-  - "/v2/sv/dui?documentnumber=123456789&dateofbirth=01/12/1995"
+endpoint: "/v2/sv/dui"
 sourceAnchor: "¿Qué valida esta API?"
 slug: "/validaciones-de-identidad/el-salvador"
 url: "https://docs.verifik.co/verifik-es/validaciones-de-identidad/el-salvador"
 ---
 
 # Ciudadano Salvadoreño
-**API path(s):** /v2/sv/dui, /v2/sv/dui?, /v2/sv/dui?documentnumber=123456789&dateofbirth=01/12/1995
+**API path(s):** /v2/sv/dui
 
 ## ¿Qué valida esta API?
 

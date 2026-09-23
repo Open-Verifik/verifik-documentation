@@ -8,16 +8,16 @@ tags:
   - "cr"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/cr/cedula?documenttype=cccr&documentnumber=206820588"
-  - "/v2/cr/company?documenttype=nite&documentnumber=3101122876"
-  - "/v2/cr/vehicle?plate=123456"
+  - "/v2/cr/cedula"
+  - "/v2/cr/company"
+  - "/v2/cr/vehicle"
 sourceAnchor: "86. PLACAS COSTARICA"
 slug: "/london-stock-exchange-integration/costa-rica"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/costa-rica"
 ---
 
 # Costa Rica — API pública Verifik
-**API path(s):** /v2/cr/cedula?documenttype=cccr&documentnumber=206820588, /v2/cr/company?documenttype=nite&documentnumber=3101122876, /v2/cr/vehicle?plate=123456
+**API path(s):** /v2/cr/cedula, /v2/cr/company, /v2/cr/vehicle
 
 ## 86. PLACAS COSTARICA
 

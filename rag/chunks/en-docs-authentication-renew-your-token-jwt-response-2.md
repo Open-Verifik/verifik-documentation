@@ -7,16 +7,14 @@ category: "authentication"
 tags:
   - "authentication"
   - "auth"
-endpoints:
-  - "/v2/auth/session"
-  - "/v2/auth/session?origin=refresh&expiresin=120"
+endpoint: "/v2/auth/session"
 sourceAnchor: "Response"
 slug: "/authentication/renew-your-token-jwt"
 url: "https://docs.verifik.co/authentication/renew-your-token-jwt"
 ---
 
 # Renew your token (JWT)
-**API path(s):** /v2/auth/session, /v2/auth/session?origin=refresh&expiresin=120
+**API path(s):** /v2/auth/session
 
 ## Response
 

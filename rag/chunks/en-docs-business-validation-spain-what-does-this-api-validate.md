@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "es"
   - "business-validation"
-endpoints:
-  - "/v2/es/company"
-  - "/v2/es/company?"
-  - "/v2/es/company?documenttype=cif&documentnumber=33011826"
+endpoint: "/v2/es/company"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/spain"
 url: "https://docs.verifik.co/business-validation/spain"
 ---
 
 # Spanish Business Verification
-**API path(s):** /v2/es/company, /v2/es/company?, /v2/es/company?documenttype=cif&documentnumber=33011826
+**API path(s):** /v2/es/company
 
 ## What does this API validate?
 

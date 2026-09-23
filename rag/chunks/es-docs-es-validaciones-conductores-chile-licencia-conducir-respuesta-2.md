@@ -7,16 +7,14 @@ category: "validaciones-conductores"
 tags:
   - "cl"
   - "validaciones-conductores"
-endpoints:
-  - "/v2/cl/driver-license"
-  - "/v2/cl/driver-license?documentnumber=12345678"
+endpoint: "/v2/cl/driver-license"
 sourceAnchor: "Respuesta"
 slug: "/validaciones-conductores/chile-licencia-conducir"
 url: "https://docs.verifik.co/verifik-es/validaciones-conductores/chile-licencia-conducir"
 ---
 
 # 🇨🇱 Chile - Licencia de Conducir
-**API path(s):** /v2/cl/driver-license, /v2/cl/driver-license?documentnumber=12345678
+**API path(s):** /v2/cl/driver-license
 
 Este servicio consulta una licencia de conducir chilena por número (cuerpo del RUN). Hoy solo cubre **Municipalidad de Santiago** (`tramites.munistgo.cl`). Licencias de otras comunas (por ejemplo Ñuñoa) responden **404** aunque el número sea válido. Eso es cobertura, no una caída del servicio.
 

@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "ar"
   - "background-check"
-endpoints:
-  - "/v2/ar/dnrec/antecedentes"
-  - "/v2/ar/dnrec/antecedentes?requestcode=02118499487&securitycode=371488f861"
+endpoint: "/v2/ar/dnrec/antecedentes"
 sourceAnchor: "API Reference"
 slug: "/background-check/argentina-certificate-verify"
 url: "https://docs.verifik.co/background-check/argentina-certificate-verify"
 ---
 
 # Argentina - Criminal Record Certificate
-**API path(s):** /v2/ar/dnrec/antecedentes, /v2/ar/dnrec/antecedentes?requestcode=02118499487&securitycode=371488f861
+**API path(s):** /v2/ar/dnrec/antecedentes
 
 ## API Reference
 

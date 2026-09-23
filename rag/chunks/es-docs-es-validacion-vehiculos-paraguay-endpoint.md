@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "py"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/py/vehicle"
-  - "/v2/py/vehicle?plate=abc123"
+endpoint: "/v2/py/vehicle"
 sourceAnchor: "Endpoint"
 slug: "/validacion-vehiculos/paraguay"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/paraguay"
 ---
 
 # 🇵🇾 Paraguay - Información de Vehículos
-**API path(s):** /v2/py/vehicle, /v2/py/vehicle?plate=abc123
+**API path(s):** /v2/py/vehicle
 
 ## Endpoint
 

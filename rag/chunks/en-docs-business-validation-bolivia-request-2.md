@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "bo"
   - "business-validation"
-endpoints:
-  - "/v2/bo/company"
-  - "/v2/bo/company?"
-  - "/v2/bo/company?documenttype=nit&documentnumber=9287278014"
+endpoint: "/v2/bo/company"
 sourceAnchor: "Request"
 slug: "/business-validation/bolivia"
 url: "https://docs.verifik.co/business-validation/bolivia"
 ---
 
 # Bolivian Business Verification
-**API path(s):** /v2/bo/company, /v2/bo/company?, /v2/bo/company?documenttype=nit&documentnumber=9287278014
+**API path(s):** /v2/bo/company
 
 Verifik's Business Verification API helps you authenticate Bolivian companies using official government data. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the legitimacy of companies, partners, or vendors.

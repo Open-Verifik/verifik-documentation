@@ -9,16 +9,14 @@ tags:
   - "identity"
 endpoints:
   - "/v2/ca/british-columbia/driver-license"
-  - "/v2/ca/british-columbia/driver-license?documentnumber=1123456&lastname=hello"
   - "/v2/ca/ontario/driver-license"
-  - "/v2/ca/ontario/driver-license?documentnumber=s123456789123456"
 sourceAnchor: "Ejemplos de Respuesta"
 slug: "/identidad/canada"
 url: "https://docs.verifik.co/verifik-es/identidad/canada"
 ---
 
 # Validación de Licencias de Conducir en Canadá
-**API path(s):** /v2/ca/british-columbia/driver-license, /v2/ca/british-columbia/driver-license?documentnumber=1123456&lastname=hello, /v2/ca/ontario/driver-license, /v2/ca/ontario/driver-license?documentnumber=s123456789123456
+**API path(s):** /v2/ca/british-columbia/driver-license, /v2/ca/ontario/driver-license
 
 La API de Verificación de Licencias de Conducir de Verifik te ayuda a autenticar licencias de conducir canadienses usando datos oficiales del gobierno. Está diseñada para agilizar tus procesos de KYC (Conozca a su Cliente), prevenir fraudes y asegurar el cumplimiento normativo sin complicaciones.
 Creamos esta integración para empresas que necesitan una forma rápida, segura y automatizada de confirmar la validez de licencias de conducir emitidas en las provincias de Columbia Británica y Ontario.

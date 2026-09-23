@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "pa"
   - "identity"
-endpoints:
-  - "/v2/pa/cedula"
-  - "/v2/pa/cedula?"
-  - "/v2/pa/cedula?documenttype=ccpa&documentnumber=8-1251-1829"
+endpoint: "/v2/pa/cedula"
 sourceAnchor: "¿Qué valida esta API?"
 slug: "/identidad/panama"
 url: "https://docs.verifik.co/verifik-es/identidad/panama"
 ---
 
 # Ciudadano Panameño
-**API path(s):** /v2/pa/cedula, /v2/pa/cedula?, /v2/pa/cedula?documenttype=ccpa&documentnumber=8-1251-1829
+**API path(s):** /v2/pa/cedula
 
 ## ¿Qué valida esta API?
 

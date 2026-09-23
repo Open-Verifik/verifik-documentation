@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "es"
   - "business-validation"
-endpoints:
-  - "/v2/es/company"
-  - "/v2/es/company?"
-  - "/v2/es/company?documenttype=cif&documentnumber=33011826"
+endpoint: "/v2/es/company"
 sourceAnchor: "Notes"
 slug: "/business-validation/spain"
 url: "https://docs.verifik.co/business-validation/spain"
 ---
 
 # Spanish Business Verification
-**API path(s):** /v2/es/company, /v2/es/company?, /v2/es/company?documenttype=cif&documentnumber=33011826
+**API path(s):** /v2/es/company
 
 Verifik's Business Verification API helps you authenticate Spanish companies using official government data. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the legitimacy of companies, partners, or vendors.

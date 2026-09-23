@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "co"
   - "background-check"
-endpoints:
-  - "/v2/co/procuraduria/antecedentes"
-  - "/v2/co/procuraduria/antecedentes?documenttype=cc&documentnumber="
+endpoint: "/v2/co/procuraduria/antecedentes"
 sourceAnchor: "Response"
 slug: "/background-check/colombia-disciplinary-records-attorneys-office"
 url: "https://docs.verifik.co/background-check/colombia-disciplinary-records-attorneys-office"
 ---
 
 # Colombia - Disciplinary Records in Colombia (attorney's office)
-**API path(s):** /v2/co/procuraduria/antecedentes, /v2/co/procuraduria/antecedentes?documenttype=cc&documentnumber=
+**API path(s):** /v2/co/procuraduria/antecedentes
 
 ## Response
 

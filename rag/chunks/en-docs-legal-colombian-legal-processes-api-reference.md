@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/procesos"
-  - "/v2/co/rama/procesos?documenttype=cc&documentnumber=123456789"
+endpoint: "/v2/co/rama/procesos"
 sourceAnchor: "API Reference"
 slug: "/legal/colombian-legal-processes"
 url: "https://docs.verifik.co/legal/colombian-legal-processes"
 ---
 
 # Colombia — Judicial processes
-**API path(s):** /v2/co/rama/procesos, /v2/co/rama/procesos?documenttype=cc&documentnumber=123456789
+**API path(s):** /v2/co/rama/procesos
 
 ## API Reference
 

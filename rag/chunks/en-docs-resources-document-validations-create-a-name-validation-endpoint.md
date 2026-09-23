@@ -9,7 +9,6 @@ tags:
   - "resources"
 endpoints:
   - "/v2/document-validations/document_validation_123456789/validate"
-  - "/v2/document-validations/document_validation_123456789/validate?force=false"
   - "/v2/document-validations/{id}/validate"
 sourceAnchor: "Endpoint"
 slug: "/resources/create-a-name-validation"
@@ -17,7 +16,7 @@ url: "https://docs.verifik.co/resources/create-a-name-validation"
 ---
 
 # Create a Name Validation
-**API path(s):** /v2/document-validations/document_validation_123456789/validate, /v2/document-validations/document_validation_123456789/validate?force=false, /v2/document-validations/{id}/validate
+**API path(s):** /v2/document-validations/document_validation_123456789/validate, /v2/document-validations/{id}/validate
 
 ## Endpoint
 

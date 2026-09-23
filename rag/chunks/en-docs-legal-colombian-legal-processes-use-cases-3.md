@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/procesos"
-  - "/v2/co/rama/procesos?documenttype=cc&documentnumber=123456789"
+endpoint: "/v2/co/rama/procesos"
 sourceAnchor: "Use Cases"
 slug: "/legal/colombian-legal-processes"
 url: "https://docs.verifik.co/legal/colombian-legal-processes"
 ---
 
 # Colombia — Judicial processes
-**API path(s):** /v2/co/rama/procesos, /v2/co/rama/procesos?documenttype=cc&documentnumber=123456789
+**API path(s):** /v2/co/rama/procesos
 
 Verifik’s **Judicial processes** endpoint returns a **list of legal processes** from Colombia’s judicial system for a given **CC** (natural person) or **NIT** (company). Typical fields include process dates, last action, court office (**despacho**), department, and **sujetosProcesales**, with **pagination** when there are many matches.
 

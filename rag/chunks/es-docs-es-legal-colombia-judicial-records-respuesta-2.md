@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/juzgado/expedientes"
-  - "/v2/co/rama/juzgado/expedientes?documenttype=cc&documentnumber=1234567890&city=bogota"
+endpoint: "/v2/co/rama/juzgado/expedientes"
 sourceAnchor: "Respuesta"
 slug: "/legal/antecedentes-judiciales-colombia"
 url: "https://docs.verifik.co/verifik-es/legal/antecedentes-judiciales-colombia"
 ---
 
 # Colombia — Antecedentes judiciales (expedientes)
-**API path(s):** /v2/co/rama/juzgado/expedientes, /v2/co/rama/juzgado/expedientes?documenttype=cc&documentnumber=1234567890&city=bogota
+**API path(s):** /v2/co/rama/juzgado/expedientes
 
 Este endpoint devuelve **datos de expediente judicial** desde el sistema judicial colombiano para titulares de **CC** (**cédula de ciudadanía**) en una **ciudad** (circuito) determinada. Suele incluir despacho (**EPMS**), fechas, municipio, radicación y nombres de partes cuando la fuente los provee.
 

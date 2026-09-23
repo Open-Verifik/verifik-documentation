@@ -7,17 +7,14 @@ category: "identity-validation"
 tags:
   - "gt"
   - "identity-validation"
-endpoints:
-  - "/v2/gt/cedula"
-  - "/v2/gt/cedula?"
-  - "/v2/gt/cedula?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984"
+endpoint: "/v2/gt/cedula"
 sourceAnchor: "Notes"
 slug: "/identity-validation/guatemala"
 url: "https://docs.verifik.co/identity-validation/guatemala"
 ---
 
 # Guatemalan Citizen
-**API path(s):** /v2/gt/cedula, /v2/gt/cedula?, /v2/gt/cedula?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984
+**API path(s):** /v2/gt/cedula
 
 Verifik's Identity Verification API helps you authenticate Guatemalan citizens using official government data. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the true identity of users, employees, or customers.

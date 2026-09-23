@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "ec"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/ec/vehiculo/placa/multas"
-  - "/v2/ec/vehiculo/placa/multas?plate=abc1234"
+endpoint: "/v2/ec/vehiculo/placa/multas"
 sourceAnchor: "Respuesta"
 slug: "/validacion-de-vehiculo/ecuador/consulta-de-informacion-de-vehiculo"
 url: "https://docs.verifik.co/verifik-es/validacion-de-vehiculo/ecuador/consulta-de-informacion-de-vehiculo"
 ---
 
 # 🇪🇨 Ecuador - Multas de Vehículos
-**API path(s):** /v2/ec/vehiculo/placa/multas, /v2/ec/vehiculo/placa/multas?plate=abc1234
+**API path(s):** /v2/ec/vehiculo/placa/multas
 
 El servicio de Multas de Placa de Vehículos de Ecuador te permite recuperar información sobre multas asociadas con la placa de matrícula de un vehículo en Ecuador. Puedes acceder a detalles como la información de registro del vehículo, incluyendo el número de placa, clase y modelo. El servicio también proporciona el estado actual, tipo de servicio y fecha de vencimiento del registro, junto con cualquier multa pendiente vinculada a la placa de matrícula.
 Este servicio es útil para individuos y empresas que buscan mantenerse informados sobre las multas asociadas con sus vehículos y asegurar el cumplimiento de las leyes de tránsito ecuatorianas.

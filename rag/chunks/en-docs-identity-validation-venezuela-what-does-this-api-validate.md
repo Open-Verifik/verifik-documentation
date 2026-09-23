@@ -7,17 +7,14 @@ category: "identity-validation"
 tags:
   - "ve"
   - "identity-validation"
-endpoints:
-  - "/v2/ve/cedula"
-  - "/v2/ve/cedula?"
-  - "/v2/ve/cedula?documentnumber=10000001"
+endpoint: "/v2/ve/cedula"
 sourceAnchor: "What does this API validate?"
 slug: "/identity-validation/venezuela"
 url: "https://docs.verifik.co/identity-validation/venezuela"
 ---
 
 # Venezuelan Citizen Information
-**API path(s):** /v2/ve/cedula, /v2/ve/cedula?, /v2/ve/cedula?documentnumber=10000001
+**API path(s):** /v2/ve/cedula
 
 ## What does this API validate?
 

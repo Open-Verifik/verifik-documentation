@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "pe"
   - "business-validation"
-endpoints:
-  - "/v3/pe/company"
-  - "/v3/pe/company?"
-  - "/v3/pe/company?documenttype=ruc&documentnumber=20605980008"
+endpoint: "/v3/pe/company"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/peru"
 url: "https://docs.verifik.co/business-validation/peru"
 ---
 
 # Peruvian Business Verification
-**API path(s):** /v3/pe/company, /v3/pe/company?, /v3/pe/company?documenttype=ruc&documentnumber=20605980008
+**API path(s):** /v3/pe/company
 
 ## What does this API validate?
 

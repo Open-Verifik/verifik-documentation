@@ -8,16 +8,14 @@ tags:
   - "us"
   - "usa"
   - "vehicle-validation"
-endpoints:
-  - "/v2/usa/vehicle-by-vin"
-  - "/v2/usa/vehicle-by-vin?vin=1g3ak47a7cm535209"
+endpoint: "/v2/usa/vehicle-by-vin"
 sourceAnchor: "Endpoint"
 slug: "/vehicle-validation/united-states/vehicle-by-vin"
 url: "https://docs.verifik.co/vehicle-validation/united-states/vehicle-by-vin"
 ---
 
 # United States - Vehicle by VIN
-**API path(s):** /v2/usa/vehicle-by-vin, /v2/usa/vehicle-by-vin?vin=1g3ak47a7cm535209
+**API path(s):** /v2/usa/vehicle-by-vin
 
 ## Endpoint
 

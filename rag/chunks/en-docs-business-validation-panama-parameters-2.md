@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "pa"
   - "business-validation"
-endpoints:
-  - "/v2/pa/company"
-  - "/v2/pa/company?"
-  - "/v2/pa/company?documenttype=ruc&documentnumber=155703400-2-2021&dv=39"
+endpoint: "/v2/pa/company"
 sourceAnchor: "Parameters"
 slug: "/business-validation/panama"
 url: "https://docs.verifik.co/business-validation/panama"
 ---
 
 # Panamanian Business Verification
-**API path(s):** /v2/pa/company, /v2/pa/company?, /v2/pa/company?documenttype=ruc&documentnumber=155703400-2-2021&dv=39
+**API path(s):** /v2/pa/company
 
 Verifik's Business Verification API helps you authenticate Panamanian companies using official government data. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the legitimacy of companies, partners, or vendors.

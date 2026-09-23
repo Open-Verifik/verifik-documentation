@@ -7,16 +7,14 @@ category: "verificacion-antecendentes"
 tags:
   - "co"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/co/contracts"
-  - "/v2/co/contracts?documenttype=cc&documentnumber=63535790"
+endpoint: "/v2/co/contracts"
 sourceAnchor: "Referencia de API"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-colombia-contratos-publicos"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-colombia-contratos-publicos"
 ---
 
 # Colombia - Contratos Públicos
-**API path(s):** /v2/co/contracts, /v2/co/contracts?documenttype=cc&documentnumber=63535790
+**API path(s):** /v2/co/contracts
 
 ## Referencia de API
 

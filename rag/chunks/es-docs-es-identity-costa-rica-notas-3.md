@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "cr"
   - "identity"
-endpoints:
-  - "/v2/cr/cedula"
-  - "/v2/cr/cedula?"
-  - "/v2/cr/cedula?documenttype=cccr&documentnumber=010000001"
+endpoint: "/v2/cr/cedula"
 sourceAnchor: "Notas"
 slug: "/identidad/costa-rica"
 url: "https://docs.verifik.co/verifik-es/identidad/costa-rica"
 ---
 
 # Ciudadano costarricense (CCCR)
-**API path(s):** /v2/cr/cedula, /v2/cr/cedula?, /v2/cr/cedula?documenttype=cccr&documentnumber=010000001
+**API path(s):** /v2/cr/cedula
 
 La API de Verificación de Identidad de Verifik te ayuda a autenticar ciudadanos costarricenses usando datos oficiales del gobierno. Está diseñada para agilizar tus procesos de KYC (Conozca a su Cliente), prevenir fraudes y asegurar el cumplimiento normativo sin complicaciones.
 Creamos esta integración para empresas que necesitan una forma rápida, segura y automatizada de confirmar la verdadera identidad de usuarios, empleados o clientes.

@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "ar"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/ar/vehicle"
-  - "/v2/ar/vehicle?"
+endpoint: "/v2/ar/vehicle"
 sourceAnchor: "Endpoint"
 slug: "/validacion-de-vehiculo/argentina"
 url: "https://docs.verifik.co/verifik-es/validacion-de-vehiculo/argentina"
 ---
 
 # Argentina - Información Vehicular
-**API path(s):** /v2/ar/vehicle, /v2/ar/vehicle?
+**API path(s):** /v2/ar/vehicle
 
 ## Endpoint
 

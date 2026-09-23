@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "cr"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/cr/vehicle"
-  - "/v2/cr/vehicle?plate=aa123ba"
+endpoint: "/v2/cr/vehicle"
 sourceAnchor: "Respuesta"
 slug: "/validacion-vehiculos/costa-rica"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/costa-rica"
 ---
 
 # 🇨🇷 Costa Rica - Información de Vehículos
-**API path(s):** /v2/cr/vehicle, /v2/cr/vehicle?plate=aa123ba
+**API path(s):** /v2/cr/vehicle
 
 Este servicio devuelve información detallada de un vehículo inscrito en Costa Rica mediante su **placa de matrícula**. Suele incluir titular actual, datos técnicos del vehículo, **infracciones** e **historial de propietarios** cuando la fuente los provee.
 Útil para flotas, seguros y cumplimiento.

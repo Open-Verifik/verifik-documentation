@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "gt"
   - "identity"
-endpoints:
-  - "/v2/gt/cedula/extra"
-  - "/v2/gt/cedula/extra?"
-  - "/v2/gt/cedula/extra?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984"
+endpoint: "/v2/gt/cedula/extra"
 sourceAnchor: "What does this API validate?"
 slug: "/identity/guatemala-extra"
 url: "https://docs.verifik.co/identity/guatemala-extra"
 ---
 
 # Guatemala Extra
-**API path(s):** /v2/gt/cedula/extra, /v2/gt/cedula/extra?, /v2/gt/cedula/extra?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984
+**API path(s):** /v2/gt/cedula/extra
 
 ## What does this API validate?
 

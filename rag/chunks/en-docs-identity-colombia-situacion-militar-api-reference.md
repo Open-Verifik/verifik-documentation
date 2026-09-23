@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "co"
   - "identity"
-endpoints:
-  - "/v2/co/situacion-militar"
-  - "/v2/co/situacion-militar?documenttype=cc&documentnumber=1121329661"
+endpoint: "/v2/co/situacion-militar"
 sourceAnchor: "API Reference"
 slug: "/identity/colombia-situacion-militar"
 url: "https://docs.verifik.co/identity/colombia-situacion-militar"
 ---
 
 # Colombia — Military service status
-**API path(s):** /v2/co/situacion-militar, /v2/co/situacion-militar?documenttype=cc&documentnumber=1121329661
+**API path(s):** /v2/co/situacion-militar
 
 ## API Reference
 

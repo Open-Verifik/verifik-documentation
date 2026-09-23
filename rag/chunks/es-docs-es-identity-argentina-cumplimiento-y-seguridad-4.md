@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "ar"
   - "identity"
-endpoints:
-  - "/v2/ar/cedula"
-  - "/v2/ar/cedula?documenttype=dniar&documentnumber=123456789"
+endpoint: "/v2/ar/cedula"
 sourceAnchor: "Cumplimiento y Seguridad"
 slug: "/identidad/argentina"
 url: "https://docs.verifik.co/verifik-es/identidad/argentina"
 ---
 
 # Ciudadano Argentino
-**API path(s):** /v2/ar/cedula, /v2/ar/cedula?documenttype=dniar&documentnumber=123456789
+**API path(s):** /v2/ar/cedula
 
 La API de Verificación de Identidad de Verifik te ayuda a autenticar ciudadanos argentinos usando datos oficiales del gobierno. Está diseñada para agilizar tus procesos de KYC (Conozca a su Cliente), prevenir fraudes y asegurar el cumplimiento normativo sin complicaciones.
 Creamos esta integración para empresas que necesitan una forma rápida, segura y automatizada de confirmar la verdadera identidad de usuarios, empleados o clientes.

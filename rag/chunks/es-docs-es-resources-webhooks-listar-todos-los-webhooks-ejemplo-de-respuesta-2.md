@@ -6,18 +6,15 @@ locale: "es"
 category: "resources"
 tags:
   - "webhooks"
-  - "webhooks?page=1&perpage=20&like_name=postman"
   - "resources"
-endpoints:
-  - "/v2/webhooks"
-  - "/v2/webhooks?page=1&perpage=20&like_name=postman"
+endpoint: "/v2/webhooks"
 sourceAnchor: "Ejemplo de Respuesta"
 slug: "/resources/listar-todos-los-webhooks"
 url: "https://docs.verifik.co/verifik-es/resources/listar-todos-los-webhooks"
 ---
 
 # Listar Todos los Webhooks
-**API path(s):** /v2/webhooks, /v2/webhooks?page=1&perpage=20&like_name=postman
+**API path(s):** /v2/webhooks
 
 ## Ejemplo de Respuesta
 

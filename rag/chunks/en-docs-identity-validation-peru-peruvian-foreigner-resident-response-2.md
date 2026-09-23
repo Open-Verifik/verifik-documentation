@@ -7,16 +7,14 @@ category: "identity-validation"
 tags:
   - "pe"
   - "identity-validation"
-endpoints:
-  - "/v2/pe/foreigner-id/ce"
-  - "/v2/pe/foreigner-id/ce?documentnumber=005015372&dateofbirth=16/08/1993"
+endpoint: "/v2/pe/foreigner-id/ce"
 sourceAnchor: "Response"
 slug: "/identity-validation/peru/peruvian-foreigner-resident"
 url: "https://docs.verifik.co/identity-validation/peru/peruvian-foreigner-resident"
 ---
 
 # \U0001F1F5\U0001F1EA Peru - Foreigner Resident
-**API path(s):** /v2/pe/foreigner-id/ce, /v2/pe/foreigner-id/ce?documentnumber=005015372&dateofbirth=16/08/1993
+**API path(s):** /v2/pe/foreigner-id/ce
 
 The Peruvian ID Verification service allows you to verify the identity of an individual in Peru by their foreigner ID number. The service returns the full name and other related information of the individual, including immigration status, nationality, residence expiration, and foreigner ID details, along with a signature to certify the authenticity of the response.
 This service is useful for verifying foreign residents in Peru and accessing their immigration status and document validity.

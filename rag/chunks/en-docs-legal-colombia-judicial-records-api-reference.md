@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/juzgado/expedientes"
-  - "/v2/co/rama/juzgado/expedientes?documenttype=cc&documentnumber=1234567890&city=bogota"
+endpoint: "/v2/co/rama/juzgado/expedientes"
 sourceAnchor: "API Reference"
 slug: "/legal/colombia-judicial-records"
 url: "https://docs.verifik.co/legal/colombia-judicial-records"
 ---
 
 # Colombia — Judicial records (court files / expedientes)
-**API path(s):** /v2/co/rama/juzgado/expedientes, /v2/co/rama/juzgado/expedientes?documenttype=cc&documentnumber=1234567890&city=bogota
+**API path(s):** /v2/co/rama/juzgado/expedientes
 
 ## API Reference
 

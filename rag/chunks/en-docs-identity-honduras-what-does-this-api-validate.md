@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "hn"
   - "identity"
-endpoints:
-  - "/v2/hn/cedula"
-  - "/v2/hn/cedula?"
-  - "/v2/hn/cedula?documenttype=dnihn&documentnumber=123456789"
+endpoint: "/v2/hn/cedula"
 sourceAnchor: "What does this API validate?"
 slug: "/identity/honduras"
 url: "https://docs.verifik.co/identity/honduras"
 ---
 
 # Honduran Citizen
-**API path(s):** /v2/hn/cedula, /v2/hn/cedula?, /v2/hn/cedula?documenttype=dnihn&documentnumber=123456789
+**API path(s):** /v2/hn/cedula
 
 ## What does this API validate?
 

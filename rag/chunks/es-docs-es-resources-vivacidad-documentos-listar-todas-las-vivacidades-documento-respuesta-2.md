@@ -6,18 +6,15 @@ locale: "es"
 category: "resources"
 tags:
   - "document-liveness"
-  - "document-liveness?page=1&limit=10&status=completed&populates[]=client&populates[]=appregistration"
   - "resources"
-endpoints:
-  - "/v2/document-liveness"
-  - "/v2/document-liveness?page=1&limit=10&status=completed&populates[]=client&populates[]=appregistration"
+endpoint: "/v2/document-liveness"
 sourceAnchor: "Respuesta"
 slug: "/resources/listar-todas-las-vivacidades-documentos"
 url: "https://docs.verifik.co/verifik-es/resources/listar-todas-las-vivacidades-documentos"
 ---
 
 # Listar Todas las Validaciones de Vivacidad de Documento
-**API path(s):** /v2/document-liveness, /v2/document-liveness?page=1&limit=10&status=completed&populates[]=client&populates[]=appregistration
+**API path(s):** /v2/document-liveness
 
 ## Respuesta
 

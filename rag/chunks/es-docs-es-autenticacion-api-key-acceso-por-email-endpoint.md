@@ -10,14 +10,13 @@ tags:
 endpoints:
   - "/v2/projects/email-login"
   - "/v2/projects/email-login/confirm"
-  - "/v2/projects/email-login?email=user@example.com"
 sourceAnchor: "Endpoint"
 slug: "/autenticacion/acceso-con-llave-por-email"
 url: "https://docs.verifik.co/verifik-es/autenticacion/acceso-con-llave-por-email"
 ---
 
 # Acceso con API Key vía Email
-**API path(s):** /v2/projects/email-login, /v2/projects/email-login/confirm, /v2/projects/email-login?email=user@example.com
+**API path(s):** /v2/projects/email-login, /v2/projects/email-login/confirm
 
 ## Endpoint
 

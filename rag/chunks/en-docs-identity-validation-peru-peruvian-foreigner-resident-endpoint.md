@@ -7,16 +7,14 @@ category: "identity-validation"
 tags:
   - "pe"
   - "identity-validation"
-endpoints:
-  - "/v2/pe/foreigner-id/ce"
-  - "/v2/pe/foreigner-id/ce?documentnumber=005015372&dateofbirth=16/08/1993"
+endpoint: "/v2/pe/foreigner-id/ce"
 sourceAnchor: "Endpoint"
 slug: "/identity-validation/peru/peruvian-foreigner-resident"
 url: "https://docs.verifik.co/identity-validation/peru/peruvian-foreigner-resident"
 ---
 
 # \U0001F1F5\U0001F1EA Peru - Foreigner Resident
-**API path(s):** /v2/pe/foreigner-id/ce, /v2/pe/foreigner-id/ce?documentnumber=005015372&dateofbirth=16/08/1993
+**API path(s):** /v2/pe/foreigner-id/ce
 
 ## Endpoint
 

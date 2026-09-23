@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "pe"
   - "identity"
-endpoints:
-  - "/v2/pe/foreigner-id/ce"
-  - "/v2/pe/foreigner-id/ce?documentnumber=005015372&dateofbirth=16/08/1993"
+endpoint: "/v2/pe/foreigner-id/ce"
 sourceAnchor: "Endpoint"
 slug: "/identidad/peru-cedula-extranjero"
 url: "https://docs.verifik.co/verifik-es/identidad/peru-cedula-extranjero"
 ---
 
 # 🇵🇪 Perú - Cédula de Extranjero
-**API path(s):** /v2/pe/foreigner-id/ce, /v2/pe/foreigner-id/ce?documentnumber=005015372&dateofbirth=16/08/1993
+**API path(s):** /v2/pe/foreigner-id/ce
 
 ## Endpoint
 

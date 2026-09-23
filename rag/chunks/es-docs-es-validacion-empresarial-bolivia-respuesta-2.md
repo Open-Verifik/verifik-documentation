@@ -7,15 +7,12 @@ category: "validacion-empresarial"
 tags:
   - "bo"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/bo/company"
-  - "/v2/bo/company?"
-  - "/v2/bo/company?documentnumber=1234567"
+endpoint: "/v2/bo/company"
 sourceAnchor: "Respuesta"
 ---
 
 # Verificación Empresarial Boliviana
-**API path(s):** /v2/bo/company, /v2/bo/company?, /v2/bo/company?documentnumber=1234567
+**API path(s):** /v2/bo/company
 
 ## Respuesta
 

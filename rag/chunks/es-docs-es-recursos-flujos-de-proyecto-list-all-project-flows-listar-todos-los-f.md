@@ -6,16 +6,14 @@ locale: "es"
 category: "recursos"
 tags:
   - "recursos"
-endpoints:
-  - "/v3/project-flows"
-  - "/v3/project-flows?page=1&perpage=20"
+endpoint: "/v3/project-flows"
 sourceAnchor: "Endpoint"
 slug: "/recursos/flujos-de-proyecto/list-all-project-flows-listar-todos-los-flujos-de-proyecto"
 url: "https://docs.verifik.co/verifik-es/recursos/flujos-de-proyecto/list-all-project-flows-listar-todos-los-flujos-de-proyecto"
 ---
 
 # Listar Todos los Flujos de Proyecto
-**API path(s):** /v3/project-flows, /v3/project-flows?page=1&perpage=20
+**API path(s):** /v3/project-flows
 
 ## Endpoint
 

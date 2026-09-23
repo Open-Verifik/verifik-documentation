@@ -7,16 +7,14 @@ category: "validaciones-vehiculos"
 tags:
   - "usa"
   - "validaciones-vehiculos"
-endpoints:
-  - "/v2/usa/kansas/driver-license"
-  - "/v2/usa/kansas/driver-license?documentnumber=k12345678&dateofbirth=29/01/1974&firstname=mateo&lastname=verifik"
+endpoint: "/v2/usa/kansas/driver-license"
 sourceAnchor: "Response"
 slug: "/validaciones-vehiculos/licencia-de-manejo-kansas"
 url: "https://docs.verifik.co/verifik-es/validaciones-vehiculos/licencia-de-manejo-kansas"
 ---
 
 # Licencia de Manejo Kansas
-**API path(s):** /v2/usa/kansas/driver-license, /v2/usa/kansas/driver-license?documentnumber=k12345678&dateofbirth=29/01/1974&firstname=mateo&lastname=verifik
+**API path(s):** /v2/usa/kansas/driver-license
 
 ## Response
 

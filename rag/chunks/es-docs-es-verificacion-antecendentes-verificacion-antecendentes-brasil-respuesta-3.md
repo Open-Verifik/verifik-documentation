@@ -7,16 +7,14 @@ category: "verificacion-antecendentes"
 tags:
   - "br"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/br/background-check"
-  - "/v2/br/background-check?documenttype=cpf&documentnumber=012.345.678-01&dateofbirth=17/02/2002"
+endpoint: "/v2/br/background-check"
 sourceAnchor: "Respuesta"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-brasil"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-brasil"
 ---
 
 # Verificación de antecedentes (CPF)
-**API path(s):** /v2/br/background-check, /v2/br/background-check?documenttype=cpf&documentnumber=012.345.678-01&dateofbirth=17/02/2002
+**API path(s):** /v2/br/background-check
 
 ## Respuesta
 

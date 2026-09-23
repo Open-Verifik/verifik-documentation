@@ -7,17 +7,14 @@ category: "identity-validation"
 tags:
   - "co"
   - "identity-validation"
-endpoints:
-  - "/v2/co/foreigner-id/pep"
-  - "/v2/co/foreigner-id/pep?documentnumber=123456789&expeditiondate=10%2f10%2f2024"
-  - "/v2/co/foreigner-id/pep?documentnumber=123456789&expeditiondate=10/10/2024"
+endpoint: "/v2/co/foreigner-id/pep"
 sourceAnchor: "Official Sources & Reliability"
 slug: "/identity-validation/colombia/special-stay-permit-pep"
 url: "https://docs.verifik.co/identity-validation/colombia/special-stay-permit-pep"
 ---
 
 # \U0001F1E8\U0001F1F4 Colombia - Special Stay Permit (PEP)
-**API path(s):** /v2/co/foreigner-id/pep, /v2/co/foreigner-id/pep?documentnumber=123456789&expeditiondate=10%2f10%2f2024, /v2/co/foreigner-id/pep?documentnumber=123456789&expeditiondate=10/10/2024
+**API path(s):** /v2/co/foreigner-id/pep
 
 Verifik's Identity Verification API helps you validate the Special Stay Permit (PEP - Permiso Especial de Permanencia) for Venezuelan citizens in Colombia. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for organizations needing to verify the legal status of Venezuelan nationals in Colombia, such as for employment, financial services, or humanitarian programs.

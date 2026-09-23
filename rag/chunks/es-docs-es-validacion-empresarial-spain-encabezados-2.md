@@ -7,17 +7,14 @@ category: "validacion-empresarial"
 tags:
   - "es"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/es/company"
-  - "/v2/es/company?"
-  - "/v2/es/company?documenttype=cif&documentnumber=33011826"
+endpoint: "/v2/es/company"
 sourceAnchor: "Encabezados"
 slug: "/validacion-empresarial/espana"
 url: "https://docs.verifik.co/verifik-es/validacion-empresarial/espana"
 ---
 
 # España — Verificación empresarial (CIF/NIF)
-**API path(s):** /v2/es/company, /v2/es/company?, /v2/es/company?documenttype=cif&documentnumber=33011826
+**API path(s):** /v2/es/company
 
 Este endpoint está pensado para equipos que deben **saber con quién contratan**: bancos, plataformas B2B, insuretech, operadores de marketplace o cualquier negocio que deba validar que una empresa existe, está activa y coincide con el identificador que te ha proporcionado el usuario o el fichero de alta.
 **Qué hace en la práctica:** envías un **identificador de empresa** (por ejemplo CIF/NIF en el formato que admita el servicio) y recibes un objeto de datos que puedes usar para completar fichas de cliente, pipelines de aprobación o revisiones de cumplimiento. La respuesta incluye firma Verifik para trazabilidad. Los campos exactos dependen de la fuente y de tu configuración; si necesitas un listado campo a campo para tu sector, el equipo de soporte puede orientarte.

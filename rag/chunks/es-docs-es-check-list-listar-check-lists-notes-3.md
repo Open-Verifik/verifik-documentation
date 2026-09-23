@@ -6,18 +6,15 @@ locale: "es"
 category: "check-list"
 tags:
   - "check-lists"
-  - "check-lists?page=1&perpage=20&search=colombia"
   - "check-list"
-endpoints:
-  - "/v2/check-lists"
-  - "/v2/check-lists?page=1&perpage=20&search=colombia"
+endpoint: "/v2/check-lists"
 sourceAnchor: "Notes"
 slug: "/check-list/listar-check-lists"
 url: "https://docs.verifik.co/verifik-es/check-list/listar-check-lists"
 ---
 
 # Listar checklists
-**API path(s):** /v2/check-lists, /v2/check-lists?page=1&perpage=20&search=colombia
+**API path(s):** /v2/check-lists
 
 ## Notes
 

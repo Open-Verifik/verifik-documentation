@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "co"
   - "background-check"
-endpoints:
-  - "/v2/co/policia/rnmc"
-  - "/v2/co/policia/rnmc?documenttype=cc&documentnumber=&date="
+endpoint: "/v2/co/policia/rnmc"
 sourceAnchor: "Verify Police Compliance with Corrective Measures"
 slug: "/background-check/colombia/verify-police-compliance-with-corrective-measures"
 url: "https://docs.verifik.co/background-check/colombia/verify-police-compliance-with-corrective-measures"
 ---
 
 # Colombia - Verify Police Compliance with Corrective Measures
-**API path(s):** /v2/co/policia/rnmc, /v2/co/policia/rnmc?documenttype=cc&documentnumber=&date=
+**API path(s):** /v2/co/policia/rnmc
 
 ## Verify Police Compliance with Corrective Measures
 

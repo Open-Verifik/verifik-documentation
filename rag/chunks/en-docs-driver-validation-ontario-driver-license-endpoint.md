@@ -7,16 +7,14 @@ category: "driver-validation"
 tags:
   - "ca"
   - "driver-validation"
-endpoints:
-  - "/v2/ca/ontario/driver-license"
-  - "/v2/ca/ontario/driver-license?documentnumber=m4596-07657-60824"
+endpoint: "/v2/ca/ontario/driver-license"
 sourceAnchor: "Endpoint"
 slug: "/driver-validation/ontario-driver-license"
 url: "https://docs.verifik.co/driver-validation/ontario-driver-license"
 ---
 
 # Ontario Driver License
-**API path(s):** /v2/ca/ontario/driver-license, /v2/ca/ontario/driver-license?documentnumber=m4596-07657-60824
+**API path(s):** /v2/ca/ontario/driver-license
 
 ## Endpoint
 

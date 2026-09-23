@@ -7,14 +7,12 @@ category: "vehicle-validation"
 tags:
   - "ar"
   - "vehicle-validation"
-endpoints:
-  - "/v2/ar/vehicle"
-  - "/v2/ar/vehicle?"
+endpoint: "/v2/ar/vehicle"
 sourceAnchor: "Response"
 ---
 
 # Argentina - Vehicle Information
-**API path(s):** /v2/ar/vehicle, /v2/ar/vehicle?
+**API path(s):** /v2/ar/vehicle
 
 ## Response
 

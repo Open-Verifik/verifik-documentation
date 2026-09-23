@@ -6,18 +6,15 @@ locale: "en"
 category: "background-check"
 tags:
   - "onu"
-  - "onu?fullname="
   - "background-check"
-endpoints:
-  - "/v2/onu"
-  - "/v2/onu?fullname="
+endpoint: "/v2/onu"
 sourceAnchor: "Notes"
 slug: "/background-check/international/onu-background-check"
 url: "https://docs.verifik.co/background-check/international/onu-background-check"
 ---
 
 # UN Background Check
-**API path(s):** /v2/onu, /v2/onu?fullname=
+**API path(s):** /v2/onu
 
 ## Notes
 

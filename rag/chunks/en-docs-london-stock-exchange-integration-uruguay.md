@@ -7,14 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "uy"
   - "london-stock-exchange-integration"
-endpoint: "/v2/uy/cedula?documenttype=ccuy&documentnumber=44871740&dateofbirth=18/02/1983"
+endpoint: "/v2/uy/cedula"
 sourceAnchor: "122. Uruguayan National Identity Document Verification"
 slug: "/london-stock-exchange-integration/uruguay"
 url: "https://docs.verifik.co/london-stock-exchange-integration/uruguay"
 ---
 
 # Uruguay — Verifik public API
-**API path(s):** /v2/uy/cedula?documenttype=ccuy&documentnumber=44871740&dateofbirth=18/02/1983
+**API path(s):** /v2/uy/cedula
 
 ## 122. Uruguayan National Identity Document Verification
 

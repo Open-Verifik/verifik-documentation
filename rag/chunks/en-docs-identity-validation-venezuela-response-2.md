@@ -7,17 +7,14 @@ category: "identity-validation"
 tags:
   - "ve"
   - "identity-validation"
-endpoints:
-  - "/v2/ve/cedula"
-  - "/v2/ve/cedula?"
-  - "/v2/ve/cedula?documentnumber=10000001"
+endpoint: "/v2/ve/cedula"
 sourceAnchor: "Response"
 slug: "/identity-validation/venezuela"
 url: "https://docs.verifik.co/identity-validation/venezuela"
 ---
 
 # Venezuelan Citizen Information
-**API path(s):** /v2/ve/cedula, /v2/ve/cedula?, /v2/ve/cedula?documentnumber=10000001
+**API path(s):** /v2/ve/cedula
 
 Verifik's Identity Verification API helps you authenticate Venezuelan citizens using official government data. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the true identity of users, employees, or customers.

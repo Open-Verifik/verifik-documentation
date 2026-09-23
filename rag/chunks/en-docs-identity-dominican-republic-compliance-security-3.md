@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "do"
   - "identity"
-endpoints:
-  - "/v2/do/cedula"
-  - "/v2/do/cedula?"
-  - "/v2/do/cedula?documentnumber=123456789&documenttype=cie"
+endpoint: "/v2/do/cedula"
 sourceAnchor: "Compliance & Security"
 slug: "/identity/dominican-republic"
 url: "https://docs.verifik.co/identity/dominican-republic"
 ---
 
 # Dominican Citizen
-**API path(s):** /v2/do/cedula, /v2/do/cedula?, /v2/do/cedula?documentnumber=123456789&documenttype=cie
+**API path(s):** /v2/do/cedula
 
 Verifik's Identity Verification API helps you authenticate Dominican citizens using official government data. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the true identity of users, employees, or customers.

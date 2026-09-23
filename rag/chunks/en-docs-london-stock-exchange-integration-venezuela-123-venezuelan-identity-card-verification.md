@@ -8,16 +8,16 @@ tags:
   - "ve"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/ve/cedula?documentnumber=31802329"
-  - "/v2/ve/foreigner-id?documentnumber=27976032"
-  - "/v2/ve/public/cedula?documentnumber=25622914"
+  - "/v2/ve/cedula"
+  - "/v2/ve/foreigner-id"
+  - "/v2/ve/public/cedula"
 sourceAnchor: "123. Venezuelan Identity Card Verification"
 slug: "/london-stock-exchange-integration/venezuela"
 url: "https://docs.verifik.co/london-stock-exchange-integration/venezuela"
 ---
 
 # Venezuela — Verifik public API
-**API path(s):** /v2/ve/cedula?documentnumber=31802329, /v2/ve/foreigner-id?documentnumber=27976032, /v2/ve/public/cedula?documentnumber=25622914
+**API path(s):** /v2/ve/cedula, /v2/ve/foreigner-id, /v2/ve/public/cedula
 
 ## 123. Venezuelan Identity Card Verification
 

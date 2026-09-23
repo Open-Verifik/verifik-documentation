@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "es"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/es/vehicle"
-  - "/v2/es/vehicle?plate=5684ccd"
+endpoint: "/v2/es/vehicle"
 sourceAnchor: "Encabezados"
 slug: "/validacion-vehiculos/espana"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/espana"
 ---
 
 # 🇪🇸 España — Vehículo por matrícula
-**API path(s):** /v2/es/vehicle, /v2/es/vehicle?plate=5684ccd
+**API path(s):** /v2/es/vehicle
 
 Este servicio te permite **consultar información asociada a una matrícula española** (formato habitual de placas nacionales) y recibir datos estructurados cuando la consulta encuentra coincidencia en la fuente integrada por Verifik.
 **Qué obtienes:** normalmente datos útiles para identificar el vehículo en contexto de negocio: por ejemplo marca, modelo, año o tipo, según lo que devuelva la fuente en tu respuesta. La tabla de ejemplo en esta página ilustra la forma del payload; los campos concretos pueden variar según disponibilidad y versión del servicio.

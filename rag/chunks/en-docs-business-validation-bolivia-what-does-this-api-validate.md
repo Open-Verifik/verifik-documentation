@@ -7,17 +7,14 @@ category: "business-validation"
 tags:
   - "bo"
   - "business-validation"
-endpoints:
-  - "/v2/bo/company"
-  - "/v2/bo/company?"
-  - "/v2/bo/company?documenttype=nit&documentnumber=9287278014"
+endpoint: "/v2/bo/company"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/bolivia"
 url: "https://docs.verifik.co/business-validation/bolivia"
 ---
 
 # Bolivian Business Verification
-**API path(s):** /v2/bo/company, /v2/bo/company?, /v2/bo/company?documenttype=nit&documentnumber=9287278014
+**API path(s):** /v2/bo/company
 
 ## What does this API validate?
 

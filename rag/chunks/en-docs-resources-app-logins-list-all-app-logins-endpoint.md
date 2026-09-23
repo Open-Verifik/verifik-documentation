@@ -6,18 +6,15 @@ locale: "en"
 category: "resources"
 tags:
   - "app-logins"
-  - "app-logins?page=1&populates[]=emailvalidation&populates[]=phonevalidation&populates[]=biometricvalidation&sort=-createdat"
   - "resources"
-endpoints:
-  - "/v2/app-logins"
-  - "/v2/app-logins?page=1&populates[]=emailvalidation&populates[]=phonevalidation&populates[]=biometricvalidation&sort=-createdat"
+endpoint: "/v2/app-logins"
 sourceAnchor: "Endpoint"
 slug: "/resources/list-all-app-logins"
 url: "https://docs.verifik.co/resources/list-all-app-logins"
 ---
 
 # List All App Logins
-**API path(s):** /v2/app-logins, /v2/app-logins?page=1&populates[]=emailvalidation&populates[]=phonevalidation&populates[]=biometricvalidation&sort=-createdat
+**API path(s):** /v2/app-logins
 
 ## Endpoint
 

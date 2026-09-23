@@ -7,16 +7,14 @@ category: "driver-validation"
 tags:
   - "usa"
   - "driver-validation"
-endpoints:
-  - "/v2/usa/florida/driver-license"
-  - "/v2/usa/florida/driver-license?documentnumber=b123-456-78-910-0"
+endpoint: "/v2/usa/florida/driver-license"
 sourceAnchor: "Endpoint"
 slug: "/driver-validation/florida-driver-license"
 url: "https://docs.verifik.co/driver-validation/florida-driver-license"
 ---
 
 # Florida Driver License
-**API path(s):** /v2/usa/florida/driver-license, /v2/usa/florida/driver-license?documentnumber=b123-456-78-910-0
+**API path(s):** /v2/usa/florida/driver-license
 
 ## Endpoint
 

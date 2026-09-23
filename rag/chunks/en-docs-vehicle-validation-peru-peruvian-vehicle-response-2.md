@@ -7,16 +7,14 @@ category: "vehicle-validation"
 tags:
   - "pe"
   - "vehicle-validation"
-endpoints:
-  - "/v2/pe/vehiculo/placa"
-  - "/v2/pe/vehiculo/placa?plate="
+endpoint: "/v2/pe/vehiculo/placa"
 sourceAnchor: "Response"
 slug: "/vehicle-validation/peru/peruvian-vehicle"
 url: "https://docs.verifik.co/vehicle-validation/peru/peruvian-vehicle"
 ---
 
 # Peru - Vehicle Information
-**API path(s):** /v2/pe/vehiculo/placa, /v2/pe/vehiculo/placa?plate=
+**API path(s):** /v2/pe/vehiculo/placa
 
 ## Response
 

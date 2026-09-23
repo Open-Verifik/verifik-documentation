@@ -7,16 +7,14 @@ category: "vehicle-validation"
 tags:
   - "es"
   - "vehicle-validation"
-endpoints:
-  - "/v2/es/vehicle"
-  - "/v2/es/vehicle?plate=5684ccd"
+endpoint: "/v2/es/vehicle"
 sourceAnchor: "API Reference"
 slug: "/vehicle-validation/spain"
 url: "https://docs.verifik.co/vehicle-validation/spain"
 ---
 
 # Spain
-**API path(s):** /v2/es/vehicle, /v2/es/vehicle?plate=5684ccd
+**API path(s):** /v2/es/vehicle
 
 ## API Reference
 

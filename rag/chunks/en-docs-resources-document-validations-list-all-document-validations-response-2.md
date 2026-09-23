@@ -6,18 +6,15 @@ locale: "en"
 category: "resources"
 tags:
   - "document-validations"
-  - "document-validations?page=1&perpage=10&populates[]=appregistration&populates[]=projectflow&where_status=active&where_documenttype=driver_license&where_validationmethod=ocr"
   - "resources"
-endpoints:
-  - "/v2/document-validations"
-  - "/v2/document-validations?page=1&perpage=10&populates[]=appregistration&populates[]=projectflow&where_status=active&where_documenttype=driver_license&where_validationmethod=ocr"
+endpoint: "/v2/document-validations"
 sourceAnchor: "Response"
 slug: "/resources/list-all-document-validations"
 url: "https://docs.verifik.co/resources/list-all-document-validations"
 ---
 
 # List All Document Validations
-**API path(s):** /v2/document-validations, /v2/document-validations?page=1&perpage=10&populates[]=appregistration&populates[]=projectflow&where_status=active&where_documenttype=driver_license&where_validationmethod=ocr
+**API path(s):** /v2/document-validations
 
 ## Response
 

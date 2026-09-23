@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/certificado/vigencia"
-  - "/v2/co/rama/certificado/vigencia?documenttype=cc&documentnumber=123456789&quality=abg"
+endpoint: "/v2/co/rama/certificado/vigencia"
 sourceAnchor: "Casos de Uso"
 slug: "/legal/certificado-vigencia-profesionales-legales"
 url: "https://docs.verifik.co/verifik-es/legal/certificado-vigencia-profesionales-legales"
 ---
 
 # Certificado de Vigencia para Profesionales Legales
-**API path(s):** /v2/co/rama/certificado/vigencia, /v2/co/rama/certificado/vigencia?documenttype=cc&documentnumber=123456789&quality=abg
+**API path(s):** /v2/co/rama/certificado/vigencia
 
 ## Casos de Uso
 

@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/abogados"
-  - "/v2/co/rama/abogados?documenttype=cc&documentnumber=123456789"
+endpoint: "/v2/co/rama/abogados"
 sourceAnchor: "API Reference"
 slug: "/legal/lawyer-verification"
 url: "https://docs.verifik.co/legal/lawyer-verification"
 ---
 
 # Colombia — Lawyer lookup
-**API path(s):** /v2/co/rama/abogados, /v2/co/rama/abogados?documenttype=cc&documentnumber=123456789
+**API path(s):** /v2/co/rama/abogados
 
 ## API Reference
 

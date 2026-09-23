@@ -9,7 +9,6 @@ tags:
   - "resources"
 endpoints:
   - "/v2/app-logins/66e464acbad79f3a380d408f"
-  - "/v2/app-logins/66e464acbad79f3a380d408f?populates[]=biometricvalidation"
   - "/v2/app-logins/{id}"
 sourceAnchor: "Endpoint"
 slug: "/resources/retrieve-an-app-login"
@@ -17,7 +16,7 @@ url: "https://docs.verifik.co/resources/retrieve-an-app-login"
 ---
 
 # Retrieve an App Login
-**API path(s):** /v2/app-logins/66e464acbad79f3a380d408f, /v2/app-logins/66e464acbad79f3a380d408f?populates[]=biometricvalidation, /v2/app-logins/{id}
+**API path(s):** /v2/app-logins/66e464acbad79f3a380d408f, /v2/app-logins/{id}
 
 ## Endpoint
 

@@ -7,16 +7,14 @@ category: "validaciones-de-identidad"
 tags:
   - "usa"
   - "validaciones-de-identidad"
-endpoints:
-  - "/v2/usa/ssn"
-  - "/v2/usa/ssn?documentnumber=123-45-678"
+endpoint: "/v2/usa/ssn"
 sourceAnchor: "¿Qué valida esta API?"
 slug: "/validaciones-de-identidad/estados-unidos"
 url: "https://docs.verifik.co/verifik-es/validaciones-de-identidad/estados-unidos"
 ---
 
 # Verificación de SSN en Estados Unidos
-**API path(s):** /v2/usa/ssn, /v2/usa/ssn?documentnumber=123-45-678
+**API path(s):** /v2/usa/ssn
 
 ## ¿Qué valida esta API?
 

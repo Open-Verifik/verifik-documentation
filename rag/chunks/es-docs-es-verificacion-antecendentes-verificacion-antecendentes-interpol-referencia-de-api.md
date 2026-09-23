@@ -6,20 +6,15 @@ locale: "es"
 category: "verificacion-antecendentes"
 tags:
   - "interpol"
-  - "interpol?fullname=ivan"
-  - "interpol?fullname=ivan%20luciano%20marquez%20marin%20arango"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/interpol"
-  - "/v2/interpol?fullname=ivan"
-  - "/v2/interpol?fullname=ivan%20luciano%20marquez%20marin%20arango"
+endpoint: "/v2/interpol"
 sourceAnchor: "Referencia de API"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-interpol"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-interpol"
 ---
 
 # Verificación de Antecedentes Interpol
-**API path(s):** /v2/interpol, /v2/interpol?fullname=ivan, /v2/interpol?fullname=ivan%20luciano%20marquez%20marin%20arango
+**API path(s):** /v2/interpol
 
 ## Referencia de API
 

@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "sv"
   - "identity"
-endpoints:
-  - "/v2/sv/dui"
-  - "/v2/sv/dui?"
-  - "/v2/sv/dui?documentnumber=123456789&dateofbirth=01/12/1995"
+endpoint: "/v2/sv/dui"
 sourceAnchor: "What does this API validate?"
 slug: "/identity/el-salvador"
 url: "https://docs.verifik.co/identity/el-salvador"
 ---
 
 # Salvadoran Citizen
-**API path(s):** /v2/sv/dui, /v2/sv/dui?, /v2/sv/dui?documentnumber=123456789&dateofbirth=01/12/1995
+**API path(s):** /v2/sv/dui
 
 ## What does this API validate?
 

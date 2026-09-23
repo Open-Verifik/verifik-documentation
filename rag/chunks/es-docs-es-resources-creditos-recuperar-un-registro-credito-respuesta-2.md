@@ -9,7 +9,6 @@ tags:
   - "resources"
 endpoints:
   - "/v2/credits/credit_123456789"
-  - "/v2/credits/credit_123456789?populates[]=client&populates[]=superadmin"
   - "/v2/credits/{id}"
 sourceAnchor: "Respuesta"
 slug: "/resources/recuperar-un-registro-credito"
@@ -17,7 +16,7 @@ url: "https://docs.verifik.co/verifik-es/resources/recuperar-un-registro-credito
 ---
 
 # Recuperar un Registro de Crédito
-**API path(s):** /v2/credits/credit_123456789, /v2/credits/credit_123456789?populates[]=client&populates[]=superadmin, /v2/credits/{id}
+**API path(s):** /v2/credits/credit_123456789, /v2/credits/{id}
 
 ## Respuesta
 

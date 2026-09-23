@@ -8,15 +8,15 @@ tags:
   - "gt"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/gt/cedula/extra?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984"
-  - "/v2/gt/cedula?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984"
+  - "/v2/gt/cedula"
+  - "/v2/gt/cedula/extra"
 sourceAnchor: "95. Cedula Guatemala"
 slug: "/london-stock-exchange-integration/guatemala"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/guatemala"
 ---
 
 # Guatemala — API pública Verifik
-**API path(s):** /v2/gt/cedula/extra?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984, /v2/gt/cedula?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984
+**API path(s):** /v2/gt/cedula, /v2/gt/cedula/extra
 
 ## 95. Cedula Guatemala
 

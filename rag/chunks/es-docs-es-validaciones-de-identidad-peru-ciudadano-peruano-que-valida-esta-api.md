@@ -7,16 +7,14 @@ category: "validaciones-de-identidad"
 tags:
   - "pe"
   - "validaciones-de-identidad"
-endpoints:
-  - "/v3/pe/cedula"
-  - "/v3/pe/cedula?documenttype=dni&documentnumber=1234567"
+endpoint: "/v3/pe/cedula"
 sourceAnchor: "¿Qué valida esta API?"
 slug: "/validaciones-de-identidad/peru/ciudadano-peruano"
 url: "https://docs.verifik.co/verifik-es/validaciones-de-identidad/peru/ciudadano-peruano"
 ---
 
 # Ciudadano Peruano v3
-**API path(s):** /v3/pe/cedula, /v3/pe/cedula?documenttype=dni&documentnumber=1234567
+**API path(s):** /v3/pe/cedula
 
 ## ¿Qué valida esta API?
 

@@ -7,17 +7,14 @@ category: "identity-validation"
 tags:
   - "gt"
   - "identity-validation"
-endpoints:
-  - "/v2/gt/cedula"
-  - "/v2/gt/cedula?"
-  - "/v2/gt/cedula?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984"
+endpoint: "/v2/gt/cedula"
 sourceAnchor: "What does this API validate?"
 slug: "/identity-validation/guatemala"
 url: "https://docs.verifik.co/identity-validation/guatemala"
 ---
 
 # Guatemalan Citizen
-**API path(s):** /v2/gt/cedula, /v2/gt/cedula?, /v2/gt/cedula?documenttype=cui&documentnumber=2222624190903&dateofbirth=12/03/1984
+**API path(s):** /v2/gt/cedula
 
 ## What does this API validate?
 

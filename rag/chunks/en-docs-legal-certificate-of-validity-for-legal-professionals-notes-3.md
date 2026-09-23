@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/certificado/vigencia"
-  - "/v2/co/rama/certificado/vigencia?documenttype=cc&documentnumber=123456789&quality=abg"
+endpoint: "/v2/co/rama/certificado/vigencia"
 sourceAnchor: "Notes"
 slug: "/legal/certificate-of-validity-for-legal-professionals"
 url: "https://docs.verifik.co/legal/certificate-of-validity-for-legal-professionals"
 ---
 
 # Certificate of Validity for Legal Professionals
-**API path(s):** /v2/co/rama/certificado/vigencia, /v2/co/rama/certificado/vigencia?documenttype=cc&documentnumber=123456789&quality=abg
+**API path(s):** /v2/co/rama/certificado/vigencia
 
 ## Notes
 

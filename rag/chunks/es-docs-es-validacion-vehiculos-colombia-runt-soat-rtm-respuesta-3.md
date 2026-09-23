@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/runt/vehiculo"
-  - "/v2/co/runt/vehiculo?documenttype=cc&documentnumber=123456789&plate=abc123"
+endpoint: "/v2/co/runt/vehiculo"
 sourceAnchor: "Respuesta"
 slug: "/validacion-vehiculos/colombia/runt-soat-rtm"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/runt-soat-rtm"
 ---
 
 # SOAT y RTM
-**API path(s):** /v2/co/runt/vehiculo, /v2/co/runt/vehiculo?documenttype=cc&documentnumber=123456789&plate=abc123
+**API path(s):** /v2/co/runt/vehiculo
 
 La API de Validación de SOAT y RTM de Verifik proporciona acceso en tiempo real al estado de los documentos obligatorios para vehículos registrados en Colombia: el Seguro Obligatorio de Accidentes de Tránsito (SOAT) y la Revisión Técnico-Mecánica (RTM).
 Este servicio es crítico para asegurar que los vehículos cumplan con la normativa de tránsito colombiana, ayudando a prevenir multas y problemas legales.

@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "br"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/br/vehicle"
-  - "/v2/br/vehicle?plate=pzy7h82"
+endpoint: "/v2/br/vehicle"
 sourceAnchor: "Notas"
 slug: "/validacion-vehiculos/brazil"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/brazil"
 ---
 
 # Información de vehículos
-**API path(s):** /v2/br/vehicle, /v2/br/vehicle?plate=pzy7h82
+**API path(s):** /v2/br/vehicle
 
 ## Notas
 

@@ -7,17 +7,14 @@ category: "identity-validation"
 tags:
   - "cr"
   - "identity-validation"
-endpoints:
-  - "/v2/cr/cedula"
-  - "/v2/cr/cedula?"
-  - "/v2/cr/cedula?documenttype=cccr&documentnumber=010000001"
+endpoint: "/v2/cr/cedula"
 sourceAnchor: "¿Qué valida esta API?"
 slug: "/identity-validation/costa-rica"
 url: "https://docs.verifik.co/verifik-es/identity-validation/costa-rica"
 ---
 
 # Ciudadano Costarricense
-**API path(s):** /v2/cr/cedula, /v2/cr/cedula?, /v2/cr/cedula?documenttype=cccr&documentnumber=010000001
+**API path(s):** /v2/cr/cedula
 
 ## ¿Qué valida esta API?
 

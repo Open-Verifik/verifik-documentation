@@ -9,19 +9,17 @@ tags:
   - "london-stock-exchange-integration"
 endpoints:
   - "/v2/cl/cedula"
-  - "/v2/cl/cedula?documenttype=run&documentnumber=18.562.530-3"
-  - "/v2/cl/company?documenttype=rut&documentnumber=77398220"
+  - "/v2/cl/company"
   - "/v2/cl/driver-license"
-  - "/v2/cl/driver-license?documentnumber=06230840"
-  - "/v2/cl/taxpayer?documenttype=rut&documentnumber=263007905"
-  - "/v2/cl/vehicle?plate=bb985"
+  - "/v2/cl/taxpayer"
+  - "/v2/cl/vehicle"
 sourceAnchor: "22. Contribuyente rut Chile"
 slug: "/london-stock-exchange-integration/chile"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/chile"
 ---
 
 # Chile — API pública Verifik
-**API path(s):** /v2/cl/cedula, /v2/cl/cedula?documenttype=run&documentnumber=18.562.530-3, /v2/cl/company?documenttype=rut&documentnumber=77398220, /v2/cl/driver-license, /v2/cl/driver-license?documentnumber=06230840, /v2/cl/taxpayer?documenttype=rut&documentnumber=263007905, /v2/cl/vehicle?plate=bb985
+**API path(s):** /v2/cl/cedula, /v2/cl/company, /v2/cl/driver-license, /v2/cl/taxpayer, /v2/cl/vehicle
 
 ## 22. Contribuyente rut Chile
 

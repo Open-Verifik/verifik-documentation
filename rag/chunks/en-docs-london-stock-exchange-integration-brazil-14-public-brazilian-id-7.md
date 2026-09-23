@@ -9,25 +9,21 @@ tags:
   - "vehicle"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/br/background-check?documenttype=cpf&documentnumber=019.166.586-01&dateofbirth=17/02/2002"
+  - "/v2/br/background-check"
   - "/v2/br/cedula"
-  - "/v2/br/cedula?documenttype=cpf&documentnumber=019.166.586-01&dateofbirth=17/02/2002"
-  - "/v2/br/company?documenttype=cnpj&documentnumber=45990181000189"
+  - "/v2/br/company"
   - "/v2/br/public/cedula"
-  - "/v2/br/public/cedula?documenttype=cpf&documentnumber=019.166.58601&dateofbirth=17/02/2002"
-  - "/v2/br/public/vehicle?plate=cdv2172"
+  - "/v2/br/public/vehicle"
   - "/v2/br/vehicle"
-  - "/v2/br/vehicle/data-sheet-by-plate?plate=jiz5244"
-  - "/v2/br/vehicle?plate=pzy7h82"
+  - "/v2/br/vehicle/data-sheet-by-plate"
   - "/v2/vehicle/data-sheet"
-  - "/v2/vehicle/data-sheet?brand=chevrolet&model=cruze&year=2011&version=lt&vehicletype=cars"
 sourceAnchor: "14. Public Brazilian ID"
 slug: "/london-stock-exchange-integration/brazil"
 url: "https://docs.verifik.co/london-stock-exchange-integration/brazil"
 ---
 
 # Brazil: Verifik public API
-**API path(s):** /v2/br/background-check?documenttype=cpf&documentnumber=019.166.586-01&dateofbirth=17/02/2002, /v2/br/cedula, /v2/br/cedula?documenttype=cpf&documentnumber=019.166.586-01&dateofbirth=17/02/2002, /v2/br/company?documenttype=cnpj&documentnumber=45990181000189, /v2/br/public/cedula, /v2/br/public/cedula?documenttype=cpf&documentnumber=019.166.58601&dateofbirth=17/02/2002, /v2/br/public/vehicle?plate=cdv2172, /v2/br/vehicle, /v2/br/vehicle/data-sheet-by-plate?plate=jiz5244, /v2/br/vehicle?plate=pzy7h82, /v2/vehicle/data-sheet, /v2/vehicle/data-sheet?brand=chevrolet&model=cruze&year=2011&version=lt&vehicletype=cars
+**API path(s):** /v2/br/background-check, /v2/br/cedula, /v2/br/company, /v2/br/public/cedula, /v2/br/public/vehicle, /v2/br/vehicle, /v2/br/vehicle/data-sheet-by-plate, /v2/vehicle/data-sheet
 
 ## 14. Public Brazilian ID
 

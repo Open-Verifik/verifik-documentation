@@ -6,18 +6,15 @@ locale: "es"
 category: "resources"
 tags:
   - "biometric-validations"
-  - "biometric-validations?page=1&perpage=10&populates[]=client&populates[]=project&where_status=validated&where_type=login&sort=-createdat"
   - "resources"
-endpoints:
-  - "/v2/biometric-validations"
-  - "/v2/biometric-validations?page=1&perpage=10&populates[]=client&populates[]=project&where_status=validated&where_type=login&sort=-createdat"
+endpoint: "/v2/biometric-validations"
 sourceAnchor: "Respuesta"
 slug: "/resources/listar-todas-las-validaciones-biometricas"
 url: "https://docs.verifik.co/verifik-es/resources/listar-todas-las-validaciones-biometricas"
 ---
 
 # Listar Todas las Validaciones Biométricas
-**API path(s):** /v2/biometric-validations, /v2/biometric-validations?page=1&perpage=10&populates[]=client&populates[]=project&where_status=validated&where_type=login&sort=-createdat
+**API path(s):** /v2/biometric-validations
 
 ## Respuesta
 

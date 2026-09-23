@@ -7,16 +7,14 @@ category: "identity-validation"
 tags:
   - "ar"
   - "identity-validation"
-endpoints:
-  - "/v2/ar/cedula"
-  - "/v2/ar/cedula?documenttype=dniar&documentnumber=123456789"
+endpoint: "/v2/ar/cedula"
 sourceAnchor: "Request"
 slug: "/identity-validation/argentina"
 url: "https://docs.verifik.co/identity-validation/argentina"
 ---
 
 # Argentine Citizen
-**API path(s):** /v2/ar/cedula, /v2/ar/cedula?documenttype=dniar&documentnumber=123456789
+**API path(s):** /v2/ar/cedula
 
 Verifik's Identity Verification API helps you authenticate Argentine citizens using official government data. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the true identity of users, employees, or customers.

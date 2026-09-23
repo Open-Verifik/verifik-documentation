@@ -7,16 +7,14 @@ category: "vehicle-validation"
 tags:
   - "py"
   - "vehicle-validation"
-endpoints:
-  - "/v2/py/vehicle"
-  - "/v2/py/vehicle?plate=abc123"
+endpoint: "/v2/py/vehicle"
 sourceAnchor: "Respuesta"
 slug: "/vehicle-validation/paraguay"
 url: "https://docs.verifik.co/verifik-es/vehicle-validation/paraguay"
 ---
 
 # 🇵🇾 Paraguay - Información de Vehículos
-**API path(s):** /v2/py/vehicle, /v2/py/vehicle?plate=abc123
+**API path(s):** /v2/py/vehicle
 
 Este servicio proporciona información detallada sobre un vehículo en Paraguay usando su número de placa de matrícula. La respuesta incluye detalles del vehículo como la marca, chasis, tipo, año, número de ejes, el nombre del propietario, el tipo de servicio, el estado actual del vehículo y el número de placa de matrícula.
 Esta información es útil para varios propósitos, incluyendo verificación de vehículos, verificaciones de propiedad y monitoreo de cumplimiento.

@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "pe"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/pe/vehiculo/placa"
-  - "/v2/pe/vehiculo/placa?plate=abc123"
+endpoint: "/v2/pe/vehiculo/placa"
 sourceAnchor: "Endpoint"
 slug: "/validacion-vehiculos/peru/informacion-vehiculo"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/peru/informacion-vehiculo"
 ---
 
 # Perú - Información de Vehículo
-**API path(s):** /v2/pe/vehiculo/placa, /v2/pe/vehiculo/placa?plate=abc123
+**API path(s):** /v2/pe/vehiculo/placa
 
 ## Endpoint
 

@@ -8,19 +8,19 @@ tags:
   - "pe"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/pe/cedula/extra?documenttype=dni&documentnumber=70904000"
-  - "/v2/pe/cedula?documenttype=dni&documentnumber=01028795"
-  - "/v2/pe/empresa?documenttype=ruc&documentnumber=20605980008"
-  - "/v2/pe/foreigner-id/ce?documentnumber=005005393&dateofbirth=16/08/1993"
-  - "/v2/pe/vehiculo/placa?plate=afj286"
-  - "/v2/pe/vehiculo/soat?plate=afj289"
+  - "/v2/pe/cedula"
+  - "/v2/pe/cedula/extra"
+  - "/v2/pe/empresa"
+  - "/v2/pe/foreigner-id/ce"
+  - "/v2/pe/vehiculo/placa"
+  - "/v2/pe/vehiculo/soat"
 sourceAnchor: "108. Información de Vehículos en Perú"
 slug: "/london-stock-exchange-integration/peru"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/peru"
 ---
 
 # Perú — API pública Verifik
-**API path(s):** /v2/pe/cedula/extra?documenttype=dni&documentnumber=70904000, /v2/pe/cedula?documenttype=dni&documentnumber=01028795, /v2/pe/empresa?documenttype=ruc&documentnumber=20605980008, /v2/pe/foreigner-id/ce?documentnumber=005005393&dateofbirth=16/08/1993, /v2/pe/vehiculo/placa?plate=afj286, /v2/pe/vehiculo/soat?plate=afj289
+**API path(s):** /v2/pe/cedula, /v2/pe/cedula/extra, /v2/pe/empresa, /v2/pe/foreigner-id/ce, /v2/pe/vehiculo/placa, /v2/pe/vehiculo/soat
 
 ## 108. Información de Vehículos en Perú
 

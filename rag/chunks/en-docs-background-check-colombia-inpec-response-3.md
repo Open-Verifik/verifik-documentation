@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "co"
   - "background-check"
-endpoints:
-  - "/v2/co/inpec"
-  - "/v2/co/inpec?documenttype=cc&documentnumber=80086615&firstsurname=murcia"
+endpoint: "/v2/co/inpec"
 sourceAnchor: "Response"
 slug: "/background-check/colombia-inpec"
 url: "https://docs.verifik.co/background-check/colombia-inpec"
 ---
 
 # Colombia - INPEC Prison Records Check
-**API path(s):** /v2/co/inpec, /v2/co/inpec?documenttype=cc&documentnumber=80086615&firstsurname=murcia
+**API path(s):** /v2/co/inpec
 
 ## Response
 

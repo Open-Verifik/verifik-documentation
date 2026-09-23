@@ -5,16 +5,16 @@ sourcePath: "docs-es/london-stock-exchange-integration/un.mdx"
 locale: "es"
 category: "london-stock-exchange-integration"
 tags:
-  - "onu?fullname=muhammad"
+  - "onu"
   - "london-stock-exchange-integration"
-endpoint: "/v2/onu?fullname=muhammad"
+endpoint: "/v2/onu"
 sourceAnchor: "128. ONU"
 slug: "/london-stock-exchange-integration/un"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/un"
 ---
 
 # ONU / otros — API pública Verifik
-**API path(s):** /v2/onu?fullname=muhammad
+**API path(s):** /v2/onu
 
 ## 128. ONU
 

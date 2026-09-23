@@ -7,16 +7,14 @@ category: "verificacion-antecendentes"
 tags:
   - "co"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/co/inpec"
-  - "/v2/co/inpec?documenttype=cc&documentnumber=80086615&firstsurname=murcia"
+endpoint: "/v2/co/inpec"
 sourceAnchor: "Características"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-colombia-inpec"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-colombia-inpec"
 ---
 
 # Colombia - Consulta INPEC Población Privada de la Libertad
-**API path(s):** /v2/co/inpec, /v2/co/inpec?documenttype=cc&documentnumber=80086615&firstsurname=murcia
+**API path(s):** /v2/co/inpec
 
 ## Características
 

@@ -7,16 +7,14 @@ category: "verificacion-antecendentes"
 tags:
   - "co"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/co/procuraduria/antecedentes"
-  - "/v2/co/procuraduria/antecedentes?documenttype=cc&documentnumber=123456789"
+endpoint: "/v2/co/procuraduria/antecedentes"
 sourceAnchor: "Features"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-colombia-procuraduria"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-colombia-procuraduria"
 ---
 
 # Colombia - Antecedentes Disciplinarios (Procuraduría)
-**API path(s):** /v2/co/procuraduria/antecedentes, /v2/co/procuraduria/antecedentes?documenttype=cc&documentnumber=123456789
+**API path(s):** /v2/co/procuraduria/antecedentes
 
 ## Features
 

@@ -9,7 +9,7 @@ tags:
   - "legal"
 endpoints:
   - "/v2/in/epic"
-  - "/v2/in/epic**](/legal/epic-eci)."
+  - "/v2/in/epic**](/legal/epic-eci"
   - "/v2/in/epic/votacion"
 sourceAnchor: "What does this API validate?"
 slug: "/legal/voting-eci-epic"
@@ -17,7 +17,7 @@ url: "https://docs.verifik.co/legal/voting-eci-epic"
 ---
 
 # India EPIC (Voter ID) — Polling & voting location | Verifik
-**API path(s):** /v2/in/epic, /v2/in/epic**](/legal/epic-eci)., /v2/in/epic/votacion
+**API path(s):** /v2/in/epic, /v2/in/epic**](/legal/epic-eci, /v2/in/epic/votacion
 
 ## What does this API validate?
 

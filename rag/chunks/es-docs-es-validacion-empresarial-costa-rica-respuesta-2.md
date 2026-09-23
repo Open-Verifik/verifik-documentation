@@ -7,17 +7,14 @@ category: "validacion-empresarial"
 tags:
   - "cr"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/cr/company"
-  - "/v2/cr/company?"
-  - "/v2/cr/company?documenttype=nite&documentnumber=3101122876"
+endpoint: "/v2/cr/company"
 sourceAnchor: "Respuesta"
 slug: "/validacion-empresarial/costa-rica"
 url: "https://docs.verifik.co/verifik-es/validacion-empresarial/costa-rica"
 ---
 
 # Costa Rica — Verificación empresarial (NITE)
-**API path(s):** /v2/cr/company, /v2/cr/company?, /v2/cr/company?documenttype=nite&documentnumber=3101122876
+**API path(s):** /v2/cr/company
 
 Consulta registros de empresas costarricenses usando el **NITE** (*Número de Identificación Tributaria de Empresas*) para onboarding de proveedores, cumplimiento y prevención de fraude.
 

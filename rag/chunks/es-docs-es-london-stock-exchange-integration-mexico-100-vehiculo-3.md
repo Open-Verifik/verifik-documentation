@@ -8,17 +8,16 @@ tags:
   - "mx"
   - "london-stock-exchange-integration"
 endpoints:
-  - "/v2/mx/company?documenttype=fme&documentnumber=n-2021007300"
-  - "/v2/mx/curp?documentnumber=nuha930929hslxrl02&documenttype=curp"
-  - "/v2/mx/vehiculo/placa?plate=338er"
-  - "/v2/mx/vehiculo/placa?plate=mse9670"
+  - "/v2/mx/company"
+  - "/v2/mx/curp"
+  - "/v2/mx/vehiculo/placa"
 sourceAnchor: "100. VEHÍCULO"
 slug: "/london-stock-exchange-integration/mexico"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/mexico"
 ---
 
 # México — API pública Verifik
-**API path(s):** /v2/mx/company?documenttype=fme&documentnumber=n-2021007300, /v2/mx/curp?documentnumber=nuha930929hslxrl02&documenttype=curp, /v2/mx/vehiculo/placa?plate=338er, /v2/mx/vehiculo/placa?plate=mse9670
+**API path(s):** /v2/mx/company, /v2/mx/curp, /v2/mx/vehiculo/placa
 
 ## 100. VEHÍCULO
 

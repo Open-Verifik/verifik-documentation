@@ -7,16 +7,14 @@ category: "driver-validation"
 tags:
   - "cl"
   - "driver-validation"
-endpoints:
-  - "/v2/cl/driver-license"
-  - "/v2/cl/driver-license?documentnumber=12345678"
+endpoint: "/v2/cl/driver-license"
 sourceAnchor: "Response"
 slug: "/driver-validation/chile-driver-license"
 url: "https://docs.verifik.co/driver-validation/chile-driver-license"
 ---
 
 # \U0001F1E8\U0001F1F1 Chile - Driver License
-**API path(s):** /v2/cl/driver-license, /v2/cl/driver-license?documentnumber=12345678
+**API path(s):** /v2/cl/driver-license
 
 This service looks up a Chilean driver license by license number (RUN body). Today it queries **Municipalidad de Santiago only** (`tramites.munistgo.cl`). Licenses issued by other communes (for example Ñuñoa) return **404** even when the number is valid. That is expected coverage, not an outage.
 

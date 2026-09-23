@@ -7,16 +7,14 @@ category: "verificacion-antecendentes"
 tags:
   - "co"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/co/policia/rnmc"
-  - "/v2/co/policia/rnmc?documenttype=cc&documentnumber=123456789&date=10/10/2020"
+endpoint: "/v2/co/policia/rnmc"
 sourceAnchor: "Request"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-colombia-cumplimiento-policial"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-colombia-cumplimiento-policial"
 ---
 
 # Colombia - Verificar Cumplimiento Policial con Medidas Correctivas
-**API path(s):** /v2/co/policia/rnmc, /v2/co/policia/rnmc?documenttype=cc&documentnumber=123456789&date=10/10/2020
+**API path(s):** /v2/co/policia/rnmc
 
 ## Request
 

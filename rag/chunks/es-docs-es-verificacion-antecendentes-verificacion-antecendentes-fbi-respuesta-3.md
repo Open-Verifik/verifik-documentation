@@ -6,20 +6,15 @@ locale: "es"
 category: "verificacion-antecendentes"
 tags:
   - "fbi"
-  - "fbi?fullname=mateo"
-  - "fbi?fullname=mateo%20verifik"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/fbi"
-  - "/v2/fbi?fullname=mateo"
-  - "/v2/fbi?fullname=mateo%20verifik"
+endpoint: "/v2/fbi"
 sourceAnchor: "Respuesta"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-fbi"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-fbi"
 ---
 
 # Verificación de Antecedentes FBI
-**API path(s):** /v2/fbi, /v2/fbi?fullname=mateo, /v2/fbi?fullname=mateo%20verifik
+**API path(s):** /v2/fbi
 
 ## Respuesta
 
