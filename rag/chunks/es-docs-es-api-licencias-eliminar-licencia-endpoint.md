@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/licenses/{licenseid}"
-  - "/api/sessions"
 sourceAnchor: "Endpoint"
 ---
 
 # Eliminar Licencia
-**API path(s):** /api/licenses/{licenseid}, /api/sessions
 
 ## Endpoint
 

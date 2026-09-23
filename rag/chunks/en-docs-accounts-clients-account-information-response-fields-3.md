@@ -7,14 +7,16 @@ category: "accounts"
 tags:
   - "clients"
   - "accounts"
-endpoint: "/v2/clients/me"
+endpoints:
+  - "/api/clients/me"
+  - "/v2/clients/me"
 sourceAnchor: "Response Fields"
 slug: "/accounts/clients/account-information"
 url: "https://docs.verifik.co/accounts/clients/account-information"
 ---
 
 # Account Information
-**API path(s):** /v2/clients/me
+**API path(s):** /api/clients/me, /v2/clients/me
 
 ## Response Fields
 

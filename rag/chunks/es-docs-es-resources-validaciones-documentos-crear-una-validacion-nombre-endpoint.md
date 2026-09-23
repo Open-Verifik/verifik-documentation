@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "document-validations"
   - "resources"
-endpoints:
-  - "/v2/document-validations/document_validation_123456789/validate"
-  - "/v2/document-validations/{id}/validate"
+endpoint: "/v2/document-validations/{id}/validate"
 sourceAnchor: "Endpoint"
 slug: "/resources/crear-una-validacion-nombre"
 url: "https://docs.verifik.co/verifik-es/resources/crear-una-validacion-nombre"
 ---
 
 # Crear una Validación de Nombre
-**API path(s):** /v2/document-validations/document_validation_123456789/validate, /v2/document-validations/{id}/validate
+**API path(s):** /v2/document-validations/{id}/validate
 
 ## Endpoint
 

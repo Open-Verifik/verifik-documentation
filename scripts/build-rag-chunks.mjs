@@ -21,11 +21,13 @@ const OUT_DIR = path.join(ROOT, "rag");
 const CHUNKS_DIR = path.join(OUT_DIR, "chunks");
 const MANIFEST_PATH = path.join(OUT_DIR, "manifest.json");
 const INVENTORY_PATH = path.join(ROOT, "internal", "docs-i18n-inventory.json");
+const ALLOWLIST_PATH = path.join(ROOT, "internal", "appfeature-url-allowlist.txt");
 const SITE_URL = "https://docs.verifik.co";
 
 const SUPPORTED_EXT = new Set([".md", ".mdx"]);
 const MIN_CHUNK_CHARS = 1600;
 const MAX_CHUNK_CHARS = 4800;
+const MAX_ENDPOINTS_PER_DOC = 5;
 
 const DOC_SOURCES = [
 	{ root: "docs", locale: "en", urlPrefix: "" },
@@ -121,10 +123,30 @@ const parseFrontmatter = (raw) => {
 	const block = raw.slice(3, end).trim();
 	const body = raw.slice(end + 4).replace(/^\s*\n/, "");
 	const data = {};
-	for (const line of block.split("\n")) {
+	const lines = block.split("\n");
+	for (let i = 0; i < lines.length; i += 1) {
+		const line = lines[i];
 		const match = /^([A-Za-z0-9_-]+):\s*(.*)$/.exec(line);
 		if (!match) continue;
 		const [, key, rawValue] = match;
+		if (rawValue.trim() === "") {
+			const items = [];
+			for (let j = i + 1; j < lines.length; j += 1) {
+				const itemMatch = /^\s+-\s+(.*)$/.exec(lines[j]);
+				if (!itemMatch) break;
+				let item = itemMatch[1].trim();
+				if (
+					(item.startsWith('"') && item.endsWith('"')) ||
+					(item.startsWith("'") && item.endsWith("'"))
+				) {
+					item = item.slice(1, -1);
+				}
+				items.push(item);
+				i = j;
+			}
+			data[key] = items;
+			continue;
+		}
 		let value = rawValue.trim();
 		if (
 			(value.startsWith('"') && value.endsWith('"')) ||
@@ -209,22 +231,138 @@ const normalizeEndpoint = (raw) => {
 	return next;
 };
 
-const extractEndpoints = (text) => {
+const API_PATH_IN_TEXT =
+	/(?:https?:\/\/(?:api\.verifik\.co|verifik\.app)\/)?\/?((?:v2|api)\/[a-z0-9./_-]+)/i;
+
+const isApiPath = (value) => value.startsWith("v2/") || value.startsWith("api/");
+
+const pathFromKeyword = (keyword) => {
+	let text = String(keyword).replace(/['"]/g, "").trim();
+	const methodMatch = /^(?:GET|POST|PUT|PATCH|DELETE)\s+(.+)/i.exec(text);
+	if (methodMatch) text = methodMatch[1].trim();
+	if (/api\.verifik\.co\//i.test(text) || /verifik\.app\//i.test(text)) {
+		const normalized = normalizeEndpoint(text);
+		return isApiPath(normalized) ? normalized : "";
+	}
+	if (/^\/?(?:v2|api)\//i.test(text)) {
+		const normalized = normalizeEndpoint(text);
+		return isApiPath(normalized) ? normalized : "";
+	}
+	const match = API_PATH_IN_TEXT.exec(text);
+	if (!match) return "";
+	const normalized = normalizeEndpoint(match[1] ?? match[0]);
+	return isApiPath(normalized) ? normalized : "";
+};
+
+const dedupeSortedPaths = (paths) => [...new Set(paths.filter(Boolean))].sort();
+
+const extractPathsFromKeywords = (frontmatter) => {
+	const keywords = frontmatter.keywords;
+	if (!keywords) return [];
+	const list = Array.isArray(keywords) ? keywords : [keywords];
+	const paths = new Set();
+	for (const keyword of list) {
+		const normalized = pathFromKeyword(keyword);
+		if (normalized) paths.add(normalized);
+	}
+	return dedupeSortedPaths([...paths]);
+};
+
+const extractPathsFromText = (text, { allowBackticks = false } = {}) => {
 	const found = new Set();
 	const patterns = [
 		/https?:\/\/(?:api\.verifik\.co|verifik\.app)\/[^\s`'"]+/gi,
 		/\b(?:GET|POST|PUT|PATCH|DELETE)\s+https?:\/\/[^\s`'"]+/gi,
 		/\b(?:GET|POST|PUT|PATCH|DELETE)\s+\/?(?:v2|api)\/[^\s`'"]+/gi,
-		/`(\/?(?:v2|api)\/[^`]+)`/gi,
 	];
+	if (allowBackticks) {
+		patterns.push(/`(\/?(?:v2|api)\/[^`]+)`/gi);
+	}
 	for (const pattern of patterns) {
 		for (const match of text.matchAll(pattern)) {
 			const candidate = match[1] ?? match[0];
 			const normalized = normalizeEndpoint(candidate);
-			if (normalized) found.add(normalized);
+			if (normalized && isApiPath(normalized)) found.add(normalized);
 		}
 	}
-	return [...found].sort();
+	return dedupeSortedPaths([...found]);
+};
+
+const extractEndpointSectionTexts = (body) => {
+	const sections = [];
+	const pattern = /^#{2,3}\s+(?:Endpoint|API Reference)\s*$[\s\S]*?(?=^#{2,3}\s+|\s*$)/gim;
+	for (const match of body.matchAll(pattern)) {
+		if (match[0]?.trim()) sections.push(match[0]);
+	}
+	return sections;
+};
+
+const extractPathsFromEndpointSections = (body) => {
+	const paths = new Set();
+	for (const section of extractEndpointSectionTexts(body)) {
+		for (const pathValue of extractPathsFromText(section, { allowBackticks: true })) {
+			paths.add(pathValue);
+		}
+	}
+	return dedupeSortedPaths([...paths]);
+};
+
+const extractFirstHttpEndpoint = (body) => {
+	const patterns = [
+		/\b(?:GET|POST|PUT|PATCH|DELETE)\s+(https?:\/\/(?:api\.verifik\.co|verifik\.app)\/[^\s`'"]+)/i,
+		/https?:\/\/(?:api\.verifik\.co|verifik\.app)\/(?:v2|api)\/[^\s`'"]+/i,
+	];
+	for (const pattern of patterns) {
+		const match = pattern.exec(body);
+		if (!match) continue;
+		const normalized = normalizeEndpoint(match[1] ?? match[0]);
+		if (normalized && isApiPath(normalized)) return [normalized];
+	}
+	return [];
+};
+
+const loadEndpointAllowlist = () => {
+	if (!fs.existsSync(ALLOWLIST_PATH)) return null;
+	const allowlist = new Set();
+	for (const line of fs.readFileSync(ALLOWLIST_PATH, "utf8").split("\n")) {
+		const trimmed = line.trim();
+		if (!trimmed || trimmed.startsWith("#")) continue;
+		const normalized = normalizeEndpoint(trimmed);
+		if (normalized) allowlist.add(normalized);
+	}
+	return allowlist.size ? allowlist : null;
+};
+
+const applyAllowlistFilter = (paths, allowlist) => {
+	if (!allowlist || paths.length === 0) return paths;
+	const matched = paths.filter((pathValue) => allowlist.has(pathValue));
+	return matched.length ? matched : paths;
+};
+
+const capPrimaryEndpoints = (paths, sourcePath, sourceLabel) => {
+	if (paths.length <= MAX_ENDPOINTS_PER_DOC) return paths;
+	console.warn(
+		`Warning: ${sourcePath} yielded ${paths.length} endpoints from ${sourceLabel}; capping to ${MAX_ENDPOINTS_PER_DOC}`
+	);
+	return paths.slice(0, MAX_ENDPOINTS_PER_DOC);
+};
+
+const extractPrimaryEndpoints = (frontmatter, cleanedBody, sourcePath, allowlist) => {
+	let sourceLabel = "keywords";
+	let paths = extractPathsFromKeywords(frontmatter);
+
+	if (!paths.length) {
+		paths = extractPathsFromEndpointSections(cleanedBody);
+		sourceLabel = "endpoint-section";
+	}
+	if (!paths.length) {
+		paths = extractFirstHttpEndpoint(cleanedBody);
+		sourceLabel = "fallback";
+	}
+
+	paths = applyAllowlistFilter(paths, allowlist);
+	paths = capPrimaryEndpoints(paths, sourcePath, sourceLabel);
+	return paths;
 };
 
 const extractTitle = (frontmatter, body) => {
@@ -396,10 +534,13 @@ const inferTags = (sourcePath, category, frontmatter, endpoints) => {
 		if (normalizedPath.includes(segment)) tags.add(tag);
 	}
 	if (frontmatter.keywords) {
-		for (const token of String(frontmatter.keywords).split(/[\s,]+/)) {
-			const cleaned = token.replace(/['"]/g, "").trim();
-			if (/^(v2|api)\//.test(cleaned) || /^\/(v2|api)\//.test(cleaned)) {
-				tags.add(cleaned.replace(/^\/+/, "").split("/")[1] ?? cleaned);
+		const keywordList = Array.isArray(frontmatter.keywords)
+			? frontmatter.keywords
+			: [frontmatter.keywords];
+		for (const keyword of keywordList) {
+			const normalized = pathFromKeyword(keyword);
+			if (normalized && normalized.startsWith("v2/")) {
+				tags.add(normalized.split("/")[1] ?? normalized);
 			}
 		}
 	}
@@ -463,6 +604,7 @@ const emptyDir = (dir) => {
 
 const main = () => {
 	const duplicatePaths = loadDuplicatePaths();
+	const endpointAllowlist = loadEndpointAllowlist();
 	const allChunks = [];
 
 	for (const source of activeSources) {
@@ -478,7 +620,7 @@ const main = () => {
 
 			const title = extractTitle(frontmatter, cleanedBody);
 			const intro = extractIntro(cleanedBody);
-			const endpoints = extractEndpoints(cleanedBody);
+			const endpoints = extractPrimaryEndpoints(frontmatter, cleanedBody, relToRoot, endpointAllowlist);
 			const category = relToDocs.split("/")[0] || "root";
 			const slug = frontmatter.slug || undefined;
 			const tags = inferTags(relToRoot, category, frontmatter, endpoints);

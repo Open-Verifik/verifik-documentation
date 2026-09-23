@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "credits"
   - "resources"
-endpoints:
-  - "/v2/credits/credit_123456789"
-  - "/v2/credits/{id}"
+endpoint: "/v2/credits/{id}"
 sourceAnchor: "Response"
 slug: "/resources/credits/retrieve-a-credit-record"
 url: "https://docs.verifik.co/resources/credits/retrieve-a-credit-record"
 ---
 
 # Retrieve a Credit Record
-**API path(s):** /v2/credits/credit_123456789, /v2/credits/{id}
+**API path(s):** /v2/credits/{id}
 
 ## Response
 

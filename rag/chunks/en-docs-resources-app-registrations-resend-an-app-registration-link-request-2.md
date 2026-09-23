@@ -8,17 +8,14 @@ tags:
   - "app-registrations"
   - "resources"
 endpoints:
-  - "/v2/app-registrations"
-  - "/v2/app-registrations/${appregistrationid}/resend-link"
-  - "/v2/app-registrations/%s/resend-link"
-  - "/v2/app-registrations/{app_registration_id}/resend-link"
-  - "/v2/app-registrations/{id}"
+  - "/api/app-registrations/resend-link"
+  - "/v2/app-registrations/resend-link"
   - "/v2/app-registrations/{id}/resend-link"
 sourceAnchor: "Request"
 ---
 
 # Resend an App Registration Link
-**API path(s):** /v2/app-registrations, /v2/app-registrations/${appregistrationid}/resend-link, /v2/app-registrations/%s/resend-link, /v2/app-registrations/{app_registration_id}/resend-link, /v2/app-registrations/{id}, /v2/app-registrations/{id}/resend-link
+**API path(s):** /api/app-registrations/resend-link, /v2/app-registrations/resend-link, /v2/app-registrations/{id}/resend-link
 
 ## Request
 

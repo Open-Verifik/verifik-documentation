@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients/sync/password"
 sourceAnchor: "Notas"
 ---
 
 # Cambiar Contraseña
-**API path(s):** /api/clients/sync/password
 
 Cambiar la contraseña maestra de una cuenta de cliente.
 

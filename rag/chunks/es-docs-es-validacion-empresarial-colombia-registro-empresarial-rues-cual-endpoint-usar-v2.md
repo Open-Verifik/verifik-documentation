@@ -7,16 +7,14 @@ category: "validacion-empresarial"
 tags:
   - "co"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/co/rues"
-  - "/v2/co/rues/complete"
+endpoint: "/v2/co/rues"
 sourceAnchor: "¿Cuál endpoint usar? (v2)"
 slug: "/validacion-empresarial/colombia-registro-empresarial-rues"
 url: "https://docs.verifik.co/verifik-es/validacion-empresarial/colombia-registro-empresarial-rues"
 ---
 
 # Colombia - Registro Empresarial RUES
-**API path(s):** /v2/co/rues, /v2/co/rues/complete
+**API path(s):** /v2/co/rues
 
 ## ¿Cuál endpoint usar? (v2)
 

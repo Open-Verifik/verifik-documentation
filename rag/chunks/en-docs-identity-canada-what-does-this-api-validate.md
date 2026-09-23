@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "ca"
   - "identity"
-endpoints:
-  - "/v2/ca/british-columbia/driver-license"
-  - "/v2/ca/ontario/driver-license"
+endpoint: "/v2/ca/british-columbia/driver-license"
 sourceAnchor: "What does this API validate?"
 slug: "/identity/canada"
 url: "https://docs.verifik.co/identity/canada"
 ---
 
 # Canadian Driver License Validation
-**API path(s):** /v2/ca/british-columbia/driver-license, /v2/ca/ontario/driver-license
+**API path(s):** /v2/ca/british-columbia/driver-license
 
 ## What does this API validate?
 

@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/runt/vehicle-by-plate"
-  - "/v2/co/runt/vehicle-by-plate-only"
+endpoint: "/v2/co/runt/vehicle-by-plate-only"
 sourceAnchor: "Solicitud"
 slug: "/validacion-vehiculos/colombia/runt-vehicle-by-plate-only"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/runt-vehicle-by-plate-only"
 ---
 
 # RUNT - Registros de vehículos solo por placa
-**API path(s):** /v2/co/runt/vehicle-by-plate, /v2/co/runt/vehicle-by-plate-only
+**API path(s):** /v2/co/runt/vehicle-by-plate-only
 
 Consulta información oficial de un vehículo en RUNT usando **solo** la placa. A diferencia de [Registros de vehículos por placa](/verifik-es/validacion-de-vehiculo/colombia/vehiculo-por-placa-y-cedula-unicamente), este endpoint **no** requiere `documentType` ni `documentNumber` del propietario.
 Úsalo cuando necesites los bloques de identidad, técnicos y de estado de una placa colombiana sin el documento del titular.

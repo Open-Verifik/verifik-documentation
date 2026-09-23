@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/bogota/taxi-drivers/card/3002873"
-  - "/v2/co/bogota/taxi-drivers/card/{controlcardnumber}"
+endpoint: "/v2/co/bogota/taxi-drivers/card/{controlcardnumber}"
 sourceAnchor: "Endpoint"
 slug: "/validacion-de-vehiculo/colombia/taxis-conductores-bogota-por-tarjeta"
 url: "https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/taxis-conductores-bogota-por-tarjeta"
 ---
 
 # Conductores de Taxi en Bogotá por Tarjeta de Control
-**API path(s):** /v2/co/bogota/taxi-drivers/card/3002873, /v2/co/bogota/taxi-drivers/card/{controlcardnumber}
+**API path(s):** /v2/co/bogota/taxi-drivers/card/{controlcardnumber}
 
 ## Endpoint
 

@@ -6,14 +6,14 @@ locale: "en"
 category: "business-validation"
 tags:
   - "business-validation"
-endpoint: "/v3/co/rues-complete"
+endpoint: "/api/co/rues-complete"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/colombia-rues-business-information"
 url: "https://docs.verifik.co/business-validation/colombia-rues-business-information"
 ---
 
 # RUES Complete Business Validation (v3)
-**API path(s):** /v3/co/rues-complete
+**API path(s):** /api/co/rues-complete
 
 ## What does this API validate?
 

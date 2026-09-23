@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients"
 sourceAnchor: "Ejemplos"
 ---
 
 # Crear Cuenta
-**API path(s):** /api/clients
 
 Crear una nueva cuenta de cliente con verificación biométrica facial y autenticación con contraseña maestra.
 

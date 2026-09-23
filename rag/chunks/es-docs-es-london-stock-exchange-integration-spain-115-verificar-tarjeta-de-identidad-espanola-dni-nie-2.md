@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "es"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/es/cedula"
-  - "/v2/es/company"
-  - "/v2/es/vehicle"
+endpoint: "/v2/es/cedula"
 sourceAnchor: "115. Verificar tarjeta de identidad española (DNI/NIE)"
 slug: "/london-stock-exchange-integration/spain"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/spain"
 ---
 
 # España — API pública Verifik
-**API path(s):** /v2/es/cedula, /v2/es/company, /v2/es/vehicle
+**API path(s):** /v2/es/cedula
 
 ## 115. Verificar tarjeta de identidad española (DNI/NIE)
 

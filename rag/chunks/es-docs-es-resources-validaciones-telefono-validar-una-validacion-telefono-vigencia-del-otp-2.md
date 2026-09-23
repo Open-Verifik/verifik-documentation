@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "phone-validations"
   - "resources"
-endpoints:
-  - "/v2/phone-validations"
-  - "/v2/phone-validations/manual"
+endpoint: "/v2/phone-validations"
 sourceAnchor: "Vigencia del OTP"
 slug: "/resources/validar-una-validacion-telefono"
 url: "https://docs.verifik.co/verifik-es/resources/validar-una-validacion-telefono"
 ---
 
 # Validar una Validación de Teléfono
-**API path(s):** /v2/phone-validations, /v2/phone-validations/manual
+**API path(s):** /v2/phone-validations
 
 ## Vigencia del OTP
 

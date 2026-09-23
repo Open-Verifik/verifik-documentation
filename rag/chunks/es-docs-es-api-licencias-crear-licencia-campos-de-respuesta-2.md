@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/licenses"
-  - "/api/sessions"
 sourceAnchor: "Campos de Respuesta"
 ---
 
 # Crear Licencia
-**API path(s):** /api/licenses, /api/sessions
 
 Crear una nueva licencia para un usuario u organización.
 

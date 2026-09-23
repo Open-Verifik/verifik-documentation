@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "in"
   - "legal"
-endpoints:
-  - "/v2/in/epic"
-  - "/v2/in/epic/votacion"
+endpoint: "/v2/in/epic"
 sourceAnchor: "What does this API validate?"
 slug: "/legal/epic-eci"
 url: "https://docs.verifik.co/legal/epic-eci"
 ---
 
 # India EPIC (Voter ID) — Person & Name Lookup | Verifik
-**API path(s):** /v2/in/epic, /v2/in/epic/votacion
+**API path(s):** /v2/in/epic
 
 ## What does this API validate?
 

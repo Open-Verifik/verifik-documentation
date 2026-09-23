@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "ve"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/ve/cedula"
-  - "/v2/ve/foreigner-id"
-  - "/v2/ve/public/cedula"
+endpoint: "/v2/ve/cedula"
 sourceAnchor: "123. Verificación de Cédula de Identidad Venezolana"
 slug: "/london-stock-exchange-integration/venezuela"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/venezuela"
 ---
 
 # Venezuela — API pública Verifik
-**API path(s):** /v2/ve/cedula, /v2/ve/foreigner-id, /v2/ve/public/cedula
+**API path(s):** /v2/ve/cedula
 
 ## 123. Verificación de Cédula de Identidad Venezolana
 

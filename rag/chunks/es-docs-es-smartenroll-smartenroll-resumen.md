@@ -6,13 +6,10 @@ locale: "es"
 category: "smartenroll"
 tags:
   - "smartenroll"
-  - "app-registrations"
-endpoint: "/v2/app-registrations/{id}/resend-link"
 sourceAnchor: "Resumen"
 ---
 
 # SmartEnroll
-**API path(s):** /v2/app-registrations/{id}/resend-link
 
 ## Resumen
 

@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients/{id}"
 sourceAnchor: "Notas"
 ---
 
 # Eliminar Cuenta
-**API path(s):** /api/clients/{id}
 
 Eliminar una cuenta de cliente por ID.
 

@@ -6,16 +6,10 @@ locale: "es"
 category: "resources"
 tags:
   - "resources"
-endpoints:
-  - "/v3/project-flows/${flowid}"
-  - "/v3/project-flows/%s"
-  - "/v3/project-flows/{flow_id}"
-  - "/v3/project-flows/{id}"
 sourceAnchor: "Endpoint"
 ---
 
 # Actualizar un flujo de proyecto
-**API path(s):** /v3/project-flows/${flowid}, /v3/project-flows/%s, /v3/project-flows/{flow_id}, /v3/project-flows/{id}
 
 ## Endpoint
 

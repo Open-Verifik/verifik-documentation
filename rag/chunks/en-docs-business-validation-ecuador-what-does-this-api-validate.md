@@ -7,16 +7,14 @@ category: "business-validation"
 tags:
   - "ec"
   - "business-validation"
-endpoints:
-  - "/v2/ec/company"
-  - "/v3/ec/company"
+endpoint: "/api/ec/company"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/ecuador"
 url: "https://docs.verifik.co/business-validation/ecuador"
 ---
 
 # Ecuadorian Business Verification
-**API path(s):** /v2/ec/company, /v3/ec/company
+**API path(s):** /api/ec/company
 
 ## What does this API validate?
 

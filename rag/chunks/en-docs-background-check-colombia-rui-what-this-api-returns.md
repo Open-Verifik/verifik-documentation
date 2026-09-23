@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "co"
   - "background-check"
-endpoints:
-  - "/v2/co/rui"
-  - "/v2/co/sisben"
+endpoint: "/v2/co/rui"
 sourceAnchor: "What this API returns"
 slug: "/background-check/colombia-rui"
 url: "https://docs.verifik.co/background-check/colombia-rui"
 ---
 
 # Colombia — RUI Classification
-**API path(s):** /v2/co/rui, /v2/co/sisben
+**API path(s):** /v2/co/rui
 
 ## What this API returns
 

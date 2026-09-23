@@ -8,16 +8,14 @@ tags:
   - "us"
   - "usa"
   - "vehicle-validation"
-endpoints:
-  - "/v2/usa/vehicle"
-  - "/v2/usa/vehicle-by-vin"
+endpoint: "/v2/usa/vehicle"
 sourceAnchor: "Endpoint"
 slug: "/vehicle-validation/united-states"
 url: "https://docs.verifik.co/vehicle-validation/united-states"
 ---
 
 # 🇺🇸 United States - Vehicle Information
-**API path(s):** /v2/usa/vehicle, /v2/usa/vehicle-by-vin
+**API path(s):** /v2/usa/vehicle
 
 ## Endpoint
 

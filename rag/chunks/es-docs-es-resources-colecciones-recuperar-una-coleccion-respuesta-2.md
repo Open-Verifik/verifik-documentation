@@ -7,18 +7,14 @@ category: "resources"
 tags:
   - "face-recognition"
   - "resources"
-endpoints:
-  - "/v2/face-recognition/collections/${collectionid}"
-  - "/v2/face-recognition/collections/%s"
-  - "/v2/face-recognition/collections/{collection_id}"
-  - "/v2/face-recognition/collections/{id}"
+endpoint: "/v2/face-recognition/collections/{id}"
 sourceAnchor: "Respuesta"
 slug: "/resources/recuperar-una-coleccion"
 url: "https://docs.verifik.co/verifik-es/resources/recuperar-una-coleccion"
 ---
 
 # Recuperar una Colección
-**API path(s):** /v2/face-recognition/collections/${collectionid}, /v2/face-recognition/collections/%s, /v2/face-recognition/collections/{collection_id}, /v2/face-recognition/collections/{id}
+**API path(s):** /v2/face-recognition/collections/{id}
 
 ## Respuesta
 

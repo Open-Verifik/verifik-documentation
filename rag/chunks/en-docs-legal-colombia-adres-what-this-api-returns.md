@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/adres"
-  - "/v2/co/afiliaciones"
+endpoint: "/v2/co/adres"
 sourceAnchor: "What this API returns"
 slug: "/legal/colombia-adres"
 url: "https://docs.verifik.co/legal/colombia-adres"
 ---
 
 # Colombia — ADRES (BDUA affiliation)
-**API path(s):** /v2/co/adres, /v2/co/afiliaciones
+**API path(s):** /v2/co/adres
 
 ## What this API returns
 

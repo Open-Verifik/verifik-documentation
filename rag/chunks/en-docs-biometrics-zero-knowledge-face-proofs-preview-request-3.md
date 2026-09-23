@@ -7,14 +7,16 @@ category: "biometrics"
 tags:
   - "biometrics"
   - "human-id"
-endpoint: "/v2/human-id/preview"
+endpoints:
+  - "/api/human-id/preview"
+  - "/v2/human-id/preview"
 sourceAnchor: "Request"
 slug: "/biometrics/humanID-preview"
 url: "https://docs.verifik.co/biometrics/humanID-preview"
 ---
 
 # Preview HumanID
-**API path(s):** /v2/human-id/preview
+**API path(s):** /api/human-id/preview, /v2/human-id/preview
 
 ## Request
 

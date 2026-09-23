@@ -7,18 +7,14 @@ category: "resources"
 tags:
   - "face-recognition"
   - "resources"
-endpoints:
-  - "/v2/face-recognition/collections/${collectionid}"
-  - "/v2/face-recognition/collections/%s"
-  - "/v2/face-recognition/collections/{collection_id}"
-  - "/v2/face-recognition/collections/{id}"
+endpoint: "/v2/face-recognition/collections"
 sourceAnchor: "Endpoint"
 slug: "/resources/delete-a-collection"
 url: "https://docs.verifik.co/resources/delete-a-collection"
 ---
 
 # Delete a Collection
-**API path(s):** /v2/face-recognition/collections/${collectionid}, /v2/face-recognition/collections/%s, /v2/face-recognition/collections/{collection_id}, /v2/face-recognition/collections/{id}
+**API path(s):** /v2/face-recognition/collections
 
 ## Endpoint
 

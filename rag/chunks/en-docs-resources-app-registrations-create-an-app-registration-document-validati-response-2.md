@@ -7,12 +7,14 @@ category: "resources"
 tags:
   - "document-validations"
   - "resources"
-endpoint: "/v2/document-validations/app-registration"
+endpoints:
+  - "/api/document-validations/app-registration"
+  - "/v2/document-validations/app-registration"
 sourceAnchor: "Response"
 ---
 
 # Create an App Registration Document Validation
-**API path(s):** /v2/document-validations/app-registration
+**API path(s):** /api/document-validations/app-registration, /v2/document-validations/app-registration
 
 ## Response
 

@@ -7,17 +7,14 @@ category: "biometrics"
 tags:
   - "biometrics"
   - "face-recognition"
-  - "face-verifications"
-endpoints:
-  - "/v2/face-recognition/compare-with-liveness"
-  - "/v2/face-verifications/:id"
+endpoint: "/v2/face-recognition/compare-with-liveness"
 sourceAnchor: "Respuesta"
 slug: "/comparar-con-deteccion-vitalidad"
 url: "https://docs.verifik.co/verifik-es/comparar-con-deteccion-vitalidad"
 ---
 
 # Comparar con Detección de Vitalidad (Secuencial)
-**API path(s):** /v2/face-recognition/compare-with-liveness, /v2/face-verifications/:id
+**API path(s):** /v2/face-recognition/compare-with-liveness
 
 ## Respuesta
 

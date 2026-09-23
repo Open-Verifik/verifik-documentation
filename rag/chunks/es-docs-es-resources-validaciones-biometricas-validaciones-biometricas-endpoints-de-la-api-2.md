@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "biometric-validations"
   - "resources"
-endpoints:
-  - "/v2/biometric-validations"
-  - "/v2/biometric-validations/{validationid}"
+endpoint: "/v2/biometric-validations"
 sourceAnchor: "Endpoints de la API"
 slug: "/resources/validaciones-biometricas"
 url: "https://docs.verifik.co/verifik-es/resources/validaciones-biometricas"
 ---
 
 # Validaciones Biométricas
-**API path(s):** /v2/biometric-validations, /v2/biometric-validations/{validationid}
+**API path(s):** /v2/biometric-validations
 
 ## Endpoints de la API
 

@@ -7,14 +7,12 @@ category: "resources"
 tags:
   - "project-flows"
   - "resources"
-endpoints:
-  - "/v2/project-flows"
-  - "/v2/project-flows/{flowid}"
+endpoint: "/v2/project-flows"
 sourceAnchor: "Overview"
 ---
 
 # Project Flows
-**API path(s):** /v2/project-flows, /v2/project-flows/{flowid}
+**API path(s):** /v2/project-flows
 
 ## Overview
 

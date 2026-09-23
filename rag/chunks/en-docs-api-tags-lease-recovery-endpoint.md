@@ -6,14 +6,12 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/lease-recovery"
+endpoint: "/api/tags/lease-recovery"
 sourceAnchor: "Endpoint"
 ---
 
 # Lease Recovery
-**API path(s):** /api/sessions, /api/tags/lease-recovery
+**API path(s):** /api/tags/lease-recovery
 
 ## Endpoint
 

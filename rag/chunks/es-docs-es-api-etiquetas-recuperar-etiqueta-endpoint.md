@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/lease-recovery"
 sourceAnchor: "Endpoint"
 ---
 
 # Recuperación de una Etiqueta
-**API path(s):** /api/sessions, /api/tags/lease-recovery
 
 ## Endpoint
 

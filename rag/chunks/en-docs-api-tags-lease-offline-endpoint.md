@@ -6,14 +6,12 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/lease-offline"
+endpoint: "/api/tags/lease-offline"
 sourceAnchor: "Endpoint"
 ---
 
 # Lease Tag Offline
-**API path(s):** /api/sessions, /api/tags/lease-offline
+**API path(s):** /api/tags/lease-offline
 
 ## Endpoint
 

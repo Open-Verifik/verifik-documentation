@@ -7,14 +7,14 @@ category: "identity-validation"
 tags:
   - "pe"
   - "identity-validation"
-endpoint: "/v3/pe/cedula/extra"
+endpoint: "/api/pe/cedula/extra"
 sourceAnchor: "Official Sources & Reliability"
 slug: "/identity-validation/peru/v3-peruvian-citizen"
 url: "https://docs.verifik.co/identity-validation/peru/v3-peruvian-citizen"
 ---
 
 # \U0001F1F5\U0001F1EA Peru - V3 Peruvian Citizen
-**API path(s):** /v3/pe/cedula/extra
+**API path(s):** /api/pe/cedula/extra
 
 Verifik's Identity Verification API helps you perform extended identity verification for Peruvian citizens using their DNI (Documento Nacional de Identidad) number. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to access comprehensive personal information, including full name, civil status, date of birth, document details, address, and photo data.

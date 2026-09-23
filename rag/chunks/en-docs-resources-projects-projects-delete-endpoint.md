@@ -6,16 +6,12 @@ locale: "en"
 category: "resources"
 tags:
   - "resources"
-endpoints:
-  - "/v3/projects/${projectid}"
-  - "/v3/projects/%s"
-  - "/v3/projects/{id}"
-  - "/v3/projects/{project_id}"
+endpoint: "/api/projects"
 sourceAnchor: "Endpoint"
 ---
 
 # Delete Project
-**API path(s):** /v3/projects/${projectid}, /v3/projects/%s, /v3/projects/{id}, /v3/projects/{project_id}
+**API path(s):** /api/projects
 
 ## Endpoint
 

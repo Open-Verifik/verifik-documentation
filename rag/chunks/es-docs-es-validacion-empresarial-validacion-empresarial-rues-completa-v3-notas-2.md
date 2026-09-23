@@ -6,14 +6,12 @@ locale: "es"
 category: "validacion-empresarial"
 tags:
   - "validacion-empresarial"
-endpoint: "/v3/co/rues-complete"
 sourceAnchor: "Notas"
 slug: "/business-validation/rues-complete-v3"
 url: "https://docs.verifik.co/verifik-es/business-validation/rues-complete-v3"
 ---
 
 # Colombia — RUES expediente completo (v3)
-**API path(s):** /v3/co/rues-complete
 
 Recupera información empresarial **completa** del registro RUES de Colombia (mismos parámetros que `GET /v3/co/rues`, con mucho más detalle en la respuesta).
 

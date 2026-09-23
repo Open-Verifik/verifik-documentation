@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients"
 sourceAnchor: "Endpoint"
 ---
 
 # Verificar Cuenta
-**API path(s):** /api/clients
 
 ## Endpoint
 

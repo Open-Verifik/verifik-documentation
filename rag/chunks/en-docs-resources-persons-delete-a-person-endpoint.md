@@ -7,18 +7,14 @@ category: "resources"
 tags:
   - "face-recognition"
   - "resources"
-endpoints:
-  - "/v2/face-recognition/persons"
-  - "/v2/face-recognition/persons/${id}"
-  - "/v2/face-recognition/persons/{id}"
-  - "/v2/face-recognition/persons/{person_id}"
+endpoint: "/v2/face-recognition/persons"
 sourceAnchor: "Endpoint"
 slug: "/resources/persons/delete-a-person"
 url: "https://docs.verifik.co/resources/persons/delete-a-person"
 ---
 
 # Delete a Person
-**API path(s):** /v2/face-recognition/persons, /v2/face-recognition/persons/${id}, /v2/face-recognition/persons/{id}, /v2/face-recognition/persons/{person_id}
+**API path(s):** /v2/face-recognition/persons
 
 ## Endpoint
 

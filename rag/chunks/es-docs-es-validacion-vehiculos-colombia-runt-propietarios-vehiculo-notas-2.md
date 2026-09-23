@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/runt/propietarios"
-  - "/v2/co/runt/vehiculo/owners"
+endpoint: "/v2/co/runt/propietarios"
 sourceAnchor: "Notas"
 slug: "/validacion-vehiculos/colombia/runt-propietarios-vehiculo"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/runt-propietarios-vehiculo"
 ---
 
 # RUNT - Propietarios de vehículo por placa
-**API path(s):** /v2/co/runt/propietarios, /v2/co/runt/vehiculo/owners
+**API path(s):** /v2/co/runt/propietarios
 
 ## Notas
 

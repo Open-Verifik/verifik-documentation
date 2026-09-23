@@ -5,18 +5,13 @@ sourcePath: "docs-es/validacion-empresarial/colombia-rues-v3.mdx"
 locale: "es"
 category: "validacion-empresarial"
 tags:
-  - "co"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/co/rues"
-  - "/v3/co/rues"
 sourceAnchor: "¿Cuál endpoint usar?"
 slug: "/business-validation/colombia-rues-v3"
 url: "https://docs.verifik.co/verifik-es/business-validation/colombia-rues-v3"
 ---
 
 # Colombia — Consulta RUES (v3)
-**API path(s):** /v2/co/rues, /v3/co/rues
 
 ## ¿Cuál endpoint usar?
 

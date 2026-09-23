@@ -8,16 +8,14 @@ tags:
   - "authentication"
   - "projects"
   - "accounts"
-endpoints:
-  - "/v2/projects/phone-login"
-  - "/v2/projects/phone-login/confirm"
+endpoint: "/v2/projects/phone-login"
 sourceAnchor: "**OTP Request - Phone**"
 slug: "/accounts/authentication/api-key-access-via-phone"
 url: "https://docs.verifik.co/accounts/authentication/api-key-access-via-phone"
 ---
 
 # API Key Access via Phone
-**API path(s):** /v2/projects/phone-login, /v2/projects/phone-login/confirm
+**API path(s):** /v2/projects/phone-login
 
 ## **OTP Request - Phone**
 

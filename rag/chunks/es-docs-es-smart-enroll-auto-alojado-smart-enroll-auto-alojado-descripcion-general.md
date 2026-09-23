@@ -6,14 +6,12 @@ locale: "es"
 category: "smart-enroll-auto-alojado"
 tags:
   - "smart-enroll-auto-alojado"
-endpoint: "/v3"
 sourceAnchor: "Descripción General"
 slug: "/smart-enroll-auto-alojado"
 url: "https://docs.verifik.co/verifik-es/smart-enroll-auto-alojado"
 ---
 
 # SmartEnroll: Auto-alojado
-**API path(s):** /v3
 
 ## Descripción General
 

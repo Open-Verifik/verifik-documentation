@@ -5,18 +5,15 @@ sourcePath: "docs/business-validation/colombia-rues-v3.mdx"
 locale: "en"
 category: "business-validation"
 tags:
-  - "co"
   - "business-validation"
-endpoints:
-  - "/v2/co/rues"
-  - "/v3/co/rues"
+endpoint: "/api/co/rues"
 sourceAnchor: "Which endpoint should I use?"
 slug: "/business-validation/colombia-rues-v3"
 url: "https://docs.verifik.co/business-validation/colombia-rues-v3"
 ---
 
 # Colombia — RUES business lookup (v3)
-**API path(s):** /v2/co/rues, /v3/co/rues
+**API path(s):** /api/co/rues
 
 ## Which endpoint should I use?
 

@@ -7,14 +7,16 @@ category: "biometrics"
 tags:
   - "biometrics"
   - "human-id"
-endpoint: "/v2/human-id/encrypt-qr-code"
+endpoints:
+  - "/api/human-id/encrypt-qr-code"
+  - "/v2/human-id/encrypt-qr-code"
 sourceAnchor: "Notes"
 slug: "/biometrics/humanID-encrypt-qr-code"
 url: "https://docs.verifik.co/biometrics/humanID-encrypt-qr-code"
 ---
 
 # Encrypt HumanID QR Code
-**API path(s):** /v2/human-id/encrypt-qr-code
+**API path(s):** /api/human-id/encrypt-qr-code, /v2/human-id/encrypt-qr-code
 
 ## Notes
 

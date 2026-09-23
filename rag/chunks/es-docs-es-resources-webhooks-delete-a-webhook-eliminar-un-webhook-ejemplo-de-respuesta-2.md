@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "webhooks"
   - "resources"
-endpoints:
-  - "/v2/webhooks/66df1c0ad08b9d244bd1c806"
-  - "/v2/webhooks/{id}"
+endpoint: "/v2/webhooks/{id}"
 sourceAnchor: "Ejemplo de Respuesta"
 slug: "/resources/webhooks/delete-a-webhook-eliminar-un-webhook"
 url: "https://docs.verifik.co/verifik-es/resources/webhooks/delete-a-webhook-eliminar-un-webhook"
 ---
 
 # Eliminar un Webhook
-**API path(s):** /v2/webhooks/66df1c0ad08b9d244bd1c806, /v2/webhooks/{id}
+**API path(s):** /v2/webhooks/{id}
 
 ## Ejemplo de Respuesta
 

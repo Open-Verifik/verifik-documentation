@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "support-tickets"
   - "resources"
-endpoints:
-  - "/v2/support-tickets/support_ticket_123456789"
-  - "/v2/support-tickets/{id}"
+endpoint: "/v2/support-tickets/{id}"
 sourceAnchor: "Endpoint"
 slug: "/resources/retrieve-a-support-ticket"
 url: "https://docs.verifik.co/resources/retrieve-a-support-ticket"
 ---
 
 # Retrieve a Support Ticket
-**API path(s):** /v2/support-tickets/support_ticket_123456789, /v2/support-tickets/{id}
+**API path(s):** /v2/support-tickets/{id}
 
 ## Endpoint
 

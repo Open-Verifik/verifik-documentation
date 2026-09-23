@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "mx"
   - "identity"
-endpoints:
-  - "/v2/mx/curp"
-  - "/v2/mx/ine"
-  - "/v2/mx/ine/ocr"
+endpoint: "/v2/mx/ine/ocr"
 sourceAnchor: "Response"
 slug: "/identity/mexico-ine-ocr"
 url: "https://docs.verifik.co/identity/mexico-ine-ocr"
 ---
 
 # Mexico — INE OCR
-**API path(s):** /v2/mx/curp, /v2/mx/ine, /v2/mx/ine/ocr
+**API path(s):** /v2/mx/ine/ocr
 
 One-shot flow for a Mexican **INE** (*Credencial para Votar*):
 1. **Verifik Gemini OCR** extracts credential fields from front (and optional back) images

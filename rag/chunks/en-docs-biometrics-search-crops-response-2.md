@@ -7,16 +7,14 @@ category: "biometrics"
 tags:
   - "biometrics"
   - "face-recognition"
-endpoints:
-  - "/v2/face-recognition/search"
-  - "/v2/face-recognition/search/crops"
+endpoint: "/v2/face-recognition/search/crops"
 sourceAnchor: "Response"
 slug: "/biometrics/search-crops"
 url: "https://docs.verifik.co/biometrics/search-crops"
 ---
 
 # Face Search 1:N (Crops)
-**API path(s):** /v2/face-recognition/search, /v2/face-recognition/search/crops
+**API path(s):** /v2/face-recognition/search/crops
 
 ## Response
 

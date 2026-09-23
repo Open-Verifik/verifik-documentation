@@ -7,17 +7,14 @@ category: "recursos"
 tags:
   - "app-registrations"
   - "recursos"
-endpoints:
-  - "/v2/app-registrations"
-  - "/v2/app-registrations/{id}"
-  - "/v2/app-registrations/{id}/sync"
+endpoint: "/v2/app-registrations"
 sourceAnchor: "Overview"
 slug: "/recursos/registros-en-la-app"
 url: "https://docs.verifik.co/verifik-es/recursos/registros-en-la-app"
 ---
 
 # Registros en la App
-**API path(s):** /v2/app-registrations, /v2/app-registrations/{id}, /v2/app-registrations/{id}/sync
+**API path(s):** /v2/app-registrations
 
 ## Overview
 

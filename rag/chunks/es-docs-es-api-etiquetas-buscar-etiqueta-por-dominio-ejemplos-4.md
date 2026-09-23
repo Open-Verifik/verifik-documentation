@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/search-by-domain"
 sourceAnchor: "Ejemplos"
 ---
 
 # Buscar Etiquetas por Dominio
-**API path(s):** /api/sessions, /api/tags/search-by-domain
 
 Buscar todas las etiquetas dentro de un dominio específico y sistema de almacenamiento.
 

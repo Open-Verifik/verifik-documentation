@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/preview"
 sourceAnchor: "Ejemplos"
 ---
 
 # Vista Previa de Etiqueta
-**API path(s):** /api/sessions, /api/tags/preview
 
 Previsualizar una etiqueta para ver si existe o verificar información de precios antes de alquilarla.
 

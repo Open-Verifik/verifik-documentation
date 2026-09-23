@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/lease"
 sourceAnchor: "Endpoint"
 ---
 
 # Alquilar Etiqueta
-**API path(s):** /api/sessions, /api/tags/lease
 
 ## Endpoint
 

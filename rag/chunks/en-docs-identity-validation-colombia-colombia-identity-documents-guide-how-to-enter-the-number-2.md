@@ -7,23 +7,12 @@ category: "identity-validation"
 tags:
   - "co"
   - "identity-validation"
-endpoints:
-  - "/v2/co/adres"
-  - "/v2/co/afiliaciones"
-  - "/v2/co/cedula"
-  - "/v2/co/foreigner-id/ce"
-  - "/v2/co/foreigner-id/pep"
-  - "/v2/co/foreigner-id/ppt"
-  - "/v2/co/politically-exposed-persons"
-  - "/v2/co/procuraduria"
-  - "/v2/co/runt/conductor"
 sourceAnchor: "How to enter the number"
 slug: "/identity-validation/colombia/colombia-identity-documents-guide"
 url: "https://docs.verifik.co/identity-validation/colombia/colombia-identity-documents-guide"
 ---
 
 # Colombia — Identity documents guide
-**API path(s):** /v2/co/adres, /v2/co/afiliaciones, /v2/co/cedula, /v2/co/foreigner-id/ce, /v2/co/foreigner-id/pep, /v2/co/foreigner-id/ppt, /v2/co/politically-exposed-persons, /v2/co/procuraduria, /v2/co/runt/conductor
 
 Use this page when you are not sure **which document type** your user has or **which Verifik endpoint** to call. Each Colombian ID has a different issuer and a different API path.
 

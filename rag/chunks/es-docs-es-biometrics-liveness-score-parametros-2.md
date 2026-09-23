@@ -7,16 +7,14 @@ category: "biometrics"
 tags:
   - "biometrics"
   - "face-recognition"
-endpoints:
-  - "/v2/face-recognition/liveness"
-  - "/v2/face-recognition/liveness-score"
+endpoint: "/v2/face-recognition/liveness-score"
 sourceAnchor: "Parámetros"
 slug: "/puntaje-vitalidad"
 url: "https://docs.verifik.co/verifik-es/puntaje-vitalidad"
 ---
 
 # Puntaje de Vitalidad
-**API path(s):** /v2/face-recognition/liveness, /v2/face-recognition/liveness-score
+**API path(s):** /v2/face-recognition/liveness-score
 
 ## Parámetros
 

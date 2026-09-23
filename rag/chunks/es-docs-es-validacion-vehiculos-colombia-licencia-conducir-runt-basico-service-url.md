@@ -7,16 +7,12 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/runt/conductor"
-  - "/v3/co/runt/conductor"
 sourceAnchor: "Service URL"
 slug: "/validacion-vehiculos/colombia/licencia-conducir-runt-basico"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt-basico"
 ---
 
 # Consulta de Licencia de Conducción en RUNT (Básico) | Verifik API Colombia
-**API path(s):** /v2/co/runt/conductor, /v3/co/runt/conductor
 
 ## Service URL
 

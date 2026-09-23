@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/lease-offline"
 sourceAnchor: "Endpoint"
 ---
 
 # Alquilar Etiqueta Offline
-**API path(s):** /api/sessions, /api/tags/lease-offline
 
 ## Endpoint
 

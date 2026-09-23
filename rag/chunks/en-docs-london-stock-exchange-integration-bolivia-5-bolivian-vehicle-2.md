@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "bo"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/bo/cedula"
-  - "/v2/bo/company"
-  - "/v2/bo/vehicle"
+endpoint: "/v2/bo/cedula"
 sourceAnchor: "5. Bolivian Vehicle"
 slug: "/london-stock-exchange-integration/bolivia"
 url: "https://docs.verifik.co/london-stock-exchange-integration/bolivia"
 ---
 
 # Bolivia — Verifik public API
-**API path(s):** /v2/bo/cedula, /v2/bo/company, /v2/bo/vehicle
+**API path(s):** /v2/bo/cedula
 
 ## 5. Bolivian Vehicle
 

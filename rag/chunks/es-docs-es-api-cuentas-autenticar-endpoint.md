@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients/auth"
 sourceAnchor: "Endpoint"
 ---
 
 # Autenticar
-**API path(s):** /api/clients/auth
 
 ## Endpoint
 

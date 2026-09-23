@@ -6,14 +6,14 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoint: "/v3/projects"
+endpoint: "/api/projects"
 sourceAnchor: "Notes"
 slug: "/api/projects/projects-create"
 url: "https://docs.verifik.co/api/projects/projects-create"
 ---
 
 # Create Project
-**API path(s):** /v3/projects
+**API path(s):** /api/projects
 
 ## Notes
 

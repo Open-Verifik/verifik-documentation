@@ -5,18 +5,13 @@ sourcePath: "docs-es/certificados/colombia-ministerio-trabajo-certificados-v3.md
 locale: "es"
 category: "certificados"
 tags:
-  - "co"
   - "certificados"
-endpoints:
-  - "/v2/co/ministerio-de-trabajo/certificados"
-  - "/v3/co/ministerio-de-trabajo/certificados"
 sourceAnchor: "Respuesta"
 slug: "/certificados/colombia-ministerio-trabajo-certificados-v3"
 url: "https://docs.verifik.co/verifik-es/certificados/colombia-ministerio-trabajo-certificados-v3"
 ---
 
 # Colombia — Certificados Ministerio del Trabajo (v3)
-**API path(s):** /v2/co/ministerio-de-trabajo/certificados, /v3/co/ministerio-de-trabajo/certificados
 
 Este endpoint devuelve información de **certificados del Ministerio del Trabajo** para una persona en Colombia, incluyendo datos asociados al **curso de alturas**, desde el **microservicio de Bogotá**. La integración **v3** devuelve el objeto completo y expone las filas de certificados en **`records`** (mapeado desde `constances` en origen).
 

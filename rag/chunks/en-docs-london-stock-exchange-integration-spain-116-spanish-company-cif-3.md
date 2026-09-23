@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "es"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/es/cedula"
-  - "/v2/es/company"
-  - "/v2/es/vehicle"
+endpoint: "/v2/es/cedula"
 sourceAnchor: "116. Spanish company (CIF)"
 slug: "/london-stock-exchange-integration/spain"
 url: "https://docs.verifik.co/london-stock-exchange-integration/spain"
 ---
 
 # Spain — Verifik public API
-**API path(s):** /v2/es/cedula, /v2/es/company, /v2/es/vehicle
+**API path(s):** /v2/es/cedula
 
 ## 116. Spanish company (CIF)
 

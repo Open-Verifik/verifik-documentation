@@ -7,16 +7,12 @@ category: "resources"
 tags:
   - "app-registrations"
   - "resources"
-endpoints:
-  - "/v2/app-registrations/${appregistrationid}"
-  - "/v2/app-registrations/%s"
-  - "/v2/app-registrations/{app_registration_id}"
-  - "/v2/app-registrations/{id}"
+endpoint: "/v2/app-registrations/{id}"
 sourceAnchor: "Endpoint"
 ---
 
 # Obtener Registro de Aplicación
-**API path(s):** /v2/app-registrations/${appregistrationid}, /v2/app-registrations/%s, /v2/app-registrations/{app_registration_id}, /v2/app-registrations/{id}
+**API path(s):** /v2/app-registrations/{id}
 
 ## Endpoint
 

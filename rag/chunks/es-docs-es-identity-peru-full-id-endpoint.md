@@ -6,14 +6,12 @@ locale: "es"
 category: "identity"
 tags:
   - "identity"
-endpoint: "/v3/pe/cedula/extra"
 sourceAnchor: "Endpoint"
 slug: "/identidad/peru-id-completo"
 url: "https://docs.verifik.co/verifik-es/identidad/peru-id-completo"
 ---
 
 # 🇵🇪 Perú - ID Completo
-**API path(s):** /v3/pe/cedula/extra
 
 ## Endpoint
 

@@ -6,15 +6,12 @@ locale: "en"
 category: "smartenroll"
 tags:
   - "smartenroll"
-  - "app-registrations"
-endpoint: "/v2/app-registrations/{id}/resend-link"
 sourceAnchor: "Overview"
 slug: "/smartenroll"
 url: "https://docs.verifik.co/smartenroll"
 ---
 
 # SmartEnroll
-**API path(s):** /v2/app-registrations/{id}/resend-link
 
 ## Overview
 

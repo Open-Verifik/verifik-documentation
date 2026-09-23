@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "ca"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/ca/british-columbia/driver-license"
-  - "/v2/ca/company"
-  - "/v2/ca/ontario/driver-license"
+endpoint: "/v2/ca/ontario/driver-license"
 sourceAnchor: "15. Ontario Driver's License"
 slug: "/london-stock-exchange-integration/canada"
 url: "https://docs.verifik.co/london-stock-exchange-integration/canada"
 ---
 
 # Canada — Verifik public API
-**API path(s):** /v2/ca/british-columbia/driver-license, /v2/ca/company, /v2/ca/ontario/driver-license
+**API path(s):** /v2/ca/ontario/driver-license
 
 ## 15. Ontario Driver's License
 

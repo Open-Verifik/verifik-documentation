@@ -8,15 +8,14 @@ tags:
   - "email-validations"
   - "resources"
 endpoints:
-  - "/v2/email-validations/${emailvalidationid}"
-  - "/v2/email-validations/%s"
-  - "/v2/email-validations/{email_validation_id}"
+  - "/api/email-validations"
+  - "/v2/email-validations"
   - "/v2/email-validations/{id}"
 sourceAnchor: "Response"
 ---
 
 # Validate an App Registration Email Validation
-**API path(s):** /v2/email-validations/${emailvalidationid}, /v2/email-validations/%s, /v2/email-validations/{email_validation_id}, /v2/email-validations/{id}
+**API path(s):** /api/email-validations, /v2/email-validations, /v2/email-validations/{id}
 
 ## Response
 

@@ -6,14 +6,12 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/lease"
+endpoint: "/api/tags/lease"
 sourceAnchor: "Response"
 ---
 
 # Lease Tag
-**API path(s):** /api/sessions, /api/tags/lease
+**API path(s):** /api/tags/lease
 
 Lease a tag for any supported domain name (Zelf, Avax, BDAG, or other licensed domains).
 

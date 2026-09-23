@@ -7,16 +7,12 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/runt/conductor"
-  - "/v3/co/runt/conductor"
 sourceAnchor: "Solicitud"
 slug: "/validacion-vehiculos/colombia/licencia-conducir-runt-basico"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt-basico"
 ---
 
 # Consulta de Licencia de Conducción en RUNT (Básico) | Verifik API Colombia
-**API path(s):** /v2/co/runt/conductor, /v3/co/runt/conductor
 
 La misma consulta RUNT que [Premium v2](/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt), cobrada a la **tarifa actual de conductor**. Debe enviar `primerApellido`. Si lo omite, la API responde `409 MissingParameter`.
 Use esta ruta cuando ya conoce el primer apellido. Si se queda en v2 y envía `primerApellido`, también paga esta tarifa Básica sin cambiar la URL.

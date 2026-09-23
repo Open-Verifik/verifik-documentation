@@ -7,16 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "gt"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/gt/cedula"
-  - "/v2/gt/cedula/extra"
+endpoint: "/v2/gt/cedula"
 sourceAnchor: "96. Cedula Guatemala extra"
 slug: "/london-stock-exchange-integration/guatemala"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/guatemala"
 ---
 
 # Guatemala — API pública Verifik
-**API path(s):** /v2/gt/cedula, /v2/gt/cedula/extra
+**API path(s):** /v2/gt/cedula
 
 ## 96. Cedula Guatemala extra
 

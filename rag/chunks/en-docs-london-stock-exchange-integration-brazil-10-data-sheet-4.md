@@ -6,24 +6,15 @@ locale: "en"
 category: "london-stock-exchange-integration"
 tags:
   - "br"
-  - "vehicle"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/br/background-check"
-  - "/v2/br/cedula"
-  - "/v2/br/company"
-  - "/v2/br/public/cedula"
-  - "/v2/br/public/vehicle"
-  - "/v2/br/vehicle"
-  - "/v2/br/vehicle/data-sheet-by-plate"
-  - "/v2/vehicle/data-sheet"
+endpoint: "/v2/br/cedula"
 sourceAnchor: "10. data sheet"
 slug: "/london-stock-exchange-integration/brazil"
 url: "https://docs.verifik.co/london-stock-exchange-integration/brazil"
 ---
 
 # Brazil: Verifik public API
-**API path(s):** /v2/br/background-check, /v2/br/cedula, /v2/br/company, /v2/br/public/cedula, /v2/br/public/vehicle, /v2/br/vehicle, /v2/br/vehicle/data-sheet-by-plate, /v2/vehicle/data-sheet
+**API path(s):** /v2/br/cedula
 
 ## 10. data sheet
 

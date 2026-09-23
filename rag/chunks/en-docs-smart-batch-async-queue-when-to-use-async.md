@@ -6,23 +6,15 @@ locale: "en"
 category: "smart-batch"
 tags:
   - "smart-batch"
-  - "co"
-  - "pe"
   - "smart-batches"
-endpoints:
-  - "/v2/co/afiliaciones"
-  - "/v2/co/cedula"
-  - "/v2/pe/cedula"
-  - "/v2/smart-batches/:id"
-  - "/v2/smart-batches/from-queue"
-  - "/v2/smart-batches/{batchid}"
+endpoint: "/v2/smart-batches/{batchid}"
 sourceAnchor: "When to use async"
 slug: "/smart-batch/async-queue"
 url: "https://docs.verifik.co/smart-batch/async-queue"
 ---
 
 # Call endpoints as queue (async)
-**API path(s):** /v2/co/afiliaciones, /v2/co/cedula, /v2/pe/cedula, /v2/smart-batches/:id, /v2/smart-batches/from-queue, /v2/smart-batches/{batchid}
+**API path(s):** /v2/smart-batches/{batchid}
 
 ## When to use async
 

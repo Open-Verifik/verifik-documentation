@@ -7,14 +7,14 @@ category: "business-validation"
 tags:
   - "pe"
   - "business-validation"
-endpoint: "/v3/pe/company"
+endpoint: "/api/pe/company"
 sourceAnchor: "Request"
 slug: "/business-validation/peru"
 url: "https://docs.verifik.co/business-validation/peru"
 ---
 
 # Peruvian Business Verification
-**API path(s):** /v3/pe/company
+**API path(s):** /api/pe/company
 
 Verifik's Business Verification API helps you authenticate Peruvian companies using official government data. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the legitimacy of companies, partners, or vendors.

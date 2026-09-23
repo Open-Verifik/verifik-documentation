@@ -6,14 +6,12 @@ locale: "es"
 category: "resources"
 tags:
   - "resources"
-endpoint: "/v3/projects"
 sourceAnchor: "Respuesta"
 slug: "/resources/proyectos/crear-un-proyecto"
 url: "https://docs.verifik.co/verifik-es/resources/proyectos/crear-un-proyecto"
 ---
 
 # Crear un proyecto
-**API path(s):** /v3/projects
 
 ## Respuesta
 

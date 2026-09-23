@@ -6,14 +6,12 @@ locale: "es"
 category: "smart-enroll-auto-alojado"
 tags:
   - "smart-enroll-auto-alojado"
-endpoint: "/v3"
 sourceAnchor: "Lo que Configurarás"
 slug: "/smart-enroll-auto-alojado"
 url: "https://docs.verifik.co/verifik-es/smart-enroll-auto-alojado"
 ---
 
 # SmartEnroll: Auto-alojado
-**API path(s):** /v3
 
 La **API de SmartEnroll** proporciona acceso programático a toda la funcionalidad de SmartEnroll, permitiéndote construir flujos personalizados de KYC e incorporación que se integran perfectamente con tus sistemas existentes. Esta solución es perfecta para empresas que necesitan más control sobre la experiencia del usuario o desean integrar la incorporación en sus aplicaciones existentes.
 

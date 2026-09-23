@@ -5,20 +5,13 @@ sourcePath: "docs/resources/phone-validations/phone-validations.mdx"
 locale: "en"
 category: "resources"
 tags:
-  - "phone-validations"
   - "resources"
-endpoints:
-  - "/v2/phone-validations"
-  - "/v2/phone-validations/app-registration"
-  - "/v2/phone-validations/manual"
-  - "/v2/phone-validations/{id}"
 sourceAnchor: "API endpoint index"
 slug: "/resources/phone-validations"
 url: "https://docs.verifik.co/resources/phone-validations"
 ---
 
 # Phone Validations
-**API path(s):** /v2/phone-validations, /v2/phone-validations/app-registration, /v2/phone-validations/manual, /v2/phone-validations/{id}
 
 ## API endpoint index
 

@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "co"
   - "identity"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/foreigner-id/ce"
+endpoint: "/v2/co/foreigner-id/ce"
 sourceAnchor: "What this API returns"
 slug: "/identity/colombia-ce"
 url: "https://docs.verifik.co/identity/colombia-ce"
 ---
 
 # Colombia — CE (Cédula de Extranjería)
-**API path(s):** /v2/co/cedula, /v2/co/foreigner-id/ce
+**API path(s):** /v2/co/foreigner-id/ce
 
 ## What this API returns
 

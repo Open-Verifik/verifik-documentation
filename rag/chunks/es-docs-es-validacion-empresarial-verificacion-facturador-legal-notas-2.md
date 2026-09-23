@@ -7,16 +7,14 @@ category: "validacion-empresarial"
 tags:
   - "co"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/co/company/dian"
-  - "/v2/co/company/dian/invoicer"
+endpoint: "/v2/co/company/dian/invoicer"
 sourceAnchor: "Notas"
 slug: "/business-validation/colombia-legal-invoicer-verification"
 url: "https://docs.verifik.co/verifik-es/business-validation/colombia-legal-invoicer-verification"
 ---
 
 # Colombia — Facturador electrónico DIAN (NIT)
-**API path(s):** /v2/co/company/dian, /v2/co/company/dian/invoicer
+**API path(s):** /v2/co/company/dian/invoicer
 
 ## Notas
 

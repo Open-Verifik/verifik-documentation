@@ -6,13 +6,10 @@ locale: "es"
 category: "smartenroll"
 tags:
   - "smartenroll"
-  - "app-registrations"
-endpoint: "/v2/app-registrations/{id}/resend-link"
 sourceAnchor: "6. Personalizar el Estilo"
 ---
 
 # SmartEnroll
-**API path(s):** /v2/app-registrations/{id}/resend-link
 
 **SmartEnroll** es una solución sin código diseñada para proporcionar incorporaciones seguras y fluidas para los usuarios. Esta plataforma permite a las empresas ofrecer diversas verificaciones de incorporación, incluyendo verificación de correo electrónico, teléfono y biométrica, validaciones de documentos, verificaciones AML, verificaciones de manipulación y más. Todas estas características están integradas en nuestro proyecto asegurando una experiencia fácil de usar y segura. Con SmartEnroll, las empresas pueden integrar fácilmente estas soluciones KYC sin la necesidad de codificación compleja o desarrollo de infraestructura.
 

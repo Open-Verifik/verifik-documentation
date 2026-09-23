@@ -6,12 +6,10 @@ locale: "es"
 category: "funciones"
 tags:
   - "funciones"
-endpoint: "/api/zelf-proof/preview"
 sourceAnchor: "Respuestas"
 ---
 
 # Vista Previa ZelfProof
-**API path(s):** /api/zelf-proof/preview
 
 ## Respuestas
 

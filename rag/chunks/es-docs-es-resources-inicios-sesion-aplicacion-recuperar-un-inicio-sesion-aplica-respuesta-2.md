@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "app-logins"
   - "resources"
-endpoints:
-  - "/v2/app-logins/66e464acbad79f3a380d408f"
-  - "/v2/app-logins/{id}"
+endpoint: "/v2/app-logins/{id}"
 sourceAnchor: "Respuesta"
 slug: "/resources/recuperar-un-inicio-sesion-aplicacion"
 url: "https://docs.verifik.co/verifik-es/resources/recuperar-un-inicio-sesion-aplicacion"
 ---
 
 # Recuperar un Inicio de Sesión de Aplicación
-**API path(s):** /v2/app-logins/66e464acbad79f3a380d408f, /v2/app-logins/{id}
+**API path(s):** /v2/app-logins/{id}
 
 ## Respuesta
 

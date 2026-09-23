@@ -7,12 +7,10 @@ category: "validacion-empresarial"
 tags:
   - "pe"
   - "validacion-empresarial"
-endpoint: "/v3/pe/company"
 sourceAnchor: "Respuesta"
 ---
 
 # Verificación Empresarial Peruana v3
-**API path(s):** /v3/pe/company
 
 ## Respuesta
 

@@ -7,14 +7,16 @@ category: "ocr-engines"
 tags:
   - "ocr"
   - "ocr-engines"
-endpoint: "/v2/ocr/scan-prompt"
+endpoints:
+  - "/api/ocr/scan-prompt"
+  - "/v2/ocr/scan-prompt"
 sourceAnchor: "Response"
 slug: "/ocr-engines/scan-prompt"
 url: "https://docs.verifik.co/ocr-engines/scan-prompt"
 ---
 
 # Scan Prompt
-**API path(s):** /v2/ocr/scan-prompt
+**API path(s):** /api/ocr/scan-prompt, /v2/ocr/scan-prompt
 
 ## Response
 

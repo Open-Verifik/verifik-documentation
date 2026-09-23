@@ -7,17 +7,14 @@ category: "vehicle-validation"
 tags:
   - "cl"
   - "vehicle-validation"
-endpoints:
-  - "/v2/cl/vehicle"
-  - "/v2/cl/vehicle-soap"
-  - "/v2/cl/vehicle/v3"
+endpoint: "/v2/cl/vehicle"
 sourceAnchor: "Vehicle Information Lookup"
 slug: "/vehicle-validation/chile"
 url: "https://docs.verifik.co/vehicle-validation/chile"
 ---
 
 # \U0001F1E8\U0001F1F1 Chile - Vehicle Information
-**API path(s):** /v2/cl/vehicle, /v2/cl/vehicle-soap, /v2/cl/vehicle/v3
+**API path(s):** /v2/cl/vehicle
 
 ## Vehicle Information Lookup
 

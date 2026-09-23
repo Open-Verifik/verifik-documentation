@@ -6,23 +6,15 @@ locale: "en"
 category: "smart-batch"
 tags:
   - "smart-batch"
-  - "co"
-  - "pe"
   - "smart-batches"
-endpoints:
-  - "/v2/co/afiliaciones"
-  - "/v2/co/cedula"
-  - "/v2/pe/cedula"
-  - "/v2/smart-batches/:id"
-  - "/v2/smart-batches/from-queue"
-  - "/v2/smart-batches/{batchid}"
+endpoint: "/v2/smart-batches/{batchid}"
 sourceAnchor: "How to get the result"
 slug: "/smart-batch/async-queue"
 url: "https://docs.verifik.co/smart-batch/async-queue"
 ---
 
 # Call endpoints as queue (async)
-**API path(s):** /v2/co/afiliaciones, /v2/co/cedula, /v2/pe/cedula, /v2/smart-batches/:id, /v2/smart-batches/from-queue, /v2/smart-batches/{batchid}
+**API path(s):** /v2/smart-batches/{batchid}
 
 Any catalog lookup can wait for the result (**sync**) or return immediately (**queue** / **Async**). Queue mode creates a one-row Smart Batch. A worker later calls the same endpoint and records the attempt. Credits are charged on that worker call, not on the enqueue.
 This page is the A–Z for calling endpoints as a queue from your backend. For the product, wizard, and dashboard, start with [SmartBatch](/smart-batch).

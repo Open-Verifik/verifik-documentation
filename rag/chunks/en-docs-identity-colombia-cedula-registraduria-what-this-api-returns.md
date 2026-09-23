@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "co"
   - "identity"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/cedula/registraduria"
+endpoint: "/v2/co/cedula/registraduria"
 sourceAnchor: "What this API returns"
 slug: "/identity/colombia-cedula-registraduria"
 url: "https://docs.verifik.co/identity/colombia-cedula-registraduria"
 ---
 
 # Colombia — Citizen lookup via Registraduría (SCCRC)
-**API path(s):** /v2/co/cedula, /v2/co/cedula/registraduria
+**API path(s):** /v2/co/cedula/registraduria
 
 ## What this API returns
 

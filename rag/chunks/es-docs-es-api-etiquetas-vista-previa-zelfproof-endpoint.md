@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/tags/preview-zelfproof"
 sourceAnchor: "Endpoint"
 ---
 
 # Vista Previa de ZelfProof
-**API path(s):** /api/tags/preview-zelfproof
 
 ## Endpoint
 

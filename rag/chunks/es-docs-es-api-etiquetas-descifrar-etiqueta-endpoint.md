@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/tags/decrypt"
 sourceAnchor: "Endpoint"
 ---
 
 # Descifrar Etiqueta
-**API path(s):** /api/tags/decrypt
 
 ## Endpoint
 

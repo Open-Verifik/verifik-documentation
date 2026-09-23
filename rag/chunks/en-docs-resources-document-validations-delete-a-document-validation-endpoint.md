@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "document-validations"
   - "resources"
-endpoints:
-  - "/v2/document-validations/document_validation_123456789"
-  - "/v2/document-validations/{id}"
+endpoint: "/v2/document-validations/{id}"
 sourceAnchor: "Endpoint"
 slug: "/resources/delete-a-document-validation"
 url: "https://docs.verifik.co/resources/delete-a-document-validation"
 ---
 
 # Delete a Document Validation
-**API path(s):** /v2/document-validations/document_validation_123456789, /v2/document-validations/{id}
+**API path(s):** /v2/document-validations/{id}
 
 ## Endpoint
 

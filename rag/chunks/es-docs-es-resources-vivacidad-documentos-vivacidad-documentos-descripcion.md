@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "document-liveness"
   - "resources"
-endpoints:
-  - "/v2/document-liveness"
-  - "/v2/document-liveness/{livenessid}"
+endpoint: "/v2/document-liveness"
 sourceAnchor: "Descripción"
 slug: "/resources/vivacidad-documentos"
 url: "https://docs.verifik.co/verifik-es/resources/vivacidad-documentos"
 ---
 
 # Vivacidad de Documentos
-**API path(s):** /v2/document-liveness, /v2/document-liveness/{livenessid}
+**API path(s):** /v2/document-liveness
 
 ## Descripción
 

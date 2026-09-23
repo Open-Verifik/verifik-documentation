@@ -6,20 +6,15 @@ locale: "es"
 category: "biometrics"
 tags:
   - "biometrics"
-  - "app-registrations"
   - "face-recognition"
-  - "face-verifications"
-endpoints:
-  - "/v2/app-registrations/:id"
-  - "/v2/face-recognition/compare"
-  - "/v2/face-verifications/:id"
+endpoint: "/v2/face-recognition/compare"
 sourceAnchor: "Respuesta"
 slug: "/comparar"
 url: "https://docs.verifik.co/verifik-es/comparar"
 ---
 
 # Comparación Facial
-**API path(s):** /v2/app-registrations/:id, /v2/face-recognition/compare, /v2/face-verifications/:id
+**API path(s):** /v2/face-recognition/compare
 
 ## Respuesta
 

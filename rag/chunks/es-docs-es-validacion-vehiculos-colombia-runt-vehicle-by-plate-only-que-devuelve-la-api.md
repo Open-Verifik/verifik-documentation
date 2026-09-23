@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/runt/vehicle-by-plate"
-  - "/v2/co/runt/vehicle-by-plate-only"
+endpoint: "/v2/co/runt/vehicle-by-plate-only"
 sourceAnchor: "Qué devuelve la API"
 slug: "/validacion-vehiculos/colombia/runt-vehicle-by-plate-only"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/runt-vehicle-by-plate-only"
 ---
 
 # RUNT - Registros de vehículos solo por placa
-**API path(s):** /v2/co/runt/vehicle-by-plate, /v2/co/runt/vehicle-by-plate-only
+**API path(s):** /v2/co/runt/vehicle-by-plate-only
 
 ## Qué devuelve la API
 

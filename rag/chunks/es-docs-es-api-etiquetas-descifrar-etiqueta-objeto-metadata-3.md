@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/tags/decrypt"
 sourceAnchor: "Objeto Metadata"
 ---
 
 # Descifrar Etiqueta
-**API path(s):** /api/tags/decrypt
 
 Descifrar un ZelfProof para acceder a datos de wallet y metadatos usando verificación biométrica facial.
 

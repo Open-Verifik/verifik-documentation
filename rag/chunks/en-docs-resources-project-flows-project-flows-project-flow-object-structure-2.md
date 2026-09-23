@@ -7,14 +7,12 @@ category: "resources"
 tags:
   - "project-flows"
   - "resources"
-endpoints:
-  - "/v2/project-flows"
-  - "/v2/project-flows/{flowid}"
+endpoint: "/v2/project-flows"
 sourceAnchor: "Project Flow Object Structure"
 ---
 
 # Project Flows
-**API path(s):** /v2/project-flows, /v2/project-flows/{flowid}
+**API path(s):** /v2/project-flows
 
 ## Project Flow Object Structure
 

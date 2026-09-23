@@ -7,16 +7,14 @@ category: "check-list"
 tags:
   - "check-lists"
   - "check-list"
-endpoints:
-  - "/v2/check-lists"
-  - "/v2/check-lists/{id}"
+endpoint: "/v2/check-lists"
 sourceAnchor: "Ejemplo de creación"
 slug: "/check-list/guia-api"
 url: "https://docs.verifik.co/verifik-es/check-list/guia-api"
 ---
 
 # Check List — Guía de API
-**API path(s):** /v2/check-lists, /v2/check-lists/{id}
+**API path(s):** /v2/check-lists
 
 Usa esta página cuando tu **backend** deba guardar el mismo playbook que guarda la UI de Smart-Agent. Para el recorrido de producto, ver [Check List](/verifik-es/check-list).
 El CRUD de Check List **no** ejecuta consultas y **no** gasta créditos. Ejecutar un servicio es una llamada normal al catálogo (la misma URL que ya usas en SmartCheck o Postman).

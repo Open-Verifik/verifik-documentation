@@ -7,14 +7,12 @@ category: "identity-validation"
 tags:
   - "br"
   - "identity-validation"
-endpoint: "/v2/br/cedula"
 sourceAnchor: "Official Sources & Reliability"
 slug: "/identity-validation/brazil"
 url: "https://docs.verifik.co/identity-validation/brazil"
 ---
 
 # Brazilian Citizen
-**API path(s):** /v2/br/cedula
 
 Verifik's Identity Verification API helps you authenticate Brazilian citizens using the Cadastro de Pessoas Físicas (CPF). It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to confirm the true identity of users, employees, or customers.

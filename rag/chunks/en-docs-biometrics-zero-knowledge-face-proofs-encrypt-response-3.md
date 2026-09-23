@@ -7,14 +7,16 @@ category: "biometrics"
 tags:
   - "biometrics"
   - "human-id"
-endpoint: "/v2/human-id/encrypt"
+endpoints:
+  - "/api/human-id/encrypt"
+  - "/v2/human-id/encrypt"
 sourceAnchor: "Response"
 slug: "/biometrics/humanID-encrypt"
 url: "https://docs.verifik.co/biometrics/humanID-encrypt"
 ---
 
 # Encrypt HumanID
-**API path(s):** /v2/human-id/encrypt
+**API path(s):** /api/human-id/encrypt, /v2/human-id/encrypt
 
 ## Response
 

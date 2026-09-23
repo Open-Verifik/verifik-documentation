@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients"
 sourceAnchor: "Endpoint"
 ---
 
 # Crear Cuenta
-**API path(s):** /api/clients
 
 ## Endpoint
 

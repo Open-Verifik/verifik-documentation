@@ -7,16 +7,12 @@ category: "validacion-empresarial"
 tags:
   - "ec"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/ec/company"
-  - "/v3/ec/company"
 sourceAnchor: "Notas"
 slug: "/validacion-empresarial/ecuador"
 url: "https://docs.verifik.co/verifik-es/validacion-empresarial/ecuador"
 ---
 
 # Verificación Empresarial Ecuatoriana
-**API path(s):** /v2/ec/company, /v3/ec/company
 
 La API de Validación Empresarial de Verifik autentica empresas ecuatorianas con datos oficiales del gobierno. Está diseñada para agilizar procesos KYB (Know Your Business), prevenir fraude y cumplir requisitos regulatorios.
 Construimos esta integración para negocios que necesitan confirmar de forma rápida, segura y automatizada la legitimidad de empresas, socios o proveedores.

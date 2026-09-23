@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "ve"
   - "identity"
-endpoints:
-  - "/v2/ve/cedula"
-  - "/v2/ve/foreigner-id"
+endpoint: "/v2/ve/cedula"
 sourceAnchor: "Parámetros"
 slug: "/identidad/venezuela"
 url: "https://docs.verifik.co/verifik-es/identidad/venezuela"
 ---
 
 # Ciudadano venezolano (CCVE)
-**API path(s):** /v2/ve/cedula, /v2/ve/foreigner-id
+**API path(s):** /v2/ve/cedula
 
 La API de Verificación de Identidad de Verifik te ayuda a autenticar ciudadanos venezolanos usando datos oficiales del gobierno. Está diseñada para agilizar tus procesos de KYC (Conozca a su Cliente), prevenir fraudes y asegurar el cumplimiento normativo sin complicaciones.
 Creamos esta integración para empresas que necesitan una forma rápida, segura y automatizada de confirmar la verdadera identidad de usuarios, empleados o clientes.

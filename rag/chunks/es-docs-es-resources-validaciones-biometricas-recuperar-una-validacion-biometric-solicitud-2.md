@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "biometric-validations"
   - "resources"
-endpoints:
-  - "/v2/biometric-validations/biometric_validation_123456789"
-  - "/v2/biometric-validations/{id}"
+endpoint: "/v2/biometric-validations/{id}"
 sourceAnchor: "Solicitud"
 slug: "/resources/validaciones-biometricas/recuperar-una-validacion-biometrica"
 url: "https://docs.verifik.co/verifik-es/resources/validaciones-biometricas/recuperar-una-validacion-biometrica"
 ---
 
 # Recuperar una Validación Biométrica
-**API path(s):** /v2/biometric-validations/biometric_validation_123456789, /v2/biometric-validations/{id}
+**API path(s):** /v2/biometric-validations/{id}
 
 ## Solicitud
 

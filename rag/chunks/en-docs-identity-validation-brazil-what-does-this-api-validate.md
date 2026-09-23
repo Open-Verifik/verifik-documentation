@@ -7,14 +7,12 @@ category: "identity-validation"
 tags:
   - "br"
   - "identity-validation"
-endpoint: "/v2/br/cedula"
 sourceAnchor: "What does this API validate?"
 slug: "/identity-validation/brazil"
 url: "https://docs.verifik.co/identity-validation/brazil"
 ---
 
 # Brazilian Citizen
-**API path(s):** /v2/br/cedula
 
 ## What does this API validate?
 

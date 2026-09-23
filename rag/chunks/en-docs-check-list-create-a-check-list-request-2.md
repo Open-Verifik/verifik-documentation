@@ -7,14 +7,16 @@ category: "check-list"
 tags:
   - "check-lists"
   - "check-list"
-endpoint: "/v2/check-lists"
+endpoints:
+  - "/api/check-lists"
+  - "/v2/check-lists"
 sourceAnchor: "Request"
 slug: "/check-list/create-a-check-list"
 url: "https://docs.verifik.co/check-list/create-a-check-list"
 ---
 
 # Create a checklist
-**API path(s):** /v2/check-lists
+**API path(s):** /api/check-lists, /v2/check-lists
 
 ## Request
 

@@ -6,14 +6,14 @@ locale: "en"
 category: "business-validation"
 tags:
   - "business-validation"
-endpoint: "/v3/co/rues-complete"
+endpoint: "/api/co/rues-complete"
 sourceAnchor: "Parameters"
 slug: "/business-validation/colombia-rues-business-information"
 url: "https://docs.verifik.co/business-validation/colombia-rues-business-information"
 ---
 
 # RUES Complete Business Validation (v3)
-**API path(s):** /v3/co/rues-complete
+**API path(s):** /api/co/rues-complete
 
 Verifik's RUES Complete Business Validation API helps you retrieve comprehensive business information from Colombia's RUES (Registro Único Empresarial y Social) registry. It's designed to streamline your KYB (Know Your Business) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 We built this integration for businesses that need a fast, secure, and automated way to access complete business information for Colombian companies, partners, or vendors.

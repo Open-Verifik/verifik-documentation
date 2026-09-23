@@ -6,16 +6,12 @@ locale: "es"
 category: "recursos"
 tags:
   - "recursos"
-endpoints:
-  - "/v3/project-flows"
-  - "/v3/project-flows/{flowid}"
 sourceAnchor: "Descripción General"
 slug: "/recursos/flujos-de-proyecto"
 url: "https://docs.verifik.co/verifik-es/recursos/flujos-de-proyecto"
 ---
 
 # Flujos de Proyecto
-**API path(s):** /v3/project-flows, /v3/project-flows/{flowid}
 
 ## Descripción General
 

@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/preview"
 sourceAnchor: "Endpoint"
 ---
 
 # Vista Previa de Etiqueta
-**API path(s):** /api/sessions, /api/tags/preview
 
 ## Endpoint
 

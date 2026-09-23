@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "ve"
   - "identity"
-endpoints:
-  - "/v2/ve/cedula"
-  - "/v2/ve/foreigner-id"
+endpoint: "/v2/ve/foreigner-id"
 sourceAnchor: "What does this API validate?"
 slug: "/identity/venezuela-foreigner-id"
 url: "https://docs.verifik.co/identity/venezuela-foreigner-id"
 ---
 
 # \U0001F1FB\U0001F1EA Venezuela - Foreigner ID (CEVE)
-**API path(s):** /v2/ve/cedula, /v2/ve/foreigner-id
+**API path(s):** /v2/ve/foreigner-id
 
 ## What does this API validate?
 

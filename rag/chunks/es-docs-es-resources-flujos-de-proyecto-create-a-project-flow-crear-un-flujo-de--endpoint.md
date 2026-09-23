@@ -6,14 +6,12 @@ locale: "es"
 category: "resources"
 tags:
   - "resources"
-endpoint: "/v3/project-flows"
 sourceAnchor: "Endpoint"
 slug: "/resources/flujos-de-proyecto/create-a-project-flow-crear-un-flujo-de-proyecto"
 url: "https://docs.verifik.co/verifik-es/resources/flujos-de-proyecto/create-a-project-flow-crear-un-flujo-de-proyecto"
 ---
 
 # Crear un Flujo de Proyecto
-**API path(s):** /v3/project-flows
 
 ## Endpoint
 

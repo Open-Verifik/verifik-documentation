@@ -7,18 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "ec"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/ec/cedula"
-  - "/v2/ec/company"
-  - "/v2/ec/vehiculo/placa"
-  - "/v2/ec/vehiculo/placa/multas"
+endpoint: "/v2/ec/cedula"
 sourceAnchor: "93. EMPRESA"
 slug: "/london-stock-exchange-integration/ecuador"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/ecuador"
 ---
 
 # Ecuador — API pública Verifik
-**API path(s):** /v2/ec/cedula, /v2/ec/company, /v2/ec/vehiculo/placa, /v2/ec/vehiculo/placa/multas
+**API path(s):** /v2/ec/cedula
 
 ## 93. EMPRESA
 

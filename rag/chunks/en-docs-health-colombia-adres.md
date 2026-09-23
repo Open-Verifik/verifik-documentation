@@ -5,15 +5,12 @@ sourcePath: "docs/health/colombia-adres.mdx"
 locale: "en"
 category: "health"
 tags:
-  - "co"
   - "health"
-endpoint: "/v2/co/adres"
 slug: "/health/colombia-adres"
 url: "https://docs.verifik.co/health/colombia-adres"
 ---
 
 # Colombia — ADRES (BDUA affiliation)
-**API path(s):** /v2/co/adres
 
 The API reference for this endpoint is maintained here:
 

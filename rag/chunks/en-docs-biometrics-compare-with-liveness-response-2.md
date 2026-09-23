@@ -7,15 +7,12 @@ category: "biometrics"
 tags:
   - "biometrics"
   - "face-recognition"
-  - "face-verifications"
-endpoints:
-  - "/v2/face-recognition/compare-with-liveness"
-  - "/v2/face-verifications/:id"
+endpoint: "/v2/face-recognition/compare-with-liveness"
 sourceAnchor: "Response"
 ---
 
 # Compare with Liveness (Sequential)
-**API path(s):** /v2/face-recognition/compare-with-liveness, /v2/face-verifications/:id
+**API path(s):** /v2/face-recognition/compare-with-liveness
 
 ## Response
 

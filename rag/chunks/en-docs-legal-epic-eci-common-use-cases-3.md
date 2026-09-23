@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "in"
   - "legal"
-endpoints:
-  - "/v2/in/epic"
-  - "/v2/in/epic/votacion"
+endpoint: "/v2/in/epic"
 sourceAnchor: "Common use cases"
 slug: "/legal/epic-eci"
 url: "https://docs.verifik.co/legal/epic-eci"
 ---
 
 # India EPIC (Voter ID) — Person & Name Lookup | Verifik
-**API path(s):** /v2/in/epic, /v2/in/epic/votacion
+**API path(s):** /v2/in/epic
 
 Verifik exposes a single REST endpoint to look up **voter name** information tied to an Indian **EPIC** (*Elector's Photo Identity Card* number) from sources aligned with the **Electoral Commission of India (ECI)**. Use it to support identity checks, onboarding flows, and compliance workflows that require confirming that a Voter ID number returns consistent registered name data.
 

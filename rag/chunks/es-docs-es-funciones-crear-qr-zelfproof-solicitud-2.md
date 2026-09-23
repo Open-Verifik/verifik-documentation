@@ -6,12 +6,10 @@ locale: "es"
 category: "funciones"
 tags:
   - "funciones"
-endpoint: "/api/zelf-proof/encrypt"
 sourceAnchor: "Solicitud"
 ---
 
 # Crear un QR-Code ZelfProof
-**API path(s):** /api/zelf-proof/encrypt
 
 ## Solicitud
 

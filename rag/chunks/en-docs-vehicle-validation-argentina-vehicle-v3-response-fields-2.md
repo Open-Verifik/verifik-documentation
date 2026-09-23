@@ -7,14 +7,12 @@ category: "vehicle-validation"
 tags:
   - "ar"
   - "vehicle-validation"
-endpoint: "/v3/ar/vehicle"
 sourceAnchor: "Response fields"
 slug: "/vehicle-validation/argentina/vehicle-v3"
 url: "https://docs.verifik.co/vehicle-validation/argentina/vehicle-v3"
 ---
 
 # Argentina - Vehicle v3
-**API path(s):** /v3/ar/vehicle
 
 ## Response fields
 

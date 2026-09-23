@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "cl"
   - "identity"
-endpoints:
-  - "/v2/cl/cedula"
-  - "/v2/cl/taxpayer"
+endpoint: "/v2/cl/taxpayer"
 sourceAnchor: "API reference"
 slug: "/identity/chile-taxpayer"
 url: "https://docs.verifik.co/identity/chile-taxpayer"
 ---
 
 # Chile — Taxpayer (RUT) lookup
-**API path(s):** /v2/cl/cedula, /v2/cl/taxpayer
+**API path(s):** /v2/cl/taxpayer
 
 ## API reference
 

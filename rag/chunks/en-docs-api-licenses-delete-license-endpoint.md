@@ -7,13 +7,13 @@ category: "api"
 tags:
   - "api"
 endpoints:
+  - "/api/licenses"
   - "/api/licenses/{licenseid}"
-  - "/api/sessions"
 sourceAnchor: "Endpoint"
 ---
 
 # Delete License
-**API path(s):** /api/licenses/{licenseid}, /api/sessions
+**API path(s):** /api/licenses, /api/licenses/{licenseid}
 
 ## Endpoint
 

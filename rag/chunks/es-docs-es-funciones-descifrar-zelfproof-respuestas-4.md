@@ -6,12 +6,10 @@ locale: "es"
 category: "funciones"
 tags:
   - "funciones"
-endpoint: "/api/zelf-proof/decrypt"
 sourceAnchor: "Respuestas"
 ---
 
 # Descifrar un ZelfProof
-**API path(s):** /api/zelf-proof/decrypt
 
 ## Respuestas
 

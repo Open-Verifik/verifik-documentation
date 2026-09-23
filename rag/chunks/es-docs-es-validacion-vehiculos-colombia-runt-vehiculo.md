@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/runt/vehicle-by-plate"
-  - "/v2/co/runt/vehiculo"
+endpoint: "/v2/co/runt/vehiculo"
 sourceAnchor: "Service URL"
 slug: "/validacion-vehiculos/colombia/runt-vehiculo"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/runt-vehiculo"
 ---
 
 # RUNT — Vehículo (registro básico)
-**API path(s):** /v2/co/runt/vehicle-by-plate, /v2/co/runt/vehiculo
+**API path(s):** /v2/co/runt/vehiculo
 
 ## Service URL
 

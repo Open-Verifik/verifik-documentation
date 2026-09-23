@@ -8,7 +8,7 @@ tags:
   - "face-recognition"
   - "resources"
 endpoints:
-  - "/v2/face-recognition/persons"
+  - "/api/face-recognition/persons/lookup"
   - "/v2/face-recognition/persons/lookup"
 sourceAnchor: "Endpoint"
 slug: "/resources/lookup-a-person"
@@ -16,7 +16,7 @@ url: "https://docs.verifik.co/resources/lookup-a-person"
 ---
 
 # Lookup a Person by Name
-**API path(s):** /v2/face-recognition/persons, /v2/face-recognition/persons/lookup
+**API path(s):** /api/face-recognition/persons/lookup, /v2/face-recognition/persons/lookup
 
 ## Endpoint
 

@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "credits"
   - "resources"
-endpoints:
-  - "/v2/credits"
-  - "/v2/credits/{creditid}"
+endpoint: "/v2/credits"
 sourceAnchor: "API Endpoints"
 slug: "/resources/credits"
 url: "https://docs.verifik.co/resources/credits"
 ---
 
 # Credits
-**API path(s):** /v2/credits, /v2/credits/{creditid}
+**API path(s):** /v2/credits
 
 ## API Endpoints
 

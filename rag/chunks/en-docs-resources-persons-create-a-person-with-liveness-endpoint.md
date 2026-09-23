@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "face-recognition"
   - "resources"
-endpoints:
-  - "/v2/face-recognition/persons/liveness"
-  - "/v2/face-recognition/persons/search-live-face"
+endpoint: "/v2/face-recognition/persons/search-live-face"
 sourceAnchor: "Endpoint"
 slug: "/resources/create-a-person-with-liveness"
 url: "https://docs.verifik.co/resources/create-a-person-with-liveness"
 ---
 
 # Create a Person with Liveness
-**API path(s):** /v2/face-recognition/persons/liveness, /v2/face-recognition/persons/search-live-face
+**API path(s):** /v2/face-recognition/persons/search-live-face
 
 ## Endpoint
 

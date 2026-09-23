@@ -7,14 +7,16 @@ category: "resources"
 tags:
   - "email-validations"
   - "resources"
-endpoint: "/v2/email-validations"
+endpoints:
+  - "/api/email-validations"
+  - "/v2/email-validations"
 sourceAnchor: "Response"
 slug: "/resources/create-an-email-validation"
 url: "https://docs.verifik.co/resources/create-an-email-validation"
 ---
 
 # Create an Email Validation
-**API path(s):** /v2/email-validations
+**API path(s):** /api/email-validations, /v2/email-validations
 
 ## Response
 

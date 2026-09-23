@@ -7,16 +7,14 @@ category: "biometrics"
 tags:
   - "biometrics"
   - "face-recognition"
-endpoints:
-  - "/v2/face-recognition/liveness"
-  - "/v2/face-recognition/liveness-score"
+endpoint: "/v2/face-recognition/liveness"
 sourceAnchor: "Endpoint"
 slug: "/deteccion-vitalidad"
 url: "https://docs.verifik.co/verifik-es/deteccion-vitalidad"
 ---
 
 # Detección de Vitalidad
-**API path(s):** /v2/face-recognition/liveness, /v2/face-recognition/liveness-score
+**API path(s):** /v2/face-recognition/liveness
 
 ## Endpoint
 

@@ -7,18 +7,14 @@ category: "identity-validation"
 tags:
   - "co"
   - "identity-validation"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/foreigner-id/ce"
-  - "/v2/co/foreigner-id/ppt"
-  - "/v2/co/procuraduria"
+endpoint: "/v2/co/cedula"
 sourceAnchor: "Notas"
 slug: "/validacion-identidad/colombia/ciudadano-colombiano"
 url: "https://docs.verifik.co/verifik-es/validacion-identidad/colombia/ciudadano-colombiano"
 ---
 
 # Ciudadano Colombiano
-**API path(s):** /v2/co/cedula, /v2/co/foreigner-id/ce, /v2/co/foreigner-id/ppt, /v2/co/procuraduria
+**API path(s):** /v2/co/cedula
 
 ## Notas
 

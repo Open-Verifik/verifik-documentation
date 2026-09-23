@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/licenses/my-license"
-  - "/api/sessions"
 sourceAnchor: "Campos de Respuesta"
 ---
 
 # Obtener Mi Licencia
-**API path(s):** /api/licenses/my-license, /api/sessions
 
 Obtener la información y estado de la licencia del usuario actual.
 

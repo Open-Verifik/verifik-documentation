@@ -8,15 +8,15 @@ tags:
   - "ocr"
   - "ocr-engines"
 endpoints:
+  - "/api/ocr/scan-prompt/template/:id"
   - "/v2/ocr/scan-prompt/template/:id"
-  - "/v2/ocr/scan-prompt/template/template_id_123"
 sourceAnchor: "Endpoint"
 slug: "/ocr-engines/scan-prompt/delete-a-scan-prompt-template"
 url: "https://docs.verifik.co/ocr-engines/scan-prompt/delete-a-scan-prompt-template"
 ---
 
 # Delete a Scan Prompt Template
-**API path(s):** /v2/ocr/scan-prompt/template/:id, /v2/ocr/scan-prompt/template/template_id_123
+**API path(s):** /api/ocr/scan-prompt/template/:id, /v2/ocr/scan-prompt/template/:id
 
 ## Endpoint
 

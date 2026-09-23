@@ -5,16 +5,11 @@ sourcePath: "docs/legal/health.md"
 locale: "en"
 category: "legal"
 tags:
-  - "co"
   - "legal"
-endpoints:
-  - "/v2/co/afiliaciones"
-  - "/v2/co/cedula/rethus"
 sourceAnchor: "Colombia — API coverage"
 ---
 
 # Health (Colombia)
-**API path(s):** /v2/co/afiliaciones, /v2/co/cedula/rethus
 
 ## Colombia — API coverage
 

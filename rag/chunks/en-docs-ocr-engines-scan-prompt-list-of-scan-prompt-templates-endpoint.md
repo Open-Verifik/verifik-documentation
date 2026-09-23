@@ -7,14 +7,16 @@ category: "ocr-engines"
 tags:
   - "ocr"
   - "ocr-engines"
-endpoint: "/v2/ocr/scan-prompt/templates"
+endpoints:
+  - "/api/ocr/scan-prompt/templates"
+  - "/v2/ocr/scan-prompt/templates"
 sourceAnchor: "Endpoint"
 slug: "/ocr-engines/scan-prompt/list-of-scan-prompt-templates"
 url: "https://docs.verifik.co/ocr-engines/scan-prompt/list-of-scan-prompt-templates"
 ---
 
 # List of Scan Prompt Templates
-**API path(s):** /v2/ocr/scan-prompt/templates
+**API path(s):** /api/ocr/scan-prompt/templates, /v2/ocr/scan-prompt/templates
 
 ## Endpoint
 

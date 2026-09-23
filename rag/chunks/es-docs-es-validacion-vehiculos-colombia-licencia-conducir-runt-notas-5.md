@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/runt/conductor"
+endpoint: "/v2/co/runt/conductor"
 sourceAnchor: "Notas"
 slug: "/validacion-vehiculos/colombia/licencia-conducir-runt"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt"
 ---
 
 # Consulta de Licencia de Conducción por Cédula en RUNT (Premium) | Verifik API Colombia
-**API path(s):** /v2/co/cedula, /v2/co/runt/conductor
+**API path(s):** /v2/co/runt/conductor
 
 La API de validación de licencias de Verifik permite consultar información oficial registrada en el Registro Único Nacional de Tránsito (RUNT) de Colombia, utilizando el número de documento de identidad del conductor.
 Esta integración es esencial para empresas de transporte, agencias de alquiler de vehículos, aseguradoras y plataformas logísticas que necesitan verificar el estado legal y la idoneidad de los conductores antes de la contratación o autorización de uso de vehículos.

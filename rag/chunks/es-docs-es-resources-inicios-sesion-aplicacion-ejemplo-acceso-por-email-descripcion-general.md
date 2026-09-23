@@ -5,21 +5,16 @@ sourcePath: "docs-es/resources/inicios-sesion-aplicacion/ejemplo-acceso-por-emai
 locale: "es"
 category: "resources"
 tags:
-  - "app-logins"
   - "email-validations"
   - "resources"
-endpoints:
-  - "/v2/app-logins/app_login_id"
-  - "/v2/app-logins/{apploginid}"
-  - "/v2/email-validations"
-  - "/v2/email-validations/validate"
+endpoint: "/v2/email-validations"
 sourceAnchor: "Descripción General"
 slug: "/resources/ejemplo-acceso-por-email"
 url: "https://docs.verifik.co/verifik-es/resources/ejemplo-acceso-por-email"
 ---
 
 # Ejemplo de Acceso por Email
-**API path(s):** /v2/app-logins/app_login_id, /v2/app-logins/{apploginid}, /v2/email-validations, /v2/email-validations/validate
+**API path(s):** /v2/email-validations
 
 ## Descripción General
 

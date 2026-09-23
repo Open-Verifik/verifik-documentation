@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "project-flows"
   - "resources"
-endpoints:
-  - "/v2/project-flows"
-  - "/v2/project-flows/{flowid}"
+endpoint: "/v2/project-flows"
 sourceAnchor: "Overview"
 slug: "/resources/project-flows"
 url: "https://docs.verifik.co/verifik-es/resources/project-flows"
 ---
 
 # Flujos de Proyecto
-**API path(s):** /v2/project-flows, /v2/project-flows/{flowid}
+**API path(s):** /v2/project-flows
 
 ## Overview
 

@@ -5,16 +5,13 @@ sourcePath: "docs-es/health/health.mdx"
 locale: "es"
 category: "health"
 tags:
-  - "co"
   - "health"
-endpoint: "/v2/co/afiliaciones"
 sourceAnchor: "Available Services"
 slug: "/health"
 url: "https://docs.verifik.co/verifik-es/health"
 ---
 
 # Verificación de Salud
-**API path(s):** /v2/co/afiliaciones
 
 ## Available Services
 

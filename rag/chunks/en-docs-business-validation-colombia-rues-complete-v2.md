@@ -7,16 +7,14 @@ category: "business-validation"
 tags:
   - "co"
   - "business-validation"
-endpoints:
-  - "/v2/co/rues"
-  - "/v2/co/rues/complete"
+endpoint: "/v2/co/rues/complete"
 sourceAnchor: "Which endpoint should I use? (v2)"
 slug: "/business-validation/colombia-rues-complete-v2"
 url: "https://docs.verifik.co/business-validation/colombia-rues-complete-v2"
 ---
 
 # Colombia — RUES complete lookup (v2, legacy)
-**API path(s):** /v2/co/rues, /v2/co/rues/complete
+**API path(s):** /v2/co/rues/complete
 
 ## Which endpoint should I use? (v2)
 

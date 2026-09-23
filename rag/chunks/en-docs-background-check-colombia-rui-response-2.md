@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "co"
   - "background-check"
-endpoints:
-  - "/v2/co/rui"
-  - "/v2/co/sisben"
+endpoint: "/v2/co/rui"
 sourceAnchor: "Response"
 slug: "/background-check/colombia-rui"
 url: "https://docs.verifik.co/background-check/colombia-rui"
 ---
 
 # Colombia — RUI Classification
-**API path(s):** /v2/co/rui, /v2/co/sisben
+**API path(s):** /v2/co/rui
 
 Verifik queries the **Registro Universal de Ingresos (RUI)** via **DNP Ventanilla Social** using **`documentType`** and **`documentNumber`**.
 :::info Replaces SISBEN

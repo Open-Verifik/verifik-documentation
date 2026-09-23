@@ -7,17 +7,12 @@ category: "validacion-vehiculos"
 tags:
   - "cl"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/cl/vehicle"
-  - "/v2/cl/vehicle-soap"
-  - "/v3/cl/vehicle"
 sourceAnchor: "Endpoint"
 slug: "/validacion-vehiculos/chile/vehicle-technical-review"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/chile/vehicle-technical-review"
 ---
 
 # 🇨🇱 Chile - Revisión técnica vehicular
-**API path(s):** /v2/cl/vehicle, /v2/cl/vehicle-soap, /v3/cl/vehicle
 
 ## Endpoint
 

@@ -7,19 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "cl"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/cl/cedula"
-  - "/v2/cl/company"
-  - "/v2/cl/driver-license"
-  - "/v2/cl/taxpayer"
-  - "/v2/cl/vehicle"
+endpoint: "/v2/cl/cedula"
 sourceAnchor: "20. Vehículo Chile"
 slug: "/london-stock-exchange-integration/chile"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/chile"
 ---
 
 # Chile — API pública Verifik
-**API path(s):** /v2/cl/cedula, /v2/cl/company, /v2/cl/driver-license, /v2/cl/taxpayer, /v2/cl/vehicle
+**API path(s):** /v2/cl/cedula
 
 ## 20. Vehículo Chile
 

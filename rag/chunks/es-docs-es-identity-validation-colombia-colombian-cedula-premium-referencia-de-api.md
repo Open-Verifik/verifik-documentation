@@ -7,16 +7,14 @@ category: "identity-validation"
 tags:
   - "co"
   - "identity-validation"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/cedula/premium"
+endpoint: "/v2/co/cedula/premium"
 sourceAnchor: "Referencia de API"
 slug: "/validacion-identidad/colombia/cedula-premium-cc"
 url: "https://docs.verifik.co/verifik-es/validacion-identidad/colombia/cedula-premium-cc"
 ---
 
 # Colombia — Cédula nacional premium (CC)
-**API path(s):** /v2/co/cedula, /v2/co/cedula/premium
+**API path(s):** /v2/co/cedula/premium
 
 ## Referencia de API
 

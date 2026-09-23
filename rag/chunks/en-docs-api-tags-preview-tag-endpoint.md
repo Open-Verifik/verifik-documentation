@@ -6,14 +6,12 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/preview"
+endpoint: "/api/tags/preview"
 sourceAnchor: "Endpoint"
 ---
 
 # Preview Tag
-**API path(s):** /api/sessions, /api/tags/preview
+**API path(s):** /api/tags/preview
 
 ## Endpoint
 

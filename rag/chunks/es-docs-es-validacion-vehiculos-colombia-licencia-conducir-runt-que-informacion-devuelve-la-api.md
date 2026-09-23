@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/runt/conductor"
+endpoint: "/v2/co/runt/conductor"
 sourceAnchor: "¿Qué información devuelve la API?"
 slug: "/validacion-vehiculos/colombia/licencia-conducir-runt"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt"
 ---
 
 # Consulta de Licencia de Conducción por Cédula en RUNT (Premium) | Verifik API Colombia
-**API path(s):** /v2/co/cedula, /v2/co/runt/conductor
+**API path(s):** /v2/co/runt/conductor
 
 ## ¿Qué información devuelve la API?
 

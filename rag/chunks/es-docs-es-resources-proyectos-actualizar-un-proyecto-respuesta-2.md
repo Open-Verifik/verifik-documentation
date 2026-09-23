@@ -6,16 +6,10 @@ locale: "es"
 category: "resources"
 tags:
   - "resources"
-endpoints:
-  - "/v3/projects/${projectid}"
-  - "/v3/projects/%s"
-  - "/v3/projects/{id}"
-  - "/v3/projects/{project_id}"
 sourceAnchor: "Respuesta"
 ---
 
 # Actualizar un proyecto
-**API path(s):** /v3/projects/${projectid}, /v3/projects/%s, /v3/projects/{id}, /v3/projects/{project_id}
 
 ## Respuesta
 

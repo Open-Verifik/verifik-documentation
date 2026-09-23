@@ -7,17 +7,14 @@ category: "recursos"
 tags:
   - "face-recognition"
   - "recursos"
-endpoints:
-  - "/v2/face-recognition/persons"
-  - "/v2/face-recognition/persons/liveness"
-  - "/v2/face-recognition/persons/{personid}"
+endpoint: "/v2/face-recognition/persons"
 sourceAnchor: "Descripción General"
 slug: "/recursos/personas"
 url: "https://docs.verifik.co/verifik-es/recursos/personas"
 ---
 
 # Personas
-**API path(s):** /v2/face-recognition/persons, /v2/face-recognition/persons/liveness, /v2/face-recognition/persons/{personid}
+**API path(s):** /v2/face-recognition/persons
 
 ## Descripción General
 

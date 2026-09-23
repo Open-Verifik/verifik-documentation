@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients/auth"
 sourceAnchor: "Notas"
 ---
 
 # Autenticar
-**API path(s):** /api/clients/auth
 
 Autenticar un cliente usando verificación biométrica facial.
 

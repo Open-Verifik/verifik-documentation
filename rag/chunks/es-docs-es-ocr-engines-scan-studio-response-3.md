@@ -7,16 +7,14 @@ category: "ocr-engines"
 tags:
   - "ocr"
   - "ocr-engines"
-endpoints:
-  - "/v2/ocr/scan-studio"
-  - "/v3/ocr/scan-studio"
+endpoint: "/v2/ocr/scan-studio"
 sourceAnchor: "Response"
 slug: "/ocr-engines/escaneo-estudio"
 url: "https://docs.verifik.co/verifik-es/ocr-engines/escaneo-estudio"
 ---
 
 # Escaneo Estudio
-**API path(s):** /v2/ocr/scan-studio, /v3/ocr/scan-studio
+**API path(s):** /v2/ocr/scan-studio
 
 ## Response
 

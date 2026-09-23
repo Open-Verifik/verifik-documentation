@@ -8,7 +8,8 @@ tags:
   - "app-logins"
   - "resources"
 endpoints:
-  - "/v2/app-logins/66e464acbad79f3a380d408f"
+  - "/api/app-logins"
+  - "/v2/app-logins"
   - "/v2/app-logins/{id}"
 sourceAnchor: "Response"
 slug: "/resources/retrieve-an-app-login"
@@ -16,7 +17,7 @@ url: "https://docs.verifik.co/resources/retrieve-an-app-login"
 ---
 
 # Retrieve an App Login
-**API path(s):** /v2/app-logins/66e464acbad79f3a380d408f, /v2/app-logins/{id}
+**API path(s):** /api/app-logins, /v2/app-logins, /v2/app-logins/{id}
 
 ## Response
 

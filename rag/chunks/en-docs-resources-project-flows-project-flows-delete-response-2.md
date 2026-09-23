@@ -6,16 +6,12 @@ locale: "en"
 category: "resources"
 tags:
   - "resources"
-endpoints:
-  - "/v3/project-flows/${flowid}"
-  - "/v3/project-flows/%s"
-  - "/v3/project-flows/{flow_id}"
-  - "/v3/project-flows/{id}"
+endpoint: "/api/project-flows"
 sourceAnchor: "Response"
 ---
 
 # Delete Project Flow
-**API path(s):** /v3/project-flows/${flowid}, /v3/project-flows/%s, /v3/project-flows/{flow_id}, /v3/project-flows/{id}
+**API path(s):** /api/project-flows
 
 ## Response
 

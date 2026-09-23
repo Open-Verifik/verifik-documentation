@@ -6,17 +6,12 @@ locale: "es"
 category: "resources"
 tags:
   - "resources"
-endpoints:
-  - "/v3/project-flows/${flowid}"
-  - "/v3/project-flows/{flow_id}"
-  - "/v3/project-flows/{id}"
 sourceAnchor: "Endpoint"
 slug: "/resources/project-flows/retrieve-a-project-flow"
 url: "https://docs.verifik.co/verifik-es/resources/project-flows/retrieve-a-project-flow"
 ---
 
 # Recuperar un Flujo de Proyecto
-**API path(s):** /v3/project-flows/${flowid}, /v3/project-flows/{flow_id}, /v3/project-flows/{id}
 
 ## Endpoint
 

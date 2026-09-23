@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "document-validations"
   - "resources"
-endpoints:
-  - "/v2/document-validations"
-  - "/v2/document-validations/{validationid}"
+endpoint: "/v2/document-validations"
 sourceAnchor: "Overview"
 slug: "/resources/document-validations"
 url: "https://docs.verifik.co/resources/document-validations"
 ---
 
 # Document Validations
-**API path(s):** /v2/document-validations, /v2/document-validations/{validationid}
+**API path(s):** /v2/document-validations
 
 ## Overview
 

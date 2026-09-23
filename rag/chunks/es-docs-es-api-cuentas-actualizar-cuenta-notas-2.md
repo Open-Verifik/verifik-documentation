@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients/sync"
 sourceAnchor: "Notas"
 ---
 
 # Actualizar Cuenta
-**API path(s):** /api/clients/sync
 
 Actualizar la información de una cuenta de cliente existente.
 

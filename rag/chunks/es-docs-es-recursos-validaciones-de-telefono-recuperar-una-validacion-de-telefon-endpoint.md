@@ -7,16 +7,14 @@ category: "recursos"
 tags:
   - "phone-validations"
   - "recursos"
-endpoints:
-  - "/v2/phone-validations/phone_validation_123456789"
-  - "/v2/phone-validations/{id}"
+endpoint: "/v2/phone-validations/{id}"
 sourceAnchor: "Endpoint"
 slug: "/recursos/validaciones-de-telefono/recuperar-una-validacion-de-telefono"
 url: "https://docs.verifik.co/verifik-es/recursos/validaciones-de-telefono/recuperar-una-validacion-de-telefono"
 ---
 
 # Recuperar una Validación de Teléfono
-**API path(s):** /v2/phone-validations/phone_validation_123456789, /v2/phone-validations/{id}
+**API path(s):** /v2/phone-validations/{id}
 
 ## Endpoint
 

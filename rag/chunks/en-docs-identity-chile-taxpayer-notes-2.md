@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "cl"
   - "identity"
-endpoints:
-  - "/v2/cl/cedula"
-  - "/v2/cl/taxpayer"
+endpoint: "/v2/cl/taxpayer"
 sourceAnchor: "Notes"
 slug: "/identity/chile-taxpayer"
 url: "https://docs.verifik.co/identity/chile-taxpayer"
 ---
 
 # Chile — Taxpayer (RUT) lookup
-**API path(s):** /v2/cl/cedula, /v2/cl/taxpayer
+**API path(s):** /v2/cl/taxpayer
 
 Use this endpoint when you need **taxpayer-oriented** identity data for a Chilean **RUT** (not the civil-registry cedula flow). It complements **[Identity verification in Chile](/identity/chile)** (`v2/cl/cedula`), which is tuned to **RUN/civil** lookup.
 

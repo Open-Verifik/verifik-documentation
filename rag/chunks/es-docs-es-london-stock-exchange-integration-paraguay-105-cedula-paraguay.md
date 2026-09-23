@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "py"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/py/cic"
-  - "/v2/py/company"
-  - "/v2/py/vehicle"
+endpoint: "/v2/py/cic"
 sourceAnchor: "105. Cedula Paraguay"
 slug: "/london-stock-exchange-integration/paraguay"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/paraguay"
 ---
 
 # Paraguay — API pública Verifik
-**API path(s):** /v2/py/cic, /v2/py/company, /v2/py/vehicle
+**API path(s):** /v2/py/cic
 
 ## 105. Cedula Paraguay
 

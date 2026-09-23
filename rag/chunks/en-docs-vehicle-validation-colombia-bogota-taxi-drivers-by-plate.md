@@ -7,14 +7,12 @@ category: "vehicle-validation"
 tags:
   - "co"
   - "vehicle-validation"
-endpoints:
-  - "/v2/co/bogota/taxi-drivers/plate"
-  - "/v2/co/bogota/taxi-drivers/plate/wmn482"
+endpoint: "/v2/co/bogota/taxi-drivers/plate"
 sourceAnchor: "Endpoint"
 ---
 
 # Bogotá Taxi Driver Information by Plate
-**API path(s):** /v2/co/bogota/taxi-drivers/plate, /v2/co/bogota/taxi-drivers/plate/wmn482
+**API path(s):** /v2/co/bogota/taxi-drivers/plate
 
 ## Endpoint
 

@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "mx"
   - "identity"
-endpoints:
-  - "/v2/mx/curp"
-  - "/v2/mx/ine"
-  - "/v2/mx/ine/ocr"
+endpoint: "/v2/mx/ine/ocr"
 sourceAnchor: "API reference"
 slug: "/identity/mexico-ine-ocr"
 url: "https://docs.verifik.co/identity/mexico-ine-ocr"
 ---
 
 # Mexico — INE OCR
-**API path(s):** /v2/mx/curp, /v2/mx/ine, /v2/mx/ine/ocr
+**API path(s):** /v2/mx/ine/ocr
 
 ## API reference
 

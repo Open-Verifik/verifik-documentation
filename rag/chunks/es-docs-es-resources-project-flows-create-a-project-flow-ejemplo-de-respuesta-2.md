@@ -6,14 +6,12 @@ locale: "es"
 category: "resources"
 tags:
   - "resources"
-endpoint: "/v3/project-flows"
 sourceAnchor: "Ejemplo de Respuesta"
 slug: "/resources/project-flows/create-a-project-flow"
 url: "https://docs.verifik.co/verifik-es/resources/project-flows/create-a-project-flow"
 ---
 
 # Crear un Flujo de Proyecto
-**API path(s):** /v3/project-flows
 
 ## Ejemplo de Respuesta
 

@@ -7,12 +7,14 @@ category: "resources"
 tags:
   - "phone-validations"
   - "resources"
-endpoint: "/v2/phone-validations"
+endpoints:
+  - "/api/phone-validations"
+  - "/v2/phone-validations"
 sourceAnchor: "Endpoint"
 ---
 
 # Validate an App Registration Phone Validation
-**API path(s):** /v2/phone-validations
+**API path(s):** /api/phone-validations, /v2/phone-validations
 
 ## Endpoint
 

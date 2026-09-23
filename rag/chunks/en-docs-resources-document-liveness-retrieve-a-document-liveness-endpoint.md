@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "document-liveness"
   - "resources"
-endpoints:
-  - "/v2/document-liveness/document_liveness_123456789"
-  - "/v2/document-liveness/{id}"
+endpoint: "/v2/document-liveness/{id}"
 sourceAnchor: "Endpoint"
 slug: "/resources/retrieve-a-document-liveness"
 url: "https://docs.verifik.co/resources/retrieve-a-document-liveness"
 ---
 
 # Retrieve a Document Liveness Validation
-**API path(s):** /v2/document-liveness/document_liveness_123456789, /v2/document-liveness/{id}
+**API path(s):** /v2/document-liveness/{id}
 
 ## Endpoint
 

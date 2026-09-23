@@ -7,12 +7,10 @@ category: "functions"
 tags:
   - "authentication"
   - "functions"
-endpoint: "/api/clients/auth"
 sourceAnchor: "Authentication endpoint"
 ---
 
 # Authentication
-**API path(s):** /api/clients/auth
 
 ## Authentication endpoint
 

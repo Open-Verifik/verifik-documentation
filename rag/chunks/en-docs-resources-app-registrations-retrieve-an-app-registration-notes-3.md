@@ -6,19 +6,16 @@ locale: "en"
 category: "resources"
 tags:
   - "app-registrations"
-  - "face-verifications"
   - "resources"
 endpoints:
-  - "/v2/app-registrations/${appregistrationid}"
-  - "/v2/app-registrations/%s"
-  - "/v2/app-registrations/{app_registration_id}"
+  - "/api/app-registrations"
+  - "/v2/app-registrations"
   - "/v2/app-registrations/{id}"
-  - "/v2/face-verifications/:id"
 sourceAnchor: "Notes"
 ---
 
 # Get App Registration
-**API path(s):** /v2/app-registrations/${appregistrationid}, /v2/app-registrations/%s, /v2/app-registrations/{app_registration_id}, /v2/app-registrations/{id}, /v2/face-verifications/:id
+**API path(s):** /api/app-registrations, /v2/app-registrations, /v2/app-registrations/{id}
 
 ## Notes
 

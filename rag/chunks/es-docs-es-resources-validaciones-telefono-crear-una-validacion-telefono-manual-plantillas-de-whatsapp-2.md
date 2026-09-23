@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "phone-validations"
   - "resources"
-endpoints:
-  - "/v2/phone-validations"
-  - "/v2/phone-validations/manual"
+endpoint: "/v2/phone-validations/manual"
 sourceAnchor: "Plantillas de WhatsApp"
 slug: "/resources/crear-una-validacion-telefono-manual"
 url: "https://docs.verifik.co/verifik-es/resources/crear-una-validacion-telefono-manual"
 ---
 
 # Crear una Validación de Teléfono manual
-**API path(s):** /v2/phone-validations, /v2/phone-validations/manual
+**API path(s):** /v2/phone-validations/manual
 
 ## Plantillas de WhatsApp
 

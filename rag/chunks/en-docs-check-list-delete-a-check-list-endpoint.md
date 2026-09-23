@@ -8,9 +8,8 @@ tags:
   - "check-lists"
   - "check-list"
 endpoints:
+  - "/api/check-lists"
   - "/v2/check-lists"
-  - "/v2/check-lists/${id}"
-  - "/v2/check-lists/{check_list_id}"
   - "/v2/check-lists/{id}"
 sourceAnchor: "Endpoint"
 slug: "/check-list/delete-a-check-list"
@@ -18,7 +17,7 @@ url: "https://docs.verifik.co/check-list/delete-a-check-list"
 ---
 
 # Delete a checklist
-**API path(s):** /v2/check-lists, /v2/check-lists/${id}, /v2/check-lists/{check_list_id}, /v2/check-lists/{id}
+**API path(s):** /api/check-lists, /v2/check-lists, /v2/check-lists/{id}
 
 ## Endpoint
 

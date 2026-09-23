@@ -5,18 +5,13 @@ sourcePath: "docs/resources/support-tickets/support-tickets.mdx"
 locale: "en"
 category: "resources"
 tags:
-  - "support-tickets"
   - "resources"
-endpoints:
-  - "/v2/support-tickets"
-  - "/v2/support-tickets/:id"
 sourceAnchor: "Overview"
 slug: "/resources/support-tickets"
 url: "https://docs.verifik.co/resources/support-tickets"
 ---
 
 # Support Tickets
-**API path(s):** /v2/support-tickets, /v2/support-tickets/:id
 
 ## Overview
 

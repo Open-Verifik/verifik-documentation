@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/search"
 sourceAnchor: "Respuesta"
 ---
 
 # Buscar Etiqueta
-**API path(s):** /api/sessions, /api/tags/search
 
 Buscar una etiqueta en cualquier nombre de dominio soportado (Zelf, Avax, BDAG, u otros dominios licenciados).
 

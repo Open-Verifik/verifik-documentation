@@ -6,14 +6,12 @@ locale: "en"
 category: "resources"
 tags:
   - "resources"
-endpoint: "/webhook"
 sourceAnchor: "Now we are ready to create the webhook object in Verifik"
 slug: "/resources/webhook-integration"
 url: "https://docs.verifik.co/resources/webhook-integration"
 ---
 
 # Webhook Integration
-**API path(s):** /webhook
 
 ## Now we are ready to create the webhook object in Verifik
 

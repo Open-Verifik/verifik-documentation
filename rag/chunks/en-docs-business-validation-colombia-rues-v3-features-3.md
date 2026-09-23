@@ -5,18 +5,15 @@ sourcePath: "docs/business-validation/colombia-rues-v3.mdx"
 locale: "en"
 category: "business-validation"
 tags:
-  - "co"
   - "business-validation"
-endpoints:
-  - "/v2/co/rues"
-  - "/v3/co/rues"
+endpoint: "/api/co/rues"
 sourceAnchor: "Features"
 slug: "/business-validation/colombia-rues-v3"
 url: "https://docs.verifik.co/business-validation/colombia-rues-v3"
 ---
 
 # Colombia — RUES business lookup (v3)
-**API path(s):** /v2/co/rues, /v3/co/rues
+**API path(s):** /api/co/rues
 
 Verifik queries **RUES** (*Registro Único Empresarial y Social*) for a Colombian legal entity using **`NIT`**, a **registry category**, and returns a **normalized basic record** for that category (commercial registry, RUP proponent, tourism, non-profits, etc.). This is the **lighter** **`/v3/co/rues`** integration; use **`/v3/co/rues-complete`** when you need the **full** dossier (representatives, economic activities, establishments, and more).
 

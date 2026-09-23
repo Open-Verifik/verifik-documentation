@@ -7,16 +7,14 @@ category: "business-validation"
 tags:
   - "co"
   - "business-validation"
-endpoints:
-  - "/v2/co/company/dian"
-  - "/v2/co/company/dian/invoicer"
+endpoint: "/v2/co/company/dian/invoicer"
 sourceAnchor: "What does this API validate?"
 slug: "/business-validation/colombia-legal-invoicer-verification"
 url: "https://docs.verifik.co/business-validation/colombia-legal-invoicer-verification"
 ---
 
 # Colombia Legal Invoicer Verification
-**API path(s):** /v2/co/company/dian, /v2/co/company/dian/invoicer
+**API path(s):** /v2/co/company/dian/invoicer
 
 ## What does this API validate?
 

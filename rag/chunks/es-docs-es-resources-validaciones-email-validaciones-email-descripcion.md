@@ -7,17 +7,14 @@ category: "resources"
 tags:
   - "email-validations"
   - "resources"
-endpoints:
-  - "/v2/email-validations"
-  - "/v2/email-validations/{validationid}"
-  - "/v2/email-validations/{validationid}/validate"
+endpoint: "/v2/email-validations"
 sourceAnchor: "Descripción"
 slug: "/resources/validaciones-email"
 url: "https://docs.verifik.co/verifik-es/resources/validaciones-email"
 ---
 
 # Validaciones de Email
-**API path(s):** /v2/email-validations, /v2/email-validations/{validationid}, /v2/email-validations/{validationid}/validate
+**API path(s):** /v2/email-validations
 
 ## Descripción
 

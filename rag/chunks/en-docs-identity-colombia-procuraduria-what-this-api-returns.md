@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "co"
   - "identity"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/procuraduria"
-  - "/v2/co/procuraduria/antecedentes"
+endpoint: "/v2/co/procuraduria"
 sourceAnchor: "What this API returns"
 slug: "/identity/colombia-procuraduria"
 url: "https://docs.verifik.co/identity/colombia-procuraduria"
 ---
 
 # Colombia — Citizen lookup via Procuraduría
-**API path(s):** /v2/co/cedula, /v2/co/procuraduria, /v2/co/procuraduria/antecedentes
+**API path(s):** /v2/co/procuraduria
 
 ## What this API returns
 

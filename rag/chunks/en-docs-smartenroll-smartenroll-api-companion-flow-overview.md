@@ -7,31 +7,14 @@ category: "smartenroll"
 tags:
   - "smartenroll"
   - "app-registrations"
-  - "biometric-validations"
-  - "document-validations"
-  - "face-recognition"
-  - "face-verifications"
-  - "identity-images"
-endpoints:
-  - "/v2/app-registrations/:id"
-  - "/v2/app-registrations/:id/resend-link"
-  - "/v2/app-registrations/{id}"
-  - "/v2/biometric-validations/app-registration"
-  - "/v2/document-validations/app-registration"
-  - "/v2/face-recognition/compare"
-  - "/v2/face-recognition/compare-with-liveness"
-  - "/v2/face-recognition/compare/app-registration"
-  - "/v2/face-recognition/liveness"
-  - "/v2/face-recognition/liveness-score"
-  - "/v2/face-verifications/:id"
-  - "/v2/identity-images/appregistration"
+endpoint: "/v2/app-registrations/{id}"
 sourceAnchor: "Flow overview"
 slug: "/smartenroll/api-companion"
 url: "https://docs.verifik.co/smartenroll/api-companion"
 ---
 
 # SmartEnroll API Companion
-**API path(s):** /v2/app-registrations/:id, /v2/app-registrations/:id/resend-link, /v2/app-registrations/{id}, /v2/biometric-validations/app-registration, /v2/document-validations/app-registration, /v2/face-recognition/compare, /v2/face-recognition/compare-with-liveness, /v2/face-recognition/compare/app-registration, /v2/face-recognition/liveness, /v2/face-recognition/liveness-score, /v2/face-verifications/:id, /v2/identity-images/appregistration
+**API path(s):** /v2/app-registrations/{id}
 
 ## Flow overview
 

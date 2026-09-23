@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/adres"
-  - "/v2/co/afiliaciones"
+endpoint: "/v2/co/adres"
 sourceAnchor: "Response"
 slug: "/legal/colombia-adres"
 url: "https://docs.verifik.co/legal/colombia-adres"
 ---
 
 # Colombia — ADRES (BDUA affiliation)
-**API path(s):** /v2/co/adres, /v2/co/afiliaciones
+**API path(s):** /v2/co/adres
 
 Verifik queries **ADRES** (*Administradora de los Recursos del Sistema General de Seguridad Social en Salud*) / **BDUA** affiliation status using **`documentType`** and **`documentNumber`**.
 Use this endpoint when you need **EPS affiliation**, **regime**, and **status** from ADRES/BDUA. It is **not** the same as [`GET /v2/co/afiliaciones`](/legal/verify-colombian-affiliations), which returns a broader RUAF/SISPRO social-security bundle (EPS, ARL, pension, cajas, cesantías) and requires a document issue **`date`**.

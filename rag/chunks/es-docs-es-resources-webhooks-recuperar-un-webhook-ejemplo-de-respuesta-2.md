@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "webhooks"
   - "resources"
-endpoints:
-  - "/v2/webhooks/66de320d6a5c6ef0e02d4223"
-  - "/v2/webhooks/{id}"
+endpoint: "/v2/webhooks/{id}"
 sourceAnchor: "Ejemplo de Respuesta"
 slug: "/resources/webhooks/retrieve-a-webhook"
 url: "https://docs.verifik.co/verifik-es/resources/webhooks/retrieve-a-webhook"
 ---
 
 # Recuperar un Webhook
-**API path(s):** /v2/webhooks/66de320d6a5c6ef0e02d4223, /v2/webhooks/{id}
+**API path(s):** /v2/webhooks/{id}
 
 ## Ejemplo de Respuesta
 

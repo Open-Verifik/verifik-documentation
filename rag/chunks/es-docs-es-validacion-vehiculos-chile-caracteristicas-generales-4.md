@@ -7,17 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "cl"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/cl/vehicle"
-  - "/v2/cl/vehicle-soap"
-  - "/v2/cl/vehicle/v3"
+endpoint: "/v2/cl/vehicle"
 sourceAnchor: "Características Generales"
 slug: "/validacion-vehiculos/chile"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/chile"
 ---
 
 # 🇨🇱 Chile - Información de Vehículos
-**API path(s):** /v2/cl/vehicle, /v2/cl/vehicle-soap, /v2/cl/vehicle/v3
+**API path(s):** /v2/cl/vehicle
 
 El servicio de validación de vehículos chilenos proporciona capacidades de verificación integrales para información vehicular. Este servicio te permite recuperar información detallada sobre vehículos registrados en Chile.
 Endpoints vehiculares relacionados en Chile:

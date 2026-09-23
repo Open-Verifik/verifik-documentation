@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/search-by-domain"
 sourceAnchor: "Endpoint"
 ---
 
 # Buscar Etiquetas por Dominio
-**API path(s):** /api/sessions, /api/tags/search-by-domain
 
 ## Endpoint
 

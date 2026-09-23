@@ -9,8 +9,6 @@ tags:
   - "check-list"
 endpoints:
   - "/v2/check-lists"
-  - "/v2/check-lists/${id}"
-  - "/v2/check-lists/{check_list_id}"
   - "/v2/check-lists/{id}"
 sourceAnchor: "Response"
 slug: "/check-list/actualizar-un-check-list"
@@ -18,7 +16,7 @@ url: "https://docs.verifik.co/verifik-es/check-list/actualizar-un-check-list"
 ---
 
 # Actualizar una checklist
-**API path(s):** /v2/check-lists, /v2/check-lists/${id}, /v2/check-lists/{check_list_id}, /v2/check-lists/{id}
+**API path(s):** /v2/check-lists, /v2/check-lists/{id}
 
 ## Response
 

@@ -6,20 +6,15 @@ locale: "en"
 category: "biometrics"
 tags:
   - "biometrics"
-  - "app-registrations"
   - "face-recognition"
-  - "face-verifications"
-endpoints:
-  - "/v2/app-registrations/:id"
-  - "/v2/face-recognition/compare"
-  - "/v2/face-verifications/:id"
+endpoint: "/v2/face-recognition/compare"
 sourceAnchor: "Endpoint"
 slug: "/biometrics/compare"
 url: "https://docs.verifik.co/biometrics/compare"
 ---
 
 # Face Comparison
-**API path(s):** /v2/app-registrations/:id, /v2/face-recognition/compare, /v2/face-verifications/:id
+**API path(s):** /v2/face-recognition/compare
 
 ## Endpoint
 

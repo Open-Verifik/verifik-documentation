@@ -5,20 +5,13 @@ sourcePath: "docs-es/resources/validaciones-telefono/validaciones-telefono.mdx"
 locale: "es"
 category: "resources"
 tags:
-  - "phone-validations"
   - "resources"
-endpoints:
-  - "/v2/phone-validations"
-  - "/v2/phone-validations/app-registration"
-  - "/v2/phone-validations/manual"
-  - "/v2/phone-validations/{id}"
 sourceAnchor: "¿Qué es una Validación de Teléfono?"
 slug: "/resources/validaciones-telefono"
 url: "https://docs.verifik.co/verifik-es/resources/validaciones-telefono"
 ---
 
 # Validaciones de Teléfono
-**API path(s):** /v2/phone-validations, /v2/phone-validations/app-registration, /v2/phone-validations/manual, /v2/phone-validations/{id}
 
 ## ¿Qué es una Validación de Teléfono?
 

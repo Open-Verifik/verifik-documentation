@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients/sync"
 sourceAnchor: "Endpoint"
 ---
 
 # Actualizar Cuenta
-**API path(s):** /api/clients/sync
 
 ## Endpoint
 

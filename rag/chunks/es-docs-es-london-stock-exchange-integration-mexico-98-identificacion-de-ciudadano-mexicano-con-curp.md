@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "mx"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/mx/company"
-  - "/v2/mx/curp"
-  - "/v2/mx/vehiculo/placa"
+endpoint: "/v2/mx/curp"
 sourceAnchor: "98. Identificación de Ciudadano Mexicano con CURP"
 slug: "/london-stock-exchange-integration/mexico"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/mexico"
 ---
 
 # México — API pública Verifik
-**API path(s):** /v2/mx/company, /v2/mx/curp, /v2/mx/vehiculo/placa
+**API path(s):** /v2/mx/curp
 
 ## 98. Identificación de Ciudadano Mexicano con CURP
 

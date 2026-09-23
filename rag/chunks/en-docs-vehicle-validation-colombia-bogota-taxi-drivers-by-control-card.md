@@ -7,14 +7,12 @@ category: "vehicle-validation"
 tags:
   - "co"
   - "vehicle-validation"
-endpoints:
-  - "/v2/co/bogota/taxi-drivers/card/3002873"
-  - "/v2/co/bogota/taxi-drivers/card/{controlcardnumber}"
+endpoint: "/v2/co/bogota/taxi-drivers/card"
 sourceAnchor: "Endpoint"
 ---
 
 # Bogotá Taxi Driver Information by Control Card
-**API path(s):** /v2/co/bogota/taxi-drivers/card/3002873, /v2/co/bogota/taxi-drivers/card/{controlcardnumber}
+**API path(s):** /v2/co/bogota/taxi-drivers/card
 
 ## Endpoint
 

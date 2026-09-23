@@ -7,16 +7,14 @@ category: "validacion-empresarial"
 tags:
   - "co"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/co/rues"
-  - "/v2/co/rues/complete"
+endpoint: "/v2/co/rues"
 sourceAnchor: "Notas"
 slug: "/validacion-empresarial/colombia-registro-empresarial-rues"
 url: "https://docs.verifik.co/verifik-es/validacion-empresarial/colombia-registro-empresarial-rues"
 ---
 
 # Colombia - Registro Empresarial RUES
-**API path(s):** /v2/co/rues, /v2/co/rues/complete
+**API path(s):** /v2/co/rues
 
 Consulta **básica** en RUES por **NIT** (API v2, legado). Devuelve datos esenciales de registro; para el expediente completo en v2 usa `GET /v2/co/rues/complete`.
 

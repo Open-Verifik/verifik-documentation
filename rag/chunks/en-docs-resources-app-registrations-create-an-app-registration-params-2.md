@@ -7,12 +7,14 @@ category: "resources"
 tags:
   - "app-registrations"
   - "resources"
-endpoint: "/v2/app-registrations"
+endpoints:
+  - "/api/app-registrations"
+  - "/v2/app-registrations"
 sourceAnchor: "Params"
 ---
 
 # Create an App Registration
-**API path(s):** /v2/app-registrations
+**API path(s):** /api/app-registrations, /v2/app-registrations
 
 ## Params
 

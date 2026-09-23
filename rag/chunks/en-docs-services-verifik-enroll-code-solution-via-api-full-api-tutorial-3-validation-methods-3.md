@@ -6,14 +6,12 @@ locale: "en"
 category: "services"
 tags:
   - "services"
-endpoint: "/v2"
 sourceAnchor: "3. Validation Methods"
 slug: "/services/verifik-enroll-code-solution-via-api/full-api-tutorial"
 url: "https://docs.verifik.co/services/verifik-enroll-code-solution-via-api/full-api-tutorial"
 ---
 
 # Enroll
-**API path(s):** /v2
 
 ## 3. Validation Methods
 

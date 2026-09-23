@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "mx"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/mx/company"
-  - "/v2/mx/curp"
-  - "/v2/mx/vehiculo/placa"
+endpoint: "/v2/mx/curp"
 sourceAnchor: "100. VEHICLE"
 slug: "/london-stock-exchange-integration/mexico"
 url: "https://docs.verifik.co/london-stock-exchange-integration/mexico"
 ---
 
 # Mexico — Verifik public API
-**API path(s):** /v2/mx/company, /v2/mx/curp, /v2/mx/vehiculo/placa
+**API path(s):** /v2/mx/curp
 
 ## 100. VEHICLE
 

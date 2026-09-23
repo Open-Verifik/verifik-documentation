@@ -7,16 +7,12 @@ category: "resources"
 tags:
   - "app-registrations"
   - "resources"
-endpoints:
-  - "/v2/app-registrations/${appregistrationid}/sync"
-  - "/v2/app-registrations/%s/sync"
-  - "/v2/app-registrations/{app_registration_id}/sync"
-  - "/v2/app-registrations/{id}/sync"
+endpoint: "/v2/app-registrations/{id}/sync"
 sourceAnchor: "Common Use Cases"
 ---
 
 # Sincronizar Estado de Registro de Aplicación
-**API path(s):** /v2/app-registrations/${appregistrationid}/sync, /v2/app-registrations/%s/sync, /v2/app-registrations/{app_registration_id}/sync, /v2/app-registrations/{id}/sync
+**API path(s):** /v2/app-registrations/{id}/sync
 
 ## Common Use Cases
 

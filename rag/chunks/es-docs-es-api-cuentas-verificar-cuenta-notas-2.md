@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients"
 sourceAnchor: "Notas"
 ---
 
 # Verificar Cuenta
-**API path(s):** /api/clients
 
 Verificar si existe una cuenta de cliente basada en email o número de teléfono.
 

@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "document-validations"
   - "resources"
-endpoints:
-  - "/v2/document-validations/document_validation_123456789"
-  - "/v2/document-validations/{id}"
+endpoint: "/v2/document-validations/{id}"
 sourceAnchor: "Respuesta"
 slug: "/resources/eliminar-una-validacion-documento"
 url: "https://docs.verifik.co/verifik-es/resources/eliminar-una-validacion-documento"
 ---
 
 # Eliminar una Validación de Documento
-**API path(s):** /v2/document-validations/document_validation_123456789, /v2/document-validations/{id}
+**API path(s):** /v2/document-validations/{id}
 
 ## Respuesta
 

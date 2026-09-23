@@ -6,14 +6,12 @@ locale: "es"
 category: "identity"
 tags:
   - "identity"
-endpoint: "/v3/pe/cedula/extra"
 sourceAnchor: "Respuesta"
 slug: "/identidad/peru-id-completo"
 url: "https://docs.verifik.co/verifik-es/identidad/peru-id-completo"
 ---
 
 # 🇵🇪 Perú - ID Completo
-**API path(s):** /v3/pe/cedula/extra
 
 Esta llamada API realiza una verificación extendida de identidad para un ciudadano peruano usando su número de DNI (Documento Nacional de Identidad). Este Servicio recupera información personal detallada. Devuelve datos como el nombre completo del individuo, primer nombre, apellido, estado civil, fecha de nacimiento, número de documento, fechas de expedición y vencimiento, y detalles adicionales como dirección y firma de verificación, certificado por Verifik.
 **El header de Authorization es requerido para autenticación para acceder a esta información de forma segura.**

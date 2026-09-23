@@ -7,19 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/rama/proceso"
-  - "/v2/co/rama/proceso/${processnumber}"
-  - "/v2/co/rama/proceso/\\(processnumber"
-  - "/v2/co/rama/proceso/{$processnumber}"
-  - "/v2/co/rama/proceso/{process_number}"
+endpoint: "/v2/co/rama/proceso"
 sourceAnchor: "Endpoint"
 slug: "/legal/recuperar-detalles-proceso-legal-por-numero"
 url: "https://docs.verifik.co/verifik-es/legal/recuperar-detalles-proceso-legal-por-numero"
 ---
 
 # Recuperar Detalles de un Proceso Legal por Número
-**API path(s):** /v2/co/rama/proceso, /v2/co/rama/proceso/${processnumber}, /v2/co/rama/proceso/\(processnumber, /v2/co/rama/proceso/{$processnumber}, /v2/co/rama/proceso/{process_number}
+**API path(s):** /v2/co/rama/proceso
 
 ## Endpoint
 

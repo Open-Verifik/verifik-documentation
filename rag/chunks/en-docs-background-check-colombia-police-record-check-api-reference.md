@@ -7,16 +7,14 @@ category: "background-check"
 tags:
   - "co"
   - "background-check"
-endpoints:
-  - "/v2/co/policia/consultar"
-  - "/v2/co/policia/rnmc"
+endpoint: "/v2/co/policia/consultar"
 sourceAnchor: "API Reference"
 slug: "/background-check/colombia-police-record-check"
 url: "https://docs.verifik.co/background-check/colombia-police-record-check"
 ---
 
 # Colombia - Colombian Police Record Check
-**API path(s):** /v2/co/policia/consultar, /v2/co/policia/rnmc
+**API path(s):** /v2/co/policia/consultar
 
 ## API Reference
 

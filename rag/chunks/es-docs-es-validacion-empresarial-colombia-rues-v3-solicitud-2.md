@@ -5,18 +5,13 @@ sourcePath: "docs-es/validacion-empresarial/colombia-rues-v3.mdx"
 locale: "es"
 category: "validacion-empresarial"
 tags:
-  - "co"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/co/rues"
-  - "/v3/co/rues"
 sourceAnchor: "Solicitud"
 slug: "/business-validation/colombia-rues-v3"
 url: "https://docs.verifik.co/verifik-es/business-validation/colombia-rues-v3"
 ---
 
 # Colombia — Consulta RUES (v3)
-**API path(s):** /v2/co/rues, /v3/co/rues
 
 Verifik consulta **RUES** (*Registro Único Empresarial y Social*) con **`NIT`**, **categoría** de registro y devuelve un **resumen** normalizado para esa línea. Es el endpoint **básico** **`/v3/co/rues`**; para el **expediente completo** usa **`/v3/co/rues-complete`**.
 

@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/simit/comparendo"
-  - "/v2/co/simit/comparendos"
+endpoint: "/v2/co/simit/comparendo"
 sourceAnchor: "Respuesta"
 slug: "/validacion-vehiculos/colombia/simit-comparendo-detalles"
 url: "https://docs.verifik.co/verifik-es/validacion-vehiculos/colombia/simit-comparendo-detalles"
 ---
 
 # SIMIT - Detalles de comparendo
-**API path(s):** /v2/co/simit/comparendo, /v2/co/simit/comparendos
+**API path(s):** /v2/co/simit/comparendo
 
 ## Respuesta
 

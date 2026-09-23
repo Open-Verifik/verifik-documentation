@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/licenses"
-  - "/api/sessions"
 sourceAnchor: "Endpoint"
 ---
 
 # Crear Licencia
-**API path(s):** /api/licenses, /api/sessions
 
 ## Endpoint
 

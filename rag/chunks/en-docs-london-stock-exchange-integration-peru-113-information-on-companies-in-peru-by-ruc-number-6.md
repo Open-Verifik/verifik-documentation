@@ -7,20 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "pe"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/pe/cedula"
-  - "/v2/pe/cedula/extra"
-  - "/v2/pe/empresa"
-  - "/v2/pe/foreigner-id/ce"
-  - "/v2/pe/vehiculo/placa"
-  - "/v2/pe/vehiculo/soat"
+endpoint: "/v2/pe/vehiculo/placa"
 sourceAnchor: "113. Information on Companies in Peru by RUC Number"
 slug: "/london-stock-exchange-integration/peru"
 url: "https://docs.verifik.co/london-stock-exchange-integration/peru"
 ---
 
 # Peru — Verifik public API
-**API path(s):** /v2/pe/cedula, /v2/pe/cedula/extra, /v2/pe/empresa, /v2/pe/foreigner-id/ce, /v2/pe/vehiculo/placa, /v2/pe/vehiculo/soat
+**API path(s):** /v2/pe/vehiculo/placa
 
 ## 113. Information on Companies in Peru by RUC Number
 

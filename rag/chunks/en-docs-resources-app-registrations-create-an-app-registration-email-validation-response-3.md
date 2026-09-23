@@ -7,12 +7,14 @@ category: "resources"
 tags:
   - "email-validations"
   - "resources"
-endpoint: "/v2/email-validations/app-registration"
+endpoints:
+  - "/api/email-validations/app-registration"
+  - "/v2/email-validations/app-registration"
 sourceAnchor: "Response"
 ---
 
 # Create an App Registration Email Validation
-**API path(s):** /v2/email-validations/app-registration
+**API path(s):** /api/email-validations/app-registration, /v2/email-validations/app-registration
 
 ## Response
 

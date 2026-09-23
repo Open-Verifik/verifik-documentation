@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "email-validations"
   - "resources"
-endpoints:
-  - "/v2/email-validations/email_validation_123456789/validate"
-  - "/v2/email-validations/{id}/validate"
+endpoint: "/v2/email-validations/{id}/validate"
 sourceAnchor: "Respuesta"
 slug: "/resources/validaciones-de-correo-electronico/validar-la-validacion-de-correo-electronico"
 url: "https://docs.verifik.co/verifik-es/resources/validaciones-de-correo-electronico/validar-la-validacion-de-correo-electronico"
 ---
 
 # Validar la Validación de Correo Electrónico
-**API path(s):** /v2/email-validations/email_validation_123456789/validate, /v2/email-validations/{id}/validate
+**API path(s):** /v2/email-validations/{id}/validate
 
 ## Respuesta
 

@@ -7,16 +7,14 @@ category: "services"
 tags:
   - "phone"
   - "services"
-endpoints:
-  - "/v2/phone/send-sms"
-  - "/v2/phone/verify-otp"
+endpoint: "/v2/phone/send-sms"
 sourceAnchor: "Video Tutorial"
 slug: "/services/verifik-access-code-solution-via-api/ejemplo-acceso-telefonico"
 url: "https://docs.verifik.co/verifik-es/services/verifik-access-code-solution-via-api/ejemplo-acceso-telefonico"
 ---
 
 # Ejemplo de Acceso Telefónico
-**API path(s):** /v2/phone/send-sms, /v2/phone/verify-otp
+**API path(s):** /v2/phone/send-sms
 
 Esta guía te muestra cómo implementar acceso telefónico usando la API de Verifik. El flujo incluye la creación de validaciones de teléfono (SMS o WhatsApp) y la validación del código OTP.
 

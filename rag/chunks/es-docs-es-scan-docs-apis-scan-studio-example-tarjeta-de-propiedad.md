@@ -6,14 +6,12 @@ locale: "es"
 category: "scan-docs-apis"
 tags:
   - "scan-docs-apis"
-endpoint: "/v3/ocr/scan-studio"
 sourceAnchor: "Endpoint"
 slug: "/scan-docs-apis/scan-studio/example-tarjeta-de-propiedad"
 url: "https://docs.verifik.co/verifik-es/scan-docs-apis/scan-studio/example-tarjeta-de-propiedad"
 ---
 
 # Ejemplo - Tarjeta de Propiedad
-**API path(s):** /v3/ocr/scan-studio
 
 ## Endpoint
 

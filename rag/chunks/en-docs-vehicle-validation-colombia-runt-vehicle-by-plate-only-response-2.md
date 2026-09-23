@@ -7,16 +7,14 @@ category: "vehicle-validation"
 tags:
   - "co"
   - "vehicle-validation"
-endpoints:
-  - "/v2/co/runt/vehicle-by-plate"
-  - "/v2/co/runt/vehicle-by-plate-only"
+endpoint: "/v2/co/runt/vehicle-by-plate-only"
 sourceAnchor: "Response"
 slug: "/vehicle-validation/colombia/runt-vehicle-by-plate-only"
 url: "https://docs.verifik.co/vehicle-validation/colombia/runt-vehicle-by-plate-only"
 ---
 
 # RUNT - Vehicle Records by Plate Only
-**API path(s):** /v2/co/runt/vehicle-by-plate, /v2/co/runt/vehicle-by-plate-only
+**API path(s):** /v2/co/runt/vehicle-by-plate-only
 
 Query official RUNT vehicle information using **only** the license plate. Unlike [Vehicle records by plate](/vehicle-validation/colombia/runt-vehicle-by-plate), this endpoint does **not** require the owner's `documentType` or `documentNumber`.
 Use it when you need name, technical, and status blocks for a Colombian plate without an owner document on hand.

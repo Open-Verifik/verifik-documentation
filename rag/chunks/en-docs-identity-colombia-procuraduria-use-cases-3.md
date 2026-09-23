@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "co"
   - "identity"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/procuraduria"
-  - "/v2/co/procuraduria/antecedentes"
+endpoint: "/v2/co/procuraduria"
 sourceAnchor: "Use cases"
 slug: "/identity/colombia-procuraduria"
 url: "https://docs.verifik.co/identity/colombia-procuraduria"
 ---
 
 # Colombia — Citizen lookup via Procuraduría
-**API path(s):** /v2/co/cedula, /v2/co/procuraduria, /v2/co/procuraduria/antecedentes
+**API path(s):** /v2/co/procuraduria
 
 Validate a Colombian document number and extract **names** from **Procuraduría General de la Nación**. This is the official source that supports *Cédula de ciudadanía* (**CC**), *Cédula de extranjería* (**CE**), *Permiso Especial de Permanencia* (**PEP**), *NIT*, and *Permiso por Protección Temporal* (**PPT**).
 Unlike [citizen by document](/identity-validation/colombia/colombian-citizen) (`/v2/co/cedula`), this endpoint hits **Procuraduría only** — it does **not** try DIAN, ADRES, or Registraduría. Unlike [disciplinary records](/background-check/colombia-disciplinary-records-attorneys-office) (`/v2/co/procuraduria/antecedentes`), it does **not** return `antecedentes` or `legend`.

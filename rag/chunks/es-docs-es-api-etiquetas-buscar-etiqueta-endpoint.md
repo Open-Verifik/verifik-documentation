@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/search"
 sourceAnchor: "Endpoint"
 ---
 
 # Buscar Etiqueta
-**API path(s):** /api/sessions, /api/tags/search
 
 ## Endpoint
 

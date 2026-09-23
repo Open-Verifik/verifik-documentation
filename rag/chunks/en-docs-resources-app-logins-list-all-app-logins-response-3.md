@@ -7,14 +7,16 @@ category: "resources"
 tags:
   - "app-logins"
   - "resources"
-endpoint: "/v2/app-logins"
+endpoints:
+  - "/api/app-logins"
+  - "/v2/app-logins"
 sourceAnchor: "Response"
 slug: "/resources/list-all-app-logins"
 url: "https://docs.verifik.co/resources/list-all-app-logins"
 ---
 
 # List All App Logins
-**API path(s):** /v2/app-logins
+**API path(s):** /api/app-logins, /v2/app-logins
 
 ## Response
 

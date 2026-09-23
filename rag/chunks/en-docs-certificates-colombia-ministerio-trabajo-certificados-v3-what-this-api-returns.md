@@ -5,18 +5,15 @@ sourcePath: "docs/certificates/colombia-ministerio-trabajo-certificados-v3.mdx"
 locale: "en"
 category: "certificates"
 tags:
-  - "co"
   - "certificates"
-endpoints:
-  - "/v2/co/ministerio-de-trabajo/certificados"
-  - "/v3/co/ministerio-de-trabajo/certificados"
+endpoint: "/api/co/ministerio-de-trabajo/certificados"
 sourceAnchor: "What this API returns"
 slug: "/certificates/colombia-ministerio-trabajo-certificados-v3"
 url: "https://docs.verifik.co/certificates/colombia-ministerio-trabajo-certificados-v3"
 ---
 
 # Colombia — Ministry of Labor certificates (v3)
-**API path(s):** /v2/co/ministerio-de-trabajo/certificados, /v3/co/ministerio-de-trabajo/certificados
+**API path(s):** /api/co/ministerio-de-trabajo/certificados
 
 ## What this API returns
 

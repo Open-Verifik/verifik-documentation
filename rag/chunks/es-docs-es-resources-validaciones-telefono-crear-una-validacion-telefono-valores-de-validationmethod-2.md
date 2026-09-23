@@ -7,17 +7,14 @@ category: "resources"
 tags:
   - "phone-validations"
   - "resources"
-endpoints:
-  - "/v2/phone-validations"
-  - "/v2/phone-validations/app-registration"
-  - "/v2/phone-validations/manual"
+endpoint: "/v2/phone-validations"
 sourceAnchor: "Valores de `validationMethod`"
 slug: "/resources/crear-una-validacion-telefono"
 url: "https://docs.verifik.co/verifik-es/resources/crear-una-validacion-telefono"
 ---
 
 # Crear una Validación de Teléfono
-**API path(s):** /v2/phone-validations, /v2/phone-validations/app-registration, /v2/phone-validations/manual
+**API path(s):** /v2/phone-validations
 
 ## Valores de `validationMethod`
 

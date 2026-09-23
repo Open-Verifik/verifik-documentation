@@ -7,16 +7,12 @@ category: "vehicle-validation"
 tags:
   - "co"
   - "vehicle-validation"
-endpoints:
-  - "/v2/co/runt/conductor"
-  - "/v3/co/runt/conductor"
 sourceAnchor: "Request"
 slug: "/vehicle-validation/colombia/runt-drivers-license-basic"
 url: "https://docs.verifik.co/vehicle-validation/colombia/runt-drivers-license-basic"
 ---
 
 # RUNT - Driver's License (Basic)
-**API path(s):** /v2/co/runt/conductor, /v3/co/runt/conductor
 
 Same RUNT driver lookup as [Premium v2](/vehicle-validation/colombia/runt-drivers-license), billed at the **current conductor price**. You must send `primerApellido`. Omitting it returns `409 MissingParameter`.
 Use this path when you already know the first last name. If you stay on v2 and send `primerApellido`, you also pay this Basic rate without changing the URL.

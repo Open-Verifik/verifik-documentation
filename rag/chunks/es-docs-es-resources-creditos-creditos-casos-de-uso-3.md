@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "credits"
   - "resources"
-endpoints:
-  - "/v2/credits"
-  - "/v2/credits/{creditid}"
+endpoint: "/v2/credits"
 sourceAnchor: "Casos de Uso"
 slug: "/resources/creditos"
 url: "https://docs.verifik.co/verifik-es/resources/creditos"
 ---
 
 # Créditos
-**API path(s):** /v2/credits, /v2/credits/{creditid}
+**API path(s):** /v2/credits
 
 ## Casos de Uso
 

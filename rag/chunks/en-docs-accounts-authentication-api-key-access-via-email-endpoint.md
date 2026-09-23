@@ -9,15 +9,15 @@ tags:
   - "projects"
   - "accounts"
 endpoints:
+  - "/api/projects/email-login"
   - "/v2/projects/email-login"
-  - "/v2/projects/email-login/confirm"
 sourceAnchor: "Endpoint"
 slug: "/accounts/authentication/api-key-access-via-email"
 url: "https://docs.verifik.co/accounts/authentication/api-key-access-via-email"
 ---
 
 # API Key Access via Email
-**API path(s):** /v2/projects/email-login, /v2/projects/email-login/confirm
+**API path(s):** /api/projects/email-login, /v2/projects/email-login
 
 ## Endpoint
 

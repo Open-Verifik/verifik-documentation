@@ -7,16 +7,14 @@ category: "legal"
 tags:
   - "co"
   - "legal"
-endpoints:
-  - "/v2/co/legal-process/123456789"
-  - "/v2/co/legal-process/{casenumber}"
+endpoint: "/v2/co/legal-process/{casenumber}"
 sourceAnchor: "Endpoint"
 slug: "/legal/court-case-records-lookup"
 url: "https://docs.verifik.co/verifik-es/legal/court-case-records-lookup"
 ---
 
 # Consulta de Expedientes Judiciales
-**API path(s):** /v2/co/legal-process/123456789, /v2/co/legal-process/{casenumber}
+**API path(s):** /v2/co/legal-process/{casenumber}
 
 ## Endpoint
 

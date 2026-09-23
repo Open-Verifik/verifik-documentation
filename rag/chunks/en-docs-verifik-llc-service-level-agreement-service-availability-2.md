@@ -5,18 +5,13 @@ sourcePath: "docs/verifik-llc/service-level-agreement.md"
 locale: "en"
 category: "verifik-llc"
 tags:
-  - "co"
   - "verifik-llc"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/cedula/premium"
 sourceAnchor: "Service Availability"
 slug: "/verifik-llc/service-level-agreement"
 url: "https://docs.verifik.co/verifik-llc/service-level-agreement"
 ---
 
 # Service Level Agreement
-**API path(s):** /v2/co/cedula, /v2/co/cedula/premium
 
 ## Service Availability
 

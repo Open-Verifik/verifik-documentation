@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients/sync/password"
 sourceAnchor: "Endpoint"
 ---
 
 # Cambiar Contraseña
-**API path(s):** /api/clients/sync/password
 
 ## Endpoint
 

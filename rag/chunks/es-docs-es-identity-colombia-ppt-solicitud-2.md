@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "co"
   - "identity"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/foreigner-id/ppt"
+endpoint: "/v2/co/foreigner-id/ppt"
 sourceAnchor: "Solicitud"
 slug: "/identidad/colombia-ppt"
 url: "https://docs.verifik.co/verifik-es/identidad/colombia-ppt"
 ---
 
 # Colombia — PPT (Permiso de Protección Temporal)
-**API path(s):** /v2/co/cedula, /v2/co/foreigner-id/ppt
+**API path(s):** /v2/co/foreigner-id/ppt
 
 Validación del **PPT** ante **Migración Colombia** para KYC, programas sociales y cumplimiento.
 

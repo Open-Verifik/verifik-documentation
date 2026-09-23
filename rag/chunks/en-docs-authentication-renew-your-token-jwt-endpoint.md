@@ -7,14 +7,16 @@ category: "authentication"
 tags:
   - "authentication"
   - "auth"
-endpoint: "/v2/auth/session"
+endpoints:
+  - "/api/auth/session"
+  - "/v2/auth/session"
 sourceAnchor: "Endpoint"
 slug: "/authentication/renew-your-token-jwt"
 url: "https://docs.verifik.co/authentication/renew-your-token-jwt"
 ---
 
 # Renew your token (JWT)
-**API path(s):** /v2/auth/session
+**API path(s):** /api/auth/session, /v2/auth/session
 
 ## Endpoint
 

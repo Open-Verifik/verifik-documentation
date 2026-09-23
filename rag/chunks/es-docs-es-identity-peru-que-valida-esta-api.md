@@ -7,14 +7,12 @@ category: "identity"
 tags:
   - "pe"
   - "identity"
-endpoint: "/v3/pe/cedula"
 sourceAnchor: "¿Qué valida esta API?"
 slug: "/identidad/peru"
 url: "https://docs.verifik.co/verifik-es/identidad/peru"
 ---
 
 # Ciudadano Peruano v3
-**API path(s):** /v3/pe/cedula
 
 ## ¿Qué valida esta API?
 

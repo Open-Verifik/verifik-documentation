@@ -6,14 +6,12 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/licenses/my-license"
-  - "/api/sessions"
+endpoint: "/api/licenses/my-license"
 sourceAnchor: "Endpoint"
 ---
 
 # Get My License
-**API path(s):** /api/licenses/my-license, /api/sessions
+**API path(s):** /api/licenses/my-license
 
 ## Endpoint
 

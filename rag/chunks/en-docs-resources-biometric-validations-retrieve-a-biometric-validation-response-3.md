@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "biometric-validations"
   - "resources"
-endpoints:
-  - "/v2/biometric-validations/biometric_validation_123456789"
-  - "/v2/biometric-validations/{id}"
+endpoint: "/v2/biometric-validations/{id}"
 sourceAnchor: "Response"
 slug: "/resources/retrieve-a-biometric-validation"
 url: "https://docs.verifik.co/resources/retrieve-a-biometric-validation"
 ---
 
 # Retrieve a Biometric Validation
-**API path(s):** /v2/biometric-validations/biometric_validation_123456789, /v2/biometric-validations/{id}
+**API path(s):** /v2/biometric-validations/{id}
 
 ## Response
 

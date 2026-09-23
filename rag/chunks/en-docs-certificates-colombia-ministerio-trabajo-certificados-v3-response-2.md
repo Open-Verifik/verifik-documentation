@@ -5,18 +5,15 @@ sourcePath: "docs/certificates/colombia-ministerio-trabajo-certificados-v3.mdx"
 locale: "en"
 category: "certificates"
 tags:
-  - "co"
   - "certificates"
-endpoints:
-  - "/v2/co/ministerio-de-trabajo/certificados"
-  - "/v3/co/ministerio-de-trabajo/certificados"
+endpoint: "/api/co/ministerio-de-trabajo/certificados"
 sourceAnchor: "Response"
 slug: "/certificates/colombia-ministerio-trabajo-certificados-v3"
 url: "https://docs.verifik.co/certificates/colombia-ministerio-trabajo-certificados-v3"
 ---
 
 # Colombia — Ministry of Labor certificates (v3)
-**API path(s):** /v2/co/ministerio-de-trabajo/certificados, /v3/co/ministerio-de-trabajo/certificados
+**API path(s):** /api/co/ministerio-de-trabajo/certificados
 
 This endpoint returns **Ministry of Labor** certificate information for a Colombian individual, including data associated with **height / occupational safety** training (*curso de alturas*), sourced from Verifik’s **Bogotá microservice**. The **v3** handler returns the **full microservice payload** and exposes certificate rows under **`records`** (mapped from the upstream `constances` field).
 Use it for **employment compliance**, **contractor onboarding**, and **workplace safety** checks where this registry is allowed.

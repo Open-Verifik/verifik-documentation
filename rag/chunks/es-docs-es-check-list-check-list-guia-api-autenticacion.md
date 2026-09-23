@@ -7,16 +7,14 @@ category: "check-list"
 tags:
   - "check-lists"
   - "check-list"
-endpoints:
-  - "/v2/check-lists"
-  - "/v2/check-lists/{id}"
+endpoint: "/v2/check-lists"
 sourceAnchor: "Autenticación"
 slug: "/check-list/guia-api"
 url: "https://docs.verifik.co/verifik-es/check-list/guia-api"
 ---
 
 # Check List — Guía de API
-**API path(s):** /v2/check-lists, /v2/check-lists/{id}
+**API path(s):** /v2/check-lists
 
 ## Autenticación
 

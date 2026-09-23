@@ -7,14 +7,12 @@ category: "validaciones-de-identidad"
 tags:
   - "pe"
   - "validaciones-de-identidad"
-endpoint: "/v3/pe/cedula"
 sourceAnchor: "Beneficios Clave"
 slug: "/validaciones-de-identidad/peru/ciudadano-peruano"
 url: "https://docs.verifik.co/verifik-es/validaciones-de-identidad/peru/ciudadano-peruano"
 ---
 
 # Ciudadano Peruano v3
-**API path(s):** /v3/pe/cedula
 
 La API de Verificación de Identidad de Verifik te ayuda a autenticar ciudadanos peruanos usando el Documento Nacional de Identidad (DNI). Está diseñada para agilizar tus procesos de KYC (Conozca a su Cliente), prevenir fraudes y asegurar el cumplimiento normativo sin complicaciones.
 Creamos esta integración para empresas que necesitan una forma rápida, segura y automatizada de confirmar la verdadera identidad de usuarios, empleados o clientes.

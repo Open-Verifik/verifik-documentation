@@ -8,7 +8,8 @@ tags:
   - "email-validations"
   - "resources"
 endpoints:
-  - "/v2/email-validations/email_validation_123456789/validate"
+  - "/api/email-validations/validate"
+  - "/v2/email-validations/validate"
   - "/v2/email-validations/{id}/validate"
 sourceAnchor: "Response"
 slug: "/resources/validate-an-email-validation"
@@ -16,7 +17,7 @@ url: "https://docs.verifik.co/resources/validate-an-email-validation"
 ---
 
 # Validate an Email Validation
-**API path(s):** /v2/email-validations/email_validation_123456789/validate, /v2/email-validations/{id}/validate
+**API path(s):** /api/email-validations/validate, /v2/email-validations/validate, /v2/email-validations/{id}/validate
 
 ## Response
 

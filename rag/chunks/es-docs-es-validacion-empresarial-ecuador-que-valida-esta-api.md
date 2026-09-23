@@ -7,16 +7,12 @@ category: "validacion-empresarial"
 tags:
   - "ec"
   - "validacion-empresarial"
-endpoints:
-  - "/v2/ec/company"
-  - "/v3/ec/company"
 sourceAnchor: "¿Qué valida esta API?"
 slug: "/validacion-empresarial/ecuador"
 url: "https://docs.verifik.co/verifik-es/validacion-empresarial/ecuador"
 ---
 
 # Verificación Empresarial Ecuatoriana
-**API path(s):** /v2/ec/company, /v3/ec/company
 
 ## ¿Qué valida esta API?
 

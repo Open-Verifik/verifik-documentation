@@ -6,14 +6,12 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/licenses"
-  - "/api/sessions"
+endpoint: "/api/licenses"
 sourceAnchor: "Response Fields"
 ---
 
 # Create License
-**API path(s):** /api/licenses, /api/sessions
+**API path(s):** /api/licenses
 
 Create a new license for a user or organization.
 

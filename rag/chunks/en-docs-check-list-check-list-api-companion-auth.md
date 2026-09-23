@@ -7,16 +7,14 @@ category: "check-list"
 tags:
   - "check-lists"
   - "check-list"
-endpoints:
-  - "/v2/check-lists"
-  - "/v2/check-lists/{id}"
+endpoint: "/v2/check-lists"
 sourceAnchor: "Auth"
 slug: "/check-list/api-companion"
 url: "https://docs.verifik.co/check-list/api-companion"
 ---
 
 # Check List API companion
-**API path(s):** /v2/check-lists, /v2/check-lists/{id}
+**API path(s):** /v2/check-lists
 
 ## Auth
 

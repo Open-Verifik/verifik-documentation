@@ -6,14 +6,12 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/lease-recovery"
+endpoint: "/api/tags/lease-recovery"
 sourceAnchor: "Examples"
 ---
 
 # Lease Recovery
-**API path(s):** /api/sessions, /api/tags/lease-recovery
+**API path(s):** /api/tags/lease-recovery
 
 Recover a tag using an existing ZelfProof from a previously leased tag. This endpoint allows you to create a new tag with the same wallet data from a previous tag.
 

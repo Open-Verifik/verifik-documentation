@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "document-validations"
   - "resources"
-endpoints:
-  - "/v2/document-validations/document_validation_123456789"
-  - "/v2/document-validations/{id}"
+endpoint: "/v2/document-validations/{id}"
 sourceAnchor: "Response"
 slug: "/resources/retrieve-a-document-validation"
 url: "https://docs.verifik.co/resources/retrieve-a-document-validation"
 ---
 
 # Retrieve a Document Validation
-**API path(s):** /v2/document-validations/document_validation_123456789, /v2/document-validations/{id}
+**API path(s):** /v2/document-validations/{id}
 
 ## Response
 

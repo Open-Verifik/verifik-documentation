@@ -6,12 +6,10 @@ locale: "es"
 category: "funciones"
 tags:
   - "funciones"
-endpoint: "/api/clients/auth"
 sourceAnchor: "Autenticación endpoint"
 ---
 
 # Autenticación
-**API path(s):** /api/clients/auth
 
 ## Autenticación endpoint
 

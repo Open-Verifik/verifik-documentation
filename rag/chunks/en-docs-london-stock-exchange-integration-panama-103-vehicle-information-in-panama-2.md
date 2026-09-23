@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "pa"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/pa/cedula"
-  - "/v2/pa/company"
-  - "/v2/pa/vehiculo/placa"
+endpoint: "/v2/pa/cedula"
 sourceAnchor: "103. Vehicle Information in Panama"
 slug: "/london-stock-exchange-integration/panama"
 url: "https://docs.verifik.co/london-stock-exchange-integration/panama"
 ---
 
 # Panama — Verifik public API
-**API path(s):** /v2/pa/cedula, /v2/pa/company, /v2/pa/vehiculo/placa
+**API path(s):** /v2/pa/cedula
 
 ## 103. Vehicle Information in Panama
 

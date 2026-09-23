@@ -7,17 +7,14 @@ category: "legal"
 tags:
   - "in"
   - "legal"
-endpoints:
-  - "/v2/in/epic"
-  - "/v2/in/epic**](/legal/epic-eci"
-  - "/v2/in/epic/votacion"
+endpoint: "/v2/in/epic/votacion"
 sourceAnchor: "Request"
 slug: "/legal/voting-eci-epic"
 url: "https://docs.verifik.co/legal/voting-eci-epic"
 ---
 
 # India EPIC (Voter ID) — Polling & voting location | Verifik
-**API path(s):** /v2/in/epic, /v2/in/epic**](/legal/epic-eci, /v2/in/epic/votacion
+**API path(s):** /v2/in/epic/votacion
 
 This endpoint returns **where the voter is assigned to vote**: assembly, district, part (polling-section) details, building name, and related location fields—based on a valid **10-character EPIC** (*Elector's Photo Identity Card* number). It complements the [name-lookup API](/legal/epic-eci) when you need **polling-place context** for logistics, support, or compliance checks.
 

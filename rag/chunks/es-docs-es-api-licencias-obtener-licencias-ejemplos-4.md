@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/licenses"
-  - "/api/sessions"
 sourceAnchor: "Ejemplos"
 ---
 
 # Obtener Licencias
-**API path(s):** /api/licenses, /api/sessions
 
 Obtener una lista de todas las licencias disponibles en el sistema.
 

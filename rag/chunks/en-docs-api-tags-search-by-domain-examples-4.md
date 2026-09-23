@@ -6,14 +6,12 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/search-by-domain"
+endpoint: "/api/tags/search-by-domain"
 sourceAnchor: "Examples"
 ---
 
 # Search Tags by Domain
-**API path(s):** /api/sessions, /api/tags/search-by-domain
+**API path(s):** /api/tags/search-by-domain
 
 Search for all tags within a specific domain and storage system.
 

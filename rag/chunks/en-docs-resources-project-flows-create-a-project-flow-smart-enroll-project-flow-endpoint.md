@@ -7,14 +7,16 @@ category: "resources"
 tags:
   - "project-flows"
   - "resources"
-endpoint: "/v2/project-flows"
+endpoints:
+  - "/api/project-flows"
+  - "/v2/project-flows"
 sourceAnchor: "Endpoint"
 slug: "/resources/project-flows/create-a-project-flow/smart-enroll-project-flow"
 url: "https://docs.verifik.co/resources/project-flows/create-a-project-flow/smart-enroll-project-flow"
 ---
 
 # Smart Enroll Project Flow
-**API path(s):** /v2/project-flows
+**API path(s):** /api/project-flows, /v2/project-flows
 
 ## Endpoint
 

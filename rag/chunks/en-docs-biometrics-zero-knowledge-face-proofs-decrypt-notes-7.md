@@ -7,14 +7,16 @@ category: "biometrics"
 tags:
   - "biometrics"
   - "human-id"
-endpoint: "/v2/human-id/decrypt"
+endpoints:
+  - "/api/human-id/decrypt"
+  - "/v2/human-id/decrypt"
 sourceAnchor: "Notes"
 slug: "/biometrics/humanID-decrypt"
 url: "https://docs.verifik.co/biometrics/humanID-decrypt"
 ---
 
 # Decrypt HumanID
-**API path(s):** /v2/human-id/decrypt
+**API path(s):** /api/human-id/decrypt, /v2/human-id/decrypt
 
 ## Notes
 

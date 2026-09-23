@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "phone-validations"
   - "resources"
-endpoints:
-  - "/v2/phone-validations"
-  - "/v2/phone-validations/manual"
+endpoint: "/v2/phone-validations/manual"
 sourceAnchor: "Success response"
 slug: "/resources/create-a-manual-phone-validation"
 url: "https://docs.verifik.co/resources/create-a-manual-phone-validation"
 ---
 
 # Create a Manual Phone Validation
-**API path(s):** /v2/phone-validations, /v2/phone-validations/manual
+**API path(s):** /v2/phone-validations/manual
 
 ## Success response
 

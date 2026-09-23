@@ -7,16 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "in"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/in/epic"
-  - "/v2/in/epic/votacion"
+endpoint: "/v2/in/epic"
 sourceAnchor: "89. Indian ID"
 slug: "/london-stock-exchange-integration/india"
 url: "https://docs.verifik.co/london-stock-exchange-integration/india"
 ---
 
 # India — Verifik public API
-**API path(s):** /v2/in/epic, /v2/in/epic/votacion
+**API path(s):** /v2/in/epic
 
 ## 89. Indian ID
 

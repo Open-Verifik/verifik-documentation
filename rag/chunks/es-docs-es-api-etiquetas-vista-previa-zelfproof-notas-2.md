@@ -6,12 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/tags/preview-zelfproof"
 sourceAnchor: "Notas"
 ---
 
 # Vista Previa de ZelfProof
-**API path(s):** /api/tags/preview-zelfproof
 
 Obtener una vista previa de un ZelfProof antes del descifrado para ver sus datos públicos y requisitos.
 

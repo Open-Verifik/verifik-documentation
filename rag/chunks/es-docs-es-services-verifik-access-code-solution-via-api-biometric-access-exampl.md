@@ -7,16 +7,14 @@ category: "services"
 tags:
   - "biometric-validations"
   - "services"
-endpoints:
-  - "/v2/biometric-validations"
-  - "/v2/biometric-validations/{validation_id}/validate"
+endpoint: "/v2/biometric-validations"
 sourceAnchor: "Configuración"
 slug: "/services/verifik-access-code-solution-via-api/biometric-access-example-ejemplo-de-acceso-biometrico"
 url: "https://docs.verifik.co/verifik-es/services/verifik-access-code-solution-via-api/biometric-access-example-ejemplo-de-acceso-biometrico"
 ---
 
 # Ejemplo de Acceso Biométrico
-**API path(s):** /v2/biometric-validations, /v2/biometric-validations/{validation_id}/validate
+**API path(s):** /v2/biometric-validations
 
 ## Configuración
 

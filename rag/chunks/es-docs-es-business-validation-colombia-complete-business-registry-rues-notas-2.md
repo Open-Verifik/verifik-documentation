@@ -7,16 +7,14 @@ category: "business-validation"
 tags:
   - "co"
   - "business-validation"
-endpoints:
-  - "/v2/co/rues"
-  - "/v2/co/rues/complete"
+endpoint: "/v2/co/rues/complete"
 sourceAnchor: "Notas"
 slug: "/business-validation/colombia/complete-business-registry-rues"
 url: "https://docs.verifik.co/verifik-es/business-validation/colombia/complete-business-registry-rues"
 ---
 
 # Validación Empresarial RUES Completa
-**API path(s):** /v2/co/rues, /v2/co/rues/complete
+**API path(s):** /v2/co/rues/complete
 
 ## Notas
 

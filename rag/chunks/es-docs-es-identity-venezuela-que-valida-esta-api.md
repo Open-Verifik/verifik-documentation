@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "ve"
   - "identity"
-endpoints:
-  - "/v2/ve/cedula"
-  - "/v2/ve/foreigner-id"
+endpoint: "/v2/ve/cedula"
 sourceAnchor: "¿Qué valida esta API?"
 slug: "/identidad/venezuela"
 url: "https://docs.verifik.co/verifik-es/identidad/venezuela"
 ---
 
 # Ciudadano venezolano (CCVE)
-**API path(s):** /v2/ve/cedula, /v2/ve/foreigner-id
+**API path(s):** /v2/ve/cedula
 
 ## ¿Qué valida esta API?
 

@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "cl"
   - "identity"
-endpoints:
-  - "/v2/cl/cedula"
-  - "/v2/cl/validate/documents"
+endpoint: "/v2/cl/validate/documents"
 sourceAnchor: "Referencia de API"
 slug: "/identidad/chile-validate-documents"
 url: "https://docs.verifik.co/verifik-es/identidad/chile-validate-documents"
 ---
 
 # Chile — Validación de documento de identidad
-**API path(s):** /v2/cl/cedula, /v2/cl/validate/documents
+**API path(s):** /v2/cl/validate/documents
 
 ## Referencia de API
 

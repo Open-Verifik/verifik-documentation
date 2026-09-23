@@ -7,16 +7,14 @@ category: "validacion-vehiculos"
 tags:
   - "co"
   - "validacion-vehiculos"
-endpoints:
-  - "/v2/co/bogota/taxi-drivers/plate"
-  - "/v2/co/bogota/taxi-drivers/plate/wmn482"
+endpoint: "/v2/co/bogota/taxi-drivers/plate"
 sourceAnchor: "Endpoint"
 slug: "/validacion-de-vehiculo/colombia/taxis-conductores-bogota-por-placa"
 url: "https://docs.verifik.co/verifik-es/validacion-de-vehiculo/colombia/taxis-conductores-bogota-por-placa"
 ---
 
 # Conductores de Taxi en Bogotá por Placa
-**API path(s):** /v2/co/bogota/taxi-drivers/plate, /v2/co/bogota/taxi-drivers/plate/wmn482
+**API path(s):** /v2/co/bogota/taxi-drivers/plate
 
 ## Endpoint
 

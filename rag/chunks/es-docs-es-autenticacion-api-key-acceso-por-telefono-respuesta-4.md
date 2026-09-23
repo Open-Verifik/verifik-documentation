@@ -7,16 +7,14 @@ category: "autenticacion"
 tags:
   - "projects"
   - "autenticacion"
-endpoints:
-  - "/v2/projects/phone-login"
-  - "/v2/projects/phone-login/confirm"
+endpoint: "/v2/projects/phone-login"
 sourceAnchor: "Respuesta"
 slug: "/autenticacion/acceso-con-llave-por-telefono"
 url: "https://docs.verifik.co/verifik-es/autenticacion/acceso-con-llave-por-telefono"
 ---
 
 # Acceso con API Key vía Teléfono
-**API path(s):** /v2/projects/phone-login, /v2/projects/phone-login/confirm
+**API path(s):** /v2/projects/phone-login
 
 ## Respuesta
 

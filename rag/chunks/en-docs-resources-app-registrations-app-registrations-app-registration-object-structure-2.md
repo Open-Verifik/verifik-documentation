@@ -7,16 +7,12 @@ category: "resources"
 tags:
   - "app-registrations"
   - "resources"
-endpoints:
-  - "/v2/app-registrations"
-  - "/v2/app-registrations/{id}"
-  - "/v2/app-registrations/{id}/resend-link"
-  - "/v2/app-registrations/{id}/sync"
+endpoint: "/v2/app-registrations"
 sourceAnchor: "App Registration Object Structure"
 ---
 
 # App Registrations
-**API path(s):** /v2/app-registrations, /v2/app-registrations/{id}, /v2/app-registrations/{id}/resend-link, /v2/app-registrations/{id}/sync
+**API path(s):** /v2/app-registrations
 
 ## App Registration Object Structure
 

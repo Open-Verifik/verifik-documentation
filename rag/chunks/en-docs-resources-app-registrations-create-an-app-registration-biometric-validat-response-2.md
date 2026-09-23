@@ -7,12 +7,14 @@ category: "resources"
 tags:
   - "biometric-validations"
   - "resources"
-endpoint: "/v2/biometric-validations/app-registration"
+endpoints:
+  - "/api/biometric-validations/app-registration"
+  - "/v2/biometric-validations/app-registration"
 sourceAnchor: "Response"
 ---
 
 # Create an App Registration Biometric Validation
-**API path(s):** /v2/biometric-validations/app-registration
+**API path(s):** /api/biometric-validations/app-registration, /v2/biometric-validations/app-registration
 
 ## Response
 

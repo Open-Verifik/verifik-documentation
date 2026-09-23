@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "cl"
   - "identity"
-endpoints:
-  - "/v2/cl/cedula"
-  - "/v2/cl/validate/documents"
+endpoint: "/v2/cl/validate/documents"
 sourceAnchor: "Response"
 slug: "/identity/chile-validate-documents"
 url: "https://docs.verifik.co/identity/chile-validate-documents"
 ---
 
 # Chile — Identity document validation
-**API path(s):** /v2/cl/cedula, /v2/cl/validate/documents
+**API path(s):** /v2/cl/validate/documents
 
 This endpoint checks **document vigency** for Chilean **RUN** or **RUT** using the **printed serial number** on the physical ID, in addition to the identifier. Use it when you must confirm that a **card** is **valid** (not only that the number exists)—for example **high-assurance KYC** or **compliance** steps that go beyond a simple cedula lookup.
 For name-only verification against civil registry without serial, use **[Identity verification in Chile](/identity/chile)** (`v2/cl/cedula`).

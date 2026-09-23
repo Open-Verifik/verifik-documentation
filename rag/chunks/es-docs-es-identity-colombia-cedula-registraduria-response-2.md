@@ -7,16 +7,14 @@ category: "identity"
 tags:
   - "co"
   - "identity"
-endpoints:
-  - "/v2/co/cedula"
-  - "/v2/co/cedula/registraduria"
+endpoint: "/v2/co/cedula/registraduria"
 sourceAnchor: "Response"
 slug: "/identity/colombia-cedula-registraduria"
 url: "https://docs.verifik.co/verifik-es/identity/colombia-cedula-registraduria"
 ---
 
 # Colombia — Consulta de ciudadano vía Registraduría (SCCRC)
-**API path(s):** /v2/co/cedula, /v2/co/cedula/registraduria
+**API path(s):** /v2/co/cedula/registraduria
 
 Consulta un registro civil de **nacimiento** (*registro civil de nacimiento*) de la **Registraduría Nacional del Estado Civil** (**SCCRC**) usando el número de **cédula (CC)**.
 A diferencia de [ciudadano por documento](/identity-validation/colombia/colombian-citizen) (`/v2/co/cedula`), este endpoint usa **solo Registraduría** — **no** intenta Procuraduría ni DIAN. Úsalo para aislar el comportamiento de SCCRC en modo documento.

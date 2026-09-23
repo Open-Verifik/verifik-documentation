@@ -7,23 +7,12 @@ category: "identity-validation"
 tags:
   - "co"
   - "identity-validation"
-endpoints:
-  - "/v2/co/adres"
-  - "/v2/co/afiliaciones"
-  - "/v2/co/cedula"
-  - "/v2/co/foreigner-id/ce"
-  - "/v2/co/foreigner-id/pep"
-  - "/v2/co/foreigner-id/ppt"
-  - "/v2/co/politically-exposed-persons"
-  - "/v2/co/procuraduria"
-  - "/v2/co/runt/conductor"
 sourceAnchor: "Quick decision table"
 slug: "/identity-validation/colombia/colombia-identity-documents-guide"
 url: "https://docs.verifik.co/identity-validation/colombia/colombia-identity-documents-guide"
 ---
 
 # Colombia — Identity documents guide
-**API path(s):** /v2/co/adres, /v2/co/afiliaciones, /v2/co/cedula, /v2/co/foreigner-id/ce, /v2/co/foreigner-id/pep, /v2/co/foreigner-id/ppt, /v2/co/politically-exposed-persons, /v2/co/procuraduria, /v2/co/runt/conductor
 
 ## Quick decision table
 

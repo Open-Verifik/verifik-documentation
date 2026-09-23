@@ -5,21 +5,16 @@ sourcePath: "docs-es/resources/personas/personas.mdx"
 locale: "es"
 category: "resources"
 tags:
-  - "face-recognition"
   - "persons"
   - "resources"
-endpoints:
-  - "/v2/face-recognition/persons/lookup"
-  - "/v2/persons"
-  - "/v2/persons/liveness"
-  - "/v2/persons/{personid}"
+endpoint: "/v2/persons"
 sourceAnchor: "Estado de Verificación"
 slug: "/resources/persons"
 url: "https://docs.verifik.co/verifik-es/resources/persons"
 ---
 
 # Personas
-**API path(s):** /v2/face-recognition/persons/lookup, /v2/persons, /v2/persons/liveness, /v2/persons/{personid}
+**API path(s):** /v2/persons
 
 ## Estado de Verificación
 

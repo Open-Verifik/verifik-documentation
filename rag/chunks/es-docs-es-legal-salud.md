@@ -5,18 +5,13 @@ sourcePath: "docs-es/legal/salud.mdx"
 locale: "es"
 category: "legal"
 tags:
-  - "co"
   - "legal"
-endpoints:
-  - "/v2/co/afiliaciones"
-  - "/v2/co/cedula/rethus"
 sourceAnchor: "Colombia — Cobertura de API"
 slug: "/legal/salud"
 url: "https://docs.verifik.co/verifik-es/legal/salud"
 ---
 
 # Salud (Colombia)
-**API path(s):** /v2/co/afiliaciones, /v2/co/cedula/rethus
 
 ## Colombia — Cobertura de API
 

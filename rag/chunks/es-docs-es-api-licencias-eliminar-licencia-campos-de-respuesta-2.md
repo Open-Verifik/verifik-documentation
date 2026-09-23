@@ -6,14 +6,10 @@ locale: "es"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/licenses/{licenseid}"
-  - "/api/sessions"
 sourceAnchor: "Campos de Respuesta"
 ---
 
 # Eliminar Licencia
-**API path(s):** /api/licenses/{licenseid}, /api/sessions
 
 Eliminar una licencia existente del sistema.
 

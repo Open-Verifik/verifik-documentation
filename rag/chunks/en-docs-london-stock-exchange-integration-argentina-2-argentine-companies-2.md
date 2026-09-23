@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "ar"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/ar/cedula"
-  - "/v2/ar/company"
-  - "/v2/ar/vehicle"
+endpoint: "/v2/ar/cedula"
 sourceAnchor: "2. Argentine Companies"
 slug: "/london-stock-exchange-integration/argentina"
 url: "https://docs.verifik.co/london-stock-exchange-integration/argentina"
 ---
 
 # Argentina — Verifik public API
-**API path(s):** /v2/ar/cedula, /v2/ar/company, /v2/ar/vehicle
+**API path(s):** /v2/ar/cedula
 
 ## 2. Argentine Companies
 

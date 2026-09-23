@@ -5,20 +5,16 @@ sourcePath: "docs-es/validacion-de-vehiculo/estados-unidos/informacion-del-vehic
 locale: "es"
 category: "validacion-de-vehiculo"
 tags:
-  - "us"
   - "usa"
   - "validacion-de-vehiculo"
-endpoints:
-  - "/v2/us/vehicle"
-  - "/v2/usa/vehicle"
-  - "/v2/usa/vehicle-by-vin"
+endpoint: "/v2/usa/vehicle"
 sourceAnchor: "Endpoint"
 slug: "/validacion-de-vehiculo/estados-unidos/informacion-del-vehiculo"
 url: "https://docs.verifik.co/verifik-es/validacion-de-vehiculo/estados-unidos/informacion-del-vehiculo"
 ---
 
 # Estados Unidos - Información del Vehículo
-**API path(s):** /v2/us/vehicle, /v2/usa/vehicle, /v2/usa/vehicle-by-vin
+**API path(s):** /v2/usa/vehicle
 
 ## Endpoint
 

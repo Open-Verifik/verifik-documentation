@@ -7,17 +7,14 @@ category: "identity"
 tags:
   - "mx"
   - "identity"
-endpoints:
-  - "/v2/mx/curp"
-  - "/v2/mx/ine"
-  - "/v2/mx/ine/ocr"
+endpoint: "/v2/mx/ine"
 sourceAnchor: "Request"
 slug: "/identity/mexico-ine"
 url: "https://docs.verifik.co/verifik-es/identity/mexico-ine"
 ---
 
 # México — Validación INE
-**API path(s):** /v2/mx/curp, /v2/mx/ine, /v2/mx/ine/ocr
+**API path(s):** /v2/mx/ine
 
 Valida una **INE** mexicana (*Credencial para Votar*) contra el padrón electoral. Envía `documentType=INE` y un identificador principal en `documentNumber`. La API detecta automáticamente si el valor es un **CIC** (9 dígitos), **OCR** (13 dígitos) o **clave de elector** (18 caracteres).
 Los campos opcionales cubren las combinaciones por modelo de credencial que exige la fuente oficial:

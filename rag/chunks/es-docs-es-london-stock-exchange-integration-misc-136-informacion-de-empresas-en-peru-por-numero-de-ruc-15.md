@@ -5,41 +5,16 @@ sourcePath: "docs-es/london-stock-exchange-integration/misc.mdx"
 locale: "es"
 category: "london-stock-exchange-integration"
 tags:
-  - "dea"
-  - "europol"
-  - "fbi"
-  - "interpol"
-  - "ip-lookup"
-  - "ofac"
-  - "tin"
   - "usa"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/dea"
-  - "/v2/europol"
-  - "/v2/fbi"
-  - "/v2/interpol"
-  - "/v2/ip-lookup"
-  - "/v2/ofac"
-  - "/v2/tin/validate"
-  - "/v2/usa/company"
-  - "/v2/usa/florida/driver-license"
-  - "/v2/usa/ssn"
-  - "/v2/usa/vehicle"
-  - "/v2/usa/vehicle-by-vin"
-  - "/v3/co/ministerio-de-trabajo/certificados"
-  - "/v3/co/rues"
-  - "/v3/co/rues-complete"
-  - "/v3/pe/cedula"
-  - "/v3/pe/cedula/extra"
-  - "/v3/pe/company"
+endpoint: "/v2/usa/vehicle"
 sourceAnchor: "136. Información de Empresas en Perú por Número de RUC"
 slug: "/london-stock-exchange-integration/misc"
 url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/misc"
 ---
 
 # Otros — API pública Verifik
-**API path(s):** /v2/dea, /v2/europol, /v2/fbi, /v2/interpol, /v2/ip-lookup, /v2/ofac, /v2/tin/validate, /v2/usa/company, /v2/usa/florida/driver-license, /v2/usa/ssn, /v2/usa/vehicle, /v2/usa/vehicle-by-vin, /v3/co/ministerio-de-trabajo/certificados, /v3/co/rues, /v3/co/rues-complete, /v3/pe/cedula, /v3/pe/cedula/extra, /v3/pe/company
+**API path(s):** /v2/usa/vehicle
 
 ## 136. Información de Empresas en Perú por Número de RUC
 

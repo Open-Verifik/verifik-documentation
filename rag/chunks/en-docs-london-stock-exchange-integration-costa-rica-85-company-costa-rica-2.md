@@ -7,17 +7,14 @@ category: "london-stock-exchange-integration"
 tags:
   - "cr"
   - "london-stock-exchange-integration"
-endpoints:
-  - "/v2/cr/cedula"
-  - "/v2/cr/company"
-  - "/v2/cr/vehicle"
+endpoint: "/v2/cr/cedula"
 sourceAnchor: "85. company Costa Rica"
 slug: "/london-stock-exchange-integration/costa-rica"
 url: "https://docs.verifik.co/london-stock-exchange-integration/costa-rica"
 ---
 
 # Costa Rica — Verifik public API
-**API path(s):** /v2/cr/cedula, /v2/cr/company, /v2/cr/vehicle
+**API path(s):** /v2/cr/cedula
 
 ## 85. company Costa Rica
 

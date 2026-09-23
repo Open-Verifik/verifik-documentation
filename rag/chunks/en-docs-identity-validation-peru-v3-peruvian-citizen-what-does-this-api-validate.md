@@ -7,14 +7,14 @@ category: "identity-validation"
 tags:
   - "pe"
   - "identity-validation"
-endpoint: "/v3/pe/cedula/extra"
+endpoint: "/api/pe/cedula/extra"
 sourceAnchor: "What does this API validate?"
 slug: "/identity-validation/peru/v3-peruvian-citizen"
 url: "https://docs.verifik.co/identity-validation/peru/v3-peruvian-citizen"
 ---
 
 # \U0001F1F5\U0001F1EA Peru - V3 Peruvian Citizen
-**API path(s):** /v3/pe/cedula/extra
+**API path(s):** /api/pe/cedula/extra
 
 ## What does this API validate?
 

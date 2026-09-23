@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "face-recognition"
   - "resources"
-endpoints:
-  - "/v2/face-recognition/persons/person_123456789"
-  - "/v2/face-recognition/persons/{id}"
+endpoint: "/v2/face-recognition/persons/{id}"
 sourceAnchor: "Ejemplo de Respuesta"
 slug: "/resources/persons/update-a-person"
 url: "https://docs.verifik.co/verifik-es/resources/persons/update-a-person"
 ---
 
 # Actualizar una Persona
-**API path(s):** /v2/face-recognition/persons/person_123456789, /v2/face-recognition/persons/{id}
+**API path(s):** /v2/face-recognition/persons/{id}
 
 ## Ejemplo de Respuesta
 

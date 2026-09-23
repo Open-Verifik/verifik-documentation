@@ -7,16 +7,14 @@ category: "verificacion-antecendentes"
 tags:
   - "co"
   - "verificacion-antecendentes"
-endpoints:
-  - "/v2/co/rui"
-  - "/v2/co/sisben"
+endpoint: "/v2/co/rui"
 sourceAnchor: "Qué retorna esta API"
 slug: "/verificacion-antecendentes/verificacion-antecendentes-colombia-rui"
 url: "https://docs.verifik.co/verifik-es/verificacion-antecendentes/verificacion-antecendentes-colombia-rui"
 ---
 
 # Colombia — Clasificación RUI
-**API path(s):** /v2/co/rui, /v2/co/sisben
+**API path(s):** /v2/co/rui
 
 ## Qué retorna esta API
 

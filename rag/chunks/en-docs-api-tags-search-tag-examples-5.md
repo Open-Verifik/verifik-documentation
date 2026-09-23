@@ -6,14 +6,12 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoints:
-  - "/api/sessions"
-  - "/api/tags/search"
+endpoint: "/api/tags/search"
 sourceAnchor: "Examples"
 ---
 
 # Search Tag
-**API path(s):** /api/sessions, /api/tags/search
+**API path(s):** /api/tags/search
 
 Search for a tag across any supported domain name (Zelf, Avax, BDAG, or other licensed domains).
 

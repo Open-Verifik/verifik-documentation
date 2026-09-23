@@ -7,16 +7,12 @@ category: "vehicle-validation"
 tags:
   - "co"
   - "vehicle-validation"
-endpoints:
-  - "/v2/co/runt/conductor"
-  - "/v3/co/runt/conductor"
 sourceAnchor: "Endpoint"
 slug: "/vehicle-validation/colombia/runt-drivers-license-basic"
 url: "https://docs.verifik.co/vehicle-validation/colombia/runt-drivers-license-basic"
 ---
 
 # RUNT - Driver's License (Basic)
-**API path(s):** /v2/co/runt/conductor, /v3/co/runt/conductor
 
 ## Endpoint
 

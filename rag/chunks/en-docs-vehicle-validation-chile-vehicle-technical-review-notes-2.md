@@ -7,17 +7,12 @@ category: "vehicle-validation"
 tags:
   - "cl"
   - "vehicle-validation"
-endpoints:
-  - "/v2/cl/vehicle"
-  - "/v2/cl/vehicle-soap"
-  - "/v3/cl/vehicle"
 sourceAnchor: "Notes"
 slug: "/vehicle-validation/chile/vehicle-technical-review"
 url: "https://docs.verifik.co/vehicle-validation/chile/vehicle-technical-review"
 ---
 
 # 🇨🇱 Chile - Vehicle Technical Review
-**API path(s):** /v2/cl/vehicle, /v2/cl/vehicle-soap, /v3/cl/vehicle
 
 Use this endpoint when you need Chilean **technical review / inspection** data by license plate: vehicle details, inspection plant, certificate number, expiration date, and review status.
 Related Chile vehicle endpoints:

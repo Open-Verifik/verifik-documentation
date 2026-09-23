@@ -6,12 +6,14 @@ locale: "en"
 category: "api"
 tags:
   - "api"
-endpoint: "/api/clients/{id}"
+endpoints:
+  - "/api/clients"
+  - "/api/clients/{id}"
 sourceAnchor: "Notes"
 ---
 
 # Delete Account
-**API path(s):** /api/clients/{id}
+**API path(s):** /api/clients, /api/clients/{id}
 
 Delete a client account by ID.
 

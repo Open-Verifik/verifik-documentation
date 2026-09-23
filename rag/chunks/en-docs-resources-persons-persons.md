@@ -7,18 +7,14 @@ category: "resources"
 tags:
   - "face-recognition"
   - "resources"
-endpoints:
-  - "/v2/face-recognition/persons"
-  - "/v2/face-recognition/persons/lookup"
-  - "/v2/face-recognition/persons/search-live-face"
-  - "/v2/face-recognition/persons/{id}"
+endpoint: "/v2/face-recognition/persons"
 sourceAnchor: "Overview"
 slug: "/resources/persons"
 url: "https://docs.verifik.co/resources/persons"
 ---
 
 # Persons
-**API path(s):** /v2/face-recognition/persons, /v2/face-recognition/persons/lookup, /v2/face-recognition/persons/search-live-face, /v2/face-recognition/persons/{id}
+**API path(s):** /v2/face-recognition/persons
 
 ## Overview
 

@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "projects"
   - "resources"
-endpoints:
-  - "/v2/projects"
-  - "/v2/projects/{projectid}"
+endpoint: "/v2/projects"
 sourceAnchor: "Project Object Structure"
 slug: "/resources/projects/projects"
 url: "https://docs.verifik.co/resources/projects/projects"
 ---
 
 # Projects
-**API path(s):** /v2/projects, /v2/projects/{projectid}
+**API path(s):** /v2/projects
 
 ## Project Object Structure
 

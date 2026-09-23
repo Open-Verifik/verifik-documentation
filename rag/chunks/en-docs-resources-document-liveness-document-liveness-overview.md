@@ -7,16 +7,14 @@ category: "resources"
 tags:
   - "document-liveness"
   - "resources"
-endpoints:
-  - "/v2/document-liveness"
-  - "/v2/document-liveness/{livenessid}"
+endpoint: "/v2/document-liveness"
 sourceAnchor: "Overview"
 slug: "/resources/document-liveness"
 url: "https://docs.verifik.co/resources/document-liveness"
 ---
 
 # Document Liveness
-**API path(s):** /v2/document-liveness, /v2/document-liveness/{livenessid}
+**API path(s):** /v2/document-liveness
 
 ## Overview
 

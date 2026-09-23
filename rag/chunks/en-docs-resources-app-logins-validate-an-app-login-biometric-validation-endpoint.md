@@ -7,14 +7,16 @@ category: "resources"
 tags:
   - "biometric-validations"
   - "resources"
-endpoint: "/v2/biometric-validations/validate"
+endpoints:
+  - "/api/biometric-validations/validate"
+  - "/v2/biometric-validations/validate"
 sourceAnchor: "Endpoint"
 slug: "/resources/validate-an-app-login-biometric-validation"
 url: "https://docs.verifik.co/resources/validate-an-app-login-biometric-validation"
 ---
 
 # Validate an App Login Biometric Validation
-**API path(s):** /v2/biometric-validations/validate
+**API path(s):** /api/biometric-validations/validate, /v2/biometric-validations/validate
 
 ## Endpoint
 

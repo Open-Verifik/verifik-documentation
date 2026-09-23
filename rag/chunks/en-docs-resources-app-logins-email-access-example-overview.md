@@ -5,21 +5,16 @@ sourcePath: "docs/resources/app-logins/email-access-example.mdx"
 locale: "en"
 category: "resources"
 tags:
-  - "app-logins"
   - "email-validations"
   - "resources"
-endpoints:
-  - "/v2/app-logins/app_login_id"
-  - "/v2/app-logins/{apploginid}"
-  - "/v2/email-validations"
-  - "/v2/email-validations/validate"
+endpoint: "/v2/email-validations"
 sourceAnchor: "Overview"
 slug: "/resources/email-access-example"
 url: "https://docs.verifik.co/resources/email-access-example"
 ---
 
 # Email Access Example
-**API path(s):** /v2/app-logins/app_login_id, /v2/app-logins/{apploginid}, /v2/email-validations, /v2/email-validations/validate
+**API path(s):** /v2/email-validations
 
 ## Overview
 
