@@ -1,0 +1,182 @@
+---
+id: "es-docs-es-api-cuentas-actualizar-cuenta-endpoint"
+title: "Actualizar Cuenta — Endpoint"
+sourcePath: "docs-es/api/cuentas/actualizar-cuenta.md"
+locale: "es"
+category: "api"
+tags:
+  - "api"
+sourceAnchor: "Endpoint"
+---
+
+# Actualizar Cuenta
+
+## Endpoint
+
+Actualizar la información de una cuenta de cliente existente.
+
+### Endpoint
+
+```
+PUT /api/clients/sync
+```
+
+## Descripción
+
+Este endpoint te permite actualizar la información de un cliente existente. Requiere autenticación con clave API.
+
+### Parámetros
+
+| Parámetro | Tipo | Requerido | Descripción |
+|-----------|------|-----------|-------------|
+| `name` | string | No | Nombre del cliente |
+| `email` | string | No | Dirección de email del cliente |
+| `countryCode` | string | No | Código de país |
+| `phone` | string | No | Número de teléfono |
+| `language` | string | No | Preferencia de idioma (en, es) |
+
+## Autenticación
+
+Este endpoint requiere una clave API en el header de la solicitud:
+```
+x-api-key: TU_CLAVE_API
+```
+
+### Respuesta
+
+```json
+{
+  "data": {
+    "message": "Cliente actualizado exitosamente",
+    "client": {
+      "id": "client_id",
+      "name": "Nombre Actualizado",
+      "email": "actualizado@ejemplo.com",
+      "countryCode": "+1",
+      "phone": "5551234567",
+      "language": "es"
+    }
+  }
+}
+```
+
+```json
+{
+  "validationError": "Clave API no válida"
+}
+```
+
+```json
+{
+  "validationError": "Mensaje de error de validación"
+}
+```
+
+## Ejemplos
+
+```bash
+curl -X PUT "https://api.zelf.world/api/clients/sync" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: TU_CLAVE_API" \
+  -d '{
+    "name": "Nombre Actualizado",
+    "email": "actualizado@ejemplo.com",
+    "language": "es"
+  }'
+```
+
+```javascript
+const axios = require('axios');
+
+const data = {
+  name: "Nombre Actualizado",
+  email: "actualizado@ejemplo.com",
+  language: "es"
+};
+
+const config = {
+  method: 'put',
+  url: 'https://api.zelf.world/api/clients/sync',
+  headers: { 
+    'Content-Type': 'application/json',
+    'x-api-key': 'TU_CLAVE_API'
+  },
+  data: data
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+```
+
+```python
+
+url = "https://api.zelf.world/api/clients/sync"
+
+payload = {
+    "name": "Nombre Actualizado",
+    "email": "actualizado@ejemplo.com",
+    "language": "es"
+}
+
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "TU_CLAVE_API"
+}
+
+response = requests.put(url, json=payload, headers=headers)
+print(response.json())
+```
+
+```php
+ "Nombre Actualizado",
+    "email" => "actualizado@ejemplo.com",
+    "language" => "es"
+);
+
+$options = array(
+    'http' => array(
+        'header'  => "Content-Type: application/json\r\nx-api-key: TU_CLAVE_API\r\n",
+        'method'  => 'PUT',
+        'content' => json_encode($data)
+    )
+);
+
+$context  = stream_context_create($options);
+$result = file_get_contents($url, false, $context);
+echo $result;
+?>
+```
+
+```rust
+use reqwest;
+use serde_json::json;
+
+#[tokio::main]
+async fn main() -> Result> {
+    let client = reqwest::Client::new();
+    
+    let data = json!({
+        "name": "Nombre Actualizado",
+        "email": "actualizado@ejemplo.com",
+        "language": "es"
+    });
+    
+    let response = client
+        .put("https://api.zelf.world/api/clients/sync")
+        .header("Content-Type", "application/json")
+        .header("x-api-key", "TU_CLAVE_API")
+        .json(&data)
+        .send()
+        .await?;
+    
+    let body = response.text().await?;
+    println!("{}", body);
+    
+    Ok(())
+}
+```

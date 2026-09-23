@@ -1,0 +1,100 @@
+---
+id: "en-docs-identity-mexico-ine-ocr-response-2"
+title: "Mexico — INE OCR — Response"
+sourcePath: "docs/identity/mexico-ine-ocr.mdx"
+locale: "en"
+category: "identity"
+tags:
+  - "mx"
+  - "identity"
+endpoint: "/v2/mx/ine/ocr"
+sourceAnchor: "Response"
+slug: "/identity/mexico-ine-ocr"
+url: "https://docs.verifik.co/identity/mexico-ine-ocr"
+---
+
+# Mexico — INE OCR
+**API path(s):** /v2/mx/ine/ocr
+
+One-shot flow for a Mexican **INE** (*Credencial para Votar*):
+1. **Verifik Gemini OCR** extracts credential fields from front (and optional back) images
+2. Verifik builds identifier params from that extraction
+3. **Nexcar validate** runs with numbers only (no vendor image OCR)
+4. Response returns **`ocr`**, **`validation`**, and **`validateParamsUsed`**
+Send JSON with:
+- **`front`** (required) — public URL or base64 image of the credential front
+- **`back`** (optional) — public URL or base64 of the reverse; strongly recommended for CIC, OCR, and MRZ
+For numbers-only electoral validation (no images), use **[Mexico — INE Validation](/identity/mexico-ine)** (`GET v2/mx/ine`). For CURP identity lookup, use **[Mexican Citizen (CURP)](/identity/mexico)** (`v2/mx/curp`).
+
+## Response
+
+```json
+{
+  "data": {
+    "ocr": {
+      "birthDate": "11/06/1976",
+      "cic": "187639699",
+      "citizenIdentifier": "031206745",
+      "curp": "MAFC760611MYNRLR03",
+      "documentType": "INE",
+      "electorKey": "CSFTGV76061131H400",
+      "firstName": "CARLA ISABEL",
+      "fullName": "CARLA ISABEL MARTINEZ FERNANDEZ",
+      "ocr": "0276031206745",
+      "subType": "E",
+      "type": "INE",
+      "validity": "2029"
+    },
+    "validation": {
+      "cic": "187639699",
+      "documentNumber": "187639699",
+      "documentType": "INE",
+      "electorKey": "CSFTGV76061131H400",
+      "ocr": "0276031206745",
+      "status": "OK",
+      "validity": "31 de diciembre de 2030"
+    },
+    "validateParamsUsed": {
+      "documentType": "INE",
+      "documentNumber": "187639699",
+      "ocr": "0276031206745",
+      "citizenIdentifier": "031206745",
+      "model": "E"
+    }
+  },
+  "signature": {
+    "dateTime": "July 14, 2026 10:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  
+  
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  
+  
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "front is required"
+}
+```
+
+### Notes
+
+- Billed as **`mexico_api_ine_ocr`** once for the combined Gemini OCR + Nexcar validate shot.
+- `front` is required; `back` is optional but recommended for CIC, OCR, citizen identifier, and MRZ.
+- Images are resized/compressed before Gemini to reduce payload size.
+- If OCR cannot extract a usable identifier (`cic`, `ocr`, or clave de elector), the request returns **409** and Nexcar is not called.
+- If identifiers are extracted but Nexcar validate fails, the endpoint fails like `GET /v2/mx/ine` with those numbers.
+- Sandbox: any valid `front` string returns a nested fixture; a `front` value containing `404` returns **404**.
+- Related: [Mexico — INE Validation](/identity/mexico-ine), [Mexican Citizen (CURP)](/identity/mexico).

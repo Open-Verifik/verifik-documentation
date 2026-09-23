@@ -1,0 +1,52 @@
+---
+id: "en-docs-roadmap-q2-2025"
+title: "Q2 2025 — Android App"
+sourcePath: "docs/roadmap/q2-2025.md"
+locale: "en"
+category: "roadmap"
+tags:
+  - "roadmap"
+sourceAnchor: "Android App"
+---
+
+# Q2 2025
+
+## Android App
+
+### Android App
+
+* [ ] Bitcoin Lighting integration fully functional
+* [ ] Binance Smart Chain integration
+* [ ] Polygon integration
+* [ ] Tron integration
+* [ ] Base integration
+
+### iOS App
+
+* [ ] Bitcoin Lighting integration fully functional
+* [ ] Binance Smart Chain integration
+* [ ] Polygon integration
+* [ ] Tron integration
+* [ ] Base integration
+
+### Web Extension
+
+* [ ] Bitcoin Lighting integration fully functional
+* [ ] Binance Smart Chain integration
+* [ ] Polygon integration
+* [ ] Tron integration
+* [ ] Base integration
+
+### Zelf Name Service
+
+* [ ] Integrate backups of ZelfProofs in Nostr
+* [ ] Integrate backups of ZelfProofs in Walrus
+
+### Social & Marketing Goals
+
+* [ ] Tour destination to Las Vegas > Bitcoin Conference 2025.
+* [ ] Tour destination to Singapore > Event hosted by us.
+
+### Sales Goals
+
+* [ ] Minimum of 5,000 downloads by end of Q2

@@ -1,0 +1,159 @@
+---
+id: "en-docs-resources-app-registrations-the-app-registration-object-overview"
+title: "The App Registration Object — Overview"
+sourcePath: "docs/resources/app-registrations/the-app-registration-object.mdx"
+locale: "en"
+category: "resources"
+tags:
+  - "resources"
+sourceAnchor: "Overview"
+slug: "/resources/the-app-registration-object"
+url: "https://docs.verifik.co/resources/the-app-registration-object"
+---
+
+# The App Registration Object
+
+## Overview
+
+The App Registration object represents user registration processes within your Verifik projects. This object contains all the information needed to track and manage user registration requests and their associated validation processes.
+
+### Attributes
+
+#### `client`
+**Type:** string (reference id)  
+**Required:** Yes
+
+The client associated with this registration.
+
+#### `project`
+**Type:** string (reference id)  
+**Required:** Yes
+
+The project this registration belongs to.
+
+#### `projectFlow`
+**Type:** string (reference id)  
+**Required:** Yes
+
+The specific flow configuration for this registration.
+
+#### `smartLink`
+**Type:** String  
+**Required:** No
+
+Reference to a **OneTimeLink** (`link.verifik.co`) when the registration was created through that product. This is **not** the hosted SmartEnroll continuation URL. To resume an incomplete `/sign-up/{projectId}` session, call [Resend an App Registration Link](/resources/app-registrations/resend-an-app-registration-link).
+
+#### `status`
+**Type:** String  
+**Required:** Yes
+
+The current status of the registration process. Can be:
+* `STARTED` - Registration request created but not yet processed
+* `ONGOING` - Registration is in progress
+* `COMPLETED` - Registration completed successfully
+* `COMPLETED_WITHOUT_KYC` - Registration completed without KYC verification
+* `FAILED` - Registration failed
+* `NEEDS_MANUAL_VERIFICATION` - Registration requires manual review
+* `EXPIRED` - Registration session has expired
+
+#### `email`
+**Type:** String  
+**Required:** No
+
+The email address for the user to be registered. Either `email` or `phone` is required.
+
+#### `phone`
+**Type:** String  
+**Required:** No
+
+The phone number for the user to be registered. Either `email` or `phone` is required.
+
+#### `countryCode`
+**Type:** String  
+**Required:** No
+
+The country code associated with the phone number. Required if `phone` is provided. Format: `+123`
+
+#### `fullName`
+**Type:** String  
+**Required:** No
+
+The full name of the person being registered. Can also use `firstName` and `lastName` instead.
+
+#### `firstName`
+**Type:** String  
+**Required:** No
+
+The first name of the person being registered.
+
+#### `lastName`
+**Type:** String  
+**Required:** No
+
+The last name of the person being registered.
+
+#### `language`
+**Type:** String  
+**Required:** No
+
+Locale used for OTP and related emails for this registration (common values: `en`, `es`; other supported backend locales include `fr`, `br`, `ja`, and more). The hosted SmartEnroll SDK sets this from the enrollee’s active UI language. Editing a language tab in the project-flow email template editor only stores per-locale copy overrides—it does not change which language is sent. Default: `"en"`.
+
+#### `currentStep`
+**Type:** String  
+**Required:** Yes
+
+The current step in the registration process.
+
+#### `informationValidation`
+**Type:** string (reference id)  
+**Required:** No
+
+Reference to the Information Validation object if basic information was collected.
+
+#### `emailValidation`
+**Type:** string (reference id)  
+**Required:** No
+
+Reference to the Email Validation object if email validation was performed.
+
+#### `phoneValidation`
+**Type:** string (reference id)  
+**Required:** No
+
+Reference to the Phone Validation object if phone validation was performed.
+
+#### `biometricValidation`
+**Type:** string (reference id)  
+**Required:** No
+
+Reference to the Biometric Validation object if biometric validation was performed.
+
+#### `documentValidation`
+**Type:** string (reference id)  
+**Required:** No
+
+Reference to the Document Validation object if document validation was performed.
+
+#### `person`
+**Type:** string (reference id)  
+**Required:** No
+
+Reference to the Person object created during biometric validation.
+
+#### `assignedCollection`
+**Type:** string (reference id)  
+**Required:** No
+
+Reference to the Collection assigned for storing biometric data.
+
+#### `createdAt`
+**Type:** Date  
+**Required:** Yes
+
+Timestamp when the app registration was created.
+
+#### `updatedAt`
+**Type:** Date  
+**Required:** Yes
+
+Timestamp when the app registration was last updated.
