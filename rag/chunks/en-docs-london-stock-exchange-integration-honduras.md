@@ -1,0 +1,131 @@
+---
+id: "en-docs-london-stock-exchange-integration-honduras"
+title: "Honduras — Verifik public API — 97. Honduras ID"
+sourcePath: "docs/london-stock-exchange-integration/honduras.mdx"
+locale: "en"
+category: "london-stock-exchange-integration"
+tags:
+  - "hn"
+  - "london-stock-exchange-integration"
+endpoint: "/v2/hn/cedula?documenttype=dnihn&documentnumber=0501199705651"
+sourceAnchor: "97. Honduras ID"
+slug: "/london-stock-exchange-integration/honduras"
+url: "https://docs.verifik.co/london-stock-exchange-integration/honduras"
+---
+
+# Honduras — Verifik public API
+**API path(s):** /v2/hn/cedula?documenttype=dnihn&documentnumber=0501199705651
+
+## 97. Honduras ID
+
+**English** (this page) · [Versión en español](/verifik-es/london-stock-exchange-integration/honduras/)
+
+# Honduras
+
+## 97. Honduras ID
+
+**Location in the collection:** v2 › hn › cedula › Cedula Honduras
+
+**What it does (summary):**
+
+The Argentine National Identity Document (DNI) verification API allows developers to verify the authenticity of an Argentine identity document (Documento Nacional de Identidad, or DNI) by providing the DNI number. The API returns information such as the person's full name, the first and last name separately, and the DNI number.
+
+This information can be used for various purposes, such as verifying the identity of a customer or validating information provided by a user.
+
+**Query type:** `GET`
+
+**Example full address** (with example values):
+
+```
+https://api.verifik.co/v2/hn/cedula?documentType=DNIHN&documentNumber=0501199705651
+```
+
+**Parameters in the address (after the `?`):**
+
+| Name | Example value | Notes |
+| --- | --- | --- |
+| documentType | DNIHN | (Required) Document type. Allowed value: CCAR. |
+| documentNumber | 0501199705651 | (Required) Document number of the person to consult. |
+
+**Common headers:**
+
+| Name | Example value |
+| --- | --- |
+| Accept | application/json |
+
+**Example with the `curl` tool (for those who request it from your technical team):**
+
+```bash
+curl -X GET "https://api.verifik.co/v2/hn/cedula?documentType=DNIHN&documentNumber=0501199705651" \
+  -H "Accept: application/json"
+```
+
+**Answer examples saved by Postman:**
+
+- **HTTP 200 (OK)**
+
+```json
+{
+
+    "data": {
+
+        "arrayName": [
+
+            "APELLIDO",
+
+            "NOMBRE",
+
+            "SEGUNDO"
+
+        ],
+
+        "documentNumber": "0501199705651",
+
+        "documentType": "DNIHN",
+
+        "firstName": "NOMBRE SEGUNDO",
+
+        "fullName": "NOMBRE SEGUNDO APELLIDO",
+
+        "lastName": "APELLIDO"
+
+    },
+
+    "signature": {
+
+        "dateTime": "April 8, 2026 11:00 PM",
+
+        "message": "Certified by Verifik.co"
+
+    },
+
+    "id": "IDNT1"
+
+}
+```
+
+- **HTTP 404 (Not Found)**
+
+```json
+{
+
+    "code": "NotFound",
+
+    "message": "Record not found."
+
+}
+```
+
+- **HTTP 409 (Conflict)**
+
+```json
+{
+
+    "code": "MissingParameter",
+
+    "message": "documentNumber maximum length exceeded.\n"
+
+}
+```
+
+---

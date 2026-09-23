@@ -1,0 +1,51 @@
+---
+id: "en-docs-roadmap-q1-2025-android-app"
+title: "Q1 2025 — Android App"
+sourcePath: "docs/roadmap/q1-2025.md"
+locale: "en"
+category: "roadmap"
+tags:
+  - "roadmap"
+sourceAnchor: "Android App"
+---
+
+# Q1 2025
+
+## Android App
+
+### Android App
+
+* [x] Encryption and Decryption completely offline&#x20;
+* [x] Add logic to purchase domain with FIAT
+* [x] Implement new design proposed to increase the UX of the user so they understand why our Zelf Name Service solution offer wallet features better than the competitors
+* [x] Complete screens to receive assets properly
+* [x] Complete screens to send assets on Ethereum & Solana & Avalanche
+* [x] Complete settings screen
+
+### iOS App
+
+* [x] Add logic to purchase domain with FIAT
+* [x] Implement new design proposed to increase the UX of the user so they understand why our Zelf Name Service solution offer wallet features better than the competitors
+* [x] Complete screens to receive assets properly
+* [x] Complete screens to send assets on Ethereum & Solana & Avalanche
+* [x] Complete settings screen
+
+### Web Extension
+
+* [x] Add logic to purchase domain with Crypto
+* [x] Implement new design proposed to increase the UX of the user so they understand why our Zelf Name Service solution offer wallet features better than the competitors
+* [x] Complete screens to receive assets properly
+* [x] Complete screens to send assets on Ethereum & Solana & Avalanche
+* [x] Complete settings screen
+
+### Zelf Name Service
+
+* [x] Finalize the Undername integration with Arweave/AR.IO
+
+### Social & Marketing Goals
+
+* [x] Tour destination San Salvador, El Salvador > Bitcoin conference.&#x20;
+* [x] Tour destination to Medellín, Colombia > Event hosted by us.
+* [x] Tour destination to Bogotá, Colombia > Event hosted by us.
+* [x] Tour destination to Panama City, Panama > Event hosted by us.
+* [x] Tour destination to Dubai > co-hosted with Coinstore

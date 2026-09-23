@@ -1,0 +1,30 @@
+---
+id: "es-docs-es-resources-webhooks-webhooks"
+title: "Webhooks — Descripción"
+sourcePath: "docs-es/resources/webhooks/webhooks.mdx"
+locale: "es"
+category: "resources"
+tags:
+  - "resources"
+sourceAnchor: "Descripción"
+slug: "/resources/webhooks"
+url: "https://docs.verifik.co/verifik-es/resources/webhooks"
+---
+
+# Webhooks
+
+## Descripción
+
+Los webhooks se usan para enviar información desde nuestro backend a tu backend mediante una URL que puedes configurar durante la creación de un proyecto/projectFlow.
+
+### Recursos relacionados
+
+-   [El Objeto Webhook](/verifik-es/resources/webhooks/el-objeto-de-webhook) - Los webhooks se usan para enviar información desde nuestro backend a tu backend mediante una URL
+-   [Crear un Webhook](/verifik-es/resources/webhooks/crear-un-webhook)
+-   [Actualizar un Webhook](/verifik-es/resources/actualizar-un-webhook)
+-   [Eliminar un Webhook](/verifik-es/resources/webhooks/delete-a-webhook)
+-   [Recuperar un Webhook](/verifik-es/resources/webhooks/retrieve-a-webhook)
+-   [Listar todos los Webhooks](/verifik-es/resources/listar-todos-los-webhooks)
+-   [Integración de Webhooks](/verifik-es/resources/integracion-webhook)
+-   [Webhooks de Smart Enroll (KYC)](/verifik-es/resources/smart-enroll-kyc-webhooks)
+-   [Eventos soportados](/verifik-es/resources/eventos-soportados)

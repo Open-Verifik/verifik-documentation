@@ -1,0 +1,44 @@
+---
+id: "en-docs-identity-validation-brazil-what-does-this-api-validate"
+title: "Brazilian Citizen — What does this API validate?"
+sourcePath: "docs/identity-validation/brazil.mdx"
+locale: "en"
+category: "identity-validation"
+tags:
+  - "br"
+  - "identity-validation"
+endpoint: "/v2/br/cedula"
+sourceAnchor: "What does this API validate?"
+slug: "/identity-validation/brazil"
+url: "https://docs.verifik.co/identity-validation/brazil"
+---
+
+# Brazilian Citizen
+**API path(s):** /v2/br/cedula
+
+## What does this API validate?
+
+Verifik's Identity Verification API helps you authenticate Brazilian citizens using the Cadastro de Pessoas Físicas (CPF). It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
+
+We built this integration for businesses that need a fast, secure, and automated way to confirm the true identity of users, employees, or customers.
+
+## What does this API validate?
+
+Our API connects directly with official records to validate:
+
+-   **Full Name & CPF Number**: Supports *Cadastro de Pessoas Físicas* (CPF).
+-   **Identity Match**: Confirms that the name provided matches the CPF number.
+-   **Date of Birth Verification**: Validates the date of birth matches the official records.
+
+By verifying these details, you can be confident that the person you're dealing with is real and holds a valid document, significantly lowering the risk of impersonation and fraud.
+
+## API reference
+
+The canonical HTTP reference for Brazilian identity verification (**`GET` `v2/br/cedula`**), including headers, query parameters, request examples, responses, and error codes, lives on **[Identity verification in Brazil](/identity/brazil)**. This page avoids duplicating that content so tooling and search stay aligned with a single source of truth.
+
+## Common Use Cases
+
+-   **Fintech & Banking**: Verify identities instantly during account opening or loan applications.
+-   **E-commerce & Delivery**: Authenticate users and couriers before they become active on your platform.
+-   **HR & Recruitment**: Validate candidate documents as part of your hiring workflow.
+-   **Insurance & Healthcare**: Confirm identities before issuing policies or providing medical benefits.
