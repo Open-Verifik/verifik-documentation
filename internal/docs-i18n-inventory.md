@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-09-22T23:34:58.765Z
+Generated: 2026-09-30T21:55:55.676Z
 
-- **Files scanned:** 525
+- **Files scanned:** 524
 - **Unique endpoint URLs:** 229
 - **Duplicate URL groups (SEO / aliases):** 57
-- **Docs without `### Endpoint` block:** 216
+- **Docs without `### Endpoint` block:** 215
 
 ## Summary by priority (canonical primary path only)
 
@@ -657,7 +657,6 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `verifik-llc.mdx`
 - `verifik-llc/acuerdo-de-niveles-de-servicio.md`
 - `verifik-llc/enterprises-hub.mdx`
-- `verifik-llc/politicas-de-privacidad.md`
 - `verifik-llc/polticas-e2a-de-privacidad.md`
 - `verifik-llc/privacy-policy.md`
 - `verifik-llc/service-level-agreement.md`
