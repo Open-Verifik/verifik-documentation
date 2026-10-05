@@ -1,7 +1,7 @@
 ---
 id: peru-full-id
 title: 🇵🇪 秘鲁 — DNI（扩展信息）
-description: 使用 Verifik 的 KYC API 对秘鲁公民进行扩展身份核验，获取 DNI（国民身份证）的详细信息（地址、出生日期、照片、婚姻状态等）。直接对接官方数据源，在数秒内完成身份验证。
+description: 使用 Verifik 的 KYC API 对秘鲁公民进行扩展身份核验，获取 DNI（国民身份证）的详细信息。直接对接官方数据源，在数秒内完成身份验证。
 slug: /identity/peru-full-id
 ---
 
@@ -10,7 +10,7 @@ export const structuredData = {
 	"@type": "TechArticle",
 	headline: "秘鲁 — DNI 扩展信息 | Verifik KYC API",
 	description:
-		"使用 Verifik 的 KYC API 对秘鲁公民进行扩展身份核验，获取 DNI（国民身份证）的详细信息（地址、出生日期、照片、婚姻状态等）。直接对接官方数据源，在数秒内完成身份验证。",
+		"使用 Verifik 的 KYC API 对秘鲁公民进行扩展身份核验，获取 DNI（国民身份证）的详细信息。直接对接官方数据源，在数秒内完成身份验证。",
 	articleSection: "API 文档",
 	keywords: "身份核验, KYC API, 秘鲁 DNI 验证, Documento Nacional de Identidad, 扩展数据, 官方数据源, 反欺诈",
 	about: {
@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Verifik 的身份核验 API 可使用秘鲁公民的 DNI（*Documento Nacional de Identidad*）号码进行扩展身份验证。该 API 旨在简化您的 KYC（了解您的客户）流程、防范欺诈，并轻松满足合规要求。
 
-我们专为需要快速、安全且自动化获取完整个人信息（包括姓名全称、婚姻状态、出生日期、证件信息、地址和照片）的企业打造此集成。
+我们专为需要快速、安全且自动化获取扩展个人信息（包括姓名全称、婚姻状态、出生日期、地址明细（省、区域、居住区）及相关身份字段）的企业打造此集成。
 
 **为安全访问该信息，必须传入 Authorization 头。**
 
@@ -38,10 +38,11 @@ Verifik 的身份核验 API 可使用秘鲁公民的 DNI（*Documento Nacional d
 
 -   **姓名全称与 DNI 号码**：支持 *Documento Nacional de Identidad*（DNI）证件。
 -   **身份匹配**：确认所提供姓名与 DNI 号码相符。
--   **扩展个人信息**：返回婚姻状态、出生日期、性别和地址信息。
--   **证件信息**：验证证件类型、号码、签发日期、到期日期及校验位。
--   **地理信息**：提供 ubigeoReniec 编码用于地址识别。
--   **照片数据**：以 base64 格式获取公民照片。
+-   **扩展个人信息**：返回婚姻状态、出生日期、性别、地址、省、区域和居住区。
+-   **姓名组成部分**：返回 `firstName`、`lastName`、`paternalLastName`、`maternalLastName` 和 `arrayName`。
+-   **证件信息**：返回证件类型和号码。
+
+部分字段始终出现在响应中，但当前返回字符串 `not_available`（不会被省略）：`photo`、`expeditionDate`、`expirationDate`、`ubigeoReniec` 和 `verificationDigit`。此端点当前不提供照片。
 
 通过验证这些信息，您可以确信对接的人员真实存在并持有有效证件，从而显著降低身份冒用与欺诈风险。
 
@@ -50,6 +51,10 @@ Verifik 的身份核验 API 可使用秘鲁公民的 DNI（*Documento Nacional d
 ```
 GET https://api.verifik.co/v3/pe/cedula/extra
 ```
+
+返回秘鲁公民的 **RENIEC DNI 扩展数据**：姓名全称、婚姻状态、出生日期、地址（省、区域、居住区）及相关身份字段。请传入 `documentType=DNI` 和 8 位 `documentNumber`。
+
+`photo`、`expeditionDate`、`expirationDate`、`ubigeoReniec` 和 `verificationDigit` 包含在响应结构中，但当前返回 `not_available`。
 
 ### 请求头（Headers）
 
@@ -62,8 +67,8 @@ GET https://api.verifik.co/v3/pe/cedula/extra
 
 | 名称 | 类型 | 必填 | 描述 | 示例 |
 | ---- | ---- | ---- | ---- | ---- |
-| `documentType` | string | **是** | 证件类型。允许值：DNI。 | `DNI` |
-| `documentNumber` | string | **是** | 待查询人员的证件号码。 | `123456789` |
+| `documentType` | string | **是** | 证件类型。允许值：`DNI`。 | `DNI` |
+| `documentNumber` | string | **是** | 8 位 DNI 号码（不含空格）。 | `44868598` |
 
 ### 请求示例（Request）
 
@@ -78,7 +83,7 @@ const options = {
   url: 'https://api.verifik.co/v3/pe/cedula/extra',
   params: {
     documentType: 'DNI',
-    documentNumber: '1234567'
+    documentNumber: '44868598'
   },
   headers: {
     'Accept': 'application/json',
@@ -100,11 +105,11 @@ try {
 ```python
 import requests
 
-url = "https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367"
+url = "https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598"
 
 payload = {}
 headers = {
-  'Authorization': 'Bearer eyJhbGciOIJ9.eyJjbGllbnRJZCI6..06rwjGQ'
+  'Authorization': 'Bearer <token>'
 }
 
 response = requests.request("GET", url, headers=headers, data=payload)
@@ -119,13 +124,13 @@ print(response.text)
 require "uri"
 require "net/http"
 
-url = URI("https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367")
+url = URI("https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598")
 
 https = Net::HTTP.new(url.host, url.port)
 https.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Authorization"] = "Bearer eyJhbGciOkpXVCJ9.eyJjbGllbn...rwjGQ"
+request["Authorization"] = "Bearer <token>"
 
 response = https.request(request)
 puts response.read_body
@@ -135,8 +140,8 @@ puts response.read_body
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367' \
---header 'Authorization: Bearer eyJhbGciOiJXVCJ9.eyJjbGllbnR...QqLcIe4-706rwjGQ'
+curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598' \
+--header 'Authorization: Bearer <token>'
 ```
 
   </TabItem>
@@ -150,28 +155,34 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
 ```json
 {
   "data": {
-    "address": "CARACALLA",
+    "address": "SAN MARTIN-SAN MARTIN-SHAPAJA",
     "arrayName": [
-      "FELIPE",
-      "TRUJILLO",
-      "HERNANDEZ"
+      "JORGE",
+      "EDUARDO",
+      "VARGAS",
+      "RAMIREZ"
     ],
     "civilStatus": "SOLTERO",
-    "dateOfBirth": "19-11-1997",
-    "documentNumber": "74687367",
+    "dateOfBirth": "03-04-1986",
+    "documentNumber": "44868598",
     "documentType": "DNI",
-    "expeditionDate": "03-03-2025",
-    "expirationDate": "03-03-2033",
-    "firstName": "FELIPE",
-    "fullName": "FELIPE TRUJILLO HERNANDEZ",
-    "lastName": "TRUJILLO HERNANDEZ",
-    "photo": "/9j/4AAQSkZJRgABAgAAAQABAAD/2wBD...v8ADSGiigD/2Q==",
+    "expeditionDate": "not_available",
+    "expirationDate": "not_available",
+    "firstName": "JORGE EDUARDO",
+    "fullName": "JORGE EDUARDO VARGAS RAMIREZ",
+    "lastName": "VARGAS RAMIREZ",
+    "maternalLastName": "RAMIREZ",
+    "paternalLastName": "VARGAS",
+    "photo": "not_available",
     "sex": "M",
-    "ubigeoReniec": "020208",
-    "verificationDigit": "2"
+    "ubigeoReniec": "not_available",
+    "verificationDigit": "not_available",
+    "province": "SAN MARTIN",
+    "area": "SAN MARTIN",
+    "homeDistrict": "SHAPAJA"
   },
   "signature": {
-    "dateTime": "April 16, 2025 2:44 PM",
+    "dateTime": "October 5, 2026 7:00 PM",
     "message": "Certified by Verifik.co"
   },
   "id": "G2ZOZ"
@@ -211,6 +222,16 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
   </TabItem>
 </Tabs>
 
+### 响应字段
+
+| 字段 | 典型值 | 说明 |
+| ---- | ------ | ---- |
+| `address`、`province`、`area`、`homeDistrict` | 已填充的字符串 | 来自 RENIEC 记录的地址明细。 |
+| `arrayName`、`firstName`、`lastName`、`paternalLastName`、`maternalLastName`、`fullName` | 已填充的字符串 | 姓名组成部分。 |
+| `civilStatus`、`dateOfBirth`、`sex` | 已填充的字符串 | 人口统计数据。 |
+| `documentType`、`documentNumber` | 已填充的字符串 | DNI 标识符。 |
+| `photo`、`expeditionDate`、`expirationDate`、`ubigeoReniec`、`verificationDigit` | `not_available` | 出现在响应中，但在当前产品层级未填充。 |
+
 ---
 
 ## 常见使用场景
@@ -219,7 +240,7 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
 -   **金融服务**：为银行及金融服务申请验证详细身份信息。
 -   **雇佣验证**：在招聘流程中确认完整的个人信息。
 -   **合规与尽职调查**：满足秘鲁要求扩展身份数据的法规要求。
--   **欺诈检测**：使用包含照片与人口学信息在内的扩展数据进行高级反欺诈。
+-   **欺诈检测**：使用扩展的人口统计与地址数据进行高级反欺诈。
 
 ## 官方数据源与可靠性
 
@@ -229,7 +250,7 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
 ## 主要优势
 
 -   **自动化合规**：在不增加用户摩擦的前提下简化 KYC 检查并防范欺诈。
--   **扩展数据访问**：获取包含照片、地址、婚姻状态及人口学信息在内的完整身份数据。
+-   **扩展数据访问**：获取包含地址、婚姻状态及人口学信息在内的完整身份数据。
 -   **即时结果**：在数秒内完成核验，适用于实时身份验证。
 -   **可信数据**：采用直接来源于 RENIEC 官方记录的数据。
 -   **轻松集成**：通过 REST API 或兼容 SDK 即可便捷接入。
