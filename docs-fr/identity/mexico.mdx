@@ -95,6 +95,32 @@ print(r.json())
   </TabItem>
 </Tabs>
 
+### Format du CURP {#curp-format}
+
+Un CURP compte 18 caractères. Verifik contrôle la structure et le chiffre de contrôle RENAPO avant d'interroger le registre.
+
+| Positions | Signification |
+| --- | --- |
+| 1–4 | Lettres tirées du nom |
+| 5–10 | Date de naissance au format `YYMMDD` |
+| 11 | Sexe : `H` ou `M` |
+| 12–13 | État de naissance (`NE` pour une naissance hors du Mexique) |
+| 14–16 | Consonnes internes du nom |
+| 17 | Homoclave de siècle : `0–9` pour une naissance en 1931–1999, ou `A–J` pour 2000–2030 |
+| 18 | Chiffre de contrôle |
+
+Le chiffre est calculé sur les 17 premiers caractères avec le dictionnaire RENAPO `0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ`. La valeur de chaque caractère est multipliée par `18` jusqu'à `2`, et le chiffre vaut `(10 - (somme % 10)) % 10`.
+
+Un CURP qui échoue sur la longueur, la structure, la date, le sexe, l'état, l'homoclave de siècle ou le chiffre de contrôle est rejeté en HTTP 409. Le message du chiffre indique le caractère attendu. `documentation` pointe toujours vers la page en anglais :
+
+```json
+{
+  "code": "InvalidCurp",
+  "message": "CURP check digit is invalid. The last character should be 0.",
+  "documentation": "https://docs.verifik.co/identity/mexico#curp-format"
+}
+```
+
 ### Réponse (Response)
 
 <Tabs>
@@ -117,12 +143,13 @@ print(r.json())
 ```
 
   </TabItem>
-  <TabItem value="400" label="400">
+  <TabItem value="409" label="409">
 
 ```json
 {
-  "message": "Invalid CURP number",
-  "code": "INVALID_CURP"
+  "code": "InvalidCurp",
+  "message": "CURP check digit is invalid. The last character should be 0.",
+  "documentation": "https://docs.verifik.co/identity/mexico#curp-format"
 }
 ```
 
@@ -131,7 +158,7 @@ print(r.json())
 
 ### Notes
 
--   Assurez-vous que `documentNumber` respecte strictement le format CURP.
+-   `documentNumber` doit respecter le [format CURP](#curp-format). Une valeur dont la structure ou le chiffre de contrôle est incorrect renvoie 409 `InvalidCurp` sans interroger le registre.
 
 ---
 

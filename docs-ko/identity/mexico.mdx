@@ -95,6 +95,32 @@ print(r.json())
   </TabItem>
 </Tabs>
 
+### CURP 형식 {#curp-format}
+
+CURP는 18자입니다. Verifik는 등기소에 조회하기 전에 구성과 RENAPO 검증 숫자를 확인합니다.
+
+| 위치 | 의미 |
+| --- | --- |
+| 1–4 | 이름에서 가져온 문자 |
+| 5–10 | 생년월일 `YYMMDD` |
+| 11 | 성별: `H` 또는 `M` |
+| 12–13 | 출생 주 (`NE`는 멕시코 외 출생) |
+| 14–16 | 이름의 내부 자음 |
+| 17 | 세기 동음이자: 1931–1999년 출생은 `0–9`, 2000–2030년 출생은 `A–J` |
+| 18 | 검증 숫자 |
+
+검증 숫자는 앞 17자와 RENAPO 사전 `0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ`로 계산합니다. 각 문자의 사전 값에 `18`부터 `2`까지 곱하고, 숫자는 `(10 - (합 % 10)) % 10`입니다.
+
+길이, 문자 구성, 날짜, 성별, 주 코드, 세기 동음이자, 검증 숫자 중 하나라도 실패하면 HTTP 409입니다. 검증 숫자 메시지에는 기대 문자가 들어갑니다. `documentation`은 항상 영어 페이지를 가리킵니다.
+
+```json
+{
+  "code": "InvalidCurp",
+  "message": "CURP check digit is invalid. The last character should be 0.",
+  "documentation": "https://docs.verifik.co/identity/mexico#curp-format"
+}
+```
+
 ### 응답(Response)
 
 <Tabs>
@@ -117,12 +143,13 @@ print(r.json())
 ```
 
   </TabItem>
-  <TabItem value="400" label="400">
+  <TabItem value="409" label="409">
 
 ```json
 {
-  "message": "Invalid CURP number",
-  "code": "INVALID_CURP"
+  "code": "InvalidCurp",
+  "message": "CURP check digit is invalid. The last character should be 0.",
+  "documentation": "https://docs.verifik.co/identity/mexico#curp-format"
 }
 ```
 
@@ -131,7 +158,7 @@ print(r.json())
 
 ### 비고
 
--   `documentNumber`는 CURP 형식과 정확히 일치해야 합니다.
+-   `documentNumber`는 [CURP 형식](#curp-format)과 일치해야 합니다. 구성이나 검증 숫자가 틀리면 409 `InvalidCurp`가 반환되고 등기소는 호출되지 않습니다.
 
 ---
 

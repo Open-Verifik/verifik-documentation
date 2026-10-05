@@ -108,6 +108,32 @@ print(r.json())
   </TabItem>
 </Tabs>
 
+### CURP format {#curp-format}
+
+A CURP is 18 characters. Verifik checks the layout and the RENAPO check digit before calling the registry.
+
+| Positions | Meaning |
+| --- | --- |
+| 1–4 | Letters taken from the name |
+| 5–10 | Birth date as `YYMMDD` |
+| 11 | Sex: `H` or `M` |
+| 12–13 | State of birth (`NE` for people born outside Mexico) |
+| 14–16 | Internal consonants from the name |
+| 17 | Century homoclave: `0–9` when the birth year is 1931–1999, or `A–J` when the birth year is 2000–2030 |
+| 18 | Check digit |
+
+The check digit is calculated from the first 17 characters with the RENAPO dictionary `0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ`. Each character's dictionary value is multiplied by `18` down to `2`, and the digit is `(10 - (sum % 10)) % 10`.
+
+A CURP that fails length, character layout, date, sex, state code, century homoclave, or the check digit is rejected with HTTP 409. The check-digit message includes the expected character. `documentation` always points at this English section:
+
+```json
+{
+  "code": "InvalidCurp",
+  "message": "CURP check digit is invalid. The last character should be 0.",
+  "documentation": "https://docs.verifik.co/identity/mexico#curp-format"
+}
+```
+
 ### Response
 
 <Tabs>
@@ -130,12 +156,13 @@ print(r.json())
 ```
 
   </TabItem>
-  <TabItem value="400" label="400">
+  <TabItem value="409" label="409">
 
 ```json
 {
-  "message": "Invalid CURP number",
-  "code": "INVALID_CURP"
+  "code": "InvalidCurp",
+  "message": "CURP check digit is invalid. The last character should be 0.",
+  "documentation": "https://docs.verifik.co/identity/mexico#curp-format"
 }
 ```
 
@@ -144,7 +171,7 @@ print(r.json())
 
 ### Notes
 
--   Make sure `documentNumber` strictly matches the CURP format.
+-   `documentNumber` must match the [CURP format](#curp-format). A value that fails the layout or the check digit returns 409 `InvalidCurp` and does not call the registry.
 
 ---
 
