@@ -1,7 +1,7 @@
 ---
 id: peru-full-id
 title: 🇵🇪 ペルー — DNI（拡張データ）
-description: Verifik の KYC API を使用して、ペルー市民の DNI（国民身分証明書）に関する拡張情報（住所、生年月日、写真、配偶者の有無など）を取得します。公式の RENIEC データに直接接続し、数秒で本人確認を行います。
+description: Verifik の KYC API を使用して、ペルー市民の DNI（国民身分証明書）に関する拡張情報を取得します。公式の RENIEC データに直接接続し、数秒で本人確認を行います。
 slug: /identity/peru-full-id
 ---
 
@@ -10,7 +10,7 @@ export const structuredData = {
 	"@type": "TechArticle",
 	headline: "ペルー — DNI 拡張情報 | Verifik KYC API",
 	description:
-		"Verifik の KYC API を使用して、ペルー市民の DNI（国民身分証明書）に関する拡張情報（住所、生年月日、写真、配偶者の有無など）を取得します。公式の RENIEC データに直接接続し、数秒で本人確認を行います。",
+		"Verifik の KYC API を使用して、ペルー市民の DNI（国民身分証明書）に関する拡張情報を取得します。公式の RENIEC データに直接接続し、数秒で本人確認を行います。",
 	articleSection: "API ドキュメント",
 	keywords: "本人確認, KYC API, ペルー DNI 検証, Documento Nacional de Identidad, 拡張データ, 公式データソース, 不正防止",
 	about: {
@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Verifik の本人確認 API を使用すると、ペルー市民の DNI（*Documento Nacional de Identidad*）番号で拡張本人確認を実行できます。KYC（Know Your Customer）プロセスの効率化、不正防止、各種規制要件への対応を簡単に実現できるよう設計されています。
 
-氏名、配偶者の有無、生年月日、文書情報、住所、写真などの包括的な個人情報に、迅速・安全・自動的にアクセスする必要があるビジネス向けに構築しました。
+氏名、配偶者の有無、生年月日、住所の詳細（省、地域、居住地区）および関連する本人情報フィールドに、迅速・安全・自動的にアクセスする必要があるビジネス向けに構築しました。
 
 **この情報に安全にアクセスするには Authorization ヘッダーが必要です。**
 
@@ -38,10 +38,11 @@ Verifik の本人確認 API を使用すると、ペルー市民の DNI（*Docum
 
 -   **氏名と DNI 番号**: *Documento Nacional de Identidad*（DNI）文書をサポートします。
 -   **本人一致**: 入力された氏名が DNI 番号と一致するかを確認します。
--   **拡張個人情報**: 配偶者の有無、生年月日、性別、住所情報を返します。
--   **文書情報**: 文書種別、番号、発行日、有効期限、検証桁を検証します。
--   **地理情報**: 場所の特定に用いる ubigeoReniec コードを提供します。
--   **写真データ**: 市民の写真を base64 形式で取得できます。
+-   **拡張個人情報**: 配偶者の有無、生年月日、性別、住所、省、地域、居住地区を返します。
+-   **氏名の構成要素**: `firstName`、`lastName`、`paternalLastName`、`maternalLastName`、`arrayName` を返します。
+-   **文書情報**: 文書種別と番号を返します。
+
+一部のフィールドはレスポンスに常に含まれますが、現在は文字列 `not_available` を返します（省略されません）: `photo`、`expeditionDate`、`expirationDate`、`ubigeoReniec`、`verificationDigit`。このエンドポイントでは現在、写真は提供されていません。
 
 これらを検証することで、相手が実在し有効な文書を保有していることを確認でき、なりすましや不正のリスクを大幅に低減できます。
 
@@ -51,7 +52,9 @@ Verifik の本人確認 API を使用すると、ペルー市民の DNI（*Docum
 GET https://api.verifik.co/v3/pe/cedula/extra
 ```
 
-ペルー国民の **DNI 拡張照会**です。氏名・配偶者の有無・生年月日・**写真（base64）**・住所・ubigeo・検証桁などを返します。`documentType=DNI` と 8 桁の `documentNumber` を指定します。
+ペルー国民の **DNI 拡張照会**です。氏名、配偶者の有無、生年月日、住所（省、地域、居住地区）および関連する本人情報フィールドを返します。`documentType=DNI` と 8 桁の `documentNumber` を指定します。
+
+`photo`、`expeditionDate`、`expirationDate`、`ubigeoReniec`、`verificationDigit` はレスポンスの構造に含まれますが、現在は `not_available` を返します。
 
 ### ヘッダー（Headers）
 
@@ -65,7 +68,7 @@ GET https://api.verifik.co/v3/pe/cedula/extra
 | 名前 | 型 | 必須 | 説明 | 例 |
 | ---- | ---- | ---- | ---- | ---- |
 | `documentType` | string | **はい** | 文書種別。許可値は `DNI` のみ。 | `DNI` |
-| `documentNumber` | string | **はい** | 8 桁の DNI 番号（スペースなし）。 | `12345678` |
+| `documentNumber` | string | **はい** | 8 桁の DNI 番号（スペースなし）。 | `44868598` |
 
 ### リクエスト（Request）
 
@@ -80,7 +83,7 @@ const options = {
   url: 'https://api.verifik.co/v3/pe/cedula/extra',
   params: {
     documentType: 'DNI',
-    documentNumber: '1234567'
+    documentNumber: '44868598'
   },
   headers: {
     'Accept': 'application/json',
@@ -102,11 +105,11 @@ try {
 ```python
 import requests
 
-url = "https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367"
+url = "https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598"
 
 payload = {}
 headers = {
-  'Authorization': 'Bearer eyJhbGciOIJ9.eyJjbGllbnRJZCI6..06rwjGQ'
+  'Authorization': 'Bearer <token>'
 }
 
 response = requests.request("GET", url, headers=headers, data=payload)
@@ -121,13 +124,13 @@ print(response.text)
 require "uri"
 require "net/http"
 
-url = URI("https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367")
+url = URI("https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598")
 
 https = Net::HTTP.new(url.host, url.port)
 https.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Authorization"] = "Bearer eyJhbGciOkpXVCJ9.eyJjbGllbn...rwjGQ"
+request["Authorization"] = "Bearer <token>"
 
 response = https.request(request)
 puts response.read_body
@@ -137,8 +140,8 @@ puts response.read_body
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367' \
---header 'Authorization: Bearer eyJhbGciOiJXVCJ9.eyJjbGllbnR...QqLcIe4-706rwjGQ'
+curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598' \
+--header 'Authorization: Bearer <token>'
 ```
 
   </TabItem>
@@ -152,28 +155,34 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
 ```json
 {
   "data": {
-    "address": "CARACALLA",
+    "address": "SAN MARTIN-SAN MARTIN-SHAPAJA",
     "arrayName": [
-      "FELIPE",
-      "TRUJILLO",
-      "HERNANDEZ"
+      "JORGE",
+      "EDUARDO",
+      "VARGAS",
+      "RAMIREZ"
     ],
     "civilStatus": "SOLTERO",
-    "dateOfBirth": "19-11-1997",
-    "documentNumber": "74687367",
+    "dateOfBirth": "03-04-1986",
+    "documentNumber": "44868598",
     "documentType": "DNI",
-    "expeditionDate": "03-03-2025",
-    "expirationDate": "03-03-2033",
-    "firstName": "FELIPE",
-    "fullName": "FELIPE TRUJILLO HERNANDEZ",
-    "lastName": "TRUJILLO HERNANDEZ",
-    "photo": "/9j/4AAQSkZJRgABAgAAAQABAAD/2wBD...v8ADSGiigD/2Q==",
+    "expeditionDate": "not_available",
+    "expirationDate": "not_available",
+    "firstName": "JORGE EDUARDO",
+    "fullName": "JORGE EDUARDO VARGAS RAMIREZ",
+    "lastName": "VARGAS RAMIREZ",
+    "maternalLastName": "RAMIREZ",
+    "paternalLastName": "VARGAS",
+    "photo": "not_available",
     "sex": "M",
-    "ubigeoReniec": "020208",
-    "verificationDigit": "2"
+    "ubigeoReniec": "not_available",
+    "verificationDigit": "not_available",
+    "province": "SAN MARTIN",
+    "area": "SAN MARTIN",
+    "homeDistrict": "SHAPAJA"
   },
   "signature": {
-    "dateTime": "April 16, 2025 2:44 PM",
+    "dateTime": "October 5, 2026 7:00 PM",
     "message": "Certified by Verifik.co"
   },
   "id": "G2ZOZ"
@@ -213,6 +222,16 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
   </TabItem>
 </Tabs>
 
+### レスポンスフィールド
+
+| フィールド | 典型的な値 | 備考 |
+| ---------- | ---------- | ---- |
+| `address`、`province`、`area`、`homeDistrict` | 値が入った文字列 | RENIEC 記録からの住所の詳細。 |
+| `arrayName`、`firstName`、`lastName`、`paternalLastName`、`maternalLastName`、`fullName` | 値が入った文字列 | 氏名の構成要素。 |
+| `civilStatus`、`dateOfBirth`、`sex` | 値が入った文字列 | 人口統計データ。 |
+| `documentType`、`documentNumber` | 値が入った文字列 | DNI 識別子。 |
+| `photo`、`expeditionDate`、`expirationDate`、`ubigeoReniec`、`verificationDigit` | `not_available` | レスポンスに含まれますが、現在のプロダクトティアでは値が入りません。 |
+
 ---
 
 ## 一般的なユースケース
@@ -221,7 +240,7 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
 -   **金融サービス**: 銀行・金融サービスの申請における詳細な本人情報を検証します。
 -   **雇用確認**: 採用プロセスにおける包括的な個人情報を確認します。
 -   **コンプライアンスとデューデリジェンス**: 拡張本人情報を要求するペルーの規制に準拠します。
--   **不正検知**: 写真や人口統計情報を含む拡張データを活用し、高度な不正防止を行います。
+-   **不正検知**: 拡張された人口統計情報と住所データを活用し、高度な不正防止を行います。
 
 ## 公式ソースと信頼性
 
@@ -231,7 +250,7 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
 ## 主な利点
 
 -   **自動化されたコンプライアンス**: ユーザー体験を損なうことなく KYC チェックを自動化し、不正を防止します。
--   **拡張データへのアクセス**: 写真、住所、配偶者の有無、人口統計情報を含む包括的な本人情報を取得できます。
+-   **拡張データへのアクセス**: 住所、配偶者の有無、人口統計情報を含む包括的な本人情報を取得できます。
 -   **即時の結果**: 数秒で照会を処理できるため、リアルタイム本人確認に最適です。
 -   **信頼できるデータ**: 公式 RENIEC 記録から直接取得したデータを利用できます。
 -   **容易な統合**: REST API または互換 SDK を通じて簡単に接続できます。
