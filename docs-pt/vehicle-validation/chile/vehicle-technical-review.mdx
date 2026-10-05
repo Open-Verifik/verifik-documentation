@@ -1,14 +1,28 @@
 ---
 id: vehicle-validation-chile-vehicle-technical-review
 title: "🇨🇱 Chile - Revisão técnica veicular"
-description: "Consulte o estado e o histórico da revisão técnica de veículo chileno por placa via GET /v3/cl/vehicle."
+description: "Consulte o estado da revisão técnica, o histórico de inspeções e os dados da ficha técnica quando disponíveis por placa via GET /v3/cl/vehicle."
 slug: /vehicle-validation/chile/vehicle-technical-review
 sidebar_label: "🇨🇱 Chile - Revisão técnica veicular"
+keywords:
+  - v3/cl/vehicle
+  - /v3/cl/vehicle
+  - api.verifik.co/v3/cl/vehicle
+  - GET v3/cl/vehicle
 ---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 # 🇨🇱 Chile - Revisão técnica veicular
 
-Use este endpoint para obter **revisão técnica / histórico de inspeções** de um veículo chileno por placa. Ele é diferente de `v2/cl/vehicle` (dados gerais do registro) e de `v2/cl/vehicle-soap` (seguro obrigatório SOAP).
+Use este endpoint quando precisar de dados de **revisão técnica / inspeção** de um veículo chileno por placa: detalhes do veículo, planta de inspeção, número do certificado, data de validade, status da revisão e campos da ficha técnica quando disponíveis.
+
+Endpoints veiculares relacionados no Chile:
+
+- **Informações do veículo (`v2/cl/vehicle`)**: dados gerais do registro, como marca, modelo, RUT do titular, motor, chassi, multas e indicadores de furto.
+- **Revisão técnica veicular (`v3/cl/vehicle`)**: status e histórico de inspeções técnicas, e dados da ficha técnica quando disponíveis.
+- **SOAP veicular (`v2/cl/vehicle-soap`)**: certificado de seguro obrigatório por placa e número da apólice.
 
 ### Endpoint
 
@@ -16,22 +30,59 @@ Use este endpoint para obter **revisão técnica / histórico de inspeções** d
 GET https://api.verifik.co/v3/cl/vehicle
 ```
 
-### Parâmetros
+Retorna dados de revisão técnica chilena para uma placa, incluindo atributos do veículo, histórico de inspeções e `technicalSheet` opcional (`engine`, `performance`, `dimensions`) quando disponível. Use para conformidade de frotas, seguros, sinistros ou onboarding veicular.
 
-| Nome | Tipo | Obrigatório | Descrição | Exemplo |
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
 | --- | --- | --- | --- | --- |
-| `plate` | string | **Sim** | Placa chilena compatível com v3: quatro letras e dois dígitos, ou duas letras e quatro dígitos. | `XH6640` |
+| `plate` | string | **Yes** | Placa chilena em formato compatível com v3, como quatro letras e dois dígitos ou duas letras e quatro dígitos. | `XH6640` |
 
-### Requisição
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
 
 ```javascript
+import axios from "axios";
+
 const { data } = await axios.get("https://api.verifik.co/v3/cl/vehicle", {
 	params: { plate: "XH6640" },
-	headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
 });
+console.log(data);
 ```
 
-### Resposta 200
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/cl/vehicle"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "XH6640"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
 
 ```json
 {
@@ -57,17 +108,66 @@ const { data } = await axios.get("https://api.verifik.co/v3/cl/vehicle", {
 				"expirationDate": "2027-01-12",
 				"status": "APROBADA"
 			}
-		]
+		],
+		"technicalSheet": {
+			"engine": {
+				"engineDescription": "1.6L",
+				"fuel": "Petrol (Gasoline)",
+				"powerHp": "110 Hp"
+			},
+			"performance": {
+				"cityConsumption": "8.2 l/100 km",
+				"highwayConsumption": "5.9 l/100 km"
+			},
+			"dimensions": {
+				"doors": "4",
+				"occupants": "5",
+				"length": "4300 mm"
+			}
+		}
+	},
+	"signature": {
+		"dateTime": "June 30, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
 	}
 }
 ```
 
-### Erros
+  </TabItem>
+  <TabItem value="404" label="404">
 
-- `404 NotFound`: registro não encontrado.
-- `409 Invalid_plate_format`: formato de placa inválido.
-- `409 timeout_data_source`: fonte externa indisponível ou tempo limite.
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409-format" label="409 Invalid_plate_format">
+
+```json
+{
+	"code": "Invalid_plate_format",
+	"message": "Plate must match Chile vehicle format ABCD12 (4 letters and 2 digits) or XH6640 (2 letters and 4 digits)"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-timeout" label="409 timeout_data_source">
+
+```json
+{
+	"code": "timeout_data_source",
+	"message": "timeout_data_source"
+}
+```
+
+  </TabItem>
+</Tabs>
 
 ### Notes
 
-`XH6640`, `FHDJ31` e `DCCH18` retornam perfis estáveis. `BB985` retorna `409 Invalid_plate_format`.
+- `technicalSheet` pode ser `null` ou parcialmente preenchido quando não há dados técnicos correspondentes.
+- `XH6640`, `FHDJ31` e `DCCH18` retornam perfis estáveis de revisão técnica.
+- `BB985` retorna `409 Invalid_plate_format` porque não corresponde ao formato de placa v3.
