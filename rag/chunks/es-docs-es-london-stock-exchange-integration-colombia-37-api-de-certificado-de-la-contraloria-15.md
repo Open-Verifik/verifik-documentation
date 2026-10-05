@@ -1,0 +1,100 @@
+---
+id: "es-docs-es-london-stock-exchange-integration-colombia-37-api-de-certificado-de-la-contraloria-15"
+title: "Colombia — API pública Verifik — 37. API de Certificado de la Contraloría"
+sourcePath: "docs-es/london-stock-exchange-integration/colombia.mdx"
+locale: "es"
+category: "london-stock-exchange-integration"
+tags:
+  - "co"
+  - "london-stock-exchange-integration"
+endpoint: "/v2/co/cedula/extra"
+sourceAnchor: "37. API de Certificado de la Contraloría"
+slug: "/london-stock-exchange-integration/colombia"
+url: "https://docs.verifik.co/verifik-es/london-stock-exchange-integration/colombia"
+---
+
+# Colombia — API pública Verifik
+**API path(s):** /v2/co/cedula/extra
+
+## 37. API de Certificado de la Contraloría
+
+**Ubicación en la colección:** v2 › co › contraloria › certificado › API de Certificado de la Contraloría
+
+**Qué hace (resumen):**
+
+La API de Certificado de la Contraloría te permite verificar un certificado de buena conducta emitido por la Contraloría de Colombia. Simplemente proporciona el tipo y número de documento, y la API devolverá la fecha de búsqueda y un PDF codificado en base64 del certificado. 
+
+La respuesta de la API está certificada por Verifik.co para garantizar la autenticidad de los datos. Utiliza esta API para confirmar de manera rápida y sencilla la buena conducta de una empresa o individuo colombiano.
+
+**Tipo de consulta:** `GET`
+
+**Ejemplo de dirección completa** (con valores de ejemplo):
+
+```
+https://api.verifik.co/v2/co/contraloria/certificado?documentType=CC&documentNumber=1121329662
+```
+
+**Parámetros en la dirección (después del `?`):**
+
+| Nombre | Valor de ejemplo | Notas |
+| --- | --- | --- |
+| documentType | CC | (Required) Tipo de documento. Parámetros válidos: CC, CE, PA, PEP.  |
+| documentNumber | 1121329662 | (Required) Número de documento de la persona a consultar, sin espacios ni puntos. |
+
+**Cabeceras habituales:**
+
+| Nombre | Valor de ejemplo |
+| --- | --- |
+| Accept | application/json |
+
+**Ejemplo con la herramienta `curl` (para quien lo pida tu equipo técnico):**
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/contraloria/certificado?documentType=CC&documentNumber=1121329662" \
+  -H "Accept: application/json"
+```
+
+**Ejemplos de respuesta que guarda Postman:**
+
+- **HTTP 200 (OK)**
+
+```json
+{
+
+    "data": {
+
+        "documentType": "CC",
+
+        "documentNumber": "1121329662",
+
+        "searchDate": "2026-04-09T15:18:28.537Z",
+
+        "pdfBase64": "data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PC9UeXBlL1hPYmplY3QvU3VidHlwZS9JbWFnZS9XaWR0aCAyNTAvSGVpZ2h0IDI1NC9GaWx0ZXIvRENURGVjb2RlL0NvbG9yU3BhY2UvRGV2aWNlUkdCL0JpdHNQZXJDb21wb25lbnQgOC9MZW5ndGggMzMyMj4+c3RyZWFtCv/Y/+AAEEpGSUYAAQEBAEgASAAA/9sAQwAGBAQEBQQGBQUGCQYFBgkLCAYGCAsMCgoLCgoMEAwMDAwMDBAMDg8QDw4MExMUFBMTHBsbGxwgICAgICAgICAg/9sAQwEHBwcNDA0YEBAYGhURFRogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg/8AAEQgA/gD6AwERAAIRAQMRAf/EABsAAQACAwEBAAAAAAAAAAAAAAABBQIDBAYI/8QALhAAAgEDBAEEAQQCAgMAAAAAAAECAwQRBRIhMUETIjJRQgYjYXEUMxVSQ4Gx/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APqkAAAAAAAAAAAMgYSqpAY+tnoDH1JsCG6oGFS69L5gRG/pvyBsV1B+QNirQYGSmgMgAAAAAAAAAAAAAAAAAAAAAAEOSXYGqVZ9RWQMcSfbwBO1L+QGV9AMgSmwKD9QympRwwKeNat4kBsjd14+QOilq1aHfIFhR1vPy4AsKGoUZ/lyB2wq7gM8oCQAAAAAAAAAAAAAAAAABqlW8RAwUW+ZATwugGQIAAAJQFD+ovlECmj0BIDAEYAmNSrDmLA77TWa1J+95QF5a6tRrpc4YHfComBmAAAAAAAAAAAAAABEpJdgaJSlUfHQE+2KAjkAAAnAD2rtga53VCHckBqepWy8gUuuXdOs47AKpdATlAAJAZAjbkApTg8xYFrp+tTi1Co+APQULqNRZT4A6E8gSAAAAAAAAAAAIlJRWQNHM3l9ATnwugIAASkBrq3FCkvfICtr65l7aMc/yBoS1K4eeYpgboaLcz5nUA3rQo+ZAZLQqPkDGWgUX0By1f02/wAWBwXGj3NLpZA4pRnHiSwBCaYEsABDiB12eo1aEsN+0D0ljfQrR4YHeAAAAAAAAAAQ2ksgc/NSXPxAyb8ICAAE8RW6XQFTeaxmXpW6zIDXQ0q5uXurvCYFrbaXb0ellgdail0BIAAAAAQ0n2By3GmW9btAUt9oE4ZlRAp5RnTltmuQAACMAb7O7nb1V9AersbuNammgOwAAAAAAAABoqS3SwugD4WEBAACKlSFKDnN4SApbi7uNQqejQyqf2BZ6fpNG2jmS3VPsCwAAAAAAAAAAAACv1HSaNzB4WJgeWurWtaVHCa9v2Br7/oABHgDt0q+lQqqLftA9XQrKcU10BuAAAAAABrqz2rjsDXFbVnyAAAJyjTg5y6QFJVnX1O49OHFFdgXVnY0bWmowXPlgdIAAAAjKAjegG9AN6AyyAAAAAHPeWNG5puM1z9geSv7CtZVnx+34YHMBIEPvIF3o+pdU5sD0MJbo5AyAAAAEN4QGj5T3eAD5YACf7Aqb6tUuqyoUvj5AtbKzp21JRiufLA6AAADGU0gOardxj28AcVbVILpgcstYkBj/wAxMDOGrvyB10tThLtgdtK6jJccgb1JMDIAAA5r2zp3NFwkufDA8fcW07aq6cv/AEBqAkCac3TqKSA9Xpd36tJAWIAAAA11ZYWAMFwgIAAc19W2U8LsB
+… (respuesta recortada)
+```
+
+- **HTTP 404 (Not Found)**
+
+```json
+{
+
+    "code": "NotFound",
+
+    "message": "Record not found."
+
+}
+```
+
+- **HTTP 409 (Conflict)**
+
+```json
+{
+
+    "code": "MissingParameter",
+
+    "message": "documentNumber maximum length exceeded.\n"
+
+}
+```
+
+---

@@ -1,0 +1,36 @@
+---
+id: "en-docs-resources-information-validations"
+title: "Information Validations — Available Services"
+sourcePath: "docs/resources/information-validations.mdx"
+locale: "en"
+category: "resources"
+tags:
+  - "resources"
+sourceAnchor: "Available Services"
+slug: "/resources/information-validations"
+url: "https://docs.verifik.co/resources/information-validations"
+---
+
+# Information Validations
+
+## Available Services
+
+Background check and information validation services for verifying individual records, criminal history, and other identity-related information.
+
+## Available Services
+
+See related background-check APIs under [Background Check](/background-check).
+
+## Related Services
+
+For more comprehensive background check services, see the [Background Check](/background-check) documentation section.
+
+## Features
+
+- **Criminal History Verification**: Check criminal records and legal status
+- **Identity Verification**: Verify personal information and records
+- **Compliance**: Meet regulatory requirements for background checks
+- **Real-time Data**: Access current and up-to-date information
+- **Multiple Countries**: Support for various jurisdictions
+
+For detailed API documentation and integration guides, please refer to the specific service documentation.

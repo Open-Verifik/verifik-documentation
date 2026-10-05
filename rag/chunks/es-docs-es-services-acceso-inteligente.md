@@ -1,0 +1,35 @@
+---
+id: "es-docs-es-services-acceso-inteligente"
+title: "Acceso Inteligente — Resumen"
+sourcePath: "docs-es/services/acceso-inteligente.mdx"
+locale: "es"
+category: "services"
+tags:
+  - "services"
+sourceAnchor: "Resumen"
+slug: "/services/acceso-inteligente"
+url: "https://docs.verifik.co/verifik-es/services/acceso-inteligente"
+---
+
+# Acceso Inteligente
+
+## Resumen
+
+**SmartAccess** es una solución sin código diseñada para proporcionar autenticación segura y fluida para los usuarios. Esta plataforma permite a las empresas ofrecer diversos métodos de autenticación, incluyendo verificación de correo electrónico, teléfono y biométrica.
+
+## Resumen
+
+SmartAccess proporciona una solución de autenticación integral que agiliza el proceso de inicio de sesión mientras mantiene los más altos estándares de seguridad.
+
+## Características
+
+- **Acceso por Correo**: Autenticación mediante códigos OTP por correo electrónico
+- **Acceso por Teléfono**: Autenticación mediante códigos OTP por SMS y WhatsApp
+- **Acceso Biométrico**: Reconocimiento facial avanzado y detección de vivacidad
+- **Integración con Base de Datos**: Conexión con tu base de datos de usuarios existente
+
+## Recursos
+
+- [SmartAccess Overview](/smartaccess)
+- [Ejemplo de Acceso Telefónico](/verifik-es/services/verifik-access-code-solution-via-api/ejemplo-acceso-telefonico)
+- [Ejemplo de Acceso Biométrico](/verifik-es/services/verifik-access-code-solution-via-api/ejemplo-de-acceso-biometrico)

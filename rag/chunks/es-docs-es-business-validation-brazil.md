@@ -1,0 +1,18 @@
+---
+id: "es-docs-es-business-validation-brazil"
+title: "Verificación empresarial (CNPJ)"
+sourcePath: "docs-es/business-validation/brazil.mdx"
+locale: "es"
+category: "business-validation"
+tags:
+  - "br"
+  - "business-validation"
+slug: "/business-validation/brazil"
+url: "https://docs.verifik.co/verifik-es/business-validation/brazil"
+---
+
+# Verificación empresarial (CNPJ)
+
+Esta ruta de documentación se mantenía duplicada con parámetros incorrectos (`cnpj` en lugar de `documentType` / `documentNumber`). La referencia canónica en español para **`v2/br/company`** (encabezados, parámetros, ejemplos y respuestas) está en **[Verificación empresarial (CNPJ)](/verifik-es/validacion-empresarial/brazil)**.
+
+Usa siempre `documentType=CNPJ` y un CNPJ de 14 dígitos en `documentNumber`, más `Accept: application/json` y tu token en `Authorization`.

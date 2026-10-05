@@ -1,0 +1,136 @@
+---
+id: "en-docs-london-stock-exchange-integration-uruguay"
+title: "Uruguay — Verifik public API — 122. Uruguayan National Identity Document Verification"
+sourcePath: "docs/london-stock-exchange-integration/uruguay.mdx"
+locale: "en"
+category: "london-stock-exchange-integration"
+tags:
+  - "uy"
+  - "london-stock-exchange-integration"
+endpoint: "/v2/uy/cedula"
+sourceAnchor: "122. Uruguayan National Identity Document Verification"
+slug: "/london-stock-exchange-integration/uruguay"
+url: "https://docs.verifik.co/london-stock-exchange-integration/uruguay"
+---
+
+# Uruguay — Verifik public API
+**API path(s):** /v2/uy/cedula
+
+## 122. Uruguayan National Identity Document Verification
+
+**English** (this page) · [Versión en español](/verifik-es/london-stock-exchange-integration/uruguay/)
+
+# Uruguay
+
+## 122. Uruguayan National Identity Document Verification
+
+**Location in the collection:** v2 › uy › cedula › Uruguayan National Identity Document Verification
+
+**What it does (summary):**
+
+The Argentine National Identity Document (DNI) verification API allows developers to verify the authenticity of an Argentine identity document (Documento Nacional de Identidad, or DNI) by providing the DNI number. The API returns information such as the person's full name, the first and last name separately, and the DNI number.
+
+This information can be used for various purposes, such as verifying the identity of a customer or validating information provided by a user.
+
+**Query type:** `GET`
+
+**Example full address** (with example values):
+
+```
+https://api.verifik.co/v2/uy/cedula?documentType=CCUY&documentNumber=44871740&dateOfBirth=18/02/1983
+```
+
+**Parameters in the address (after the `?`):**
+
+| Name | Example value | Notes |
+| --- | --- | --- |
+| documentType | CCUY | (Required) Document type. Allowed value: CCAR. |
+| documentNumber | 44871740 | (Required) Document number of the person to consult. |
+| dateOfBirth | 02/18/1983 |  |
+
+**Common headers:**
+
+| Name | Example value |
+| --- | --- |
+| Accept | application/json |
+
+**Example with the `curl` tool (for those who request it from your technical team):**
+
+```bash
+curl -X GET "https://api.verifik.co/v2/uy/cedula?documentType=CCUY&documentNumber=44871740&dateOfBirth=18/02/1983" \
+  -H "Accept: application/json"
+```
+
+**Answer examples saved by Postman:**
+
+- **HTTP 200 (OK)**
+
+```json
+{
+
+    "data": {
+
+        "arrayName": [
+
+            "YOSELIN",
+
+            "ALACI",
+
+            "FALCON",
+
+            "ORTIZ"
+
+        ],
+
+        "dateOfBirth": "1983-02-18",
+
+        "documentNumber": "44871740",
+
+        "documentType": "CCUY",
+
+        "firstName": "YOSELIN ALACI",
+
+        "fullName": "YOSELIN ALACI FALCON ORTIZ",
+
+        "lastName": "FALCON ORTIZ"
+
+    },
+
+    "signature": {
+
+        "dateTime": "April 10, 2026 3:53 PM",
+
+        "message": "Certified by Verifik.co"
+
+    },
+
+    "id": "6WQQ6"
+
+}
+```
+
+- **HTTP 404 (Not Found)**
+
+```json
+{
+
+    "code": "NotFound",
+
+    "message": "Record not found."
+
+}
+```
+
+- **HTTP 409 (Conflict)**
+
+```json
+{
+
+    "code": "MissingParameter",
+
+    "message": "documentNumber maximum length exceeded.\n"
+
+}
+```
+
+---

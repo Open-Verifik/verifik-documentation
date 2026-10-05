@@ -1,0 +1,41 @@
+---
+id: "es-docs-es-plans-and-pricings-smart-access-plans-extra-charges"
+title: "Extra Charges - Smart Access — Tipos de Cargos Adicionales"
+sourcePath: "docs-es/plans-and-pricings/smart-access-plans/extra-charges.mdx"
+locale: "es"
+category: "plans-and-pricings"
+tags:
+  - "plans-and-pricings"
+sourceAnchor: "Tipos de Cargos Adicionales"
+slug: "/plans-and-pricings/smart-access-plans/extra-charges"
+url: "https://docs.verifik.co/verifik-es/plans-and-pricings/smart-access-plans/extra-charges"
+---
+
+# Extra Charges - Smart Access
+
+## Tipos de Cargos Adicionales
+
+Los cargos adicionales en Smart Access se aplican cuando excedes los límites incluidos en tu plan.
+
+## Tipos de Cargos Adicionales
+
+### Sesiones Adicionales
+Si excedes el límite de sesiones incluidas en tu plan, se aplicarán cargos adicionales por cada sesión extra.
+
+### Usuarios Activos Adicionales
+Si excedes el límite de usuarios activos incluidos en tu plan, se aplicarán cargos adicionales por cada usuario activo extra.
+
+### Características Premium
+Algunas características avanzadas pueden tener cargos adicionales según el plan seleccionado.
+
+## Información de Contacto
+
+Para obtener más información sobre los cargos adicionales y cómo se aplican, contacta a nuestro equipo de ventas:
+
+- **Email**: [Contactar Ventas](mailto:sales@verifik.co)
+
+## Recursos
+
+- [Planes de Smart Access](/verifik-es/plans-and-pricings/planes-de-smart-access)
+- [Usuarios Activos](/verifik-es/plans-and-pricings/planes-de-smart-access/usuarios-activos)
+- [Sesiones](/verifik-es/planes-y-precios/planes-de-smart-access/sesiones)
