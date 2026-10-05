@@ -10,15 +10,31 @@ import TabItem from '@theme/TabItem';
 
 # 🇵🇪 Perú - ID Completo
 
-Esta llamada API realiza una verificación extendida de identidad para un ciudadano peruano usando su número de DNI (Documento Nacional de Identidad). Este Servicio recupera información personal detallada. Devuelve datos como el nombre completo del individuo, primer nombre, apellido, estado civil, fecha de nacimiento, número de documento, fechas de expedición y vencimiento, y detalles adicionales como dirección y firma de verificación, certificado por Verifik.
+Esta llamada API realiza una verificación extendida de identidad para un ciudadano peruano usando su número de DNI (Documento Nacional de Identidad). Recupera información personal detallada: nombre completo, estado civil, fecha de nacimiento, desglose de dirección (provincia, área, distrito) y campos de identidad relacionados.
 
 **El header de Authorization es requerido para autenticación para acceder a esta información de forma segura.**
+
+## ¿Qué valida esta API?
+
+Nuestra API se conecta directamente con registros oficiales peruanos para validar:
+
+-   **Nombre completo y número de DNI**: admite documentos *Documento Nacional de Identidad* (DNI).
+-   **Coincidencia de identidad**: confirma que el nombre proporcionado coincide con el número de DNI.
+-   **Datos personales extendidos**: devuelve estado civil, fecha de nacimiento, sexo, dirección, provincia, área y distrito.
+-   **Componentes del nombre**: devuelve `firstName`, `lastName`, `paternalLastName`, `maternalLastName` y `arrayName`.
+-   **Información del documento**: devuelve tipo y número de documento.
+
+Algunos campos siempre están presentes en la respuesta pero actualmente devuelven la cadena `not_available` (no se omiten): `photo`, `expeditionDate`, `expirationDate`, `ubigeoReniec` y `verificationDigit`. La foto no se ofrece actualmente en este endpoint.
 
 ### Endpoint
 
 ```
 GET https://api.verifik.co/v3/pe/cedula/extra
 ```
+
+Devuelve **datos extendidos de DNI RENIEC** para ciudadanos peruanos: nombre completo, estado civil, fecha de nacimiento, dirección (provincia, área, distrito) y campos de identidad relacionados. Envíe `documentType=DNI` y el `documentNumber` de 8 dígitos.
+
+`photo`, `expeditionDate`, `expirationDate`, `ubigeoReniec` y `verificationDigit` están incluidos en la forma de la respuesta pero actualmente devuelven `not_available`.
 
 ### Headers
 
@@ -32,7 +48,7 @@ GET https://api.verifik.co/v3/pe/cedula/extra
 | Name | Type | Required | Description | Example |
 | ---- | ---- | -------- | ----------- | ------- |
 | `documentType` | string | **Sí** | Tipo de documento. Valor permitido: DNI. | `DNI` |
-| `documentNumber` | string | **Sí** | Número de documento de la persona a consultar. | `123456789` |
+| `documentNumber` | string | **Sí** | Número de DNI de 8 dígitos (sin espacios). | `44868598` |
 
 ### Solicitud
 
@@ -47,7 +63,7 @@ const options = {
   url: 'https://api.verifik.co/v3/pe/cedula/extra',
   params: {
     documentType: 'DNI',
-    documentNumber: '1234567'
+    documentNumber: '44868598'
   },
   headers: {
     'Accept': 'application/json',
@@ -69,11 +85,11 @@ try {
 ```python
 import requests
 
-url = "https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367"
+url = "https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598"
 
 payload = {}
 headers = {
-  'Authorization': 'Bearer eyJhbGciOIJ9.eyJjbGllbnRJZCI6..06rwjGQ'
+  'Authorization': 'Bearer <token>'
 }
 
 response = requests.request("GET", url, headers=headers, data=payload)
@@ -88,13 +104,13 @@ print(response.text)
 require "uri"
 require "net/http"
 
-url = URI("https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367")
+url = URI("https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598")
 
 https = Net::HTTP.new(url.host, url.port)
 https.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Authorization"] = "Bearer eyJhbGciOkpXVCJ9.eyJjbGllbn...rwjGQ"
+request["Authorization"] = "Bearer <token>"
 
 response = https.request(request)
 puts response.read_body
@@ -104,8 +120,8 @@ puts response.read_body
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367' \
---header 'Authorization: Bearer eyJhbGciOiJXVCJ9.eyJjbGllbnR...QqLcIe4-706rwjGQ'
+curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598' \
+--header 'Authorization: Bearer <token>'
 ```
 
   </TabItem>
@@ -119,28 +135,34 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
 ```json
 {
   "data": {
-    "address": "CARACALLA",
+    "address": "SAN MARTIN-SAN MARTIN-SHAPAJA",
     "arrayName": [
-      "FELIPE",
-      "TRUJILLO",
-      "HERNANDEZ"
+      "JORGE",
+      "EDUARDO",
+      "VARGAS",
+      "RAMIREZ"
     ],
     "civilStatus": "SOLTERO",
-    "dateOfBirth": "19-11-1997",
-    "documentNumber": "74687367",
+    "dateOfBirth": "03-04-1986",
+    "documentNumber": "44868598",
     "documentType": "DNI",
-    "expeditionDate": "03-03-2025",
-    "expirationDate": "03-03-2033",
-    "firstName": "FELIPE",
-    "fullName": "FELIPE TRUJILLO HERNANDEZ",
-    "lastName": "TRUJILLO HERNANDEZ",
-    "photo": "/9j/4AAQSkZJRgABAgAAAQABAAD/2wBD...v8ADSGiigD/2Q==",
+    "expeditionDate": "not_available",
+    "expirationDate": "not_available",
+    "firstName": "JORGE EDUARDO",
+    "fullName": "JORGE EDUARDO VARGAS RAMIREZ",
+    "lastName": "VARGAS RAMIREZ",
+    "maternalLastName": "RAMIREZ",
+    "paternalLastName": "VARGAS",
+    "photo": "not_available",
     "sex": "M",
-    "ubigeoReniec": "020208",
-    "verificationDigit": "2"
+    "ubigeoReniec": "not_available",
+    "verificationDigit": "not_available",
+    "province": "SAN MARTIN",
+    "area": "SAN MARTIN",
+    "homeDistrict": "SHAPAJA"
   },
   "signature": {
-    "dateTime": "April 16, 2025 2:44 PM",
+    "dateTime": "October 5, 2026 7:00 PM",
     "message": "Certified by Verifik.co"
   },
   "id": "G2ZOZ"
@@ -180,20 +202,25 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
   </TabItem>
 </Tabs>
 
+### Campos de respuesta
+
+| Campo | Valor típico | Notas |
+| ----- | ------------ | ----- |
+| `address`, `province`, `area`, `homeDistrict` | Cadenas con datos | Desglose de dirección desde registros RENIEC. |
+| `arrayName`, `firstName`, `lastName`, `paternalLastName`, `maternalLastName`, `fullName` | Cadenas con datos | Componentes del nombre. |
+| `civilStatus`, `dateOfBirth`, `sex` | Cadenas con datos | Datos demográficos. |
+| `documentType`, `documentNumber` | Cadenas con datos | Identificador DNI. |
+| `photo`, `expeditionDate`, `expirationDate`, `ubigeoReniec`, `verificationDigit` | `not_available` | Presentes en la respuesta pero no poblados en el producto actual. |
+
 ## Características
 
-- **Verificación Extendida de Identidad**: Realizar verificación integral de identidad para ciudadanos peruanos usando DNI
-- **Información Personal Detallada**: Acceder a nombre completo, primer nombre, apellido y componentes de nombre en array
-- **Datos Demográficos**: Obtener estado civil, sexo, fecha de nacimiento e información de dirección
-- **Detalles del Documento**: Acceder a tipo de documento, número, fecha de expedición, fecha de vencimiento y dígito de verificación
-- **Información Geográfica**: Obtener código ubigeoReniec para identificación de ubicación
-- **Datos de Foto**: Acceder a foto del ciudadano en formato base64
-- **Ciclo de Vida del Documento**: Rastrear fechas de expedición y vencimiento
-- **Dígito de Verificación**: Acceder al dígito de verificación del DNI para validación
-- **Múltiples Lenguajes de Programación**: Soporte para JavaScript, Python, Ruby y cURL
-- **Datos en Tiempo Real**: Acceder a información de ciudadanos actual y actualizada
-- **Manejo Completo de Errores**: Respuestas de error detalladas para varios escenarios
-- **Integración con Registro Peruano**: Acceso directo a base de datos oficial de ciudadanos peruanos
-- **Autenticación Segura**: Header de Authorization requerido para acceso seguro
-- **Demografía Completa**: Información demográfica y geográfica completa
-- **Validación de Documento**: Validación completa de DNI con todos los campos disponibles
+- **Verificación extendida de identidad**: verificación integral de identidad para ciudadanos peruanos usando DNI
+- **Información personal detallada**: nombre completo, componentes del nombre y `arrayName`
+- **Datos demográficos**: estado civil, sexo, fecha de nacimiento e información de dirección (provincia, área, distrito)
+- **Detalles del documento**: tipo y número de documento
+- **Campos no disponibles**: `photo`, `expeditionDate`, `expirationDate`, `ubigeoReniec` y `verificationDigit` devuelven `not_available` en el producto actual
+- **Múltiples lenguajes de programación**: soporte para JavaScript, Python, Ruby y cURL
+- **Datos en tiempo real**: información de ciudadanos actual y actualizada
+- **Manejo completo de errores**: respuestas de error detalladas para varios escenarios
+- **Integración con registro peruano**: acceso directo a base de datos oficial de ciudadanos peruanos
+- **Autenticación segura**: header de Authorization requerido para acceso seguro

@@ -43,7 +43,7 @@ import TabItem from '@theme/TabItem';
 
 Verifik's Identity Verification API helps you perform extended identity verification for Peruvian citizens using their DNI (Documento Nacional de Identidad) number. It's designed to streamline your KYC (Know Your Customer) processes, prevent fraud, and ensure you meet all regulatory requirements effortlessly.
 
-We built this integration for businesses that need a fast, secure, and automated way to access comprehensive personal information, including full name, civil status, date of birth, document details, address, and photo data.
+We built this integration for businesses that need a fast, secure, and automated way to access extended personal information, including full name, civil status, date of birth, address breakdown (province, area, home district), and related identity fields.
 
 **The Authorization header is required for authentication to access this information securely.**
 
@@ -53,10 +53,11 @@ Our API connects directly with official Peruvian records to validate:
 
 -   **Full Name & DNI Number**: Supports *Documento Nacional de Identidad* (DNI) documents.
 -   **Identity Match**: Confirms that the name provided matches the DNI number.
--   **Extended Personal Data**: Returns civil status, date of birth, sex, and address information.
--   **Document Information**: Validates document type, number, expedition date, expiration date, and verification digit.
--   **Geographic Information**: Provides ubigeoReniec code for location identification.
--   **Photo Data**: Access citizen photo in base64 format.
+-   **Extended Personal Data**: Returns civil status, date of birth, sex, address, province, area, and home district.
+-   **Name Components**: Returns `firstName`, `lastName`, `paternalLastName`, `maternalLastName`, and `arrayName`.
+-   **Document Information**: Returns document type and number.
+
+Some fields are always present in the response but currently return the string `not_available` (they are not omitted): `photo`, `expeditionDate`, `expirationDate`, `ubigeoReniec`, and `verificationDigit`. Photo is not currently offered on this endpoint.
 
 By verifying these details, you can be confident that the person you're dealing with is real and holds a valid document, significantly lowering the risk of impersonation and fraud.
 
@@ -65,6 +66,10 @@ By verifying these details, you can be confident that the person you're dealing 
 ```
 GET https://api.verifik.co/v3/pe/cedula/extra
 ```
+
+Returns **extended RENIEC DNI data** for Peruvian citizens: full name, civil status, date of birth, address (province, area, home district), and related identity fields. Send `documentType=DNI` and the 8-digit `documentNumber`.
+
+`photo`, `expeditionDate`, `expirationDate`, `ubigeoReniec`, and `verificationDigit` are included in the response shape but currently return `not_available`.
 
 ### Headers
 
@@ -77,8 +82,8 @@ GET https://api.verifik.co/v3/pe/cedula/extra
 
 | Name | Type | Required | Description | Example |
 | ---- | ---- | -------- | ----------- | ------- |
-| `documentType` | string | **Yes** | Document type. Allowed value: DNI. | `DNI` |
-| `documentNumber` | string | **Yes** | Document number of the person to be queried. | `123456789` |
+| `documentType` | string | **Yes** | Document type. Allowed value: `DNI`. | `DNI` |
+| `documentNumber` | string | **Yes** | Eight-digit DNI number (no spaces). | `44868598` |
 
 ### Request
 
@@ -93,7 +98,7 @@ const options = {
   url: 'https://api.verifik.co/v3/pe/cedula/extra',
   params: {
     documentType: 'DNI',
-    documentNumber: '1234567'
+    documentNumber: '44868598'
   },
   headers: {
     'Accept': 'application/json',
@@ -115,11 +120,11 @@ try {
 ```python
 import requests
 
-url = "https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367"
+url = "https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598"
 
 payload = {}
 headers = {
-  'Authorization': 'Bearer eyJhbGciOIJ9.eyJjbGllbnRJZCI6..06rwjGQ'
+  'Authorization': 'Bearer <token>'
 }
 
 response = requests.request("GET", url, headers=headers, data=payload)
@@ -134,13 +139,13 @@ print(response.text)
 require "uri"
 require "net/http"
 
-url = URI("https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367")
+url = URI("https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598")
 
 https = Net::HTTP.new(url.host, url.port)
 https.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["Authorization"] = "Bearer eyJhbGciOkpXVCJ9.eyJjbGllbn...rwjGQ"
+request["Authorization"] = "Bearer <token>"
 
 response = https.request(request)
 puts response.read_body
@@ -150,8 +155,8 @@ puts response.read_body
   <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=74687367' \
---header 'Authorization: Bearer eyJhbGciOiJXVCJ9.eyJjbGllbnR...QqLcIe4-706rwjGQ'
+curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documentType=DNI&documentNumber=44868598' \
+--header 'Authorization: Bearer <token>'
 ```
 
   </TabItem>
@@ -165,28 +170,34 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
 ```json
 {
   "data": {
-    "address": "CARACALLA",
+    "address": "SAN MARTIN-SAN MARTIN-SHAPAJA",
     "arrayName": [
-      "FELIPE",
-      "TRUJILLO",
-      "HERNANDEZ"
+      "JORGE",
+      "EDUARDO",
+      "VARGAS",
+      "RAMIREZ"
     ],
     "civilStatus": "SOLTERO",
-    "dateOfBirth": "19-11-1997",
-    "documentNumber": "74687367",
+    "dateOfBirth": "03-04-1986",
+    "documentNumber": "44868598",
     "documentType": "DNI",
-    "expeditionDate": "03-03-2025",
-    "expirationDate": "03-03-2033",
-    "firstName": "FELIPE",
-    "fullName": "FELIPE TRUJILLO HERNANDEZ",
-    "lastName": "TRUJILLO HERNANDEZ",
-    "photo": "/9j/4AAQSkZJRgABAgAAAQABAAD/2wBD...v8ADSGiigD/2Q==",
+    "expeditionDate": "not_available",
+    "expirationDate": "not_available",
+    "firstName": "JORGE EDUARDO",
+    "fullName": "JORGE EDUARDO VARGAS RAMIREZ",
+    "lastName": "VARGAS RAMIREZ",
+    "maternalLastName": "RAMIREZ",
+    "paternalLastName": "VARGAS",
+    "photo": "not_available",
     "sex": "M",
-    "ubigeoReniec": "020208",
-    "verificationDigit": "2"
+    "ubigeoReniec": "not_available",
+    "verificationDigit": "not_available",
+    "province": "SAN MARTIN",
+    "area": "SAN MARTIN",
+    "homeDistrict": "SHAPAJA"
   },
   "signature": {
-    "dateTime": "April 16, 2025 2:44 PM",
+    "dateTime": "October 5, 2026 7:00 PM",
     "message": "Certified by Verifik.co"
   },
   "id": "G2ZOZ"
@@ -226,6 +237,16 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
   </TabItem>
 </Tabs>
 
+### Response fields
+
+| Field | Typical value | Notes |
+| ----- | ------------- | ----- |
+| `address`, `province`, `area`, `homeDistrict` | Populated strings | Address breakdown from RENIEC records. |
+| `arrayName`, `firstName`, `lastName`, `paternalLastName`, `maternalLastName`, `fullName` | Populated strings | Name components. |
+| `civilStatus`, `dateOfBirth`, `sex` | Populated strings | Demographic data. |
+| `documentType`, `documentNumber` | Populated strings | DNI identifier. |
+| `photo`, `expeditionDate`, `expirationDate`, `ubigeoReniec`, `verificationDigit` | `not_available` | Present in the response but not populated on the current product tier. |
+
 ---
 
 ## Common Use Cases
@@ -234,7 +255,7 @@ curl --location --request GET 'https://app.verifik.co/v3/pe/cedula/extra?documen
 -   **Financial Services**: Verify detailed identity data for banking and financial service applications.
 -   **Employment Verification**: Validate comprehensive personal information for hiring processes.
 -   **Compliance & Due Diligence**: Ensure compliance with Peruvian regulations requiring extended identity data.
--   **Fraud Detection**: Access extended data including photo and demographic information for advanced fraud prevention.
+-   **Fraud Detection**: Use extended demographic and address data for advanced fraud prevention.
 
 ## Official Sources & Reliability
 
@@ -244,7 +265,7 @@ Every query is handled with strict adherence to security and regulatory standard
 ## Key Benefits
 
 -   **Automated Compliance**: Streamline your KYC checks to prevent fraud without adding friction for your users.
--   **Extended Data Access**: Get comprehensive identity information including photo, address, civil status, and demographic data.
+-   **Extended Data Access**: Get comprehensive identity information including address, civil status, and demographic data.
 -   **Instant Results**: Process verifications in seconds, perfect for real-time identity verification.
 -   **Trusted Data**: Rely on data sourced directly from official RENIEC records.
 -   **Easy Integration**: Connect easily via our REST API or use our compatible SDKs.
