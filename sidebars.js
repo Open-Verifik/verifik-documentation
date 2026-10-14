@@ -671,6 +671,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/colombia/vehicle-validation-colombia-sibga-vehicle-valuation",
+							label: "SIBGA - Vehicle commercial valuation",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/colombia/vehicle-validation-colombia-runt-vehicle-by-plate-simplified",
 							label: "RUNT - Vehicle records by plate number (simplified)",
 						},

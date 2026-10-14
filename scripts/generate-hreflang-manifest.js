@@ -32,6 +32,7 @@ const SUPPORTED_EXT = new Set([".mdx", ".md"]);
 const ES_REL_PATH_TO_CANONICAL = {
 	"validacion-vehiculos/spain": "vehicle-validation/spain",
 	"validacion-vehiculos/colombia/runt-vehicle-by-plate-only": "vehicle-validation/colombia/runt-vehicle-by-plate-only",
+	"validacion-vehiculos/colombia/sibga-vehicle-valuation": "vehicle-validation/colombia/sibga-vehicle-valuation",
 	"validacion-empresarial/spain": "business-validation/spain",
 	"verificacion-antecendentes/verificacion-antecendentes-brasil": "background-check/brazil",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-inpec": "background-check/colombia-inpec",

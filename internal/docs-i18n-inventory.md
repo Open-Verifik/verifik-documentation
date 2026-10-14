@@ -1,19 +1,19 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-05T19:36:51.000Z
+Generated: 2026-10-14T23:29:56.775Z
 
-- **Files scanned:** 525
-- **Unique endpoint URLs:** 229
+- **Files scanned:** 530
+- **Unique endpoint URLs:** 231
 - **Duplicate URL groups (SEO / aliases):** 57
-- **Docs without `### Endpoint` block:** 216
+- **Docs without `### Endpoint` block:** 219
 
 ## Summary by priority (canonical primary path only)
 
 | Priority | Count | Scope |
 | --- | ---: | --- |
-| P0 | 26 | vehicle-validation/colombia |
+| P0 | 27 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 179 | identity, biometrics, resources, etc. |
+| P2 | 180 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -333,6 +333,7 @@ Generated: 2026-10-05T19:36:51.000Z
 | P0 | `v2/co/runt/vehicle-by-vin` | `vehicle-validation/colombia/runt-vehicle-by-vin.mdx` |
 | P0 | `v2/co/runt/vehiculo` | `vehicle-validation/colombia/runt-vehicle-soat-rtm.md` |
 | P2 | `v2/co/sena/certificados` | `certificates/sena-certificates.mdx` |
+| P0 | `v2/co/sibga/valuation` | `vehicle-validation/colombia/sibga-vehicle-valuation.mdx` |
 | P2 | `v2/co/sigep/name` | `legal/sigep-public-servant-by-name.mdx` |
 | P2 | `v2/co/sigep/number` | `legal/sigep-public-servant-by-number.mdx` |
 | P0 | `v2/co/simit/acuerdos` | `vehicle-validation/colombia/simit-agreements.mdx` |
@@ -428,6 +429,7 @@ Generated: 2026-10-05T19:36:51.000Z
 | P2 | `v2/usa/ssn` | `identity-validation/united-states/ssn-verification-social-security-number.mdx` |
 | P1 | `v2/usa/vehicle` | `vehicle-validation/united-states.mdx` |
 | P1 | `v2/usa/vehicle-by-vin` | `vehicle-validation/united-states/vehicle-by-vin.mdx` |
+| P2 | `v2/usage` | `resources/usage/usage.mdx` |
 | P2 | `v2/uy/cedula` | `identity-validation/uruguay-citizen.mdx` |
 | P2 | `v2/ve/cedula` | `identity-validation/venezuela.mdx` |
 | P2 | `v2/ve/foreigner-id` | `identity/venezuela-foreigner-id.mdx` |
@@ -461,6 +463,8 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `authentication/authentication.md`
 - `authentication/create-new-token-and-revoke-previous-tokens.md`
 - `background-check.mdx`
+- `background-check/chile-antecedentes.mdx`
+- `background-check/chile-d80.mdx`
 - `background-check/colombia.mdx`
 - `background-check/colombia/disciplinary-records-in-colombia-attorneys-office.md`
 - `background-check/colombia/verify-police-compliance-with-corrective-measures.mdx`
@@ -568,6 +572,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `resources/biometric-validations/the-biometric-validation-object.mdx`
 - `resources/collections-1/list-all-collection.mdx`
 - `resources/collections/the-collection-object.mdx`
+- `resources/cost-centers/cost-centers.mdx`
 - `resources/credits/credits.mdx`
 - `resources/credits/list-all-credit-records.mdx`
 - `resources/credits/retrieve-a-credit-record.mdx`

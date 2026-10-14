@@ -1,0 +1,256 @@
+---
+id: vehicle-validation-colombia-sibga-vehicle-valuation
+title: SIBGA - Vehicle Commercial Valuation
+description: Official Ministerio de Transporte (SIBGA) commercial value for a Colombian plate, mapped automatically from RUNT.
+sidebar_label: SIBGA - Vehicle commercial valuation
+slug: /vehicle-validation/colombia/sibga-vehicle-valuation
+keywords:
+  - colombia_api_vehicle_valuation_sibga
+  - v2/co/sibga/valuation
+  - /v2/co/sibga/valuation
+  - GET /v2/co/sibga/valuation
+  - SIBGA valuation
+  - Colombia vehicle commercial value
+  - api.verifik.co/v2/co/sibga/valuation
+  - 'https://api.verifik.co/v2/co/sibga/valuation'
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "SIBGA - Vehicle commercial valuation | Verifik API Colombia",
+	description:
+		"Official Ministerio de Transporte (SIBGA) commercial value for a Colombian plate, mapped automatically from RUNT.",
+	articleSection: "API Documentation",
+	keywords: "SIBGA Colombia, commercial valuation, RUNT, Verifik API, GET /v2/co/sibga/valuation",
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# SIBGA - Vehicle Commercial Valuation
+
+Returns the official **Ministerio de Transporte (SIBGA)** commercial value for a Colombian vehicle. Verifik looks the plate up in **RUNT** and maps brand, line, class, fuel, and displacement onto the SIBGA catalog. You do not maintain an equivalence table.
+
+Send the plate alone, or send the owner's document together with the plate. With a document, RUNT is queried by plate and owner, the same way as [Vehicle records by plate](/vehicle-validation/colombia/runt-vehicle-by-plate). Without a document, the lookup follows [Vehicle records by plate only](/vehicle-validation/colombia/runt-vehicle-by-plate-only).
+
+Use it for insurance underwriting, credit, and fleet valuation when the tax base must come from SIBGA.
+
+## What this API returns
+
+- **`valuation`** — commercial value in **COP** for the vehicle model year. `null` when SIBGA does not value that year (vehicles newer than the period are valued from the purchase invoice)
+- **`valuesByModel`** — commercial value for about **25** model years ending the year before the period
+- **`matched`** — SIBGA vehicle type, class, brand, line, cylinder capacity, and the certificate **`avalId`**
+- **`confidence`** — match strength for the line, brand, and class (`exact`, `high`, `medium`, `low`, or `none`)
+- **`needsReview`** / **`reviewReason`** — set when the catalog match is weak, SIBGA rejected the search, no line matched, or the model year is not valued
+- **`alternatives`** — other catalog lines considered, with scores
+- **`certificateUrl`** — official SIBGA PDF when a value was returned
+- **`runtSource`** — the RUNT brand, line, model, class, and displacement used for the match
+- A **signed** Verifik response
+
+## API reference
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/sibga/valuation
+```
+
+Send **`plate`** as a query parameter. **`documentType`** and **`documentNumber`** are optional and must be sent together. **`period`** is the taxable year, from **2016** through the current year, and defaults to the current year. The response includes the commercial value, the model-year table, the matched SIBGA record, and a review flag when the match should be checked by a person.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | Yes | Colombian license plate, **5–9** alphanumeric characters. | `CUT984` |
+| `documentType` | string | No | Owner document type. One of **`CC`**, **`CE`**, **`PA`**, **`NIT`**. Required together with `documentNumber`. | `CC` |
+| `documentNumber` | string | No | Owner document number, without spaces or punctuation. Required together with `documentType`. | `63535790` |
+| `period` | number | No | Taxable year, from **2016** through the current year. Defaults to the current year. | `2026` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/sibga/valuation", {
+	params: {
+		plate: "CUT984",
+		documentType: "CC",
+		documentNumber: "63535790",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/sibga/valuation"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "CUT984", "documentType": "CC", "documentNumber": "63535790"}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"plate": "CUT984",
+		"period": 2026,
+		"model": 2012,
+		"valuation": {
+			"commercialValue": 12180000,
+			"currency": "COP",
+			"period": 2026,
+			"model": 2012
+		},
+		"valuesByModel": [
+			{ "model": 2025, "commercialValue": 45200000 },
+			{ "model": 2012, "commercialValue": 12180000 },
+			{ "model": 2001, "commercialValue": 6100000 }
+		],
+		"matched": {
+			"avalId": "63441603",
+			"vehicleType": { "id": "1", "name": "AUTOMOVILES" },
+			"vehicleClass": { "id": "1", "name": "AUTOMOVIL" },
+			"brand": { "id": "128", "name": "KIA" },
+			"line": { "id": "26457", "name": "RIO UB EX" },
+			"cylinderCapacity": "1400",
+			"score": 1
+		},
+		"confidence": {
+			"overall": "exact",
+			"line": { "score": 1, "tier": "exact" },
+			"brand": { "score": 1, "tier": "exact" },
+			"vehicleClass": { "score": 1, "tier": "exact" }
+		},
+		"needsReview": false,
+		"reviewReason": null,
+		"alternatives": [],
+		"certificateUrl": "https://web.mintransporte.gov.co/Sibga/Home/GenerarCertificado?id=63441603&modelo=2012&periodo=2026",
+		"runtSource": {
+			"plate": "CUT984",
+			"marca": "KIA",
+			"linea": "RIO UB EX",
+			"modelo": "2012",
+			"cilindraje": "1396",
+			"claseVehiculo": "AUTOMOVIL",
+			"tipoServicio": "Particular"
+		},
+		"source": "SIBGA"
+	},
+	"signature": {
+		"dateTime": "October 9, 2026 5:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-unvalued" label="200 (not valued)">
+
+```json
+{
+	"data": {
+		"plate": "QTO942",
+		"period": 2026,
+		"model": 2026,
+		"valuation": null,
+		"valuesByModel": [
+			{ "model": 2025, "commercialValue": 180000000 }
+		],
+		"matched": {
+			"avalId": "94222603",
+			"vehicleType": { "id": "5", "name": "ELECTRICOS" },
+			"vehicleClass": { "id": "726", "name": "AUTOMOVIL" },
+			"brand": { "id": "223", "name": "TESLA" },
+			"line": { "id": "47175", "name": "MODEL Y" },
+			"cylinderCapacity": null,
+			"score": 0.925
+		},
+		"confidence": {
+			"overall": "high",
+			"line": { "score": 0.95, "tier": "high" },
+			"brand": { "score": 1, "tier": "exact" },
+			"vehicleClass": { "score": 0.8, "tier": "high" }
+		},
+		"needsReview": true,
+		"reviewReason": "model_not_valued_in_period",
+		"alternatives": [],
+		"certificateUrl": null,
+		"runtSource": {
+			"plate": "QTO942",
+			"marca": "TESLA",
+			"linea": "MODELO Y",
+			"modelo": "2026",
+			"claseVehiculo": "CAMIONETA"
+		},
+		"source": "SIBGA"
+	},
+	"signature": {
+		"dateTime": "October 9, 2026 5:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "\"plate\" is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- The AppFeature code is **`colombia_api_vehicle_valuation_sibga`**.
+- A body with **`valuation: null`** is still **HTTP 200**. Read **`reviewReason`**: `model_not_valued_in_period`, `low_confidence_match`, `no_matching_line`, or `sibga_search_rejected`.
+- **`documentType`** and **`documentNumber`** must be sent together, or both omitted.
+- Unsupported classes, such as a semitrailer, return **404**.
+- Sandbox plates **`AA123BA`–`AA123BF`**, **`AA123BH`**, and **`AA123BI`** return distinct valued vehicles. **`AA123BG`** returns **200** with `reviewReason: model_not_valued_in_period`. **`AA123BJ`** and **`ERR40401`** return **404**. Document **`90040401`** returns **404** and **`90050001`** returns **500**.
+- Related RUNT lookups: [vehicle by plate](/vehicle-validation/colombia/runt-vehicle-by-plate) and [vehicle by plate only](/vehicle-validation/colombia/runt-vehicle-by-plate-only).

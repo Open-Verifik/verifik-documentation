@@ -1,0 +1,240 @@
+---
+id: vehicle-validation-colombia-sibga-vehicle-valuation
+title: SIBGA - 車両の商業評価額
+description: コロンビアナンバーの運輸省（SIBGA）公式商業評価額。RUNTのデータを自動で対応付けます。
+sidebar_label: SIBGA - 車両の商業評価額
+slug: /vehicle-validation/colombia/sibga-vehicle-valuation
+keywords:
+  - colombia_api_vehicle_valuation_sibga
+  - v2/co/sibga/valuation
+  - GET /v2/co/sibga/valuation
+  - SIBGA 評価額
+  - api.verifik.co/v2/co/sibga/valuation
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "SIBGA - 車両の商業評価額 | Verifik API コロンビア",
+	description:
+		"コロンビアナンバーの運輸省（SIBGA）公式商業評価額。RUNTのデータを自動で対応付けます。",
+	articleSection: "APIドキュメント",
+	keywords: "SIBGA コロンビア, 商業評価額, RUNT, Verifik API, GET /v2/co/sibga/valuation",
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# SIBGA - 車両の商業評価額
+
+コロンビア車両の**運輸省（SIBGA）**公式商業評価額を返します。Verifikはナンバーを**RUNT**で照会し、メーカー、ライン、クラス、燃料、排気量をSIBGAカタログへ自動で対応付けます。対照表を別途維持する必要はありません。
+
+ナンバーだけを送るか、所有者の書類と一緒に送ります。書類がある場合は[ナンバーによる車両照会（詳細）](/verifik-ja/vehicle-validation/colombia/runt-vehicle-by-plate)と同様に、ナンバーと所有者でRUNTを照会します。書類がない場合は[ナンバーのみの車両照会](/verifik-ja/vehicle-validation/colombia/runt-vehicle-by-plate-only)と同じ経路です。
+
+課税標準をSIBGAから取る必要がある保険引受、与信、フリート評価に使います。
+
+## このAPIが返す内容
+
+- **`valuation`** — 年式に対する**COP**の商業評価額。SIBGAがその年式を評価しないときは`null`（課税年度より新しい車両は請求書で評価）
+- **`valuesByModel`** — 課税年度の前年まで、およそ**25**年式の評価額
+- **`matched`** — SIBGAの車両種別、クラス、メーカー、ライン、排気量、証明書の**`avalId`**
+- **`confidence`** — ライン、メーカー、クラスの対応の強さ（`exact`、`high`、`medium`、`low`、`none`）
+- **`needsReview`** / **`reviewReason`** — 対応が弱い、SIBGAが検索を拒否した、ラインがない、年式が未評価のときに設定
+- **`alternatives`** — 検討した他のカタログ行とスコア
+- **`certificateUrl`** — 評価額があるときの公式SIBGA PDF
+- **`runtSource`** — 対応に使ったRUNTのメーカー、ライン、年式、クラス、排気量
+- Verifikの**署名**付き応答
+
+## APIリファレンス
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/sibga/valuation
+```
+
+**`plate`**をクエリパラメータで送ります。**`documentType`**と**`documentNumber`**は任意で、セットで送る必要があります。**`period`**は**2016**年から当年までの課税年度で、省略すると当年です。応答には商業評価額、年式表、対応したSIBGAレコード、人が確認すべきときのレビュー表示が含まれます。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | はい | コロンビアのナンバー。英数字**5–9**文字。 | `CUT984` |
+| `documentType` | string | いいえ | 所有者の書類種別。**`CC`**、**`CE`**、**`PA`**、**`NIT`**のいずれか。`documentNumber`とセットで必須。 | `CC` |
+| `documentNumber` | string | いいえ | 空白や記号を除いた所有者の書類番号。`documentType`とセットで必須。 | `63535790` |
+| `period` | number | いいえ | **2016**年から当年までの課税年度。省略すると当年。 | `2026` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/sibga/valuation", {
+	params: {
+		plate: "CUT984",
+		documentType: "CC",
+		documentNumber: "63535790",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/sibga/valuation"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "CUT984", "documentType": "CC", "documentNumber": "63535790"}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"plate": "CUT984",
+		"period": 2026,
+		"model": 2012,
+		"valuation": { "commercialValue": 12180000, "currency": "COP", "period": 2026, "model": 2012 },
+		"valuesByModel": [
+			{ "model": 2025, "commercialValue": 45200000 },
+			{ "model": 2012, "commercialValue": 12180000 },
+			{ "model": 2001, "commercialValue": 6100000 }
+		],
+		"matched": {
+			"avalId": "63441603",
+			"vehicleType": { "id": "1", "name": "AUTOMOVILES" },
+			"vehicleClass": { "id": "1", "name": "AUTOMOVIL" },
+			"brand": { "id": "128", "name": "KIA" },
+			"line": { "id": "26457", "name": "RIO UB EX" },
+			"cylinderCapacity": "1400",
+			"score": 1
+		},
+		"confidence": {
+			"overall": "exact",
+			"line": { "score": 1, "tier": "exact" },
+			"brand": { "score": 1, "tier": "exact" },
+			"vehicleClass": { "score": 1, "tier": "exact" }
+		},
+		"needsReview": false,
+		"reviewReason": null,
+		"alternatives": [],
+		"certificateUrl": "https://web.mintransporte.gov.co/Sibga/Home/GenerarCertificado?id=63441603&modelo=2012&periodo=2026",
+		"runtSource": {
+			"plate": "CUT984",
+			"marca": "KIA",
+			"linea": "RIO UB EX",
+			"modelo": "2012",
+			"cilindraje": "1396",
+			"claseVehiculo": "AUTOMOVIL",
+			"tipoServicio": "Particular"
+		},
+		"source": "SIBGA"
+	},
+	"signature": { "dateTime": "October 9, 2026 5:00 PM", "message": "Certified by Verifik.co" },
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-unvalued" label="200（未評価）">
+
+```json
+{
+	"data": {
+		"plate": "QTO942",
+		"period": 2026,
+		"model": 2026,
+		"valuation": null,
+		"valuesByModel": [{ "model": 2025, "commercialValue": 180000000 }],
+		"matched": {
+			"avalId": "94222603",
+			"vehicleType": { "id": "5", "name": "ELECTRICOS" },
+			"vehicleClass": { "id": "726", "name": "AUTOMOVIL" },
+			"brand": { "id": "223", "name": "TESLA" },
+			"line": { "id": "47175", "name": "MODEL Y" },
+			"cylinderCapacity": null,
+			"score": 0.925
+		},
+		"confidence": {
+			"overall": "high",
+			"line": { "score": 0.95, "tier": "high" },
+			"brand": { "score": 1, "tier": "exact" },
+			"vehicleClass": { "score": 0.8, "tier": "high" }
+		},
+		"needsReview": true,
+		"reviewReason": "model_not_valued_in_period",
+		"alternatives": [],
+		"certificateUrl": null,
+		"runtSource": {
+			"plate": "QTO942",
+			"marca": "TESLA",
+			"linea": "MODELO Y",
+			"modelo": "2026",
+			"claseVehiculo": "CAMIONETA"
+		},
+		"source": "SIBGA"
+	},
+	"signature": { "dateTime": "October 9, 2026 5:00 PM", "message": "Certified by Verifik.co" },
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "\"plate\" is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- AppFeatureコードは**`colombia_api_vehicle_valuation_sibga`**です。
+- **`valuation: null`**の本体も**HTTP 200**です。**`reviewReason`**を確認してください。`model_not_valued_in_period`、`low_confidence_match`、`no_matching_line`、`sibga_search_rejected`。
+- **`documentType`**と**`documentNumber`**はセットで送るか、両方省略します。
+- セミトレーラーのように未対応のクラスは**404**を返します。
+- サンドボックスのナンバー**`AA123BA`–`AA123BF`**、**`AA123BH`**、**`AA123BI`**はそれぞれ別の評価済み車両を返します。**`AA123BG`**は`reviewReason: model_not_valued_in_period`の**200**です。**`AA123BJ`**と**`ERR40401`**は**404**です。書類**`90040401`**は**404**、**`90050001`**は**500**です。
+- 関連するRUNT照会: [ナンバーによる車両](/verifik-ja/vehicle-validation/colombia/runt-vehicle-by-plate)、[ナンバーのみの車両](/verifik-ja/vehicle-validation/colombia/runt-vehicle-by-plate-only)。

@@ -1496,6 +1496,20 @@ keywords:
   - "https://api.verifik.co/v2/co/sena/certificados"
   - "GET v2/co/sena/certificados"
   - "GET /v2/co/sena/certificados"
+  - "v2/co/sibga/valuation"
+  - "/v2/co/sibga/valuation"
+  - "v2 co sibga valuation"
+  - "co/sibga/valuation"
+  - "/co/sibga/valuation"
+  - "api/co/sibga/valuation"
+  - "/api/co/sibga/valuation"
+  - "api co sibga valuation"
+  - "sibga/valuation"
+  - "/sibga/valuation"
+  - "api.verifik.co/v2/co/sibga/valuation"
+  - "https://api.verifik.co/v2/co/sibga/valuation"
+  - "GET v2/co/sibga/valuation"
+  - "GET /v2/co/sibga/valuation"
   - "v2/co/sigep/name"
   - "/v2/co/sigep/name"
   - "v2 co sigep name"
@@ -2673,6 +2687,18 @@ keywords:
   - "https://api.verifik.co/v2/usa/vehicle-by-vin"
   - "GET v2/usa/vehicle-by-vin"
   - "GET /v2/usa/vehicle-by-vin"
+  - "v2/usage"
+  - "/v2/usage"
+  - "v2 usage"
+  - "usage"
+  - "/usage"
+  - "api/usage"
+  - "/api/usage"
+  - "api usage"
+  - "api.verifik.co/v2/usage"
+  - "https://api.verifik.co/v2/usage"
+  - "GET v2/usage"
+  - "GET /v2/usage"
   - "v2/uy/cedula"
   - "/v2/uy/cedula"
   - "v2 uy cedula"
@@ -2858,12 +2884,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (229 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (231 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-10-05T19:36:51.052Z_
+_Last regenerated: 2026-10-14T23:29:56.826Z_
 
 ## Argentina
 
@@ -2971,6 +2997,7 @@ _Last regenerated: 2026-10-05T19:36:51.052Z_
 | `v2/co/runt/vehicle-by-vin` | v2 co runt vehicle-by-vin co/runt/vehicle-by-vin /co/runt/vehicle-by-vin api/co/runt/vehicle-by-vin /api/co/runt/vehicle-by-vin api co runt vehicle-by-vin runt/vehicle-by-vin /runt/vehicle-by-vin api.verifik.co/v2/co/runt/vehicle-by-vin https://api.verifik.co/v2/co/runt/vehicle-by-vin GET v2/co/runt/vehicle-by-vin GET /v2/co/runt/vehicle-by-vin | [Vehicle Records by VIN](/vehicle-validation/colombia/runt-vehicle-by-vin) |
 | `v2/co/runt/vehiculo` | v2 co runt vehiculo co/runt/vehiculo /co/runt/vehiculo api/co/runt/vehiculo /api/co/runt/vehiculo api co runt vehiculo runt/vehiculo /runt/vehiculo api.verifik.co/v2/co/runt/vehiculo https://api.verifik.co/v2/co/runt/vehiculo GET v2/co/runt/vehiculo GET /v2/co/runt/vehiculo | [SOAT and RTM Validation in RUNT](/vehicle-validation/colombia/runt-vehicle-soat-rtm) |
 | `v2/co/sena/certificados` | v2 co sena certificados co/sena/certificados /co/sena/certificados api/co/sena/certificados /api/co/sena/certificados api co sena certificados sena/certificados /sena/certificados api.verifik.co/v2/co/sena/certificados https://api.verifik.co/v2/co/sena/certificados GET v2/co/sena/certificados GET /v2/co/sena/certificados | [Colombia — SENA Certificates](/certificates/sena-certificates) |
+| `v2/co/sibga/valuation` | v2 co sibga valuation co/sibga/valuation /co/sibga/valuation api/co/sibga/valuation /api/co/sibga/valuation api co sibga valuation sibga/valuation /sibga/valuation api.verifik.co/v2/co/sibga/valuation https://api.verifik.co/v2/co/sibga/valuation GET v2/co/sibga/valuation GET /v2/co/sibga/valuation | [SIBGA - Vehicle Commercial Valuation](/vehicle-validation/colombia/sibga-vehicle-valuation) |
 | `v2/co/sigep/name` | v2 co sigep name co/sigep/name /co/sigep/name api/co/sigep/name /api/co/sigep/name api co sigep name sigep/name /sigep/name api.verifik.co/v2/co/sigep/name https://api.verifik.co/v2/co/sigep/name GET v2/co/sigep/name GET /v2/co/sigep/name | [Colombia — SIGEP lookup by full name](/legal/sigep-public-servant-by-name) |
 | `v2/co/sigep/number` | v2 co sigep number co/sigep/number /co/sigep/number api/co/sigep/number /api/co/sigep/number api co sigep number sigep/number /sigep/number api.verifik.co/v2/co/sigep/number https://api.verifik.co/v2/co/sigep/number GET v2/co/sigep/number GET /v2/co/sigep/number | [Colombia — SIGEP lookup by document](/legal/sigep-public-servant-by-number) |
 | `v2/co/simit/acuerdos` | v2 co simit acuerdos co/simit/acuerdos /co/simit/acuerdos api/co/simit/acuerdos /api/co/simit/acuerdos api co simit acuerdos simit/acuerdos /simit/acuerdos api.verifik.co/v2/co/simit/acuerdos https://api.verifik.co/v2/co/simit/acuerdos GET v2/co/simit/acuerdos GET /v2/co/simit/acuerdos | [SIMIT - Agreements](/vehicle-validation/colombia/simit-agreements) |
@@ -3281,6 +3308,12 @@ _Last regenerated: 2026-10-05T19:36:51.052Z_
 | `v2/usa/ssn` | v2 usa ssn usa/ssn /usa/ssn api/usa/ssn /api/usa/ssn api usa ssn api.verifik.co/v2/usa/ssn https://api.verifik.co/v2/usa/ssn GET v2/usa/ssn GET /v2/usa/ssn | [SSN Verification (Social Security Number)](/identity-validation/united-states/ssn-verification-social-security-number) |
 | `v2/usa/vehicle` | v2 usa vehicle usa/vehicle /usa/vehicle api/usa/vehicle /api/usa/vehicle api usa vehicle api.verifik.co/v2/usa/vehicle https://api.verifik.co/v2/usa/vehicle GET v2/usa/vehicle GET /v2/usa/vehicle | [🇺🇸 United States - Vehicle Information](/vehicle-validation/united-states) |
 | `v2/usa/vehicle-by-vin` | v2 usa vehicle-by-vin usa/vehicle-by-vin /usa/vehicle-by-vin api/usa/vehicle-by-vin /api/usa/vehicle-by-vin api usa vehicle-by-vin api.verifik.co/v2/usa/vehicle-by-vin https://api.verifik.co/v2/usa/vehicle-by-vin GET v2/usa/vehicle-by-vin GET /v2/usa/vehicle-by-vin | [United States - Vehicle by VIN](/vehicle-validation/united-states/vehicle-by-vin) |
+
+## Usage
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/usage` | v2 usage usage /usage api/usage /api/usage api usage api.verifik.co/v2/usage https://api.verifik.co/v2/usage GET v2/usage GET /v2/usage | [Usage API](/resources/usage) |
 
 ## Zelf / API
 

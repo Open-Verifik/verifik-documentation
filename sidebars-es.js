@@ -490,6 +490,11 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "validacion-vehiculos/colombia/sibga-vehicle-valuation",
+							label: "SIBGA - Avalúo comercial de vehículo",
+						},
+						{
+							type: "doc",
 							id: "validacion-vehiculos/colombia/registros-vehiculos-por-placa-simplificado-runt",
 							label: "Registros de Vehículos por Placa (Simplificado)",
 						},

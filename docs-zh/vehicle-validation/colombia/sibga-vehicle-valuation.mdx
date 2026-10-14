@@ -1,0 +1,239 @@
+---
+id: vehicle-validation-colombia-sibga-vehicle-valuation
+title: SIBGA - 车辆商业估价
+description: 哥伦比亚车牌的交通部（SIBGA）官方商业估价，由 RUNT 数据自动对照。
+sidebar_label: SIBGA - 车辆商业估价
+slug: /vehicle-validation/colombia/sibga-vehicle-valuation
+keywords:
+  - colombia_api_vehicle_valuation_sibga
+  - v2/co/sibga/valuation
+  - GET /v2/co/sibga/valuation
+  - SIBGA 估价
+  - api.verifik.co/v2/co/sibga/valuation
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "SIBGA - 车辆商业估价 | Verifik API 哥伦比亚",
+	description: "哥伦比亚车牌的交通部（SIBGA）官方商业估价，由 RUNT 数据自动对照。",
+	articleSection: "API 文档",
+	keywords: "SIBGA 哥伦比亚, 商业估价, RUNT, Verifik API, GET /v2/co/sibga/valuation",
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# SIBGA - 车辆商业估价
+
+返回哥伦比亚车辆的**交通部（SIBGA）**官方商业估价。Verifik 在 **RUNT** 中查询车牌，并把品牌、车系、类别、燃料和排量自动对照到 SIBGA 目录。不需要自行维护对照表。
+
+可以只提交车牌，也可以连同车主证件一起提交。有证件时，按车牌和车主查询 RUNT，与[按车牌查询车辆（完整）](/verifik-zh/vehicle-validation/colombia/runt-vehicle-by-plate)相同。没有证件时，走[仅凭车牌查询车辆](/verifik-zh/vehicle-validation/colombia/runt-vehicle-by-plate-only)的路径。
+
+适用于保险核保、信贷和车队估价，且计税基础必须来自 SIBGA 的场景。
+
+## 此 API 返回的内容
+
+- **`valuation`** — 该年款的 **COP** 商业估价。SIBGA 不评估该年款时为 `null`（新于课税年度的车辆按发票估价）
+- **`valuesByModel`** — 截至课税年度前一年、约 **25** 个年款的估价
+- **`matched`** — SIBGA 车辆类型、类别、品牌、车系、排量，以及证书 **`avalId`**
+- **`confidence`** — 车系、品牌和类别对照的强度（`exact`、`high`、`medium`、`low` 或 `none`）
+- **`needsReview`** / **`reviewReason`** — 对照较弱、SIBGA 拒绝检索、没有匹配车系，或该年款未估价时设置
+- **`alternatives`** — 一并考虑的其他目录车系及其分数
+- **`certificateUrl`** — 有估价时的官方 SIBGA PDF
+- **`runtSource`** — 对照所用的 RUNT 品牌、车系、年款、类别和排量
+- 带 Verifik **签名**的响应
+
+## API 参考
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/sibga/valuation
+```
+
+以查询参数发送 **`plate`**。**`documentType`** 和 **`documentNumber`** 为可选，且必须成对发送。**`period`** 是 **2016** 年至当前年的课税年度，省略时为当前年。响应包含商业估价、年款表、对照后的 SIBGA 记录，以及需要人工确认时的复核标记。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | 是 | 哥伦比亚车牌，**5–9** 位字母数字。 | `CUT984` |
+| `documentType` | string | 否 | 车主证件类型。**`CC`**、**`CE`**、**`PA`**、**`NIT`** 之一。与 `documentNumber` 成对必填。 | `CC` |
+| `documentNumber` | string | 否 | 不含空格和标点的车主证件号。与 `documentType` 成对必填。 | `63535790` |
+| `period` | number | 否 | **2016** 年至当前年的课税年度。省略时为当前年。 | `2026` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/sibga/valuation", {
+	params: {
+		plate: "CUT984",
+		documentType: "CC",
+		documentNumber: "63535790",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/sibga/valuation"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "CUT984", "documentType": "CC", "documentNumber": "63535790"}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"plate": "CUT984",
+		"period": 2026,
+		"model": 2012,
+		"valuation": { "commercialValue": 12180000, "currency": "COP", "period": 2026, "model": 2012 },
+		"valuesByModel": [
+			{ "model": 2025, "commercialValue": 45200000 },
+			{ "model": 2012, "commercialValue": 12180000 },
+			{ "model": 2001, "commercialValue": 6100000 }
+		],
+		"matched": {
+			"avalId": "63441603",
+			"vehicleType": { "id": "1", "name": "AUTOMOVILES" },
+			"vehicleClass": { "id": "1", "name": "AUTOMOVIL" },
+			"brand": { "id": "128", "name": "KIA" },
+			"line": { "id": "26457", "name": "RIO UB EX" },
+			"cylinderCapacity": "1400",
+			"score": 1
+		},
+		"confidence": {
+			"overall": "exact",
+			"line": { "score": 1, "tier": "exact" },
+			"brand": { "score": 1, "tier": "exact" },
+			"vehicleClass": { "score": 1, "tier": "exact" }
+		},
+		"needsReview": false,
+		"reviewReason": null,
+		"alternatives": [],
+		"certificateUrl": "https://web.mintransporte.gov.co/Sibga/Home/GenerarCertificado?id=63441603&modelo=2012&periodo=2026",
+		"runtSource": {
+			"plate": "CUT984",
+			"marca": "KIA",
+			"linea": "RIO UB EX",
+			"modelo": "2012",
+			"cilindraje": "1396",
+			"claseVehiculo": "AUTOMOVIL",
+			"tipoServicio": "Particular"
+		},
+		"source": "SIBGA"
+	},
+	"signature": { "dateTime": "October 9, 2026 5:00 PM", "message": "Certified by Verifik.co" },
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-unvalued" label="200（未估价）">
+
+```json
+{
+	"data": {
+		"plate": "QTO942",
+		"period": 2026,
+		"model": 2026,
+		"valuation": null,
+		"valuesByModel": [{ "model": 2025, "commercialValue": 180000000 }],
+		"matched": {
+			"avalId": "94222603",
+			"vehicleType": { "id": "5", "name": "ELECTRICOS" },
+			"vehicleClass": { "id": "726", "name": "AUTOMOVIL" },
+			"brand": { "id": "223", "name": "TESLA" },
+			"line": { "id": "47175", "name": "MODEL Y" },
+			"cylinderCapacity": null,
+			"score": 0.925
+		},
+		"confidence": {
+			"overall": "high",
+			"line": { "score": 0.95, "tier": "high" },
+			"brand": { "score": 1, "tier": "exact" },
+			"vehicleClass": { "score": 0.8, "tier": "high" }
+		},
+		"needsReview": true,
+		"reviewReason": "model_not_valued_in_period",
+		"alternatives": [],
+		"certificateUrl": null,
+		"runtSource": {
+			"plate": "QTO942",
+			"marca": "TESLA",
+			"linea": "MODELO Y",
+			"modelo": "2026",
+			"claseVehiculo": "CAMIONETA"
+		},
+		"source": "SIBGA"
+	},
+	"signature": { "dateTime": "October 9, 2026 5:00 PM", "message": "Certified by Verifik.co" },
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "\"plate\" is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- AppFeature 代码为 **`colombia_api_vehicle_valuation_sibga`**。
+- **`valuation: null`** 的响应仍是 **HTTP 200**。请阅读 **`reviewReason`**：`model_not_valued_in_period`、`low_confidence_match`、`no_matching_line` 或 `sibga_search_rejected`。
+- **`documentType`** 与 **`documentNumber`** 必须成对发送，或同时省略。
+- 半挂车等不受支持的类别返回 **404**。
+- 沙箱车牌 **`AA123BA`–`AA123BF`**、**`AA123BH`** 和 **`AA123BI`** 返回不同的已估价车辆。**`AA123BG`** 返回 `reviewReason: model_not_valued_in_period` 的 **200**。**`AA123BJ`** 和 **`ERR40401`** 返回 **404**。证件 **`90040401`** 返回 **404**，**`90050001`** 返回 **500**。
+- 相关 RUNT 查询：[按车牌查询车辆](/verifik-zh/vehicle-validation/colombia/runt-vehicle-by-plate)、[仅凭车牌查询车辆](/verifik-zh/vehicle-validation/colombia/runt-vehicle-by-plate-only)。

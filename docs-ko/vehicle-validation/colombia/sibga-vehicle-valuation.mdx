@@ -1,0 +1,240 @@
+---
+id: vehicle-validation-colombia-sibga-vehicle-valuation
+title: SIBGA - 차량 상업 평가액
+description: 콜롬비아 번호판의 교통부(SIBGA) 공식 상업 평가액. RUNT 데이터를 자동으로 대응합니다.
+sidebar_label: SIBGA - 차량 상업 평가액
+slug: /vehicle-validation/colombia/sibga-vehicle-valuation
+keywords:
+  - colombia_api_vehicle_valuation_sibga
+  - v2/co/sibga/valuation
+  - GET /v2/co/sibga/valuation
+  - SIBGA 평가액
+  - api.verifik.co/v2/co/sibga/valuation
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "SIBGA - 차량 상업 평가액 | Verifik API 콜롬비아",
+	description:
+		"콜롬비아 번호판의 교통부(SIBGA) 공식 상업 평가액. RUNT 데이터를 자동으로 대응합니다.",
+	articleSection: "API 문서",
+	keywords: "SIBGA 콜롬비아, 상업 평가액, RUNT, Verifik API, GET /v2/co/sibga/valuation",
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# SIBGA - 차량 상업 평가액
+
+콜롬비아 차량의 **교통부(SIBGA)** 공식 상업 평가액을 반환합니다. Verifik가 번호판을 **RUNT**에서 조회하고 제조사, 라인, 차종, 연료, 배기량을 SIBGA 카탈로그에 자동으로 대응합니다. 별도의 대조표를 유지할 필요가 없습니다.
+
+번호판만 보내거나, 소유자 문서와 함께 보낼 수 있습니다. 문서가 있으면 [번호판으로 차량 조회(전체)](/verifik-ko/vehicle-validation/colombia/runt-vehicle-by-plate)와 같이 번호판과 소유자로 RUNT를 조회합니다. 문서가 없으면 [번호판만으로 차량 조회](/verifik-ko/vehicle-validation/colombia/runt-vehicle-by-plate-only)와 같은 경로를 따릅니다.
+
+과세 기준이 SIBGA에서 나와야 하는 보험 인수, 여신, 차량 자산 평가에 사용합니다.
+
+## 이 API가 반환하는 값
+
+- **`valuation`** — 연식에 대한 **COP** 상업 평가액. SIBGA가 그 연식을 평가하지 않으면 `null`입니다(과세 연도보다 새로운 차량은 송장으로 평가)
+- **`valuesByModel`** — 과세 연도 직전까지 약 **25**개 연식의 평가액
+- **`matched`** — SIBGA 차량 유형, 차종, 제조사, 라인, 배기량, 증명서 **`avalId`**
+- **`confidence`** — 라인, 제조사, 차종 대응의 강도(`exact`, `high`, `medium`, `low`, `none`)
+- **`needsReview`** / **`reviewReason`** — 대응이 약하거나, SIBGA가 검색을 거절했거나, 라인이 없거나, 연식이 평가되지 않을 때 설정
+- **`alternatives`** — 함께 검토한 다른 카탈로그 라인과 점수
+- **`certificateUrl`** — 평가액이 있을 때의 공식 SIBGA PDF
+- **`runtSource`** — 대응에 사용한 RUNT 제조사, 라인, 연식, 차종, 배기량
+- Verifik **서명** 응답
+
+## API 참조
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/co/sibga/valuation
+```
+
+**`plate`**를 쿼리 매개변수로 보냅니다. **`documentType`**과 **`documentNumber`**는 선택이며 함께 보내야 합니다. **`period`**는 **2016**년부터 현재 연도까지의 과세 연도이며, 생략하면 현재 연도입니다. 응답에는 상업 평가액, 연식별 표, 대응된 SIBGA 레코드, 사람이 확인해야 할 때의 검토 표시가 포함됩니다.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | 예 | 콜롬비아 번호판, 영숫자 **5–9**자. | `CUT984` |
+| `documentType` | string | 아니요 | 소유자 문서 유형. **`CC`**, **`CE`**, **`PA`**, **`NIT`** 중 하나. `documentNumber`와 함께 필수. | `CC` |
+| `documentNumber` | string | 아니요 | 공백과 문장 부호 없는 소유자 문서 번호. `documentType`과 함께 필수. | `63535790` |
+| `period` | number | 아니요 | **2016**년부터 현재 연도까지의 과세 연도. 생략하면 현재 연도. | `2026` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/co/sibga/valuation", {
+	params: {
+		plate: "CUT984",
+		documentType: "CC",
+		documentNumber: "63535790",
+	},
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/sibga/valuation"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "CUT984", "documentType": "CC", "documentNumber": "63535790"}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"plate": "CUT984",
+		"period": 2026,
+		"model": 2012,
+		"valuation": { "commercialValue": 12180000, "currency": "COP", "period": 2026, "model": 2012 },
+		"valuesByModel": [
+			{ "model": 2025, "commercialValue": 45200000 },
+			{ "model": 2012, "commercialValue": 12180000 },
+			{ "model": 2001, "commercialValue": 6100000 }
+		],
+		"matched": {
+			"avalId": "63441603",
+			"vehicleType": { "id": "1", "name": "AUTOMOVILES" },
+			"vehicleClass": { "id": "1", "name": "AUTOMOVIL" },
+			"brand": { "id": "128", "name": "KIA" },
+			"line": { "id": "26457", "name": "RIO UB EX" },
+			"cylinderCapacity": "1400",
+			"score": 1
+		},
+		"confidence": {
+			"overall": "exact",
+			"line": { "score": 1, "tier": "exact" },
+			"brand": { "score": 1, "tier": "exact" },
+			"vehicleClass": { "score": 1, "tier": "exact" }
+		},
+		"needsReview": false,
+		"reviewReason": null,
+		"alternatives": [],
+		"certificateUrl": "https://web.mintransporte.gov.co/Sibga/Home/GenerarCertificado?id=63441603&modelo=2012&periodo=2026",
+		"runtSource": {
+			"plate": "CUT984",
+			"marca": "KIA",
+			"linea": "RIO UB EX",
+			"modelo": "2012",
+			"cilindraje": "1396",
+			"claseVehiculo": "AUTOMOVIL",
+			"tipoServicio": "Particular"
+		},
+		"source": "SIBGA"
+	},
+	"signature": { "dateTime": "October 9, 2026 5:00 PM", "message": "Certified by Verifik.co" },
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-unvalued" label="200 (미평가)">
+
+```json
+{
+	"data": {
+		"plate": "QTO942",
+		"period": 2026,
+		"model": 2026,
+		"valuation": null,
+		"valuesByModel": [{ "model": 2025, "commercialValue": 180000000 }],
+		"matched": {
+			"avalId": "94222603",
+			"vehicleType": { "id": "5", "name": "ELECTRICOS" },
+			"vehicleClass": { "id": "726", "name": "AUTOMOVIL" },
+			"brand": { "id": "223", "name": "TESLA" },
+			"line": { "id": "47175", "name": "MODEL Y" },
+			"cylinderCapacity": null,
+			"score": 0.925
+		},
+		"confidence": {
+			"overall": "high",
+			"line": { "score": 0.95, "tier": "high" },
+			"brand": { "score": 1, "tier": "exact" },
+			"vehicleClass": { "score": 0.8, "tier": "high" }
+		},
+		"needsReview": true,
+		"reviewReason": "model_not_valued_in_period",
+		"alternatives": [],
+		"certificateUrl": null,
+		"runtSource": {
+			"plate": "QTO942",
+			"marca": "TESLA",
+			"linea": "MODELO Y",
+			"modelo": "2026",
+			"claseVehiculo": "CAMIONETA"
+		},
+		"source": "SIBGA"
+	},
+	"signature": { "dateTime": "October 9, 2026 5:00 PM", "message": "Certified by Verifik.co" },
+	"id": "ABCDE"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+	"code": "NotFound",
+	"message": "Record_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+	"code": "MissingParameter",
+	"message": "\"plate\" is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- AppFeature 코드는 **`colombia_api_vehicle_valuation_sibga`**입니다.
+- **`valuation: null`**인 본문도 **HTTP 200**입니다. **`reviewReason`**을 읽으십시오. `model_not_valued_in_period`, `low_confidence_match`, `no_matching_line`, `sibga_search_rejected`.
+- **`documentType`**과 **`documentNumber`**는 함께 보내거나 둘 다 생략해야 합니다.
+- 세미트레일러처럼 지원하지 않는 차종은 **404**를 반환합니다.
+- 샌드박스 번호판 **`AA123BA`–`AA123BF`**, **`AA123BH`**, **`AA123BI`**는 서로 다른 평가 차량을 반환합니다. **`AA123BG`**는 `reviewReason: model_not_valued_in_period`인 **200**을 반환합니다. **`AA123BJ`**와 **`ERR40401`**은 **404**입니다. 문서 **`90040401`**은 **404**, **`90050001`**은 **500**입니다.
+- 관련 RUNT 조회: [번호판으로 차량](/verifik-ko/vehicle-validation/colombia/runt-vehicle-by-plate), [번호판만으로 차량](/verifik-ko/vehicle-validation/colombia/runt-vehicle-by-plate-only).
