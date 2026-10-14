@@ -681,6 +681,16 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-chile-antecedentes",
+					label: "🇨🇱 Chile - Certificado de Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "verificacion-antecendentes/verificacion-antecendentes-chile-d80",
+					label: "🇨🇱 Chile - Registro de transporte (D80)",
+				},
+				{
+					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-colombia-procuraduria",
 					label: "🇨🇴 Colombia - Procuraduría",
 				},
@@ -931,6 +941,16 @@ const sidebars = {
 						"resources/tickets-soporte/recuperar-un-ticket-soporte",
 						"resources/tickets-soporte/listar-todos-los-tickets-soporte",
 					],
+				},
+				{
+					type: "doc",
+					id: "resources/uso/uso",
+					label: "API de uso",
+				},
+				{
+					type: "doc",
+					id: "resources/centros-de-costo/centros-de-costo",
+					label: "Centros de costo",
 				},
 				{
 					type: "category",

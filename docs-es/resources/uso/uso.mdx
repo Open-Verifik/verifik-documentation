@@ -1,0 +1,287 @@
+---
+id: uso
+title: API de uso
+description: Solicitudes y costo de tu cuenta por día, mes, endpoint, país o centro de costo, y la disponibilidad mensual de SmartCheck. Consultar el uso no consume créditos.
+slug: /resources/uso
+keywords:
+  - v2/usage
+  - GET /v2/usage
+  - reporte de uso
+  - CSV de uso
+  - v2/usage/availability
+  - disponibilidad SmartCheck
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# API de uso
+
+La API de uso devuelve cuántas solicitudes hizo tu cuenta, cuántas fueron exitosas y cuánto costaron. Puedes agrupar los totales por día, mes, endpoint, país o [centro de costo](/verifik-es/resources/centros-de-costo), y descargar el mismo reporte en CSV. Un segundo endpoint devuelve la disponibilidad mensual de SmartCheck frente a tu objetivo.
+
+- Estas llamadas **no consumen créditos**.
+- Cada cuenta puede hacer **60 solicitudes por minuto** entre ambos endpoints.
+- Las fechas están en **UTC**. Un reporte cubre como máximo **12 meses**.
+
+## Consultar el uso
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/usage
+```
+
+### Headers
+
+| Nombre        | Valor              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parámetros
+
+| Nombre       | Tipo   | Requerido | Descripción                                                                                                             |
+| ------------ | ------ | --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `startDate`  | string | No        | Inicio de la ventana en ISO 8601. Por defecto, 30 días antes de `endDate`.                                              |
+| `endDate`    | string | No        | Fin de la ventana en ISO 8601. Por defecto, ahora. La ventana no puede superar 12 meses.                                |
+| `groupBy`    | string | No        | `day`, `month`, `endpoint`, `country` o `costCenter`. Sin este parámetro recibes las solicitudes una por una, paginadas. |
+| `costCenter` | string | No        | Id del centro de costo, o `none` para las solicitudes sin centro de costo.                                              |
+| `status`     | string | No        | `ok`, `failed` o `timed-out`.                                                                                           |
+| `page`       | number | No        | Número de página, desde 1.                                                                                              |
+| `limit`      | number | No        | Elementos por página. Grupos: 100 por defecto, hasta 500. Solicitudes (sin `groupBy`): 50 por defecto, hasta 100.       |
+| `format`     | string | No        | `json` (por defecto) o `csv`. El CSV se envía como archivo adjunto.                                                     |
+
+`country` es el código ISO-2 del endpoint que llamaste (`/v2/co/...` es `CO`). Los endpoints sin país, como biometría, se agrupan en `null`.
+
+### Solicitud
+
+<Tabs groupId="language">
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -G "https://api.verifik.co/v2/usage" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "startDate=2026-08-01T00:00:00Z" \
+  --data-urlencode "endDate=2026-09-30T23:59:59Z" \
+  --data-urlencode "groupBy=month"
+```
+
+</TabItem>
+<TabItem value="nodejs" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/usage", {
+	headers: { Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+	params: {
+		startDate: "2026-08-01T00:00:00Z",
+		endDate: "2026-09-30T23:59:59Z",
+		groupBy: "month",
+	},
+});
+
+console.log(data.data.totals);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://api.verifik.co/v2/usage",
+    headers={"Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}"},
+    params={
+        "startDate": "2026-08-01T00:00:00Z",
+        "endDate": "2026-09-30T23:59:59Z",
+        "groupBy": "month",
+    },
+)
+
+print(response.json()["data"]["totals"])
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/usage', [
+  'headers' => ['Authorization' => 'Bearer ' . getenv('VERIFIK_TOKEN')],
+  'query' => [
+    'startDate' => '2026-08-01T00:00:00Z',
+    'endDate' => '2026-09-30T23:59:59Z',
+    'groupBy' => 'month',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+</TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"startDate": "2026-08-01T00:00:00.000Z",
+		"endDate": "2026-09-30T23:59:59.000Z",
+		"groupBy": "month",
+		"source": "apiRequests",
+		"totals": { "totalRequests": 1075, "ok": 790, "failed": 285, "timedOut": 0, "costUSD": 240.75 },
+		"groups": [
+			{ "key": "2026-08", "totalRequests": 324, "ok": 210, "failed": 114, "timedOut": 0, "costUSD": 56.6 },
+			{ "key": "2026-09", "totalRequests": 751, "ok": 580, "failed": 171, "timedOut": 0, "costUSD": 184.15 }
+		],
+		"page": 1,
+		"limit": 100,
+		"totalGroups": 2,
+		"pages": 1
+	}
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+	"code": "Conflict",
+	"message": "date_range_exceeds_12_months"
+}
+```
+
+</TabItem>
+<TabItem value="429" label="429">
+
+```json
+{
+	"code": "TooManyRequests",
+	"message": "Usage API allows 60 requests per minute"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Campos de la respuesta
+
+| Campo               | Descripción                                                                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `source`            | `apiRequests` cuando las cifras vienen del registro de solicitudes. `credits` cuando la ventana no tiene registro y los totales salen de la facturación. |
+| `totals`            | Sumas de toda la ventana.                                                                                                                    |
+| `groups[].key`      | El valor del grupo: fecha, mes, ruta del endpoint, país ISO-2 o id del centro de costo.                                                      |
+| `groups[].ok`       | Solicitudes que devolvieron un resultado.                                                                                                    |
+| `groups[].failed`   | Solicitudes que devolvieron un error, incluidos datos inválidos y registros no encontrados.                                                  |
+| `groups[].timedOut` | Solicitudes que agotaron el tiempo con la fuente.                                                                                            |
+| `groups[].costUSD`  | Monto cobrado. Solo se cobran las solicitudes exitosas, así que las fallidas y las que agotaron el tiempo no suman aquí.                     |
+| `groups[].costCenterCode`, `costCenterName` | Presentes cuando `groupBy=costCenter`.                                                                               |
+
+Cuando `source` es `credits`, el detalle por solicitud como `failed` y `timedOut` puede ser cero, porque la facturación solo registra las llamadas cobradas.
+
+### Exportar a CSV
+
+Agrega `format=csv` para descargar los mismos grupos como archivo:
+
+```bash
+curl -G "https://api.verifik.co/v2/usage" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "groupBy=costCenter" \
+  --data-urlencode "format=csv" \
+  -o uso.csv
+```
+
+```
+costCenter,costCenterCode,costCenterName,totalRequests,ok,failed,timedOut,costUSD
+6acfbd5792451bac5d0a7eac,SPAIN-OPS,Spain operations,751,580,171,0,184.15
+,,,42,30,12,0,8.4
+```
+
+La última fila agrupa las solicitudes sin centro de costo. Sin `groupBy`, el CSV tiene una fila por solicitud con `createdAt`, `endpoint`, `code`, `status`, `statusCode`, `country`, `costCenter`, `cost` y `duration`. Las celdas que empiezan con `=`, `+`, `-` o `@` llevan el prefijo `'` para que las hojas de cálculo no las ejecuten como fórmulas.
+
+### Headers de límite
+
+Cada respuesta incluye `X-RateLimit-Limit`, `X-RateLimit-Remaining` y `X-RateLimit-Reset` (segundos Unix). Una respuesta `429` incluye además `Retry-After` en segundos.
+
+## Consultar la disponibilidad mensual
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/usage/availability
+```
+
+Devuelve la disponibilidad de SmartCheck de tu cuenta por mes calendario (UTC), con el detalle por servicio. El mes en curso viene con `partial: true` y se actualiza a medida que avanza.
+
+### Parámetros
+
+| Nombre   | Tipo   | Requerido | Descripción                                        |
+| -------- | ------ | --------- | -------------------------------------------------- |
+| `months` | number | No        | Cuántos meses devolver, de 1 a 12. Por defecto, 6. |
+| `code`   | string | No        | Limita el detalle a un código de servicio.         |
+
+### Cómo se mide la disponibilidad
+
+La disponibilidad es la proporción de solicitudes que el servicio respondió:
+
+```
+disponibilidad = éxitos / (éxitos + fallas del servicio)
+```
+
+- **Éxitos** son las solicitudes que devolvieron un resultado.
+- **Fallas del servicio** son los tiempos agotados, los errores `5xx`, las respuestas `408` y `504`, y `Endpoint_out_of_service`.
+- **Errores del cliente** (parámetros inválidos, registros no encontrados, errores de autenticación y otras respuestas `4xx`) se reportan en `clientErrors` y **no entran** en el cálculo.
+
+`met` compara el mes con `target`. Es `null` en un mes sin solicitudes medibles.
+
+### Solicitud
+
+```bash
+curl -G "https://api.verifik.co/v2/usage/availability" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "months=3"
+```
+
+### Respuesta
+
+```json
+{
+	"data": {
+		"target": 0.95,
+		"months": [
+			{
+				"month": "2026-09",
+				"partial": false,
+				"successes": 580,
+				"serviceFailures": 47,
+				"clientErrors": 124,
+				"sli": 0.92504,
+				"met": false,
+				"services": [
+					{
+						"code": "colombia_api_military_situation",
+						"name": "Colombia — Military service status",
+						"successes": 114,
+						"serviceFailures": 2,
+						"clientErrors": 17,
+						"sli": 0.98276
+					}
+				]
+			}
+		]
+	}
+}
+```
+
+Las mismas cifras aparecen en el panel de cliente, en **Estado de servicios**. Consulta el [Acuerdo de Niveles de Servicio](/verifik-es/acuerdo-de-niveles-de-servicio) para ver los compromisos frente a los que se miden.

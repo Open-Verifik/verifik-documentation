@@ -1,0 +1,287 @@
+---
+id: usage
+title: Usage API
+description: Request counts and cost for your account by day, month, endpoint, country, or cost center, plus monthly SmartCheck availability. Reading usage does not spend credits.
+slug: /resources/usage
+keywords:
+  - v2/usage
+  - GET /v2/usage
+  - usage report
+  - usage CSV
+  - v2/usage/availability
+  - SmartCheck availability
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Usage API
+
+The Usage API returns how many requests your account made, how many succeeded, and what they cost. You can group the totals by day, month, endpoint, country, or [cost center](/resources/cost-centers), and download the same report as CSV. A second endpoint returns monthly SmartCheck availability against your target.
+
+- Calls to these endpoints **do not spend credits**.
+- Each account can make **60 requests per minute** across both endpoints.
+- Dates are in **UTC**. A report covers at most **12 months**.
+
+## Get usage
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/usage
+```
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parameters
+
+| Name         | Type    | Required | Description                                                                                                                               |
+| ------------ | ------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `startDate`  | string  | No       | ISO 8601 start of the window. Defaults to 30 days before `endDate`.                                                                       |
+| `endDate`    | string  | No       | ISO 8601 end of the window. Defaults to now. The window can't be longer than 12 months.                                                   |
+| `groupBy`    | string  | No       | `day`, `month`, `endpoint`, `country`, or `costCenter`. Leave it out to get paginated request rows instead of groups.                      |
+| `costCenter` | string  | No       | Cost center id, or `none` for requests without a cost center.                                                                             |
+| `status`     | string  | No       | `ok`, `failed`, or `timed-out`.                                                                                                           |
+| `page`       | number  | No       | Page number, starting at 1.                                                                                                               |
+| `limit`      | number  | No       | Items per page. Groups: default 100, up to 500. Request rows (no `groupBy`): default 50, up to 100.                                        |
+| `format`     | string  | No       | `json` (default) or `csv`. CSV responses are sent as a file attachment.                                                                   |
+
+`country` is the ISO-2 code of the endpoint you called (`/v2/co/...` is `CO`). Endpoints that aren't tied to a country, such as biometrics, are grouped under `null`.
+
+### Request
+
+<Tabs groupId="language">
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -G "https://api.verifik.co/v2/usage" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "startDate=2026-08-01T00:00:00Z" \
+  --data-urlencode "endDate=2026-09-30T23:59:59Z" \
+  --data-urlencode "groupBy=month"
+```
+
+</TabItem>
+<TabItem value="nodejs" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/usage", {
+	headers: { Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+	params: {
+		startDate: "2026-08-01T00:00:00Z",
+		endDate: "2026-09-30T23:59:59Z",
+		groupBy: "month",
+	},
+});
+
+console.log(data.data.totals);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://api.verifik.co/v2/usage",
+    headers={"Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}"},
+    params={
+        "startDate": "2026-08-01T00:00:00Z",
+        "endDate": "2026-09-30T23:59:59Z",
+        "groupBy": "month",
+    },
+)
+
+print(response.json()["data"]["totals"])
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.verifik.co/v2/usage', [
+  'headers' => ['Authorization' => 'Bearer ' . getenv('VERIFIK_TOKEN')],
+  'query' => [
+    'startDate' => '2026-08-01T00:00:00Z',
+    'endDate' => '2026-09-30T23:59:59Z',
+    'groupBy' => 'month',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+	"data": {
+		"startDate": "2026-08-01T00:00:00.000Z",
+		"endDate": "2026-09-30T23:59:59.000Z",
+		"groupBy": "month",
+		"source": "apiRequests",
+		"totals": { "totalRequests": 1075, "ok": 790, "failed": 285, "timedOut": 0, "costUSD": 240.75 },
+		"groups": [
+			{ "key": "2026-08", "totalRequests": 324, "ok": 210, "failed": 114, "timedOut": 0, "costUSD": 56.6 },
+			{ "key": "2026-09", "totalRequests": 751, "ok": 580, "failed": 171, "timedOut": 0, "costUSD": 184.15 }
+		],
+		"page": 1,
+		"limit": 100,
+		"totalGroups": 2,
+		"pages": 1
+	}
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+	"code": "Conflict",
+	"message": "date_range_exceeds_12_months"
+}
+```
+
+</TabItem>
+<TabItem value="429" label="429">
+
+```json
+{
+	"code": "TooManyRequests",
+	"message": "Usage API allows 60 requests per minute"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Response fields
+
+| Field                | Description                                                                                                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `source`             | `apiRequests` when the figures come from request logs. `credits` when the window has no request logs and the totals come from your billing ledger. |
+| `totals`             | Sums for the whole window.                                                                                                                          |
+| `groups[].key`       | The group value: a date, month, endpoint path, ISO-2 country, or cost center id.                                                                    |
+| `groups[].ok`        | Requests that returned a result.                                                                                                                    |
+| `groups[].failed`    | Requests that returned an error, including invalid input and records not found.                                                                     |
+| `groups[].timedOut`  | Requests that ran out of time upstream.                                                                                                             |
+| `groups[].costUSD`   | Amount charged. Only successful requests are charged, so failed and timed-out requests add nothing here.                                            |
+| `groups[].costCenterCode`, `costCenterName` | Present when `groupBy=costCenter`.                                                                                           |
+
+When `source` is `credits`, request-level detail such as `failed` and `timedOut` may be zero, because the billing ledger only records charged calls.
+
+### CSV export
+
+Add `format=csv` to download the same groups as a file:
+
+```bash
+curl -G "https://api.verifik.co/v2/usage" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "groupBy=costCenter" \
+  --data-urlencode "format=csv" \
+  -o usage.csv
+```
+
+```
+costCenter,costCenterCode,costCenterName,totalRequests,ok,failed,timedOut,costUSD
+6acfbd5792451bac5d0a7eac,SPAIN-OPS,Spain operations,751,580,171,0,184.15
+,,,42,30,12,0,8.4
+```
+
+The last row holds requests without a cost center. Without `groupBy`, the CSV has one row per request with `createdAt`, `endpoint`, `code`, `status`, `statusCode`, `country`, `costCenter`, `cost`, and `duration`. Cells that start with `=`, `+`, `-`, or `@` are prefixed with `'` so spreadsheets don't run them as formulas.
+
+### Rate limit headers
+
+Every response includes `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset` (Unix seconds). A `429` response also includes `Retry-After` in seconds.
+
+## Get monthly availability
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/usage/availability
+```
+
+Returns SmartCheck availability for your account for each calendar month (UTC), plus a per-service breakdown. The current month is marked `partial: true` and updates as the month goes on.
+
+### Parameters
+
+| Name     | Type   | Required | Description                                             |
+| -------- | ------ | -------- | ------------------------------------------------------- |
+| `months` | number | No       | How many months to return, 1 to 12. Defaults to 6.      |
+| `code`   | string | No       | Limit the breakdown to one service code.                |
+
+### How availability is measured
+
+Availability is the share of requests the service answered:
+
+```
+availability = successes / (successes + serviceFailures)
+```
+
+- **Successes** are requests that returned a result.
+- **Service failures** are timeouts, `5xx` errors, `408` and `504` responses, and `Endpoint_out_of_service`.
+- **Client errors** (invalid parameters, records not found, authentication errors, and other `4xx` responses) are reported in `clientErrors` and **left out** of the calculation.
+
+`met` compares the month against `target`. It is `null` for a month with no measurable requests.
+
+### Request
+
+```bash
+curl -G "https://api.verifik.co/v2/usage/availability" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "months=3"
+```
+
+### Response
+
+```json
+{
+	"data": {
+		"target": 0.95,
+		"months": [
+			{
+				"month": "2026-09",
+				"partial": false,
+				"successes": 580,
+				"serviceFailures": 47,
+				"clientErrors": 124,
+				"sli": 0.92504,
+				"met": false,
+				"services": [
+					{
+						"code": "colombia_api_military_situation",
+						"name": "Colombia — Military service status",
+						"successes": 114,
+						"serviceFailures": 2,
+						"clientErrors": 17,
+						"sli": 0.98276
+					}
+				]
+			}
+		]
+	}
+}
+```
+
+The same figures appear in the client panel under **Status Check**. See the [Service Level Agreement](/legal/service-level-agreement) for the commitments these figures are measured against.

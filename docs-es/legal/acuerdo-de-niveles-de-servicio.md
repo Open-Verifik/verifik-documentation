@@ -54,6 +54,17 @@ El tiempo de respuesta varía según la criticidad del requerimiento, de la sigu
 
 Los tiempos de respuesta contarán a partir del último mensaje enviado por el usuario.
 
+##### **4.1. Tickets críticos en el panel de cliente**
+
+Los usuarios pueden abrir un ticket con prioridad **Crítica** desde el panel de cliente cuando el tráfico de producción está bloqueado. Para estos tickets:
+
+- Verifik envía una primera respuesta dentro de las **24 horas** siguientes al envío.
+- Verifik busca resolver el ticket dentro de las **48 horas** siguientes al envío.
+- Ambos plazos corren en horas reloj desde que se envía el ticket, y el panel los muestra en la zona horaria de soporte del usuario.
+- Los tickets críticos sin respuesta del equipo se escalan internamente antes de que venza el plazo de primera respuesta.
+
+Estos plazos aplican a los tickets abiertos desde el panel de cliente. Los tiempos de atención, revisión y escalamiento de la tabla anterior aplican a las conversaciones en los canales de la Sección 1.
+
 #### **5. Disponibilidad de la Plataforma**
 
 La Plataforma estará disponible al menos:
@@ -80,6 +91,23 @@ Las interrupciones, los periodos de mantenimiento, el rendimiento degradado, las
 - darán derecho a créditos de servicio ni a ninguna otra compensación en virtud de este Acuerdo.
 
 Verifik seguirá realizando esfuerzos comercialmente razonables para mantener la conectividad y restablecer el servicio siempre que sea posible; sin embargo, no se ofrece ninguna garantía de tiempo de actividad para los puntos finales mencionados anteriormente.
+
+##### **5.2. Cómo se mide la disponibilidad**
+
+La disponibilidad se calcula por cuenta para cada mes calendario en UTC:
+
+```
+disponibilidad = solicitudes exitosas / (solicitudes exitosas + fallas del servicio)
+```
+
+- **Fallas del servicio** son las solicitudes que agotan el tiempo, devuelven un error `5xx` o una respuesta `408` o `504`, o indican que el endpoint está fuera de servicio.
+- **Errores del cliente** quedan fuera del cálculo. Incluyen parámetros inválidos o faltantes, registros no encontrados en la fuente, errores de autenticación y permisos, y otras respuestas `4xx`.
+
+Los usuarios ven su disponibilidad mensual en el panel de cliente, en **Estado de servicios**, y en la [API de uso](/verifik-es/resources/uso#consultar-la-disponibilidad-mensual). Ambos incluyen el detalle por servicio, así que las solicitudes a los endpoints de la Sección 5.1 se pueden separar del resto. Esos endpoints siguen fuera de los compromisos de este Acuerdo.
+
+##### **5.3. Objetivos por contrato**
+
+El panel de cliente y la API de uso comparan cada mes con un objetivo de SmartCHECK de **95%**. Ese objetivo aplica a las cuentas cuyo acuerdo comercial lo incluye. Para las demás cuentas, la cifra es informativa y aplican los compromisos de la Sección 5. Un objetivo por contrato no agrega compensación en créditos más allá de la Sección 6, salvo que el acuerdo lo indique.
 
 #### **6. Compensación por Tiempos de Inactividad**
 

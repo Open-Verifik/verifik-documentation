@@ -1,0 +1,186 @@
+---
+id: cost-centers
+title: Cost Centers
+description: Tag API requests with a team, country, or business unit so usage and invoices can be split. Create cost centers, set defaults, and send the x-cost-center header.
+slug: /resources/cost-centers
+keywords:
+  - v2/cost-centers
+  - x-cost-center
+  - cost center
+  - usage by country
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Cost Centers
+
+A cost center is a label for part of your business, such as a country operation or a team. Every request your account makes can carry one, and the [Usage API](/resources/usage) can group totals and CSV exports by it. Managing cost centers does not spend credits.
+
+You can also manage them in the client panel under **Settings → Cost Centers**.
+
+## The cost center object
+
+```json
+{
+	"_id": "6acfbdda92451bac5d0a7ebe",
+	"client": "69c2b824295cd7d276e478ad",
+	"name": "Spain operations",
+	"code": "SPAIN-OPS",
+	"country": "ES",
+	"active": true,
+	"createdAt": "2026-10-14T17:37:30.469Z",
+	"updatedAt": "2026-10-14T17:37:30.469Z"
+}
+```
+
+| Field     | Type    | Description                                                                                         |
+| --------- | ------- | --------------------------------------------------------------------------------------------------- |
+| `name`    | string  | Display name, up to 120 characters.                                                                 |
+| `code`    | string  | The value you send in `x-cost-center`. Letters, numbers, `.`, `-`, and `_`, up to 60 characters. Unique per account. |
+| `country` | string  | ISO-2 country this cost center usually serves.                                                      |
+| `active`  | boolean | Inactive cost centers keep their history but can't be assigned to new requests.                     |
+
+## How a request gets a cost center
+
+Verifik checks these in order and uses the first match:
+
+1. **The `x-cost-center` header.** Send the code or the id on any data API request. If the value doesn't match an active cost center on your account, the request fails with `400` before any credits are spent.
+2. **The default on the token's project.** Set it with `PUT /v2/projects/{id}` and `{ "costCenter": "<id>" }` (send `null` to clear it). An id that isn't an active cost center on your account returns `409` with `invalid_cost_center`.
+3. **The endpoint's country.** A request to `/v2/es/...` uses your cost center for `ES` when you have exactly one active cost center for that country.
+
+When nothing matches, the request has no cost center and appears as `null` in usage reports.
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+```json
+{
+	"code": "BadRequest",
+	"message": "x-cost-center does not match an active cost center on this account"
+}
+```
+
+## Create a cost center
+
+```
+POST https://api.verifik.co/v2/cost-centers
+```
+
+| Name      | Type    | Required | Description                         |
+| --------- | ------- | -------- | ----------------------------------- |
+| `name`    | string  | Yes      | Display name.                       |
+| `code`    | string  | Yes      | Header value. Unique per account.   |
+| `country` | string  | Yes      | ISO-2 country code.                 |
+| `active`  | boolean | No       | Defaults to `true`.                 |
+
+<Tabs groupId="language">
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/cost-centers" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Spain operations","code":"SPAIN-OPS","country":"ES"}'
+```
+
+</TabItem>
+<TabItem value="nodejs" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+	"https://api.verifik.co/v2/cost-centers",
+	{ name: "Spain operations", code: "SPAIN-OPS", country: "ES" },
+	{ headers: { Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` } }
+);
+
+console.log(data.data._id);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.post(
+    "https://api.verifik.co/v2/cost-centers",
+    headers={"Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}"},
+    json={"name": "Spain operations", "code": "SPAIN-OPS", "country": "ES"},
+)
+
+print(response.json()["data"]["_id"])
+```
+
+</TabItem>
+</Tabs>
+
+The response is the new [cost center object](#the-cost-center-object) inside `data`. Reusing a code returns:
+
+```json
+{
+	"code": "Conflict",
+	"message": "cost_center_code_taken"
+}
+```
+
+## List cost centers
+
+```
+GET https://api.verifik.co/v2/cost-centers
+```
+
+| Name      | Type    | Required | Description                         |
+| --------- | ------- | -------- | ----------------------------------- |
+| `active`  | boolean | No       | `true` for active cost centers only, `false` for inactive ones. |
+| `country` | string  | No       | ISO-2 country code.                 |
+| `page`    | number  | No       | Page number, starting at 1.         |
+| `limit`   | number  | No       | Items per page. Default 50, up to 100. |
+
+```json
+{
+	"data": [
+		{
+			"_id": "6acfbdda92451bac5d0a7ebe",
+			"name": "Spain operations",
+			"code": "SPAIN-OPS",
+			"country": "ES",
+			"active": true
+		}
+	],
+	"total": 1,
+	"page": 1,
+	"pages": 1,
+	"limit": 50
+}
+```
+
+## Retrieve a cost center
+
+```
+GET https://api.verifik.co/v2/cost-centers/{id}
+```
+
+Returns the cost center object, or `404` with `cost_center_not_found`.
+
+## Update a cost center
+
+```
+PUT https://api.verifik.co/v2/cost-centers/{id}
+```
+
+Send any of `name`, `code`, `country`, or `active`. Set `active: true` to reactivate a cost center. Requests already stamped keep the cost center they had.
+
+## Deactivate a cost center
+
+```
+DELETE https://api.verifik.co/v2/cost-centers/{id}
+```
+
+Sets `active` to `false` and returns the updated object. The cost center stays in your usage history.

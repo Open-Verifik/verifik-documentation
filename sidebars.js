@@ -865,6 +865,16 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/chile-antecedentes",
+					label: "🇨🇱 Chile - Certificado de Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "background-check/chile-d80",
+					label: "🇨🇱 Chile - Transport Register (D80)",
+				},
+				{
+					type: "doc",
 					id: "background-check/united-states-passport-entries",
 					label: "🇺🇸 United States - Passport & U.S. entries",
 				},
@@ -1198,6 +1208,16 @@ const sidebars = {
 						"resources/support-tickets/retrieve-a-support-ticket",
 						"resources/support-tickets/list-all-support-tickets",
 					],
+				},
+				{
+					type: "doc",
+					id: "resources/usage/usage",
+					label: "Usage API",
+				},
+				{
+					type: "doc",
+					id: "resources/cost-centers/cost-centers",
+					label: "Cost Centers",
 				},
 				{
 					type: "category",

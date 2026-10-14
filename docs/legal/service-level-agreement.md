@@ -53,6 +53,17 @@ The response time varies according to the criticality of the requirement, as fol
 
 Response times will be counted from the last message sent by the user.
 
+##### **4.1. Critical Tickets in the Client Panel**
+
+Users can open a ticket with **Critical** priority from the client panel when production traffic is blocked. For these tickets:
+
+- Verifik sends a first response within **24 hours** of submission.
+- Verifik aims to resolve the ticket within **48 hours** of submission.
+- Both deadlines run in clock hours from the moment the ticket is submitted, and the panel shows them in the user's support timezone.
+- Critical tickets that have no staff reply are escalated internally before the first-response deadline.
+
+These deadlines apply to tickets opened through the client panel. The attention, review, and escalation times in the table above apply to conversations on the service channels in Section 1.
+
 #### **5. Platform Availability**
 
 The Platform will be available at least:
@@ -79,6 +90,23 @@ Interruptions, maintenance periods, degraded performance, delayed responses, or 
 - qualify for Service Credits or any other compensation under this Agreement.
 
 Verifik will continue to make commercially reasonable efforts to maintain connectivity and restore service whenever possible; however, no uptime guarantee is provided for the endpoints listed above.
+
+##### **5.2. How Availability Is Measured**
+
+Availability is calculated per account for each calendar month in UTC:
+
+```
+availability = successful requests / (successful requests + service failures)
+```
+
+- **Service failures** are requests that time out, return a `5xx` error or a `408` or `504` response, or report that the endpoint is out of service.
+- **Client errors** are left out of the calculation. They include invalid or missing parameters, records not found in the source, authentication and permission errors, and other `4xx` responses.
+
+Users can see their monthly availability in the client panel under **Status Check** and through the [Usage API](/resources/usage#get-monthly-availability). Both include a per-service breakdown, so requests to the endpoints in Section 5.1 can be separated from the rest. Those endpoints stay outside the commitments of this Agreement.
+
+##### **5.3. Contract-Specific Targets**
+
+The client panel and the Usage API compare each month against a **95%** SmartCHECK target. That target applies to accounts whose commercial agreement includes it. For other accounts, the figure is informational and the commitments in Section 5 apply. A contract-specific target doesn't add credit compensation beyond Section 6 unless the agreement says so.
 
 #### **6. Downtime Compensation**
 
