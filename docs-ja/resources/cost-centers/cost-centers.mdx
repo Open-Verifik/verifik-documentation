@@ -1,0 +1,69 @@
+---
+id: cost-centers
+title: コストセンター
+description: チーム、国、または事業単位で API リクエストをタグ付けし、利用量と請求を分けます。コストセンターを作成し、既定値を設定して x-cost-center ヘッダーを送ります。
+slug: /resources/cost-centers
+keywords:
+  - v2/cost-centers
+  - x-cost-center
+  - コストセンター
+  - 国別の利用量
+---
+
+# コストセンター
+
+コストセンターは、国ごとの運用やチームなど、事業の一部につけるラベルです。アカウントの各リクエストは 1 つ持てます。利用レポートはコストセンターごとに合計と CSV をまとめられます。コストセンターの管理ではクレジットを消費しません。
+
+クライアントパネルの **設定 → コストセンター** でも管理できます。
+
+## コストセンターを利用量に紐づける {#link-cost-centers-to-your-consumption}
+
+設定したあとのリクエストに適用されます。すでに保存されたリクエストは、その時点のコストセンターのままです。
+
+1. **コストセンターを作ります。** パネルで **設定 → コストセンター** を開いて追加するか、[`POST /v2/cost-centers`](/verifik-ja/resources/create-a-cost-center) を呼びます。`code` を控えます。例: `SPAIN-OPS`。
+2. **以降の呼び出しがどう受け取るかを選びます。**
+   - **呼び出しごと:** ヘッダー `x-cost-center` にコードまたは id を送ります。
+   - **トークンを使うすべての呼び出し:** **設定 → APIキー** でそのプロジェクトを選び、既定値を保存します。同じ書き込みは `PUT /v2/projects/{id}` と `{ "costCenter": "<id>" }` です。外すには `null` を送ります。
+   - **国ごと:** その ISO-2 コードの有効なコストセンターをちょうど 1 つにします。`/v2/es/...` への呼び出しは、ヘッダーなしでスペインのセンターを使います。
+3. **通常のデータ呼び出しをします。** ヘッダーを送ると、プロジェクトの既定値と国の規則より優先されます。
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+4. **利用量を確認します。** パネルで **設定 → 利用レポート** を開き、コストセンターでグループ化または絞り込みます。同じ分け方は `GET /v2/usage?groupBy=costCenter` です。コストセンターのないリクエストは空のグループです。
+5. **あとからの変更は過去のリクエストを書き換えません。** プロジェクトの既定値を変える、またはセンターを無効にしても、その後の呼び出しだけが変わります。すでに刻まれた履歴はそのままです。
+
+## リクエストがコストセンターを受け取る方法
+
+Verifik は次の規則を順に確認し、最初に一致したものを使います。
+
+1. **`x-cost-center` ヘッダー。** データ API のリクエストにコードまたは id を送ります。値がアカウントの有効なコストセンターと一致しない場合、クレジットを使う前に `400` で失敗します。
+2. **トークンのプロジェクトの既定値。** `PUT /v2/projects/{id}` と `{ "costCenter": "<id>" }` で設定します。外すには `null` を送ります。アカウントの有効なコストセンターでない id は `409` と `invalid_cost_center` を返します。
+3. **エンドポイントの国。** `/v2/es/...` へのリクエストは、その国の有効なコストセンターがちょうど 1 つのとき `ES` のセンターを使います。
+
+どの規則にも一致しない場合、リクエストにコストセンターはなく、利用レポートでは `null` になります。
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+```json
+{
+	"code": "BadRequest",
+	"message": "x-cost-center does not match an active cost center on this account"
+}
+```
+
+## エンドポイント
+
+- [コストセンターオブジェクト](/verifik-ja/resources/the-cost-center-object)
+- [コストセンターを作成する](/verifik-ja/resources/create-a-cost-center)
+- [コストセンターを取得する](/verifik-ja/resources/retrieve-a-cost-center)
+- [コストセンターを一覧する](/verifik-ja/resources/list-all-cost-centers)
+- [コストセンターを更新する](/verifik-ja/resources/update-a-cost-center)
+- [コストセンターを無効にする](/verifik-ja/resources/delete-a-cost-center)

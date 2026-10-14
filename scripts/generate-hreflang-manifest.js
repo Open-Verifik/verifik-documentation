@@ -66,6 +66,13 @@ const ES_REL_PATH_TO_CANONICAL = {
 	"check-list/eliminar-un-check-list": "check-list/delete-a-check-list",
 	"resources/registros-aplicacion/reenviar-enlace-registro-aplicacion":
 		"resources/app-registrations/resend-an-app-registration-link",
+	"resources/centros-de-costo/centros-de-costo": "resources/cost-centers/cost-centers",
+	"resources/centros-de-costo/el-objeto-centro-de-costo": "resources/cost-centers/the-cost-center-object",
+	"resources/centros-de-costo/crear-un-centro-de-costo": "resources/cost-centers/create-a-cost-center",
+	"resources/centros-de-costo/recuperar-un-centro-de-costo": "resources/cost-centers/retrieve-a-cost-center",
+	"resources/centros-de-costo/listar-centros-de-costo": "resources/cost-centers/list-all-cost-centers",
+	"resources/centros-de-costo/actualizar-un-centro-de-costo": "resources/cost-centers/update-a-cost-center",
+	"resources/centros-de-costo/desactivar-un-centro-de-costo": "resources/cost-centers/delete-a-cost-center",
 };
 
 /**

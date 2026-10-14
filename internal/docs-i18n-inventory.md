@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-14T23:31:39.855Z
+Generated: 2026-10-14T23:55:51.367Z
 
-- **Files scanned:** 530
+- **Files scanned:** 536
 - **Unique endpoint URLs:** 231
 - **Duplicate URL groups (SEO / aliases):** 57
-- **Docs without `### Endpoint` block:** 219
+- **Docs without `### Endpoint` block:** 225
 
 ## Summary by priority (canonical primary path only)
 
@@ -573,6 +573,12 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `resources/collections-1/list-all-collection.mdx`
 - `resources/collections/the-collection-object.mdx`
 - `resources/cost-centers/cost-centers.mdx`
+- `resources/cost-centers/create-a-cost-center.mdx`
+- `resources/cost-centers/delete-a-cost-center.mdx`
+- `resources/cost-centers/list-all-cost-centers.mdx`
+- `resources/cost-centers/retrieve-a-cost-center.mdx`
+- `resources/cost-centers/the-cost-center-object.mdx`
+- `resources/cost-centers/update-a-cost-center.mdx`
 - `resources/credits/credits.mdx`
 - `resources/credits/list-all-credit-records.mdx`
 - `resources/credits/retrieve-a-credit-record.mdx`

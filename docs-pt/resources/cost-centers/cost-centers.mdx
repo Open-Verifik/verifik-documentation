@@ -1,0 +1,69 @@
+---
+id: cost-centers
+title: Centros de custo
+description: Marque as solicitações da API com uma equipe, um país ou uma unidade para separar o uso e a faturação. Crie centros de custo, defina um padrão e envie o header x-cost-center.
+slug: /resources/cost-centers
+keywords:
+  - v2/cost-centers
+  - x-cost-center
+  - centro de custo
+  - uso por país
+---
+
+# Centros de custo
+
+Um centro de custo é um rótulo para uma parte do seu negócio, como a operação de um país ou uma equipe. Cada solicitação da sua conta pode levar um, e o relatório de uso pode agrupar totais e exportações CSV por centro de custo. Gerir centros de custo não consome créditos.
+
+Você também pode gerenciá-los no painel do cliente, em **Configurações → Centros de custo**.
+
+## Vincule os centros de custo ao seu consumo {#link-cost-centers-to-your-consumption}
+
+Isto vale para as solicitações feitas depois da configuração. As solicitações já gravadas mantêm o centro de custo que tinham.
+
+1. **Crie o centro de custo.** No painel, abra **Configurações → Centros de custo** e adicione um, ou chame [`POST /v2/cost-centers`](/verifik-pt/resources/create-a-cost-center). Guarde o `code`, por exemplo `SPAIN-OPS`.
+2. **Escolha como as chamadas seguintes o recebem.**
+   - **Em cada chamada:** envie o header `x-cost-center` com o código ou o id.
+   - **Em cada chamada que usa um token:** abra **Configurações → Chave API**, escolha esse projeto e salve um padrão. A mesma gravação é `PUT /v2/projects/{id}` com `{ "costCenter": "<id>" }`. Envie `null` para limpar.
+   - **Por país:** mantenha exatamente um centro de custo ativo para esse código ISO-2. Uma chamada para `/v2/es/...` usa então o centro da Espanha, sem header.
+3. **Faça uma chamada de dados normal.** Se você enviar o header, ele prevalece sobre o padrão do projeto e sobre a regra do país.
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+4. **Confira o consumo.** No painel, abra **Configurações → Relatório de uso** e agrupe ou filtre por centro de custo. O mesmo recorte é `GET /v2/usage?groupBy=costCenter`. As solicitações sem centro de custo ficam no grupo vazio.
+5. **Uma mudança posterior não reescreve solicitações antigas.** Atualizar o padrão do projeto, ou desativar um centro, só afeta chamadas feitas depois. O histórico já marcado permanece como estava.
+
+## Como uma solicitação recebe um centro de custo
+
+A Verifik verifica estas regras em ordem e usa a primeira que se aplicar:
+
+1. **O header `x-cost-center`.** Envie o código ou o id em qualquer solicitação da API de dados. Se o valor não corresponder a um centro de custo ativo da sua conta, a solicitação falha com `400` antes de debitar créditos.
+2. **O padrão do projeto do token.** Defina-o com `PUT /v2/projects/{id}` e `{ "costCenter": "<id>" }` (envie `null` para remover). Um id que não seja um centro de custo ativo da sua conta devolve `409` com `invalid_cost_center`.
+3. **O país do endpoint.** Uma solicitação para `/v2/es/...` usa o seu centro de custo `ES` quando existe exatamente um centro ativo para esse país.
+
+Se nenhuma regra se aplicar, a solicitação fica sem centro de custo e aparece como `null` nos relatórios de uso.
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+```json
+{
+	"code": "BadRequest",
+	"message": "x-cost-center does not match an active cost center on this account"
+}
+```
+
+## Endpoints
+
+- [O objeto centro de custo](/verifik-pt/resources/the-cost-center-object)
+- [Criar um centro de custo](/verifik-pt/resources/create-a-cost-center)
+- [Consultar um centro de custo](/verifik-pt/resources/retrieve-a-cost-center)
+- [Listar centros de custo](/verifik-pt/resources/list-all-cost-centers)
+- [Atualizar um centro de custo](/verifik-pt/resources/update-a-cost-center)
+- [Desativar um centro de custo](/verifik-pt/resources/delete-a-cost-center)

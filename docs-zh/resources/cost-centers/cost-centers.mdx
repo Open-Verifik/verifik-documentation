@@ -1,0 +1,69 @@
+---
+id: cost-centers
+title: 成本中心
+description: 用团队、国家或业务单元标记 API 请求，以便拆分用量和账单。创建成本中心、设置默认值，并发送 x-cost-center 请求头。
+slug: /resources/cost-centers
+keywords:
+  - v2/cost-centers
+  - x-cost-center
+  - 成本中心
+  - 按国家统计用量
+---
+
+# 成本中心
+
+成本中心是业务中某一部分的标签，例如某个国家的运营或一个团队。账户的每次请求都可以带上一个，用量报告可以按成本中心汇总并导出 CSV。管理成本中心不消耗积分。
+
+也可以在客户面板的 **设置 → 成本中心** 中管理。
+
+## 将成本中心关联到用量 {#link-cost-centers-to-your-consumption}
+
+这适用于设置之后发出的请求。已经保存的请求仍保留当时的成本中心。
+
+1. **创建成本中心。** 在面板中打开 **设置 → 成本中心** 并添加一个，或调用 [`POST /v2/cost-centers`](/verifik-zh/resources/create-a-cost-center)。记下 `code`，例如 `SPAIN-OPS`。
+2. **选择之后的调用如何获得它。**
+   - **每次调用：** 在 `x-cost-center` 请求头中发送代码或 id。
+   - **使用某个令牌的每次调用：** 打开 **设置 → API密钥**，选择该项目并保存默认值。同样的写入是 `PUT /v2/projects/{id}` 和 `{ "costCenter": "<id>" }`。发送 `null` 可清除。
+   - **按国家：** 为该 ISO-2 代码只保留一个启用的成本中心。对 `/v2/es/...` 的调用就会使用西班牙中心，无需请求头。
+3. **发起一次普通的数据调用。** 如果发送了请求头，它优先于项目默认值和国家规则。
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+4. **查看用量。** 在面板中打开 **设置 → 用量报告**，按成本中心分组或筛选。同样的拆分是 `GET /v2/usage?groupBy=costCenter`。没有成本中心的请求在空组中。
+5. **之后的更改不会改写旧请求。** 更新项目默认值或停用某个中心，只影响之后的调用。已经打上标记的历史保持原样。
+
+## 请求如何获得成本中心
+
+Verifik 按顺序检查这些规则，并使用第一个匹配项：
+
+1. **`x-cost-center` 请求头。** 在任何数据 API 请求上发送代码或 id。如果该值不是账户上的启用成本中心，请求会在扣积分之前以 `400` 失败。
+2. **令牌所属项目的默认值。** 用 `PUT /v2/projects/{id}` 和 `{ "costCenter": "<id>" }` 设置。发送 `null` 可清除。不是账户上启用成本中心的 id 会返回 `409` 和 `invalid_cost_center`。
+3. **端点的国家。** 当该国家恰好有一个启用的成本中心时，对 `/v2/es/...` 的请求使用 `ES` 中心。
+
+如果都不匹配，请求没有成本中心，在用量报告中显示为 `null`。
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+```json
+{
+	"code": "BadRequest",
+	"message": "x-cost-center does not match an active cost center on this account"
+}
+```
+
+## 接口
+
+- [成本中心对象](/verifik-zh/resources/the-cost-center-object)
+- [创建成本中心](/verifik-zh/resources/create-a-cost-center)
+- [查询一个成本中心](/verifik-zh/resources/retrieve-a-cost-center)
+- [列出成本中心](/verifik-zh/resources/list-all-cost-centers)
+- [更新成本中心](/verifik-zh/resources/update-a-cost-center)
+- [停用成本中心](/verifik-zh/resources/delete-a-cost-center)

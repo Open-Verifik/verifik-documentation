@@ -1220,9 +1220,18 @@ const sidebars = {
 					label: "Usage API",
 				},
 				{
-					type: "doc",
-					id: "resources/cost-centers/cost-centers",
+					type: "category",
 					label: "Cost Centers",
+					collapsible: true,
+					items: [
+						"resources/cost-centers/cost-centers",
+						"resources/cost-centers/the-cost-center-object",
+						"resources/cost-centers/create-a-cost-center",
+						"resources/cost-centers/retrieve-a-cost-center",
+						"resources/cost-centers/list-all-cost-centers",
+						"resources/cost-centers/update-a-cost-center",
+						"resources/cost-centers/delete-a-cost-center",
+					],
 				},
 				{
 					type: "category",

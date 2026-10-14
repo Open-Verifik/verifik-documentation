@@ -953,9 +953,18 @@ const sidebars = {
 					label: "API de uso",
 				},
 				{
-					type: "doc",
-					id: "resources/centros-de-costo/centros-de-costo",
+					type: "category",
 					label: "Centros de costo",
+					collapsible: true,
+					items: [
+						"resources/centros-de-costo/centros-de-costo",
+						"resources/centros-de-costo/el-objeto-centro-de-costo",
+						"resources/centros-de-costo/crear-un-centro-de-costo",
+						"resources/centros-de-costo/recuperar-un-centro-de-costo",
+						"resources/centros-de-costo/listar-centros-de-costo",
+						"resources/centros-de-costo/actualizar-un-centro-de-costo",
+						"resources/centros-de-costo/desactivar-un-centro-de-costo",
+					],
 				},
 				{
 					type: "category",

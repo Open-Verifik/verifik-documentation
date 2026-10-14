@@ -10,36 +10,31 @@ keywords:
   - uso por país
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 # Centros de costo
 
 Un centro de costo es una etiqueta para una parte de tu negocio, como la operación de un país o un equipo. Cada solicitud de tu cuenta puede llevar uno, y la [API de uso](/verifik-es/resources/uso) agrupa totales y exportaciones CSV por centro de costo. Administrar centros de costo no consume créditos.
 
-También puedes administrarlos en el panel de cliente, en **Configuración → Centros de costo**.
+También puedes administrarlos en el panel de cliente, en **Configuración → Centros de Costo**.
 
-## El objeto centro de costo
+## Vincula los centros de costo a tu consumo {#vincular-centros-de-costo}
 
-```json
-{
-	"_id": "6acfbdda92451bac5d0a7ebe",
-	"client": "69c2b824295cd7d276e478ad",
-	"name": "Operación España",
-	"code": "SPAIN-OPS",
-	"country": "ES",
-	"active": true,
-	"createdAt": "2026-10-14T17:37:30.469Z",
-	"updatedAt": "2026-10-14T17:37:30.469Z"
-}
+Esto aplica a las solicitudes que hagas después de configurarlo. Las solicitudes ya guardadas conservan el centro de costo que tenían.
+
+1. **Crea el centro de costo.** En el panel, abre **Configuración → Centros de Costo** y agrega uno, o llama a [`POST /v2/cost-centers`](/verifik-es/resources/centros-de-costo/crear-un-centro-de-costo). Conserva el `code`, por ejemplo `SPAIN-OPS`.
+2. **Elige cómo lo reciben las llamadas siguientes.**
+   - **En cada llamada:** envía el header `x-cost-center` con el código o el id.
+   - **En cada llamada que use un token:** abre **Configuración → Clave API**, elige ese proyecto y guarda un valor por defecto. El mismo cambio es `PUT /v2/projects/{id}` con `{ "costCenter": "<id>" }`. Envía `null` para quitarlo.
+   - **Por país:** deja exactamente un centro de costo activo para ese código ISO-2. Una llamada a `/v2/es/...` usa entonces el centro de España, sin header.
+3. **Haz una llamada normal de datos.** Si envías el header, tiene prioridad sobre el valor del proyecto y sobre la regla del país.
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
 ```
 
-| Campo     | Tipo    | Descripción                                                                                                   |
-| --------- | ------- | ------------------------------------------------------------------------------------------------------------- |
-| `name`    | string  | Nombre visible, hasta 120 caracteres.                                                                         |
-| `code`    | string  | El valor que envías en `x-cost-center`. Letras, números, `.`, `-` y `_`, hasta 60 caracteres. Único por cuenta. |
-| `country` | string  | País ISO-2 que atiende normalmente este centro de costo.                                                      |
-| `active`  | boolean | Los centros inactivos conservan su historial pero no se asignan a nuevas solicitudes.                         |
+4. **Revisa el consumo.** En el panel, abre **Configuración → Reporte de Uso** y agrupa o filtra por centro de costo. El mismo corte es `GET /v2/usage?groupBy=costCenter` en la [API de uso](/verifik-es/resources/uso). Las solicitudes sin centro de costo quedan en el grupo vacío.
+5. **Un cambio posterior no reescribe las solicitudes anteriores.** Actualizar el valor por defecto del proyecto, o desactivar un centro, solo afecta las llamadas hechas después. El historial ya marcado se queda como estaba.
 
 ## Cómo se asigna el centro de costo a una solicitud
 
@@ -64,123 +59,11 @@ curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=1234567
 }
 ```
 
-## Crear un centro de costo
+## Endpoints
 
-```
-POST https://api.verifik.co/v2/cost-centers
-```
-
-| Nombre    | Tipo    | Requerido | Descripción                        |
-| --------- | ------- | --------- | ---------------------------------- |
-| `name`    | string  | Sí        | Nombre visible.                    |
-| `code`    | string  | Sí        | Valor del header. Único por cuenta. |
-| `country` | string  | Sí        | Código de país ISO-2.              |
-| `active`  | boolean | No        | Por defecto, `true`.               |
-
-<Tabs groupId="language">
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -X POST "https://api.verifik.co/v2/cost-centers" \
-  -H "Authorization: Bearer $VERIFIK_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Operación España","code":"SPAIN-OPS","country":"ES"}'
-```
-
-</TabItem>
-<TabItem value="nodejs" label="Node.js">
-
-```javascript
-import axios from "axios";
-
-const { data } = await axios.post(
-	"https://api.verifik.co/v2/cost-centers",
-	{ name: "Operación España", code: "SPAIN-OPS", country: "ES" },
-	{ headers: { Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` } }
-);
-
-console.log(data.data._id);
-```
-
-</TabItem>
-<TabItem value="python" label="Python">
-
-```python
-import os
-import requests
-
-response = requests.post(
-    "https://api.verifik.co/v2/cost-centers",
-    headers={"Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}"},
-    json={"name": "Operación España", "code": "SPAIN-OPS", "country": "ES"},
-)
-
-print(response.json()["data"]["_id"])
-```
-
-</TabItem>
-</Tabs>
-
-La respuesta es el nuevo [objeto centro de costo](#el-objeto-centro-de-costo) dentro de `data`. Si el código ya existe, la respuesta es:
-
-```json
-{
-	"code": "Conflict",
-	"message": "cost_center_code_taken"
-}
-```
-
-## Listar centros de costo
-
-```
-GET https://api.verifik.co/v2/cost-centers
-```
-
-| Nombre    | Tipo    | Requerido | Descripción                                                  |
-| --------- | ------- | --------- | ------------------------------------------------------------ |
-| `active`  | boolean | No        | `true` para solo los activos, `false` para los inactivos.    |
-| `country` | string  | No        | Código de país ISO-2.                                        |
-| `page`    | number  | No        | Número de página, desde 1.                                   |
-| `limit`   | number  | No        | Elementos por página. 50 por defecto, hasta 100.             |
-
-```json
-{
-	"data": [
-		{
-			"_id": "6acfbdda92451bac5d0a7ebe",
-			"name": "Operación España",
-			"code": "SPAIN-OPS",
-			"country": "ES",
-			"active": true
-		}
-	],
-	"total": 1,
-	"page": 1,
-	"pages": 1,
-	"limit": 50
-}
-```
-
-## Consultar un centro de costo
-
-```
-GET https://api.verifik.co/v2/cost-centers/{id}
-```
-
-Devuelve el objeto centro de costo, o `404` con `cost_center_not_found`.
-
-## Actualizar un centro de costo
-
-```
-PUT https://api.verifik.co/v2/cost-centers/{id}
-```
-
-Envía cualquiera de `name`, `code`, `country` o `active`. Usa `active: true` para reactivar un centro de costo. Las solicitudes ya registradas conservan el centro de costo que tenían.
-
-## Desactivar un centro de costo
-
-```
-DELETE https://api.verifik.co/v2/cost-centers/{id}
-```
-
-Cambia `active` a `false` y devuelve el objeto actualizado. El centro de costo sigue en tu historial de uso.
+- [El objeto centro de costo](/verifik-es/resources/centros-de-costo/el-objeto-centro-de-costo)
+- [Crear un centro de costo](/verifik-es/resources/centros-de-costo/crear-un-centro-de-costo)
+- [Consultar un centro de costo](/verifik-es/resources/centros-de-costo/recuperar-un-centro-de-costo)
+- [Listar centros de costo](/verifik-es/resources/centros-de-costo/listar-centros-de-costo)
+- [Actualizar un centro de costo](/verifik-es/resources/centros-de-costo/actualizar-un-centro-de-costo)
+- [Desactivar un centro de costo](/verifik-es/resources/centros-de-costo/desactivar-un-centro-de-costo)

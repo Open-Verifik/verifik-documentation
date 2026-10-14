@@ -1,0 +1,69 @@
+---
+id: cost-centers
+title: Centres de coût
+description: Étiquetez les requêtes API avec une équipe, un pays ou une unité pour séparer l'usage et la facturation. Créez des centres de coût, définissez une valeur par défaut et envoyez le header x-cost-center.
+slug: /resources/cost-centers
+keywords:
+  - v2/cost-centers
+  - x-cost-center
+  - centre de coût
+  - usage par pays
+---
+
+# Centres de coût
+
+Un centre de coût est une étiquette pour une partie de votre activité, comme l'opération d'un pays ou une équipe. Chaque requête de votre compte peut en porter un, et le rapport d'usage peut regrouper les totaux et les exports CSV par centre de coût. Gérer les centres de coût ne consomme pas de crédits.
+
+Vous pouvez aussi les gérer dans le panneau client, sous **Paramètres → Centres de coût**.
+
+## Relier les centres de coût à votre consommation {#link-cost-centers-to-your-consumption}
+
+Cela s'applique aux requêtes faites après la configuration. Les requêtes déjà enregistrées gardent le centre de coût qu'elles avaient.
+
+1. **Créez le centre de coût.** Dans le panneau, ouvrez **Paramètres → Centres de coût** et ajoutez-en un, ou appelez [`POST /v2/cost-centers`](/verifik-fr/resources/create-a-cost-center). Conservez le `code`, par exemple `SPAIN-OPS`.
+2. **Choisissez comment les appels suivants le reçoivent.**
+   - **Sur chaque appel :** envoyez le header `x-cost-center` avec le code ou l'id.
+   - **Sur chaque appel qui utilise un jeton :** ouvrez **Paramètres → Clé API**, choisissez ce projet et enregistrez une valeur par défaut. La même écriture est `PUT /v2/projects/{id}` avec `{ "costCenter": "<id>" }`. Envoyez `null` pour l'effacer.
+   - **Par pays :** gardez exactement un centre de coût actif pour ce code ISO-2. Un appel vers `/v2/es/...` utilise alors le centre Espagne, sans header.
+3. **Faites un appel de données normal.** Si vous envoyez le header, il l'emporte sur la valeur du projet et sur la règle du pays.
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+4. **Vérifiez la consommation.** Dans le panneau, ouvrez **Paramètres → Rapport d'utilisation** et groupez ou filtrez par centre de coût. Le même découpage est `GET /v2/usage?groupBy=costCenter`. Les requêtes sans centre de coût forment le groupe vide.
+5. **Un changement ultérieur ne réécrit pas les requêtes anciennes.** Modifier la valeur par défaut du projet, ou désactiver un centre, ne concerne que les appels faits ensuite. L'historique déjà marqué reste tel quel.
+
+## Comment une requête reçoit un centre de coût
+
+Verifik examine ces règles dans l'ordre et utilise la première qui s'applique :
+
+1. **Le header `x-cost-center`.** Envoyez le code ou l'id sur n'importe quelle requête de l'API de données. Si la valeur ne correspond pas à un centre de coût actif de votre compte, la requête échoue en `400` avant tout débit de crédits.
+2. **La valeur par défaut du projet du jeton.** Définissez-la avec `PUT /v2/projects/{id}` et `{ "costCenter": "<id>" }` (envoyez `null` pour la retirer). Un id qui n'est pas un centre de coût actif de votre compte renvoie `409` avec `invalid_cost_center`.
+3. **Le pays de l'endpoint.** Une requête vers `/v2/es/...` utilise votre centre de coût `ES` lorsque vous avez exactement un centre actif pour ce pays.
+
+Si aucune règle ne s'applique, la requête n'a pas de centre de coût et apparaît comme `null` dans les rapports d'usage.
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+```json
+{
+	"code": "BadRequest",
+	"message": "x-cost-center does not match an active cost center on this account"
+}
+```
+
+## Endpoints
+
+- [L'objet centre de coût](/verifik-fr/resources/the-cost-center-object)
+- [Créer un centre de coût](/verifik-fr/resources/create-a-cost-center)
+- [Consulter un centre de coût](/verifik-fr/resources/retrieve-a-cost-center)
+- [Lister les centres de coût](/verifik-fr/resources/list-all-cost-centers)
+- [Mettre à jour un centre de coût](/verifik-fr/resources/update-a-cost-center)
+- [Désactiver un centre de coût](/verifik-fr/resources/delete-a-cost-center)

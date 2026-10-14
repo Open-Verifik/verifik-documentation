@@ -10,36 +10,31 @@ keywords:
   - usage by country
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 # Cost Centers
 
 A cost center is a label for part of your business, such as a country operation or a team. Every request your account makes can carry one, and the [Usage API](/resources/usage) can group totals and CSV exports by it. Managing cost centers does not spend credits.
 
 You can also manage them in the client panel under **Settings → Cost Centers**.
 
-## The cost center object
+## Link cost centers to your consumption {#link-cost-centers-to-your-consumption}
 
-```json
-{
-	"_id": "6acfbdda92451bac5d0a7ebe",
-	"client": "69c2b824295cd7d276e478ad",
-	"name": "Spain operations",
-	"code": "SPAIN-OPS",
-	"country": "ES",
-	"active": true,
-	"createdAt": "2026-10-14T17:37:30.469Z",
-	"updatedAt": "2026-10-14T17:37:30.469Z"
-}
+This applies to requests you make after you set it up. Requests already stored keep the cost center they had.
+
+1. **Create the cost center.** In the client panel, open **Settings → Cost Centers** and add one, or call [`POST /v2/cost-centers`](/resources/create-a-cost-center). Keep the `code`, for example `SPAIN-OPS`.
+2. **Choose how later calls get it.**
+   - **On each call:** send the header `x-cost-center` with the code or the id.
+   - **On every call that uses a token:** open **Settings → API Key**, pick that project, and save a default. The same write is `PUT /v2/projects/{id}` with `{ "costCenter": "<id>" }`. Send `null` to clear it.
+   - **By country:** keep exactly one active cost center for that ISO-2 code. A call to `/v2/es/...` then uses the Spain center, with no header.
+3. **Make a normal data call.** When you send the header, it wins over the project default and the country rule.
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
 ```
 
-| Field     | Type    | Description                                                                                         |
-| --------- | ------- | --------------------------------------------------------------------------------------------------- |
-| `name`    | string  | Display name, up to 120 characters.                                                                 |
-| `code`    | string  | The value you send in `x-cost-center`. Letters, numbers, `.`, `-`, and `_`, up to 60 characters. Unique per account. |
-| `country` | string  | ISO-2 country this cost center usually serves.                                                      |
-| `active`  | boolean | Inactive cost centers keep their history but can't be assigned to new requests.                     |
+4. **Check the consumption.** In the panel, open **Settings → Usage Report** and group or filter by cost center. The same split is `GET /v2/usage?groupBy=costCenter` on the [Usage API](/resources/usage). Requests with no cost center are the empty group.
+5. **A later change does not rewrite older requests.** Updating the project default, or deactivating a center, only affects calls made after that. History already stamped stays as it was.
 
 ## How a request gets a cost center
 
@@ -64,123 +59,11 @@ curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=1234567
 }
 ```
 
-## Create a cost center
+## Endpoints
 
-```
-POST https://api.verifik.co/v2/cost-centers
-```
-
-| Name      | Type    | Required | Description                         |
-| --------- | ------- | -------- | ----------------------------------- |
-| `name`    | string  | Yes      | Display name.                       |
-| `code`    | string  | Yes      | Header value. Unique per account.   |
-| `country` | string  | Yes      | ISO-2 country code.                 |
-| `active`  | boolean | No       | Defaults to `true`.                 |
-
-<Tabs groupId="language">
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -X POST "https://api.verifik.co/v2/cost-centers" \
-  -H "Authorization: Bearer $VERIFIK_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Spain operations","code":"SPAIN-OPS","country":"ES"}'
-```
-
-</TabItem>
-<TabItem value="nodejs" label="Node.js">
-
-```javascript
-import axios from "axios";
-
-const { data } = await axios.post(
-	"https://api.verifik.co/v2/cost-centers",
-	{ name: "Spain operations", code: "SPAIN-OPS", country: "ES" },
-	{ headers: { Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` } }
-);
-
-console.log(data.data._id);
-```
-
-</TabItem>
-<TabItem value="python" label="Python">
-
-```python
-import os
-import requests
-
-response = requests.post(
-    "https://api.verifik.co/v2/cost-centers",
-    headers={"Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}"},
-    json={"name": "Spain operations", "code": "SPAIN-OPS", "country": "ES"},
-)
-
-print(response.json()["data"]["_id"])
-```
-
-</TabItem>
-</Tabs>
-
-The response is the new [cost center object](#the-cost-center-object) inside `data`. Reusing a code returns:
-
-```json
-{
-	"code": "Conflict",
-	"message": "cost_center_code_taken"
-}
-```
-
-## List cost centers
-
-```
-GET https://api.verifik.co/v2/cost-centers
-```
-
-| Name      | Type    | Required | Description                         |
-| --------- | ------- | -------- | ----------------------------------- |
-| `active`  | boolean | No       | `true` for active cost centers only, `false` for inactive ones. |
-| `country` | string  | No       | ISO-2 country code.                 |
-| `page`    | number  | No       | Page number, starting at 1.         |
-| `limit`   | number  | No       | Items per page. Default 50, up to 100. |
-
-```json
-{
-	"data": [
-		{
-			"_id": "6acfbdda92451bac5d0a7ebe",
-			"name": "Spain operations",
-			"code": "SPAIN-OPS",
-			"country": "ES",
-			"active": true
-		}
-	],
-	"total": 1,
-	"page": 1,
-	"pages": 1,
-	"limit": 50
-}
-```
-
-## Retrieve a cost center
-
-```
-GET https://api.verifik.co/v2/cost-centers/{id}
-```
-
-Returns the cost center object, or `404` with `cost_center_not_found`.
-
-## Update a cost center
-
-```
-PUT https://api.verifik.co/v2/cost-centers/{id}
-```
-
-Send any of `name`, `code`, `country`, or `active`. Set `active: true` to reactivate a cost center. Requests already stamped keep the cost center they had.
-
-## Deactivate a cost center
-
-```
-DELETE https://api.verifik.co/v2/cost-centers/{id}
-```
-
-Sets `active` to `false` and returns the updated object. The cost center stays in your usage history.
+- [The cost center object](/resources/the-cost-center-object)
+- [Create a cost center](/resources/create-a-cost-center)
+- [Retrieve a cost center](/resources/retrieve-a-cost-center)
+- [List cost centers](/resources/list-all-cost-centers)
+- [Update a cost center](/resources/update-a-cost-center)
+- [Deactivate a cost center](/resources/delete-a-cost-center)

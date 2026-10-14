@@ -1,0 +1,69 @@
+---
+id: cost-centers
+title: 비용 센터
+description: 팀, 국가 또는 사업 단위로 API 요청을 표시해 사용량과 청구를 나눕니다. 비용 센터를 만들고 기본값을 정한 뒤 x-cost-center 헤더를 보냅니다.
+slug: /resources/cost-centers
+keywords:
+  - v2/cost-centers
+  - x-cost-center
+  - 비용 센터
+  - 국가별 사용량
+---
+
+# 비용 센터
+
+비용 센터는 국가 운영이나 팀처럼 사업의 한 부분을 가리키는 이름입니다. 계정의 각 요청은 하나를 가질 수 있고, 사용 보고서는 비용 센터별로 합계와 CSV를 묶을 수 있습니다. 비용 센터를 관리해도 크레딧은 차감되지 않습니다.
+
+클라이언트 패널의 **설정 → 비용 센터**에서도 관리할 수 있습니다.
+
+## 비용 센터를 사용량에 연결하기 {#link-cost-centers-to-your-consumption}
+
+설정한 뒤에 보내는 요청에 적용됩니다. 이미 저장된 요청은 그때 가졌던 비용 센터를 유지합니다.
+
+1. **비용 센터를 만듭니다.** 패널에서 **설정 → 비용 센터**를 열어 추가하거나 [`POST /v2/cost-centers`](/verifik-ko/resources/create-a-cost-center)를 호출합니다. `code`를 보관합니다. 예: `SPAIN-OPS`.
+2. **이후 호출이 어떻게 받을지 정합니다.**
+   - **호출마다:** `x-cost-center` 헤더에 코드 또는 id를 보냅니다.
+   - **토큰을 쓰는 모든 호출:** **설정 → API 키**에서 해당 프로젝트를 고르고 기본값을 저장합니다. 같은 변경은 `PUT /v2/projects/{id}`와 `{ "costCenter": "<id>" }`입니다. 지우려면 `null`을 보냅니다.
+   - **국가별:** 그 ISO-2 코드에 활성 비용 센터를 정확히 하나만 둡니다. `/v2/es/...` 호출은 헤더 없이 스페인 센터를 사용합니다.
+3. **일반 데이터 호출을 합니다.** 헤더를 보내면 프로젝트 기본값과 국가 규칙보다 우선합니다.
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+4. **사용량을 확인합니다.** 패널에서 **설정 → 사용 보고서**를 열고 비용 센터로 묶거나 거릅니다. 같은 구분은 `GET /v2/usage?groupBy=costCenter`입니다. 비용 센터가 없는 요청은 빈 그룹입니다.
+5. **나중의 변경은 이전 요청을 다시 쓰지 않습니다.** 프로젝트 기본값을 바꾸거나 센터를 비활성화해도, 그 이후 호출만 바뀝니다. 이미 표시된 기록은 그대로입니다.
+
+## 요청이 비용 센터를 받는 방법
+
+Verifik은 아래 규칙을 순서대로 확인하고 처음 맞는 것을 사용합니다.
+
+1. **`x-cost-center` 헤더.** 데이터 API 요청에 코드 또는 id를 보냅니다. 값이 계정의 활성 비용 센터와 맞지 않으면 크레딧을 쓰기 전에 `400`으로 실패합니다.
+2. **토큰 프로젝트의 기본값.** `PUT /v2/projects/{id}`와 `{ "costCenter": "<id>" }`로 설정합니다. 지우려면 `null`을 보냅니다. 계정의 활성 비용 센터가 아닌 id는 `409`와 `invalid_cost_center`를 반환합니다.
+3. **엔드포인트 국가.** `/v2/es/...` 요청은 그 국가의 활성 비용 센터가 정확히 하나일 때 `ES` 센터를 사용합니다.
+
+어떤 규칙도 맞지 않으면 요청에는 비용 센터가 없고 사용 보고서에서 `null`로 나타납니다.
+
+```bash
+curl "https://api.verifik.co/v2/co/cedula?documentType=CC&documentNumber=123456789" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "x-cost-center: SPAIN-OPS"
+```
+
+```json
+{
+	"code": "BadRequest",
+	"message": "x-cost-center does not match an active cost center on this account"
+}
+```
+
+## 엔드포인트
+
+- [비용 센터 객체](/verifik-ko/resources/the-cost-center-object)
+- [비용 센터 만들기](/verifik-ko/resources/create-a-cost-center)
+- [비용 센터 조회](/verifik-ko/resources/retrieve-a-cost-center)
+- [비용 센터 목록](/verifik-ko/resources/list-all-cost-centers)
+- [비용 센터 수정](/verifik-ko/resources/update-a-cost-center)
+- [비용 센터 비활성화](/verifik-ko/resources/delete-a-cost-center)

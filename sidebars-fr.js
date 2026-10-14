@@ -427,6 +427,20 @@ const sidebars = {
 			items: [
 				{
 					type: "category",
+					label: "Centres de coût",
+					collapsible: true,
+					items: [
+						"resources/cost-centers/cost-centers",
+						"resources/cost-centers/the-cost-center-object",
+						"resources/cost-centers/create-a-cost-center",
+						"resources/cost-centers/retrieve-a-cost-center",
+						"resources/cost-centers/list-all-cost-centers",
+						"resources/cost-centers/update-a-cost-center",
+						"resources/cost-centers/delete-a-cost-center",
+					],
+				},
+				{
+					type: "category",
 					label: "Validations téléphoniques",
 					collapsible: true,
 					items: [
