@@ -8,33 +8,149 @@ keywords:
   - GET /v2/cost-centers
 ---
 
-# 列出成本中心
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-```
-GET https://api.verifik.co/v2/cost-centers
+### 接口
+
+**GET** `https://api.verifik.co/v2/cost-centers`
+
+返回账户上的成本中心，先按国家、再按名称排序。
+
+#### 请求头
+
+| 名称          | 值                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+#### 查询参数
+
+#### `active`
+
+**类型:** boolean  
+**必填:** 否
+
+`true` 只返回启用的，`false` 只返回停用的。省略则两者都返回。
+
+#### `country`
+
+**类型:** string  
+**必填:** 否
+
+ISO-2 国家代码，例如 `ES`。
+
+#### `page`
+
+**类型:** number  
+**必填:** 否
+
+页码，从 1 开始。
+
+#### `limit`
+
+**类型:** number  
+**必填:** 否
+
+每页条数。默认 50，最多 100。
+
+### 请求示例
+
+<Tabs groupId="language">
+<TabItem value="curl" label="cURL">
+
+```bash
+curl "https://api.verifik.co/v2/cost-centers?active=true&country=ES&page=1&limit=50" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN"
 ```
 
-| 名称      | 类型    | 必填 | 说明                                      |
-| --------- | ------- | ---- | ----------------------------------------- |
-| `active`  | boolean | 否   | `true` 仅启用，`false` 仅停用。           |
-| `country` | string  | 否   | ISO-2 国家代码。                          |
-| `page`    | number  | 否   | 页码，从 1 开始。                         |
-| `limit`   | number  | 否   | 每页条数。默认 50，最多 100。             |
+</TabItem>
+<TabItem value="node" label="Node.js">
+
+```javascript
+const axios = require("axios");
+
+const config = {
+  method: "get",
+  url: "https://api.verifik.co/v2/cost-centers",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  },
+  params: {
+    active: true,
+    country: "ES",
+    page: 1,
+    limit: 50
+  }
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://api.verifik.co/v2/cost-centers",
+    headers={"Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}"},
+    params={"active": "true", "country": "ES", "page": 1, "limit": 50},
+)
+
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs groupId="status">
+<TabItem value="200" label="200 OK">
 
 ```json
 {
-	"data": [
-		{
-			"_id": "6acfbdda92451bac5d0a7ebe",
-			"name": "西班牙运营",
-			"code": "SPAIN-OPS",
-			"country": "ES",
-			"active": true
-		}
-	],
-	"total": 1,
-	"page": 1,
-	"pages": 1,
-	"limit": 50
+  "data": [
+    {
+      "_id": "6acfbdda92451bac5d0a7ebe",
+      "client": "69c2b824295cd7d276e478ad",
+      "name": "西班牙运营",
+      "code": "SPAIN-OPS",
+      "country": "ES",
+      "active": true,
+      "createdAt": "2026-10-14T17:37:30.469Z",
+      "updatedAt": "2026-10-14T17:37:30.469Z"
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "pages": 1,
+  "limit": 50
+}
+```
+
+</TabItem>
+</Tabs>
+
+`data` 中的每一项都是一个[成本中心对象](/verifik-zh/resources/the-cost-center-object)。
+
+## 错误响应
+
+无效的查询，例如 `limit` 大于 100，或 `country` 不是两个字母：
+
+```json
+{
+  "message": "\"limit\" must be less than or equal to 100",
+  "code": "MissingParameter"
 }
 ```

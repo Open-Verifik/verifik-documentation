@@ -11,18 +11,50 @@ keywords:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 创建成本中心
+### 接口
 
-```
-POST https://api.verifik.co/v2/cost-centers
-```
+**POST** `https://api.verifik.co/v2/cost-centers`
 
-| 名称      | 类型    | 必填 | 说明                         |
-| --------- | ------- | ---- | ---------------------------- |
-| `name`    | string  | 是   | 显示名称。                   |
-| `code`    | string  | 是   | 请求头的值。每个账户唯一。   |
-| `country` | string  | 是   | ISO-2 国家代码。             |
-| `active`  | boolean | 否   | 默认为 `true`。              |
+在账户上创建一个成本中心。管理成本中心不消耗积分。
+
+#### 请求头
+
+| 名称          | 值                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+#### 请求体参数
+
+#### `name`
+
+**类型:** string  
+**必填:** 是
+
+显示名称，最多 120 个字符。
+
+#### `code`
+
+**类型:** string  
+**必填:** 是
+
+将在 `x-cost-center` 中发送的值。字母、数字、`.`、`-` 和 `_`，最多 60 个字符。每个账户唯一。
+
+#### `country`
+
+**类型:** string  
+**必填:** 是
+
+ISO-2 国家代码，例如 `ES`。
+
+#### `active`
+
+**类型:** boolean  
+**必填:** 否
+
+默认为 `true`。
+
+### 请求示例
 
 <Tabs groupId="language">
 <TabItem value="curl" label="cURL">
@@ -35,18 +67,32 @@ curl -X POST "https://api.verifik.co/v2/cost-centers" \
 ```
 
 </TabItem>
-<TabItem value="nodejs" label="Node.js">
+<TabItem value="node" label="Node.js">
 
 ```javascript
-import axios from "axios";
+const axios = require("axios");
 
-const { data } = await axios.post(
-	"https://api.verifik.co/v2/cost-centers",
-	{ name: "西班牙运营", code: "SPAIN-OPS", country: "ES" },
-	{ headers: { Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` } }
-);
+const config = {
+  method: "post",
+  url: "https://api.verifik.co/v2/cost-centers",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  },
+  data: {
+    name: "西班牙运营",
+    code: "SPAIN-OPS",
+    country: "ES"
+  }
+};
 
-console.log(data.data._id);
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
 ```
 
 </TabItem>
@@ -58,21 +104,60 @@ import requests
 
 response = requests.post(
     "https://api.verifik.co/v2/cost-centers",
-    headers={"Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}"},
+    headers={
+        "Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}",
+        "Content-Type": "application/json",
+    },
     json={"name": "西班牙运营", "code": "SPAIN-OPS", "country": "ES"},
 )
 
-print(response.json()["data"]["_id"])
+print(response.json())
 ```
 
 </TabItem>
 </Tabs>
 
-响应的 `data` 中是新的[成本中心对象](/verifik-zh/resources/the-cost-center-object)。重复使用已有代码会返回：
+### 响应示例
+
+<Tabs groupId="status">
+<TabItem value="200" label="200 OK">
 
 ```json
 {
-	"code": "Conflict",
-	"message": "cost_center_code_taken"
+  "data": {
+    "_id": "6acfbdda92451bac5d0a7ebe",
+    "client": "69c2b824295cd7d276e478ad",
+    "name": "西班牙运营",
+    "code": "SPAIN-OPS",
+    "country": "ES",
+    "active": true,
+    "createdAt": "2026-10-14T17:37:30.469Z",
+    "updatedAt": "2026-10-14T17:37:30.469Z"
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`data` 是新的[成本中心对象](/verifik-zh/resources/the-cost-center-object)。
+
+## 错误响应
+
+账户上已存在的代码：
+
+```json
+{
+  "message": "cost_center_code_taken",
+  "code": "Conflict"
+}
+```
+
+缺少或无效的字段，例如 `name`、`code` 或 `country`：
+
+```json
+{
+  "message": "\"name\" is required",
+  "code": "MissingParameter"
 }
 ```

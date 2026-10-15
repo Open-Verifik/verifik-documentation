@@ -8,10 +8,164 @@ keywords:
   - PUT /v2/cost-centers
 ---
 
-# Mettre à jour un centre de coût
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-```
-PUT https://api.verifik.co/v2/cost-centers/{id}
+### Endpoint
+
+**PUT** `https://api.verifik.co/v2/cost-centers/{id}`
+
+Met à jour un centre de coût. Envoyez seulement les champs à changer. Les requêtes déjà enregistrées gardent le centre qu'elles avaient.
+
+#### en-têtes
+
+| Nom           | Valeur             |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+#### paramètres de chemin
+
+#### `id`
+
+**Type :** string  
+**Requis :** Oui
+
+L'id du centre de coût.
+
+#### paramètres du corps
+
+#### `name`
+
+**Type :** string  
+**Requis :** Non
+
+Nom affiché, jusqu'à 120 caractères.
+
+#### `code`
+
+**Type :** string  
+**Requis :** Non
+
+Nouvelle valeur du header. Lettres, chiffres, `.`, `-` et `_`, jusqu'à 60 caractères. Unique par compte.
+
+#### `country`
+
+**Type :** string  
+**Requis :** Non
+
+Code pays ISO-2.
+
+#### `active`
+
+**Type :** boolean  
+**Requis :** Non
+
+`true` pour réactiver, `false` pour ne plus l'assigner aux nouvelles requêtes.
+
+### Exemple de requête
+
+<Tabs groupId="language">
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/cost-centers/6acfbdda92451bac5d0a7ebe" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Opérations Espagne","active":true}'
 ```
 
-Envoyez `name`, `code`, `country` ou `active`. Utilisez `active: true` pour réactiver un centre. Les requêtes déjà enregistrées gardent le centre de coût qu'elles avaient.
+</TabItem>
+<TabItem value="node" label="Node.js">
+
+```javascript
+const axios = require("axios");
+
+const config = {
+  method: "put",
+  url: "https://api.verifik.co/v2/cost-centers/6acfbdda92451bac5d0a7ebe",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  },
+  data: {
+    name: "Opérations Espagne",
+    active: true
+  }
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.put(
+    "https://api.verifik.co/v2/cost-centers/6acfbdda92451bac5d0a7ebe",
+    headers={
+        "Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}",
+        "Content-Type": "application/json",
+    },
+    json={"name": "Opérations Espagne", "active": True},
+)
+
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Exemple de réponse
+
+<Tabs groupId="status">
+<TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6acfbdda92451bac5d0a7ebe",
+    "client": "69c2b824295cd7d276e478ad",
+    "name": "Opérations Espagne",
+    "code": "SPAIN-OPS",
+    "country": "ES",
+    "active": true,
+    "createdAt": "2026-10-14T17:37:30.469Z",
+    "updatedAt": "2026-10-14T18:02:11.120Z"
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`data` est l'[objet centre de coût](/verifik-fr/resources/the-cost-center-object) mis à jour.
+
+## Réponses d'erreur
+
+Id inconnu :
+
+```json
+{
+  "message": "cost_center_not_found",
+  "code": "NotFound"
+}
+```
+
+Un `code` déjà utilisé par un autre centre du compte :
+
+```json
+{
+  "message": "cost_center_code_taken",
+  "code": "Conflict"
+}
+```

@@ -11,18 +11,50 @@ keywords:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 비용 센터 만들기
+### 엔드포인트
 
-```
-POST https://api.verifik.co/v2/cost-centers
-```
+**POST** `https://api.verifik.co/v2/cost-centers`
 
-| 이름      | 타입    | 필수 | 설명                              |
-| --------- | ------- | ---- | --------------------------------- |
-| `name`    | string  | 예   | 표시 이름.                        |
-| `code`    | string  | 예   | 헤더 값. 계정당 고유.             |
-| `country` | string  | 예   | ISO-2 국가 코드.                  |
-| `active`  | boolean | 아니요 | 기본값 `true`.                  |
+계정에 비용 센터를 만듭니다. 비용 센터를 관리해도 크레딧은 차감되지 않습니다.
+
+#### 헤더
+
+| 이름          | 값                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+#### 본문 매개변수
+
+#### `name`
+
+**타입:** string  
+**필수:** 예
+
+표시 이름. 최대 120자.
+
+#### `code`
+
+**타입:** string  
+**필수:** 예
+
+`x-cost-center`에 보낼 값. 문자, 숫자, `.`, `-`, `_`. 최대 60자. 계정당 고유.
+
+#### `country`
+
+**타입:** string  
+**필수:** 예
+
+ISO-2 국가 코드. 예: `ES`.
+
+#### `active`
+
+**타입:** boolean  
+**필수:** 아니요
+
+기본값 `true`.
+
+### 요청 예시
 
 <Tabs groupId="language">
 <TabItem value="curl" label="cURL">
@@ -35,18 +67,32 @@ curl -X POST "https://api.verifik.co/v2/cost-centers" \
 ```
 
 </TabItem>
-<TabItem value="nodejs" label="Node.js">
+<TabItem value="node" label="Node.js">
 
 ```javascript
-import axios from "axios";
+const axios = require("axios");
 
-const { data } = await axios.post(
-	"https://api.verifik.co/v2/cost-centers",
-	{ name: "스페인 운영", code: "SPAIN-OPS", country: "ES" },
-	{ headers: { Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` } }
-);
+const config = {
+  method: "post",
+  url: "https://api.verifik.co/v2/cost-centers",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  },
+  data: {
+    name: "스페인 운영",
+    code: "SPAIN-OPS",
+    country: "ES"
+  }
+};
 
-console.log(data.data._id);
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
 ```
 
 </TabItem>
@@ -58,21 +104,60 @@ import requests
 
 response = requests.post(
     "https://api.verifik.co/v2/cost-centers",
-    headers={"Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}"},
+    headers={
+        "Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}",
+        "Content-Type": "application/json",
+    },
     json={"name": "스페인 운영", "code": "SPAIN-OPS", "country": "ES"},
 )
 
-print(response.json()["data"]["_id"])
+print(response.json())
 ```
 
 </TabItem>
 </Tabs>
 
-응답의 `data` 안에 새 [비용 센터 객체](/verifik-ko/resources/the-cost-center-object)가 있습니다. 이미 있는 코드는 다음을 반환합니다.
+### 응답 예시
+
+<Tabs groupId="status">
+<TabItem value="200" label="200 OK">
 
 ```json
 {
-	"code": "Conflict",
-	"message": "cost_center_code_taken"
+  "data": {
+    "_id": "6acfbdda92451bac5d0a7ebe",
+    "client": "69c2b824295cd7d276e478ad",
+    "name": "스페인 운영",
+    "code": "SPAIN-OPS",
+    "country": "ES",
+    "active": true,
+    "createdAt": "2026-10-14T17:37:30.469Z",
+    "updatedAt": "2026-10-14T17:37:30.469Z"
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`data`는 새 [비용 센터 객체](/verifik-ko/resources/the-cost-center-object)입니다.
+
+## 오류 응답
+
+계정에 이미 있는 코드:
+
+```json
+{
+  "message": "cost_center_code_taken",
+  "code": "Conflict"
+}
+```
+
+`name`, `code`, `country`처럼 빠지거나 잘못된 필드:
+
+```json
+{
+  "message": "\"name\" is required",
+  "code": "MissingParameter"
 }
 ```

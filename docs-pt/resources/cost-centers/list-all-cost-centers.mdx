@@ -8,33 +8,149 @@ keywords:
   - GET /v2/cost-centers
 ---
 
-# Listar centros de custo
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-```
-GET https://api.verifik.co/v2/cost-centers
+### Endpoint
+
+**GET** `https://api.verifik.co/v2/cost-centers`
+
+Devolve os centros de custo da sua conta, ordenados por país e depois por nome.
+
+#### cabeçalhos
+
+| Nome          | Valor              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+#### parâmetros de consulta
+
+#### `active`
+
+**Tipo:** boolean  
+**Obrigatório:** Não
+
+`true` devolve só os ativos. `false` devolve os inativos. Omita para devolver ambos.
+
+#### `country`
+
+**Tipo:** string  
+**Obrigatório:** Não
+
+Código de país ISO-2, por exemplo `ES`.
+
+#### `page`
+
+**Tipo:** number  
+**Obrigatório:** Não
+
+Número da página, a partir de 1.
+
+#### `limit`
+
+**Tipo:** number  
+**Obrigatório:** Não
+
+Itens por página. 50 por padrão, no máximo 100.
+
+### Exemplo de solicitação
+
+<Tabs groupId="language">
+<TabItem value="curl" label="cURL">
+
+```bash
+curl "https://api.verifik.co/v2/cost-centers?active=true&country=ES&page=1&limit=50" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN"
 ```
 
-| Nome      | Tipo    | Obrigatório | Descrição                                                    |
-| --------- | ------- | ----------- | ------------------------------------------------------------ |
-| `active`  | boolean | Não         | `true` só para os ativos, `false` para os inativos.          |
-| `country` | string  | Não         | Código de país ISO-2.                                        |
-| `page`    | number  | Não         | Número da página, a partir de 1.                             |
-| `limit`   | number  | Não         | Itens por página. 50 por padrão, até 100.                    |
+</TabItem>
+<TabItem value="node" label="Node.js">
+
+```javascript
+const axios = require("axios");
+
+const config = {
+  method: "get",
+  url: "https://api.verifik.co/v2/cost-centers",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  },
+  params: {
+    active: true,
+    country: "ES",
+    page: 1,
+    limit: 50
+  }
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.get(
+    "https://api.verifik.co/v2/cost-centers",
+    headers={"Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}"},
+    params={"active": "true", "country": "ES", "page": 1, "limit": 50},
+)
+
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Exemplo de resposta
+
+<Tabs groupId="status">
+<TabItem value="200" label="200 OK">
 
 ```json
 {
-	"data": [
-		{
-			"_id": "6acfbdda92451bac5d0a7ebe",
-			"name": "Operação Espanha",
-			"code": "SPAIN-OPS",
-			"country": "ES",
-			"active": true
-		}
-	],
-	"total": 1,
-	"page": 1,
-	"pages": 1,
-	"limit": 50
+  "data": [
+    {
+      "_id": "6acfbdda92451bac5d0a7ebe",
+      "client": "69c2b824295cd7d276e478ad",
+      "name": "Operação Espanha",
+      "code": "SPAIN-OPS",
+      "country": "ES",
+      "active": true,
+      "createdAt": "2026-10-14T17:37:30.469Z",
+      "updatedAt": "2026-10-14T17:37:30.469Z"
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "pages": 1,
+  "limit": 50
+}
+```
+
+</TabItem>
+</Tabs>
+
+Cada item de `data` é um [objeto centro de custo](/verifik-pt/resources/the-cost-center-object).
+
+## Respostas de erro
+
+Uma consulta inválida, por exemplo `limit` acima de 100 ou um `country` que não tem duas letras:
+
+```json
+{
+  "message": "\"limit\" must be less than or equal to 100",
+  "code": "MissingParameter"
 }
 ```

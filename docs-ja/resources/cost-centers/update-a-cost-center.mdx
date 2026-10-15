@@ -8,10 +8,164 @@ keywords:
   - PUT /v2/cost-centers
 ---
 
-# コストセンターを更新する
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-```
-PUT https://api.verifik.co/v2/cost-centers/{id}
+### エンドポイント
+
+**PUT** `https://api.verifik.co/v2/cost-centers/{id}`
+
+コストセンターを 1 件更新します。変えるフィールドだけを送ります。すでに記録されたリクエストは、当時のコストセンターのままです。
+
+#### ヘッダー
+
+| 名前          | 値                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+#### パスパラメータ
+
+#### `id`
+
+**型:** string  
+**必須:** はい
+
+コストセンターの id です。
+
+#### ボディパラメータ
+
+#### `name`
+
+**型:** string  
+**必須:** いいえ
+
+表示名。120 文字まで。
+
+#### `code`
+
+**型:** string  
+**必須:** いいえ
+
+新しいヘッダー値。文字、数字、`.`、`-`、`_`。60 文字まで。アカウントごとに一意。
+
+#### `country`
+
+**型:** string  
+**必須:** いいえ
+
+ISO-2 の国コード。
+
+#### `active`
+
+**型:** boolean  
+**必須:** いいえ
+
+`true` で再び有効にします。`false` で新しいリクエストに割り当てないようにします。
+
+### リクエスト例
+
+<Tabs groupId="language">
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/cost-centers/6acfbdda92451bac5d0a7ebe" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"スペイン運用","active":true}'
 ```
 
-`name`、`code`、`country`、`active` のいずれかを送ります。`active: true` で再び有効にします。すでに記録されたリクエストは、当時のコストセンターのままです。
+</TabItem>
+<TabItem value="node" label="Node.js">
+
+```javascript
+const axios = require("axios");
+
+const config = {
+  method: "put",
+  url: "https://api.verifik.co/v2/cost-centers/6acfbdda92451bac5d0a7ebe",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  },
+  data: {
+    name: "スペイン運用",
+    active: true
+  }
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.put(
+    "https://api.verifik.co/v2/cost-centers/6acfbdda92451bac5d0a7ebe",
+    headers={
+        "Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}",
+        "Content-Type": "application/json",
+    },
+    json={"name": "スペイン運用", "active": True},
+)
+
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+### レスポンス例
+
+<Tabs groupId="status">
+<TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6acfbdda92451bac5d0a7ebe",
+    "client": "69c2b824295cd7d276e478ad",
+    "name": "スペイン運用",
+    "code": "SPAIN-OPS",
+    "country": "ES",
+    "active": true,
+    "createdAt": "2026-10-14T17:37:30.469Z",
+    "updatedAt": "2026-10-14T18:02:11.120Z"
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`data` は更新後の[コストセンターオブジェクト](/verifik-ja/resources/the-cost-center-object)です。
+
+## エラーレスポンス
+
+不明な id:
+
+```json
+{
+  "message": "cost_center_not_found",
+  "code": "NotFound"
+}
+```
+
+アカウントの別のセンターがすでに使っている `code`:
+
+```json
+{
+  "message": "cost_center_code_taken",
+  "code": "Conflict"
+}
+```

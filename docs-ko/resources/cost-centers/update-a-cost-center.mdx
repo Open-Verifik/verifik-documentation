@@ -8,10 +8,164 @@ keywords:
   - PUT /v2/cost-centers
 ---
 
-# 비용 센터 수정
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-```
-PUT https://api.verifik.co/v2/cost-centers/{id}
+### 엔드포인트
+
+**PUT** `https://api.verifik.co/v2/cost-centers/{id}`
+
+비용 센터 하나를 수정합니다. 바꿀 필드만 보냅니다. 이미 기록된 요청은 당시의 비용 센터를 유지합니다.
+
+#### 헤더
+
+| 이름          | 값                 |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+#### 경로 매개변수
+
+#### `id`
+
+**타입:** string  
+**필수:** 예
+
+비용 센터 id입니다.
+
+#### 본문 매개변수
+
+#### `name`
+
+**타입:** string  
+**필수:** 아니요
+
+표시 이름. 최대 120자.
+
+#### `code`
+
+**타입:** string  
+**필수:** 아니요
+
+새 헤더 값. 문자, 숫자, `.`, `-`, `_`. 최대 60자. 계정당 고유.
+
+#### `country`
+
+**타입:** string  
+**필수:** 아니요
+
+ISO-2 국가 코드.
+
+#### `active`
+
+**타입:** boolean  
+**필수:** 아니요
+
+`true`로 다시 활성화하고, `false`로 새 요청에 지정되지 않게 합니다.
+
+### 요청 예시
+
+<Tabs groupId="language">
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/cost-centers/6acfbdda92451bac5d0a7ebe" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"스페인 운영","active":true}'
 ```
 
-`name`, `code`, `country`, `active` 중 원하는 항목을 보냅니다. `active: true`로 다시 활성화합니다. 이미 기록된 요청은 당시의 비용 센터를 유지합니다.
+</TabItem>
+<TabItem value="node" label="Node.js">
+
+```javascript
+const axios = require("axios");
+
+const config = {
+  method: "put",
+  url: "https://api.verifik.co/v2/cost-centers/6acfbdda92451bac5d0a7ebe",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  },
+  data: {
+    name: "스페인 운영",
+    active: true
+  }
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+response = requests.put(
+    "https://api.verifik.co/v2/cost-centers/6acfbdda92451bac5d0a7ebe",
+    headers={
+        "Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}",
+        "Content-Type": "application/json",
+    },
+    json={"name": "스페인 운영", "active": True},
+)
+
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+### 응답 예시
+
+<Tabs groupId="status">
+<TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6acfbdda92451bac5d0a7ebe",
+    "client": "69c2b824295cd7d276e478ad",
+    "name": "스페인 운영",
+    "code": "SPAIN-OPS",
+    "country": "ES",
+    "active": true,
+    "createdAt": "2026-10-14T17:37:30.469Z",
+    "updatedAt": "2026-10-14T18:02:11.120Z"
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`data`는 갱신된 [비용 센터 객체](/verifik-ko/resources/the-cost-center-object)입니다.
+
+## 오류 응답
+
+알 수 없는 id:
+
+```json
+{
+  "message": "cost_center_not_found",
+  "code": "NotFound"
+}
+```
+
+계정의 다른 센터가 이미 쓰는 `code`:
+
+```json
+{
+  "message": "cost_center_code_taken",
+  "code": "Conflict"
+}
+```

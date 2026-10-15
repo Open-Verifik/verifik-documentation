@@ -11,18 +11,50 @@ keywords:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Crear un centro de costo
+### Endpoint
 
-```
-POST https://api.verifik.co/v2/cost-centers
-```
+**POST** `https://api.verifik.co/v2/cost-centers`
 
-| Nombre    | Tipo    | Requerido | Descripción                        |
-| --------- | ------- | --------- | ---------------------------------- |
-| `name`    | string  | Sí        | Nombre visible.                    |
-| `code`    | string  | Sí        | Valor del header. Único por cuenta. |
-| `country` | string  | Sí        | Código de país ISO-2.              |
-| `active`  | boolean | No        | Por defecto, `true`.               |
+Crea un centro de costo en tu cuenta. Administrar centros de costo no consume créditos.
+
+#### encabezados
+
+| Nombre        | Valor              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+#### parámetros del cuerpo
+
+#### `name`
+
+**Tipo:** string  
+**Requerido:** Sí
+
+Nombre visible, hasta 120 caracteres.
+
+#### `code`
+
+**Tipo:** string  
+**Requerido:** Sí
+
+Valor que enviarás en `x-cost-center`. Letras, números, `.`, `-` y `_`, hasta 60 caracteres. Único por cuenta.
+
+#### `country`
+
+**Tipo:** string  
+**Requerido:** Sí
+
+Código de país ISO-2, por ejemplo `ES`.
+
+#### `active`
+
+**Tipo:** boolean  
+**Requerido:** No
+
+Por defecto, `true`.
+
+### Ejemplo de solicitud
 
 <Tabs groupId="language">
 <TabItem value="curl" label="cURL">
@@ -35,18 +67,32 @@ curl -X POST "https://api.verifik.co/v2/cost-centers" \
 ```
 
 </TabItem>
-<TabItem value="nodejs" label="Node.js">
+<TabItem value="node" label="Node.js">
 
 ```javascript
-import axios from "axios";
+const axios = require("axios");
 
-const { data } = await axios.post(
-	"https://api.verifik.co/v2/cost-centers",
-	{ name: "Operación España", code: "SPAIN-OPS", country: "ES" },
-	{ headers: { Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` } }
-);
+const config = {
+  method: "post",
+  url: "https://api.verifik.co/v2/cost-centers",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+  },
+  data: {
+    name: "Operación España",
+    code: "SPAIN-OPS",
+    country: "ES"
+  }
+};
 
-console.log(data.data._id);
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
 ```
 
 </TabItem>
@@ -58,21 +104,60 @@ import requests
 
 response = requests.post(
     "https://api.verifik.co/v2/cost-centers",
-    headers={"Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}"},
+    headers={
+        "Authorization": f"Bearer {os.environ['VERIFIK_TOKEN']}",
+        "Content-Type": "application/json",
+    },
     json={"name": "Operación España", "code": "SPAIN-OPS", "country": "ES"},
 )
 
-print(response.json()["data"]["_id"])
+print(response.json())
 ```
 
 </TabItem>
 </Tabs>
 
-La respuesta es el nuevo [objeto centro de costo](/verifik-es/resources/centros-de-costo/el-objeto-centro-de-costo) dentro de `data`. Si el código ya existe, la respuesta es:
+### Ejemplo de respuesta
+
+<Tabs groupId="status">
+<TabItem value="200" label="200 OK">
 
 ```json
 {
-	"code": "Conflict",
-	"message": "cost_center_code_taken"
+  "data": {
+    "_id": "6acfbdda92451bac5d0a7ebe",
+    "client": "69c2b824295cd7d276e478ad",
+    "name": "Operación España",
+    "code": "SPAIN-OPS",
+    "country": "ES",
+    "active": true,
+    "createdAt": "2026-10-14T17:37:30.469Z",
+    "updatedAt": "2026-10-14T17:37:30.469Z"
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+`data` es el [objeto centro de costo](/verifik-es/resources/centros-de-costo/el-objeto-centro-de-costo).
+
+## Respuestas de error
+
+Un código que ya existe en la cuenta:
+
+```json
+{
+  "message": "cost_center_code_taken",
+  "code": "Conflict"
+}
+```
+
+Un campo ausente o inválido, como `name`, `code` o `country`:
+
+```json
+{
+  "message": "\"name\" is required",
+  "code": "MissingParameter"
 }
 ```
