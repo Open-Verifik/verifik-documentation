@@ -746,7 +746,11 @@ const sidebars = {
 			label: "VOTACIÓN",
 			collapsible: false,
 			items: [
-				"legal/votacion",
+				{
+					type: "doc",
+					id: "legal/votacion",
+					label: "🇨🇴 Colombia — Información de votación",
+				},
 				{
 					type: "doc",
 					id: "legal/epic-eci",
@@ -763,7 +767,23 @@ const sidebars = {
 			type: "category",
 			label: "SALUD",
 			collapsible: false,
-			items: ["legal/salud", "legal/colombia-rethus", "legal/verificar-afiliaciones-colombianas"],
+			items: [
+				{
+					type: "doc",
+					id: "legal/salud",
+					label: "🇨🇴 Colombia — APIs de salud",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-rethus",
+					label: "🇨🇴 Colombia — RETHUS",
+				},
+				{
+					type: "doc",
+					id: "legal/verificar-afiliaciones-colombianas",
+					label: "🇨🇴 Colombia — Salud y seguridad social",
+				},
+			],
 		},
 		{
 			type: "category",

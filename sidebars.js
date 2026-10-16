@@ -960,7 +960,11 @@ const sidebars = {
 			label: "VOTING",
 			collapsible: false,
 			items: [
-				"legal/voting",
+				{
+					type: "doc",
+					id: "legal/voting",
+					label: "🇨🇴 Colombia — Voting Information",
+				},
 				{
 					type: "doc",
 					id: "legal/epic-eci",
@@ -978,10 +982,26 @@ const sidebars = {
 			label: "HEALTH",
 			collapsible: false,
 			items: [
-				"legal/health",
-				"legal/colombia-rethus",
-				"legal/colombia-adres",
-				"legal/verify-colombian-affiliations",
+				{
+					type: "doc",
+					id: "legal/health",
+					label: "🇨🇴 Colombia — Health APIs",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-rethus",
+					label: "🇨🇴 Colombia — RETHUS",
+				},
+				{
+					type: "doc",
+					id: "legal/colombia-adres",
+					label: "🇨🇴 Colombia — ADRES",
+				},
+				{
+					type: "doc",
+					id: "legal/verify-colombian-affiliations",
+					label: "🇨🇴 Colombia — Health & Social Security",
+				},
 			],
 		},
 		{
