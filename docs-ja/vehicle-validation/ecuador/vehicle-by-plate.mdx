@@ -1,8 +1,14 @@
 ---
 id: vehicle-validation-ecuador-plate
 title: 🇪🇨 エクアドル — 車両検証
-description: ナンバープレートでエクアドル登録車両を照会します。
+description: GET /v3/ec/vehiculo/placa でナンバープレートからエクアドル登録車両の詳細と、利用可能な場合の技術仕様データを照会します。
 slug: /vehicle-validation/ecuador/vehicle-by-plate
+keywords:
+  - v3/ec/vehiculo/placa
+  - /v3/ec/vehiculo/placa
+  - api.verifik.co/v3/ec/vehiculo/placa
+  - GET v3/ec/vehiculo/placa
+  - ec/vehiculo/placa
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,51 +16,65 @@ import TabItem from '@theme/TabItem';
 
 # 🇪🇨 エクアドル — 車両検証
 
-ナンバープレート（**`plate`**）を指定して、エクアドルに登録された車両の情報（メーカー、モデル、年式、車種など、ソースが返す範囲）を取得します。
+このサービスは、ナンバープレート（**`plate`**）を指定してエクアドルに登録された車両情報を返します：メーカー、モデル、年式、車種、VIN、エンジン番号、点検メタデータ、および利用可能な場合の技術仕様フィールド。
 
-### エンドポイント
+### Endpoint
 
 ```
-GET https://api.verifik.co/v2/ec/vehiculo/placa
+GET https://api.verifik.co/v3/ec/vehiculo/placa
 ```
 
-**`plate`**（スペースや句点なし）で照会します。**車両確認**、**保険**、**フリート**、**コンプライアンス**に利用できます。
+**`plate`**（スペースや句点なし）でエクアドル車両を照会します。応答には、利用可能な場合に `brand`、`model`、`year`、`vin`、`engineNumber`、`vehicleClass`、`vehicleType`、`color`、`serviceType`、`revision`、`technicalSheet`（`engine`、`performance`、`dimensions`）が含まれることがあります。**検証**、**保険**、**フリート**、**コンプライアンス**に利用できます。
 
-### ヘッダー
+### Headers
 
-| 名前          | 値                 |
+| Name          | Value              |
 | ------------- | ------------------ |
-| Content-Type  | `application/json` |
+| Accept | `application/json` |
 | Authorization | `Bearer <token>`   |
 
-### パラメーター
+### Parameters
 
-| 名前 | 型 | 必須 | 説明 | 例 |
-| ---- | ---- | ---- | ---- | ---- |
-| `plate` | string | **はい** | 照会するナンバープレート（スペースや句点なし）。 | `PBB3239` |
+| Name | Type | Required | Description | Example |
+| ---- | ---- | -------- | ----------- | ------- |
+| `plate` | string | **Yes** | 照会するナンバープレート（スペースや句点なし）。 | `PBB3239` |
 
-### リクエスト
+### Request
 
 <Tabs>
-  <TabItem value="javascript" label="JavaScript">
+  <TabItem value="node" label="Node.js">
 
 ```javascript
 import axios from 'axios';
 
-const { data } = await axios.get('https://api.verifik.co/v2/ec/vehiculo/placa', {
+const { data } = await axios.get('https://api.verifik.co/v3/ec/vehiculo/placa', {
   params: { plate: 'PBB3239' },
   headers: {
     Accept: 'application/json',
-    Authorization: 'Bearer <token>',
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
   },
 });
 console.log(data);
 ```
 
   </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v3/ec/vehiculo/placa"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "PBB3239"}
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
 </Tabs>
 
-### レスポンス
+### Response
 
 <Tabs>
   <TabItem value="200" label="200">
@@ -62,17 +82,47 @@ console.log(data);
 ```json
 {
   "data": {
+    "brand": "CHEVROLET",
+    "color": "BLANCO",
+    "engineNumber": "ENG10000001",
+    "manufactureCountry": "ECUADOR",
+    "model": "ONIX LTZ",
     "plate": "PBB3239",
-    "brand": "MAKE",
-    "model": "MODEL",
-    "year": "2020",
-    "vehicleType": "SEDAN"
+    "previousPlate": null,
+    "revision": {
+      "registrationFrom": "01-01-2023",
+      "registrationUntil": "01-01-2028",
+      "lastInspectionYear": "2024",
+      "lastInspectionFrom": "01-06-2024",
+      "lastInspectionTo": null,
+      "inspections": []
+    },
+    "serviceType": "USO PARTICULAR",
+    "technicalSheet": {
+      "engine": {
+        "engineDescription": "1.4L",
+        "fuel": "Petrol (Gasoline)",
+        "powerHp": "98 Hp"
+      },
+      "performance": {
+        "cityConsumption": "8.5 l/100 km",
+        "highwayConsumption": "6.2 l/100 km"
+      },
+      "dimensions": {
+        "doors": "4",
+        "occupants": "5",
+        "length": "4500 mm"
+      }
+    },
+    "vehicleClass": "AUTOMOVIL",
+    "vehicleType": "SEDAN",
+    "vin": "VIN10000001",
+    "year": "2019"
   },
   "signature": {
-    "dateTime": "April 8, 2026 11:00 PM",
+    "dateTime": "July 17, 2026 3:00 PM",
     "message": "Certified by Verifik.co"
-  },
-  "id": "VHCL1"
+  }
 }
 ```
 
@@ -98,3 +148,8 @@ console.log(data);
 
   </TabItem>
 </Tabs>
+
+### Notes
+
+- 一致する技術データがない場合、`technicalSheet` は `null` または部分的にしか埋まらないことがあります。
+- `revision` は可用性に応じて `null` または部分的に埋まることがあります。
