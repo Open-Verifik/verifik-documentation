@@ -1,0 +1,36 @@
+---
+id: "es-docs-es-services-registro-inteligente"
+title: "Registro Inteligente — Resumen"
+sourcePath: "docs-es/services/registro-inteligente.mdx"
+locale: "es"
+category: "services"
+tags:
+  - "services"
+sourceAnchor: "Resumen"
+slug: "/services/registro-inteligente"
+url: "https://docs.verifik.co/verifik-es/services/registro-inteligente"
+---
+
+# Registro Inteligente
+
+## Resumen
+
+**SmartEnroll** es una solución sin código diseñada para proporcionar incorporaciones seguras y fluidas para los usuarios. Esta plataforma permite a las empresas ofrecer diversas verificaciones de incorporación, incluyendo verificación de correo electrónico, teléfono y biométrica, validaciones de documentos, verificaciones AML, verificaciones de manipulación y más.
+
+## Resumen
+
+SmartEnroll proporciona una solución KYC (Know Your Customer) integral que agiliza el proceso de incorporación de usuarios mientras mantiene los más altos estándares de seguridad.
+
+## Características
+
+- **Verificación de Correo Electrónico**: Valida direcciones de correo electrónico con verificación OTP
+- **Verificación de Teléfono**: Verifica números de teléfono vía SMS y WhatsApp
+- **Verificación Biométrica**: Reconocimiento facial avanzado y detección de vivacidad
+- **Validación de Documentos**: Verificación de documentos de identidad
+- **Verificaciones AML**: Verificación de antecedentes y listas de sanciones
+
+## Recursos
+
+- [SmartEnroll Overview](/smartenroll)
+- [SmartEnroll KYC Flow](/verifik-es/smartenroll/smartenroll-flujo-kyc)
+- [Tutorial de API](/verifik-es/services/verifik-enroll-code-solution-via-api/tutorial)

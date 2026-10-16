@@ -1,0 +1,40 @@
+---
+id: "es-docs-es-resources-flujos-de-proyecto-create-a-project-flow-crear-un-flujo-de--2"
+title: "Configuración de Seguridad — Configuración de Seguridad"
+sourcePath: "docs-es/resources/flujos-de-proyecto/create-a-project-flow-crear-un-flujo-de-proyecto/security-settings-configuracion-de-seguridad.mdx"
+locale: "es"
+category: "resources"
+tags:
+  - "resources"
+sourceAnchor: "Configuración de Seguridad"
+slug: "/resources/flujos-de-proyecto/create-a-project-flow-crear-un-flujo-de-proyecto/security-settings-configuracion-de-seguridad"
+url: "https://docs.verifik.co/verifik-es/resources/flujos-de-proyecto/create-a-project-flow-crear-un-flujo-de-proyecto/security-settings-configuracion-de-seguridad"
+---
+
+# Configuración de Seguridad
+
+## Configuración de Seguridad
+
+Los ajustes de seguridad permiten configurar quién puede acceder a tu sistema y qué nivel de estrictez aplicar durante la verificación.
+
+### Parámetros de Seguridad
+
+| Campo | Tipo | Descripción |
+| --- | --- | --- |
+| `whitelistEnabled` | boolean | Habilita lista blanca de usuarios permitidos |
+| `blacklistEnabled` | boolean | Habilita lista negra de usuarios bloqueados |
+| `strictMode` | boolean | Modo estricto para verificaciones |
+| `minScore` | number | Puntuación mínima requerida para aprobación |
+
+### Ejemplo de Configuración
+
+```json
+{
+  "securitySettings": {
+    "whitelistEnabled": false,
+    "blacklistEnabled": true,
+    "strictMode": true,
+    "minScore": 0.7
+  }
+}
+```
