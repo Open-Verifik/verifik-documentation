@@ -1,6 +1,6 @@
 ---
 id: colombia-fasecolda-values-by-plate
-title: 🇨🇴 Fasecolda — 번호판 차량 가치
+title: Fasecolda — 번호판 차량 가치
 description: 콜롬비아 번호판으로 Fasecolda 상업 가치·제원·연식별 가격을 조회합니다.
 sidebar_label: Fasecolda — 번호판
 slug: /vehicle-validation/colombia-fasecolda-values-by-plate
@@ -9,28 +9,43 @@ slug: /vehicle-validation/colombia-fasecolda-values-by-plate
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-### 엔드포인트
+# 번호판 기반 차량 가치 조회 - Fasecolda
+
+Verifik의 Fasecolda 번호판 기반 차량 가치 조회 API는 번호판만으로 콜롬비아에 등록된 차량의 공식 상업 가치와 기술 제원을 조회합니다. 승용차, SUV, 픽업트럭, 상용차 및 오토바이 전반에서 높은 조회 성공률을 달성하기 위해 본 엔드포인트는 **두 가지 상호보완적인 공식 차량 데이터 소스를 결합**합니다:
+
+1. **1차 조회 (번호판-코드 직접 인덱스)**: 번호판이 기본 평가 인덱스의 Fasecolda 코드와 직접 연결되어 있는 경우 카탈로그의 정확한 항목을 즉시 반환합니다.
+2. **2차 조회 (교차 소스 제원 매칭)**: 오토바이나 신규 등록 차량처럼 번호판에 직접 연결된 코드가 없는 경우, Verifik은 공식 차량 등록 데이터에서 검증된 기술 제원(`brand`, `line`, `cylinderCapacity`, `year`, `vehicleClass`)을 조회하여 Fasecolda 가치 산정 카탈로그와 교차 매칭합니다(`matchSource: "runt_fallback"`).
+
+교차 소스 제원 매칭을 통해 응답이 반환될 때는 추적성 및 신뢰도 점수 메타데이터(`matchSource`, `matchConfidence`, `matchNote`, `matchDetails`, `runtVehicle`)가 함께 포함되어, 어떤 방식으로 코드가 매칭되었고 어떤 요소가 신뢰도 점수를 차감했는지 명확히 확인할 수 있습니다.
+
+## 이 API는 무엇을 검증하나요?
+
+- **번호판 기반 차량 및 오토바이 조회**: 콜롬비아 자동차, SUV, 픽업트럭, 상용차 및 오토바이 번호판(`ABC123`, `ABC12D`, `ABC12`)을 지원합니다. 번호판의 공백, 하이픈, 마침표는 자동으로 제거되고 대문자로 정규화됩니다.
+- **종합 제원 및 상업 가치 데이터**: Fasecolda 코드(`code` / `homoloCode`), 제조사(`marke`), 세부 모델(`line1`, `line2`, `line3`), 차종(`class`), 카테고리(`category`), 배기량(`cylinderCapacity`), 연료(`fuel`), 변속기(`transmission`), 기준 상업 가격(`bcpp`), 연식별 가격(`valueModel`)을 반환합니다.
+- **교차 소스 투명성 및 신뢰도 점수 분석**: 교차 매칭 시 가중 신뢰도 점수(`0.60`~`1.00`)와 감점 사유(`matchDetails.penalties`)를 상세히 제공합니다.
+
+### Endpoint
 
 ```
 GET https://api.verifik.co/v2/co/fasecolda/values-by-plate
 ```
 
-콜롬비아 등록 차량의 등급, 제조사, 모델, 연식, 추정 가치, 적재량, 연료 유형 등을 조회합니다. **번호판**은 **쿼리** **`plate`** 로 전달합니다(공백·마침표 없음).
+콜롬비아 등록 차량의 공식 가치 및 제원(`code`, `marke`, `line1`, `line2`, `line3`, `class`, `cylinderCapacity`, `bcpp`, `valueModel`)을 반환하며, 교차 소스 매칭 시 `matchSource`, `matchConfidence`, `matchNote`, `matchDetails`, `runtVehicle`을 함께 반환합니다. **번호판**은 **쿼리** 매개변수 **`plate`**로 전달합니다.
 
-### 헤더(Headers)
+### Headers
 
 | Name | Value |
 | --- | --- |
 | Accept | `application/json` |
 | Authorization | `Bearer <token>` |
 
-### 매개변수(Parameters)
+### Parameters
 
-| name | type | required | description |
-| --- | --- | --- | --- |
-| `plate` | string | yes | 조회할 번호판(공백·마침표 없음). |
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | Yes | 조회할 콜롬비아 차량 또는 오토바이 번호판(공백, 하이픈, 마침표는 자동 제거됨). | `ABC123` |
 
-### 요청(Request)
+### Request
 
 <Tabs>
   <TabItem value="node" label="Node.js">
@@ -64,10 +79,10 @@ print(r.json())
   </TabItem>
 </Tabs>
 
-### 응답(Response)
+### Response
 
 <Tabs>
-  <TabItem value="200" label="200">
+  <TabItem value="200" label="200 (Direct Match)">
 
 ```json
 {
@@ -82,6 +97,7 @@ print(r.json())
     "capacityPassengers": "5",
     "category": "LIVIANO PASAJEROS",
     "class": "AUTOMOVIL",
+    "code": "08001151",
     "country": "COL",
     "cylinderCapacity": "1598",
     "doors": "5",
@@ -135,10 +151,132 @@ print(r.json())
         "idEstado": 1
       }
     ],
-    "weight": "1108"
+    "weight": "1108",
+    "year": "2016"
   },
-  "signature": {"message": "Certified by Verifik.co", "dateTime": "October 12, 2023 7:38 PM"},
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 20, 2026 2:20 PM"
+  },
   "id": "mhlt7"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-cross-source" label="200 (Cross-Source Match)">
+
+```json
+{
+  "data": {
+    "absShow": "SI",
+    "airbags": "2",
+    "airconditioningShow": "SI",
+    "axles": "2",
+    "bcpp": "91500",
+    "brakes": "DISCO/TAMBOR",
+    "capacityLoad": "0",
+    "capacityPassengers": "5",
+    "category": "LIVIANOS PASAJEROS",
+    "class": "AUTOMOVIL",
+    "code": "06433106",
+    "country": "MEXICO",
+    "cylinderCapacity": "1598",
+    "doors": "4",
+    "electricChairs": "0",
+    "electricGlasses": "4",
+    "electricMirrors": "2",
+    "explorersShow": "SI",
+    "foodSystem": "INYECCION ELECTRONICA",
+    "fuel": "GASOLINA",
+    "groupUpdate": "L",
+    "homoloCode": "06433106",
+    "importedShow": "SI",
+    "line1": "VERSA [FL]",
+    "line2": "ADVANCE",
+    "line3": "AT 1600CC 2AB ABS",
+    "long": "4492",
+    "marke": "NISSAN",
+    "matchConfidence": "0.76",
+    "matchDetails": {
+      "ccPoints": "0.25/0.25",
+      "ccScore": "1",
+      "extraGuideTokens": [
+        "ADVANCE",
+        "AT",
+        "1600",
+        "2",
+        "AB",
+        "ABS"
+      ],
+      "formula": "0.55 * textScore + 0.25 * ccScore + 0.20 * yearScore",
+      "guideReferenceTokens": [
+        "VERSA",
+        "ADVANCE",
+        "AT",
+        "1600",
+        "2",
+        "AB",
+        "ABS"
+      ],
+      "matchedTokens": [
+        "VERSA"
+      ],
+      "penalties": [
+        "-0.24 on line/trim text: registered vehicle line \"VERSA\" matched (VERSA), while the valuation catalog reference includes additional trim/spec tokens (ADVANCE, AT, 1600, 2, AB, ABS) not specified in the base vehicle record."
+      ],
+      "runtLineTokens": [
+        "VERSA"
+      ],
+      "textPoints": "0.31/0.55",
+      "textScore": "0.57",
+      "unmatchedRuntTokens": [],
+      "yearPoints": "0.20/0.20",
+      "yearScore": "1"
+    },
+    "matchNote": "Cross-source specification match: brand, line, cylinder capacity, model year, and vehicle class were verified from official vehicle records and matched to the closest Fasecolda valuation catalog reference. Score 0.76/1.00 (-0.24 on line/trim text: registered vehicle line \"VERSA\" matched (VERSA), while the valuation catalog reference includes additional trim/spec tokens (ADVANCE, AT, 1600, 2, AB, ABS) not specified in the base vehicle record.)",
+    "matchSource": "runt_fallback",
+    "novelty": "M",
+    "observation": "Ninguna",
+    "plate": "ABC123",
+    "power": "106",
+    "rearSuspension": "EJE RIGIDO",
+    "reverseCameraShow": "SI",
+    "runtVehicle": {
+      "brand": "NISSAN",
+      "cylinderCapacity": "1598",
+      "line": "VERSA",
+      "vehicleClass": "AUTOMOVIL",
+      "year": "2016"
+    },
+    "segmentCylinder": "1500 A 2000 CC",
+    "segmentSize": "MEDIANO",
+    "sensorsShow": "SI",
+    "service": "PARTICULAR",
+    "sunroofShow": "NO",
+    "tachometer": "SI",
+    "traction": "DELANTERA",
+    "transmission": "4X2",
+    "typeAddress": "ELECTRICA",
+    "typeAirConditioning": "MANUAL",
+    "typeBox": "AUTOMATICA",
+    "typeHeadlights": "HALOGENO",
+    "typology": "SEDAN",
+    "upholsteryLeatherShow": "NO",
+    "valueModel": [
+      {
+        "id": "891204",
+        "modelo": "2016",
+        "valor": "43800"
+      }
+    ],
+    "weight": "1077",
+    "year": "2016"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 20, 2026 2:20 PM"
+  },
+  "id": "k9p2x"
 }
 ```
 
@@ -147,8 +285,18 @@ print(r.json())
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "code": "UnprocessableEntity",
+  "message": "invalid_plate_format"
 }
 ```
 
@@ -165,10 +313,12 @@ print(r.json())
   </TabItem>
 </Tabs>
 
-### 참고(Notes)
+### Notes
 
-- Fasecolda는 콜롬비아 공식 차량 가치 산정 체계입니다.
-- **`valueModel`** 은 연식별 과거 가격 배열입니다.
-- 금액은 콜롬비아 페소(COP)입니다.
-- **`bcpp`** 는 기준 상업 기본 가격입니다.
-- **`estado: "USADO"`** 는 중고 가치 구분 예시입니다.
+- **이중 소스 커버리지(승용차 및 오토바이)**: 번호판이 기본 평가 인덱스에 직접 등록된 경우 정확한 Fasecolda 레코드를 반환합니다(`matchSource` 생략). 번호판이 직접 인덱싱되지 않은 경우(특히 오토바이), 공식 보조 차량 등록소에서 제원을 검증한 뒤 Fasecolda 카탈로그와 매칭합니다(`matchSource: "runt_fallback"`).
+- **신뢰도 계산 공식(`matchConfidence` 및 `matchDetails`)**: 교차 소스 매칭은 `0.55 * textScore + 0.25 * ccScore + 0.20 * yearScore` 공식을 사용하여 `0.00`~`1.00` 범위로 산정되며 최소 임계값은 `0.60`입니다.
+- **`matchConfidence` 감점 요인(`matchDetails.penalties`)**:
+  - **카탈로그의 추가 트림/사양 토큰(`textPoints`, 최대 `0.55`)**: 차량 등록 원부는 기본 모델명(`"VERSA"`, `"TRK 502X"`)만 기록하는 반면 Fasecolda 카탈로그는 세부 트림과 변속기/ABS 사양(`"ADVANCE AT 1600CC 2AB ABS"`)을 포함합니다. 이 추가 토큰들은 `extraGuideTokens`에 표시됩니다.
+  - **형식승인 코드와 상업용 모델명 차이**: `"FZN250 A"` vs `"FZ25 250"` 같은 토큰 차이는 `unmatchedRuntTokens`에 기록됩니다.
+  - **배기량 표기 반올림(`ccPoints`, 최대 `0.25`)**: 5% 이내 차이(`199cc` vs `200cc`)는 만점(`0.25/0.25`)을 받으며, 공칭 배기량 차이(`373cc` vs `400cc`)는 `-0.07`이 차감되어 `penalties`에 설명됩니다.
+- **통화 단위**: `valueModel`은 연식별 상업 가치를 담고 있으며 `bcpp`는 콜롬비아 페소(COP) 기준 기본 상업 가격입니다.

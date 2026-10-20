@@ -9,28 +9,43 @@ slug: /vehicle-validation/colombia-fasecolda-values-by-plate
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+# Valores de Veículos por Placa - Fasecolda
+
+A API de Valores de Veículos por Placa Fasecolda da Verifik recupera avaliações comerciais oficiais e especificações técnicas de veículos registrados na Colômbia usando apenas a placa. Para maximizar a taxa de sucesso em automóveis, SUVs, picapes, veículos pesados e motocicletas, este endpoint conecta **duas fontes oficiais complementares de dados veiculares**:
+
+1. **Resolução Primária (Índice Direto Placa-Código)**: Quando a placa possui um código Fasecolda diretamente vinculado no índice principal, a Verifik retorna imediatamente a referência exata do catálogo.
+2. **Resolução Secundária (Cruzamento de Especificações Técnicas entre Fontes)**: Quando um veículo (especialmente motocicletas ou veículos recém-registrados) não possui código direto indexado pela placa, a Verifik consulta automaticamente as especificações técnicas verificadas do veículo (`brand`, `line`, `cylinderCapacity`, `year` e `vehicleClass`) em um registro oficial secundário e realiza o cruzamento com o catálogo de avaliação Fasecolda (`matchSource: "runt_fallback"`).
+
+Sempre que uma resposta é resolvida por cruzamento entre fontes, o payload inclui metadados completos de rastreabilidade e pontuação (`matchSource`, `matchConfidence`, `matchNote`, `matchDetails` e `runtVehicle`), explicando exatamente como o código foi obtido e o que reduziu a pontuação de confiança.
+
+## O que esta API valida?
+
+- **Informações de Veículos e Motocicletas por Placa**: Suporta placas colombianas de automóveis, SUVs, picapes, caminhões e motocicletas (`ABC123`, `ABC12D`, `ABC12`). A placa é normalizada automaticamente (convertida para maiúsculas e sem espaços, hífens ou pontos).
+- **Dados Técnicos e de Avaliação Completos**: Retorna código Fasecolda (`code` / `homoloCode`), marca (`marke`), linhas (`line1`, `line2`, `line3`), classe (`class`), categoria (`category`), cilindrada (`cylinderCapacity`), combustível (`fuel`), transmissão (`transmission`), preço comercial base (`bcpp`) e histórico por ano de modelo (`valueModel`).
+- **Transparência Multi-Fonte e Detalhamento de Confiança**: Fornece uma pontuação ponderada (`0.60` a `1.00`) e a explicação detalhada de cada dedução (`matchDetails.penalties`) quando o cruzamento de especificações é utilizado.
+
 ### Endpoint
 
 ```
 GET https://api.verifik.co/v2/co/fasecolda/values-by-plate
 ```
 
-Recupera dados detalhados de veículos colombianos (classe, marca, modelo, ano, valor estimado, capacidade, combustível, etc.). Envie a **placa** como **`plate`** na **query** (sem espaços nem pontos).
+O serviço de consulta Fasecolda retorna os atributos técnicos e comerciais oficiais (`code`, `marke`, `line1`, `line2`, `line3`, `class`, `cylinderCapacity`, `bcpp`, `valueModel`) de veículos registrados na Colômbia, além de `matchSource`, `matchConfidence`, `matchNote`, `matchDetails` e `runtVehicle` quando resolvido por cruzamento entre fontes. Envie a **placa** como **`plate`** na **query**.
 
-### Cabeçalhos
+### Headers
 
-| Nome | Valor |
+| Name | Value |
 | --- | --- |
 | Accept | `application/json` |
 | Authorization | `Bearer <token>` |
 
-### Parâmetros
+### Parameters
 
-| Nome | Tipo | Obrigatório | Descrição |
-| --- | --- | --- | --- |
-| `plate` | string | Sim | Placa sem espaços nem pontos. |
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | Yes | Placa colombiana de veículo ou motocicleta. Espaços, hífens e pontos são removidos automaticamente. | `ABC123` |
 
-### Requisição
+### Request
 
 <Tabs>
   <TabItem value="node" label="Node.js">
@@ -64,10 +79,10 @@ print(r.json())
   </TabItem>
 </Tabs>
 
-### Resposta
+### Response
 
 <Tabs>
-  <TabItem value="200" label="200">
+  <TabItem value="200" label="200 (Correspondência Direta)">
 
 ```json
 {
@@ -82,6 +97,7 @@ print(r.json())
     "capacityPassengers": "5",
     "category": "LIVIANO PASAJEROS",
     "class": "AUTOMOVIL",
+    "code": "08001151",
     "country": "COL",
     "cylinderCapacity": "1598",
     "doors": "5",
@@ -135,10 +151,132 @@ print(r.json())
         "idEstado": 1
       }
     ],
-    "weight": "1108"
+    "weight": "1108",
+    "year": "2016"
   },
-  "signature": {"message": "Certified by Verifik.co", "dateTime": "October 12, 2023 7:38 PM"},
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 20, 2026 2:20 PM"
+  },
   "id": "mhlt7"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-cross-source" label="200 (Cruzamento entre Fontes)">
+
+```json
+{
+  "data": {
+    "absShow": "SI",
+    "airbags": "2",
+    "airconditioningShow": "SI",
+    "axles": "2",
+    "bcpp": "91500",
+    "brakes": "DISCO/TAMBOR",
+    "capacityLoad": "0",
+    "capacityPassengers": "5",
+    "category": "LIVIANOS PASAJEROS",
+    "class": "AUTOMOVIL",
+    "code": "06433106",
+    "country": "MEXICO",
+    "cylinderCapacity": "1598",
+    "doors": "4",
+    "electricChairs": "0",
+    "electricGlasses": "4",
+    "electricMirrors": "2",
+    "explorersShow": "SI",
+    "foodSystem": "INYECCION ELECTRONICA",
+    "fuel": "GASOLINA",
+    "groupUpdate": "L",
+    "homoloCode": "06433106",
+    "importedShow": "SI",
+    "line1": "VERSA [FL]",
+    "line2": "ADVANCE",
+    "line3": "AT 1600CC 2AB ABS",
+    "long": "4492",
+    "marke": "NISSAN",
+    "matchConfidence": "0.76",
+    "matchDetails": {
+      "ccPoints": "0.25/0.25",
+      "ccScore": "1",
+      "extraGuideTokens": [
+        "ADVANCE",
+        "AT",
+        "1600",
+        "2",
+        "AB",
+        "ABS"
+      ],
+      "formula": "0.55 * textScore + 0.25 * ccScore + 0.20 * yearScore",
+      "guideReferenceTokens": [
+        "VERSA",
+        "ADVANCE",
+        "AT",
+        "1600",
+        "2",
+        "AB",
+        "ABS"
+      ],
+      "matchedTokens": [
+        "VERSA"
+      ],
+      "penalties": [
+        "-0.24 on line/trim text: registered vehicle line \"VERSA\" matched (VERSA), while the valuation catalog reference includes additional trim/spec tokens (ADVANCE, AT, 1600, 2, AB, ABS) not specified in the base vehicle record."
+      ],
+      "runtLineTokens": [
+        "VERSA"
+      ],
+      "textPoints": "0.31/0.55",
+      "textScore": "0.57",
+      "unmatchedRuntTokens": [],
+      "yearPoints": "0.20/0.20",
+      "yearScore": "1"
+    },
+    "matchNote": "Cross-source specification match: brand, line, cylinder capacity, model year, and vehicle class were verified from official vehicle records and matched to the closest Fasecolda valuation catalog reference. Score 0.76/1.00 (-0.24 on line/trim text: registered vehicle line \"VERSA\" matched (VERSA), while the valuation catalog reference includes additional trim/spec tokens (ADVANCE, AT, 1600, 2, AB, ABS) not specified in the base vehicle record.)",
+    "matchSource": "runt_fallback",
+    "novelty": "M",
+    "observation": "Ninguna",
+    "plate": "ABC123",
+    "power": "106",
+    "rearSuspension": "EJE RIGIDO",
+    "reverseCameraShow": "SI",
+    "runtVehicle": {
+      "brand": "NISSAN",
+      "cylinderCapacity": "1598",
+      "line": "VERSA",
+      "vehicleClass": "AUTOMOVIL",
+      "year": "2016"
+    },
+    "segmentCylinder": "1500 A 2000 CC",
+    "segmentSize": "MEDIANO",
+    "sensorsShow": "SI",
+    "service": "PARTICULAR",
+    "sunroofShow": "NO",
+    "tachometer": "SI",
+    "traction": "DELANTERA",
+    "transmission": "4X2",
+    "typeAddress": "ELECTRICA",
+    "typeAirConditioning": "MANUAL",
+    "typeBox": "AUTOMATICA",
+    "typeHeadlights": "HALOGENO",
+    "typology": "SEDAN",
+    "upholsteryLeatherShow": "NO",
+    "valueModel": [
+      {
+        "id": "891204",
+        "modelo": "2016",
+        "valor": "43800"
+      }
+    ],
+    "weight": "1077",
+    "year": "2016"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 20, 2026 2:20 PM"
+  },
+  "id": "k9p2x"
 }
 ```
 
@@ -147,8 +285,18 @@ print(r.json())
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "code": "UnprocessableEntity",
+  "message": "invalid_plate_format"
 }
 ```
 
@@ -165,10 +313,12 @@ print(r.json())
   </TabItem>
 </Tabs>
 
-### Notas
+### Notes
 
-- Fasecolda é o sistema oficial de valorização de veículos da Colômbia.
-- O array **`valueModel`** traz valores históricos por ano de modelo.
-- Valores em pesos colombianos (COP).
-- **`bcpp`**: preço comercial de base.
-- **`estado: "USADO"`**: exemplo de valor para veículo usado.
+- **Cobertura de Dupla Fonte (Carros e Motos)**: Quando a placa está indexada diretamente no registro primário de avaliação, a resposta retorna o registro exato Fasecolda (`matchSource` é omitido). Quando não está indexada diretamente, a Verifik verifica as especificações técnicas em um registro oficial secundário e as cruza com o catálogo Fasecolda (`matchSource: "runt_fallback"`).
+- **Fórmula de Confiança (`matchConfidence` e `matchDetails`)**: Calculada de `0.00` a `1.00` pela fórmula `0.55 * textScore + 0.25 * ccScore + 0.20 * yearScore` (limite mínimo `0.60`).
+- **O que reduz `matchConfidence` (`matchDetails.penalties`)**:
+  - **Tokens adicionais de versão/equipamento no catálogo (`textPoints` de `0.55`)**: Registros de matrícula costumam conter apenas a linha base (ex.: `"VERSA"`, `"TRACKER"` ou `"TRK 502X"`), enquanto o catálogo Fasecolda especifica versão, câmbio e freios (`"ADVANCE AT 1600CC 2AB ABS"`). Esses tokens extras aparecem em `extraGuideTokens`.
+  - **Códigos de homologação vs. nome comercial**: Diferenças de prefixo de homologação (como `"FZN250 A"` para `"FZ25 250"`) são listadas em `unmatchedRuntTokens`.
+  - **Arredondamento nominal de cilindrada (`ccPoints` de `0.25`)**: Diferenças até 5% (`199cc` vs `200cc`) recebem pontuação máxima (`0.25/0.25`); arredondamentos nominais maiores (`373cc` vs `400cc`) deduzem `-0.07`.
+- **Unidades de Avaliação**: `valueModel` traz os valores históricos por ano de modelo e `bcpp` indica o preço comercial base em Pesos Colombianos (COP).

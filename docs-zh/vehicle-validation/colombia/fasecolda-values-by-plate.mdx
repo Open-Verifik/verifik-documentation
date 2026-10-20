@@ -9,28 +9,43 @@ slug: /vehicle-validation/colombia-fasecolda-values-by-plate
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-### 端点
+# 按车牌查询车辆价值 - Fasecolda
+
+Verifik 的 Fasecolda 按车牌查询车辆价值 API 仅需车牌即可获取哥伦比亚注册车辆的官方商业估值与技术规格。为了在乘用车、SUV、皮卡、重型商用车和摩托车上实现最高查询成功率，此端点**结合了两个互补的官方车辆数据源**：
+
+1. **主要解析（车牌-代码直接索引）**：当车牌在主要估值索引中直接关联了 Fasecolda 估值代码时，Verifik 会立即返回目录中的精确条目。
+2. **次要解析（跨源技术规格匹配）**：当车辆（尤其是大多数摩托车或新注册车辆）未按车牌直接编入估值索引时，Verifik 会自动从官方二级车辆登记记录中获取经核实的技术规格（`brand`、`line`、`cylinderCapacity`、`year` 和 `vehicleClass`），并与 Fasecolda 估值目录进行交叉匹配（`matchSource: "runt_fallback"`）。
+
+每当响应通过跨源技术规格匹配解析时，返回结果都会包含完整的溯源和评分明细（`matchSource`、`matchConfidence`、`matchNote`、`matchDetails` 和 `runtVehicle`），让您的核保或评估流程清楚了解估值代码是如何匹配的，以及哪些因素扣减了置信度得分。
+
+## 此 API 验证哪些内容？
+
+- **按车牌查询汽车与摩托车信息**：支持哥伦比亚轿车、SUV、皮卡、商用车和摩托车车牌（`ABC123`、`ABC12D`、`ABC12`）。输入的车牌会自动标准化（转为大写并去除空格、连字符和句点）。
+- **完整的技术与估值数据**：返回 Fasecolda 代码（`code` / `homoloCode`）、品牌（`marke`）、车型系列（`line1`、`line2`、`line3`）、车辆类别（`class`）、分类（`category`）、排量（`cylinderCapacity`）、燃料（`fuel`）、变速箱（`transmission`）、基准商业价格（`bcpp`）以及分年份历史价格（`valueModel`）。
+- **双源透明度与置信度评分明细**：在跨源匹配时提供加权置信度得分（`0.60` 至 `1.00`）以及每项扣分的详细说明（`matchDetails.penalties`）。
+
+### Endpoint
 
 ```
 GET https://api.verifik.co/v2/co/fasecolda/values-by-plate
 ```
 
-查询哥伦比亚注册车辆的级别、品牌、型号、年份、估算价值、载重、燃油类型等。通过 **查询参数** **`plate`** 传入**车牌**（无空格和句号）。
+查询哥伦比亚注册车辆的官方估值与技术属性（`code`、`marke`、`line1`、`line2`、`line3`、`class`、`cylinderCapacity`、`bcpp`、`valueModel`），并在跨源规格匹配时返回 `matchSource`、`matchConfidence`、`matchNote`、`matchDetails` 和 `runtVehicle`。通过**查询参数** **`plate`** 传入**车牌**。
 
-### 请求头
+### Headers
 
-| 名称 | 值 |
+| Name | Value |
 | --- | --- |
 | Accept | `application/json` |
 | Authorization | `Bearer <token>` |
 
-### 参数
+### Parameters
 
-| 名称 | 类型 | 必填 | 说明 |
-| --- | --- | --- | --- |
-| `plate` | string | 是 | 待查询车牌（无空格和句号）。 |
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | Yes | 哥伦比亚汽车或摩托车车牌（空格、连字符和句点会自动去除）。 | `ABC123` |
 
-### 请求
+### Request
 
 <Tabs>
   <TabItem value="node" label="Node.js">
@@ -64,10 +79,10 @@ print(r.json())
   </TabItem>
 </Tabs>
 
-### 响应
+### Response
 
 <Tabs>
-  <TabItem value="200" label="200">
+  <TabItem value="200" label="200 (Direct Match)">
 
 ```json
 {
@@ -82,6 +97,7 @@ print(r.json())
     "capacityPassengers": "5",
     "category": "LIVIANO PASAJEROS",
     "class": "AUTOMOVIL",
+    "code": "08001151",
     "country": "COL",
     "cylinderCapacity": "1598",
     "doors": "5",
@@ -135,10 +151,132 @@ print(r.json())
         "idEstado": 1
       }
     ],
-    "weight": "1108"
+    "weight": "1108",
+    "year": "2016"
   },
-  "signature": {"message": "Certified by Verifik.co", "dateTime": "October 12, 2023 7:38 PM"},
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 20, 2026 2:20 PM"
+  },
   "id": "mhlt7"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-cross-source" label="200 (Cross-Source Match)">
+
+```json
+{
+  "data": {
+    "absShow": "SI",
+    "airbags": "2",
+    "airconditioningShow": "SI",
+    "axles": "2",
+    "bcpp": "91500",
+    "brakes": "DISCO/TAMBOR",
+    "capacityLoad": "0",
+    "capacityPassengers": "5",
+    "category": "LIVIANOS PASAJEROS",
+    "class": "AUTOMOVIL",
+    "code": "06433106",
+    "country": "MEXICO",
+    "cylinderCapacity": "1598",
+    "doors": "4",
+    "electricChairs": "0",
+    "electricGlasses": "4",
+    "electricMirrors": "2",
+    "explorersShow": "SI",
+    "foodSystem": "INYECCION ELECTRONICA",
+    "fuel": "GASOLINA",
+    "groupUpdate": "L",
+    "homoloCode": "06433106",
+    "importedShow": "SI",
+    "line1": "VERSA [FL]",
+    "line2": "ADVANCE",
+    "line3": "AT 1600CC 2AB ABS",
+    "long": "4492",
+    "marke": "NISSAN",
+    "matchConfidence": "0.76",
+    "matchDetails": {
+      "ccPoints": "0.25/0.25",
+      "ccScore": "1",
+      "extraGuideTokens": [
+        "ADVANCE",
+        "AT",
+        "1600",
+        "2",
+        "AB",
+        "ABS"
+      ],
+      "formula": "0.55 * textScore + 0.25 * ccScore + 0.20 * yearScore",
+      "guideReferenceTokens": [
+        "VERSA",
+        "ADVANCE",
+        "AT",
+        "1600",
+        "2",
+        "AB",
+        "ABS"
+      ],
+      "matchedTokens": [
+        "VERSA"
+      ],
+      "penalties": [
+        "-0.24 on line/trim text: registered vehicle line \"VERSA\" matched (VERSA), while the valuation catalog reference includes additional trim/spec tokens (ADVANCE, AT, 1600, 2, AB, ABS) not specified in the base vehicle record."
+      ],
+      "runtLineTokens": [
+        "VERSA"
+      ],
+      "textPoints": "0.31/0.55",
+      "textScore": "0.57",
+      "unmatchedRuntTokens": [],
+      "yearPoints": "0.20/0.20",
+      "yearScore": "1"
+    },
+    "matchNote": "Cross-source specification match: brand, line, cylinder capacity, model year, and vehicle class were verified from official vehicle records and matched to the closest Fasecolda valuation catalog reference. Score 0.76/1.00 (-0.24 on line/trim text: registered vehicle line \"VERSA\" matched (VERSA), while the valuation catalog reference includes additional trim/spec tokens (ADVANCE, AT, 1600, 2, AB, ABS) not specified in the base vehicle record.)",
+    "matchSource": "runt_fallback",
+    "novelty": "M",
+    "observation": "Ninguna",
+    "plate": "ABC123",
+    "power": "106",
+    "rearSuspension": "EJE RIGIDO",
+    "reverseCameraShow": "SI",
+    "runtVehicle": {
+      "brand": "NISSAN",
+      "cylinderCapacity": "1598",
+      "line": "VERSA",
+      "vehicleClass": "AUTOMOVIL",
+      "year": "2016"
+    },
+    "segmentCylinder": "1500 A 2000 CC",
+    "segmentSize": "MEDIANO",
+    "sensorsShow": "SI",
+    "service": "PARTICULAR",
+    "sunroofShow": "NO",
+    "tachometer": "SI",
+    "traction": "DELANTERA",
+    "transmission": "4X2",
+    "typeAddress": "ELECTRICA",
+    "typeAirConditioning": "MANUAL",
+    "typeBox": "AUTOMATICA",
+    "typeHeadlights": "HALOGENO",
+    "typology": "SEDAN",
+    "upholsteryLeatherShow": "NO",
+    "valueModel": [
+      {
+        "id": "891204",
+        "modelo": "2016",
+        "valor": "43800"
+      }
+    ],
+    "weight": "1077",
+    "year": "2016"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 20, 2026 2:20 PM"
+  },
+  "id": "k9p2x"
 }
 ```
 
@@ -147,8 +285,18 @@ print(r.json())
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "code": "UnprocessableEntity",
+  "message": "invalid_plate_format"
 }
 ```
 
@@ -165,10 +313,12 @@ print(r.json())
   </TabItem>
 </Tabs>
 
-### 说明
+### Notes
 
-- Fasecolda 是哥伦比亚官方车辆估值体系。
-- **`valueModel`** 为按车型年份的历史价格数组。
-- 金额为哥伦比亚比索（COP）。
-- **`bcpp`** 为基准商业基础价。
-- **`estado: "USADO"`** 为二手车价值示例。
+- **双源覆盖（汽车与摩托车）**：当车牌在主要估值索引中直接建有索引时，返回精确的 Fasecolda 记录（省略 `matchSource`）。当车牌未直接建有索引时（在摩托车及部分轻型车辆中尤为常见），Verifik 会从官方二级车辆登记记录核实技术规格并与 Fasecolda 估值目录匹配（`matchSource: "runt_fallback"`）。
+- **置信度计算公式（`matchConfidence` 与 `matchDetails`）**：跨源匹配按 `0.55 * textScore + 0.25 * ccScore + 0.20 * yearScore` 在 `0.00` 至 `1.00` 范围内计分，最低阈值为 `0.60`。
+- **导致 `matchConfidence` 扣分的因素（`matchDetails.penalties`）**：
+  - **目录中额外的配置/变速箱词元（`textPoints`，满分 `0.55`）**：车辆登记记录通常仅保存基础车系名称（如 `"VERSA"`、`"TRACKER"` 或 `"TRK 502X"`），而 Fasecolda 目录包含具体配置、变速箱和 ABS 后缀（如 `"ADVANCE AT 1600CC 2AB ABS"`）。这些额外词元列在 `extraGuideTokens` 中。
+  - **公告型号代码与商业名称差异**：例如 `"FZN250 A"` 对应 `"FZ25 250"`，差异词元记录在 `unmatchedRuntTokens` 中。
+  - **标称排量取整差异（`ccPoints`，满分 `0.25`）**：5% 以内的排量差异（如 `199cc` 与 `200cc`）得满分（`0.25/0.25`）；较大的目录标称排量差异（如 `373cc` 与 `400cc`）扣减 `-0.07` 并在 `penalties` 中说明。
+- **估值单位**：`valueModel` 为按车型年份的历史价格数组，`bcpp` 为基准商业基础价（单位为哥伦比亚比索 COP）。

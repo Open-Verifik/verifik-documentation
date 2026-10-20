@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-16T22:20:14.971Z
+Generated: 2026-10-20T21:46:42.362Z
 
 - **Files scanned:** 535
 - **Unique endpoint URLs:** 231
-- **Duplicate URL groups (SEO / aliases):** 57
-- **Docs without `### Endpoint` block:** 224
+- **Duplicate URL groups (SEO / aliases):** 58
+- **Docs without `### Endpoint` block:** 223
 
 ## Summary by priority (canonical primary path only)
 
@@ -64,6 +64,9 @@ Generated: 2026-10-16T22:20:14.971Z
   - `business-validation/colombia-legal-invoicer-verification.mdx`
   - `business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies.md`
   - `business-validation/colombia/verify-legal-invoicer-in-dian-for-colombian-companies.mdx`
+- `v2/co/fasecolda/values-by-plate`
+  - `vehicle-validation/colombia/fasecolda-values-by-plate.mdx`
+  - `vehicle-validation/colombia/vehicle-values-by-plate-fasecolda.mdx`
 - `v2/co/foreigner-id/pep`
   - `identity-validation/colombia/special-stay-permit-pep.mdx`
   - `identity/colombia-pep-id.mdx`
@@ -661,7 +664,6 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `vehicle-validation/colombia/vehicle-fines-check-in-bogot-tta-colombia.mdx`
 - `vehicle-validation/colombia/vehicle-fines-check-in-bogota-colombia.mdx`
 - `vehicle-validation/colombia/vehicle-values-by-code-fasecolda.mdx`
-- `vehicle-validation/colombia/vehicle-values-by-plate-fasecolda.mdx`
 - `vehicle-validation/peru.mdx`
 - `vehicle-validation/vehicle-verification.mdx`
 - `verifik-biometrics-apis.mdx`

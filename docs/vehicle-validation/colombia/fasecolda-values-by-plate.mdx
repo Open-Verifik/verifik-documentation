@@ -42,19 +42,18 @@ import TabItem from '@theme/TabItem';
 
 # Vehicle Values by Plate - Fasecolda
 
-Verifik's Fasecolda Vehicle Values by Plate API helps you retrieve comprehensive vehicle information using license plates. It's designed to streamline your vehicle verification processes, provide accurate valuations, and ensure you have complete vehicle data.
+Verifik's Fasecolda Vehicle Values by Plate API retrieves official commercial valuations and technical specifications for vehicles registered in Colombia using only a license plate. To maximize coverage across passenger cars, SUVs, pickups, heavy vehicles, and motorcycles, this endpoint combines **two complementary official vehicle data sources**:
 
-We built this integration for businesses that need a fast, secure, and automated way to access vehicle information and values using license plates.
+1. **Primary Resolution (Direct Plate-to-Code Index)**: When the license plate is directly linked to a Fasecolda valuation code in the primary index, Verifik returns the exact catalog entry immediately.
+2. **Secondary Resolution (Cross-Source Specification Matching)**: When a vehicle (such as most motorcycles or newly registered vehicles) is not directly indexed by plate in the valuation registry, Verifik automatically retrieves the vehicle's verified technical specifications (`brand`, `line`, `cylinderCapacity`, `year`, and `vehicleClass`) from a secondary official vehicle registry and cross-matches them against the Fasecolda valuation catalog.
+
+Whenever a response is resolved through cross-source specification matching, the payload includes full provenance and scoring metadata (`matchSource`, `matchConfidence`, `matchNote`, `matchDetails`, and `runtVehicle`) so your underwriting or appraisal workflow knows exactly how the valuation code was matched and why any score points were deducted.
 
 ## What does this API validate?
 
-Our API connects directly with official Fasecolda records to validate:
-
--   **Vehicle Information by Plate**: Supports Colombian vehicle license plates.
--   **Comprehensive Vehicle Data**: Returns vehicle class, brand, model, year, estimated value, load capacity, fuel type, and other key attributes.
--   **Vehicle Values**: Provides historical values for different model years and conditions.
-
-By verifying these details, you can access complete vehicle information and accurate valuations, significantly helping with vehicle transactions and assessments.
+- **Vehicle Information by Plate**: Supports Colombian automobile, SUV, pickup, commercial, and motorcycle license plates (`ABC123`, `ABC12D`, `ABC12`). Input plates are automatically normalized (uppercased, with spaces, hyphens, and periods removed).
+- **Comprehensive Technical & Valuation Data**: Returns Fasecolda `code` / `homoloCode`, `marke` (brand), `line1`, `line2`, `line3`, `class`, `category`, `cylinderCapacity`, `fuel`, `transmission`, `bcpp` (base commercial price), and `valueModel` (historical values by model year).
+- **Dual-Source Transparency & Confidence Breakdown**: Provides a weighted confidence score (`0.60` to `1.00`) and a transparent point-by-point explanation (`matchDetails.penalties`) whenever cross-source specification matching is used.
 
 ## API Reference
 
@@ -64,7 +63,7 @@ By verifying these details, you can access complete vehicle information and accu
 GET https://api.verifik.co/v2/co/fasecolda/values-by-plate
 ```
 
-The Fasecolda Vehicle Value Inquiry service provides comprehensive information about vehicles registered in Colombia. You can access detailed data including vehicle class, brand, model, year, estimated value, load capacity, fuel type, and other key attributes. Pass the license **`plate`** as a **query** parameter (no spaces or periods).
+The Fasecolda Vehicle Value Inquiry service returns official valuation and technical attributes (`code`, `marke`, `line1`, `line2`, `line3`, `class`, `cylinderCapacity`, `bcpp`, `valueModel`) for Colombian vehicles. When resolved via cross-source specification matching, it also returns `matchSource`, `matchConfidence`, `matchNote`, `matchDetails`, and `runtVehicle`. Pass the license **`plate`** as a **query** parameter.
 
 ### Headers
 
@@ -75,9 +74,9 @@ The Fasecolda Vehicle Value Inquiry service provides comprehensive information a
 
 ### Parameters
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `plate` | string | Yes | Plate to consult without spaces or periods. |
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `plate` | string | Yes | Colombian vehicle or motorcycle license plate. Spaces, hyphens, and periods are stripped automatically. | `ABC123` |
 
 ### Request
 
@@ -116,7 +115,7 @@ print(r.json())
 ### Response
 
 <Tabs>
-  <TabItem value="200" label="200">
+  <TabItem value="200" label="200 (Direct Match)">
 
 ```json
 {
@@ -131,6 +130,7 @@ print(r.json())
     "capacityPassengers": "5",
     "category": "LIVIANO PASAJEROS",
     "class": "AUTOMOVIL",
+    "code": "08001151",
     "country": "COL",
     "cylinderCapacity": "1598",
     "doors": "5",
@@ -184,10 +184,132 @@ print(r.json())
         "idEstado": 1
       }
     ],
-    "weight": "1108"
+    "weight": "1108",
+    "year": "2016"
   },
-  "signature": {"message": "Certified by Verifik.co", "dateTime": "October 12, 2023 7:38 PM"},
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 20, 2026 2:20 PM"
+  },
   "id": "mhlt7"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-cross-source" label="200 (Cross-Source Match)">
+
+```json
+{
+  "data": {
+    "absShow": "SI",
+    "airbags": "2",
+    "airconditioningShow": "SI",
+    "axles": "2",
+    "bcpp": "91500",
+    "brakes": "DISCO/TAMBOR",
+    "capacityLoad": "0",
+    "capacityPassengers": "5",
+    "category": "LIVIANOS PASAJEROS",
+    "class": "AUTOMOVIL",
+    "code": "06433106",
+    "country": "MEXICO",
+    "cylinderCapacity": "1598",
+    "doors": "4",
+    "electricChairs": "0",
+    "electricGlasses": "4",
+    "electricMirrors": "2",
+    "explorersShow": "SI",
+    "foodSystem": "INYECCION ELECTRONICA",
+    "fuel": "GASOLINA",
+    "groupUpdate": "L",
+    "homoloCode": "06433106",
+    "importedShow": "SI",
+    "line1": "VERSA [FL]",
+    "line2": "ADVANCE",
+    "line3": "AT 1600CC 2AB ABS",
+    "long": "4492",
+    "marke": "NISSAN",
+    "matchConfidence": "0.76",
+    "matchDetails": {
+      "ccPoints": "0.25/0.25",
+      "ccScore": "1",
+      "extraGuideTokens": [
+        "ADVANCE",
+        "AT",
+        "1600",
+        "2",
+        "AB",
+        "ABS"
+      ],
+      "formula": "0.55 * textScore + 0.25 * ccScore + 0.20 * yearScore",
+      "guideReferenceTokens": [
+        "VERSA",
+        "ADVANCE",
+        "AT",
+        "1600",
+        "2",
+        "AB",
+        "ABS"
+      ],
+      "matchedTokens": [
+        "VERSA"
+      ],
+      "penalties": [
+        "-0.24 on line/trim text: registered vehicle line \"VERSA\" matched (VERSA), while the valuation catalog reference includes additional trim/spec tokens (ADVANCE, AT, 1600, 2, AB, ABS) not specified in the base vehicle record."
+      ],
+      "runtLineTokens": [
+        "VERSA"
+      ],
+      "textPoints": "0.31/0.55",
+      "textScore": "0.57",
+      "unmatchedRuntTokens": [],
+      "yearPoints": "0.20/0.20",
+      "yearScore": "1"
+    },
+    "matchNote": "Cross-source specification match: brand, line, cylinder capacity, model year, and vehicle class were verified from official vehicle records and matched to the closest Fasecolda valuation catalog reference. Score 0.76/1.00 (-0.24 on line/trim text: registered vehicle line \"VERSA\" matched (VERSA), while the valuation catalog reference includes additional trim/spec tokens (ADVANCE, AT, 1600, 2, AB, ABS) not specified in the base vehicle record.)",
+    "matchSource": "runt_fallback",
+    "novelty": "M",
+    "observation": "Ninguna",
+    "plate": "ABC123",
+    "power": "106",
+    "rearSuspension": "EJE RIGIDO",
+    "reverseCameraShow": "SI",
+    "runtVehicle": {
+      "brand": "NISSAN",
+      "cylinderCapacity": "1598",
+      "line": "VERSA",
+      "vehicleClass": "AUTOMOVIL",
+      "year": "2016"
+    },
+    "segmentCylinder": "1500 A 2000 CC",
+    "segmentSize": "MEDIANO",
+    "sensorsShow": "SI",
+    "service": "PARTICULAR",
+    "sunroofShow": "NO",
+    "tachometer": "SI",
+    "traction": "DELANTERA",
+    "transmission": "4X2",
+    "typeAddress": "ELECTRICA",
+    "typeAirConditioning": "MANUAL",
+    "typeBox": "AUTOMATICA",
+    "typeHeadlights": "HALOGENO",
+    "typology": "SEDAN",
+    "upholsteryLeatherShow": "NO",
+    "valueModel": [
+      {
+        "id": "891204",
+        "modelo": "2016",
+        "valor": "43800"
+      }
+    ],
+    "weight": "1077",
+    "year": "2016"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 20, 2026 2:20 PM"
+  },
+  "id": "k9p2x"
 }
 ```
 
@@ -196,8 +318,18 @@ print(r.json())
 
 ```json
 {
-    "code": "NotFound",
-    "message": "Record not found."
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "code": "UnprocessableEntity",
+  "message": "invalid_plate_format"
 }
 ```
 
@@ -216,11 +348,13 @@ print(r.json())
 
 ### Notes
 
-- Fasecolda is Colombia's official vehicle valuation system.
-- The `valueModel` array contains historical values for different model years.
-- Values are provided in Colombian Pesos (COP).
-- `bcpp` field contains the base commercial price for the vehicle.
-- `estado: "USADO"` indicates used vehicle values.
+- **Dual-Source Coverage (Cars & Motorcycles)**: When a license plate is directly indexed in the primary valuation registry, the response returns the exact Fasecolda record (`matchSource` is omitted). When the plate is not directly indexed—which is common for motorcycles and certain light vehicles—Verifik verifies the vehicle's technical specifications from an official secondary vehicle registry and matches them against the Fasecolda valuation catalog (`matchSource: "runt_fallback"`).
+- **Confidence Formula (`matchConfidence` & `matchDetails`)**: Cross-source matches are scored on a `0.00` to `1.00` scale using `0.55 * textScore + 0.25 * ccScore + 0.20 * yearScore`. Only matches with `matchConfidence >= 0.60` are returned; anything lower returns `404`.
+- **Understanding What Lowers `matchConfidence` (`matchDetails.penalties`)**:
+  - **Extra catalog trim/spec tokens (`textPoints` out of `0.55`)**: Official vehicle registration records often store only the base model line (for example, `"VERSA"`, `"TRACKER"`, or `"TRK 502X"`), whereas the Fasecolda catalog includes trim, transmission, and braking suffixes (`"ADVANCE AT 1600CC 2AB ABS"` or `"MT 500CC ABS"`). Those extra catalog tokens are listed in `extraGuideTokens` and explain why a 100% accurate vehicle match typically scores between `0.71` and `0.95`.
+  - **Homologation vs. commercial line codes**: Some manufacturers register factory chassis codes (such as `"FZN250 A"` for `"FZ25 250"` or `"GPD150 A NMAX"` for `"NMAX"`). Token differences are itemized in `unmatchedRuntTokens`.
+  - **Nominal cylinder capacity rounding (`ccPoints` out of `0.25`)**: A within-5% displacement difference (such as `199cc` vs `200cc` or `124cc` vs `125cc`) receives full points (`0.25/0.25`); larger nominal catalog rounding (such as `373cc` vs `400cc` nominal class) deducts `-0.07` and is noted in `penalties`.
+- **Valuation Units**: `valueModel` contains commercial values by model year, and `bcpp` represents the base commercial price (expressed in thousands of Colombian Pesos, COP).
 
 ### More information
 
@@ -230,29 +364,6 @@ The sections below are general product documentation (not part of the API contra
 
 ## Common Use Cases
 
--   **Vehicle Valuation**: Get accurate vehicle values for insurance, sales, or appraisals.
--   **Vehicle Information Lookup**: Access comprehensive vehicle specifications and details.
--   **Fleet Management**: Verify vehicle information for fleet operations.
--   **Insurance Underwriting**: Use vehicle data for insurance policy assessment.
-
-## Official Sources & Reliability
-
-We connect directly with official Fasecolda sources to ensure you receive verified, up-to-the-minute information.
-Every query is handled with strict adherence to security and regulatory standards.
-
-## Key Benefits
-
--   **Accurate Valuations**: Access official Fasecolda vehicle values and specifications.
--   **Instant Results**: Process verifications in seconds, perfect for real-time vehicle checks.
--   **Trusted Data**: Rely on data sourced directly from official Fasecolda records.
--   **Easy Integration**: Connect easily via our REST API or use our compatible SDKs.
-
-## Compliance & Security
-
-We prioritize the safety of your data. Verifik uses advanced encryption (HTTPS/TLS 1.3) and strict privacy management standards to ensure confidentiality.
-Our service is monitored 24/7 for availability and offers role-based access controls to keep your team's access secure.
-
-## About Verifik
-
-Verifik is a leading platform for identity verification, compliance, and fraud prevention across Latin America.
-Our APIs automate KYC, KYB, AML, vehicle validation, and biometric validation processes, connecting businesses with official data sources in Colombia, Mexico, Peru, Chile, Uruguay, Argentina, Brazil, and beyond.
+- **Motorcycle & Vehicle Valuation**: Obtain reliable commercial valuations for both passenger vehicles and motorcycles using only the license plate.
+- **Insurance Underwriting & Quoting**: Automate policy quoting with complete transparency into whether a valuation code came from a direct plate index or a verified specification cross-match.
+- **Collateral & Fleet Appraisal**: Evaluate used vehicle portfolios and verify technical specifications (`cylinderCapacity`, `class`, `fuel`, `transmission`) in a single request.
