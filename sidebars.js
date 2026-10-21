@@ -130,7 +130,7 @@ const sidebars = {
 			type: "category",
 			label: "SCAN DOCS API'S",
 			collapsible: false,
-			items: ["ocr-engines/scan-studio", "ocr-engines/scan-prompt"],
+			items: ["ocr-engines/scan-studio", "ocr-engines/scan-prompt", "ocr-engines/scan-agent"],
 		},
 		{
 			type: "category",
@@ -212,6 +212,11 @@ const sidebars = {
 					type: "doc",
 					id: "identity-validation/colombia/colombian-citizen-by-name",
 					label: "🇨🇴 Colombia — Citizen by name (SCCRC)",
+				},
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombian-cedula-barcode",
+					label: "🇨🇴 Colombia — Cédula barcode (PDF417)",
 				},
 				{
 					type: "doc",
