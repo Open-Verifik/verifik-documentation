@@ -155,6 +155,17 @@ La tecnología OCR se ha convertido en una herramienta esencial para digitalizar
       </div>
     </div>
   </div>
+  <div className="col col--6">
+    <div className="card">
+      <div className="card__header">
+        <h3>🤖 Scan Agent</h3>
+      </div>
+      <div className="card__body">
+        <p>OCR por flujo de proyecto SmartScan, con validación opcional del <strong>código PDF417 de cédula colombiana</strong> en capturas del reverso.</p>
+        <a href="/verifik-es/ocr-engines/scan-agent" className="button button--primary">Aprender Más</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 ### Interfaz de Soluciones OCR
@@ -432,5 +443,5 @@ Para soporte técnico y documentación de API, contacta a nuestro equipo de sopo
 ---
 
 :::tip Comenzando
-¿Listo para comenzar a usar Escaneo Inteligente? Revisa nuestra [documentación de API](#) y [guías de integración](#) para comenzar rápidamente.
+¿Listo para comenzar a usar Escaneo Inteligente? Revisa [Escaneo Prompt](/verifik-es/escaneo-prompt), [Escaneo Estudio](/verifik-es/ocr-engines/escaneo-estudio) y [Scan Agent](/verifik-es/ocr-engines/scan-agent) (incluida la [validación de código de barras de cédula](/verifik-es/ocr-engines/scan-agent#validacion-codigo-barras-colombiano)).
 :::

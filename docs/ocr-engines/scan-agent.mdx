@@ -1,0 +1,113 @@
+---
+id: scan-agent
+title: Scan Agent (SmartScan)
+description: SmartScan OCR agent endpoint (POST /v2/ocr/scan-agent) with optional Colombian cédula PDF417 barcode validation on document extractions.
+slug: /ocr-engines/scan-agent
+keywords:
+  - v2/ocr/scan-agent
+  - /v2/ocr/scan-agent
+  - v2 ocr scan-agent
+  - api/ocr/scan-agent
+  - /api/ocr/scan-agent
+  - api ocr scan-agent
+  - api.verifik.co/v2/ocr/scan-agent
+  - 'https://api.verifik.co/v2/ocr/scan-agent'
+  - POST v2/ocr/scan-agent
+  - POST /v2/ocr/scan-agent
+  - ocr/scan-agent
+  - /ocr/scan-agent
+  - colombianBarcodeValidation
+  - barcodeValidation
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Scan Agent (SmartScan)
+
+**Scan Agent** is the SmartScan OCR entry point used by trained project flows to extract structured fields from identity documents. It complements [Scan Prompt](/ocr-engines/scan-prompt) (flexible prompts) and [Scan Studio](/ocr-engines/scan-studio) (trained models).
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/ocr/scan-agent
+```
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+Exact fields depend on your **project flow** configuration (document type, sides to capture, and validation steps). Typical payloads include document images (`image`, `backImage`, or flow-specific keys) and a `projectFlow` identifier.
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `colombianBarcodeValidation` | boolean | No | When `true`, runs [Colombian cédula PDF417 barcode](/identity-validation/colombia/colombian-cedula-barcode) validation on the rear capture and attaches results under `OCRExtraction.barcodeValidation`. If omitted, the project flow’s **`colombianBarcodeValidation`** setting applies. |
+
+### Colombian barcode validation {#colombian-barcode-validation}
+
+For Colombian **CC** flows, enable barcode validation in either place:
+
+1. **Project flow** — turn on **`colombianBarcodeValidation`** in the SmartScan / SmartEnroll project flow settings in the Verifik client panel.
+2. **Request body** — pass **`colombianBarcodeValidation: true`** on `POST /v2/ocr/scan-agent` to force the read for that call (useful for tests or one-off API integrations).
+
+When enabled and a usable **back** image is present, the OCR extraction includes **`barcodeValidation`** with the same verdicts and fields as the standalone barcode API (`decoded` / `unreadable`, or `confirmed` / `mismatch` / `unreadable` when cross-check inputs are available from the flow).
+
+Standalone reference and billing rules: [Colombia — Cédula barcode (PDF417)](/identity-validation/colombia/colombian-cedula-barcode).
+
+### Response excerpt (barcode enabled)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "OCRExtraction": {
+      "documentType": "CC",
+      "documentNumber": "1234567890",
+      "firstName": "MARIA",
+      "lastName": "LOPEZ GARCIA",
+      "barcodeValidation": {
+        "verdict": "confirmed",
+        "attempts": 1,
+        "barcode": {
+          "documentNumber": "1234567890",
+          "primerNombre": "MARIA",
+          "segundoNombre": "ELENA",
+          "primerApellido": "LOPEZ",
+          "segundoApellido": "GARCIA",
+          "gender": "F",
+          "dateOfBirth": "15/03/1992",
+          "bloodType": "O+",
+          "fullName": "MARIA ELENA LOPEZ GARCIA"
+        },
+        "matchScores": {
+          "documentNumber": 1,
+          "firstName": 0.98,
+          "lastName": 0.97
+        },
+        "disagreements": []
+      }
+    }
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 21, 2026 3:00 PM"
+  },
+  "id": "SA12B"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Barcode validation requires a clear **rear** image; front-only uploads skip or mark the barcode step **`unreadable`**.
+- Credit usage follows your **SmartScan / smartENROLL** feature configuration (client panel or Postman). See [Smart Scan overview](/smart-scan).
+- Hosted document capture can also run barcode validation when the project enables it — see [App registration document validation](/resources/document-validations/create-an-app-registration-document-validation#colombian-cedula-barcode).

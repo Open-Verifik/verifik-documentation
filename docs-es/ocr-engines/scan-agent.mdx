@@ -1,0 +1,113 @@
+---
+id: scan-agent
+title: Scan Agent (SmartScan)
+description: Endpoint OCR SmartScan (POST /v2/ocr/scan-agent) con validación opcional del código PDF417 de cédula colombiana.
+slug: /ocr-engines/scan-agent
+keywords:
+  - v2/ocr/scan-agent
+  - /v2/ocr/scan-agent
+  - v2 ocr scan-agent
+  - api/ocr/scan-agent
+  - /api/ocr/scan-agent
+  - api ocr scan-agent
+  - api.verifik.co/v2/ocr/scan-agent
+  - 'https://api.verifik.co/v2/ocr/scan-agent'
+  - POST v2/ocr/scan-agent
+  - POST /v2/ocr/scan-agent
+  - ocr/scan-agent
+  - /ocr/scan-agent
+  - colombianBarcodeValidation
+  - barcodeValidation
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Scan Agent (SmartScan)
+
+**Scan Agent** es el punto de entrada OCR de SmartScan usado por flujos de proyecto entrenados para extraer campos estructurados de documentos de identidad. Complementa [Escaneo Prompt](/verifik-es/escaneo-prompt) y [Escaneo Estudio](/verifik-es/ocr-engines/escaneo-estudio).
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/ocr/scan-agent
+```
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+Los campos exactos dependen de la configuración del **flujo de proyecto** (tipo de documento, lados a capturar y pasos de validación). Los payloads suelen incluir imágenes (`image`, `backImage` o claves del flujo) y un identificador de `projectFlow`.
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `colombianBarcodeValidation` | boolean | No | Con `true`, ejecuta la validación del [código PDF417 de cédula colombiana](/verifik-es/validacion-identidad/colombia/cedula-codigo-barras) sobre la captura del reverso y adjunta el resultado en `OCRExtraction.barcodeValidation`. Si se omite, aplica la opción **`colombianBarcodeValidation`** del flujo de proyecto. |
+
+### Validación de código de barras colombiano {#validacion-codigo-barras-colombiano}
+
+Para flujos de **CC** colombiana, activa la validación de código de barras de dos formas:
+
+1. **Flujo de proyecto** — habilita **`colombianBarcodeValidation`** en la configuración del flujo SmartScan / SmartEnroll en el panel de Verifik.
+2. **Cuerpo de la solicitud** — envía **`colombianBarcodeValidation: true`** en `POST /v2/ocr/scan-agent` para forzar la lectura en esa llamada.
+
+Cuando está activo y hay una imagen útil del **reverso**, la extracción OCR incluye **`barcodeValidation`** con los mismos veredictos y campos que la API dedicada (`decoded` / `unreadable`, o `confirmed` / `mismatch` / `unreadable` cuando el flujo aporta datos de contraste).
+
+Referencia y facturación: [Colombia — Código de barras de cédula (PDF417)](/verifik-es/validacion-identidad/colombia/cedula-codigo-barras).
+
+### Fragmento de respuesta (código de barras activo)
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "OCRExtraction": {
+      "documentType": "CC",
+      "documentNumber": "1234567890",
+      "firstName": "MARIA",
+      "lastName": "LOPEZ GARCIA",
+      "barcodeValidation": {
+        "verdict": "confirmed",
+        "attempts": 1,
+        "barcode": {
+          "documentNumber": "1234567890",
+          "primerNombre": "MARIA",
+          "segundoNombre": "ELENA",
+          "primerApellido": "LOPEZ",
+          "segundoApellido": "GARCIA",
+          "gender": "F",
+          "dateOfBirth": "15/03/1992",
+          "bloodType": "O+",
+          "fullName": "MARIA ELENA LOPEZ GARCIA"
+        },
+        "matchScores": {
+          "documentNumber": 1,
+          "firstName": 0.98,
+          "lastName": 0.97
+        },
+        "disagreements": []
+      }
+    }
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 21, 2026 3:00 PM"
+  },
+  "id": "SA12B"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- La validación del código requiere un **reverso** nítido; solo el frente puede marcar el paso como **`unreadable`**.
+- El consumo de créditos sigue la configuración **SmartScan / smartENROLL** de tu cuenta. Consulta [Escaneo inteligente](/verifik-es/escaneo-inteligente).
+- La captura hospedada de documentos también puede ejecutar la validación cuando el proyecto la tiene activa — ver [Validación de documento en registro de aplicación](/verifik-es/resources/registros-aplicacion/crear-una-validacion-documento-registro-aplicacion#codigo-barras-cedula-colombiana).

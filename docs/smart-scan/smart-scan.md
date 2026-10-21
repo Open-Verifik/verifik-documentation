@@ -155,6 +155,17 @@ OCR technology has become an essential tool for digitizing large volumes of prin
       </div>
     </div>
   </div>
+  <div className="col col--6">
+    <div className="card">
+      <div className="card__header">
+        <h3>🤖 Scan Agent</h3>
+      </div>
+      <div className="card__body">
+        <p>Project-flow OCR for SmartScan, including optional <strong>Colombian cédula PDF417 barcode</strong> validation on rear captures.</p>
+        <a href="/ocr-engines/scan-agent" className="button button--primary">Learn More</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 ### OCR Solutions Interface
@@ -426,5 +437,5 @@ For technical support and API documentation, contact our support team or visit o
 ---
 
 :::tip Getting Started
-Ready to start using Smart Scan? Check out our [Scan Prompt API](/ocr-engines/scan-prompt) and [Scan Studio API](/ocr-engines/scan-studio) documentation to get started quickly.
+Ready to start using Smart Scan? Check out our [Scan Prompt API](/ocr-engines/scan-prompt), [Scan Studio API](/ocr-engines/scan-studio), and [Scan Agent API](/ocr-engines/scan-agent) (including [Colombian cédula barcode validation](/ocr-engines/scan-agent#colombian-barcode-validation)) to get started quickly.
 :::
