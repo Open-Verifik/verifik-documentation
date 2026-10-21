@@ -6,7 +6,7 @@ description: Política de privacidad de Verifik y prácticas de protección de d
 
 # Política de Privacidad
 
-**Última actualización: 02 de junio de 2023**
+**Última actualización: 21 de octubre de 2026**
 
 Esta Política de Privacidad describe nuestras políticas y procedimientos sobre la recopilación, uso y divulgación de Su información cuando utiliza el Servicio y le informa sobre Sus derechos de privacidad y cómo la ley le protege.
 
@@ -191,6 +191,8 @@ Lo anterior excluye los datos de suscripción y el consentimiento del originador
 La Compañía retendrá Sus Datos Personales solo durante el tiempo que sea necesario para los propósitos establecidos en esta Política de Privacidad. Retendremos y utilizaremos Sus Datos Personales en la medida necesaria para cumplir con nuestras obligaciones legales (por ejemplo, si estamos obligados a retener sus datos para cumplir con las leyes aplicables), resolver disputas y hacer cumplir nuestros acuerdos y políticas legales.
 
 La Compañía también retendrá Datos de Uso para propósitos de análisis interno. Los Datos de Uso generalmente se retienen por un período de tiempo más corto, excepto cuando estos datos se utilizan para fortalecer la seguridad o para mejorar la funcionalidad de Nuestro Servicio, o estamos legalmente obligados a retener estos datos por períodos de tiempo más largos.
+
+Para los servicios de verificación de identidad y API similares, la información enviada por o en nombre de nuestros clientes empresariales se conserva, por defecto, hasta que el cliente la elimina. Los clientes con requisitos de cumplimiento pueden solicitar una configuración sin almacenamiento en la que los resultados de verificación se devuelven solo en la respuesta de la API y no se guarda ninguna copia.
 
 ### **Transferencia de Sus Datos Personales**
 
@@ -422,9 +424,9 @@ Recopilado: Sí.
 
 * **Categoría E: Información Biométrica.**
 
-Ejemplos: Imágenes faciales utilizadas para detección de vida y autenticación.
+Ejemplos: Imágenes faciales, selfies, plantillas faciales y datos similares utilizados para detección de vida y verificación de identidad.
 
-Recopilado: **Sí, solo para detección de vida y autenticación.** Recopilamos información biométrica en forma de imágenes faciales (base64) únicamente para realizar detección de vida y autenticar al cliente en la plataforma. Esta información es procesada por los sistemas biométricos de Verifik. No retenemos, almacenamos, vendemos o comerciamos esta información biométrica para ningún otro propósito.
+Recopilado: **Sí, cuando Usted o sus usuarios finales utilizan funciones de verificación de identidad.** Procesamos información biométrica únicamente para prestar servicios de verificación y autenticación a nuestros clientes empresariales y a sus usuarios finales, y para que esos registros puedan mostrarse en la cuenta del cliente en nuestra plataforma. Verifik no recopila esta información para su propio uso. **No vendemos información biométrica y no tenemos interés en venderla a nadie.** No compartimos información biométrica para publicidad conductual intercontextual.
 
 * **Categoría F: Actividad de Internet u otra actividad de red similar.**
 
@@ -467,6 +469,10 @@ Recopilado: No.
 Ejemplos: Información de inicio de sesión y contraseña de cuenta, datos de geolocalización.
 
 Recopilado: Sí.
+
+#### **Datos de verificación de identidad (biométricos y documentos de identidad)**
+
+Verifik procesa información biométrica y datos de documentos de identidad o legales (incluidas imágenes de identificación, selfies, plantillas faciales y datos extraídos de documentos de identidad) únicamente para prestar servicios de verificación y relacionados a nuestros clientes empresariales y para su conveniencia en nuestra plataforma. No recopilamos esta información para el uso propio de Verifik. **No vendemos** esta información y **no tenemos interés en venderla** a nadie. **No compartimos** esta información para publicidad conductual intercontextual.
 
 Bajo CCPA/CPRA, la información personal no incluye:
 
@@ -534,6 +540,8 @@ Podemos utilizar o divulgar y podemos haber utilizado o divulgado en los último
 
 Tenga en cuenta que las categorías enumeradas anteriormente son las definidas en CCPA/CPRA. Esto no significa que todos los ejemplos de esa categoría de información personal fueron de hecho divulgados, sino que refleja nuestra creencia de buena fe al mejor de nuestro conocimiento de que alguna de esa información de la categoría aplicable puede ser y puede haber sido divulgada.
 
+La divulgación de información biométrica y de datos de documentos de identidad o legales (incluidas imágenes de identificación, selfies, plantillas faciales y datos extraídos de documentos) a proveedores de servicios es únicamente para operar y prestar nuestros servicios de verificación a nuestros clientes empresariales, no para la venta ni para publicidad conductual intercontextual.
+
 Cuando divulgamos información personal para un propósito comercial o un propósito comercial, entramos en un contrato que describe el propósito y requiere que el destinatario mantenga esa información personal confidencial y no la utilice para ningún propósito excepto realizar el contrato.
 
 #### **Compartir Información Personal**
@@ -550,21 +558,21 @@ Podemos compartir, y hemos compartido en los últimos doce (12) meses, Su inform
 
 * Proveedores de terceros a quienes Usted o Sus agentes nos autorizan a divulgar Su información personal en relación con productos o servicios que le proporcionamos
 
+No compartimos información biométrica ni datos de documentos de identidad o legales descritos en la sección «Datos de verificación de identidad (biométricos y documentos de identidad)» para publicidad conductual intercontextual.
+
 #### **Venta de Información Personal**
 
 Según se define en CCPA/CPRA, "vender" y "venta" significan vender, alquilar, liberar, divulgar, diseminar, poner a disposición, transferir, o comunicar de otra manera oralmente, por escrito, o por medios electrónicos u otros, la información personal de un Consumidor por el Negocio a un tercero por una consideración valiosa. Esto significa que podemos haber recibido algún tipo de beneficio a cambio de compartir información personal, pero no necesariamente un beneficio monetario.
 
-No vendemos información personal como comúnmente se entiende el término vender. Permitimos que los Proveedores de Servicios utilicen Su información personal para los propósitos comerciales descritos en Nuestra Política de Privacidad, para actividades como publicidad, marketing y análisis, y estos pueden ser considerados una venta bajo CCPA/CPRA.
+No vendemos información personal como comúnmente se entiende el término vender. Permitimos que los Proveedores de Servicios utilicen Su información personal para los propósitos comerciales descritos en Nuestra Política de Privacidad, para actividades como publicidad, marketing y análisis, y estos pueden ser considerados una venta bajo CCPA/CPRA para ciertas categorías de información. **No vendemos —y no hemos vendido en los doce (12) meses anteriores— la Categoría E (Información biométrica), ni la información personal de las Categorías A o B que consista en imágenes de documentos de identidad o legales, documentos de identificación emitidos por el gobierno, selfies enviados para verificación, plantillas faciales o información extraída de dichos documentos en relación con nuestros servicios de verificación de identidad.**
 
-Podemos vender y podemos haber vendido en los últimos doce (12) meses las siguientes categorías de información personal:
+Podemos vender y podemos haber vendido en los últimos doce (12) meses las siguientes categorías de información personal (excluyendo las categorías descritas en el párrafo anterior):
 
 * Categoría A: Identificadores
 
 * Categoría B: Categorías de información personal enumeradas en el estatuto de Registros de Clientes de California (Cal. Civ. Code § 1798.80(e))
 
 * Categoría D: Información comercial
-
-* Categoría E: Información biométrica
 
 * Categoría F: Actividad de Internet u otra actividad de red similar
 
@@ -672,7 +680,7 @@ Para solicitudes de portabilidad de datos, seleccionaremos un formato para propo
 
 Según se define en CCPA/CPRA, "vender" y "venta" significan vender, alquilar, liberar, divulgar, diseminar, poner a disposición, transferir, o comunicar de otra manera oralmente, por escrito, o por medios electrónicos u otros, la información personal de un Consumidor por el Negocio a un tercero por una consideración valiosa. Esto significa que podemos haber recibido algún tipo de beneficio a cambio de compartir información personal, pero no necesariamente un beneficio monetario.
 
-No vendemos información personal como comúnmente se entiende el término vender. Permitimos que los Proveedores de Servicios utilicen Su información personal para los propósitos comerciales descritos en Nuestra Política de Privacidad, para actividades como publicidad, marketing y análisis, y estos pueden ser considerados una venta bajo CCPA/CPRA.
+No vendemos información personal como comúnmente se entiende el término vender. Permitimos que los Proveedores de Servicios utilicen Su información personal para los propósitos comerciales descritos en Nuestra Política de Privacidad, para actividades como publicidad, marketing y análisis, y estos pueden ser considerados una venta bajo CCPA/CPRA para ciertas categorías de información. No vendemos información biométrica ni datos de documentos de identidad o legales enviados a través de nuestros servicios de verificación, y no compartimos dichos datos para publicidad conductual intercontextual.
 
 Usted tiene el derecho de optar por no participar en la venta de Su información personal. Una vez que recibamos y confirmemos una solicitud verificable del consumidor de Usted, dejaremos de vender Su información personal. Para ejercer Su derecho a optar por no participar, por favor contáctenos.
 

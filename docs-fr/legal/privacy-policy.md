@@ -7,7 +7,7 @@ slug: /legal/privacy-policy
 
 # Politique de confidentialité
 
-**Dernière mise à jour : 02 juin 2023**
+**Dernière mise à jour : 21 octobre 2026**
 
 Cette politique de confidentialité décrit nos politiques et procédures relatives à la collecte, à l'utilisation et à la divulgation de vos informations lorsque vous utilisez le service et vous informe de vos droits à la vie privée et de la manière dont la loi vous protège.
 
@@ -190,6 +190,8 @@ Nous pouvons partager vos informations personnelles dans les situations suivante
 La Société conservera vos données personnelles uniquement aussi longtemps que nécessaire aux fins énoncées dans la présente politique de confidentialité. Nous conserverons et utiliserons vos données personnelles dans la mesure nécessaire pour nous conformer à nos obligations légales (par exemple, si nous sommes tenus de conserver vos données pour nous conformer aux lois applicables), résoudre les litiges et faire respecter nos accords et politiques juridiques.
 
 La Société conservera également les données d'utilisation à des fins d'analyse interne. Les données d'utilisation sont généralement conservées pendant une période plus courte, sauf lorsque ces données sont utilisées pour renforcer la sécurité ou pour améliorer la fonctionnalité de notre service, ou lorsque nous sommes légalement tenus de conserver ces données pendant des périodes plus longues.
+
+Pour les services de vérification d'identité et API similaires, les informations soumises par ou pour le compte de nos clients professionnels sont, par défaut, conservées jusqu'à ce que le client les supprime. Les clients soumis à des exigences de conformité peuvent demander une configuration sans stockage dans laquelle les résultats de vérification sont renvoyés uniquement dans la réponse API et aucune copie n'est conservée.
 
 ### **Transfert de vos données personnelles**
 
@@ -421,9 +423,9 @@ Collecté : Oui.
 
 * **Catégorie E : Informations biométriques.**
 
-Exemples : images faciales utilisées pour la détection et l'authentification de l'activité.
+Exemples : images faciales, selfies, modèles faciaux et données similaires utilisées pour la détection de vivacité et la vérification d'identité.
 
-Collecté : **Oui, uniquement pour la détection et l'authentification de l'activité.** Nous collectons des informations biométriques sous forme d'images faciales (base64) uniquement pour effectuer la détection de l'activité et authentifier le client sur la plateforme. Ces informations sont traitées par les systèmes biométriques de Verifik. Nous ne conservons, ne stockons, ne vendons ni n’échangeons ces informations biométriques à d’autres fins.
+Collecté : **Oui, lorsque vous ou vos utilisateurs finaux utilisez les fonctionnalités de vérification d'identité.** Nous traitons les informations biométriques uniquement pour fournir des services de vérification et d'authentification à nos clients professionnels et à leurs utilisateurs finaux, et pour que ces enregistrements puissent apparaître dans le compte du client sur notre plateforme. Verifik ne collecte pas ces informations pour son propre usage. **Nous ne vendons pas d'informations biométriques et nous ne souhaitons pas les vendre à quiconque.** Nous ne partageons pas d'informations biométriques pour la publicité comportementale intercontextuelle.
 
 * **Catégorie F : Internet ou autre activité réseau similaire.**
 
@@ -466,6 +468,10 @@ Collecté : Non.
 Exemples : informations de connexion et de mot de passe du compte, données de géolocalisation.
 
 Collecté : Oui.
+
+#### **Données de vérification d'identité (biométrie et documents d'identité)**
+
+Verifik traite les informations biométriques et les données d'identité ou de documents juridiques (y compris les images de pièces d'identité, les selfies, les modèles faciaux et les données extraites des documents d'identité) uniquement pour fournir des services de vérification et connexes à nos clients professionnels et pour leur commodité sur notre plateforme. Nous ne collectons pas ces informations pour l'usage propre de Verifik. Nous **ne vendons pas** ces informations et **n'avons pas l'intention de les vendre** à quiconque. Nous **ne partageons pas** ces informations pour la publicité comportementale intercontextuelle.
 
 En vertu du CCPA/CPRA, les renseignements personnels n’incluent pas :
 
@@ -533,6 +539,8 @@ Nous pouvons utiliser ou divulguer et pouvons avoir utilisé ou divulgué au cou
 
 Veuillez noter que les catégories énumérées ci-dessus sont celles définies dans la CCPA/CPRA. Cela ne signifie pas que tous les exemples de cette catégorie d'informations personnelles ont en fait été divulgués, mais reflète notre conviction de bonne foi, au meilleur de nos connaissances, que certaines de ces informations de la catégorie applicable peuvent être et ont pu être divulguées.
 
+La divulgation d'informations biométriques et de données d'identité ou de documents juridiques (y compris images de pièces d'identité, selfies, modèles faciaux et données extraites de documents) à des fournisseurs de services vise uniquement à exploiter et fournir nos services de vérification à nos clients professionnels — pas à des fins de vente et pas pour la publicité comportementale intercontextuelle.
+
 Lorsque nous divulguons des informations personnelles à des fins commerciales, nous concluons un contrat qui décrit le but et exige que le destinataire garde ces informations personnelles confidentielles et ne les utilise pas à d'autres fins que l'exécution du contrat.
 
 #### **Partage d'informations personnelles**
@@ -549,21 +557,21 @@ Nous pouvons partager, et avons partagé au cours des douze (12) derniers mois, 
 
 * Fournisseurs tiers auxquels vous ou vos agents nous autorisez à divulguer vos informations personnelles en relation avec les produits ou services que nous vous fournissons.
 
+Nous ne partageons pas les informations biométriques ni les données d'identité ou de documents juridiques décrites dans la section « Données de vérification d'identité (biométrie et documents d'identité) » pour la publicité comportementale intercontextuelle.
+
 #### **Vente d'informations personnelles**
 
 Tel que défini dans le CCPA/CPRA, « vendre » et « vendre » signifient vendre, louer, divulguer, divulguer, diffuser, mettre à disposition, transférer ou autrement communiquer oralement, par écrit ou par des moyens électroniques ou autres, les informations personnelles d'un consommateur par l'entreprise à un tiers contre une contrepartie valable. Cela signifie que nous pouvons avoir reçu une sorte d'avantage en échange du partage d'informations personnelles, mais pas nécessairement un avantage monétaire.
 
-Nous ne vendons pas d’informations personnelles au sens courant du terme vendre. Nous autorisons les fournisseurs de services à utiliser vos informations personnelles aux fins commerciales décrites dans notre politique de confidentialité, pour des activités telles que la publicité, le marketing et l'analyse, et celles-ci peuvent être considérées comme une vente en vertu du CCPA/CPRA.
+Nous ne vendons pas d’informations personnelles au sens courant du terme vendre. Nous autorisons les fournisseurs de services à utiliser vos informations personnelles aux fins commerciales décrites dans notre politique de confidentialité, pour des activités telles que la publicité, le marketing et l'analyse, et celles-ci peuvent être considérées comme une vente en vertu du CCPA/CPRA pour certaines catégories d'informations. **Nous ne vendons pas — et n'avons pas vendu au cours des douze (12) mois précédents — la catégorie E (informations biométriques), ni les informations personnelles des catégories A ou B qui consistent en images de documents d'identité ou juridiques, documents d'identité délivrés par un gouvernement, selfies soumis pour vérification, modèles faciaux ou informations extraites de ces documents dans le cadre de nos services de vérification d'identité.**
 
-Nous pouvons vendre et avons pu vendre au cours des douze (12) derniers mois les catégories d’informations personnelles suivantes :
+Nous pouvons vendre et avons pu vendre au cours des douze (12) derniers mois les catégories d’informations personnelles suivantes (à l'exclusion des catégories décrites au paragraphe précédent) :
 
 * Catégorie A : Identifiants
 
 * Catégorie B : catégories d'informations personnelles répertoriées dans la loi californienne sur les dossiers clients (Cal. Civ. Code § 1798.80(e))
 
 * Catégorie D : Informations commerciales
-
-* Catégorie E : Informations biométriques
 
 * Catégorie F : Internet ou autre activité réseau similaire
 
@@ -671,7 +679,7 @@ Pour les demandes de portabilité des données, nous sélectionnerons un format 
 
 Tel que défini dans le CCPA/CPRA, « vendre » et « vendre » signifient vendre, louer, divulguer, divulguer, diffuser, mettre à disposition, transférer ou autrement communiquer oralement, par écrit ou par des moyens électroniques ou autres, les informations personnelles d'un consommateur par l'entreprise à un tiers contre une contrepartie valable. Cela signifie que nous pouvons avoir reçu une sorte d'avantage en échange du partage d'informations personnelles, mais pas nécessairement un avantage monétaire.
 
-Nous ne vendons pas d’informations personnelles au sens courant du terme vendre. Nous autorisons les fournisseurs de services à utiliser vos informations personnelles aux fins commerciales décrites dans notre politique de confidentialité, pour des activités telles que la publicité, le marketing et l'analyse, et celles-ci peuvent être considérées comme une vente en vertu du CCPA/CPRA.
+Nous ne vendons pas d’informations personnelles au sens courant du terme vendre. Nous autorisons les fournisseurs de services à utiliser vos informations personnelles aux fins commerciales décrites dans notre politique de confidentialité, pour des activités telles que la publicité, le marketing et l'analyse, et celles-ci peuvent être considérées comme une vente en vertu du CCPA/CPRA pour certaines catégories d'informations. Nous ne vendons pas les informations biométriques ni les données d'identité ou de documents juridiques soumises via nos services de vérification, et nous ne partageons pas ces données pour la publicité comportementale intercontextuelle.
 
 Vous avez le droit de refuser la vente de vos informations personnelles. Une fois que nous aurons reçu et confirmé une demande vérifiable du consommateur de votre part, nous cesserons de vendre vos informations personnelles. Pour exercer votre droit de retrait, veuillez nous contacter.
 
