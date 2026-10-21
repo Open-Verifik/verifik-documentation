@@ -7,7 +7,7 @@ slug: /legal/privacy-policy
 
 # Política de Privacidade
 
-**Last updated: June 02, 2023**
+**Last updated: October 21, 2026**
 
 This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.
 
@@ -185,11 +185,15 @@ We may share Your personal information in the following situations:
 
 * **With Your consent:** We may disclose Your personal information for any other purpose with Your consent.
 
+The above excludes text messaging originator opt-in data and consent; this information will not be shared with any third parties.
+
 ### **Retention of Your Personal Data**
 
 The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.
 
 The Company will also retain Usage Data for internal analysis purposes. Usage Data is generally retained for a shorter period of time, except when this data is used to strengthen the security or to improve the functionality of Our Service, or We are legally obligated to retain this data for longer time periods.
+
+For identity verification and similar API services, information submitted by or on behalf of our business customers is, by default, retained until the customer deletes it. Customers with compliance requirements may request a no-storage configuration in which verification results are returned only in the API response and no copy is stored.
 
 ### **Transfer of Your Personal Data**
 
@@ -421,9 +425,9 @@ Collected: Yes.
 
 * **Category E: Biometric Information.**
 
-Examples: Facial images used for liveness detection and authentication.
+Examples: Facial images, selfies, face templates, and similar data used for liveness detection and identity verification.
 
-Collected: **Yes, only for liveness detection and authentication.** We collect biometric information in the form of facial images (base64) solely for performing liveness detection and authenticating the customer on the platform. This information is processed by Verifik’s biometric systems. We do not retain, store, sell, or trade this biometric information for any other purpose.
+Collected: **Yes, when You or Your end users use identity verification features.** We process biometric information solely to provide verification and authentication services to our business customers and their end users, and so those records can appear in the customer's account on our platform. Verifik does not collect this information for its own use. **We do not sell biometric information, and we are not interested in selling it, to anyone.** We do not share biometric information for cross-context behavioral advertising.
 
 * **Category F: Internet or other similar network activity.**
 
@@ -466,6 +470,11 @@ Collected: No.
 Examples: Account login and password information, geolocation data.
 
 Collected: Yes.
+
+
+#### **Identity verification data (biometric and identity documents)**
+
+Verifik processes biometric information and identity or legal document data (including ID images, selfies, face templates, and data extracted from identity documents) only to provide verification and related services to our business customers and for their convenience on our platform. We do not collect this information for Verifik's own use. We **do not sell** this information and are **not interested in selling it** to anyone. We **do not share** this information for cross-context behavioral advertising.
 
 Under CCPA/CPRA, personal information does not include:
 
@@ -533,6 +542,8 @@ We may use or disclose and may have used or disclosed in the last twelve (12) mo
 
 Please note that the categories listed above are those defined in the CCPA/CPRA. This does not mean that all examples of that category of personal information were in fact disclosed, but reflects our good faith belief to the best of our knowledge that some of that information from the applicable category may be and may have been disclosed.
 
+Disclosure of biometric information and identity or legal document data (including ID images, selfies, face templates, and extracted document data) to service providers is solely to operate and provide our verification services to our business customers—not for sale, and not for cross-context behavioral advertising.
+
 When We disclose personal information for a business purpose or a commercial purpose, We enter a contract that describes the purpose and requires the recipient to both keep that personal information confidential and not use it for any purpose except performing the contract.
 
 #### **Share of Personal Information**
@@ -549,21 +560,21 @@ We may share, and have shared in the last twelve (12) months, Your personal info
 
 * Third party vendors to whom You or Your agents authorize Us to disclose Your personal information in connection with products or services We provide to You
 
+We do not share biometric information or identity or legal document data described in the "Identity verification data (biometric and identity documents)" section for cross-context behavioral advertising.
+
 #### **Sale of Personal Information**
 
 As defined in the CCPA/CPRA, "sell" and "sale" mean selling, renting, releasing, disclosing, disseminating, making available, transferring, or otherwise communicating orally, in writing, or by electronic or other means, a Consumer's personal information by the Business to a third party for valuable consideration. This means that We may have received some kind of benefit in return for sharing personal information, but not necessarily a monetary benefit.
 
-We do not sell personal information as the term sell is commonly understood. We do allow Service Providers to use Your personal information for the business purposes described in Our Privacy Policy, for activities such as advertising, marketing, and analytics, and these may be deemed a sale under CCPA/CPRA.
+We do not sell personal information as the term sell is commonly understood. We do allow Service Providers to use Your personal information for the business purposes described in Our Privacy Policy, for activities such as advertising, marketing, and analytics, and these may be deemed a sale under CCPA/CPRA for certain categories of information. **We do not sell—and have not sold in the preceding twelve (12) months—Category E (Biometric Information), or Category A or B personal information that consists of identity or legal document images, government-issued identification documents, selfies submitted for verification, face templates, or information extracted from such documents in connection with our identity verification services.**
 
-We may sell and may have sold in the last twelve (12) months the following categories of personal information:
+We may sell and may have sold in the last twelve (12) months the following categories of personal information (excluding the categories described in the preceding paragraph):
 
 * Category A: Identifiers
 
 * Category B: Personal information categories listed in the California Customer Records statute (Cal. Civ. Code § 1798.80(e))
 
 * Category D: Commercial information
-
-* Category E: Biometric information
 
 * Category F: Internet or other similar network activity
 
@@ -671,7 +682,7 @@ For data portability requests, We will select a format to provide Your personal 
 
 As defined in the CCPA/CPRA, "sell" and "sale" mean selling, renting, releasing, disclosing, disseminating, making available, transferring, or otherwise communicating orally, in writing, or by electronic or other means, a Consumer's personal information by the Business to a third party for valuable consideration. This means that We may have received some kind of benefit in return for sharing personal information, but not necessarily a monetary benefit.
 
-We do not sell personal information as the term sell is commonly understood. We do allow Service Providers to use Your personal information for the business purposes described in Our Privacy Policy, for activities such as advertising, marketing, and analytics, and these may be deemed a sale under CCPA/CPRA.
+We do not sell personal information as the term sell is commonly understood. We do allow Service Providers to use Your personal information for the business purposes described in Our Privacy Policy, for activities such as advertising, marketing, and analytics, and these may be deemed a sale under CCPA/CPRA for certain categories of information. We do not sell biometric information or identity or legal document data submitted through our verification services, and we do not share such data for cross-context behavioral advertising.
 
 You have the right to opt-out of the sale of Your personal information. Once We receive and confirm a verifiable consumer request from You, we will stop selling Your personal information. To exercise Your right to opt-out, please contact Us.
 
