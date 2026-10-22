@@ -1,0 +1,192 @@
+---
+id: mexico-health-worker
+title: メキシコ — 医療従事者の免許
+description: 対象者がメキシコの保健関連の専門免許を保有していることを確認します。非保健の免許のみの場合は 404 を返します。
+slug: /identity/mexico-health-worker
+keywords:
+  - v2/mx/health-worker
+  - /v2/mx/health-worker
+  - v2 mx health worker
+  - api/mx/health-worker
+  - /api/mx/health-worker
+  - api mx health worker
+  - api.verifik.co/v2/mx/health-worker
+  - 'https://api.verifik.co/v2/mx/health-worker'
+  - GET v2/mx/health-worker
+  - GET /v2/mx/health-worker
+  - mx/health-worker
+  - /mx/health-worker
+  - health worker license
+  - mexico health license
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# メキシコ — 医療従事者の免許
+
+公式の専門免許登録で、対象者が保健関連の専門免許を少なくとも1件保有していることを確認します。[専門免許](/verifik-ja/identity/mexico-cedula-profesional)と同じ照会方式が適用されます。CURP、免許番号、または氏名です。非保健の免許は結果から除かれます。
+
+保健の称号には、医学、看護、歯科、薬学、栄養、臨床心理、精神医学、助産、理学療法、検眼が含まれます。獣医学は除外されます。非保健の免許しか持たない人は **404** を受け取ります。
+
+これは資格のスクリーニングであり、本人確認そのものではありません。すべての免許には [専門免許](/verifik-ja/identity/mexico-cedula-profesional) を使ってください。身分記録には [メキシコ市民（CURP）](/verifik-ja/identity/mexico) を使ってください。
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/health-worker
+```
+
+一致すると、一般の免許エンドポイントと同じ身分フィールドに加え、`isHealthWorker: true` と `nonHealthCount`（除外した非保健免許の件数）を返します。`cedulas` には保健の免許だけが入ります。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+`documentType` と `documentNumber`、または `firstName` と `lastName` を送信します。二つの方式を混ぜないでください。
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | 書類モード | `CURP` または `CEDULA`（大文字小文字を区別しません）。保健分野の採用では CURP が推奨されます。 | `CURP` |
+| `documentNumber` | string | `documentType` と併用 | 17〜18文字の CURP または免許番号。 | `LOPE900501HDFGRN01` |
+| `firstName` | string | 氏名モード | 名。2〜80文字。 | `ANA` |
+| `lastName` | string | 氏名モード | 二つの姓。父姓を先に。2〜80文字。 | `LOPEZ RUIZ` |
+
+### How matching works
+
+照会は一般の免許エンドポイントと同じで、その後に保健フィルタが適用されます。
+
+- **CURP** は直接一致を試し（`matchMethod: "curp"`）、追加料金なしで正確な氏名へのフォールバックを試します（`matchMethod: "curp_to_name"`）。
+- **CEDULA** は免許番号の完全一致です。非保健の免許は **404** を返します。
+- **氏名** は完全な氏名の一致です。一致した免許に保健の称号が一つもなければ、応答は **404** です。
+- `nonHealthCount` は見つかったあと除外された免許の件数です。このエンドポイントが 200 を返すとき、`isHealthWorker` は常に `true` です。
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/health-worker", {
+  params: {
+    documentType: "CURP",
+    documentNumber: "LOPE900501HDFGRN01",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/health-worker"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CURP", "documentNumber": "LOPE900501HDFGRN01"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      }
+    ],
+    "curp": "LOPE900501HDFGRN01",
+    "documentNumber": "LOPE900501HDFGRN01",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp",
+    "matchNote": null,
+    "isHealthWorker": true,
+    "nonHealthCount": 1
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType and documentNumber, or firstName and lastName, are required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (unavailable)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **404** は保健の免許が見つからなかったことを意味します。免許がまったくない有効な CURP と、非保健の免許（例: 法学）しか持たない人が含まれます。
+- Smart Batch では、その 404 は失敗した行ではなく、完了したスクリーニング結果です。
+- 結果は最大7日間キャッシュされます。
+- サンドボックス CURP `LOPE900501HDFGRN01` は医学の免許1件と `nonHealthCount: 1` を返します。
+- `000003` を含む CURP（例: `LOPE000003MDFRRN03`）は氏名フォールバックの保健免許を返します。これは CURP を氏名へ切り替える場合です。
+- `documentType=CEDULA` かつ `documentNumber=10000002` は看護の免許を返します。`10000001` は法学のみで **404** を返します。
+- CURP `LOPE900404HDFNTF01`、`000002` を含む CURP、`lastName=NOTFOUND` は **404** を返します。
+- 17文字未満または18文字を超える CURP、あるいは無効な `documentType` は **409** `MissingParameter` を返します。
+- 登録に到達できない場合、応答は **409** `Endpoint_out_of_service` です。後でもう一度試してください。
+- 関連: [専門免許](/verifik-ja/identity/mexico-cedula-profesional)、[メキシコ市民（CURP）](/verifik-ja/identity/mexico)、[INE 検証](/verifik-ja/identity/mexico-ine)。

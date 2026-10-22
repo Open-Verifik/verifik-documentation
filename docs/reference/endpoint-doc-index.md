@@ -2268,6 +2268,18 @@ keywords:
   - "https://api.verifik.co/v2/look-ups/phone"
   - "GET v2/look-ups/phone"
   - "GET /v2/look-ups/phone"
+  - "v2/mx/cedula-profesional"
+  - "/v2/mx/cedula-profesional"
+  - "v2 mx cedula-profesional"
+  - "mx/cedula-profesional"
+  - "/mx/cedula-profesional"
+  - "api/mx/cedula-profesional"
+  - "/api/mx/cedula-profesional"
+  - "api mx cedula-profesional"
+  - "api.verifik.co/v2/mx/cedula-profesional"
+  - "https://api.verifik.co/v2/mx/cedula-profesional"
+  - "GET v2/mx/cedula-profesional"
+  - "GET /v2/mx/cedula-profesional"
   - "v2/mx/company"
   - "/v2/mx/company"
   - "v2 mx company"
@@ -2292,6 +2304,18 @@ keywords:
   - "https://api.verifik.co/v2/mx/curp"
   - "GET v2/mx/curp"
   - "GET /v2/mx/curp"
+  - "v2/mx/health-worker"
+  - "/v2/mx/health-worker"
+  - "v2 mx health-worker"
+  - "mx/health-worker"
+  - "/mx/health-worker"
+  - "api/mx/health-worker"
+  - "/api/mx/health-worker"
+  - "api mx health-worker"
+  - "api.verifik.co/v2/mx/health-worker"
+  - "https://api.verifik.co/v2/mx/health-worker"
+  - "GET v2/mx/health-worker"
+  - "GET /v2/mx/health-worker"
   - "v2/mx/ine"
   - "/v2/mx/ine"
   - "v2 mx ine"
@@ -2318,6 +2342,20 @@ keywords:
   - "https://api.verifik.co/v2/mx/ine/ocr"
   - "GET v2/mx/ine/ocr"
   - "GET /v2/mx/ine/ocr"
+  - "v2/mx/siged/certificado"
+  - "/v2/mx/siged/certificado"
+  - "v2 mx siged certificado"
+  - "mx/siged/certificado"
+  - "/mx/siged/certificado"
+  - "api/mx/siged/certificado"
+  - "/api/mx/siged/certificado"
+  - "api mx siged certificado"
+  - "siged/certificado"
+  - "/siged/certificado"
+  - "api.verifik.co/v2/mx/siged/certificado"
+  - "https://api.verifik.co/v2/mx/siged/certificado"
+  - "GET v2/mx/siged/certificado"
+  - "GET /v2/mx/siged/certificado"
   - "v2/mx/vehiculo/placa"
   - "/v2/mx/vehiculo/placa"
   - "v2 mx vehiculo placa"
@@ -2884,12 +2922,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (231 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (234 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-10-20T21:46:42.419Z_
+_Last regenerated: 2026-10-22T02:01:41.030Z_
 
 ## Argentina
 
@@ -3067,10 +3105,13 @@ _Last regenerated: 2026-10-20T21:46:42.419Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
+| `v2/mx/cedula-profesional` | v2 mx cedula-profesional mx/cedula-profesional /mx/cedula-profesional api/mx/cedula-profesional /api/mx/cedula-profesional api mx cedula-profesional api.verifik.co/v2/mx/cedula-profesional https://api.verifik.co/v2/mx/cedula-profesional GET v2/mx/cedula-profesional GET /v2/mx/cedula-profesional | [Mexico — Professional License](/identity/mexico-cedula-profesional) |
 | `v2/mx/company` | v2 mx company mx/company /mx/company api/mx/company /api/mx/company api mx company api.verifik.co/v2/mx/company https://api.verifik.co/v2/mx/company GET v2/mx/company GET /v2/mx/company | [Mexican Business Verification](/business-validation/mexican-companies) |
 | `v2/mx/curp` | v2 mx curp mx/curp /mx/curp api/mx/curp /api/mx/curp api mx curp api.verifik.co/v2/mx/curp https://api.verifik.co/v2/mx/curp GET v2/mx/curp GET /v2/mx/curp | [Mexico — CURP](/identity/mexico) |
+| `v2/mx/health-worker` | v2 mx health-worker mx/health-worker /mx/health-worker api/mx/health-worker /api/mx/health-worker api mx health-worker api.verifik.co/v2/mx/health-worker https://api.verifik.co/v2/mx/health-worker GET v2/mx/health-worker GET /v2/mx/health-worker | [Mexico — Health Worker License](/identity/mexico-health-worker) |
 | `v2/mx/ine` | v2 mx ine mx/ine /mx/ine api/mx/ine /api/mx/ine api mx ine api.verifik.co/v2/mx/ine https://api.verifik.co/v2/mx/ine GET v2/mx/ine GET /v2/mx/ine | [Mexico — INE Validation](/identity/mexico-ine) |
 | `v2/mx/ine/ocr` | v2 mx ine ocr mx/ine/ocr /mx/ine/ocr api/mx/ine/ocr /api/mx/ine/ocr api mx ine ocr ine/ocr /ine/ocr api.verifik.co/v2/mx/ine/ocr https://api.verifik.co/v2/mx/ine/ocr GET v2/mx/ine/ocr GET /v2/mx/ine/ocr | [Mexico — INE OCR](/identity/mexico-ine-ocr) |
+| `v2/mx/siged/certificado` | v2 mx siged certificado mx/siged/certificado /mx/siged/certificado api/mx/siged/certificado /api/mx/siged/certificado api mx siged certificado siged/certificado /siged/certificado api.verifik.co/v2/mx/siged/certificado https://api.verifik.co/v2/mx/siged/certificado GET v2/mx/siged/certificado GET /v2/mx/siged/certificado | [Mexico — Education Certificate (folio)](/identity/mexico-siged-certificado) |
 | `v2/mx/vehiculo/placa` | v2 mx vehiculo placa mx/vehiculo/placa /mx/vehiculo/placa api/mx/vehiculo/placa /api/mx/vehiculo/placa api mx vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/mx/vehiculo/placa https://api.verifik.co/v2/mx/vehiculo/placa GET v2/mx/vehiculo/placa GET /v2/mx/vehiculo/placa | [Mexico Vehicle by Plate](/vehicle-validation/mexico) |
 
 ## Panama

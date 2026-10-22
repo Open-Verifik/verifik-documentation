@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-20T21:46:42.362Z
+Generated: 2026-10-22T02:01:40.957Z
 
-- **Files scanned:** 535
-- **Unique endpoint URLs:** 231
+- **Files scanned:** 536
+- **Unique endpoint URLs:** 234
 - **Duplicate URL groups (SEO / aliases):** 58
-- **Docs without `### Endpoint` block:** 223
+- **Docs without `### Endpoint` block:** 221
 
 ## Summary by priority (canonical primary path only)
 
@@ -13,7 +13,7 @@ Generated: 2026-10-20T21:46:42.362Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 180 | identity, biometrics, resources, etc. |
+| P2 | 183 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -398,10 +398,13 @@ Generated: 2026-10-20T21:46:42.362Z
 | P2 | `v2/interpol` | `background-check/interpol-background-check.mdx` |
 | P2 | `v2/ip-lookup` | `identity/ip-lookup.mdx` |
 | P2 | `v2/look-ups/phone` | `identity/phone-lookup.mdx` |
+| P2 | `v2/mx/cedula-profesional` | `identity/mexico-cedula-profesional.mdx` |
 | P2 | `v2/mx/company` | `business-validation/mexican-companies.mdx` |
 | P2 | `v2/mx/curp` | `identity/mexico.mdx` |
+| P2 | `v2/mx/health-worker` | `identity/mexico-health-worker.mdx` |
 | P2 | `v2/mx/ine` | `identity/mexico-ine.mdx` |
 | P2 | `v2/mx/ine/ocr` | `identity/mexico-ine-ocr.mdx` |
+| P2 | `v2/mx/siged/certificado` | `identity/mexico-siged-certificado.mdx` |
 | P1 | `v2/mx/vehiculo/placa` | `vehicle-validation/mexico.md` |
 | P2 | `v2/ocr/scan-prompt` | `ocr-engines/scan-prompt.mdx` |
 | P2 | `v2/ocr/scan-prompt/template/:id` | `ocr-engines/scan-prompt/delete-a-scan-prompt-template.mdx` |
@@ -509,8 +512,6 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `identity-validation/peru.mdx`
 - `identity-validation/united-states.mdx`
 - `identity/identity-verification.mdx`
-- `identity/mexico-cedula-profesional.mdx`
-- `identity/mexico-siged-certificado.mdx`
 - `integrations/avalanche.md`
 - `integrations/blockdag-milestone-four.md`
 - `integrations/blockdag-milestone-one.md`

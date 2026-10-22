@@ -1,0 +1,182 @@
+---
+id: mexico-siged-certificado
+title: メキシコ — 学業証明書（folio）
+description: folio により、公式の学業証明書登録に対してメキシコの電子学業証明書を検証します。
+slug: /identity/mexico-siged-certificado
+keywords:
+  - v2/mx/siged/certificado
+  - /v2/mx/siged/certificado
+  - v2 mx siged certificado
+  - api/mx/siged/certificado
+  - /api/mx/siged/certificado
+  - api mx siged certificado
+  - api.verifik.co/v2/mx/siged/certificado
+  - 'https://api.verifik.co/v2/mx/siged/certificado'
+  - GET v2/mx/siged/certificado
+  - GET /v2/mx/siged/certificado
+  - mx/siged/certificado
+  - /mx/siged/certificado
+  - education certificate
+  - certificado de estudios
+  - folio
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# メキシコ — 学業証明書（folio）
+
+folio により、公式の学業証明書登録に対してメキシコの電子学業証明書を検証します。任意で `fullName` または `curp` を送り、証明書がその人のものであることを確認できます。両方を送った場合は `curp` が優先されます。不一致は **409** `name_mismatch` を返します。
+
+これは証明書の記録を確認します。それだけでは本人確認にはなりません。CURP の身分記録は [メキシコ市民（CURP）](/verifik-ja/identity/mexico) を参照してください。専門免許は [専門免許](/verifik-ja/identity/mexico-cedula-profesional) を参照してください。
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/siged/certificado
+```
+
+一致すると `folio`、`fullName`、`status`、`certificateType`、`career`、`institution`、`level`、`studyType`、`average`、`averageText`、`periodStart`、`periodEnd`、`registrationDate`、`laborTraining`、`federalEntity`、`issueDate` を返します。空のフィールドは `null` です。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `folio` | string | 必須 | 電子証明書に印刷された folio。4〜64文字。 | `SIGED10000001` |
+| `fullName` | string | 任意 | 想定する氏名。不一致なら 409 `name_mismatch`。`curp` も送った場合は無視されます。3〜160文字。 | `Ana Lopez Ruiz` |
+| `curp` | string | 任意 | 対象者の CURP。送った場合は `fullName` より優先されます。17〜18文字。 | `LOPE900501HDFGRN01` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/siged/certificado", {
+  params: {
+    folio: "SIGED10000001",
+    fullName: "Ana Lopez Ruiz",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/siged/certificado"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"folio": "SIGED10000001", "fullName": "Ana Lopez Ruiz"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+保有者を CURP で確認するには、`folio` と `curp` を送り、`fullName` は省略します。
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "average": "9.1",
+    "averageText": "NUEVE PUNTO UNO",
+    "career": "BACHILLERATO TECNOLOGICO",
+    "certificateType": "CERTIFICADO DE TERMINACION DE ESTUDIOS",
+    "federalEntity": null,
+    "firstName": "ANA",
+    "folio": "SIGED10000001",
+    "fullName": "ANA LOPEZ RUIZ",
+    "institution": "DIRECCION GENERAL DE EDUCACION TECNOLOGICA INDUSTRIAL",
+    "issueDate": null,
+    "laborTraining": "TECNICO - PROGRAMACION",
+    "lastName": "LOPEZ RUIZ",
+    "level": "IEMS",
+    "periodEnd": "2021",
+    "periodStart": "2018",
+    "registrationDate": "2021-07-15",
+    "status": "Vigente",
+    "studyType": "EDUCACION MEDIA SUPERIOR"
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (name)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "name_mismatch"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-missing" label="409 (missing folio)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"folio\" is required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (unavailable)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `folio` は必須です。`fullName` と `curp` は任意の保有者確認です。両方を送った場合は `curp` が使われ、`fullName` は無視されます。
+- 登録にない folio は **404** を返します。その証明書の保有者ではない氏名または CURP は **409** `name_mismatch` を返します。
+- 結果は最大7日間キャッシュされます。
+- サンドボックスの folio `SIGED10000001` は `ANA LOPEZ RUIZ` のサンプル証明書を返します。`fullName=Ana Lopez Ruiz` も 200 を返します。
+- その folio に `fullName=Maria Perez` を送ると **409** `name_mismatch` を返します。
+- Folio `FOLIO90040401` は **404** を返します。
+- `curp=LOPE900501HDFGRN01` は、どの `fullName` と一緒でも 200 を返します。CURP が `fullName` より優先されるためです。`curp=LOPE900404HDFNTF01` は **404** を返します。
+- `folio` がない場合は **409** `MissingParameter` を返します。
+- 登録に到達できない場合、応答は **409** `Endpoint_out_of_service` です。後でもう一度試してください。
+- 関連: [メキシコ市民（CURP）](/verifik-ja/identity/mexico)、[専門免許](/verifik-ja/identity/mexico-cedula-profesional)、[医療従事者の免許](/verifik-ja/identity/mexico-health-worker)。

@@ -319,8 +319,18 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/mexico-cedula-profesional",
+					label: "🇲🇽 Mexico — Professional License",
+				},
+				{
+					type: "doc",
+					id: "identity/mexico-health-worker",
+					label: "🇲🇽 Mexico — Health Worker License",
+				},
+				{
+					type: "doc",
 					id: "identity/mexico-siged-certificado",
-					label: "🇲🇽 Mexico — SIGED Certificate",
+					label: "🇲🇽 Mexico — Education Certificate (folio)",
 				},
 				{
 					type: "doc",

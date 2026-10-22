@@ -1,0 +1,182 @@
+---
+id: mexico-siged-certificado
+title: 墨西哥 — 学历证书（folio）
+description: 通过 folio，对照官方学历证书登记册验证墨西哥电子学历证书。
+slug: /identity/mexico-siged-certificado
+keywords:
+  - v2/mx/siged/certificado
+  - /v2/mx/siged/certificado
+  - v2 mx siged certificado
+  - api/mx/siged/certificado
+  - /api/mx/siged/certificado
+  - api mx siged certificado
+  - api.verifik.co/v2/mx/siged/certificado
+  - 'https://api.verifik.co/v2/mx/siged/certificado'
+  - GET v2/mx/siged/certificado
+  - GET /v2/mx/siged/certificado
+  - mx/siged/certificado
+  - /mx/siged/certificado
+  - education certificate
+  - certificado de estudios
+  - folio
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 墨西哥 — 学历证书（folio）
+
+通过 folio，对照官方学历证书登记册验证墨西哥电子学历证书。可选发送 `fullName` 或 `curp`，以确认证书属于该人。两者都发送时，`curp` 优先。不匹配返回 **409** `name_mismatch`。
+
+这是核验证书记录。它本身不能证明身份。CURP 民事记录见 [墨西哥公民（CURP）](/verifik-zh/identity/mexico)。专业执照见 [专业执照](/verifik-zh/identity/mexico-cedula-profesional)。
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/siged/certificado
+```
+
+匹配时返回 `folio`、`fullName`、`status`、`certificateType`、`career`、`institution`、`level`、`studyType`、`average`、`averageText`、`periodStart`、`periodEnd`、`registrationDate`、`laborTraining`、`federalEntity` 和 `issueDate`。空字段为 `null`。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `folio` | string | 是 | 印在电子证书上的 folio。4–64 个字符。 | `SIGED10000001` |
+| `fullName` | string | 否 | 预期全名。不匹配则返回 409 `name_mismatch`。同时发送 `curp` 时忽略此项。3–160 个字符。 | `Ana Lopez Ruiz` |
+| `curp` | string | 否 | 该人的 CURP。发送后优先于 `fullName`。17–18 个字符。 | `LOPE900501HDFGRN01` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/siged/certificado", {
+  params: {
+    folio: "SIGED10000001",
+    fullName: "Ana Lopez Ruiz",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/siged/certificado"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"folio": "SIGED10000001", "fullName": "Ana Lopez Ruiz"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+按 CURP 核验持有人时，发送 `folio` 和 `curp`，并省略 `fullName`。
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "average": "9.1",
+    "averageText": "NUEVE PUNTO UNO",
+    "career": "BACHILLERATO TECNOLOGICO",
+    "certificateType": "CERTIFICADO DE TERMINACION DE ESTUDIOS",
+    "federalEntity": null,
+    "firstName": "ANA",
+    "folio": "SIGED10000001",
+    "fullName": "ANA LOPEZ RUIZ",
+    "institution": "DIRECCION GENERAL DE EDUCACION TECNOLOGICA INDUSTRIAL",
+    "issueDate": null,
+    "laborTraining": "TECNICO - PROGRAMACION",
+    "lastName": "LOPEZ RUIZ",
+    "level": "IEMS",
+    "periodEnd": "2021",
+    "periodStart": "2018",
+    "registrationDate": "2021-07-15",
+    "status": "Vigente",
+    "studyType": "EDUCACION MEDIA SUPERIOR"
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (name)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "name_mismatch"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-missing" label="409 (missing folio)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"folio\" is required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (unavailable)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `folio` 为必填。`fullName` 和 `curp` 是可选的持有人核验。两者都发送时使用 `curp`，并忽略 `fullName`。
+- 登记册中没有的 folio 返回 **404**。不属于该证书的姓名或 CURP 返回 **409** `name_mismatch`。
+- 结果最多缓存 7 天。
+- 沙盒 folio `SIGED10000001` 返回 `ANA LOPEZ RUIZ` 的示例证书。`fullName=Ana Lopez Ruiz` 同样返回 200。
+- 对该 folio 发送 `fullName=Maria Perez` 返回 **409** `name_mismatch`。
+- Folio `FOLIO90040401` 返回 **404**。
+- `curp=LOPE900501HDFGRN01` 与任何 `fullName` 一起都返回 200，因为 CURP 优先于 `fullName`。`curp=LOPE900404HDFNTF01` 返回 **404**。
+- 缺少 `folio` 时返回 **409** `MissingParameter`。
+- 无法连接登记册时，响应为 **409** `Endpoint_out_of_service`。请稍后重试。
+- 相关：[墨西哥公民（CURP）](/verifik-zh/identity/mexico)、[专业执照](/verifik-zh/identity/mexico-cedula-profesional)、[卫生从业人员执照](/verifik-zh/identity/mexico-health-worker)。

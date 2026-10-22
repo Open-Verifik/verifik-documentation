@@ -1,0 +1,184 @@
+---
+id: mexico-siged-certificado
+title: Mexique — Certificat d'études (folio)
+description: Validez un certificat d'études électronique mexicain par folio auprès du registre officiel des certificats d'études.
+slug: /identity/mexico-siged-certificado
+keywords:
+  - v2/mx/siged/certificado
+  - /v2/mx/siged/certificado
+  - v2 mx siged certificado
+  - api/mx/siged/certificado
+  - /api/mx/siged/certificado
+  - api mx siged certificado
+  - api.verifik.co/v2/mx/siged/certificado
+  - 'https://api.verifik.co/v2/mx/siged/certificado'
+  - GET v2/mx/siged/certificado
+  - GET /v2/mx/siged/certificado
+  - mx/siged/certificado
+  - /mx/siged/certificado
+  - education certificate
+  - certificado de estudios
+  - folio
+  - certificat d'études
+  - certificat d'études électronique
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Mexique — Certificat d'études (folio)
+
+Valide un certificat d'études électronique mexicain par folio auprès du registre officiel des certificats d'études. Vous pouvez aussi envoyer `fullName` ou `curp` pour confirmer que le certificat appartient à cette personne. Lorsque les deux sont envoyés, `curp` l'emporte. Une non-correspondance retourne **409** `name_mismatch`.
+
+Cette requête contrôle l'enregistrement du certificat. Elle ne constitue pas, à elle seule, une preuve d'identité. Pour l'état civil par CURP, voir [Citoyen mexicain (CURP)](/verifik-fr/identity/mexico). Pour une licence professionnelle, voir [Mexique — Licence professionnelle](/verifik-fr/identity/mexico-cedula-profesional).
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/siged/certificado
+```
+
+Une correspondance retourne `folio`, `fullName`, `status`, `certificateType`, `career`, `institution`, `level`, `studyType`, `average`, `averageText`, `periodStart`, `periodEnd`, `registrationDate`, `laborTraining`, `federalEntity` et `issueDate`. Les champs vides valent `null`.
+
+### Headers
+
+| Nom | Valeur |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Nom | Type | Requis | Description | Exemple |
+| --- | --- | --- | --- | --- |
+| `folio` | string | Oui | Folio imprimé sur le certificat électronique. 4 à 64 caractères. | `SIGED10000001` |
+| `fullName` | string | Non | Nom complet attendu. Une non-correspondance retourne 409 `name_mismatch`. Ignoré lorsque `curp` est aussi envoyé. 3 à 160 caractères. | `Ana Lopez Ruiz` |
+| `curp` | string | Non | CURP de la personne. Lorsqu'il est envoyé, il remplace `fullName`. 17 à 18 caractères. | `LOPE900501HDFGRN01` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/siged/certificado", {
+  params: {
+    folio: "SIGED10000001",
+    fullName: "Ana Lopez Ruiz",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/siged/certificado"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"folio": "SIGED10000001", "fullName": "Ana Lopez Ruiz"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+Pour contrôler le titulaire par CURP, envoyez `folio` et `curp` et omettez `fullName`.
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "average": "9.1",
+    "averageText": "NUEVE PUNTO UNO",
+    "career": "BACHILLERATO TECNOLOGICO",
+    "certificateType": "CERTIFICADO DE TERMINACION DE ESTUDIOS",
+    "federalEntity": null,
+    "firstName": "ANA",
+    "folio": "SIGED10000001",
+    "fullName": "ANA LOPEZ RUIZ",
+    "institution": "DIRECCION GENERAL DE EDUCACION TECNOLOGICA INDUSTRIAL",
+    "issueDate": null,
+    "laborTraining": "TECNICO - PROGRAMACION",
+    "lastName": "LOPEZ RUIZ",
+    "level": "IEMS",
+    "periodEnd": "2021",
+    "periodStart": "2018",
+    "registrationDate": "2021-07-15",
+    "status": "Vigente",
+    "studyType": "EDUCACION MEDIA SUPERIOR"
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (nom)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "name_mismatch"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-missing" label="409 (folio manquant)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"folio\" is required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (indisponible)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `folio` est obligatoire. `fullName` et `curp` sont des contrôles optionnels du titulaire. Lorsque les deux sont envoyés, `curp` est utilisé et `fullName` est ignoré.
+- Un folio absent du registre retourne **404**. Un nom ou un CURP qui n'appartient pas à ce certificat retourne **409** `name_mismatch`.
+- Les résultats sont mis en cache jusqu'à 7 jours.
+- Le folio sandbox `SIGED10000001` retourne le certificat d'exemple pour `ANA LOPEZ RUIZ`. `fullName=Ana Lopez Ruiz` retourne aussi 200.
+- `fullName=Maria Perez` sur ce folio retourne **409** `name_mismatch`.
+- Le folio `FOLIO90040401` retourne **404**.
+- `curp=LOPE900501HDFGRN01` avec n'importe quel `fullName` retourne 200, car le CURP l'emporte. `curp=LOPE900404HDFNTF01` retourne **404**.
+- Un `folio` manquant retourne **409** `MissingParameter`.
+- Lorsque le registre est injoignable, la réponse est **409** `Endpoint_out_of_service`. Réessayez plus tard.
+- Voir aussi : [Citoyen mexicain (CURP)](/verifik-fr/identity/mexico), [Mexique — Licence professionnelle](/verifik-fr/identity/mexico-cedula-profesional), [Mexique — Licence de professionnel de santé](/verifik-fr/identity/mexico-health-worker).

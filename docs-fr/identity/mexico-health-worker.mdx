@@ -1,0 +1,194 @@
+---
+id: mexico-health-worker
+title: Mexique — Licence de professionnel de santé
+description: Confirmez qu'une personne détient une licence professionnelle mexicaine liée à la santé. Une personne qui ne détient que des licences hors santé retourne 404.
+slug: /identity/mexico-health-worker
+keywords:
+  - v2/mx/health-worker
+  - /v2/mx/health-worker
+  - v2 mx health worker
+  - api/mx/health-worker
+  - /api/mx/health-worker
+  - api mx health worker
+  - api.verifik.co/v2/mx/health-worker
+  - 'https://api.verifik.co/v2/mx/health-worker'
+  - GET v2/mx/health-worker
+  - GET /v2/mx/health-worker
+  - mx/health-worker
+  - /mx/health-worker
+  - health worker license
+  - mexico health license
+  - licence de professionnel de santé
+  - mexique licence santé
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Mexique — Licence de professionnel de santé
+
+Confirme qu'une personne détient au moins une licence professionnelle liée à la santé dans le registre officiel des professions. Les mêmes modes de recherche que pour [Mexique — Licence professionnelle](/verifik-fr/identity/mexico-cedula-profesional) s'appliquent : CURP, numéro de licence ou nom. Les licences hors santé sont retirées du résultat.
+
+Les titres de santé comprennent la médecine, les soins infirmiers, l'art dentaire, la pharmacie, la nutrition, la psychologie clinique, la psychiatrie, l'obstétrique, la physiothérapie et l'optométrie. La médecine vétérinaire est exclue. Une personne qui ne détient que des licences hors santé retourne **404**.
+
+Il s'agit d'un contrôle de titres, pas d'une preuve d'identité. Pour l'ensemble des licences, utilisez [Mexique — Licence professionnelle](/verifik-fr/identity/mexico-cedula-profesional). Pour l'état civil, utilisez [Citoyen mexicain (CURP)](/verifik-fr/identity/mexico).
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/health-worker
+```
+
+Une correspondance retourne les mêmes champs d'identité que l'endpoint de licence générale, plus `isHealthWorker: true` et `nonHealthCount` (nombre de licences hors santé écartées). `cedulas` ne contient que les licences de santé.
+
+### Headers
+
+| Nom | Valeur |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+Envoyez `documentType` + `documentNumber`, ou `firstName` + `lastName`. Ne mélangez pas les deux modes.
+
+| Nom | Type | Requis | Description | Exemple |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | Mode document | `CURP` ou `CEDULA` (insensible à la casse). Le CURP est à privilégier pour un recrutement dans la santé. | `CURP` |
+| `documentNumber` | string | Avec `documentType` | Un CURP de 17 à 18 caractères ou un numéro de licence. | `LOPE900501HDFGRN01` |
+| `firstName` | string | Mode nom | Prénoms. 2 à 80 caractères. | `ANA` |
+| `lastName` | string | Mode nom | Les deux noms de famille, le paternel en premier. 2 à 80 caractères. | `LOPEZ RUIZ` |
+
+### How matching works
+
+La recherche est identique à celle de l'endpoint de licence générale, puis un filtre santé est appliqué.
+
+- **CURP** tente une correspondance directe (`matchMethod: "curp"`), puis un repli sur le nom exact, sans coût supplémentaire (`matchMethod: "curp_to_name"`).
+- **CEDULA** est une correspondance exacte sur le numéro de licence. Une licence hors santé retourne **404**.
+- **Nom** est une correspondance exacte du nom complet. Si aucune des licences correspondantes n'est un titre de santé, la réponse est **404**.
+- `nonHealthCount` est le nombre de licences trouvées puis exclues. `isHealthWorker` vaut `true` chaque fois que cet endpoint retourne 200.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/health-worker", {
+  params: {
+    documentType: "CURP",
+    documentNumber: "LOPE900501HDFGRN01",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/health-worker"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CURP", "documentNumber": "LOPE900501HDFGRN01"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      }
+    ],
+    "curp": "LOPE900501HDFGRN01",
+    "documentNumber": "LOPE900501HDFGRN01",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp",
+    "matchNote": null,
+    "isHealthWorker": true,
+    "nonHealthCount": 1
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType and documentNumber, or firstName and lastName, are required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (indisponible)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **404** signifie qu'aucune licence de santé n'a été trouvée. Cela couvre un CURP valide sans aucune licence, ainsi qu'une personne qui ne détient que des licences hors santé (par exemple le droit).
+- Dans Smart Batch, ce 404 est un résultat de contrôle abouti, pas une ligne en échec.
+- Les résultats sont mis en cache jusqu'à 7 jours.
+- Le CURP sandbox `LOPE900501HDFGRN01` retourne une licence de médecine et `nonHealthCount: 1`.
+- Un CURP contenant `000003` (par exemple `LOPE000003MDFRRN03`) retourne la licence de santé du repli par le nom.
+- `documentType=CEDULA` et `documentNumber=10000002` retournent une licence de soins infirmiers. `10000001` correspond uniquement au droit et retourne **404**.
+- Le CURP `LOPE900404HDFNTF01`, un CURP contenant `000002` et `lastName=NOTFOUND` retournent **404**.
+- Un CURP de moins de 17 caractères ou de plus de 18, ou un `documentType` invalide, retourne **409** `MissingParameter`.
+- Lorsque le registre est injoignable, la réponse est **409** `Endpoint_out_of_service`. Réessayez plus tard.
+- Voir aussi : [Mexique — Licence professionnelle](/verifik-fr/identity/mexico-cedula-profesional), [Citoyen mexicain (CURP)](/verifik-fr/identity/mexico), [Validation INE](/verifik-fr/identity/mexico-ine).

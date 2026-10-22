@@ -1,0 +1,192 @@
+---
+id: mexico-health-worker
+title: 멕시코 — 보건 전문가 면허
+description: 해당자가 멕시코 보건 관련 전문 면허를 보유했는지 확인합니다. 비보건 면허만 있는 경우 404를 반환합니다.
+slug: /identity/mexico-health-worker
+keywords:
+  - v2/mx/health-worker
+  - /v2/mx/health-worker
+  - v2 mx health worker
+  - api/mx/health-worker
+  - /api/mx/health-worker
+  - api mx health worker
+  - api.verifik.co/v2/mx/health-worker
+  - 'https://api.verifik.co/v2/mx/health-worker'
+  - GET v2/mx/health-worker
+  - GET /v2/mx/health-worker
+  - mx/health-worker
+  - /mx/health-worker
+  - health worker license
+  - mexico health license
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 멕시코 — 보건 전문가 면허
+
+공식 전문 면허 등록부에서 해당자가 보건 관련 전문 면허를 하나 이상 보유하고 있는지 확인합니다. [전문 면허](/verifik-ko/identity/mexico-cedula-profesional)와 같은 조회 방식이 적용됩니다. CURP, 면허 번호 또는 이름입니다. 비보건 면허는 결과에서 제외됩니다.
+
+보건 직함에는 의학, 간호, 치의학, 약학, 영양, 임상심리, 정신의학, 조산, 물리치료, 검안이 포함됩니다. 수의학은 제외됩니다. 비보건 면허만 보유한 사람은 **404**를 받습니다.
+
+이것은 자격 선별이며, 신원 증명 자체는 아닙니다. 모든 면허는 [전문 면허](/verifik-ko/identity/mexico-cedula-profesional)를 사용하세요. 민사 기록은 [멕시코 시민(CURP)](/verifik-ko/identity/mexico)을 사용하세요.
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/health-worker
+```
+
+일치하면 일반 면허 엔드포인트와 같은 신원 필드에 `isHealthWorker: true`와 `nonHealthCount`(제외된 비보건 면허 수)가 더해집니다. `cedulas`에는 보건 면허만 들어 있습니다.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+`documentType` + `documentNumber`, 또는 `firstName` + `lastName`을 보내세요. 두 방식을 섞지 마세요.
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | 문서 모드 | `CURP` 또는 `CEDULA`(대소문자 무시). 보건 채용에는 CURP가 권장됩니다. | `CURP` |
+| `documentNumber` | string | `documentType`과 함께 | 17–18자의 CURP 또는 면허 번호. | `LOPE900501HDFGRN01` |
+| `firstName` | string | 이름 모드 | 이름. 2–80자. | `ANA` |
+| `lastName` | string | 이름 모드 | 두 성, 부성 먼저. 2–80자. | `LOPEZ RUIZ` |
+
+### How matching works
+
+조회는 일반 면허 엔드포인트와 같으며, 그다음 보건 필터가 적용됩니다.
+
+- **CURP**는 직접 일치를 시도한 뒤(`matchMethod: "curp"`), 추가 비용 없이 정확한 이름 대체를 시도합니다(`matchMethod: "curp_to_name"`).
+- **CEDULA**는 면허 번호의 완전 일치입니다. 비보건 면허는 **404**를 반환합니다.
+- **이름**은 전체 이름의 완전 일치입니다. 일치한 면허 중 보건 직함이 없으면 응답은 **404**입니다.
+- `nonHealthCount`는 발견 후 제외된 면허 수입니다. 이 엔드포인트가 200을 반환할 때마다 `isHealthWorker`는 `true`입니다.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/health-worker", {
+  params: {
+    documentType: "CURP",
+    documentNumber: "LOPE900501HDFGRN01",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/health-worker"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CURP", "documentNumber": "LOPE900501HDFGRN01"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      }
+    ],
+    "curp": "LOPE900501HDFGRN01",
+    "documentNumber": "LOPE900501HDFGRN01",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp",
+    "matchNote": null,
+    "isHealthWorker": true,
+    "nonHealthCount": 1
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType and documentNumber, or firstName and lastName, are required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (unavailable)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **404**는 보건 면허가 없음을 뜻합니다. 면허가 전혀 없는 유효한 CURP와, 비보건 면허(예: 법학)만 보유한 사람이 여기에 포함됩니다.
+- Smart Batch에서 이 404는 실패한 행이 아니라 완료된 선별 결과입니다.
+- 결과는 최대 7일간 캐시됩니다.
+- 샌드박스 CURP `LOPE900501HDFGRN01`은 의학 면허 한 건과 `nonHealthCount: 1`을 반환합니다.
+- `000003`이 포함된 CURP(예: `LOPE000003MDFRRN03`)는 이름 대체 보건 면허를 반환합니다. 이것은 CURP를 이름으로 넘기는 경우입니다.
+- `documentType=CEDULA`와 `documentNumber=10000002`는 간호 면허를 반환합니다. `10000001`은 법학만 해당하며 **404**를 반환합니다.
+- CURP `LOPE900404HDFNTF01`, `000002`가 포함된 CURP, `lastName=NOTFOUND`는 **404**를 반환합니다.
+- 17자보다 짧거나 18자보다 긴 CURP, 또는 유효하지 않은 `documentType`은 **409** `MissingParameter`를 반환합니다.
+- 등록부에 연결할 수 없으면 응답은 **409** `Endpoint_out_of_service`입니다. 나중에 다시 시도하세요.
+- 관련: [전문 면허](/verifik-ko/identity/mexico-cedula-profesional), [멕시코 시민(CURP)](/verifik-ko/identity/mexico), [INE 검증](/verifik-ko/identity/mexico-ine).
