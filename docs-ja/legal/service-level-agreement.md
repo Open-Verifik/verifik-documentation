@@ -7,147 +7,222 @@ slug: /legal/service-level-agreement
 
 # サービスレベル契約
 
-### **Service Level Agreement**
+**最終更新日：2026年10月21日**
 
-#### **1. Service Channels. The User shall have access to the following Verifik service channels:**
+### **サービスレベル契約**
 
-1. Chat available on [Verifik.co](http://verifik.co)
-2. Email: support@verifik.co
-3. Customer service WhatsApp channel.
-4. Customer service Discord channel.
+#### **1. サービスチャネル。ユーザーは次の Verifik サービスチャネルにアクセスできます。**
 
-#### **2. Hours of Operation**
+1. [Verifik.co](http://verifik.co) で利用できるチャット
+2. メール：support@verifik.co
+3. カスタマーサービス WhatsApp チャネル
+4. カスタマーサービス Discord チャネル
 
-The User will be able to access the support provided by Verifik, Monday through Friday (business days) from 8:00 AM to 5:00 PM Colombia time.
+#### **2. 営業時間**
 
-#### **3. Criticality Levels**
+ユーザーは、月曜日から金曜日（営業日）のコロンビア時間 8:00～17:00 に Verifik が提供するサポートにアクセスできます。
 
-The requests or requirements raised by Users to the support team will be classified according to the impact they have on the User's operation, as follows:
+#### **3. 重要度レベル**
 
-| **Critical:** | Total service unavailability.                                                |
-| ------------- | ---------------------------------------------------------------------------- |
-| **Urgent:**   | Loss of specific functionality for all use cases.                            |
-| **Medium:**   | Loss of functionality in specific cases.                                     |
-| **Normal:**   | Other requests or general inquiries that do not affect Service Availability. |
+ユーザーがサポートチームに提起する依頼または要件は、ユーザーの運用への影響に応じて次のように分類されます。
 
-#### **4. Response Times**
+| | |
+| --- | --- |
+| **重大：** | サービス全体の利用不可。 |
+| **緊急：** | すべてのユースケースで特定機能の喪失。 |
+| **中：** | 特定のケースでの機能喪失。 |
+| **通常：** | サービス可用性に影響しないその他の依頼または一般的な問い合わせ。 |
 
-1. **Definitions:** Terms used in this section, shall have the following meanings:
+#### **4. 応答時間**
 
-```
-i. Attention: The time elapsed between the request or requirement and the assignment of a service agent.
-ii. Review: The time elapsed between the agent's greeting and the first response regarding the request or requirement.
-iii. Escalation: The time elapsed between the agent's escalation and the case review by the person to whom it was escalated. This time only applies in events where it is necessary to escalate the user's request or requirement.
-iv. Resolution: The time elapsed between the agent's greeting and the moment the case is resolved.
-```
+**定義：** 本節で使用する用語は次の意味を持ちます。
 
-The response time varies according to the criticality of the requirement, as follows:
+i. 受付：依頼または要件とサービス担当者の割り当てまでの経過時間。
 
-| **SEVERITY/TIME** | **ATTENTION** | **REVIEW** | **ESCALATION** | **RESOLUTION** |
-| ----------------- | ------------- | ---------- | -------------- | -------------- |
-| **Critical**      | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Urgent**        | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Medium**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
-| **Normal**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
+ii. 確認：担当者の挨拶から依頼または要件に関する最初の応答までの経過時間。
 
-**Note:** 48 hrs means we take up to 48 hours to resolve the incident depending on its complexity.
+iii. エスカレーション：担当者によるエスカレーションからエスカレーション先による案件確認までの経過時間。ユーザーの依頼または要件をエスカレーションする必要がある場合にのみ適用されます。
 
-Response times will be counted from the last message sent by the user.
+iv. 解決：担当者の挨拶から案件が解決された時点までの経過時間。
 
-#### **5. Platform Availability**
+応答時間は要件の重要度に応じて次のとおりです。
 
-The Platform will be available at least:
+| **重要度/時間** | **受付** | **確認** | **エスカレーション** | **解決** |
+| --------------- | -------- | -------- | -------------------- | -------- |
+| **重大** | 0.5時間 | 0.5時間 | 15分 | 48時間 |
+| **緊急** | 0.5時間 | 0.5時間 | 15分 | 48時間 |
+| **中** | 1時間 | 1時間 | 0.5時間 | 96時間 |
+| **通常** | 1時間 | 1時間 | 0.5時間 | 96時間 |
 
-| **Product**  | **Availability**                                                                                      | **Notes**                                                              |
-| ------------ | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| SmartCHECK   | 90.0% > Data API                                                                                      | Data API depends on connections with Government Sources                |
-| smartACCESS  | 99.0% > Email/Tel<br/>98.0% > Biometrics                                                    |                                                                        |
-| smartENROLL  | 99.0% > Email/Tel<br/>98.0% > Biometrics<br/>98.0% > Document Scanning<br/>90.0% > Data API | Data API depends on connections with Government Sources                |
+**注記：** 48時間は、事象の複雑さに応じて最大48時間まで解決にかかる場合があることを意味します。
 
-##### **5.1. エンドポイント固有の可用性除外**
+応答時間はユーザーが送信した最後のメッセージからカウントされます。
 
-特定の外部データソースにおける運用可用性の歴史的に予測困難な特性により、特定のエンドポイントは本契約のプラットフォーム可用性に関するコミットメントおよびダウンタイム補償規定から除外されます。
+##### **4.1. クライアントパネルの重大チケット**
 
-除外されるエンドポイントは以下のとおりです:
+本番トラフィックがブロックされている場合、ユーザーはクライアントパネルから重大優先度のチケットを開けます。これらのチケットについて：
 
-- メキシコ – INE検証
+- Verifik は提出から24時間以内に最初の応答を送信します。
+- Verifik は提出から48時間以内の解決を目指します。
+- 両方の期限はチケット提出時点からの実時間で計算され、パネルではユーザーのサポートタイムゾーンで表示されます。
+- 担当者の返信がない重大チケットは、最初の応答期限前に内部でエスカレーションされます。
+
+これらの期限はクライアントパネル経由で開かれたチケットに適用されます。上表の受付・確認・エスカレーション時間は、第1節のサービスチャネルでの会話に適用されます。
+
+#### **5. プラットフォーム可用性**
+
+プラットフォームは少なくとも次の水準で利用可能です。
+
+| **以上** | **未満** | **製品** | **注記** |
+| --- | --- | --- | --- |
+| 90.00% | 89.99% | smartCHECK (DB Screening) | DB Screening API は政府データソースとの接続に依存します |
+| 99.00% | 98.99% | smartACCESS, smartENROLL (メール/電話) | クレジット補償なし |
+| 99.00% | 98.99% | smartACCESS, smartENROLL (生体認証) | クレジット補償なし |
+| 99.00% | 98.99% | smartENROLL, smartACCESS (書類スキャン) | クレジット補償なし |
+
+##### **5.1. エンドポイント別可用性の除外**
+
+特定の外部データソースの運用可用性が歴史的に予測困難であるため、特定のエンドポイントは本契約のプラットフォーム可用性のコミットメントおよびダウンタイム補償の規定から除外されます。
+
+次のエンドポイントが除外されます。
+
+- メキシコ – INE 検証
 - メキシコ – 車両ナンバープレート検証
 
-これらのエンドポイントに影響する中断、メンテナンス期間、性能低下、応答遅延、または一時的な利用不可は、以下のいずれにも該当しません:
+これらのエンドポイントに影響する中断、メンテナンス期間、性能低下、応答遅延、または一時的な利用不可は次のいずれにも該当しません。
 
-- プラットフォームダウンタイムとみなされないこと;
-- プラットフォーム可用性の計算に含まれないこと;
-- 本契約に基づくサービスクレジットまたはその他の補償の対象とならないこと。
+- プラットフォームダウンタイムとみなされない；
+- プラットフォーム可用性の計算に含まれない；
+- 本契約に基づくサービスクレジットまたはその他の補償の対象とならない。
 
-Verifikは、可能な限り接続性を維持しサービスを復旧するために商業上合理的な努力を継続しますが、上記に記載されたエンドポイントについては稼働時間の保証は提供されません。
+Verifik は商業上合理的な努力を続けて接続を維持し、可能な場合はサービスを復旧しますが、上記エンドポイントについての稼働時間保証は提供されません。
 
-#### **6. Downtime Compensation**
+##### **5.2. 可用性の測定方法**
 
-Credit Compensation awarded for the affected month will be provided in the form of a credit equivalent to the cost of the failed service call. If the service unavailability is caused by **Internal Issues** of Verifik (database, servers, internal API issues) and is not effectively resolved by the Company, Verifik will compensate as follows:
+可用性は UTC で各暦月ごとにアカウント単位で計算されます。
 
-| **Service Availability**                                                                                            | **Credit Compensation**               | **Product**                       |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | --------------------------------- |
-| **Data API (Data Query)**<br/>90.00% or higher<br/>89.99% or lower               | No Credit<br/>Compensation | smartCHECK                        |
-| **Email/Tel**<br/>99.00% or higher<br/>98.99% or lower                           | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Biometrics**<br/>98.00% or higher<br/>97.99% or lower                          | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Document Scanning**<br/>98.00% or higher<br/>97.99% or lower                   | No Credit<br/>Compensation | smartENROLL<br/>smartACCESS |
+```
+可用性 = 成功したリクエスト / (成功したリクエスト + サービス障害)
+```
 
-**Internal Issues** of the Data API service (Data Query) excludes issues considered Force Majeure (Fortuitous Events), whether due to migration, disconnection, or external intervention by the governments that manage the databases. Verifik is an intermediary and therefore does NOT have control over the queried databases.
+- サービス障害とは、タイムアウト、5xx エラーまたは 408・504 応答を返す、またはエンドポイントがサービス外であることを示すリクエストです。
+- クライアントエラーは計算から除外されます。無効または欠落したパラメータ、ソースで見つからないレコード、認証および権限エラー、その他の 4xx 応答が含まれます。
 
-#### **7. Charging Scheme for smartCHECK**
+ユーザーはクライアントパネルのステータス確認および [利用状況 API](/resources/usage#get-monthly-availability) で月次可用性を確認できます。両方ともサービス別の内訳を含むため、第5.1節のエンドポイントへのリクエストを他と分離できます。これらのエンドポイントは本契約のコミットメントの外にあります。
 
-The charging scheme applies to the smartCHECK solution, which enables queries to government databases. Verifik does not own, manage, or bear responsibility for (does not control or update) the government databases of the various countries we serve; therefore, Verifik reserves the right not to offer guarantees regarding Response Time, Average Up Time, or Data Accuracy.
+##### **5.3. 契約固有の目標**
 
-If the query returns a **200** or **404**, it will be charged. Otherwise, if the query returns **403**, **409**, **412**, **422**, or **500**, it will not be charged.
+クライアントパネルと利用状況 API は各月を SmartCHECK 95% 目標と比較します。この目標は商業契約に含まれるアカウントに適用されます。その他のアカウントでは当該数値は参考情報であり、第5節のコミットメントが適用されます。契約固有の目標は、契約で別段定めない限り第6節を超えるクレジット補償を追加しません。
 
-| **Charged** | **Not Charged** |
-| ----------- | --------------- |
-| 200         | 403             |
-| 404         | 409             |
-|             | 412             |
-|             | 422             |
-|             | 500             |
+#### **6. ダウンタイム補償**
 
-#### **8. smartCHECKサービスの動的クエリ**
+影響を受けた月に付与されるクレジット補償は、失敗したサービス呼び出しのコストに相当するクレジットの形で提供されます。サービス利用不可が Verifik の内部問題（データベース、サーバー、内部 API の問題）に起因し、当社が効果的に解決しない場合、Verifik は次のとおり補償します。
 
-smartCHECKサービスの標準アーキテクチャの一環として、Verifikは、サポート対象エンドポイントにおけるサービスの可用性、カバレッジ、信頼性を最大化するために設計された動的クエリ（Dynamic Query）メカニズムを実装しています。
+| **以上** | **未満** | **サービスレベルクレジット補償** | **製品** |
+| --- | --- | --- | --- |
+| 90.00% | 89.99% | クレジット補償なし | smartCHECK (DB Screening / データ照会) |
+| 99.00% | 98.99% | クレジット補償なし | smartACCESS, smartENROLL (メール/電話) |
+| 99.00% | 98.99% | クレジット補償なし | smartACCESS, smartENROLL (生体認証) |
+| 99.00% | 98.99% | クレジット補償なし | smartENROLL, smartACCESS (書類スキャン) |
 
-動的クエリメカニズムにより、smartCHECKおよびDB Screeningは、主要データソースが「Not Found」または同等のHTTP 400レベルのエラーを含む、成功しない応答を返した場合に、複数の認可されたデータソースを自動的かつ順次に照会することができます。このアーキテクチャは、複数の適格なデータソースを活用することにより、成功した検証結果を得る確率を高めることを目的としています。
+データ API（データ照会）サービスの内部問題には、データベースを管理する政府による移行、切断、または外部介入など、不可抗力（偶発的事象）とみなされる状況が含まれません。Verifik は仲介者であり、照会されるデータベースを管理しません。
 
-クライアントは、政府データベースの品質、完全性、可用性が管轄区域によって大きく異なる場合があり、不完全なレコード、サービスの中断、または限定的なデータカバレッジにより、特定のデータベースでは成功しない応答の確率が高くなる場合があることを認識し、同意するものとします。
+#### **7. smartCHECK の課金方式**
 
-これらの制限を軽減するため、動的クエリは、該当するすべてのsmartCHECKエンドポイントでデフォルトで有効化されており、Verifikの冗長化およびフェイルオーバー戦略の不可欠な部分を構成します。このメカニズムにより、Verifikは必要に応じてリクエストを代替の利用可能なソースに動的にルーティングすることで、特定のエンドポイントにおいて100%に近いサービスの可用性およびカバレッジを維持することができます。
+課金方式は政府データベースへの照会を可能にする smartCHECK ソリューションに適用されます。Verifik はサービス提供国の政府データベースを所有・管理・責任負担せず（管理または更新しません）。したがって応答時間、平均稼働時間、データ精度について保証を提供しない場合があります。
 
-クライアントはさらに以下を認識し、同意するものとします：
+**一般規則。** HTTP **200** 応答は課金されます。**課金されない**もの：HTTP **403**、**412**、**422**、**500**；リクエストの**タイムアウト**；HTTP **409** 応答（ソース利用不可および接続失敗を含む）。HTTP **404** 応答は、そのリクエストに**第7.1節**が適用される場合を除き**課金されません**。
 
-a) 動的クエリは、成功した検証応答を得る可能性を高めることを目的としていますが、すべてのケースにおいて成功した一致または結果を保証するものではありません；
+| **課金** | **非課金** |
+| --- | --- |
+| 200 | 404（第7.1節に記載の場合を除く） |
+| | 403 |
+| | 409（ソース障害を含む；課金されない） |
+| | 412 |
+| | 422 |
+| | 500 |
+| | タイムアウト（課金されない） |
 
-b) 応答時間は変動する場合があり、複数ソースへのリクエストのカスケード的な性質により、場合によっては標準的な単一ソースクエリよりも長くなることがあります；
+コロンビア以外のエンドポイントは HTTP **404** で課金されません。**第7.1節**に記載のないエンドポイントは HTTP **404** で課金されず、コロンビア以外の国のすべてのルートが含まれます。
 
-c) 動的クエリの有効性および可用性は、基盤となる第三者または政府ソースの稼働時間、アクセス可能性、データ品質の影響を受けます；および
+##### **7.1 コロンビア：HTTP 404 課金**
 
-d) Verifikは、サービスの継続性の維持、カバレッジの最適化、検証パフォーマンスの向上のために、動的クエリアーキテクチャ内のデータソースを変更、優先順位付け、または置換する権利を単独の裁量で留保します。
+本節は**第7節**に基づく HTTP **404** 課金の唯一の根拠です。以下のすべてのルートはコロンビア smartCHECK API です。**タイムアウト**および HTTP **409** のソース障害は、Verifik のいかなるエンドポイントでも**課金されません**。
 
-動的クエリは、smartCHECKサービスの固有の機能とみなされ、Verifikが書面で別段定めない限り、適格なエンドポイントを使用するすべてのクライアントに自動的に適用されます。
+**RUNT（応答コード `NotFound` の HTTP 404 のみ）。** HTTP **409** 応答（例：ソース停止または RUNT ワーカー利用不可）は**課金されません**。
 
-#### **8.1 動的料金（請求）** {#dynamic-pricing-billing}
+| 製品名 | ルート |
+| --- | --- |
+| コロンビア RUNT 運転者照会 | `GET /v2/co/runt/conductor` |
+| コロンビア RUNT 運転者照会 (v3) | `GET /v3/co/runt/conductor` |
+| コロンビア RUNT 車両照会 | `GET /v2/co/runt/vehiculo` |
+| コロンビア RUNT 車両完全記録 | `GET /v2/co/runt/vehiculo-completo` |
+| コロンビア RUNT 車両 SOAT | `GET /v2/co/runt/vehiculo-soat` |
+| コロンビア RUNT ナンバープレート別車両 | `GET /v2/co/runt/vehicle-by-plate` |
+| コロンビア RUNT VIN 別車両 | `GET /v2/co/runt/vehicle-by-vin` |
+| コロンビア RUNT ナンバープレート別車両（簡易） | `GET /v2/co/runt/vehicle-by-plate-simplified` |
+| コロンビア RUNT ナンバープレートのみ | `GET /v2/co/runt/vehicle-by-plate-only` |
 
-動的クエリが適格なエンドポイントで拡張検証パスを使用し、成功した一致（**HTTP 200**）を返す場合、**動的料金**が適用されることがあります。その場合、クレジットはベースルートに関連付けられた標準ティアではなく、そのエンドポイントファミリーの**プレミアムティア**で差し引かれます。
+**社会保険加入（afiliaciones）。** 以下のルートにおける**いかなる** HTTP **404** も課金対象であり、発行日が不正であることを示すメッセージの場合も含みます。HTTP **409** を返す接続失敗は**課金されません**。
 
-動的料金は、標準パスが一致を返さなかった後に拡張検証パスが正常に完了したとき、標準のコロンビア身分証エンドポイント（**`GET/POST /v2/co/cedula`**）に適用されます。クレジット量は**クライアントに設定された機能価格**（そのエンドポイントファミリーの標準レート vs. プレミアムレート）に依存します。
+| 製品名 | ルート |
+| --- | --- |
+| コロンビア社会保険加入 | `GET /v2/co/afiliaciones` |
 
-動的料金は**7**条の請求規則を**変更しません**：検証エラーおよびサーバーエラー（**403**、**409**、**412**、**422**、**500**）は請求されず、適用可能なパスで成功した一致が得られない場合の**404**応答は標準ティアで請求されます。
+**SIBGA 車両評価（応答コード `NotFound` の HTTP 404 のみ）。**
 
-透明性のため、クライアントは適格なリクエストで**`includeCost=true`**を渡し、クレジットが請求される際（動的料金が適用される場合を含む）に**`billing`**オブジェクトを受け取ることができます。APIリクエスト履歴には調整メタデータ（例：標準 vs. 請求額）が記録されます。
+| 製品名 | ルート |
+| --- | --- |
+| コロンビア SIBGA 車両評価 | `GET /v2/co/sibga/valuation` |
 
-**`/v2/co/cedula/premium`**を直接呼び出すと常にプレミアム価格が適用されます。動的料金は標準の**`/v2/co/cedula`**ルートからの自動エスカレーションを説明します。
+**コロンビア国民 ID（cédula）。** メッセージが **`CEDULA NO EXISTE`** である HTTP **404** のみが**vigencia** 価格帯で課金されます。以下のルートにおけるその他の HTTP **404** は**課金されません**。**`GET`/`POST /v2/co/cedula/vigencia`** は自身の HTTP **404** 応答を**課金しません**。
 
-APIの詳細は[コロンビア身分証（プレミアム）](/verifik-ja/identity-validation/colombia/colombian-cedula-premium#dynamic-pricing)を参照してください。
+| 製品名 | ルート |
+| --- | --- |
+| コロンビア国民 ID 照会 | `GET` / `POST` `/v2/co/cedula` |
 
-#### **9. プラットフォームの利用不可**
+**HTTP 404 非課金：** その他のコロンビア RUNT ルート（所有者照会を含む）、コロンビア外のすべてのエンドポイント、本節に記載のないすべてのルート。生体認証ライブネスはライブネス失敗で HTTP **409** を課金する場合がありますが HTTP **404** では課金されません。smartBatch は HTTP **404** を行の成功マークにのみ使用し、それらの応答にクレジットを課金しません。
 
-Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.
+#### **8. smartCHECK サービスの動的照会**
 
-#### **10. 新規の適応または開発**
+smartCHECK サービスの標準アーキテクチャの一部として、Verifik はサポート対象エンドポイント全体でサービス可用性、カバレッジ、信頼性を最大化するよう設計された動的照会メカニズムを実装しています。
 
-The timeframes for developing new adaptations due to unexpected changes from User systems integrating via API with the Platform will vary according to the changes required by the User and will not count as Platform Downtime.
+動的照会メカニズムにより、プライマリデータソースが不成功応答（「見つからない」または同等の HTTP 400 レベル応答を含む）を返した場合、smartCHECK および DB Screening が複数の認可データソースを自動かつ順次照会できます。このアーキテクチャは、複数の適格ソースを活用して成功する検証結果を得る確率を高めることを目的としています。
+
+クライアントは、政府データベースの品質、完全性、可用性が管轄ごとに大きく異なる可能性があり、不完全なレコード、サービス中断、限定的なデータカバレッジにより、一部のデータベースでは不成功応答の確率が高い場合があることを認識し同意します。
+
+これらの制限を軽減するため、動的照会は適用可能なすべての smartCHECK エンドポイントでデフォルトで有効であり、Verifik の冗長化およびフェイルオーバー戦略の不可欠な部分です。このメカニズムにより、必要に応じて代替の利用可能ソースへ動的にルーティングし、特定エンドポイントで可用性とカバレッジをほぼ 100% に近づけて維持できます。
+
+クライアントはさらに次を認識し同意します。
+
+a) 動的照会は成功する検証応答の可能性を高めることを目的としますが、すべてのケースで成功する一致を保証しません；
+
+b) 応答時間は変動し、複数ソースへの連鎖的リクエストの性質により、標準の単一ソース照会より長くなる場合があります；
+
+c) 動的照会の有効性と可用性は、基盤となる政府または第三者ソースの稼働時間、アクセス可能性、データ品質に左右されます；および
+
+d) Verifik は、サービス継続性の維持、カバレッジの最適化、検証性能の向上のため、動的照会アーキテクチャ内のデータソースを単独の裁量で変更、優先順位付け、または置換する権利を留保します。
+
+動的照会は smartCHECK サービスの固有機能とみなされ、Verifik が書面で別段定めしない限り、適格エンドポイントを使用するすべてのクライアントに自動適用されます。
+
+##### **8.1 動的価格（請求）** {#dynamic-pricing-billing}
+
+動的照会が適格エンドポイントで拡張検証パスを使用し、成功する一致（HTTP 200）を返す場合、動的価格が適用されることがあります。その場合、クレジットは基本ルートに関連する標準ティアではなく、そのエンドポイントファミリーのプレミアムティアで差し引かれます。
+
+動的価格は、標準パスが一致を返さない後に拡張検証パスが成功したとき、標準のコロンビア国民 ID エンドポイント（GET/POST /v2/co/cedula）に現在適用されます。クレジット額はクライアントに設定された機能価格（当該エンドポイントファミリーの標準レート対プレミアムレート）に依存します。
+
+動的価格は HTTP ステータスコードに関する**第7節**の課金規則を変更しません。検証およびサーバーエラー（**403**、**409**、**412**、**422**、**500**）および**タイムアウト**は課金されません。HTTP **404** の課金は**第7.1節**のみに従います（**`/v2/co/cedula`** の **`CEDULA NO EXISTE`**、vigencia 価格帯で課金）。その他の HTTP **404** は課金されません。
+
+透明性のため、クライアントは適格リクエストで includeCost=true を渡し、クレジットが課金される場合（動的価格適用時を含む）に請求オブジェクトを受け取れます。API リクエスト履歴には調整メタデータ（例：標準額対課金額）が記録されます。
+
+/v2/co/cedula/premium を直接呼び出す場合は常にプレミアム価格が適用されます。動的価格は標準 /v2/co/cedula ルートからの自動エスカレーションを説明します。
+
+API の詳細は [コロンビア国民 ID プレミアム](/verifik-ja/identity-validation/colombia/colombian-cedula-premium#dynamic-pricing) を参照してください。
+
+#### **9. プラットフォーム利用不可**
+
+予定メンテナンスは夜間および/または週末に実施され、ユーザーに事前にメールで通知されます。
+
+#### **10. 新規適応または開発**
+
+API 経由でプラットフォームと統合するユーザーシステムの予期しない変更に起因する新規適応の開発期間は、ユーザーが要求する変更に応じて異なり、プラットフォームダウンタイムとしてカウントされません。
