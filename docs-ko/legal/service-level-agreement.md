@@ -7,147 +7,222 @@ slug: /legal/service-level-agreement
 
 # 서비스 수준 계약
 
-### **Service Level Agreement**
+**최종 업데이트: 2026년 10월 21일**
 
-#### **1. Service Channels. The User shall have access to the following Verifik service channels:**
+### **서비스 수준 계약**
 
-1. Chat available on [Verifik.co](http://verifik.co)
-2. Email: support@verifik.co
-3. Customer service WhatsApp channel.
-4. Customer service Discord channel.
+#### **1. 서비스 채널. 사용자는 다음 Verifik 서비스 채널을 이용할 수 있습니다.**
 
-#### **2. Hours of Operation**
+1. [Verifik.co](http://verifik.co)에서 이용 가능한 채팅
+2. 이메일: support@verifik.co
+3. 고객 서비스 WhatsApp 채널
+4. 고객 서비스 Discord 채널
 
-The User will be able to access the support provided by Verifik, Monday through Friday (business days) from 8:00 AM to 5:00 PM Colombia time.
+#### **2. 운영 시간**
 
-#### **3. Criticality Levels**
+사용자는 월요일부터 금요일(영업일)까지 콜롬비아 시간 오전 8시부터 오후 5시까지 Verifik이 제공하는 지원에 접근할 수 있습니다.
 
-The requests or requirements raised by Users to the support team will be classified according to the impact they have on the User's operation, as follows:
+#### **3. 중요도 수준**
 
-| **Critical:** | Total service unavailability.                                                |
-| ------------- | ---------------------------------------------------------------------------- |
-| **Urgent:**   | Loss of specific functionality for all use cases.                            |
-| **Medium:**   | Loss of functionality in specific cases.                                     |
-| **Normal:**   | Other requests or general inquiries that do not affect Service Availability. |
+사용자가 지원 팀에 제기하는 요청 또는 요구 사항은 사용자 운영에 미치는 영향에 따라 다음과 같이 분류됩니다.
 
-#### **4. Response Times**
+| | |
+| --- | --- |
+| **치명적:** | 서비스 전면 이용 불가. |
+| **긴급:** | 모든 사용 사례에서 특정 기능 상실. |
+| **보통(중간):** | 특정 경우에서 기능 상실. |
+| **일반:** | 서비스 가용성에 영향을 주지 않는 기타 요청 또는 일반 문의. |
 
-1. **Definitions:** Terms used in this section, shall have the following meanings:
+#### **4. 응답 시간**
 
-```
-i. Attention: The time elapsed between the request or requirement and the assignment of a service agent.
-ii. Review: The time elapsed between the agent's greeting and the first response regarding the request or requirement.
-iii. Escalation: The time elapsed between the agent's escalation and the case review by the person to whom it was escalated. This time only applies in events where it is necessary to escalate the user's request or requirement.
-iv. Resolution: The time elapsed between the agent's greeting and the moment the case is resolved.
-```
+**정의:** 이 절에서 사용하는 용어는 다음과 같은 의미를 갖습니다.
 
-The response time varies according to the criticality of the requirement, as follows:
+i. 접수: 요청 또는 요구 사항과 서비스 담당자 배정 사이의 경과 시간.
 
-| **SEVERITY/TIME** | **ATTENTION** | **REVIEW** | **ESCALATION** | **RESOLUTION** |
-| ----------------- | ------------- | ---------- | -------------- | -------------- |
-| **Critical**      | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Urgent**        | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Medium**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
-| **Normal**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
+ii. 검토: 담당자 인사와 요청 또는 요구 사항에 대한 최초 응답 사이의 경과 시간.
 
-**Note:** 48 hrs means we take up to 48 hours to resolve the incident depending on its complexity.
+iii. 에스컬레이션: 담당자의 에스컬레이션과 에스컬레이션 대상자의 사례 검토 사이의 경과 시간. 사용자 요청 또는 요구 사항을 에스컬레이션해야 하는 경우에만 적용됩니다.
 
-Response times will be counted from the last message sent by the user.
+iv. 해결: 담당자 인사와 사례 해결 시점 사이의 경과 시간.
 
-#### **5. Platform Availability**
+응답 시간은 요구 사항의 중요도에 따라 다음과 같이 달라집니다.
 
-The Platform will be available at least:
+| **중요도/시간** | **접수** | **검토** | **에스컬레이션** | **해결** |
+| --------------- | -------- | -------- | ---------------- | -------- |
+| **치명적** | 0.5시간 | 0.5시간 | 15분 | 48시간 |
+| **긴급** | 0.5시간 | 0.5시간 | 15분 | 48시간 |
+| **보통(중간)** | 1시간 | 1시간 | 0.5시간 | 96시간 |
+| **일반** | 1시간 | 1시간 | 0.5시간 | 96시간 |
 
-| **Product**  | **Availability**                                                                                      | **Notes**                                                              |
-| ------------ | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| SmartCHECK   | 90.0% > Data API                                                                                      | Data API depends on connections with Government Sources                |
-| smartACCESS  | 99.0% > Email/Tel<br/>98.0% > Biometrics                                                    |                                                                        |
-| smartENROLL  | 99.0% > Email/Tel<br/>98.0% > Biometrics<br/>98.0% > Document Scanning<br/>90.0% > Data API | Data API depends on connections with Government Sources                |
+**참고:** 48시간은 사건의 복잡도에 따라 최대 48시간까지 해결에 소요될 수 있음을 의미합니다.
 
-##### **5.1. 엔드포인트별 가용성 제외 사항**
+응답 시간은 사용자가 보낸 마지막 메시지부터 계산됩니다.
 
-특정 외부 데이터 소스의 역사적으로 예측 불가능한 운영 가용성 특성으로 인해, 특정 엔드포인트는 본 계약의 플랫폼 가용성 약정 및 다운타임 보상 조항에서 제외됩니다.
+##### **4.1. 클라이언트 패널의 치명적 티켓**
 
-다음 엔드포인트는 제외됩니다:
+프로덕션 트래픽이 차단된 경우 사용자는 클라이언트 패널에서 치명적 우선순위 티켓을 열 수 있습니다. 해당 티켓에 대해:
+
+- Verifik은 제출 후 24시간 이내에 첫 응답을 보냅니다.
+- Verifik은 제출 후 48시간 이내에 티켓 해결을 목표로 합니다.
+- 두 기한 모두 티켓 제출 시점부터 시계 시간으로 계산되며, 패널에는 사용자의 지원 시간대로 표시됩니다.
+- 담당자 응답이 없는 치명적 티켓은 첫 응답 기한 전에 내부적으로 에스컬레이션됩니다.
+
+이 기한은 클라이언트 패널을 통해 열린 티켓에 적용됩니다. 위 표의 접수, 검토 및 에스컬레이션 시간은 제1절의 서비스 채널 대화에 적용됩니다.
+
+#### **5. 플랫폼 가용성**
+
+플랫폼은 최소 다음 수준으로 이용 가능합니다.
+
+| **이상** | **미만** | **제품** | **참고** |
+| --- | --- | --- | --- |
+| 90.00% | 89.99% | smartCHECK (DB Screening) | DB Screening API는 정부 데이터 소스 연결에 의존합니다 |
+| 99.00% | 98.99% | smartACCESS, smartENROLL (이메일/전화) | 크레딧 보상 없음 |
+| 99.00% | 98.99% | smartACCESS, smartENROLL (생체인식) | 크레딧 보상 없음 |
+| 99.00% | 98.99% | smartENROLL, smartACCESS (문서 스캔) | 크레딧 보상 없음 |
+
+##### **5.1. 엔드포인트별 가용성 제외**
+
+특정 외부 데이터 소스의 운영 가용성이 역사적으로 예측하기 어렵다는 특성으로, 특정 엔드포인트는 본 계약의 플랫폼 가용성 약속 및 다운타임 보상 조항에서 제외됩니다.
+
+다음 엔드포인트가 제외됩니다.
 
 - 멕시코 – INE 검증
 - 멕시코 – 차량 번호판 검증
 
-이러한 엔드포인트에 영향을 미치는 중단, 유지보수 기간, 성능 저하, 응답 지연 또는 일시적 이용 불가는 다음으로 간주되지 않습니다:
+이러한 엔드포인트에 영향을 미치는 중단, 유지보수 기간, 성능 저하, 지연된 응답 또는 일시적 이용 불가는 다음에 해당하지 않습니다.
 
 - 플랫폼 다운타임으로 간주되지 않음;
 - 플랫폼 가용성 계산에 포함되지 않음;
-- 본 계약에 따른 서비스 크레딧 또는 기타 보상의 대상이 되지 않음.
+- 본 계약에 따른 서비스 크레딧 또는 기타 보상 대상이 아님.
 
-Verifik는 가능한 한 연결성을 유지하고 서비스를 복구하기 위해 상업적으로 합리적인 노력을 계속할 것이나, 위에 나열된 엔드포인트에 대해서는 가동 시간 보장이 제공되지 않습니다.
+Verifik은 상업적으로 합리적인 노력으로 연결을 유지하고 가능한 경우 서비스를 복구합니다. 다만 위에 열거된 엔드포인트에 대한 가동 시간 보장은 제공되지 않습니다.
 
-#### **6. Downtime Compensation**
+##### **5.2. 가용성 측정 방법**
 
-Credit Compensation awarded for the affected month will be provided in the form of a credit equivalent to the cost of the failed service call. If the service unavailability is caused by **Internal Issues** of Verifik (database, servers, internal API issues) and is not effectively resolved by the Company, Verifik will compensate as follows:
+가용성은 UTC 기준 각 달력 월별로 계정당 계산됩니다.
 
-| **Service Availability**                                                                                            | **Credit Compensation**               | **Product**                       |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | --------------------------------- |
-| **Data API (Data Query)**<br/>90.00% or higher<br/>89.99% or lower               | No Credit<br/>Compensation | smartCHECK                        |
-| **Email/Tel**<br/>99.00% or higher<br/>98.99% or lower                           | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Biometrics**<br/>98.00% or higher<br/>97.99% or lower                          | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Document Scanning**<br/>98.00% or higher<br/>97.99% or lower                   | No Credit<br/>Compensation | smartENROLL<br/>smartACCESS |
+```
+가용성 = 성공한 요청 / (성공한 요청 + 서비스 실패)
+```
 
-**Internal Issues** of the Data API service (Data Query) excludes issues considered Force Majeure (Fortuitous Events), whether due to migration, disconnection, or external intervention by the governments that manage the databases. Verifik is an intermediary and therefore does NOT have control over the queried databases.
+- 서비스 실패는 시간 초과, 5xx 오류 또는 408·504 응답을 반환하거나 엔드포인트가 서비스 중단 상태임을 나타내는 요청입니다.
+- 클라이언트 오류는 계산에서 제외됩니다. 잘못되었거나 누락된 매개변수, 소스에서 찾을 수 없는 레코드, 인증 및 권한 오류, 기타 4xx 응답이 포함됩니다.
 
-#### **7. Charging Scheme for smartCHECK**
+사용자는 클라이언트 패널의 상태 확인 및 [사용량 API](/resources/usage#get-monthly-availability)에서 월별 가용성을 확인할 수 있습니다. 두 경로 모두 서비스별 분류를 제공하므로 제5.1절 엔드포인트 요청을 나머지와 구분할 수 있습니다. 해당 엔드포인트는 본 계약의 약속 범위 밖에 있습니다.
 
-The charging scheme applies to the smartCHECK solution, which enables queries to government databases. Verifik does not own, manage, or bear responsibility for (does not control or update) the government databases of the various countries we serve; therefore, Verifik reserves the right not to offer guarantees regarding Response Time, Average Up Time, or Data Accuracy.
+##### **5.3. 계약별 목표**
 
-If the query returns a **200** or **404**, it will be charged. Otherwise, if the query returns **403**, **409**, **412**, **422**, or **500**, it will not be charged.
+클라이언트 패널과 사용량 API는 각 월을 SmartCHECK 95% 목표와 비교합니다. 이 목표는 상업 계약에 포함된 계정에 적용됩니다. 다른 계정의 경우 해당 수치는 참고용이며 제5절의 약속이 적용됩니다. 계약별 목표는 계약에서 달리 정하지 않는 한 제6절을 넘어서는 크레딧 보상을 추가하지 않습니다.
 
-| **Charged** | **Not Charged** |
-| ----------- | --------------- |
-| 200         | 403             |
-| 404         | 409             |
-|             | 412             |
-|             | 422             |
-|             | 500             |
+#### **6. 다운타임 보상**
 
-#### **8. smartCHECK 서비스 동적 쿼리**
+영향을 받은 월에 대해 부여되는 크레딧 보상은 실패한 서비스 호출 비용에 상응하는 크레딧 형태로 제공됩니다. 서비스 이용 불가가 Verifik의 내부 문제(데이터베이스, 서버, 내부 API 문제)로 인해 발생하고 회사가 효과적으로 해결하지 못한 경우 Verifik은 다음과 같이 보상합니다.
 
-smartCHECK 서비스의 표준 아키텍처의 일부로, Verifik은 지원되는 엔드포인트에서 서비스 가용성, 커버리지 및 신뢰성을 극대화하도록 설계된 동적 쿼리(Dynamic Query) 메커니즘을 구현합니다.
+| **이상** | **미만** | **서비스 수준 크레딧 보상** | **제품** |
+| --- | --- | --- | --- |
+| 90.00% | 89.99% | 크레딧 보상 없음 | smartCHECK (DB Screening / 데이터 조회) |
+| 99.00% | 98.99% | 크레딧 보상 없음 | smartACCESS, smartENROLL (이메일/전화) |
+| 99.00% | 98.99% | 크레딧 보상 없음 | smartACCESS, smartENROLL (생체인식) |
+| 99.00% | 98.99% | 크레딧 보상 없음 | smartENROLL, smartACCESS (문서 스캔) |
 
-동적 쿼리 메커니즘을 통해 smartCHECK 및 DB Screening은 주 데이터 소스가 "Not Found" 또는 이에 상응하는 HTTP 400 수준의 오류를 포함하여 성공하지 못한 응답을 반환하는 경우, 여러 승인된 데이터 소스를 자동으로 순차적으로 조회할 수 있습니다. 이 아키텍처는 여러 적격 데이터 소스를 활용하여 성공적인 검증 결과를 얻을 확률을 높이는 것을 목적으로 합니다.
+데이터 API(데이터 조회) 서비스의 내부 문제에는 데이터베이스를 관리하는 정부의 이전, 연결 해제 또는 외부 개입 등으로 인한 불가항력(우발적 사건)으로 간주되는 상황이 제외됩니다. Verifik은 중개자이므로 조회되는 데이터베이스를 통제하지 않습니다.
 
-클라이언트는 정부 데이터베이스의 품질, 완전성 및 가용성이 관할권에 따라 크게 달라질 수 있으며, 불완전한 기록, 서비스 중단 또는 제한된 데이터 커버리지로 인해 특정 데이터베이스에서 성공하지 못한 응답의 확률이 더 높을 수 있음을 인정하고 동의합니다.
+#### **7. smartCHECK 요금 부과 방식**
 
-이러한 제한을 완화하기 위해 동적 쿼리는 해당되는 모든 smartCHECK 엔드포인트에서 기본적으로 활성화되어 있으며 Verifik의 중복 및 장애 조치 전략의 필수적인 부분을 구성합니다. 이 메커니즘을 통해 Verifik은 필요한 경우 요청을 대체 가능한 소스로 동적으로 라우팅하여 특정 엔드포인트에서 100%에 가까운 서비스 가용성 및 커버리지를 유지할 수 있습니다.
+요금 부과 방식은 정부 데이터베이스 조회를 가능하게 하는 smartCHECK 솔루션에 적용됩니다. Verifik은 서비스하는 각국의 정부 데이터베이스를 소유·관리·책임지지 않으며(통제하거나 업데이트하지 않음) 따라서 응답 시간, 평균 가동 시간 또는 데이터 정확도에 대한 보장을 제공하지 않을 수 있습니다.
 
-클라이언트는 또한 다음을 인정하고 동의합니다:
+**일반 규칙.** HTTP **200** 응답은 요금이 부과됩니다. 다음은 **부과되지 않습니다**: HTTP **403**, **412**, **422**, **500**; 요청 **시간 초과**; HTTP **409** 응답(소스 이용 불가 및 연결 실패 포함). HTTP **404** 응답은 해당 요청에 **7.1절**이 적용되는 경우를 제외하고 **부과되지 않습니다**.
 
-a) 동적 쿼리는 성공적인 검증 응답을 얻을 가능성을 높이는 것을 목적으로 하지만, 모든 경우에 성공적인 일치 또는 결과를 보장하지는 않습니다;
+| **부과** | **미부과** |
+| --- | --- |
+| 200 | 404 (7.1절에 명시된 경우 제외) |
+| | 403 |
+| | 409 (소스 실패 포함; 절대 부과되지 않음) |
+| | 412 |
+| | 422 |
+| | 500 |
+| | 시간 초과 (절대 부과되지 않음) |
 
-b) 응답 시간은 변동될 수 있으며, 여러 소스에 대한 요청의 연쇄적 특성으로 인해 경우에 따라 표준 단일 소스 쿼리보다 더 길 수 있습니다;
+콜롬비아 외 지역의 어떤 엔드포인트도 HTTP **404**로 요금이 부과되지 않습니다. **7.1절**에 열거되지 않은 엔드포인트는 HTTP **404**로 요금이 부과되지 않으며, 콜롬비아 이외 국가의 모든 경로가 포함됩니다.
 
-c) 동적 쿼리의 효과 및 가용성은 기본적인 제3자 또는 정부 소스의 가동 시간, 접근성 및 데이터 품질의 영향을 받습니다; 및
+##### **7.1 콜롬비아: HTTP 404 요금 부과**
 
-d) Verifik은 서비스 연속성 유지, 커버리지 최적화 및 검증 성능 개선을 위해 동적 쿼리 아키텍처 내의 데이터 소스를 수정, 우선순위 지정 또는 대체할 권리를 단독 재량으로 보유합니다.
+이 절은 **7절**에 따른 HTTP **404** 요금의 유일한 근거입니다. 아래 모든 경로는 콜롬비아 smartCHECK API입니다. **시간 초과** 및 HTTP **409** 소스 실패는 Verifik의 어떤 엔드포인트에서도 **절대** 부과되지 않습니다.
 
-동적 쿼리는 smartCHECK 서비스의 고유 기능으로 간주되며, Verifik이 서면으로 달리 명시하지 않는 한 적격 엔드포인트를 사용하는 모든 클라이언트에 자동으로 적용됩니다.
+**RUNT (응답 코드 `NotFound`인 HTTP 404만).** HTTP **409** 응답(예: 소스 중단 또는 RUNT 워커 이용 불가)은 **부과되지 않습니다**.
 
-#### **8.1 동적 가격 (청구)** {#dynamic-pricing-billing}
+| 제품명 | 경로 |
+| --- | --- |
+| 콜롬비아 RUNT 운전자 조회 | `GET /v2/co/runt/conductor` |
+| 콜롬비아 RUNT 운전자 조회 (v3) | `GET /v3/co/runt/conductor` |
+| 콜롬비아 RUNT 차량 조회 | `GET /v2/co/runt/vehiculo` |
+| 콜롬비아 RUNT 차량 전체 기록 | `GET /v2/co/runt/vehiculo-completo` |
+| 콜롬비아 RUNT 차량 SOAT | `GET /v2/co/runt/vehiculo-soat` |
+| 콜롬비아 RUNT 번호판별 차량 | `GET /v2/co/runt/vehicle-by-plate` |
+| 콜롬비아 RUNT VIN별 차량 | `GET /v2/co/runt/vehicle-by-vin` |
+| 콜롬비아 RUNT 번호판별 차량(간소) | `GET /v2/co/runt/vehicle-by-plate-simplified` |
+| 콜롬비아 RUNT 번호판만 조회 | `GET /v2/co/runt/vehicle-by-plate-only` |
 
-동적 쿼리가 적격 엔드포인트에서 확장 검증 경로를 사용하여 성공적인 일치(**HTTP 200**)를 반환하는 경우 **동적 가격**이 적용될 수 있습니다. 이 경우 크레딧은 기본 경로의 표준 등급이 아닌 해당 엔드포인트 패밀리의 **프리미엄 등급**으로 차감됩니다.
+**사회보험 가입(afiliaciones).** 아래 경로의 **모든** HTTP **404**는 요금 부과 대상이며, 잘못된 발급일을 나타내는 메시지인 경우도 포함됩니다. HTTP **409**를 반환하는 연결 실패는 **부과되지 않습니다**.
 
-동적 가격은 오늘날 표준 경로가 일치를 반환하지 않은 후 확장 검증 경로가 성공적으로 완료될 때 표준 콜롬비아 신분증 엔드포인트(**`GET/POST /v2/co/cedula`**)에 적용됩니다. 크레딧 금액은 **클라이언트에 구성된 기능 가격**(해당 엔드포인트 패밀리의 표준 요금 vs. 프리미엄 요금)에 따라 달라집니다.
+| 제품명 | 경로 |
+| --- | --- |
+| 콜롬비아 사회보험 가입 | `GET /v2/co/afiliaciones` |
 
-동적 가격은 **7**절의 청구 규칙을 변경하지 **않습니다**: 유효성 검사 및 서버 오류(**403**, **409**, **412**, **422**, **500**)는 청구되지 않으며, 적용 가능한 경로에서 성공적인 일치가 반환되지 않을 때 **404** 응답은 표준 등급으로 청구됩니다.
+**SIBGA 차량 가치 평가 (응답 코드 `NotFound`인 HTTP 404만).**
 
-투명성을 위해 클라이언트는 적격 요청에 **`includeCost=true`**를 전달하여 크레딧이 청구될 때(동적 가격이 적용될 때 포함) **`billing`** 객체를 받을 수 있습니다. API 요청 기록에는 조정 메타데이터(예: 표준 vs. 청구 금액)가 저장됩니다.
+| 제품명 | 경로 |
+| --- | --- |
+| 콜롬비아 SIBGA 차량 가치 평가 | `GET /v2/co/sibga/valuation` |
 
-**`/v2/co/cedula/premium`**을 직접 호출하면 항상 프리미엄 가격이 적용됩니다. 동적 가격은 표준 **`/v2/co/cedula`** 경로에서의 자동 에스컬레이션을 설명합니다.
+**콜롬비아 국민 신분증(쎄둘라).** 메시지가 **`CEDULA NO EXISTE`**인 HTTP **404**만 **vigencia** 요금 등급으로 부과됩니다. 아래 경로의 그 외 HTTP **404**는 **부과되지 않습니다**. **`GET`/`POST /v2/co/cedula/vigencia`**는 자체 HTTP **404** 응답에 대해 요금을 **부과하지 않습니다**.
 
-API 세부 정보는 [콜롬비아 신분증(기본)](/verifik-ko/identity-validation/colombia/colombian-citizen#dynamic-pricing)을 참조하세요.
+| 제품명 | 경로 |
+| --- | --- |
+| 콜롬비아 국민 신분증 조회 | `GET` / `POST` `/v2/co/cedula` |
+
+**HTTP 404 미부과:** 기타 콜롬비아 RUNT 경로(소유자 조회 포함), 콜롬비아 외 모든 엔드포인트, 이 절에 열거되지 않은 모든 경로. 생체인식 라이브니스는 라이브니스 실패 시 HTTP **409**를 부과할 수 있으며 HTTP **404**로는 부과되지 않습니다. smartBatch는 HTTP **404**를 행 성공 표시에만 사용하며 해당 응답에 대해 크레딧을 부과하지 않습니다.
+
+#### **8. smartCHECK 서비스의 동적 조회**
+
+smartCHECK 서비스의 표준 아키텍처의 일부로 Verifik은 지원 엔드포인트 전반에서 서비스 가용성, 범위 및 신뢰성을 극대화하도록 설계된 동적 조회 메커니즘을 구현합니다.
+
+동적 조회 메커니즘은 기본 데이터 소스가 실패 응답(「찾을 수 없음」 또는 동등한 HTTP 400 수준 응답 포함)을 반환할 때 smartCHECK 및 DB Screening이 여러 승인된 데이터 소스를 자동·순차적으로 조회할 수 있게 합니다. 이 아키텍처는 여러 적격 소스를 활용해 성공적인 검증 결과를 얻을 가능성을 높이기 위함입니다.
+
+클라이언트는 정부 데이터베이스의 품질, 완전성 및 가용성이 관할권별로 크게 다를 수 있으며, 불완전한 레코드, 서비스 중단 또는 제한된 데이터 범위로 인해 일부 데이터베이스에서 실패 응답 가능성이 더 높을 수 있음을 인정하고 동의합니다.
+
+이러한 한계를 완화하기 위해 동적 조회는 적용 가능한 모든 smartCHECK 엔드포인트에서 기본적으로 활성화되며 Verifik의 중복 및 장애 조치 전략의 필수 부분입니다. 이 메커니즘은 필요 시 대체 가용 소스로 요청을 동적으로 라우팅하여 특정 엔드포인트에서 가용성과 범위를 거의 100%에 가깝게 유지할 수 있게 합니다.
+
+클라이언트는 또다음을 인정하고 동의합니다.
+
+a) 동적 조회는 성공적인 검증 응답 가능성을 높이기 위한 것이지만 모든 경우에 성공적인 일치를 보장하지는 않습니다;
+
+b) 응답 시간은 다를 수 있으며, 여러 소스 요청의 연쇄적 특성으로 인해 일부 경우 표준 단일 소스 조회보다 길 수 있습니다;
+
+c) 동적 조회의 효과와 가용성은 기초 정부 또는 제3자 소스의 가동 시간, 접근성 및 데이터 품질에 따릅니다; 및
+
+d) Verifik은 서비스 연속성 유지, 범위 최적화 및 검증 성능 개선을 위해 동적 조회 아키텍처 내 데이터 소스를 단독 재량으로 수정·우선순위 지정·대체할 수 있습니다.
+
+동적 조회는 smartCHECK 서비스의 고유 기능으로 간주되며, Verifik이 서면으로 달리 정하지 않는 한 적격 엔드포인트를 사용하는 모든 클라이언트에 자동 적용됩니다.
+
+##### **8.1 동적 가격(청구)** {#dynamic-pricing-billing}
+
+동적 조회가 적격 엔드포인트에서 확장 검증 경로를 사용하고 성공적인 일치(HTTP 200)를 반환하면 동적 가격이 적용될 수 있습니다. 이 경우 크레딧은 기본 경로와 연관된 표준 등급이 아니라 해당 엔드포인트 패밀리의 프리미엄 등급에서 차감됩니다.
+
+동적 가격은 오늘날 표준 경로가 일치를 반환하지 않은 후 확장 검증 경로가 성공적으로 완료될 때 표준 콜롬비아 국민 신분증 엔드포인트(GET/POST /v2/co/cedula)에 적용됩니다. 크레딧 금액은 클라이언트에 구성된 기능 가격(해당 엔드포인트 패밀리의 표준 요율 대 프리미엄 요율)에 따릅니다.
+
+동적 가격은 HTTP 상태 코드에 대한 **7절** 요금 규칙을 변경하지 않습니다. 검증 및 서버 오류(**403**, **409**, **412**, **422**, **500**) 및 **시간 초과**는 부과되지 않습니다. HTTP **404** 요금은 **7.1절**만 따릅니다(**`/v2/co/cedula`**의 **`CEDULA NO EXISTE`**, vigencia 요금 등급으로 부과). 그 외 HTTP **404**는 부과되지 않습니다.
+
+투명성을 위해 클라이언트는 적격 요청에 includeCost=true를 전달하여 크레딧이 부과될 때(동적 가격 적용 시 포함) 청구 객체를 받을 수 있습니다. API 요청 기록에는 조정 메타데이터(예: 표준 대 부과 금액)가 저장됩니다.
+
+/v2/co/cedula/premium을 직접 호출하면 항상 프리미엄 가격이 적용됩니다. 동적 가격은 표준 /v2/co/cedula 경로에서의 자동 상향을 설명합니다.
+
+API 세부 정보는 [콜롬비아 국민 신분증(기본)](/verifik-ko/identity-validation/colombia/colombian-citizen#dynamic-pricing)을 참조하세요.
 
 #### **9. 플랫폼 이용 불가**
 
-Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.
+예정된 유지보수는 야간 및/또는 주말에 진행되며 사용자에게 사전 이메일 통지가 제공됩니다.
 
 #### **10. 신규 적응 또는 개발**
 
-The timeframes for developing new adaptations due to unexpected changes from User systems integrating via API with the Platform will vary according to the changes required by the User and will not count as Platform Downtime.
+API로 플랫폼과 통합하는 사용자 시스템의 예기치 않은 변경으로 인한 신규 적응 개발 기간은 사용자가 요구하는 변경에 따라 달라지며 플랫폼 다운타임으로 계산되지 않습니다.

@@ -7,147 +7,222 @@ slug: /legal/service-level-agreement
 
 # Acordo de Nível de Serviço
 
-### **Service Level Agreement**
+**Última atualização: 21 de outubro de 2026**
 
-#### **1. Service Channels. The User shall have access to the following Verifik service channels:**
+### **Acordo de Nível de Serviço**
 
-1. Chat available on [Verifik.co](http://verifik.co)
-2. Email: support@verifik.co
-3. Customer service WhatsApp channel.
-4. Customer service Discord channel.
+#### **1. Canais de atendimento. O Usuário terá acesso aos seguintes canais de atendimento da Verifik:**
 
-#### **2. Hours of Operation**
+1. Chat disponível em [Verifik.co](http://verifik.co)
+2. E-mail: support@verifik.co
+3. Canal de WhatsApp de atendimento ao cliente.
+4. Canal de Discord de atendimento ao cliente.
 
-The User will be able to access the support provided by Verifik, Monday through Friday (business days) from 8:00 AM to 5:00 PM Colombia time.
+#### **2. Horário de atendimento**
 
-#### **3. Criticality Levels**
+O Usuário poderá acessar o suporte prestado pela Verifik, de segunda a sexta-feira (dias úteis), das 8h00 às 17h00, horário da Colômbia.
 
-The requests or requirements raised by Users to the support team will be classified according to the impact they have on the User's operation, as follows:
+#### **3. Níveis de criticidade**
 
-| **Critical:** | Total service unavailability.                                                |
-| ------------- | ---------------------------------------------------------------------------- |
-| **Urgent:**   | Loss of specific functionality for all use cases.                            |
-| **Medium:**   | Loss of functionality in specific cases.                                     |
-| **Normal:**   | Other requests or general inquiries that do not affect Service Availability. |
+As solicitações ou requisitos apresentados pelos Usuários à equipe de suporte serão classificados conforme o impacto na operação do Usuário, da seguinte forma:
 
-#### **4. Response Times**
+| | |
+| --- | --- |
+| **Crítico:** | Indisponibilidade total do serviço. |
+| **Urgente:** | Perda de funcionalidade específica em todos os casos de uso. |
+| **Médio:** | Perda de funcionalidade em casos específicos. |
+| **Normal:** | Outras solicitações ou consultas gerais que não afetam a Disponibilidade do Serviço. |
 
-1. **Definitions:** Terms used in this section, shall have the following meanings:
+#### **4. Tempos de resposta**
+
+**Definições:** Os termos utilizados nesta seção terão os seguintes significados:
+
+i. Atendimento: tempo decorrido entre a solicitação ou requisito e a atribuição de um agente de atendimento.
+
+ii. Revisão: tempo decorrido entre a saudação do agente e a primeira resposta em relação à solicitação ou requisito.
+
+iii. Escalonamento: tempo decorrido entre o escalonamento pelo agente e a análise do caso pela pessoa a quem foi escalado. Este tempo aplica-se somente quando for necessário escalar a solicitação ou requisito do Usuário.
+
+iv. Resolução: tempo decorrido entre a saudação do agente e o momento em que o caso é resolvido.
+
+O tempo de resposta varia conforme a criticidade do requisito, da seguinte forma:
+
+| **GRAVIDADE/TEMPO** | **ATENDIMENTO** | **REVISÃO** | **ESCALONAMENTO** | **RESOLUÇÃO** |
+| ------------------- | --------------- | ----------- | ----------------- | ------------- |
+| **Crítico** | 0,5 h | 0,5 h | 15 min | 48 h |
+| **Urgente** | 0,5 h | 0,5 h | 15 min | 48 h |
+| **Médio** | 1 h | 1 h | 0,5 h | 96 h |
+| **Normal** | 1 h | 1 h | 0,5 h | 96 h |
+
+**Nota:** 48 h significa que levamos até 48 horas para resolver o incidente, conforme sua complexidade.
+
+Os tempos de resposta serão contados a partir da última mensagem enviada pelo Usuário.
+
+##### **4.1. Tickets críticos no painel do cliente**
+
+Os Usuários podem abrir um ticket com prioridade Crítica no painel do cliente quando o tráfego de produção estiver bloqueado. Para esses tickets:
+
+- A Verifik envia uma primeira resposta em até 24 horas após o envio.
+- A Verifik busca resolver o ticket em até 48 horas após o envio.
+- Ambos os prazos correm em horas de relógio a partir do envio do ticket, e o painel os exibe no fuso horário de suporte do Usuário.
+- Tickets críticos sem resposta da equipe são escalonados internamente antes do prazo de primeira resposta.
+
+Esses prazos aplicam-se a tickets abertos pelo painel do cliente. Os tempos de atendimento, revisão e escalonamento da tabela acima aplicam-se às conversas nos canais de atendimento da Seção 1.
+
+#### **5. Disponibilidade da plataforma**
+
+A Plataforma estará disponível pelo menos:
+
+| **Igual ou superior a** | **Inferior a** | **Produto** | **Notas** |
+| --- | --- | --- | --- |
+| 90,00% | 89,99% | smartCHECK (DB Screening) | A API de DB Screening depende de conexões com fontes governamentais |
+| 99,00% | 98,99% | smartACCESS, smartENROLL (E-mail/Tel) | Sem compensação em créditos |
+| 99,00% | 98,99% | smartACCESS, smartENROLL (Biometria) | Sem compensação em créditos |
+| 99,00% | 98,99% | smartENROLL, smartACCESS (Digitalização de documentos) | Sem compensação em créditos |
+
+##### **5.1. Exclusões de disponibilidade por endpoint**
+
+Devido às características historicamente imprevisíveis de disponibilidade operacional de certas fontes de dados externas, endpoints específicos ficam excluídos dos compromissos de Disponibilidade da Plataforma e das disposições de Compensação por indisponibilidade deste Acordo.
+
+Os seguintes endpoints estão excluídos:
+
+- México – Validação INE
+- México – Validação de placa veicular
+
+Interrupções, períodos de manutenção, desempenho degradado, respostas atrasadas ou indisponibilidade temporária que afetem esses endpoints não:
+
+- serão consideradas Indisponibilidade da Plataforma;
+- serão incluídas nos cálculos de Disponibilidade da Plataforma;
+- qualificarão para Créditos de Serviço ou qualquer outra compensação sob este Acordo.
+
+A Verifik continuará a envidar esforços comercialmente razoáveis para manter a conectividade e restabelecer o serviço quando possível; no entanto, não há garantia de tempo de atividade para os endpoints listados.
+
+##### **5.2. Como a disponibilidade é medida**
+
+A disponibilidade é calculada por conta para cada mês civil em UTC:
 
 ```
-i. Attention: The time elapsed between the request or requirement and the assignment of a service agent.
-ii. Review: The time elapsed between the agent's greeting and the first response regarding the request or requirement.
-iii. Escalation: The time elapsed between the agent's escalation and the case review by the person to whom it was escalated. This time only applies in events where it is necessary to escalate the user's request or requirement.
-iv. Resolution: The time elapsed between the agent's greeting and the moment the case is resolved.
+disponibilidade = solicitações bem-sucedidas / (solicitações bem-sucedidas + falhas de serviço)
 ```
 
-The response time varies according to the criticality of the requirement, as follows:
+- Falhas de serviço são solicitações que expiram, retornam erro 5xx ou resposta 408 ou 504, ou indicam que o endpoint está fora de serviço.
+- Erros do cliente ficam fora do cálculo. Incluem parâmetros inválidos ou ausentes, registros não encontrados na fonte, erros de autenticação e permissão e outras respostas 4xx.
 
-| **SEVERITY/TIME** | **ATTENTION** | **REVIEW** | **ESCALATION** | **RESOLUTION** |
-| ----------------- | ------------- | ---------- | -------------- | -------------- |
-| **Critical**      | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Urgent**        | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Medium**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
-| **Normal**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
+Os Usuários podem ver a disponibilidade mensal no painel do cliente em Verificação de status e por meio da [API de uso](/resources/usage#get-monthly-availability). Ambos incluem detalhamento por serviço, de modo que solicitações aos endpoints da Seção 5.1 podem ser separadas do restante. Esses endpoints permanecem fora dos compromissos deste Acordo.
 
-**Note:** 48 hrs means we take up to 48 hours to resolve the incident depending on its complexity.
+##### **5.3. Metas específicas por contrato**
 
-Response times will be counted from the last message sent by the user.
+O painel do cliente e a API de uso comparam cada mês com uma meta de SmartCHECK de 95%. Essa meta aplica-se a contas cujo acordo comercial a inclui. Para as demais contas, o valor é informativo e aplicam-se os compromissos da Seção 5. Uma meta por contrato não adiciona compensação em créditos além da Seção 6, salvo se o acordo assim dispor.
 
-#### **5. Platform Availability**
+#### **6. Compensação por indisponibilidade**
 
-The Platform will be available at least:
+A Compensação em Crédito concedida para o mês afetado será fornecida na forma de crédito equivalente ao custo da chamada de serviço com falha. Se a indisponibilidade do serviço for causada por Problemas Internos da Verifik (banco de dados, servidores, problemas internos de API) e não for efetivamente resolvida pela Empresa, a Verifik compensará da seguinte forma:
 
-| **Product**  | **Availability**                                                                                      | **Notes**                                                              |
-| ------------ | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| SmartCHECK   | 90.0% > Data API                                                                                      | Data API depends on connections with Government Sources                |
-| smartACCESS  | 99.0% > Email/Tel<br/>98.0% > Biometrics                                                    |                                                                        |
-| smartENROLL  | 99.0% > Email/Tel<br/>98.0% > Biometrics<br/>98.0% > Document Scanning<br/>90.0% > Data API | Data API depends on connections with Government Sources                |
+| **Igual ou superior a** | **Inferior a** | **Compensação em créditos por nível de serviço** | **Produto** |
+| --- | --- | --- | --- |
+| 90,00% | 89,99% | Sem compensação em créditos | smartCHECK (DB Screening / Consulta de dados) |
+| 99,00% | 98,99% | Sem compensação em créditos | smartACCESS, smartENROLL (E-mail/Tel) |
+| 99,00% | 98,99% | Sem compensação em créditos | smartACCESS, smartENROLL (Biometria) |
+| 99,00% | 98,99% | Sem compensação em créditos | smartENROLL, smartACCESS (Digitalização de documentos) |
 
-##### **5.1. Exclusões de disponibilidade específicas por endpoint**
+Problemas Internos do serviço de API de Dados (Consulta de dados) excluem situações consideradas Força Maior (casos fortuitos), seja por migração, desconexão ou intervenção externa dos governos que administram as bases de dados. A Verifik é intermediária e, portanto, NÃO controla as bases de dados consultadas.
 
-Devido às características históricas de imprevisibilidade da disponibilidade operacional de certas fontes de dados externas, endpoints específicos são excluídos dos compromissos de Disponibilidade da Plataforma e das disposições de Compensação por Tempo de Inatividade deste Acordo.
+#### **7. Esquema de cobrança do smartCHECK**
 
-Os seguintes endpoints são excluídos:
+O esquema de cobrança aplica-se à solução smartCHECK, que permite consultas a bases de dados governamentais. A Verifik não é proprietária, não gerencia nem assume responsabilidade (não controla nem atualiza) as bases de dados governamentais dos diversos países que atendemos; por isso, a Verifik reserva-se o direito de não oferecer garantias quanto ao Tempo de Resposta, Tempo Médio de Atividade ou Precisão dos Dados.
 
-- México – Validação do INE
-- México – Validação de placas veiculares
+**Regra geral.** Uma resposta HTTP **200** é cobrada. **Não** são cobrados: HTTP **403**, **412**, **422** e **500**; **timeouts** de solicitação; e respostas HTTP **409** (incluindo indisponibilidade da fonte e falhas de conexão). Uma resposta HTTP **404** **não** é cobrada, salvo se a Seção **7.1** se aplicar a essa solicitação.
 
-Interrupções, períodos de manutenção, desempenho degradado, respostas atrasadas ou indisponibilidade temporária que afetem esses endpoints não deverão:
+| **Cobrado** | **Não cobrado** |
+| --- | --- |
+| 200 | 404 (exceto conforme a Seção 7.1) |
+| | 403 |
+| | 409 (incluindo falhas de fonte; nunca cobrado) |
+| | 412 |
+| | 422 |
+| | 500 |
+| | Timeouts (nunca cobrados) |
 
-- ser considerados Tempo de Inatividade da Plataforma;
-- ser incluídos nos cálculos de Disponibilidade da Plataforma;
-- qualificar para Créditos de Serviço ou qualquer outra compensação nos termos deste Acordo.
+Nenhum endpoint fora da Colômbia é cobrado em HTTP **404**. Endpoints não listados na Seção **7.1** não são cobrados em HTTP **404**, incluindo todas as rotas em países diferentes da Colômbia.
 
-A Verifik continuará a envidar esforços comercialmente razoáveis para manter a conectividade e restaurar o serviço sempre que possível; no entanto, nenhuma garantia de tempo de atividade é fornecida para os endpoints listados acima.
+##### **7.1 Colômbia: cobrança por HTTP 404**
 
-#### **6. Downtime Compensation**
+Esta seção é a única fonte de cobranças por HTTP **404** sob a Seção **7**. Todas as rotas abaixo são APIs smartCHECK da Colômbia. **Timeouts** e falhas de fonte HTTP **409** **nunca** são cobrados em qualquer endpoint da Verifik.
 
-Credit Compensation awarded for the affected month will be provided in the form of a credit equivalent to the cost of the failed service call. If the service unavailability is caused by **Internal Issues** of Verifik (database, servers, internal API issues) and is not effectively resolved by the Company, Verifik will compensate as follows:
+**RUNT (somente HTTP 404 com código de resposta `NotFound`).** Respostas HTTP **409** (por exemplo, quando a fonte está fora de serviço ou um worker RUNT está indisponível) **não** são cobradas.
 
-| **Service Availability**                                                                                            | **Credit Compensation**               | **Product**                       |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | --------------------------------- |
-| **Data API (Data Query)**<br/>90.00% or higher<br/>89.99% or lower               | No Credit<br/>Compensation | smartCHECK                        |
-| **Email/Tel**<br/>99.00% or higher<br/>98.99% or lower                           | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Biometrics**<br/>98.00% or higher<br/>97.99% or lower                          | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Document Scanning**<br/>98.00% or higher<br/>97.99% or lower                   | No Credit<br/>Compensation | smartENROLL<br/>smartACCESS |
+| Nome do produto | Rota |
+| --- | --- |
+| Consulta de condutor RUNT Colômbia | `GET /v2/co/runt/conductor` |
+| Consulta de condutor RUNT Colômbia (v3) | `GET /v3/co/runt/conductor` |
+| Consulta de veículo RUNT Colômbia | `GET /v2/co/runt/vehiculo` |
+| Registro veicular completo RUNT Colômbia | `GET /v2/co/runt/vehiculo-completo` |
+| SOAT veicular RUNT Colômbia | `GET /v2/co/runt/vehiculo-soat` |
+| Veículo RUNT Colômbia por placa | `GET /v2/co/runt/vehicle-by-plate` |
+| Veículo RUNT Colômbia por VIN | `GET /v2/co/runt/vehicle-by-vin` |
+| Veículo RUNT Colômbia por placa (simplificado) | `GET /v2/co/runt/vehicle-by-plate-simplified` |
+| Veículo RUNT Colômbia somente por placa | `GET /v2/co/runt/vehicle-by-plate-only` |
 
-**Internal Issues** of the Data API service (Data Query) excludes issues considered Force Majeure (Fortuitous Events), whether due to migration, disconnection, or external intervention by the governments that manage the databases. Verifik is an intermediary and therefore does NOT have control over the queried databases.
+**Afiliações à previdência social.** **Qualquer** HTTP **404** na rota abaixo é faturável, inclusive quando a mensagem indica data de expedição incorreta. Falhas de conexão que retornam HTTP **409** **não** são cobradas.
 
-#### **7. Charging Scheme for smartCHECK**
+| Nome do produto | Rota |
+| --- | --- |
+| Afiliações à previdência social Colômbia | `GET /v2/co/afiliaciones` |
 
-The charging scheme applies to the smartCHECK solution, which enables queries to government databases. Verifik does not own, manage, or bear responsibility for (does not control or update) the government databases of the various countries we serve; therefore, Verifik reserves the right not to offer guarantees regarding Response Time, Average Up Time, or Data Accuracy.
+**Avaliação veicular SIBGA (somente HTTP 404 com código de resposta `NotFound`).**
 
-If the query returns a **200** or **404**, it will be charged. Otherwise, if the query returns **403**, **409**, **412**, **422**, or **500**, it will not be charged.
+| Nome do produto | Rota |
+| --- | --- |
+| Avaliação veicular SIBGA Colômbia | `GET /v2/co/sibga/valuation` |
 
-| **Charged** | **Not Charged** |
-| ----------- | --------------- |
-| 200         | 403             |
-| 404         | 409             |
-|             | 412             |
-|             | 422             |
-|             | 500             |
+**Documento de identidade nacional colombiano (cédula).** Somente é cobrado um HTTP **404** cuja mensagem seja **`CEDULA NO EXISTE`**, na faixa de preço **vigencia**. Qualquer outro HTTP **404** na rota abaixo **não** é cobrado. **`GET`/`POST /v2/co/cedula/vigencia`** **não** cobra suas próprias respostas HTTP **404**.
 
-#### **8. Consulta Dinâmica para o Serviço smartCHECK**
+| Nome do produto | Rota |
+| --- | --- |
+| Consulta de cédula de cidadania colombiana | `GET` / `POST` `/v2/co/cedula` |
 
-Como parte da arquitetura padrão do serviço smartCHECK, a Verifik implementa um mecanismo de Consulta Dinâmica (Dynamic Query) projetado para maximizar a disponibilidade, cobertura e confiabilidade do serviço nos endpoints suportados.
+**Não cobrado em HTTP 404:** Outras rotas RUNT da Colômbia (incluindo consultas de proprietários), todo endpoint fora da Colômbia e toda rota não listada nesta seção. A prova de vida facial pode cobrar HTTP **409** por falha de liveness; não é cobrada em HTTP **404**. O smartBatch usa HTTP **404** apenas para marcar linhas como bem-sucedidas e não cobra créditos por essas respostas.
 
-O mecanismo de Consulta Dinâmica permite que o smartCHECK e o DB Screening consultem automaticamente e sequencialmente múltiplas fontes de dados autorizadas nos casos em que a fonte de dados primária retorne uma resposta malsucedida, incluindo, entre outras, respostas do tipo "Não Encontrado" ou equivalentes a erros HTTP de nível 400. Esta arquitetura tem como finalidade aumentar a probabilidade de obter um resultado de verificação bem-sucedido, aproveitando múltiplas fontes de dados elegíveis.
+#### **8. Consulta dinâmica para o serviço smartCHECK**
 
-O Cliente reconhece e concorda que a qualidade, integridade e disponibilidade das bases de dados governamentais podem variar significativamente conforme a jurisdição, e que certas bases de dados podem apresentar uma maior probabilidade de respostas malsucedidas devido a registros incompletos, interrupções de serviço ou cobertura limitada de dados.
+Como parte da arquitetura padrão do serviço smartCHECK, a Verifik implementa um mecanismo de Consulta Dinâmica destinado a maximizar a disponibilidade, a cobertura e a confiabilidade do serviço nos endpoints suportados.
 
-Para mitigar tais limitações, a Consulta Dinâmica está habilitada por padrão em todos os endpoints aplicáveis do smartCHECK e constitui parte integrante da estratégia de redundância e failover da Verifik. Este mecanismo permite à Verifik manter níveis de disponibilidade e cobertura próximos a cem por cento (100%) em determinados endpoints, roteando dinamicamente solicitações para fontes alternativas disponíveis quando necessário.
+O mecanismo de Consulta Dinâmica permite que smartCHECK e DB Screening consultem automaticamente e em sequência várias fontes de dados autorizadas quando a fonte primária retorna resposta malsucedida, incluindo, entre outras, respostas do tipo «não encontrado» ou equivalentes a erros HTTP de nível 400. Essa arquitetura visa aumentar a probabilidade de obter resultado de verificação bem-sucedido por meio de várias fontes elegíveis.
+
+O Cliente reconhece e concorda que a qualidade, a integridade e a disponibilidade das bases de dados governamentais podem variar significativamente conforme a jurisdição, e que certas bases podem apresentar maior probabilidade de respostas malsucedidas devido a registros incompletos, interrupções de serviço ou cobertura limitada de dados.
+
+Para mitigar essas limitações, a Consulta Dinâmica está habilitada por padrão em todos os endpoints aplicáveis do smartCHECK e integra a estratégia de redundância e failover da Verifik. Esse mecanismo permite à Verifik manter disponibilidade e cobertura próximas de cem por cento (100%) em determinados endpoints, roteando dinamicamente solicitações para fontes alternativas disponíveis quando necessário.
 
 O Cliente reconhece e concorda ainda que:
 
-a) A Consulta Dinâmica tem como finalidade aumentar a probabilidade de obter respostas de verificação bem-sucedidas, mas não garante uma correspondência ou resultado bem-sucedido em todos os casos;
+a) A Consulta Dinâmica visa aumentar a probabilidade de respostas de verificação bem-sucedidas, mas não garante correspondência bem-sucedida em todos os casos;
 
-b) Os tempos de resposta poderão variar e, em certos casos, poderão ser maiores do que os de uma consulta padrão a uma única fonte, devido à natureza em cascata das consultas a múltiplas fontes;
+b) Os tempos de resposta podem variar e, em alguns casos, ser maiores que em consultas padrão de fonte única, devido à natureza em cascata de várias solicitações;
 
-c) A eficácia e disponibilidade da Consulta Dinâmica estarão sujeitas à disponibilidade, acessibilidade e qualidade dos dados das fontes governamentais ou de terceiros subjacentes; e
+c) A eficácia e a disponibilidade da Consulta Dinâmica permanecem sujeitas ao tempo de atividade, à acessibilidade e à qualidade dos dados das fontes governamentais ou de terceiros subjacentes; e
 
-d) A Verifik reserva-se o direito de modificar, priorizar ou substituir as fontes de dados dentro da arquitetura de Consulta Dinâmica, a seu exclusivo critério, a fim de manter a continuidade do serviço, otimizar a cobertura e melhorar o desempenho das verificações.
+d) A Verifik reserva-se o direito de modificar, priorizar ou substituir fontes de dados na arquitetura de Consulta Dinâmica, a seu exclusivo critério, para manter a continuidade do serviço, otimizar a cobertura e melhorar o desempenho das verificações.
 
-A Consulta Dinâmica será considerada uma funcionalidade inerente ao serviço smartCHECK e aplicará automaticamente a todos os Clientes que utilizem endpoints elegíveis, salvo disposição em contrário por escrito da Verifik.
+A Consulta Dinâmica será considerada funcionalidade inerente ao serviço smartCHECK e aplicará automaticamente a todos os Clientes que utilizem endpoints elegíveis, salvo disposição em contrário por escrito da Verifik.
 
-#### **8.1 Preço dinâmico (faturamento)** {#dynamic-pricing-billing}
+##### **8.1 Preço dinâmico (faturamento)** {#dynamic-pricing-billing}
 
-Quando a Consulta Dinâmica utiliza um caminho de verificação estendido em um endpoint elegível e retorna uma correspondência bem-sucedida (**HTTP 200**), pode aplicar-se **preço dinâmico**. Nesse caso, os créditos são deduzidos no **nível premium** dessa família de endpoints, e não no nível padrão associado à rota base.
+Quando a Consulta Dinâmica utiliza um caminho de verificação estendido em um endpoint elegível e retorna correspondência bem-sucedida (HTTP 200), pode aplicar-se preço dinâmico. Nesse caso, os créditos são deduzidos no nível premium dessa família de endpoints — não no nível padrão associado à rota base.
 
-O preço dinâmico aplica-se hoje ao endpoint padrão de cédula colombiana (**`GET/POST /v2/co/cedula`**) quando um caminho de verificação estendido é concluído com sucesso após os caminhos padrão não retornarem correspondência. Os valores de crédito dependem da **precificação configurada para o Cliente** (tarifa padrão vs. tarifa premium para essa família de endpoints).
+O preço dinâmico aplica-se hoje ao endpoint padrão de documento de identidade nacional colombiano (GET/POST /v2/co/cedula) quando um caminho de verificação estendido é concluído com sucesso após as rotas padrão não retornarem correspondência. Os valores de crédito dependem da precificação de funcionalidades configurada para o Cliente (tarifa padrão vs. tarifa premium para essa família de endpoints).
 
-O preço dinâmico **não altera** as regras de cobrança da seção **7**: erros de validação e de servidor (**403**, **409**, **412**, **422**, **500**) não são cobrados; respostas **404** são cobradas na tarifa padrão quando nenhuma correspondência bem-sucedida é obtida nos caminhos aplicáveis.
+O preço dinâmico não altera as regras de cobrança da Seção **7** para códigos de status HTTP: erros de validação e de servidor (**403**, **409**, **412**, **422**, **500**) e **timeouts** não são cobrados. Cobranças por HTTP **404** seguem **somente** a Seção **7.1** (incluindo **`CEDULA NO EXISTE`** em **`/v2/co/cedula`**, cobrado na faixa de preço vigencia). Nenhum outro HTTP **404** é cobrado.
 
-Para transparência, o Cliente pode enviar **`includeCost=true`** em solicitações elegíveis para receber um objeto **`billing`** quando créditos forem cobrados (incluindo quando o preço dinâmico se aplica). O histórico de solicitações API registra metadados de ajuste (por exemplo, valores padrão vs. cobrados).
+Para transparência, o Cliente pode enviar includeCost=true em solicitações elegíveis para receber um objeto de faturamento quando créditos forem cobrados (inclusive quando o preço dinâmico se aplicar). O histórico de solicitações da API registra metadados de ajuste (por exemplo, valores padrão vs. cobrados).
 
-Chamar diretamente **`/v2/co/cedula/premium`** sempre usa precificação premium; o preço dinâmico descreve a escalada automática a partir da rota padrão **`/v2/co/cedula`**.
+Chamar /v2/co/cedula/premium diretamente sempre usa preço premium; o preço dinâmico descreve a escalada automática a partir da rota padrão /v2/co/cedula.
 
 Consulte [Cédula colombiana premium](/verifik-pt/identity-validation/colombia/colombian-cedula-premium#dynamic-pricing) para detalhes da API.
 
-#### **9. Indisponibilidade da Plataforma**
+#### **9. Indisponibilidade da plataforma**
 
-Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.
+As janelas de manutenção programada ocorrerão à noite e/ou nos fins de semana, com notificação prévia por e-mail aos usuários.
 
-#### **10. Novas Adaptações ou Desenvolvimentos**
+#### **10. Novas adaptações ou desenvolvimentos**
 
-The timeframes for developing new adaptations due to unexpected changes from User systems integrating via API with the Platform will vary according to the changes required by the User and will not count as Platform Downtime.
+Os prazos para desenvolver novas adaptações devido a alterações imprevistas nos sistemas dos Usuários que se integram via API à Plataforma variarão conforme as mudanças exigidas pelo Usuário e não contarão como Indisponibilidade da Plataforma.
