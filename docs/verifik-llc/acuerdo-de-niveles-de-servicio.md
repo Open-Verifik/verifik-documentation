@@ -73,12 +73,12 @@ Estos plazos aplican a los tickets abiertos a través del panel del cliente. Los
 
 La Plataforma estará disponible al menos:
 
-| **Disponibilidad** | **Producto** | **Notas** |
-| --- | --- | --- |
-| DB Screening 90.00% o superior 89.99% o inferior | smartCHECK | La API de DB Screening depende de las conexiones con Fuentes Gubernamentales |
-| Email/Tel 99.00% o superior 98.99% o inferior | smartACCESS smartENROLL | Sin compensación en créditos |
-| Biometrics 99.00% o superior 98.99% o inferior | smartACCESS smartENROLL | Sin compensación en créditos |
-| Document Scanning 99.00% o superior 98.99% o inferior | smartENROLL smartACCESS | Sin compensación en créditos |
+| **Igual o superior a** | **Inferior a** | **Producto** | **Notas** |
+| --- | --- | --- | --- |
+| 90.00% | 89.99% | smartCHECK (DB Screening) | La API de DB Screening depende de las conexiones con Fuentes Gubernamentales |
+| 99.00% | 98.99% | smartACCESS, smartENROLL (Email/Tel) | Sin compensación en créditos |
+| 99.00% | 98.99% | smartACCESS, smartENROLL (Biometrics) | Sin compensación en créditos |
+| 99.00% | 98.99% | smartENROLL, smartACCESS (Document Scanning) | Sin compensación en créditos |
 
 ##### **5.1. Exclusiones de disponibilidad por endpoint**
 
@@ -118,12 +118,12 @@ El panel del cliente y la API de uso comparan cada mes con un objetivo de SmartC
 
 La Compensación en Crédito otorgada para el mes afectado se proporcionará en forma de un crédito equivalente al costo de la llamada fallida del servicio. Si la indisponibilidad del servicio es causada por Problemas Internos de Verifik (base de datos, servidores, problemas internos de API) y no es resuelta efectivamente por la Compañía, Verifik compensará de la siguiente manera:
 
-| **Disponibilidad del Servicio** | **Compensación en créditos por nivel de servicio** | **Producto** |
-| --- | --- | --- |
-| DB Screening (Consulta de Datos) 90.00% o superior 89.99% o inferior | Sin compensación en créditos | smartCHECK |
-| Email/Tel 99.00% o superior 98.99% o inferior | Sin compensación en créditos | smartACCESS smartENROLL |
-| Biometrics 99.00% o superiorr 98.99% o inferior | Sin compensación en créditos | smartACCESS smartENROLL |
-| Document Scanning 99.00% o superior 98.99% o inferior | Sin compensación en créditos | smartENROLL smartACCESS |
+| **Igual o superior a** | **Inferior a** | **Compensación en créditos por nivel de servicio** | **Producto** |
+| --- | --- | --- | --- |
+| 90.00% | 89.99% | Sin compensación en créditos | smartCHECK (DB Screening / Consulta de Datos) |
+| 99.00% | 98.99% | Sin compensación en créditos | smartACCESS, smartENROLL (Email/Tel) |
+| 99.00% | 98.99% | Sin compensación en créditos | smartACCESS, smartENROLL (Biometrics) |
+| 99.00% | 98.99% | Sin compensación en créditos | smartENROLL, smartACCESS (Document Scanning) |
 
 Los Problemas Internos del servicio de API de Datos (Consulta de Datos) excluyen situaciones consideradas Fuerza Mayor (Casos Fortuitos), ya sea por migración, desconexión o intervención externa de los gobiernos que administran las bases de datos. Verifik es un intermediario y, por lo tanto, NO tiene control sobre las bases de datos consultadas.
 
@@ -131,20 +131,57 @@ Los Problemas Internos del servicio de API de Datos (Consulta de Datos) excluyen
 
 El esquema de cobro aplica a la solución smartCHECK, que permite consultar bases de datos gubernamentales. Verifik no es propietaria, no gestiona ni asume responsabilidad (no controla ni actualiza) las bases de datos gubernamentales de los distintos países que atendemos; por lo tanto, Verifik se reserva el derecho de no ofrecer garantías respecto del Tiempo de Respuesta, Tiempo Promedio Activo o Precisión de los Datos.
 
-Si la consulta devuelve un 200, se cobrará. De lo contrario, si la consulta devuelve 404, 403, 409, 412, 422 o 500, no se cobrará.
+**Regla general.** Una respuesta HTTP **200** se cobra. **No** se cobran: HTTP **403**, **412**, **422** y **500**; **tiempos de espera agotados**; y respuestas HTTP **409** (incluida indisponibilidad de la fuente y fallas de conexión). Una respuesta HTTP **404** **no** se cobra salvo que aplique la Sección **7.1** a esa solicitud.
 
 | **Cobrado** | **No cobrado** |
 | --- | --- |
-| 200 | 404 |
+| 200 | 404 (excepto lo indicado en la Sección 7.1) |
 | | 403 |
-| | 409 |
+| | 409 (incluidas fallas de fuente; nunca se cobra) |
 | | 412 |
 | | 422 |
 | | 500 |
+| | Tiempos de espera agotados (nunca se cobran) |
 
-##### **7.1 Excepción al cobro de HTTP 404**
+Ningún endpoint fuera de Colombia se cobra con HTTP **404**. Los endpoints que no figuren en la Sección **7.1** no se cobran con HTTP **404**, incluidas todas las rutas en países distintos de Colombia.
 
-Ciertos endpoints de smartCHECK asociados con fuentes de datos gubernamentales y oficiales de Colombia pueden generar cargos incluso cuando devuelven una respuesta HTTP 404 (No encontrado). Esta excepción aplica cuando una consulta ha sido procesada exitosamente por la fuente de datos subyacente pero no devuelve un registro coincidente, un estado de documento inválido u otro resultado negativo definido. Debido a que estas consultas consumen recursos y pueden generar costos de acceso a datos de terceros independientemente del resultado, se consideran transacciones facturables. Esta excepción aplica solo a endpoints colombianos designados, incluidos RUNT, Afiliaciones, SIBGA y verificación de Cédula, y no aplica a fallas técnicas, tiempos de espera agotados ni indisponibilidad del servicio.
+##### **7.1 Colombia: cobro por HTTP 404**
+
+Esta sección es la única fuente de cargos por HTTP **404** bajo la Sección **7**. Todas las rutas siguientes son APIs smartCHECK de Colombia. Los **tiempos de espera agotados** y las fallas de fuente HTTP **409** **nunca** se cobran en ningún endpoint de Verifik.
+
+**RUNT (solo HTTP 404 con código de respuesta `NotFound`).** Las respuestas HTTP **409** (por ejemplo, cuando la fuente está fuera de servicio o un worker RUNT no está disponible) **no** se cobran.
+
+| Nombre del producto | Ruta |
+| --- | --- |
+| Consulta de conductor RUNT Colombia | `GET /v2/co/runt/conductor` |
+| Consulta de conductor RUNT Colombia (v3) | `GET /v3/co/runt/conductor` |
+| Consulta de vehículo RUNT Colombia | `GET /v2/co/runt/vehiculo` |
+| Registro vehicular completo RUNT Colombia | `GET /v2/co/runt/vehiculo-completo` |
+| SOAT vehicular RUNT Colombia | `GET /v2/co/runt/vehiculo-soat` |
+| Vehículo RUNT Colombia por placa | `GET /v2/co/runt/vehicle-by-plate` |
+| Vehículo RUNT Colombia por VIN | `GET /v2/co/runt/vehicle-by-vin` |
+| Vehículo RUNT Colombia por placa (simplificado) | `GET /v2/co/runt/vehicle-by-plate-simplified` |
+| Vehículo RUNT Colombia solo por placa | `GET /v2/co/runt/vehicle-by-plate-only` |
+
+**Afiliaciones a seguridad social.** **Cualquier** HTTP **404** en la ruta siguiente es facturable, incluido cuando el mensaje indica una fecha de expedición incorrecta. Las fallas de conexión que devuelven HTTP **409** **no** se cobran.
+
+| Nombre del producto | Ruta |
+| --- | --- |
+| Afiliaciones a seguridad social Colombia | `GET /v2/co/afiliaciones` |
+
+**Valoración vehicular SIBGA (solo HTTP 404 con código de respuesta `NotFound`).**
+
+| Nombre del producto | Ruta |
+| --- | --- |
+| Valoración vehicular SIBGA Colombia | `GET /v2/co/sibga/valuation` |
+
+**Cédula de ciudadanía colombiana.** Solo se cobra un HTTP **404** cuyo mensaje sea **`CEDULA NO EXISTE`**, a la tarifa **vigencia**. Cualquier otro HTTP **404** en la ruta siguiente **no** se cobra. **`GET`/`POST /v2/co/cedula/vigencia`** **no** cobra sus propias respuestas HTTP **404**.
+
+| Nombre del producto | Ruta |
+| --- | --- |
+| Consulta de cédula de ciudadanía colombiana | `GET` / `POST` `/v2/co/cedula` |
+
+**No se cobra con HTTP 404:** Otras rutas RUNT de Colombia (incluidas consultas de propietarios), todo endpoint fuera de Colombia y toda ruta no listada en esta sección. La prueba de vida facial puede cobrar HTTP **409** por fallo de liveness; no se cobra con HTTP **404**. smartBatch usa HTTP **404** solo para marcar filas como exitosas y no cobra créditos por esas respuestas.
 
 #### **8. Consulta Dinámica para el Servicio smartCHECK**
 
@@ -174,7 +211,7 @@ Cuando la Consulta Dinámica utiliza una ruta de verificación extendida en un e
 
 El precio dinámico aplica hoy al endpoint estándar de cédula nacional colombiana (GET/POST /v2/co/cedula) cuando una ruta de verificación extendida se completa con éxito después de que las rutas estándar no devuelven coincidencia. Los montos de crédito dependen de la tarificación configurada para el Cliente (tarifa estándar vs. tarifa premium para esa familia de endpoints).
 
-El precio dinámico no modifica las reglas de cobro de la sección 7: los errores de validación y del servidor (403, 409, 412, 422, 500) no se cobran; las respuestas 404 se cobran a tarifa estándar cuando no se obtiene coincidencia exitosa en las rutas aplicables.
+El precio dinámico no modifica las reglas de cobro de la Sección **7** por códigos HTTP: los errores de validación y del servidor (**403**, **409**, **412**, **422**, **500**) y los **tiempos de espera agotados** no se cobran. Los cargos por HTTP **404** siguen **solo** la Sección **7.1** (incluido **`CEDULA NO EXISTE`** en **`/v2/co/cedula`**, cobrado a tarifa vigencia). Ningún otro HTTP **404** se cobra.
 
 Para transparencia, el Cliente puede enviar includeCost=true en solicitudes elegibles para recibir un objeto billing cuando se cobren créditos (incluido cuando aplica precio dinámico). El historial de solicitudes API registra metadatos del ajuste (por ejemplo, montos estándar vs. cobrados).
 

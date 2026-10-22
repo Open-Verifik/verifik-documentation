@@ -73,12 +73,12 @@ These deadlines apply to tickets opened through the client panel. The attention,
 
 The Platform will be available at least:
 
-| **Availability** | **Product** | **Notes** |
-| --- | --- | --- |
-| DB Screening 90.00% or higher 89.99% or lower | smartCHECK | DB Screening API depends on connections with Government Sources |
-| Email/Tel 99.00% or higher 98.99% or lower | smartACCESS smartENROLL | No Credit Compensation |
-| Biometrics 99.00% or higher 98.99% or lower | smartACCESS smartENROLL | No Credit Compensation |
-| Document Scanning 99.00% or higher 98.99% or lower | smartENROLL smartACCESS | No Credit Compensation |
+| **At or above** | **Below** | **Product** | **Notes** |
+| --- | --- | --- | --- |
+| 90.00% | 89.99% | smartCHECK (DB Screening) | DB Screening API depends on connections with Government Sources |
+| 99.00% | 98.99% | smartACCESS, smartENROLL (Email/Tel) | No Credit Compensation |
+| 99.00% | 98.99% | smartACCESS, smartENROLL (Biometrics) | No Credit Compensation |
+| 99.00% | 98.99% | smartENROLL, smartACCESS (Document Scanning) | No Credit Compensation |
 
 ##### **5.1. Endpoint-Specific Availability Exclusions**
 
@@ -118,12 +118,12 @@ The client panel and the Usage API compare each month against a 95% SmartCHECK t
 
 Credit Compensation awarded for the affected month will be provided in the form of a credit equivalent to the cost of the failed service call. If the service unavailability is caused by Internal Issues of Verifik (database, servers, internal API issues) and is not effectively resolved by the Company, Verifik will compensate as follows:
 
-| **Service Availability** | **Service Level Credit Compensation** | **Product** |
-| --- | --- | --- |
-| DB Screening (Data Query) 90.00% or higher 89.99% or lower | No Credit Compensation | smartCHECK |
-| Email/Tel 99.00% or higher 98.99% or lower | No Credit Compensation | smartACCESS smartENROLL |
-| Biometrics 99.00% or higherr 98.99% or lower | No Credit Compensation | smartACCESS smartENROLL |
-| Document Scanning 99.00% or higher 98.99% or lower | No Credit Compensation | smartENROLL smartACCESS |
+| **At or above** | **Below** | **Service Level Credit Compensation** | **Product** |
+| --- | --- | --- | --- |
+| 90.00% | 89.99% | No Credit Compensation | smartCHECK (DB Screening / Data Query) |
+| 99.00% | 98.99% | No Credit Compensation | smartACCESS, smartENROLL (Email/Tel) |
+| 99.00% | 98.99% | No Credit Compensation | smartACCESS, smartENROLL (Biometrics) |
+| 99.00% | 98.99% | No Credit Compensation | smartENROLL, smartACCESS (Document Scanning) |
 
 Internal Issues of the Data API service (Data Query) excludes issues considered Force Majeure (Fortuitous Events), whether due to migration, disconnection, or external intervention by the governments that manage the databases. Verifik is an intermediary and therefore does NOT have control over the queried databases.
 
@@ -131,20 +131,57 @@ Internal Issues of the Data API service (Data Query) excludes issues considered 
 
 The charging scheme applies to the smartCHECK solution, which enables queries to government databases. Verifik does not own, manage, or bear responsibility for (does not control or update) the government databases of the various countries we serve; therefore, Verifik reserves the right not to offer guarantees regarding Response Time, Average Up Time, or Data Accuracy.
 
-If the query returns a 200, it will be charged. Otherwise, if the query returns 404, 403, 409, 412, 422, or 500, it will not be charged.
+**General rule.** An HTTP **200** response is charged. The following are **not** charged: HTTP **403**, **412**, **422**, and **500**; request **timeouts**; and HTTP **409** responses (including source unavailability and connection failures). An HTTP **404** response is **not** charged unless Section **7.1** applies to that request.
 
-| **Charged** | **Not Charged** |
+| **Charged** | **Not charged** |
 | --- | --- |
-| 200 | 404 |
+| 200 | 404 (except as listed in Section 7.1) |
 | | 403 |
-| | 409 |
+| | 409 (including source failures; never billed) |
 | | 412 |
 | | 422 |
 | | 500 |
+| | Timeouts (never billed) |
 
-##### **7.1 Exception to HTTP 404 Charging**
+No endpoint outside Colombia is billed on HTTP **404**. Endpoints not listed in Section **7.1** are not billed on HTTP **404**, including all routes in countries other than Colombia.
 
-Certain smartCHECK endpoints associated with Colombian government and official data sources may incur charges even when returning an HTTP 404 (Not Found) response. This exception applies when a query has been successfully processed by the underlying data source but returns no matching record, an invalid document status, or another defined negative result. Because these queries consume resources and may incur third-party data access costs regardless of the outcome, they are considered billable transactions. This exception applies only to designated Colombian endpoints, including RUNT, Afiliaciones, SIBGA, and Cédula verification, and does not apply to technical failures, timeouts, or service unavailability.
+##### **7.1 Colombia: HTTP 404 billing**
+
+This section is the only source of HTTP **404** charges under Section **7**. All routes below are Colombia smartCHECK APIs. **Timeouts** and HTTP **409** source failures are **never** billed on any Verifik endpoint.
+
+**RUNT (HTTP 404 with response code `NotFound` only).** HTTP **409** responses (for example when the source is out of service or a RUNT worker is unavailable) are **not** billed.
+
+| Product name | Route |
+| --- | --- |
+| Colombia RUNT driver lookup | `GET /v2/co/runt/conductor` |
+| Colombia RUNT driver lookup (v3) | `GET /v3/co/runt/conductor` |
+| Colombia RUNT vehicle lookup | `GET /v2/co/runt/vehiculo` |
+| Colombia RUNT complete vehicle record | `GET /v2/co/runt/vehiculo-completo` |
+| Colombia RUNT vehicle SOAT | `GET /v2/co/runt/vehiculo-soat` |
+| Colombia RUNT vehicle by license plate | `GET /v2/co/runt/vehicle-by-plate` |
+| Colombia RUNT vehicle by VIN | `GET /v2/co/runt/vehicle-by-vin` |
+| Colombia RUNT vehicle by plate (simplified) | `GET /v2/co/runt/vehicle-by-plate-simplified` |
+| Colombia RUNT vehicle by plate only | `GET /v2/co/runt/vehicle-by-plate-only` |
+
+**Social security affiliations (Afiliaciones).** **Any** HTTP **404** on the route below is billable, including when the response message indicates an incorrect expedition date. Connection failures that return HTTP **409** are **not** billed.
+
+| Product name | Route |
+| --- | --- |
+| Colombia social security affiliations | `GET /v2/co/afiliaciones` |
+
+**SIBGA vehicle valuation (HTTP 404 with response code `NotFound` only).**
+
+| Product name | Route |
+| --- | --- |
+| Colombia SIBGA vehicle valuation | `GET /v2/co/sibga/valuation` |
+
+**Colombian national ID (cédula).** Only an HTTP **404** whose message is **`CEDULA NO EXISTE`** is billable, at the **vigencia** price tier. Any other HTTP **404** on the route below is **not** charged. **`GET`/`POST /v2/co/cedula/vigencia`** does **not** bill its own HTTP **404** responses.
+
+| Product name | Route |
+| --- | --- |
+| Colombian national ID lookup | `GET` / `POST` `/v2/co/cedula` |
+
+**Not billed on HTTP 404:** Other Colombia RUNT routes (including owner/propietarios lookups), every endpoint outside Colombia, and every route not listed in this section. Biometric face liveness may bill an HTTP **409** for liveness failure; it is not billed on HTTP **404**. smartBatch uses HTTP **404** only to mark rows successful and does not charge credits for those responses.
 
 #### **8. Dynamic Query for smartCHECK Service**
 
@@ -174,7 +211,7 @@ When Dynamic Query uses an extended verification path on an eligible endpoint an
 
 Dynamic pricing applies today to the standard Colombia national ID endpoint (GET/POST /v2/co/cedula) when an extended verification path completes successfully after standard paths do not return a match. Credit amounts depend on the Client's configured feature pricing (standard rate vs. premium rate for that endpoint family).
 
-Dynamic pricing does not change section 7 charge rules: validation and server errors (403, 409, 412, 422, 500) are not charged; 404 responses are charged at the standard tier when no successful match is returned across applicable paths.
+Dynamic pricing does not change the Section **7** charge rules for HTTP status codes: validation and server errors (**403**, **409**, **412**, **422**, **500**) and **timeouts** are not charged. HTTP **404** charges follow **only** Section **7.1** (including **`CEDULA NO EXISTE`** on **`/v2/co/cedula`**, billed at the vigencia price tier). No other HTTP **404** is billed.
 
 For transparency, the Client may pass includeCost=true on eligible requests to receive a billing object when credits are charged (including when dynamic pricing applies). API request history records adjustment metadata (for example, standard vs. charged amounts).
 
