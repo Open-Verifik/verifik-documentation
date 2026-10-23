@@ -1,0 +1,127 @@
+---
+id: "en-docs-london-stock-exchange-integration-colombia-75-politically-exposed-people-in-colombia-51"
+title: "Colombia — Verifik public API — 75. Politically Exposed People in Colombia"
+sourcePath: "docs/london-stock-exchange-integration/colombia.mdx"
+locale: "en"
+category: "london-stock-exchange-integration"
+tags:
+  - "co"
+  - "london-stock-exchange-integration"
+endpoint: "/v2/co/cedula/extra"
+sourceAnchor: "75. Politically Exposed People in Colombia"
+slug: "/london-stock-exchange-integration/colombia"
+url: "https://docs.verifik.co/london-stock-exchange-integration/colombia"
+---
+
+# Colombia — Verifik public API
+**API path(s):** /v2/co/cedula/extra
+
+## 75. Politically Exposed People in Colombia
+
+**Location in the collection:** v2 › co › politically-exposed-persons › Politically Exposed Persons in Colombia
+
+**What it does (summary):**
+
+The Politically Exposed Persons (PEP) Verification API in Colombia allows you to verify if a person is designated as a politically exposed person in Colombia.
+
+PEPs are individuals who hold or have held prominent public positions or functions and may represent a higher risk of corruption or money laundering.
+
+This API provides information such as the person's full name, document number, entity name, designated position, and disengagement and attachment dates. Please note that this service is only available for Colombian people.
+
+**Query type:** `GET`
+
+**Example full address** (with example values):
+
+```
+https://api.verifik.co/v2/co/politically-exposed-persons?documentType=CC&documentNumber=208079
+```
+
+**Parameters in the address (after the `?`):**
+
+| Name | Example value | Notes |
+| --- | --- | --- |
+| documentType | CC |  |
+| documentNumber | 208079 | (Required) Document number of the person to be consulted, without spaces or periods. |
+
+**Common headers:**
+
+| Name | Example value |
+| --- | --- |
+| Accept | application/json |
+
+**Example with the `curl` tool (for those who request it from your technical team):**
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/politically-exposed-persons?documentType=CC&documentNumber=208079" \
+  -H "Accept: application/json"
+```
+
+**Answer examples saved by Postman:**
+
+- **HTTP 200 (OK)**
+
+```json
+{
+
+    "data": {
+
+        "arrayName": [
+
+            "APELLIDO",
+
+            "NOMBRE",
+
+            "SEGUNDO"
+
+        ],
+
+        "documentNumber": "208079",
+
+        "documentType": "CC",
+
+        "firstName": "NOMBRE SEGUNDO",
+
+        "fullName": "NOMBRE SEGUNDO APELLIDO",
+
+        "lastName": "APELLIDO"
+
+    },
+
+    "signature": {
+
+        "dateTime": "April 8, 2026 11:00 PM",
+
+        "message": "Certified by Verifik.co"
+
+    },
+
+    "id": "IDNT1"
+
+}
+```
+
+- **HTTP 404 (Not Found)**
+
+```json
+{
+
+    "code": "NotFound",
+
+    "message": "Record not found."
+
+}
+```
+
+- **HTTP 409 (Conflict)**
+
+```json
+{
+
+    "code": "MissingParameter",
+
+    "message": "documentNumber maximum length exceeded.\n"
+
+}
+```
+
+---
