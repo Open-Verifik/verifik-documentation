@@ -1,10 +1,10 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-22T02:01:40.957Z
+Generated: 2026-10-23T00:32:42.740Z
 
 - **Files scanned:** 536
-- **Unique endpoint URLs:** 234
-- **Duplicate URL groups (SEO / aliases):** 58
+- **Unique endpoint URLs:** 233
+- **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 221
 
 ## Summary by priority (canonical primary path only)
@@ -13,7 +13,7 @@ Generated: 2026-10-22T02:01:40.957Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 183 | identity, biometrics, resources, etc. |
+| P2 | 182 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -41,6 +41,9 @@ Generated: 2026-10-22T02:01:40.957Z
 - `v2/biometric-validations/validate`
   - `resources/app-logins/validate-an-app-login-biometric-validation.mdx`
   - `resources/biometric-validations/validate-an-app-login-biometric-validation.mdx`
+- `v2/ca/ontario/driver-license`
+  - `driver-validation/ontario-driver-license.md`
+  - `identity/canada.mdx`
 - `v2/check-lists`
   - `check-list/create-a-check-list.mdx`
   - `check-list/list-all-check-lists.mdx`
@@ -264,7 +267,6 @@ Generated: 2026-10-22T02:01:40.957Z
 | P2 | `v2/br/cedula` | `identity/brazil.mdx` |
 | P2 | `v2/br/company` | `business-validation/brazil.mdx` |
 | P1 | `v2/br/vehicle` | `vehicle-validation/brazil.mdx` |
-| P2 | `v2/ca/british-columbia/driver-license` | `identity/canada.mdx` |
 | P2 | `v2/ca/company` | `business-validation/canada.mdx` |
 | P2 | `v2/ca/ontario/driver-license` | `driver-validation/ontario-driver-license.md` |
 | P1 | `v2/ca/ontario/plate` | `vehicle-validation/canada/ontario-plate.mdx` |
