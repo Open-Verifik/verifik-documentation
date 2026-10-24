@@ -1,0 +1,139 @@
+---
+id: scan-agent
+title: Scan Agent
+description: Document scan that returns the extraction immediately and stores a masked copy when the call has no project.
+slug: /ocr-engines/scan-agent
+keywords:
+  - v2/ocr/scan-agent
+  - /v2/ocr/scan-agent
+  - v2 ocr scan-agent
+  - api/ocr/scan-agent
+  - /api/ocr/scan-agent
+  - api ocr scan-agent
+  - api.verifik.co/v2/ocr/scan-agent
+  - 'https://api.verifik.co/v2/ocr/scan-agent'
+  - POST v2/ocr/scan-agent
+  - POST /v2/ocr/scan-agent
+  - ocr/scan-agent
+  - /ocr/scan-agent
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/ocr/scan-agent
+```
+
+Scan Agent reads a document image and returns the extracted fields in the response. The same call is what Smart Scan uses. Retention for a call that is not tied to a project is described below. A SmartEnroll scan tied to an app registration follows [Data retention](/getting-started/data-retention).
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `image` | string | Yes | Front image as a Base64 string or a `data:` URI. |
+| `documentType` | string | Yes | Document type to read, for example `CC`. |
+| `backImage` | string | No | Back image, same format as `image`. |
+| `promptTemplateId` | string | No | Saved prompt template to apply. |
+| `includeCost` | string | No | Pass `"true"` to include cost on the response. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post("https://api.verifik.co/v2/ocr/scan-agent", {
+  documentType: "CC",
+  image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+  includeCost: "true"
+}, {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/ocr/scan-agent"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+payload = {
+    "documentType": "CC",
+    "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+    "includeCost": "true",
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+The response includes the full extraction. `url` and `backUrl` are `https` links. For a call with no project they point at the stored images under the account policy, whose default is `store`.
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "_id": "64d3ed6aed1c7d7ea391e617",
+    "url": "https://cdn.verifik.co/ocr/64404b1f9856cc8cebd762e7/1691610471704-image.jpeg",
+    "backUrl": "https://cdn.verifik.co/ocr/64404b1f9856cc8cebd762e7/1691610471704-back.jpeg",
+    "documentType": "CC",
+    "documentNumber": "1234567890",
+    "status": "ACTIVE_BUT_UNVERIFIED",
+    "OCRExtraction": {
+      "fullName": "Ana Ruiz",
+      "firstName": "Ana",
+      "lastName": "Ruiz",
+      "documentNumber": "1234567890"
+    }
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Data retention
+
+A call that is not tied to a project uses the account [data retention](/getting-started/data-retention) policy. The default is `store`.
+
+| | Immediate response | Row saved for the scan |
+| --- | --- | --- |
+| `url`, `backUrl` | `https` links that expire after one hour. Never `data:` URIs. | The image files those links point at, while the policy keeps them. |
+| `OCRExtraction` and the other extracted fields | Full values, as read from the document. | Masked. After a purge, personal fields that remain keep the last 4 characters. |
+
+A SmartEnroll scan that belongs to an app registration uses the account, project, and flow policy. A lower level cannot loosen a stricter mode from above.
+
+See [Scan Prompt](/ocr-engines/scan-prompt).
+
+### Notes
+
+- Pass the front image in `image` and the back image in `backImage` when the document has two sides.
+- `includeCost` is the string `"true"` when you want cost on the response.
+- Policy changes apply to scans created after the change. Older rows keep the retention stamp they were given, and rows with no stamp stay as they are.

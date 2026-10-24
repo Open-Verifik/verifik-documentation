@@ -2354,6 +2354,18 @@ keywords:
   - "https://api.verifik.co/v2/mx/vehiculo/placa"
   - "GET v2/mx/vehiculo/placa"
   - "GET /v2/mx/vehiculo/placa"
+  - "v2/ocr/scan-agent"
+  - "/v2/ocr/scan-agent"
+  - "v2 ocr scan-agent"
+  - "ocr/scan-agent"
+  - "/ocr/scan-agent"
+  - "api/ocr/scan-agent"
+  - "/api/ocr/scan-agent"
+  - "api ocr scan-agent"
+  - "api.verifik.co/v2/ocr/scan-agent"
+  - "https://api.verifik.co/v2/ocr/scan-agent"
+  - "GET v2/ocr/scan-agent"
+  - "GET /v2/ocr/scan-agent"
   - "v2/ocr/scan-prompt"
   - "/v2/ocr/scan-prompt"
   - "v2 ocr scan-prompt"
@@ -2908,12 +2920,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (233 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (234 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-10-23T00:32:42.792Z_
+_Last regenerated: 2026-10-24T23:37:52.384Z_
 
 ## Argentina
 
@@ -3280,6 +3292,7 @@ _Last regenerated: 2026-10-23T00:32:42.792Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
+| `v2/ocr/scan-agent` | v2 ocr scan-agent ocr/scan-agent /ocr/scan-agent api/ocr/scan-agent /api/ocr/scan-agent api ocr scan-agent api.verifik.co/v2/ocr/scan-agent https://api.verifik.co/v2/ocr/scan-agent GET v2/ocr/scan-agent GET /v2/ocr/scan-agent | [Scan Agent](/ocr-engines/scan-agent) |
 | `v2/ocr/scan-prompt` | v2 ocr scan-prompt ocr/scan-prompt /ocr/scan-prompt api/ocr/scan-prompt /api/ocr/scan-prompt api ocr scan-prompt api.verifik.co/v2/ocr/scan-prompt https://api.verifik.co/v2/ocr/scan-prompt GET v2/ocr/scan-prompt GET /v2/ocr/scan-prompt | [Scan Prompt](/ocr-engines/scan-prompt) |
 | `v2/ocr/scan-prompt/template/:id` | v2 ocr scan-prompt template :id ocr/scan-prompt/template/:id /ocr/scan-prompt/template/:id api/ocr/scan-prompt/template/:id /api/ocr/scan-prompt/template/:id api ocr scan-prompt template :id scan-prompt/template/:id /scan-prompt/template/:id template/:id /template/:id api.verifik.co/v2/ocr/scan-prompt/template/:id https://api.verifik.co/v2/ocr/scan-prompt/template/:id GET v2/ocr/scan-prompt/template/:id GET /v2/ocr/scan-prompt/template/:id | [Delete a Scan Prompt Template](/ocr-engines/scan-prompt/delete-a-scan-prompt-template) |
 | `v2/ocr/scan-prompt/templates` | v2 ocr scan-prompt templates ocr/scan-prompt/templates /ocr/scan-prompt/templates api/ocr/scan-prompt/templates /api/ocr/scan-prompt/templates api ocr scan-prompt templates scan-prompt/templates /scan-prompt/templates api.verifik.co/v2/ocr/scan-prompt/templates https://api.verifik.co/v2/ocr/scan-prompt/templates GET v2/ocr/scan-prompt/templates GET /v2/ocr/scan-prompt/templates | [List of Scan Prompt Templates](/ocr-engines/scan-prompt/list-of-scan-prompt-templates) |

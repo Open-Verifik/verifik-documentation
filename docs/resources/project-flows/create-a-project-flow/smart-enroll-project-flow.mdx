@@ -266,6 +266,30 @@ print(r.json())
   </TabItem>
 </Tabs>
 
+## Data retention
+
+Optional `dataRetention` on this flow overrides the project for records created in the flow, when the flow mode is as strict or stricter. `none` is stricter than `ephemeral`, and `ephemeral` is stricter than `store`. The same object on the project overrides the account on that rule. Resolution order is account, then project, then flow. A mode on the object applies to every enforced type that does not set its own mode.
+
+```json
+"dataRetention": {
+  "mode": "ephemeral",
+  "webhookHoldHours": 48,
+  "allowManualDelete": true,
+  "types": {
+    "documentImages": { "mode": "ephemeral" },
+    "ocrExtraction": { "mode": "none" },
+    "faceImages": { "mode": "none" },
+    "documentLiveness": { "mode": "none" }
+  }
+}
+```
+
+`webhookHoldHours` is an integer from 24 to 72. `retentionHours` on a `store` type is how many hours that type is kept, including on SmartEnroll. `faceImages` set to `none` keeps the selfie until the hold ends so the document-to-selfie comparison can run. `documentLiveness` set to `none` means that image is not stored. `livenessResults` and `apiResponseLogs` are rejected.
+
+Images in `none` or `ephemeral` become purgeable after `onboarding_app_registration_completed` or `onboarding_app_registration_completed_without_kyc` is delivered, at the later of that delivery and the end of the hold.
+
+Set the project override with `PUT /v3/projects/{id}`. See [Data retention](/getting-started/data-retention) and [Update Project](/resources/projects/update-a-project).
+
 ## Features
 
 - **Smart Enroll Optimized**: Pre-configured for Smart Enroll onboarding flows

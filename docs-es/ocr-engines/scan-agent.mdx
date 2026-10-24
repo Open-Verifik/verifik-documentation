@@ -1,0 +1,126 @@
+---
+id: escaneo-agente
+title: Escaneo Agent
+description: Escaneo de documento que devuelve la extracción de inmediato y guarda una copia enmascarada cuando la llamada no tiene proyecto.
+slug: /ocr-engines/escaneo-agente
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/ocr/scan-agent
+```
+
+Escaneo Agent lee la imagen de un documento y devuelve los campos extraídos en la respuesta. Es la misma llamada que usa Smart Scan. La retención de una llamada sin proyecto se describe abajo. Un escaneo de SmartEnroll ligado a un registro de aplicación sigue [Retención de datos](/verifik-es/getting-started/data-retention).
+
+### Encabezados
+
+| Nombre | Valor |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Descripción |
+| --- | --- | --- | --- |
+| `image` | string | Sí | Imagen frontal en Base64 o como URI `data:`. |
+| `documentType` | string | Sí | Tipo de documento a leer, por ejemplo `CC`. |
+| `backImage` | string | No | Imagen del reverso, en el mismo formato que `image`. |
+| `promptTemplateId` | string | No | Plantilla de prompt guardada. |
+| `includeCost` | string | No | Envía `"true"` para incluir el costo en la respuesta. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post("https://api.verifik.co/v2/ocr/scan-agent", {
+  documentType: "CC",
+  image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+  includeCost: "true"
+}, {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/ocr/scan-agent"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+payload = {
+    "documentType": "CC",
+    "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+    "includeCost": "true",
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+La respuesta incluye la extracción completa. `url` y `backUrl` son enlaces `https`. En una llamada sin proyecto apuntan a las imágenes guardadas según la política de la cuenta, cuyo valor predeterminado es `store`.
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "_id": "64d3ed6aed1c7d7ea391e617",
+    "url": "https://cdn.verifik.co/ocr/64404b1f9856cc8cebd762e7/1691610471704-image.jpeg",
+    "backUrl": "https://cdn.verifik.co/ocr/64404b1f9856cc8cebd762e7/1691610471704-back.jpeg",
+    "documentType": "CC",
+    "documentNumber": "1234567890",
+    "status": "ACTIVE_BUT_UNVERIFIED",
+    "OCRExtraction": {
+      "fullName": "Ana Ruiz",
+      "firstName": "Ana",
+      "lastName": "Ruiz",
+      "documentNumber": "1234567890"
+    }
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Retención de datos
+
+Una llamada que no está ligada a un proyecto usa la política de [retención de datos](/verifik-es/getting-started/data-retention) de la cuenta. El valor predeterminado es `store`.
+
+| | Respuesta inmediata | Fila guardada del escaneo |
+| --- | --- | --- |
+| `url`, `backUrl` | Enlaces `https` que caducan al cabo de una hora. Nunca son URI `data:`. | Los archivos de imagen a los que apuntan, mientras la política los conserve. |
+| `OCRExtraction` y el resto de campos extraídos | Valores completos, tal como se leyeron. | Enmascarados. Después de una purga, los campos personales que permanecen conservan los últimos 4 caracteres. |
+
+Un escaneo de SmartEnroll que pertenece a un registro de aplicación usa la política de cuenta, proyecto y flujo. Un nivel inferior no puede aflojar un modo más estricto de arriba.
+
+Consulta [Escaneo Prompt](/verifik-es/escaneo-prompt).
+
+### Notas
+
+- Envía el frente en `image` y el reverso en `backImage` cuando el documento tiene dos caras.
+- `includeCost` es la cadena `"true"` cuando quieres el costo en la respuesta.
+- Un cambio de política aplica a los escaneos creados después del cambio. Las filas anteriores conservan el sello de retención que recibieron, y las filas sin sello permanecen como están.
