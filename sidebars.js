@@ -51,7 +51,7 @@ const sidebars = {
 			type: "category",
 			label: "CLIENTS",
 			collapsible: false,
-			items: ["clients/account-information"],
+			items: ["clients/account-information", "getting-started/data-retention"],
 		},
 		{
 			type: "category",
@@ -130,7 +130,7 @@ const sidebars = {
 			type: "category",
 			label: "SCAN DOCS API'S",
 			collapsible: false,
-			items: ["ocr-engines/scan-studio", "ocr-engines/scan-prompt"],
+			items: ["ocr-engines/scan-studio", "ocr-engines/scan-prompt", "ocr-engines/scan-agent"],
 		},
 		{
 			type: "category",

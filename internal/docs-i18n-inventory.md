@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-23T00:32:42.740Z
+Generated: 2026-10-24T23:37:52.346Z
 
-- **Files scanned:** 536
-- **Unique endpoint URLs:** 233
+- **Files scanned:** 538
+- **Unique endpoint URLs:** 234
 - **Duplicate URL groups (SEO / aliases):** 59
-- **Docs without `### Endpoint` block:** 221
+- **Docs without `### Endpoint` block:** 222
 
 ## Summary by priority (canonical primary path only)
 
@@ -13,7 +13,7 @@ Generated: 2026-10-23T00:32:42.740Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 182 | identity, biometrics, resources, etc. |
+| P2 | 183 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -408,6 +408,7 @@ Generated: 2026-10-23T00:32:42.740Z
 | P2 | `v2/mx/ine/ocr` | `identity/mexico-ine-ocr.mdx` |
 | P2 | `v2/mx/siged/certificado` | `identity/mexico-siged-certificado.mdx` |
 | P1 | `v2/mx/vehiculo/placa` | `vehicle-validation/mexico.md` |
+| P2 | `v2/ocr/scan-agent` | `ocr-engines/scan-agent.mdx` |
 | P2 | `v2/ocr/scan-prompt` | `ocr-engines/scan-prompt.mdx` |
 | P2 | `v2/ocr/scan-prompt/template/:id` | `ocr-engines/scan-prompt/delete-a-scan-prompt-template.mdx` |
 | P2 | `v2/ocr/scan-prompt/templates` | `ocr-engines/scan-prompt/list-of-scan-prompt-templates.mdx` |
@@ -495,6 +496,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `finance.mdx`
 - `functions/authentication.md`
 - `functions/create-zelfproof.md`
+- `getting-started/data-retention.md`
 - `getting-started/downloads.md`
 - `getting-started/how-it-works.md`
 - `getting-started/lite-paper.md`

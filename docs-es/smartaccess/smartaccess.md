@@ -143,3 +143,15 @@ El paso de **Finalizar y Publicar** es donde todas tus configuraciones y persona
 * **Publicación:** Una vez satisfecho con la configuración, simplemente haz clic en el botón "Publicar" para hacer el proyecto en vivo. Acceso Inteligente despliega inmediatamente tus configuraciones, haciendo los servicios de autenticación disponibles para tus usuarios. Si es necesario, puedes despublicar el proyecto más tarde para ajustes adicionales.
 
 Este paso final enfatiza la facilidad de uso y flexibilidad que Acceso Inteligente ofrece, permitiéndote lanzar una solución de autenticación completamente personalizada, segura y consistente con la marca con confianza.
+
+## Retención de datos
+
+Los flujos de inicio de sesión de Smart Access sellan la retención en el selfie de acceso.
+
+- `faceImages` en `none` significa que el selfie de acceso no se guarda.
+- `ephemeral` guarda el selfie hasta la siguiente ejecución de purga. Los flujos de acceso se sellan sin retención de webhook.
+- `store` conserva el selfie. Cuando `retentionHours` es un número mayor que 0, el selfie queda elegible de purga después de esas horas.
+
+Reconocer a una persona que regresa usa plantillas biométricas y colecciones de rostros. Esas plantillas permanecen cuando cambia esta política. Los resultados de prueba de vida del acceso y los cuerpos de webhook del acceso también permanecen. Los registros de facturación y de uso permanecen cuando se purga un selfie.
+
+Las fotos del documento y los campos de extracción guardados siguen la misma política de cuenta, proyecto y flujo cuando un flujo de acceso los crea. Consulta [Retención de datos](/verifik-es/getting-started/data-retention).

@@ -71,3 +71,9 @@ Traditional face verification systems expose users to **Hill Climbing Attacks** 
 The integration of  **ZelfProofs** into crypto wallets offers a next-generation privacy-preserving solution. By embracing **Unlikability**, **Irreversibility**, **Revocability**, and **Renewability**, crypto wallets can provide users with secure, decentralized access without the risks associated with traditional biometric verification systems.
 
 The result is a highly secure, user-centric system where privacy is not just an option, but a core principle. **ZelfEncrypt** ensures that users can confidently manage their crypto assets, knowing that their personal information remains safe, secure, and private at all times.
+
+### Document, extraction, and face-image retention
+
+How long Verifik keeps document photos, the extracted fields saved with a validation, and face images is a separate setting from ZelfProofs. Account, project, and flow policies decide what is stored, masked, or purged. Biometric templates used for Smart Access matching, and Human Auth encrypted credentials, stay under their own rules.
+
+See [Data retention](/getting-started/data-retention).

@@ -34,6 +34,7 @@ const sidebars = {
 					],
 				},
 				{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll API 가이드" },
+				{ type: "doc", id: "getting-started/data-retention", label: "데이터 보존" },
 			],
 		},
 		{

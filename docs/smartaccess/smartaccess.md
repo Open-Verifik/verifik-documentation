@@ -143,3 +143,15 @@ The **Finalize and Publish** step is where all your configurations and customiza
 * **Publishing:** Once satisfied with the setup, simply click the "Publish" button to make the project live. SmartAccess immediately deploys your configurations, making the authentication services available to your users. If needed, you can unpublish the project later for additional adjustments.
 
 This final step emphasizes the ease of use and flexibility that SmartAccess offers, allowing you to launch a fully customized, secure, and brand-consistent authentication solution with confidence.
+
+## Data retention
+
+Smart Access login flows stamp retention on the login selfie.
+
+- `faceImages` set to `none` means the login selfie is not stored.
+- `ephemeral` stores the selfie until the next purge run. Login flows are stamped without a webhook hold.
+- `store` keeps the selfie. When `retentionHours` is a number greater than 0, the selfie becomes eligible for purge after that many hours.
+
+Matching a returning person uses biometric templates and face collections. Those templates stay when this policy changes. Login liveness results and login webhook bodies stay as well. Billing and usage records stay when a selfie is purged.
+
+Document photos and saved extraction fields follow the same account, project, and flow policy when a login flow creates them. See [Data retention](/getting-started/data-retention).

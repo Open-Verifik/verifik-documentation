@@ -34,6 +34,7 @@ const sidebars = {
 					],
 				},
 				{ type: "doc", id: "smartenroll/smartenroll-api-companion", label: "SmartEnroll API コンパニオン" },
+				{ type: "doc", id: "getting-started/data-retention", label: "データ保持" },
 			],
 		},
 		{
