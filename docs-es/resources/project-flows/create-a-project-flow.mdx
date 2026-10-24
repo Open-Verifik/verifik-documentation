@@ -101,21 +101,25 @@ print(r.json())
 
 ### Retención de datos
 
-`dataRetention` es opcional en el flujo. Cuando está presente, reemplaza al proyecto para los registros creados en ese flujo. El orden de resolución es cuenta, luego proyecto, luego flujo. Define `mode` en cada tipo que este flujo deba cambiar.
+`dataRetention` es opcional en el flujo. Cuando está presente, reemplaza al proyecto para los registros creados en ese flujo si el modo del flujo es igual o más estricto. `none` es más estricto que `ephemeral`, y `ephemeral` es más estricto que `store`. El orden de resolución es cuenta, luego proyecto, luego flujo. Un modo en el objeto se aplica a cada tipo vigente que no define el suyo.
 
 ```json
 "dataRetention": {
   "mode": "ephemeral",
   "webhookHoldHours": 48,
+  "allowManualDelete": true,
   "types": {
     "documentImages": { "mode": "ephemeral" },
     "ocrExtraction": { "mode": "none" },
-    "faceImages": { "mode": "store", "retentionHours": 72 }
+    "faceImages": { "mode": "none" },
+    "documentLiveness": { "mode": "none" }
   }
 }
 ```
 
-`webhookHoldHours` es un entero de 24 a 72. La escritura confirmada del reemplazo de proyecto es `PUT /v3/projects/{id}`. Consulta [Retención de datos](/verifik-es/getting-started/data-retention).
+`webhookHoldHours` es un entero de 24 a 72. `retentionHours` en un tipo `store` es cuántas horas se conserva ese tipo, también en SmartEnroll. `faceImages` en `none` conserva el selfie hasta que termina la retención, para que la comparación del documento con el selfie pueda ejecutarse. `documentLiveness` en `none` significa que esa imagen no se guarda. `livenessResults` y `apiResponseLogs` se rechazan.
+
+El reemplazo del proyecto se envía con `PUT /v3/projects/{id}`. Consulta [Retención de datos](/verifik-es/getting-started/data-retention).
 
 ### Ejemplo de Respuesta
 

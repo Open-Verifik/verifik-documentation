@@ -146,12 +146,10 @@ This final step emphasizes the ease of use and flexibility that SmartAccess offe
 
 ## Data retention
 
-Smart Access login flows stamp retention on the login selfie.
+Smart Access login flows apply [data retention](/getting-started/data-retention) to the login selfie. `store`, `ephemeral`, and `none` are the same modes as on the account policy. `retentionHours` on a `store` selfie is how many hours that image is kept.
 
-- `faceImages` set to `none` means the login selfie is not stored.
-- `ephemeral` stores the selfie until the next purge run. Login flows are stamped without a webhook hold.
-- `store` keeps the selfie. When `retentionHours` is a number greater than 0, the selfie becomes eligible for purge after that many hours.
+`faceImages` set to `none` keeps the selfie until the webhook hold ends, so a document-to-selfie comparison can run, and then removes it.
 
-Matching a returning person uses biometric templates and face collections. Those templates stay when this policy changes. Login liveness results and login webhook bodies stay as well. Billing and usage records stay when a selfie is purged.
+Matching a returning person uses biometric templates and face collections. Those templates stay when this policy changes. `livenessResults` is not a retention type and is rejected. Stored login webhook bodies are redacted after delivery. Billing and usage records stay when a selfie is purged.
 
-Document photos and saved extraction fields follow the same account, project, and flow policy when a login flow creates them. See [Data retention](/getting-started/data-retention).
+Document photos and saved extraction fields follow the same account, project, and flow policy when a login flow creates them. A project or flow cannot loosen a stricter account mode.

@@ -146,12 +146,10 @@ Este paso final enfatiza la facilidad de uso y flexibilidad que Acceso Inteligen
 
 ## Retención de datos
 
-Los flujos de inicio de sesión de Smart Access sellan la retención en el selfie de acceso.
+Los flujos de inicio de sesión de Smart Access aplican la [retención de datos](/verifik-es/getting-started/data-retention) al selfie de acceso. `store`, `ephemeral` y `none` son los mismos modos que en la política de la cuenta. `retentionHours` en un selfie `store` es cuántas horas se conserva esa imagen.
 
-- `faceImages` en `none` significa que el selfie de acceso no se guarda.
-- `ephemeral` guarda el selfie hasta la siguiente ejecución de purga. Los flujos de acceso se sellan sin retención de webhook.
-- `store` conserva el selfie. Cuando `retentionHours` es un número mayor que 0, el selfie queda elegible de purga después de esas horas.
+`faceImages` en `none` conserva el selfie hasta que termina la retención del webhook, para que la comparación del documento con el selfie pueda ejecutarse, y después lo elimina.
 
-Reconocer a una persona que regresa usa plantillas biométricas y colecciones de rostros. Esas plantillas permanecen cuando cambia esta política. Los resultados de prueba de vida del acceso y los cuerpos de webhook del acceso también permanecen. Los registros de facturación y de uso permanecen cuando se purga un selfie.
+Reconocer a una persona que regresa usa plantillas biométricas y colecciones de rostros. Esas plantillas permanecen cuando cambia esta política. `livenessResults` no es un tipo de retención y se rechaza. Los cuerpos de webhook de acceso que se guardaron se redactan después de la entrega. Los registros de facturación y de uso permanecen cuando se purga un selfie.
 
-Las fotos del documento y los campos de extracción guardados siguen la misma política de cuenta, proyecto y flujo cuando un flujo de acceso los crea. Consulta [Retención de datos](/verifik-es/getting-started/data-retention).
+Las fotos del documento y los campos de extracción guardados siguen la misma política de cuenta, proyecto y flujo cuando un flujo de acceso los crea. Un proyecto o un flujo no puede aflojar un modo más estricto de la cuenta.
