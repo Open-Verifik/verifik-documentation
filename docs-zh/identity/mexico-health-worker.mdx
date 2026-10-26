@@ -1,0 +1,192 @@
+---
+id: mexico-health-worker
+title: 墨西哥 — 卫生从业人员执照
+description: 确认某人持有墨西哥卫生相关专业执照。仅持有非卫生执照时返回 404。
+slug: /identity/mexico-health-worker
+keywords:
+  - v2/mx/health-worker
+  - /v2/mx/health-worker
+  - v2 mx health worker
+  - api/mx/health-worker
+  - /api/mx/health-worker
+  - api mx health worker
+  - api.verifik.co/v2/mx/health-worker
+  - 'https://api.verifik.co/v2/mx/health-worker'
+  - GET v2/mx/health-worker
+  - GET /v2/mx/health-worker
+  - mx/health-worker
+  - /mx/health-worker
+  - health worker license
+  - mexico health license
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 墨西哥 — 卫生从业人员执照
+
+确认某人在官方专业执照登记册中至少持有一本卫生相关专业执照。查询方式与 [专业执照](/verifik-zh/identity/mexico-cedula-profesional) 相同：CURP、执照号码或姓名。非卫生执照会从结果中移除。
+
+卫生职称包括医学、护理、牙科、药学、营养、临床心理学、精神病学、助产、物理治疗和验光。兽医除外。仅持有非卫生执照的人返回 **404**。
+
+这是资质筛查，本身不是身份证明。查询全部执照请使用 [专业执照](/verifik-zh/identity/mexico-cedula-profesional)。民事记录请使用 [墨西哥公民（CURP）](/verifik-zh/identity/mexico)。
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/health-worker
+```
+
+匹配时返回与通用执照端点相同的身份字段，另加 `isHealthWorker: true` 和 `nonHealthCount`（被排除的非卫生执照数量）。`cedulas` 只包含卫生执照。
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+发送 `documentType` + `documentNumber`，或 `firstName` + `lastName`。不要混用两种方式。
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | 证件模式 | `CURP` 或 `CEDULA`（不区分大小写）。卫生岗位招聘优先使用 CURP。 | `CURP` |
+| `documentNumber` | string | 与 `documentType` 一起 | 17–18 个字符的 CURP 或执照号码。 | `LOPE900501HDFGRN01` |
+| `firstName` | string | 姓名模式 | 名。2–80 个字符。 | `ANA` |
+| `lastName` | string | 姓名模式 | 两个姓氏，父姓在前。2–80 个字符。 | `LOPEZ RUIZ` |
+
+### How matching works
+
+查询与通用执照端点相同，然后应用卫生过滤。
+
+- **CURP** 先尝试直接匹配（`matchMethod: "curp"`），再以不另收费的精确姓名回退（`matchMethod: "curp_to_name"`）。
+- **CEDULA** 是执照号码的精确匹配。非卫生执照返回 **404**。
+- **姓名** 是全名的精确匹配。若匹配到的执照都不是卫生职称，响应为 **404**。
+- `nonHealthCount` 是已找到并被排除的执照数量。只要此端点返回 200，`isHealthWorker` 就为 `true`。
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/health-worker", {
+  params: {
+    documentType: "CURP",
+    documentNumber: "LOPE900501HDFGRN01",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/health-worker"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CURP", "documentNumber": "LOPE900501HDFGRN01"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      }
+    ],
+    "curp": "LOPE900501HDFGRN01",
+    "documentNumber": "LOPE900501HDFGRN01",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp",
+    "matchNote": null,
+    "isHealthWorker": true,
+    "nonHealthCount": 1
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType and documentNumber, or firstName and lastName, are required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (unavailable)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **404** 表示没有找到卫生执照。这包括完全没有执照的有效 CURP，以及只持有非卫生执照（例如法学）的人。
+- 在 Smart Batch 中，该 404 是已完成的筛查结果，不是失败行。
+- 结果最多缓存 7 天。
+- 沙盒 CURP `LOPE900501HDFGRN01` 返回一本医学执照，且 `nonHealthCount: 1`。
+- 包含 `000003` 的 CURP（例如 `LOPE000003MDFRRN03`）返回姓名回退的卫生执照。这是把 CURP 改走姓名的情形。
+- `documentType=CEDULA` 且 `documentNumber=10000002` 返回护理执照。`10000001` 仅为法学，返回 **404**。
+- CURP `LOPE900404HDFNTF01`、包含 `000002` 的 CURP，以及 `lastName=NOTFOUND` 返回 **404**。
+- 短于 17 或长于 18 个字符的 CURP，或无效的 `documentType`，返回 **409** `MissingParameter`。
+- 无法连接登记册时，响应为 **409** `Endpoint_out_of_service`。请稍后重试。
+- 相关：[专业执照](/verifik-zh/identity/mexico-cedula-profesional)、[墨西哥公民（CURP）](/verifik-zh/identity/mexico)、[INE 验证](/verifik-zh/identity/mexico-ine)。

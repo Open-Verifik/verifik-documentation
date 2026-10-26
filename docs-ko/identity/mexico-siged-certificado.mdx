@@ -1,0 +1,182 @@
+---
+id: mexico-siged-certificado
+title: 멕시코 — 학업 증명서 (folio)
+description: folio로 공식 학업 증명서 등록부에서 멕시코 전자 학업 증명서를 검증합니다.
+slug: /identity/mexico-siged-certificado
+keywords:
+  - v2/mx/siged/certificado
+  - /v2/mx/siged/certificado
+  - v2 mx siged certificado
+  - api/mx/siged/certificado
+  - /api/mx/siged/certificado
+  - api mx siged certificado
+  - api.verifik.co/v2/mx/siged/certificado
+  - 'https://api.verifik.co/v2/mx/siged/certificado'
+  - GET v2/mx/siged/certificado
+  - GET /v2/mx/siged/certificado
+  - mx/siged/certificado
+  - /mx/siged/certificado
+  - education certificate
+  - certificado de estudios
+  - folio
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 멕시코 — 학업 증명서 (folio)
+
+folio로 공식 학업 증명서 등록부에서 멕시코 전자 학업 증명서를 검증합니다. 선택적으로 `fullName` 또는 `curp`를 보내 증명서가 해당자에게 속하는지 확인할 수 있습니다. 둘 다 보내면 `curp`가 우선합니다. 불일치는 **409** `name_mismatch`를 반환합니다.
+
+이것은 증명서 기록을 확인합니다. 그 자체로 신원을 증명하지는 않습니다. CURP 민사 기록은 [멕시코 시민(CURP)](/verifik-ko/identity/mexico)을 참고하세요. 전문 면허는 [전문 면허](/verifik-ko/identity/mexico-cedula-profesional)를 참고하세요.
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/siged/certificado
+```
+
+일치하면 `folio`, `fullName`, `status`, `certificateType`, `career`, `institution`, `level`, `studyType`, `average`, `averageText`, `periodStart`, `periodEnd`, `registrationDate`, `laborTraining`, `federalEntity`, `issueDate`를 반환합니다. 빈 필드는 `null`입니다.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `folio` | string | 예 | 전자 증명서에 인쇄된 folio. 4–64자. | `SIGED10000001` |
+| `fullName` | string | 아니오 | 예상 전체 이름. 불일치하면 409 `name_mismatch`. `curp`도 보내면 무시됩니다. 3–160자. | `Ana Lopez Ruiz` |
+| `curp` | string | 아니오 | 해당자의 CURP. 보내면 `fullName`보다 우선합니다. 17–18자. | `LOPE900501HDFGRN01` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/siged/certificado", {
+  params: {
+    folio: "SIGED10000001",
+    fullName: "Ana Lopez Ruiz",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/siged/certificado"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"folio": "SIGED10000001", "fullName": "Ana Lopez Ruiz"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+소유자를 CURP로 확인하려면 `folio`와 `curp`를 보내고 `fullName`은 생략하세요.
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "average": "9.1",
+    "averageText": "NUEVE PUNTO UNO",
+    "career": "BACHILLERATO TECNOLOGICO",
+    "certificateType": "CERTIFICADO DE TERMINACION DE ESTUDIOS",
+    "federalEntity": null,
+    "firstName": "ANA",
+    "folio": "SIGED10000001",
+    "fullName": "ANA LOPEZ RUIZ",
+    "institution": "DIRECCION GENERAL DE EDUCACION TECNOLOGICA INDUSTRIAL",
+    "issueDate": null,
+    "laborTraining": "TECNICO - PROGRAMACION",
+    "lastName": "LOPEZ RUIZ",
+    "level": "IEMS",
+    "periodEnd": "2021",
+    "periodStart": "2018",
+    "registrationDate": "2021-07-15",
+    "status": "Vigente",
+    "studyType": "EDUCACION MEDIA SUPERIOR"
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (name)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "name_mismatch"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-missing" label="409 (missing folio)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"folio\" is required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (unavailable)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `folio`는 필수입니다. `fullName`과 `curp`는 선택적 소유자 확인입니다. 둘 다 보내면 `curp`가 사용되고 `fullName`은 무시됩니다.
+- 등록부에 없는 folio는 **404**를 반환합니다. 해당 증명서의 소유자가 아닌 이름 또는 CURP는 **409** `name_mismatch`를 반환합니다.
+- 결과는 최대 7일간 캐시됩니다.
+- 샌드박스 folio `SIGED10000001`은 `ANA LOPEZ RUIZ`의 샘플 증명서를 반환합니다. `fullName=Ana Lopez Ruiz`도 200을 반환합니다.
+- 같은 folio에 `fullName=Maria Perez`를 보내면 **409** `name_mismatch`를 반환합니다.
+- Folio `FOLIO90040401`은 **404**를 반환합니다.
+- `curp=LOPE900501HDFGRN01`은 어떤 `fullName`과 함께 보내도 200을 반환합니다. CURP가 `fullName`보다 우선하기 때문입니다. `curp=LOPE900404HDFNTF01`은 **404**를 반환합니다.
+- `folio`가 없으면 **409** `MissingParameter`를 반환합니다.
+- 등록부에 연결할 수 없으면 응답은 **409** `Endpoint_out_of_service`입니다. 나중에 다시 시도하세요.
+- 관련: [멕시코 시민(CURP)](/verifik-ko/identity/mexico), [전문 면허](/verifik-ko/identity/mexico-cedula-profesional), [보건 전문가 면허](/verifik-ko/identity/mexico-health-worker).

@@ -1,0 +1,248 @@
+---
+id: mexico-cedula-profesional
+title: 멕시코 — 전문 면허
+description: CURP, 면허 번호 또는 이름으로 공식 전문 면허 등록부에서 멕시코 전문 면허를 조회합니다.
+slug: /identity/mexico-cedula-profesional
+keywords:
+  - v2/mx/cedula-profesional
+  - /v2/mx/cedula-profesional
+  - v2 mx cedula profesional
+  - api/mx/cedula-profesional
+  - /api/mx/cedula-profesional
+  - api mx cedula profesional
+  - api.verifik.co/v2/mx/cedula-profesional
+  - 'https://api.verifik.co/v2/mx/cedula-profesional'
+  - GET v2/mx/cedula-profesional
+  - GET /v2/mx/cedula-profesional
+  - mx/cedula-profesional
+  - /mx/cedula-profesional
+  - cédula profesional
+  - professional license
+  - mexico professional license
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 멕시코 — 전문 면허
+
+공식 전문 면허 등록부에서 해당자가 전문 면허(cédula profesional)를 보유하고 있는지 확인합니다. 이것은 자격 검증이며, 신원 증명 자체는 아닙니다.
+
+**문서** 또는 **이름** 중 하나를 보내세요.
+
+- **CURP**(권장). 해당 CURP에 연결된 면허를 등록부에서 먼저 확인합니다.
+- **면허 번호.** cédula 번호와 정확히 일치하는 항목입니다.
+- **이름.** 이름과 두 성(부성·모성)에 대한 악센트 무시 완전 일치입니다.
+
+한 사람이 여러 면허를 보유할 수 있으므로 `cedulas`는 배열입니다. CURP 소지자의 민사 기록은 [멕시코 시민(CURP)](/verifik-ko/identity/mexico)을 참고하세요. 유권자 자격증은 [INE 검증](/verifik-ko/identity/mexico-ine)을 참고하세요. 보건 면허만 필요하면 [보건 전문가 면허](/verifik-ko/identity/mexico-health-worker)를 참고하세요.
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/cedula-profesional
+```
+
+일치하면 `fullName`, `matchMethod`, `ambiguous`, 그리고 `licenseNumber`, `title`, `profession`, `institution`, `registrationYear`를 담은 `cedulas[]`를 반환합니다.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+`documentType` + `documentNumber`, 또는 `firstName` + `lastName`을 보내세요. 두 방식을 섞지 마세요.
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | 문서 모드 | `CURP` 또는 `CEDULA`(대소문자 무시). | `CURP` |
+| `documentNumber` | string | `documentType`과 함께 | 17–18자의 CURP(자동으로 대문자 변환) 또는 면허 번호. | `LOPE900501HDFGRN01` |
+| `firstName` | string | 이름 모드 | 이름. 2–80자. | `ANA` |
+| `lastName` | string | 이름 모드 | 두 성, 부성 먼저. 2–80자. | `LOPEZ RUIZ` |
+
+### How matching works
+
+- **CURP.** 해당 CURP에 연결된 면허를 먼저 반환합니다(`matchMethod: "curp"`). 직접 연결된 면허가 없으면 Verifik이 CURP 소지자의 공식 이름을 확인한 뒤 전체 이름이 정확히 일치하는 항목을 검색합니다. 이 단계는 추가 비용이 없습니다(`matchMethod: "curp_to_name"`, `matchNote` 포함). 같은 CURP를 가진 행이 우선합니다. 그렇지 않으면 CURP가 없고 이름이 정확히 일치하는 행을 반환합니다.
+- **`ambiguous: true`**는 해당 행이 둘 이상의 기관·등록 연도 그룹에 속해 동명이인일 수 있음을 뜻합니다. 행을 검토하거나 면허 번호를 요청하세요.
+- **CEDULA.** 면허 번호의 완전 일치입니다(`matchMethod: "license"`).
+- **이름.** 악센트와 대소문자를 무시한 전체 이름 완전 일치입니다(`matchMethod: "name"`). `ambiguous`는 같은 기관/연도 규칙을 사용합니다. CURP를 우선하세요.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/cedula-profesional", {
+  params: {
+    documentType: "CURP",
+    documentNumber: "LOPE900501HDFGRN01",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/cedula-profesional"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CURP", "documentNumber": "LOPE900501HDFGRN01"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+이름 모드는 `firstName=ANA`와 `lastName=LOPEZ RUIZ`를 사용하고 `documentType`과 `documentNumber`는 생략합니다.
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 (CURP)">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      },
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "20050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA EN DERECHO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA EN DERECHO"
+      }
+    ],
+    "curp": "LOPE900501HDFGRN01",
+    "documentNumber": "LOPE900501HDFGRN01",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp",
+    "matchNote": null
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-name" label="200 (name fallback)">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": null,
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10000031",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      }
+    ],
+    "curp": "LOPE000003MDFRRN03",
+    "documentNumber": "LOPE000003MDFRRN03",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp_to_name",
+    "matchNote": "Matched by name after CURP resolution; the registry had no direct CURP hit."
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType and documentNumber, or firstName and lastName, are required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (unavailable)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- 유효한 CURP라도 소지자에게 면허가 없으면 **404**를 반환하며, 샌드박스에서도 같습니다. 빈 `cedulas` 배열은 성공 응답이 아닙니다.
+- `ambiguous: true`는 행이 둘 이상의 기관과 등록 연도에 걸쳐 있음을 뜻합니다. 행을 검토하거나 면허 번호로 조회하세요.
+- 결과는 최대 7일간 캐시되므로 같은 조회는 빠르게 응답합니다.
+- 샌드박스 인물 `ANA LOPEZ RUIZ`. `LOPE900501HDFGRN01`을 포함한, 아래 트리거를 제외한 모든 CURP는 면허 두 건의 직접 일치를 반환합니다.
+- `000003`이 포함된 CURP(예: `LOPE000003MDFRRN03`)는 `matchMethod: "curp_to_name"`과 `cedulas[].curp: null`을 반환합니다. 이것은 CURP를 이름으로 넘기는 경우입니다.
+- `000002`가 포함된 CURP(예: `LOPE000002MDFRRN02`)는 **404**를 반환합니다(유효한 CURP, 면허 없음).
+- CURP `LOPE900404HDFNTF01`, 면허 `90040401`, 또는 `lastName=NOTFOUND`는 **404**를 반환합니다.
+- `documentType=CEDULA`와 `documentNumber=10000001`은 법학 면허 한 건을 반환합니다. `firstName=ANA`와 `lastName=AMBIGUA`는 `ambiguous: true`를 반환합니다.
+- 17자보다 짧거나 18자보다 긴 CURP, 또는 유효하지 않은 `documentType`은 **409** `MissingParameter`를 반환합니다.
+- 등록부에 연결할 수 없으면 응답은 **409** `Endpoint_out_of_service`입니다. 나중에 다시 시도하세요.
+- 관련: [멕시코 시민(CURP)](/verifik-ko/identity/mexico), [INE 검증](/verifik-ko/identity/mexico-ine), [보건 전문가 면허](/verifik-ko/identity/mexico-health-worker), [학업 증명서 (folio)](/verifik-ko/identity/mexico-siged-certificado).

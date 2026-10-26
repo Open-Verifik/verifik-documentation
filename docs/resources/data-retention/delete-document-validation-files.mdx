@@ -1,0 +1,119 @@
+---
+id: delete-document-validation-files
+title: Delete Document Files
+description: Erase stored document images from DigitalOcean Spaces while preserving verification results
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```http
+DELETE https://api.verifik.co/v2/document-validations/{id}/files
+```
+
+Permanently removes document front and back image files from storage for a single validation record. The verification metadata, status, and scores are preserved for billing and reporting.
+
+### Headers
+
+| Name | Value |
+| :--- | :--- |
+| `Content-Type` | `application/json` |
+| `Authorization` | `Bearer <token>` |
+
+### Path Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | `string` | Yes | The unique identifier of the document validation record |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function eraseFiles() {
+  const docId = "6add0c680b29eb28766c82ce";
+  const res = await fetch(`https://api.verifik.co/v2/document-validations/${docId}/files`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(await res.json());
+}
+
+eraseFiles();
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+doc_id = "6add0c680b29eb28766c82ce"
+url = f"https://api.verifik.co/v2/document-validations/{doc_id}/files"
+headers = {
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+    "Content-Type": "application/json"
+}
+
+response = requests.delete(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "_id": "6add0c680b29eb28766c82ce",
+    "status": "ACTIVE_BUT_UNVERIFIED",
+    "documentType": "CC",
+    "files": [],
+    "url": null,
+    "backUrl": null,
+    "hasFrontImage": false,
+    "hasBackImage": false,
+    "retention": {
+      "purgedAt": "2026-10-26T22:30:00.000Z",
+      "purgeReason": "manual_delete"
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Manual erase is disabled by policy",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "Document validation not found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+</Tabs>

@@ -1,36 +1,249 @@
 ---
 id: mexico-cedula-profesional
 title: México — Cédula profesional
-draft: true
-description: Consulta una cédula profesional en el Registro Nacional de Profesionistas de la SEP por CURP, número de cédula o nombre.
+description: Consulta una cédula profesional mexicana por CURP, número de cédula o nombre en el registro oficial de profesionistas.
 slug: /identity/mexico-cedula-profesional
 keywords:
   - v2/mx/cedula-profesional
+  - /v2/mx/cedula-profesional
+  - v2 mx cedula profesional
+  - api/mx/cedula-profesional
+  - /api/mx/cedula-profesional
+  - api mx cedula profesional
+  - api.verifik.co/v2/mx/cedula-profesional
+  - 'https://api.verifik.co/v2/mx/cedula-profesional'
+  - GET v2/mx/cedula-profesional
+  - GET /v2/mx/cedula-profesional
+  - mx/cedula-profesional
+  - /mx/cedula-profesional
   - cédula profesional
-  - SEP
+  - professional license
+  - mexico professional license
+  - registro oficial de profesionistas
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # México — Cédula profesional
 
-Confirma que una persona tiene **cédula profesional** registrada ante la Secretaría de Educación Pública (SEP). La fuente es el [Registro Nacional de Profesionistas](https://cedulaprofesional.sep.gob.mx/cedula/).
+Confirma que una persona tiene una cédula profesional en el registro oficial de profesionistas. Es una verificación de credencial, no una prueba de identidad.
 
-Es una verificación de credencial, no una prueba de identidad ni un antecedente penal. Combínala con [Ciudadano mexicano (CURP)](/identity/mexico) o [Validación INE](/identity/mexico-ine).
+Envía **un documento** o **un nombre**:
 
-La SEP publica estos resultados como datos abiertos preliminares. El documento certificante sigue siendo los Antecedentes Profesionales de la Dirección General de Profesiones.
+- **CURP** (recomendado). Primero se consulta el registro en busca de cédulas ligadas a esa CURP.
+- **Número de cédula.** Coincidencia exacta con el número de cédula.
+- **Nombre.** Coincidencia exacta, sin distinguir acentos, de los nombres de pila más ambos apellidos.
 
-## Referencia
+Una persona puede tener varias cédulas, así que `cedulas` es un arreglo. Para el registro civil del titular de la CURP, consulta [Ciudadano mexicano (CURP)](/identity/mexico). Para una credencial de elector, consulta [Validación INE](/identity/mexico-ine). Para cédulas solo de salud, consulta [Licencia de profesionista de salud](/identity/mexico-health-worker).
+
+## API reference
+
+### Endpoint
 
 ```
-GET https://api.verifik.co/v2/mx/cedula-profesional
+https://api.verifik.co/v2/mx/cedula-profesional
 ```
 
-| Parámetro | Obligatorio | Descripción |
-| --- | --- | --- |
-| `documentType` | Con `documentNumber` | `CURP` o `CEDULA`. |
-| `documentNumber` | Con `documentType` | CURP (18 caracteres) o número de cédula. |
-| `firstName` | Búsqueda por nombre | Nombres. Envíalo con `lastName` si omites `documentType`. |
-| `lastName` | Búsqueda por nombre | Apellidos. |
+Una coincidencia devuelve `fullName`, `matchMethod`, `ambiguous` y `cedulas[]` con `licenseNumber`, `title`, `profession`, `institution` y `registrationYear`.
 
-Con `CURP`, si la persona existe y no tiene cédula, la respuesta es **200** y `cedulas` va vacío. Un número de cédula o un nombre sin coincidencias responde **404**.
+### Headers
 
-Prefiere `documentType=CURP`. La búsqueda solo por nombre puede devolver homónimos.
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+Envía `documentType` + `documentNumber`, o `firstName` + `lastName`. No mezcles los dos modos.
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | Modo documento | `CURP` o `CEDULA` (sin distinguir mayúsculas). | `CURP` |
+| `documentNumber` | string | Con `documentType` | Una CURP de 17–18 caracteres (se pasa a mayúsculas automáticamente) o un número de cédula. | `LOPE900501HDFGRN01` |
+| `firstName` | string | Modo nombre | Nombres de pila. De 2 a 80 caracteres. | `ANA` |
+| `lastName` | string | Modo nombre | Ambos apellidos, el paterno primero. De 2 a 80 caracteres. | `LOPEZ RUIZ` |
+
+### How matching works
+
+- **CURP.** Primero se devuelven las cédulas ligadas a esa CURP (`matchMethod: "curp"`). Si ninguna está ligada de forma directa, Verifik resuelve el nombre oficial del titular de la CURP y busca una coincidencia exacta del nombre completo. Ese paso no tiene costo adicional (`matchMethod: "curp_to_name"`, con `matchNote`). Prevalecen las filas que traen la misma CURP. Si no las hay, se devuelven las filas sin CURP que coinciden con el nombre exacto.
+- **`ambiguous: true`** significa que esas filas pertenecen a más de un grupo de institución y año de registro, así que puede haber un homónimo. Revisa las filas o pide el número de cédula.
+- **CEDULA.** Coincidencia exacta del número de cédula (`matchMethod: "license"`).
+- **Nombre.** Coincidencia exacta del nombre completo, sin distinguir acentos ni mayúsculas (`matchMethod: "name"`). `ambiguous` usa la misma regla de institución y año. Prefiere la CURP.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/cedula-profesional", {
+  params: {
+    documentType: "CURP",
+    documentNumber: "LOPE900501HDFGRN01",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/cedula-profesional"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CURP", "documentNumber": "LOPE900501HDFGRN01"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+El modo nombre usa `firstName=ANA` y `lastName=LOPEZ RUIZ` y omite `documentType` y `documentNumber`.
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 (CURP)">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      },
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "20050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA EN DERECHO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA EN DERECHO"
+      }
+    ],
+    "curp": "LOPE900501HDFGRN01",
+    "documentNumber": "LOPE900501HDFGRN01",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp",
+    "matchNote": null
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-name" label="200 (respaldo por nombre)">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": null,
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10000031",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      }
+    ],
+    "curp": "LOPE000003MDFRRN03",
+    "documentNumber": "LOPE000003MDFRRN03",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp_to_name",
+    "matchNote": "Matched by name after CURP resolution; the registry had no direct CURP hit."
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType and documentNumber, or firstName and lastName, are required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (no disponible)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Una CURP válida cuyo titular no tiene cédula responde **404**, también en sandbox. Un arreglo `cedulas` vacío no es una respuesta de éxito.
+- `ambiguous: true` significa que las filas abarcan más de una institución y año de registro. Revísalas o consulta el número de cédula.
+- Los resultados se almacenan en caché hasta 7 días, así que una consulta repetida es rápida.
+- Persona de sandbox `ANA LOPEZ RUIZ`. Cualquier CURP, salvo los disparadores de abajo, devuelve una coincidencia directa con dos cédulas.
+- Una CURP que contiene `000003` (por ejemplo `LOPE000003MDFRRN03`) devuelve `matchMethod: "curp_to_name"` y `cedulas[].curp: null`.
+- Una CURP que contiene `000002` (por ejemplo `LOPE000002MDFRRN02`) responde **404** (CURP válida, sin cédula).
+- La CURP `LOPE900404HDFNTF01`, la cédula `90040401` o `lastName=NOTFOUND` responden **404**.
+- `documentType=CEDULA` y `documentNumber=10000001` devuelven una cédula de derecho. `firstName=ANA` y `lastName=AMBIGUA` devuelven `ambiguous: true`.
+- Una CURP de menos de 17 o más de 18 caracteres, o un `documentType` no válido, responde **409** `MissingParameter`.
+- Cuando no se puede alcanzar el registro, la respuesta es **409** `Endpoint_out_of_service`. Reintenta más tarde.
+- Relacionado: [Ciudadano mexicano (CURP)](/identity/mexico), [Validación INE](/identity/mexico-ine), [Licencia de profesionista de salud](/identity/mexico-health-worker), [Certificado de estudios (folio)](/identity/mexico-siged-certificado).

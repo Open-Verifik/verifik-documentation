@@ -1,0 +1,117 @@
+---
+id: erase-data-bulk
+title: Bulk Erase Data
+description: Trigger asynchronous bulk erasure of stored KYC media and records across projects
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/data-retention/erase
+```
+
+Initiates an asynchronous bulk erasure operation. Permanently deletes stored DigitalOcean Spaces keys under the target prefix and unsets PII fields in MongoDB.
+
+### Headers
+
+| Name | Value |
+| :--- | :--- |
+| `Content-Type` | `application/json` |
+| `Authorization` | `Bearer <token>` |
+
+### Request Body
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `scope` | `string` | Yes | Target scope: `"project"` or `"client"` |
+| `projectId` | `string` | Conditional | Required when `scope` is `"project"` |
+| `before` | `string` (ISO 8601) | No | Optional cutoff timestamp. Erases data created prior to this date. |
+| `types` | `array` | No | Optional filter for specific media types (e.g. `["documentImages", "faceImages"]`) |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function bulkErase() {
+  const payload = {
+    scope: "project",
+    projectId: "6266193db77ccc8111730c90",
+    before: "2026-01-01T00:00:00.000Z",
+    types: ["documentImages", "faceImages"]
+  };
+
+  const res = await fetch("https://api.verifik.co/v2/data-retention/erase", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload)
+  });
+  console.log(await res.json());
+}
+
+bulkErase();
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/data-retention/erase"
+headers = {
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+    "Content-Type": "application/json"
+}
+payload = {
+    "scope": "project",
+    "projectId": "6266193db77ccc8111730c90",
+    "before": "2026-01-01T00:00:00.000Z",
+    "types": ["documentImages", "faceImages"]
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "jobId": "erase_6add0c680b29eb28766c82ce",
+    "status": "QUEUED",
+    "scope": "project",
+    "projectId": "6266193db77ccc8111730c90",
+    "estimatedRecords": 1420
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Manual erase is disabled by policy",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>

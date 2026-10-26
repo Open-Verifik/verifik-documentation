@@ -1,0 +1,77 @@
+---
+id: the-data-retention-policy-object
+title: The Data Retention Policy Object
+description: The Data Retention Policy object defines storage duration, modes, and purge behavior across media types.
+---
+
+### Overview
+
+The Data Retention Policy object represents storage rules applied to your account, projects, or individual project flows. It governs whether KYC images and personal data are kept indefinitely, stored for a specific duration, or deleted immediately upon verification.
+
+### Attributes
+
+#### `mode`
+**Type:** String  
+**Values:** `"store"` | `"ephemeral"` | `"none"`  
+**Default:** `"store"`
+
+The primary storage mode for the entity. When specified at the top level, it acts as the default mode for all sub-types.
+
+#### `types`
+**Type:** Object  
+**Required:** Yes
+
+Per-media granular retention rules. Contains the following sub-objects:
+
+- **`types.documentImages`**: Front and back document photos.
+- **`types.faceImages`**: Facial photos and selfies captured during biometric validation.
+- **`types.ocrExtraction`**: Text data extracted from the document.
+- **`types.documentLiveness`**: Document tilt and liveness check photos.
+
+Each sub-object contains:
+* `mode` (String): `"store"` | `"ephemeral"` | `"none"`
+* `retentionHours` (Number | null): How many hours to keep stored media. `null` or omitted means keep indefinitely until manually erased.
+
+#### `webhookHoldHours`
+**Type:** Number  
+**Default:** `24`  
+**Minimum:** `24`  
+**Maximum:** `72`
+
+Safety window in hours during which data in `ephemeral` or `none` mode is held to guarantee that webhook notifications and retries succeed before data is deleted.
+
+#### `allowManualDelete`
+**Type:** Boolean  
+**Default:** `true`
+
+Whether administrators and authorized API clients may call manual erasure endpoints on individual records.
+
+---
+
+### Example Policy Object
+
+```json
+{
+  "mode": "store",
+  "types": {
+    "documentImages": {
+      "mode": "store",
+      "retentionHours": 720
+    },
+    "faceImages": {
+      "mode": "ephemeral",
+      "retentionHours": null
+    },
+    "ocrExtraction": {
+      "mode": "store",
+      "retentionHours": null
+    },
+    "documentLiveness": {
+      "mode": "none",
+      "retentionHours": null
+    }
+  },
+  "webhookHoldHours": 24,
+  "allowManualDelete": true
+}
+```
