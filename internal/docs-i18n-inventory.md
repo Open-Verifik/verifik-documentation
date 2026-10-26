@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-26T22:37:31.277Z
+Generated: 2026-10-26T23:39:05.700Z
 
-- **Files scanned:** 536
-- **Unique endpoint URLs:** 233
+- **Files scanned:** 545
+- **Unique endpoint URLs:** 239
 - **Duplicate URL groups (SEO / aliases):** 59
-- **Docs without `### Endpoint` block:** 221
+- **Docs without `### Endpoint` block:** 224
 
 ## Summary by priority (canonical primary path only)
 
@@ -13,7 +13,7 @@ Generated: 2026-10-26T22:37:31.277Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 182 | identity, biometrics, resources, etc. |
+| P2 | 188 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -244,6 +244,7 @@ Generated: 2026-10-26T22:37:31.277Z
 | P2 | `v2/app-logins/{id}` | `resources/app-logins/retrieve-an-app-login.mdx` |
 | P2 | `v2/app-registrations` | `resources/app-registrations/create-an-app-registration.mdx` |
 | P2 | `v2/app-registrations/{id}` | `resources/app-registrations/retrieve-an-app-registration.mdx` |
+| P2 | `v2/app-registrations/{id}/data` | `resources/data-retention/delete-app-registration-data.mdx` |
 | P2 | `v2/app-registrations/{id}/resend-link` | `resources/app-registrations/resend-an-app-registration-link.mdx` |
 | P2 | `v2/app-registrations/{id}/sync` | `resources/app-registrations/sync-app-registration-status.mdx` |
 | P1 | `v2/ar/buenos-aires/technical-inspection` | `vehicle-validation/argentina/buenos-aires-technical-inspection.mdx` |
@@ -283,6 +284,7 @@ Generated: 2026-10-26T22:37:31.277Z
 | P1 | `v2/cl/vehicle-soap` | `vehicle-validation/chile/vehicle-soap.mdx` |
 | P1 | `v2/cl/vehicle-soap-plate` | `vehicle-validation/chile/vehicle-soap-plate.mdx` |
 | P1 | `v2/cl/vehicle-stolen` | `vehicle-validation/chile/vehicle-stolen.mdx` |
+| P2 | `v2/client-settings/data` | `resources/data-retention/update-client-retention-policy.mdx` |
 | P2 | `v2/clients/me` | `accounts/clients/account-information.mdx` |
 | P2 | `v2/co/adres` | `legal/colombia-adres.mdx` |
 | P2 | `v2/co/afiliaciones` | `legal/verify-colombian-affiliations.mdx` |
@@ -355,8 +357,11 @@ Generated: 2026-10-26T22:37:31.277Z
 | P2 | `v2/cr/company` | `business-validation/costa-rica.mdx` |
 | P1 | `v2/cr/vehicle` | `vehicle-validation/costa-rica.mdx` |
 | P2 | `v2/cr/votacion` | `identity/costa-rica/votacion.mdx` |
+| P2 | `v2/data-retention/erase` | `resources/data-retention/erase-data-bulk.mdx` |
+| P2 | `v2/data-retention/policy` | `resources/data-retention/retrieve-data-retention-policy.mdx` |
 | P2 | `v2/dea` | `background-check/dea-background-check.mdx` |
 | P2 | `v2/do/cedula` | `identity/dominican-republic.mdx` |
+| P2 | `v2/document-validations/{id}/files` | `resources/data-retention/delete-document-validation-files.mdx` |
 | P2 | `v2/document-validations/app-registration` | `resources/app-registrations/create-an-app-registration-document-validation.mdx` |
 | P2 | `v2/ec/cedula` | `identity-validation/ecuador.mdx` |
 | P1 | `v2/ec/vehiculo/placa` | `vehicle-validation/ecuador/vehicle-by-plate.mdx` |
@@ -425,6 +430,7 @@ Generated: 2026-10-26T22:37:31.277Z
 | P2 | `v2/phone-validations/app-registration` | `resources/app-registrations/create-an-app-registration-phone-validation.mdx` |
 | P2 | `v2/phone-validations/manual` | `resources/phone-validations/create-a-manual-phone-validation.mdx` |
 | P2 | `v2/project-flows` | `resources/project-flows/create-a-project-flow/smart-enroll-project-flow.mdx` |
+| P2 | `v2/projects/{id}/data-retention` | `resources/data-retention/update-project-retention-policy.mdx` |
 | P2 | `v2/projects/email-login` | `accounts/authentication/api-key-access-via-email.mdx` |
 | P2 | `v2/projects/phone-login` | `authentication/api-key-access-via-phone.mdx` |
 | P2 | `v2/py/cic` | `identity/paraguay.mdx` |
@@ -589,6 +595,8 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `resources/credits/list-all-credit-records.mdx`
 - `resources/credits/retrieve-a-credit-record.mdx`
 - `resources/credits/the-credit-object.mdx`
+- `resources/data-retention/data-retention-overview.md`
+- `resources/data-retention/the-data-retention-policy-object.mdx`
 - `resources/document-liveness/create-a-document-liveness.mdx`
 - `resources/document-liveness/document-liveness.mdx`
 - `resources/document-liveness/list-all-document-liveness.mdx`
@@ -646,6 +654,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `smartaccess/smartaccess.md`
 - `smartcheck/smart-batch-queue.md`
 - `smartcheck/smartcheck.md`
+- `smartenroll/data-retention.md`
 - `smartenroll/smartenroll-admin-kyc-review.md`
 - `smartenroll/smartenroll-api-companion.md`
 - `smartenroll/smartenroll-kyc-flow.md`

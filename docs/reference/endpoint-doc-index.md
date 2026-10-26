@@ -232,6 +232,21 @@ keywords:
   - "https://api.verifik.co/v2/app-registrations/{id}"
   - "GET v2/app-registrations/{id}"
   - "GET /v2/app-registrations/{id}"
+  - "v2/app-registrations/{id}/data"
+  - "/v2/app-registrations/{id}/data"
+  - "v2/app-registrations/data"
+  - "/v2/app-registrations/data"
+  - "v2 app-registrations data"
+  - "v2 app-registrations {id} data"
+  - "app-registrations/data"
+  - "/app-registrations/data"
+  - "api/app-registrations/data"
+  - "/api/app-registrations/data"
+  - "api app-registrations data"
+  - "api.verifik.co/v2/app-registrations/{id}/data"
+  - "https://api.verifik.co/v2/app-registrations/{id}/data"
+  - "GET v2/app-registrations/{id}/data"
+  - "GET /v2/app-registrations/{id}/data"
   - "v2/app-registrations/{id}/resend-link"
   - "/v2/app-registrations/{id}/resend-link"
   - "v2/app-registrations/resend-link"
@@ -717,6 +732,18 @@ keywords:
   - "https://api.verifik.co/v2/cl/vehicle-stolen"
   - "GET v2/cl/vehicle-stolen"
   - "GET /v2/cl/vehicle-stolen"
+  - "v2/client-settings/data"
+  - "/v2/client-settings/data"
+  - "v2 client-settings data"
+  - "client-settings/data"
+  - "/client-settings/data"
+  - "api/client-settings/data"
+  - "/api/client-settings/data"
+  - "api client-settings data"
+  - "api.verifik.co/v2/client-settings/data"
+  - "https://api.verifik.co/v2/client-settings/data"
+  - "GET v2/client-settings/data"
+  - "GET /v2/client-settings/data"
   - "v2/clients/me"
   - "/v2/clients/me"
   - "v2 clients me"
@@ -1712,6 +1739,30 @@ keywords:
   - "https://api.verifik.co/v2/cr/votacion"
   - "GET v2/cr/votacion"
   - "GET /v2/cr/votacion"
+  - "v2/data-retention/erase"
+  - "/v2/data-retention/erase"
+  - "v2 data-retention erase"
+  - "data-retention/erase"
+  - "/data-retention/erase"
+  - "api/data-retention/erase"
+  - "/api/data-retention/erase"
+  - "api data-retention erase"
+  - "api.verifik.co/v2/data-retention/erase"
+  - "https://api.verifik.co/v2/data-retention/erase"
+  - "GET v2/data-retention/erase"
+  - "GET /v2/data-retention/erase"
+  - "v2/data-retention/policy"
+  - "/v2/data-retention/policy"
+  - "v2 data-retention policy"
+  - "data-retention/policy"
+  - "/data-retention/policy"
+  - "api/data-retention/policy"
+  - "/api/data-retention/policy"
+  - "api data-retention policy"
+  - "api.verifik.co/v2/data-retention/policy"
+  - "https://api.verifik.co/v2/data-retention/policy"
+  - "GET v2/data-retention/policy"
+  - "GET /v2/data-retention/policy"
   - "v2/dea"
   - "/v2/dea"
   - "v2 dea"
@@ -1736,6 +1787,21 @@ keywords:
   - "https://api.verifik.co/v2/do/cedula"
   - "GET v2/do/cedula"
   - "GET /v2/do/cedula"
+  - "v2/document-validations/{id}/files"
+  - "/v2/document-validations/{id}/files"
+  - "v2/document-validations/files"
+  - "/v2/document-validations/files"
+  - "v2 document-validations files"
+  - "v2 document-validations {id} files"
+  - "document-validations/files"
+  - "/document-validations/files"
+  - "api/document-validations/files"
+  - "/api/document-validations/files"
+  - "api document-validations files"
+  - "api.verifik.co/v2/document-validations/{id}/files"
+  - "https://api.verifik.co/v2/document-validations/{id}/files"
+  - "GET v2/document-validations/{id}/files"
+  - "GET /v2/document-validations/{id}/files"
   - "v2/document-validations/app-registration"
   - "/v2/document-validations/app-registration"
   - "v2 document-validations app-registration"
@@ -2563,6 +2629,21 @@ keywords:
   - "https://api.verifik.co/v2/project-flows"
   - "GET v2/project-flows"
   - "GET /v2/project-flows"
+  - "v2/projects/{id}/data-retention"
+  - "/v2/projects/{id}/data-retention"
+  - "v2/projects/data-retention"
+  - "/v2/projects/data-retention"
+  - "v2 projects data-retention"
+  - "v2 projects {id} data-retention"
+  - "projects/data-retention"
+  - "/projects/data-retention"
+  - "api/projects/data-retention"
+  - "/api/projects/data-retention"
+  - "api projects data-retention"
+  - "api.verifik.co/v2/projects/{id}/data-retention"
+  - "https://api.verifik.co/v2/projects/{id}/data-retention"
+  - "GET v2/projects/{id}/data-retention"
+  - "GET /v2/projects/{id}/data-retention"
   - "v2/projects/email-login"
   - "/v2/projects/email-login"
   - "v2 projects email-login"
@@ -2908,12 +2989,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (233 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (239 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-10-26T22:37:31.334Z_
+_Last regenerated: 2026-10-26T23:39:05.756Z_
 
 ## Argentina
 
@@ -3156,6 +3237,7 @@ _Last regenerated: 2026-10-26T22:37:31.334Z_
 | --- | --- | --- |
 | `v2/app-registrations` | v2 app-registrations app-registrations /app-registrations api/app-registrations /api/app-registrations api app-registrations api.verifik.co/v2/app-registrations https://api.verifik.co/v2/app-registrations GET v2/app-registrations GET /v2/app-registrations | [Create an App Registration](/resources/app-registrations/create-an-app-registration) |
 | `v2/app-registrations/{id}` | v2/app-registrations /v2/app-registrations v2 app-registrations app-registrations /app-registrations api/app-registrations /api/app-registrations api app-registrations | [Get App Registration](/resources/app-registrations/retrieve-an-app-registration) |
+| `v2/app-registrations/{id}/data` | v2/app-registrations/data /v2/app-registrations/data v2 app-registrations data app-registrations/data /app-registrations/data api/app-registrations/data /api/app-registrations/data api app-registrations data | [Delete Enrollee Data (Right to Erasure)](/resources/data-retention/delete-app-registration-data) |
 | `v2/app-registrations/{id}/resend-link` | v2/app-registrations/resend-link /v2/app-registrations/resend-link v2 app-registrations resend-link app-registrations/resend-link /app-registrations/resend-link api/app-registrations/resend-link /api/app-registrations/resend-link api app-registrations resend-link | [Resend an App Registration Link](/resources/app-registrations/resend-an-app-registration-link) |
 | `v2/app-registrations/{id}/sync` | v2/app-registrations/sync /v2/app-registrations/sync v2 app-registrations sync app-registrations/sync /app-registrations/sync api/app-registrations/sync /api/app-registrations/sync api app-registrations sync | [Sync App Registration Status](/resources/app-registrations/sync-app-registration-status) |
 
@@ -3188,11 +3270,24 @@ _Last regenerated: 2026-10-26T22:37:31.334Z_
 | `v2/check-lists` | v2 check-lists check-lists /check-lists api/check-lists /api/check-lists api check-lists api.verifik.co/v2/check-lists https://api.verifik.co/v2/check-lists GET v2/check-lists GET /v2/check-lists | [Create a checklist](/check-list/create-a-check-list) |
 | `v2/check-lists/{id}` | v2/check-lists /v2/check-lists v2 check-lists check-lists /check-lists api/check-lists /api/check-lists api check-lists | [Delete a checklist](/check-list/delete-a-check-list) |
 
+## Client Settings
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/client-settings/data` | v2 client-settings data client-settings/data /client-settings/data api/client-settings/data /api/client-settings/data api client-settings data api.verifik.co/v2/client-settings/data https://api.verifik.co/v2/client-settings/data GET v2/client-settings/data GET /v2/client-settings/data | [Update Account Retention Policy](/resources/data-retention/update-client-retention-policy) |
+
 ## Clients
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/clients/me` | v2 clients me clients/me /clients/me api/clients/me /api/clients/me api clients me api.verifik.co/v2/clients/me https://api.verifik.co/v2/clients/me GET v2/clients/me GET /v2/clients/me | [Account Information](/accounts/clients/account-information) |
+
+## Data Retention
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/data-retention/erase` | v2 data-retention erase data-retention/erase /data-retention/erase api/data-retention/erase /api/data-retention/erase api data-retention erase api.verifik.co/v2/data-retention/erase https://api.verifik.co/v2/data-retention/erase GET v2/data-retention/erase GET /v2/data-retention/erase | [Bulk Erase Data](/resources/data-retention/erase-data-bulk) |
+| `v2/data-retention/policy` | v2 data-retention policy data-retention/policy /data-retention/policy api/data-retention/policy /api/data-retention/policy api data-retention policy api.verifik.co/v2/data-retention/policy https://api.verifik.co/v2/data-retention/policy GET v2/data-retention/policy GET /v2/data-retention/policy | [Retrieve Retention Policy](/resources/data-retention/retrieve-data-retention-policy) |
 
 ## Dea
 
@@ -3204,6 +3299,7 @@ _Last regenerated: 2026-10-26T22:37:31.334Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
+| `v2/document-validations/{id}/files` | v2/document-validations/files /v2/document-validations/files v2 document-validations files document-validations/files /document-validations/files api/document-validations/files /api/document-validations/files api document-validations files | [Delete Document Files](/resources/data-retention/delete-document-validation-files) |
 | `v2/document-validations/app-registration` | v2 document-validations app-registration document-validations/app-registration /document-validations/app-registration api/document-validations/app-registration /api/document-validations/app-registration api document-validations app-registration api.verifik.co/v2/document-validations/app-registration https://api.verifik.co/v2/document-validations/app-registration GET v2/document-validations/app-registration GET /v2/document-validations/app-registration | [Create an App Registration Document Validation](/resources/app-registrations/create-an-app-registration-document-validation) |
 
 ## Email Validations
@@ -3321,6 +3417,7 @@ _Last regenerated: 2026-10-26T22:37:31.334Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
+| `v2/projects/{id}/data-retention` | v2/projects/data-retention /v2/projects/data-retention v2 projects data-retention projects/data-retention /projects/data-retention api/projects/data-retention /api/projects/data-retention api projects data-retention | [Update Project Retention Policy](/resources/data-retention/update-project-retention-policy) |
 | `v2/projects/email-login` | v2 projects email-login projects/email-login /projects/email-login api/projects/email-login /api/projects/email-login api projects email-login api.verifik.co/v2/projects/email-login https://api.verifik.co/v2/projects/email-login GET v2/projects/email-login GET /v2/projects/email-login | [API Key Access via Email](/accounts/authentication/api-key-access-via-email) |
 | `v2/projects/phone-login` | v2 projects phone-login projects/phone-login /projects/phone-login api/projects/phone-login /api/projects/phone-login api projects phone-login api.verifik.co/v2/projects/phone-login https://api.verifik.co/v2/projects/phone-login GET v2/projects/phone-login GET /v2/projects/phone-login | [API Key Access via Phone](/authentication/api-key-access-via-phone) |
 
