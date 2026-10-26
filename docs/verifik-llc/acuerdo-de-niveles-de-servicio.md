@@ -17,13 +17,15 @@ Este ANS describe los canales de soporte, los objetivos de atención y los compr
 
 ## 1. Canales y horarios de atención
 
-El cliente tendrá acceso a los siguientes canales de atención de Verifik:
+El cliente abrirá los incidentes y dará seguimiento a ellos mediante tiquetes de soporte en el [Panel de Cliente](https://ai.verifik.co/). Ese panel es el canal oficial de atención.
 
-1. Generación de tiquetes en el [Panel de Cliente](https://ai.verifik.co/).
-2. Correo electrónico: [support@verifik.co](mailto:support@verifik.co).
-3. Canal de Discord de servicio al cliente.
+Si el cliente no puede acceder al Panel de Cliente, podrá escribir a [support@mg.verifik.co](mailto:support@mg.verifik.co) como contacto secundario.
 
-El cliente podrá acceder al soporte brindado por Verifik de lunes a viernes, en horario de 8:00 a. m. a 5:00 p. m. (UTC-5), excepto los festivos nacionales («Horario Normal de Soporte»).
+El soporte estándar se presta de lunes a viernes, de 8:00 a. m. a 5:00 p. m. (UTC-5). El Horario Normal de Soporte excluye los festivos nacionales de Colombia, Estados Unidos y Canadá («Horario Normal de Soporte»).
+
+Los incidentes de Nivel 1 (Crítico) cuentan con cobertura de guardia (on-call). Esa cobertura aplica de noche, en fines de semana y en festivos. El objetivo de resolución de veinticuatro (24) horas del Nivel 1 corre de forma continua, incluidas las noches, los fines de semana y los festivos, y no se limita al Horario Normal de Soporte.
+
+Los clientes que pagan por Soporte Premium no están sujetos al Horario Normal de Soporte ni a las exclusiones por festivos. Para esos clientes, los tiempos de primera respuesta y de resolución corren las veinticuatro (24) horas del día, los siete (7) días de la semana.
 
 ## 2. Tiempos de respuesta y resolución de incidentes
 
@@ -31,13 +33,13 @@ Los incidentes reportados por el cliente serán clasificados por Verifik de acue
 
 | Gravedad del incidente | Descripción | Tiempo de primera respuesta | Objetivo de resolución |
 | --- | --- | --- | --- |
-| Nivel 1. Crítico | Incidentes que ocasionen la interrupción total de la plataforma, afecten gravemente sus funcionalidades esenciales o impliquen una vulnerabilidad crítica de seguridad. | Dentro de una (1) hora hábil. | Dentro de veinticuatro (24) horas. |
+| Nivel 1. Crítico | Incidentes que ocasionen la interrupción total de la plataforma, afecten gravemente sus funcionalidades esenciales o impliquen una vulnerabilidad crítica de seguridad. Cuentan con cobertura de guardia (on-call). | Dentro de una (1) hora, también fuera del Horario Normal de Soporte, con cobertura de guardia. | Dentro de veinticuatro (24) horas continuas, incluidas las noches, los fines de semana y los festivos. |
 | Nivel 2. Alto | Incidentes que ocasionen degradación significativa del servicio o afecten funcionalidades importantes sin producir una interrupción total. | Dentro de cuatro (4) horas hábiles. | Dentro de dos (2) días hábiles. |
 | Nivel 3. Bajo | Incidentes de impacto limitado, errores menores y consultas técnicas que no comprometan significativamente la operación del servicio. | Dentro de ocho (8) horas hábiles. | Dentro de cinco (5) días hábiles. |
 
 ### Condiciones de atención
 
-a) Los tiempos de primera respuesta se calcularán exclusivamente dentro del Horario Normal de Soporte establecido en la sección 1.
+a) Los tiempos de primera respuesta se calcularán exclusivamente dentro del Horario Normal de Soporte establecido en la sección 1, salvo los incidentes de Nivel 1 (Crítico), que cuentan con cobertura de guardia, y salvo los clientes que pagan por Soporte Premium. El objetivo de resolución de veinticuatro (24) horas del Nivel 1 se cuenta de forma continua, incluidas las noches, los fines de semana y los festivos. Para los clientes que pagan por Soporte Premium, los tiempos de primera respuesta y de resolución corren las veinticuatro (24) horas del día, los siete (7) días de la semana, conforme a la sección 1.
 
 b) La primera respuesta consistirá en una comunicación de Verifik que confirme la recepción y la atención del incidente. Las respuestas automáticas de recepción no constituirán una primera respuesta para efectos de esta sección.
 

@@ -17,13 +17,15 @@ Le présent accord décrit les canaux de support, les objectifs de prise en char
 
 ## 1. Canaux et horaires de support
 
-Le client a accès aux canaux de support Verifik suivants :
+Le client ouvre les incidents et en assure le suivi au moyen de tickets de support dans le [panneau client](https://ai.verifik.co/). Ce panneau est le canal officiel de support.
 
-1. Tickets de support dans le [panneau client](https://ai.verifik.co/).
-2. Courriel : [support@verifik.co](mailto:support@verifik.co).
-3. Canal Discord du service client.
+Si le client ne peut pas accéder au panneau client, il peut écrire à [support@mg.verifik.co](mailto:support@mg.verifik.co) à titre de contact secondaire.
 
-Le client peut accéder au support fourni par Verifik du lundi au vendredi, de 8 h 00 à 17 h 00 (UTC-5), à l’exception des jours fériés nationaux (« horaires normaux de support »).
+Le support standard est assuré du lundi au vendredi, de 8 h 00 à 17 h 00 (UTC-5). Les horaires normaux de support excluent les jours fériés nationaux de la Colombie, des États-Unis et du Canada (« horaires normaux de support »).
+
+Les incidents de niveau 1 (Critique) bénéficient d’une couverture d’astreinte (on-call). Cette couverture s’applique la nuit, le week-end et les jours fériés. L’objectif de résolution de vingt-quatre (24) heures du niveau 1 court de façon continue, y compris la nuit, le week-end et les jours fériés, et n’est pas limité aux horaires normaux de support.
+
+Les clients qui paient le Support Premium ne sont pas soumis aux horaires normaux de support ni aux exclusions pour jours fériés. Pour ces clients, les délais de première réponse et de résolution courent vingt-quatre (24) heures sur vingt-quatre, sept (7) jours sur sept.
 
 ## 2. Délais de réponse et de résolution des incidents
 
@@ -31,13 +33,13 @@ Les incidents signalés par le client sont classés par Verifik selon leur gravi
 
 | Gravité de l’incident | Description | Délai de première réponse | Objectif de résolution |
 | --- | --- | --- | --- |
-| Niveau 1. Critique | Incidents qui entraînent l’interruption totale de la plateforme, affectent gravement ses fonctions essentielles ou impliquent une vulnérabilité critique de sécurité. | Dans un délai d’une (1) heure pendant les horaires normaux de support. | Dans les vingt-quatre (24) heures. |
+| Niveau 1. Critique | Incidents qui entraînent l’interruption totale de la plateforme, affectent gravement ses fonctions essentielles ou impliquent une vulnérabilité critique de sécurité. Une couverture d’astreinte (on-call) s’applique. | Dans un délai d’une (1) heure, y compris en dehors des horaires normaux de support, au titre de la couverture d’astreinte. | Dans les vingt-quatre (24) heures continues, y compris la nuit, le week-end et les jours fériés. |
 | Niveau 2. Élevé | Incidents qui entraînent une dégradation significative du service ou affectent des fonctions importantes sans interruption totale. | Dans un délai de quatre (4) heures pendant les horaires normaux de support. | Dans les deux (2) jours ouvrés. |
 | Niveau 3. Faible | Incidents à impact limité, erreurs mineures et demandes techniques qui ne compromettent pas de façon significative le fonctionnement du service. | Dans un délai de huit (8) heures pendant les horaires normaux de support. | Dans les cinq (5) jours ouvrés. |
 
 ### Conditions de prise en charge
 
-a) Les délais de première réponse sont calculés exclusivement pendant les horaires normaux de support établis à la section 1.
+a) Les délais de première réponse sont calculés exclusivement pendant les horaires normaux de support établis à la section 1, sauf pour les incidents de niveau 1 (Critique), qui bénéficient d’une couverture d’astreinte, et sauf pour les clients qui paient le Support Premium. L’objectif de résolution de vingt-quatre (24) heures du niveau 1 est décompté de façon continue, y compris la nuit, le week-end et les jours fériés. Pour les clients qui paient le Support Premium, les délais de première réponse et de résolution courent vingt-quatre (24) heures sur vingt-quatre, sept (7) jours sur sept, conformément à la section 1.
 
 b) La première réponse est une communication de Verifik qui confirme la réception et la prise en charge de l’incident. Les accusés de réception automatiques ne constituent pas une première réponse au sens de la présente section.
 

@@ -17,13 +17,15 @@ This SLA describes the support channels, service objectives, and availability co
 
 ## 1. Support channels and hours
 
-The customer will have access to the following Verifik support channels:
+The customer opens incidents and follows up on them through support tickets in the [Client Panel](https://ai.verifik.co/). That panel is the official support channel.
 
-1. Support tickets in the [Client Panel](https://ai.verifik.co/).
-2. Email: [support@verifik.co](mailto:support@verifik.co).
-3. Customer-service Discord channel.
+If the customer cannot access the Client Panel, the customer may write to [support@mg.verifik.co](mailto:support@mg.verifik.co) as a secondary contact.
 
-The customer may access the support provided by Verifik Monday through Friday, from 8:00 a.m. to 5:00 p.m. (UTC-5), except on national holidays (“Normal Support Hours”).
+Standard support is available Monday through Friday, from 8:00 a.m. to 5:00 p.m. (UTC-5). Normal Support Hours exclude the national holidays of Colombia, the United States, and Canada (“Normal Support Hours”).
+
+Level 1 (Critical) incidents have on-call coverage. That coverage applies at night, on weekends, and on holidays. The twenty-four (24) hour resolution objective for Level 1 runs continuously, including nights, weekends, and holidays, and is not limited to Normal Support Hours.
+
+Customers who pay for Premium Support are not subject to Normal Support Hours or to the holiday exclusions. For those customers, first-response and resolution times run twenty-four (24) hours a day, seven (7) days a week.
 
 ## 2. Incident response and resolution times
 
@@ -31,13 +33,13 @@ Incidents reported by the customer will be classified by Verifik according to th
 
 | Incident severity | Description | First-response time | Resolution objective |
 | --- | --- | --- | --- |
-| Level 1. Critical | Incidents that cause a total interruption of the platform, severely affect its essential functions, or involve a critical security vulnerability. | Within one (1) hour during Normal Support Hours. | Within twenty-four (24) hours. |
+| Level 1. Critical | Incidents that cause a total interruption of the platform, severely affect its essential functions, or involve a critical security vulnerability. On-call coverage applies. | Within one (1) hour, including outside Normal Support Hours, under on-call coverage. | Within twenty-four (24) hours, counted continuously, including nights, weekends, and holidays. |
 | Level 2. High | Incidents that cause significant service degradation or affect important functions without a total interruption. | Within four (4) hours during Normal Support Hours. | Within two (2) business days. |
 | Level 3. Low | Incidents of limited impact, minor errors, and technical inquiries that do not significantly compromise operation of the service. | Within eight (8) hours during Normal Support Hours. | Within five (5) business days. |
 
 ### Service conditions
 
-a) First-response times are calculated exclusively within the Normal Support Hours established in section 1.
+a) First-response times are calculated exclusively within the Normal Support Hours established in section 1, except for Level 1 (Critical) incidents, which have on-call coverage, and except for customers who pay for Premium Support. The Level 1 resolution objective of twenty-four (24) hours is counted continuously, including nights, weekends, and holidays. For customers who pay for Premium Support, first-response and resolution times run twenty-four (24) hours a day, seven (7) days a week, as set out in section 1.
 
 b) The first response is a communication from Verifik confirming that the incident has been received and is being handled. Automatic acknowledgment replies are not a first response for purposes of this section.
 
