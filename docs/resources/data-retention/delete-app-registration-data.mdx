@@ -1,0 +1,117 @@
+---
+id: delete-app-registration-data
+title: Delete Enrollee Data (Right to Erasure)
+description: Permanently erase all KYC images, selfies, and PII for an enrollee in compliance with GDPR and Habeas Data
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```http
+DELETE https://api.verifik.co/v2/app-registrations/{id}/data
+```
+
+Executes a **Right to Erasure (GDPR / Ley 1581)** request for a single enrollment registration. All associated document images, facial selfies, and personal data (names, dates, document numbers, raw and encrypted OCR) are permanently purged across DigitalOcean Spaces and MongoDB.
+
+A minimal billing and status tombstone is retained for reporting.
+
+### Headers
+
+| Name | Value |
+| :--- | :--- |
+| `Content-Type` | `application/json` |
+| `Authorization` | `Bearer <token>` |
+
+### Path Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `id` | `string` | Yes | The unique identifier of the app registration record |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function eraseEnrollee() {
+  const regId = "6add0c680b29eb28766c82ce";
+  const res = await fetch(`https://api.verifik.co/v2/app-registrations/${regId}/data`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(await res.json());
+}
+
+eraseEnrollee();
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+reg_id = "6add0c680b29eb28766c82ce"
+url = f"https://api.verifik.co/v2/app-registrations/{reg_id}/data"
+headers = {
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+    "Content-Type": "application/json"
+}
+
+response = requests.delete(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "_id": "6add0c680b29eb28766c82ce",
+    "status": "COMPLETED",
+    "client": "6266193db77ccc8111730c90",
+    "project": "6266193db77ccc8111730c91",
+    "retention": {
+      "purgedAt": "2026-10-26T22:35:00.000Z",
+      "purgeReason": "right_to_erasure"
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Manual erase is disabled by policy",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "App registration not found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+</Tabs>

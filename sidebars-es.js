@@ -68,6 +68,7 @@ const sidebars = {
 				"smartenroll/smartenroll-reanudar",
 				"smartenroll/smartenroll-admin-revision-kyc",
 				"smartenroll/smartenroll-guia-api",
+				"smartenroll/retencion-de-datos",
 				"smart-enroll-auto-alojado/smart-enroll-self-hosted",
 				"smart-scan/escaneo-inteligente",
 			],
