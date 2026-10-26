@@ -377,7 +377,7 @@ Verifikのサービスの利用を継続した場合、変更に同意したも�
 
 ### **サービスレベル合意（SLA）**
 
-* [別紙I - サービスレベル合意](https://verifik.gitbook.io/verifik/verifik-llc/service-level-agreement)
+* [別紙I - サービスレベル合意](/verifik-ja/legal/service-level-agreement)
 
 ### **苦情、請求または通知の手続**
 

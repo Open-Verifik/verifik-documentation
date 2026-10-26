@@ -1,103 +1,91 @@
 ---
 id: service-level-agreement-llc
 title: Service Level Agreement
-description: Verifik's service level agreement and support terms
+description: Support, availability, and performance commitments for Verifik services
 slug: /verifik-llc/service-level-agreement
 ---
 
-# Service Level Agreement
+# Service Level Agreement (SLA)
 
-**Last updated: October 21, 2026**
+**Support, availability, and performance of the services**
 
-### **Service Level Agreement**
+**Version 1.0 | Publication date: October 26, 2026**
 
-#### **1. Service Channels. The User shall have access to the following Verifik service channels:**
+This SLA describes the support channels, service objectives, and availability commitments for the Verifik services identified below. The support described is included at no additional charge, unless a commercial agreement expressly provides otherwise.
 
-1. Chat available on [Verifik.co](http://verifik.co)
-2. Email: support@verifik.co
-3. Customer service WhatsApp channel.
-4. Customer service Discord channel.
+**Scope and application.** This document may be incorporated into contracts that expressly identify it. Particular terms signed by the parties prevail in the event of a conflict. Publishing later versions does not, by itself, modify contracts already in force.
 
-#### **2. Hours of Operation**
+## 1. Support channels and hours
 
-The User will be able to access the support provided by Verifik, Monday through Friday (business days) from 8:00 AM to 5:00 PM Colombia time.
+The customer will have access to the following Verifik support channels:
 
-#### **3. Criticality Levels**
+1. Support tickets in the [Client Panel](https://ai.verifik.co/).
+2. Email: [support@verifik.co](mailto:support@verifik.co).
+3. Customer-service Discord channel.
 
-The requests or requirements raised by Users to the support team will be classified according to the impact they have on the User's operation, as follows:
+The customer may access the support provided by Verifik Monday through Friday, from 8:00 a.m. to 5:00 p.m. (UTC-5), except on national holidays (“Normal Support Hours”).
 
-| | |
-| --- | --- |
-| **Critical:** | Total service unavailability. |
-| **Urgent:** | Loss of specific functionality for all use cases. |
-| **Medium:** | Loss of functionality in specific cases. |
-| **Normal:** | Other requests or general inquiries that do not affect Service Availability. |
+## 2. Incident response and resolution times
 
-#### **4. Response Times**
+Incidents reported by the customer will be classified by Verifik according to their severity, operational impact, and scope, under the following service levels:
 
-**Definitions:** Terms used in this section, shall have the following meanings:
-
-i. Attention: The time elapsed between the request or requirement and the assignment of a service agent.
-
-ii. Review: The time elapsed between the agent's greeting and the first response regarding the request or requirement.
-
-iii. Escalation: The time elapsed between the agent's escalation and the case review by the person to whom it was escalated. This time only applies in events where it is necessary to escalate the user's request or requirement.
-
-iv. Resolution: The time elapsed between the agent's greeting and the moment the case is resolved.
-
-The response time varies according to the criticality of the requirement, as follows:
-
-| **SEVERITY/TIME** | **ATTENTION** | **REVIEW** | **ESCALATION** | **RESOLUTION** |
-| ----------------- | ------------- | ---------- | -------------- | -------------- |
-| **Critical** | 0.5 hr | 0.5 hr | 15 mins | 48 hrs |
-| **Urgent** | 0.5 hr | 0.5 hr | 15 mins | 48 hrs |
-| **Medium** | 1 hr | 1 hr | 0.5 hr | 96 hrs |
-| **Normal** | 1 hr | 1 hr | 0.5 hr | 96 hrs |
-
-**Note:** 48 hrs means we take up to 48 hours to resolve the incident depending on its complexity.
-
-Response times will be counted from the last message sent by the user.
-
-##### **4.1. Critical Tickets in the Client Panel**
-
-Users can open a ticket with Critical priority from the client panel when production traffic is blocked. For these tickets:
-
-- Verifik sends a first response within 24 hours of submission.
-- Verifik aims to resolve the ticket within 48 hours of submission.
-- Both deadlines run in clock hours from the moment the ticket is submitted, and the panel shows them in the user's support timezone.
-- Critical tickets that have no staff reply are escalated internally before the first-response deadline.
-
-These deadlines apply to tickets opened through the client panel. The attention, review, and escalation times in the table above apply to conversations on the service channels in Section 1.
-
-#### **5. Platform Availability**
-
-The Platform will be available at least:
-
-| **At or above** | **Below** | **Product** | **Notes** |
+| Incident severity | Description | First-response time | Resolution objective |
 | --- | --- | --- | --- |
-| 90.00% | 89.99% | smartCHECK (DB Screening) | DB Screening API depends on connections with Government Sources |
-| 99.00% | 98.99% | smartACCESS, smartENROLL (Email/Tel) | No Credit Compensation |
-| 99.00% | 98.99% | smartACCESS, smartENROLL (Biometrics) | No Credit Compensation |
-| 99.00% | 98.99% | smartENROLL, smartACCESS (Document Scanning) | No Credit Compensation |
+| Level 1. Critical | Incidents that cause a total interruption of the platform, severely affect its essential functions, or involve a critical security vulnerability. | Within one (1) hour during Normal Support Hours. | Within twenty-four (24) hours. |
+| Level 2. High | Incidents that cause significant service degradation or affect important functions without a total interruption. | Within four (4) hours during Normal Support Hours. | Within two (2) business days. |
+| Level 3. Low | Incidents of limited impact, minor errors, and technical inquiries that do not significantly compromise operation of the service. | Within eight (8) hours during Normal Support Hours. | Within five (5) business days. |
 
-##### **5.1. Endpoint-Specific Availability Exclusions**
+### Service conditions
 
-Due to the historical unpredictable operational availability characteristics of certain external data sources, specific endpoints are excluded from the Platform Availability commitments and Downtime Compensation provisions of this Agreement.
+a) First-response times are calculated exclusively within the Normal Support Hours established in section 1.
+
+b) The first response is a communication from Verifik confirming that the incident has been received and is being handled. Automatic acknowledgment replies are not a first response for purposes of this section.
+
+c) Resolution times are operational objectives subject to commercially reasonable efforts. They are not warranties that an incident will be resolved within a stated period.
+
+d) Verifik determines the classification of incidents based on their severity and technical impact, and may change that classification when circumstances justify it.
+
+e) Resolution times may be affected by circumstances beyond Verifik’s reasonable control, including interruptions, failures, or restrictions on access to government sources or third-party services.
+
+f) When an incident cannot be resolved within the target period, Verifik will continue to use commercially reasonable efforts to resolve it and will inform the customer of its status and relevant progress.
+
+## 3. Service availability and response times
+
+Service availability is evaluated monthly according to Table 1, excluding scheduled downtime. Scheduled downtime comprises platform maintenance and update windows, planned for lower-demand hours in order to minimize interruptions.
+
+Verifik may periodically publish recurring scheduled-downtime windows. “Recurring Scheduled Downtime” means unavailability windows that occur at fixed times under recurring calendars and that are published as part of Verifik’s API documentation.
+
+Verifik will give at least seven (7) calendar days’ prior written notice of scheduled maintenance outside the published recurring windows, except in emergencies that require immediate intervention to preserve the security or continuity of the service. Windows will preferably take place at night or on weekends.
+
+### Table 1. Service availability
+
+| Availability | Product |
+| --- | --- |
+| Databases: 90.00% or higher | smartCHECK, DB Screening |
+| Email/phone: 99.00% or higher | smartACCESS, smartENROLL |
+| Biometrics: 99.00% or higher | smartACCESS, smartENROLL |
+| Document scanning: 99.00% or higher | smartENROLL, smartACCESS |
+
+The database-verification API depends on connections to government sources. Verifik does not own or control those access points.
+
+### 3.1. Availability exclusions for DB Screening / smartCHECK {#availability-exclusions}
+
+Because the operational availability of certain external data sources has historically been unpredictable, specific endpoints are excluded from the platform availability commitments and from the downtime-compensation provisions of this Agreement.
 
 The following endpoints are excluded:
 
-- Mexico – INE Validation
-- Mexico – Vehicle Plate Validation
+- Mexico – INE validation
+- Mexico – vehicle-plate validation
 
-Interruptions, maintenance periods, degraded performance, delayed responses, or temporary unavailability affecting these endpoints shall not:
+Interruptions, maintenance periods, degraded performance, delayed responses, or temporary unavailability affecting these endpoints:
 
-- be considered Platform Downtime;
-- be included in Platform Availability calculations;
-- qualify for Service Credits or any other compensation under this Agreement.
+- are not treated as platform downtime;
+- are not included in platform availability calculations;
+- do not qualify for service credits or any other compensation under this Agreement.
 
-Verifik will continue to make commercially reasonable efforts to maintain connectivity and restore service whenever possible; however, no uptime guarantee is provided for the endpoints listed above.
+Verifik will continue to use commercially reasonable efforts to maintain connectivity and to restore the service when possible. No uptime warranty is offered for the listed endpoints.
 
-##### **5.2. How Availability Is Measured**
+### 3.2. How availability is measured
 
 Availability is calculated per account for each calendar month in UTC:
 
@@ -105,124 +93,91 @@ Availability is calculated per account for each calendar month in UTC:
 availability = successful requests / (successful requests + service failures)
 ```
 
-- Service failures are requests that time out, return a 5xx error or a 408 or 504 response, or report that the endpoint is out of service.
-- Client errors are left out of the calculation. They include invalid or missing parameters, records not found in the source, authentication and permission errors, and other 4xx responses.
+Service failures are requests that time out, return a 5xx error or a 408 or 504 response, or indicate that the endpoint is out of service.
 
-Users can see their monthly availability in the client panel under Status Check and through the [Usage API](/resources/usage#get-monthly-availability). Both include a per-service breakdown, so requests to the endpoints in Section 5.1 can be separated from the rest. Those endpoints stay outside the commitments of this Agreement.
+Client errors are left out of the calculation. They include invalid or missing parameters, records not found at the source, authentication and permission errors, and other 4xx responses.
 
-##### **5.3. Contract-Specific Targets**
+Customers may view monthly availability in the Client Panel and, when enabled, through the Usage API, with a breakdown by service. The endpoints in section 3.1 are excluded from the availability commitments.
 
-The client panel and the Usage API compare each month against a 95% SmartCHECK target. That target applies to accounts whose commercial agreement includes it. For other accounts, the figure is informational and the commitments in Section 5 apply. A contract-specific target doesn't add credit compensation beyond Section 6 unless the agreement says so.
+### 3.3. Operational query response-time objectives
 
-#### **6. Downtime Compensation**
+Response times for queries to government databases (DB Screening / smartCHECK) are operational performance objectives of Verifik, aimed at providing the services efficiently.
 
-Credit Compensation awarded for the affected month will be provided in the form of a credit equivalent to the cost of the failed service call. If the service unavailability is caused by Internal Issues of Verifik (database, servers, internal API issues) and is not effectively resolved by the Company, Verifik will compensate as follows:
+Under normal operating conditions, Verifik will seek to meet the following objectives:
 
-| **At or above** | **Below** | **Service Level Credit Compensation** | **Product** |
-| --- | --- | --- | --- |
-| 90.00% | 89.99% | No Credit Compensation | smartCHECK (DB Screening / Data Query) |
-| 99.00% | 98.99% | No Credit Compensation | smartACCESS, smartENROLL (Email/Tel) |
-| 99.00% | 98.99% | No Credit Compensation | smartACCESS, smartENROLL (Biometrics) |
-| 99.00% | 98.99% | No Credit Compensation | smartENROLL, smartACCESS (Document Scanning) |
+a) **Target response time:** use commercially reasonable efforts to respond to queries within one (1) second.
 
-Internal Issues of the Data API service (Data Query) excludes issues considered Force Majeure (Fortuitous Events), whether due to migration, disconnection, or external intervention by the governments that manage the databases. Verifik is an intermediary and therefore does NOT have control over the queried databases.
+b) **Target average time:** keep the average response time at or below three (3) seconds per query, measured monthly.
 
-#### **7. Charging Scheme for smartCHECK**
+c) **Target maximum time:** seek to keep individual queries from exceeding ten (10) seconds of response time.
 
-The charging scheme applies to the smartCHECK solution, which enables queries to government databases. Verifik does not own, manage, or bear responsibility for (does not control or update) the government databases of the various countries we serve; therefore, Verifik reserves the right not to offer guarantees regarding Response Time, Average Up Time, or Data Accuracy.
+Response times may vary because of the availability, capacity, maintenance, latency, and other technical conditions of government or third-party information sources, and because of Dynamic Query mechanisms that must query multiple information sources in sequence, as set out in the [Billing and Credit Consumption Policy](/legal/billing-policy).
 
-**General rule.** An HTTP **200** response is charged. The following are **not** charged: HTTP **403**, **412**, **422**, and **500**; request **timeouts**; and HTTP **409** responses (including source unavailability and connection failures). An HTTP **404** response is **not** charged unless Section **7.1** applies to that request.
+The times above are reference operational objectives. They are not performance warranties, obligations of result, or commitments to a maximum response time.
 
-| **Charged** | **Not charged** |
-| --- | --- |
-| 200 | 404 (except as listed in Section 7.1) |
-| | 403 |
-| | 409 (including source failures; never billed) |
-| | 412 |
-| | 422 |
-| | 500 |
-| | Timeouts (never billed) |
+The customer acknowledges that response times may vary because of the availability, capacity, maintenance, latency, and other technical conditions of government or third-party information sources, and because of Dynamic Query mechanisms that access multiple sources in sequence.
 
-No endpoint outside Colombia is billed on HTTP **404**. Endpoints not listed in Section **7.1** are not billed on HTTP **404**, including all routes in countries other than Colombia.
+For measurement purposes, response time is the processing of a single API request, excluding transmission delays on Internet networks outside Verifik’s control.
 
-##### **7.1 Colombia: HTTP 404 billing**
+Failure to meet these operational objectives does not, by itself, constitute a breach of contract and does not give rise to compensation, service credits, or penalties. This does not release Verifik from the obligations it has expressly assumed regarding its own infrastructure, platform availability, and the other commitments applicable under this Agreement.
 
-This section is the only source of HTTP **404** charges under Section **7**. All routes below are Colombia smartCHECK APIs. **Timeouts** and HTTP **409** source failures are **never** billed on any Verifik endpoint.
+This section is read together with [section 6](#source-warranty-limitations) of this SLA, on warranty limitations for government sources.
 
-**RUNT (HTTP 404 with response code `NotFound` only).** HTTP **409** responses (for example when the source is out of service or a RUNT worker is unavailable) are **not** billed.
+### 3.4. Contract objectives
 
-| Product name | Route |
-| --- | --- |
-| Colombia RUNT driver lookup | `GET /v2/co/runt/conductor` |
-| Colombia RUNT driver lookup (v3) | `GET /v3/co/runt/conductor` |
-| Colombia RUNT vehicle lookup | `GET /v2/co/runt/vehiculo` |
-| Colombia RUNT complete vehicle record | `GET /v2/co/runt/vehiculo-completo` |
-| Colombia RUNT vehicle SOAT | `GET /v2/co/runt/vehiculo-soat` |
-| Colombia RUNT vehicle by license plate | `GET /v2/co/runt/vehicle-by-plate` |
-| Colombia RUNT vehicle by VIN | `GET /v2/co/runt/vehicle-by-vin` |
-| Colombia RUNT vehicle by plate (simplified) | `GET /v2/co/runt/vehicle-by-plate-simplified` |
-| Colombia RUNT vehicle by plate only | `GET /v2/co/runt/vehicle-by-plate-only` |
+The Client Panel and the Usage API may compare monthly smartCHECK performance with the 90% reference objective. Specific contractual objectives apply only when they are expressly included in the customer’s commercial terms. Otherwise, the figures shown are informational. The display does not create compensation beyond what section 4 provides.
 
-**Social security affiliations (Afiliaciones).** **Any** HTTP **404** on the route below is billable, including when the response message indicates an incorrect expedition date. Connection failures that return HTTP **409** are **not** billed.
+## 4. Compensation for missing availability levels
 
-| Product name | Route |
-| --- | --- |
-| Colombia social security affiliations | `GET /v2/co/afiliaciones` |
+Compensation for missing the availability levels in this SLA is available only when the unavailability is attributable to internal failures of Verifik and has produced actual charges to the customer for API queries that were not successfully processed.
 
-**SIBGA vehicle valuation (HTTP 404 with response code `NotFound` only).**
+In those cases, compensation consists of restoring the credits actually deducted for those queries. Additional credits are not issued for requests that were not billed.
 
-| Product name | Route |
-| --- | --- |
-| Colombia SIBGA vehicle valuation | `GET /v2/co/sibga/valuation` |
+For smartCHECK (DB Screening), interruptions or limitations of government sources do not give rise to compensation, under the exclusions and limitations in sections [3.1](#availability-exclusions) and [6](#source-warranty-limitations) of this SLA.
 
-**Colombian national ID (cédula).** Only an HTTP **404** whose message is **`CEDULA NO EXISTE`** is billable, at the **vigencia** price tier. Any other HTTP **404** on the route below is **not** charged. **`GET`/`POST /v2/co/cedula/vigencia`** does **not** bill its own HTTP **404** responses.
+The availability percentages in section 3 are the reference levels used to evaluate service performance. Missing them does not automatically produce monetary compensation when there are no actual charges that can be restored.
 
-| Product name | Route |
-| --- | --- |
-| Colombian national ID lookup | `GET` / `POST` `/v2/co/cedula` |
+Compensation under this section is granted as service credits applicable to future consumption, not as cash refunds, without prejudice to the rights the parties may have for a material breach under the applicable commercial contract.
 
-**Not billed on HTTP 404:** Other Colombia RUNT routes (including owner/propietarios lookups), every endpoint outside Colombia, and every route not listed in this section. Biometric face liveness may bill an HTTP **409** for liveness failure; it is not billed on HTTP **404**. smartBatch uses HTTP **404** only to mark rows successful and does not charge credits for those responses.
+| Service | No compensation | Compensation |
+| --- | --- | --- |
+| Databases (smartCHECK, DB Screening) | 90.00% or higher | 89.99% or lower |
+| Email/phone (smartACCESS, smartENROLL) | 99.00% or higher | 98.99% or lower |
+| Biometrics (smartACCESS, smartENROLL) | 99.00% or higher | 98.99% or lower |
+| Document scanning (smartENROLL, smartACCESS) | 99.00% or higher | 98.99% or lower |
 
-#### **8. Dynamic Query for smartCHECK Service**
+Internal problems of the database-verification service (data lookup) exclude problems treated as force majeure (fortuitous event) arising from migrations, disconnections, or external intervention by the governments that hold the databases. Verifik acts as an intermediary and therefore has no power or control over the databases that are queried.
 
-As part of the standard architecture of the smartCHECK Service, Verifik implements a Dynamic Query mechanism designed to maximize service availability, coverage, and reliability across supported endpoints.
+## 5. Dynamic Query for the smartCHECK service {#dynamic-query}
 
-The Dynamic Query mechanism allows smartCHECK and DB Screening to automatically and sequentially query multiple authorized data sources in cases where the primary data source returns an unsuccessful response, including but not limited to "Not Found" or equivalent HTTP 400-level responses. This architecture is intended to improve the probability of obtaining a successful verification result by leveraging multiple eligible data sources.
+As part of the standard architecture of the smartCHECK service, Verifik implements a Dynamic Query mechanism designed to maximize availability, coverage, and reliability on compatible endpoints.
 
-The Client acknowledges and agrees that the quality, completeness, and availability of governmental databases may vary significantly by jurisdiction, and that certain databases may present a higher probability of unsuccessful responses due to incomplete records, service interruptions, or limited data coverage.
+Dynamic Query lets smartCHECK and DB Screening automatically and sequentially query multiple authorized data sources when the primary data source returns an unsatisfactory response, including, without limitation, “Not Found” responses or equivalent HTTP 400-level responses. This architecture is intended to increase the likelihood of a satisfactory verification result by using multiple eligible data sources.
 
-To mitigate these limitations, Dynamic Query is enabled by default across all applicable smartCHECK endpoints and forms an integral part of Verifik's redundancy and failover strategy. This mechanism allows Verifik to maintain closer to one hundred percent (100%) service uptime and coverage on certain endpoints by dynamically routing requests to alternative available sources when necessary.
+The customer acknowledges and agrees that the quality, integrity, and availability of government databases may vary significantly by jurisdiction, and that certain databases may be more likely to return unsatisfactory responses because of incomplete records, service interruptions, or limited data coverage.
 
-The Client further acknowledges and agrees that:
+To mitigate those limitations, Dynamic Query is enabled by default on every applicable smartCHECK endpoint and is an integral part of Verifik’s redundancy and failover strategy. On certain endpoints, this mechanism lets Verifik maintain service availability and coverage close to one hundred percent (100%) by dynamically routing requests to available alternative sources when necessary.
 
-a) Dynamic Query is intended to increase the likelihood of successful verification responses but does not guarantee a successful match in all cases;
+The customer further acknowledges and agrees that:
 
-b) Response times may vary and, in some cases, be longer than standard single-source queries due to the cascading nature of multiple source requests;
+a) Dynamic Query is intended to increase the likelihood of satisfactory verification responses, and it does not guarantee a satisfactory match in every case.
 
-c) The effectiveness and availability of Dynamic Query remain subject to the uptime, accessibility, and data quality of the underlying third-party or governmental sources; and
+b) Response times may vary and, in some cases, may be longer than those of standard single-source queries because requests to multiple sources are made in cascade.
 
-d) Verifik reserves the right to modify, prioritize, or substitute data sources within the Dynamic Query architecture at its sole discretion in order to maintain service continuity, optimize coverage, and improve verification performance.
+c) The effectiveness and availability of Dynamic Query remain subject to the uptime, accessibility, and data quality of the underlying third-party or government sources.
 
-Dynamic Query shall be considered an inherent feature of the smartCHECK Service and shall apply automatically to all Clients using eligible endpoints, unless otherwise specified in writing by Verifik.
+d) Verifik reserves the right to modify, prioritize, or replace data sources within the Dynamic Query architecture, at its sole discretion, in order to maintain service continuity, optimize coverage, and improve verification performance.
 
-##### **8.1 Dynamic pricing (billing)** {#dynamic-pricing-billing}
+Dynamic Query is an inherent feature of the smartCHECK service and applies automatically to every customer that uses eligible endpoints, unless Verifik provides otherwise in writing.
 
-When Dynamic Query uses an extended verification path on an eligible endpoint and returns a successful match (HTTP 200), dynamic pricing may apply. In that case, credits are deducted at the premium tier for that endpoint family—not at the standard tier associated with the base route.
+The billing rules associated with Dynamic Query, including dynamic pricing for the Colombian national ID, are in the [Billing and Credit Consumption Policy](/legal/billing-policy).
 
-Dynamic pricing applies today to the standard Colombia national ID endpoint (GET/POST /v2/co/cedula) when an extended verification path completes successfully after standard paths do not return a match. Credit amounts depend on the Client's configured feature pricing (standard rate vs. premium rate for that endpoint family).
+## 6. Warranty limitations for information sources {#source-warranty-limitations}
 
-Dynamic pricing does not change the Section **7** charge rules for HTTP status codes: validation and server errors (**403**, **409**, **412**, **422**, **500**) and **timeouts** are not charged. HTTP **404** charges follow **only** Section **7.1** (including **`CEDULA NO EXISTE`** on **`/v2/co/cedula`**, billed at the vigencia price tier). No other HTTP **404** is billed.
+Verifik does not own or operate the government databases that are queried and does not control their updating, availability, or accuracy. Verifik therefore does not warrant the response time, average uptime, or accuracy of data from those sources. This limitation applies only to smartCHECK (DB Screening) services and does not release Verifik from the obligations it has expressly assumed regarding its own infrastructure.
 
-For transparency, the Client may pass includeCost=true on eligible requests to receive a billing object when credits are charged (including when dynamic pricing applies). API request history records adjustment metadata (for example, standard vs. charged amounts).
+**Version control.** Verifik identifies new versions of this SLA by their publication date. Changes to contracts already in force follow the amendment rules agreed in each contract.
 
-Calling /v2/co/cedula/premium directly always uses premium pricing; dynamic pricing describes automatic escalation from the standard /v2/co/cedula route.
+<a id="dynamic-pricing-billing"></a>
 
-See [Colombia National ID (basic)](/identity-validation/colombia/colombian-citizen#dynamic-pricing) for API details.
-
-#### **9. Platform Unavailability**
-
-Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.
-
-#### **10. New Adaptations or Developments**
-
-The timeframes for developing new adaptations due to unexpected changes from User systems integrating via API with the Platform will vary according to the changes required by the User and will not count as Platform Downtime.
+**Related documents.** Billing rules and dynamic pricing are in the [Billing and Credit Consumption Policy](/legal/billing-policy#dynamic-pricing-billing).

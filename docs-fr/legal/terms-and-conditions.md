@@ -377,7 +377,7 @@ Nous comprendrons que vous avez accepté les modifications si vous continuez à 
 
 ### **Accord de niveau de service (SLA)**
 
-* [Pièce I - Accord de niveau de service](https://verifik.gitbook.io/verifik/verifik-llc/service-level-agreement)
+* [Pièce I - Accord de niveau de service](/verifik-fr/legal/service-level-agreement)
 
 ### **Procédure de réclamation, réclamation ou notification**
 

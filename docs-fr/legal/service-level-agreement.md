@@ -1,228 +1,183 @@
 ---
 id: service-level-agreement
 title: Accord de niveau de service
-description: Accord de niveau de service et support Verifik
+description: Support, disponibilité et performance des services Verifik
 slug: /legal/service-level-agreement
 ---
 
 # Accord de niveau de service
 
-**Dernière mise à jour : 21 octobre 2026**
+**Support, disponibilité et performance des services**
 
-### **Accord de niveau de service**
+**Version 1.0 | Date de publication : 26 octobre 2026**
 
-#### **1. Canaux de service. L'Utilisateur aura accès aux canaux de service Verifik suivants :**
+Le présent accord décrit les canaux de support, les objectifs de prise en charge et les engagements de disponibilité des services Verifik indiqués ci-dessous. Le support décrit est inclus sans frais supplémentaires, sauf stipulation commerciale expresse contraire.
 
-1. Chat disponible sur [Verifik.co](http://verifik.co)
-2. E-mail : support@verifik.co
-3. Canal WhatsApp du service client.
-4. Canal Discord du service client.
+**Champ d’application.** Ce document peut être incorporé aux contrats qui l’identifient expressément. Les conditions particulières signées par les parties prévalent en cas de conflit. La publication de versions ultérieures ne modifie pas, à elle seule, les contrats en vigueur.
 
-#### **2. Heures d'ouverture**
+## 1. Canaux et horaires de support
 
-L'Utilisateur pourra accéder au support fourni par Verifik, du lundi au vendredi (jours ouvrables), de 8h00 à 17h00, heure de Colombie.
+Le client a accès aux canaux de support Verifik suivants :
 
-#### **3. Niveaux de criticité**
+1. Tickets de support dans le [panneau client](https://ai.verifik.co/).
+2. Courriel : [support@verifik.co](mailto:support@verifik.co).
+3. Canal Discord du service client.
 
-Les demandes ou exigences adressées par les Utilisateurs à l'équipe d'assistance seront classées selon l'impact sur l'exploitation de l'Utilisateur, comme suit :
+Le client peut accéder au support fourni par Verifik du lundi au vendredi, de 8 h 00 à 17 h 00 (UTC-5), à l’exception des jours fériés nationaux (« horaires normaux de support »).
 
-| | |
-| --- | --- |
-| **Critique :** | Indisponibilité totale du service. |
-| **Urgent :** | Perte d'une fonctionnalité spécifique pour tous les cas d'usage. |
-| **Moyen :** | Perte de fonctionnalité dans des cas spécifiques. |
-| **Normal :** | Autres demandes ou questions générales qui n'affectent pas la Disponibilité du service. |
+## 2. Délais de réponse et de résolution des incidents
 
-#### **4. Délais de réponse**
+Les incidents signalés par le client sont classés par Verifik selon leur gravité, leur impact opérationnel et leur portée, conformément aux niveaux suivants :
 
-**Définitions :** Les termes utilisés dans cette section ont les significations suivantes :
-
-i. Prise en charge : délai entre la demande ou l'exigence et l'attribution d'un agent de service.
-
-ii. Examen : délai entre l'accueil de l'agent et la première réponse concernant la demande ou l'exigence.
-
-iii. Escalade : délai entre l'escalade par l'agent et l'examen du dossier par la personne à qui il a été transmis. Ce délai s'applique uniquement lorsqu'il est nécessaire d'escalader la demande ou l'exigence de l'Utilisateur.
-
-iv. Résolution : délai entre l'accueil de l'agent et la résolution du dossier.
-
-Le délai de réponse varie selon la criticité de l'exigence, comme suit :
-
-| **GRAVITÉ/DÉLAI** | **PRISE EN CHARGE** | **EXAMEN** | **ESCALADE** | **RÉSOLUTION** |
-| ----------------- | ------------------- | ---------- | ------------ | -------------- |
-| **Critique** | 0,5 h | 0,5 h | 15 min | 48 h |
-| **Urgent** | 0,5 h | 0,5 h | 15 min | 48 h |
-| **Moyen** | 1 h | 1 h | 0,5 h | 96 h |
-| **Normal** | 1 h | 1 h | 0,5 h | 96 h |
-
-**Remarque :** 48 h signifie que nous pouvons prendre jusqu'à 48 heures pour résoudre l'incident selon sa complexité.
-
-Les délais de réponse sont comptés à partir du dernier message envoyé par l'Utilisateur.
-
-##### **4.1. Tickets critiques dans le panneau client**
-
-Les Utilisateurs peuvent ouvrir un ticket de priorité Critique depuis le panneau client lorsque le trafic de production est bloqué. Pour ces tickets :
-
-- Verifik envoie une première réponse dans les 24 heures suivant la soumission.
-- Verifik vise à résoudre le ticket dans les 48 heures suivant la soumission.
-- Les deux délais courent en heures civiles à partir de la soumission du ticket, et le panneau les affiche dans le fuseau horaire de support de l'Utilisateur.
-- Les tickets critiques sans réponse du personnel sont escaladés en interne avant l'échéance de première réponse.
-
-Ces délais s'appliquent aux tickets ouverts via le panneau client. Les délais de prise en charge, d'examen et d'escalade du tableau ci-dessus s'appliquent aux conversations sur les canaux de service de la Section 1.
-
-#### **5. Disponibilité de la plateforme**
-
-La Plateforme sera disponible au minimum :
-
-| **Égal ou supérieur à** | **Inférieur à** | **Produit** | **Remarques** |
+| Gravité de l’incident | Description | Délai de première réponse | Objectif de résolution |
 | --- | --- | --- | --- |
-| 90,00 % | 89,99 % | smartCHECK (DB Screening) | L'API DB Screening dépend des connexions aux sources gouvernementales |
-| 99,00 % | 98,99 % | smartACCESS, smartENROLL (E-mail/Tél) | Aucune compensation en crédits |
-| 99,00 % | 98,99 % | smartACCESS, smartENROLL (Biométrie) | Aucune compensation en crédits |
-| 99,00 % | 98,99 % | smartENROLL, smartACCESS (Numérisation de documents) | Aucune compensation en crédits |
+| Niveau 1. Critique | Incidents qui entraînent l’interruption totale de la plateforme, affectent gravement ses fonctions essentielles ou impliquent une vulnérabilité critique de sécurité. | Dans un délai d’une (1) heure pendant les horaires normaux de support. | Dans les vingt-quatre (24) heures. |
+| Niveau 2. Élevé | Incidents qui entraînent une dégradation significative du service ou affectent des fonctions importantes sans interruption totale. | Dans un délai de quatre (4) heures pendant les horaires normaux de support. | Dans les deux (2) jours ouvrés. |
+| Niveau 3. Faible | Incidents à impact limité, erreurs mineures et demandes techniques qui ne compromettent pas de façon significative le fonctionnement du service. | Dans un délai de huit (8) heures pendant les horaires normaux de support. | Dans les cinq (5) jours ouvrés. |
 
-##### **5.1. Exclusions de disponibilité par point de terminaison**
+### Conditions de prise en charge
 
-En raison du caractère historiquement imprévisible de la disponibilité opérationnelle de certaines sources de données externes, des points de terminaison spécifiques sont exclus des engagements de Disponibilité de la plateforme et des dispositions de Compensation pour indisponibilité du présent Accord.
+a) Les délais de première réponse sont calculés exclusivement pendant les horaires normaux de support établis à la section 1.
+
+b) La première réponse est une communication de Verifik qui confirme la réception et la prise en charge de l’incident. Les accusés de réception automatiques ne constituent pas une première réponse au sens de la présente section.
+
+c) Les délais de résolution sont des objectifs opérationnels soumis à des efforts commercialement raisonnables. Ils ne constituent pas une garantie de résolution dans un délai déterminé.
+
+d) Verifik détermine la classification des incidents selon leur gravité et leur impact technique, et peut la modifier lorsque les circonstances le justifient.
+
+e) Les délais de résolution peuvent être affectés par des circonstances échappant au contrôle raisonnable de Verifik, y compris des interruptions, des défaillances ou des restrictions d’accès à des sources gouvernementales ou à des services de tiers.
+
+f) Lorsqu’un incident ne peut pas être résolu dans le délai objectif, Verifik continue de déployer des efforts commercialement raisonnables pour le résoudre et informe le client de son état et des avancées pertinentes.
+
+## 3. Disponibilité du service et délais de réponse
+
+La disponibilité des services est évaluée chaque mois selon le tableau 1, à l’exclusion du temps d’indisponibilité programmé. Celui-ci comprend les fenêtres de maintenance et de mise à jour de la plateforme, prévues aux heures de plus faible demande afin de limiter les interruptions.
+
+Verifik peut publier périodiquement des fenêtres récurrentes d’indisponibilité programmée. « Indisponibilité programmée récurrente » désigne les fenêtres d’indisponibilité qui surviennent à des horaires fixes selon des calendriers récurrents et qui sont publiées dans la documentation de l’API de Verifik.
+
+Verifik notifiera par écrit, au moins sept (7) jours calendaires à l’avance, les maintenances programmées en dehors des fenêtres récurrentes publiées, sauf urgence exigeant une intervention immédiate pour préserver la sécurité ou la continuité du service. Les fenêtres ont lieu de préférence la nuit ou le week-end.
+
+### Tableau 1. Disponibilité du service
+
+| Disponibilité | Produit |
+| --- | --- |
+| Bases de données : 90,00 % ou plus | smartCHECK, DB Screening |
+| E-mail/téléphone : 99,00 % ou plus | smartACCESS, smartENROLL |
+| Biométrie : 99,00 % ou plus | smartACCESS, smartENROLL |
+| Numérisation de documents : 99,00 % ou plus | smartENROLL, smartACCESS |
+
+L’API de vérification des bases de données dépend de connexions à des sources gouvernementales. Verifik ne possède ni ne contrôle ces points d’accès.
+
+### 3.1. Exclusions de disponibilité pour DB Screening / smartCHECK {#exclusions-disponibilite}
+
+En raison du caractère historiquement imprévisible de la disponibilité opérationnelle de certaines sources de données externes, des points de terminaison précis sont exclus des engagements de disponibilité de la plateforme et des dispositions de compensation pour indisponibilité du présent accord.
 
 Les points de terminaison suivants sont exclus :
 
-- Mexique – Validation INE
-- Mexique – Validation de plaque d'immatriculation
+- Mexique – validation INE
+- Mexique – validation de plaque d’immatriculation
 
-Les interruptions, périodes de maintenance, performances dégradées, réponses retardées ou indisponibilité temporaire affectant ces points de terminaison ne doivent pas :
+Les interruptions, périodes de maintenance, performances dégradées, réponses tardives ou indisponibilités temporaires qui affectent ces points de terminaison :
 
-- être considérées comme une Indisponibilité de la plateforme ;
-- être incluses dans les calculs de Disponibilité de la plateforme ;
-- ouvrir droit à des Crédits de service ou à toute autre compensation au titre du présent Accord.
+- ne sont pas considérées comme une indisponibilité de la plateforme ;
+- ne sont pas incluses dans les calculs de disponibilité de la plateforme ;
+- n’ouvrent droit ni à des crédits de service ni à une autre compensation au titre du présent accord.
 
-Verifik continuera d'accomplir des efforts commercialement raisonnables pour maintenir la connectivité et rétablir le service lorsque cela est possible ; toutefois, aucune garantie de disponibilité n'est fournie pour les points de terminaison listés.
+Verifik continue de déployer des efforts commercialement raisonnables pour maintenir la connectivité et rétablir le service lorsque c’est possible. Aucune garantie de temps de fonctionnement n’est offerte pour les points de terminaison énumérés.
 
-##### **5.2. Mesure de la disponibilité**
+### 3.2. Comment la disponibilité est mesurée
 
-La disponibilité est calculée par compte pour chaque mois civil en UTC :
+La disponibilité est calculée par compte pour chaque mois calendaire en UTC :
 
 ```
 disponibilité = requêtes réussies / (requêtes réussies + défaillances du service)
 ```
 
-- Les défaillances du service sont les requêtes qui expirent, renvoient une erreur 5xx ou une réponse 408 ou 504, ou indiquent que le point de terminaison est hors service.
-- Les erreurs client sont exclues du calcul. Elles comprennent les paramètres invalides ou manquants, les enregistrements introuvables dans la source, les erreurs d'authentification et d'autorisation, et les autres réponses 4xx.
+Les défaillances du service sont les requêtes qui expirent, renvoient une erreur 5xx ou une réponse 408 ou 504, ou indiquent que le point de terminaison est hors service.
 
-Les Utilisateurs peuvent consulter leur disponibilité mensuelle dans le panneau client sous Contrôle de statut et via l'[API d'utilisation](/resources/usage#get-monthly-availability). Les deux incluent une ventilation par service, de sorte que les requêtes vers les points de terminaison de la Section 5.1 peuvent être séparées du reste. Ces points de terminaison restent hors des engagements du présent Accord.
+Les erreurs du client sont exclues du calcul. Elles comprennent les paramètres invalides ou manquants, les enregistrements introuvables dans la source, les erreurs d’authentification et d’autorisation, et les autres réponses 4xx.
 
-##### **5.3. Objectifs spécifiques au contrat**
+Les clients peuvent consulter la disponibilité mensuelle dans le panneau client et, lorsqu’elle est activée, au moyen de l’API d’utilisation, avec une ventilation par service. Les points de terminaison de la section 3.1 sont exclus des engagements de disponibilité.
 
-Le panneau client et l'API d'utilisation comparent chaque mois à un objectif SmartCHECK de 95 %. Cet objectif s'applique aux comptes dont l'accord commercial le prévoit. Pour les autres comptes, le chiffre est informatif et les engagements de la Section 5 s'appliquent. Un objectif contractuel n'ajoute pas de compensation en crédits au-delà de la Section 6, sauf si l'accord le prévoit.
+### 3.3. Objectifs opérationnels de temps de réponse des requêtes
 
-#### **6. Compensation pour indisponibilité**
+Les temps de réponse des requêtes aux bases de données gouvernementales (DB Screening / smartCHECK) sont des objectifs opérationnels de performance de Verifik, destinés à assurer une prestation efficace des services.
 
-La compensation en crédits accordée pour le mois concerné est fournie sous forme de crédit équivalent au coût de l'appel de service ayant échoué. Si l'indisponibilité du service est causée par des Problèmes internes de Verifik (base de données, serveurs, problèmes d'API internes) et n'est pas effectivement résolue par la Société, Verifik compensera comme suit :
+Dans des conditions normales d’exploitation, Verifik s’efforce d’atteindre les objectifs suivants :
 
-| **Égal ou supérieur à** | **Inférieur à** | **Compensation en crédits par niveau de service** | **Produit** |
-| --- | --- | --- | --- |
-| 90,00 % | 89,99 % | Aucune compensation en crédits | smartCHECK (DB Screening / Requête de données) |
-| 99,00 % | 98,99 % | Aucune compensation en crédits | smartACCESS, smartENROLL (E-mail/Tél) |
-| 99,00 % | 98,99 % | Aucune compensation en crédits | smartACCESS, smartENROLL (Biométrie) |
-| 99,00 % | 98,99 % | Aucune compensation en crédits | smartENROLL, smartACCESS (Numérisation de documents) |
+a) **Temps de réponse cible :** déployer des efforts commercialement raisonnables pour répondre aux requêtes dans un délai d’une (1) seconde.
 
-Les Problèmes internes du service API de données (Requête de données) excluent les situations considérées comme force majeure (événements fortuits), que ce soit en raison d'une migration, d'une déconnexion ou d'une intervention externe des gouvernements qui gèrent les bases de données. Verifik est un intermédiaire et n'a donc PAS le contrôle sur les bases de données interrogées.
+b) **Temps moyen cible :** maintenir un temps de réponse moyen n’excédant pas trois (3) secondes par requête, mesuré mensuellement.
 
-#### **7. Schéma de facturation pour smartCHECK**
+c) **Temps maximal cible :** faire en sorte que les requêtes individuelles ne dépassent pas dix (10) secondes de temps de réponse.
 
-Le schéma de facturation s'applique à la solution smartCHECK, qui permet d'interroger des bases de données gouvernementales. Verifik ne possède pas, ne gère pas et n'assume pas la responsabilité (ne contrôle ni ne met à jour) des bases de données gouvernementales des différents pays que nous servons ; par conséquent, Verifik se réserve le droit de ne pas offrir de garanties concernant le délai de réponse, le temps de disponibilité moyen ou l'exactitude des données.
+Les temps de réponse peuvent varier en raison de la disponibilité, de la capacité, de la maintenance, de la latence et des autres conditions techniques des sources d’information gouvernementales ou tierces, ainsi que de l’utilisation de mécanismes de requête dynamique qui doivent interroger séquentiellement plusieurs sources, conformément à la [politique de facturation et de consommation de crédits](/verifik-fr/legal/billing-policy).
 
-**Règle générale.** Une réponse HTTP **200** est facturée. Ne sont **pas** facturés : HTTP **403**, **412**, **422** et **500** ; les **délais d'attente** des requêtes ; et les réponses HTTP **409** (y compris indisponibilité de la source et échecs de connexion). Une réponse HTTP **404** **n'est pas** facturée, sauf si la Section **7.1** s'applique à cette requête.
+Les temps ci-dessus sont des objectifs opérationnels de référence. Ils ne constituent ni des garanties de performance, ni des obligations de résultat, ni des engagements de temps de réponse maximal.
 
-| **Facturé** | **Non facturé** |
-| --- | --- |
-| 200 | 404 (sauf comme indiqué à la Section 7.1) |
-| | 403 |
-| | 409 (y compris défaillances de source ; jamais facturé) |
-| | 412 |
-| | 422 |
-| | 500 |
-| | Délais d'attente (jamais facturés) |
+Le client reconnaît que les temps de réponse peuvent varier en raison de la disponibilité, de la capacité, de la maintenance, de la latence et des autres conditions techniques des sources d’information gouvernementales ou tierces, ainsi que de l’utilisation de mécanismes de requête dynamique qui accèdent séquentiellement à plusieurs sources.
 
-Aucun point de terminaison hors Colombie n'est facturé sur HTTP **404**. Les points de terminaison non listés à la Section **7.1** ne sont pas facturés sur HTTP **404**, y compris toutes les routes dans des pays autres que la Colombie.
+Aux fins de mesure, le temps de réponse correspond au traitement d’une seule requête API, à l’exclusion des délais de transmission sur des réseaux Internet échappant au contrôle de Verifik.
 
-##### **7.1 Colombie : facturation HTTP 404**
+Le non-respect de ces objectifs opérationnels ne constitue pas, à lui seul, un manquement contractuel et n’ouvre droit ni à une compensation, ni à des crédits de service, ni à des pénalités. Cela ne dispense pas Verifik de respecter les obligations qu’elle a expressément assumées concernant sa propre infrastructure, la disponibilité de la plateforme et les autres engagements applicables au titre du présent accord.
 
-Cette section est la seule source de facturation HTTP **404** au titre de la Section **7**. Toutes les routes ci-dessous sont des API smartCHECK Colombie. Les **délais d'attente** et les défaillances de source HTTP **409** ne sont **jamais** facturés sur aucun point de terminaison Verifik.
+La présente section s’interprète conjointement avec la [section 6](#limitations-de-garantie) du présent accord, relative aux limitations de garantie des sources gouvernementales.
 
-**RUNT (HTTP 404 avec code de réponse `NotFound` uniquement).** Les réponses HTTP **409** (par exemple lorsque la source est hors service ou qu'un worker RUNT est indisponible) ne sont **pas** facturées.
+### 3.4. Objectifs contractuels
 
-| Nom du produit | Route |
-| --- | --- |
-| Consultation conducteur RUNT Colombie | `GET /v2/co/runt/conductor` |
-| Consultation conducteur RUNT Colombie (v3) | `GET /v3/co/runt/conductor` |
-| Consultation véhicule RUNT Colombie | `GET /v2/co/runt/vehiculo` |
-| Dossier véhicule complet RUNT Colombie | `GET /v2/co/runt/vehiculo-completo` |
-| SOAT véhicule RUNT Colombie | `GET /v2/co/runt/vehiculo-soat` |
-| Véhicule RUNT Colombie par plaque | `GET /v2/co/runt/vehicle-by-plate` |
-| Véhicule RUNT Colombie par VIN | `GET /v2/co/runt/vehicle-by-vin` |
-| Véhicule RUNT Colombie par plaque (simplifié) | `GET /v2/co/runt/vehicle-by-plate-simplified` |
-| Véhicule RUNT Colombie par plaque uniquement | `GET /v2/co/runt/vehicle-by-plate-only` |
+Le panneau client et l’API d’utilisation peuvent comparer la performance mensuelle de smartCHECK à l’objectif de référence de 90 %. Les objectifs contractuels spécifiques s’appliquent uniquement lorsqu’ils sont expressément inclus dans les conditions commerciales du client. Dans les autres cas, les chiffres affichés sont informatifs. L’affichage ne crée pas de compensation au-delà de ce que prévoit la section 4.
 
-**Affiliations sécurité sociale.** **Toute** réponse HTTP **404** sur la route ci-dessous est facturable, y compris lorsque le message indique une date d'expédition incorrecte. Les échecs de connexion renvoyant HTTP **409** ne sont **pas** facturés.
+## 4. Compensation en cas de non-respect des niveaux de disponibilité
 
-| Nom du produit | Route |
-| --- | --- |
-| Affiliations sécurité sociale Colombie | `GET /v2/co/afiliaciones` |
+La compensation pour non-respect des niveaux de disponibilité du présent accord n’est due que lorsque l’indisponibilité est imputable à des défaillances internes de Verifik et a généré des frais effectifs pour le client au titre de requêtes API qui n’ont pas été traitées avec succès.
 
-**Évaluation véhicule SIBGA (HTTP 404 avec code de réponse `NotFound` uniquement).**
+Dans ces cas, la compensation consiste à restituer les crédits effectivement débités pour ces requêtes. Aucun crédit supplémentaire n’est accordé pour des requêtes qui n’ont pas été facturées.
 
-| Nom du produit | Route |
-| --- | --- |
-| Évaluation véhicule SIBGA Colombie | `GET /v2/co/sibga/valuation` |
+Pour smartCHECK (DB Screening), les interruptions ou limitations des sources gouvernementales ne donnent pas lieu à compensation, conformément aux exclusions et limitations des sections [3.1](#exclusions-disponibilite) et [6](#limitations-de-garantie) du présent accord.
 
-**Carte d'identité nationale colombienne (cédula).** Seule une réponse HTTP **404** dont le message est **`CEDULA NO EXISTE`** est facturable, au niveau tarifaire **vigencia**. Toute autre réponse HTTP **404** sur la route ci-dessous **n'est pas** facturée. **`GET`/`POST /v2/co/cedula/vigencia`** ne facture **pas** ses propres réponses HTTP **404**.
+Les pourcentages de disponibilité de la section 3 sont les niveaux de référence utilisés pour évaluer la performance des services. Leur non-respect ne génère pas automatiquement une compensation pécuniaire lorsqu’il n’existe pas de frais effectifs susceptibles de restitution.
 
-| Nom du produit | Route |
-| --- | --- |
-| Consultation carte d'identité nationale colombienne | `GET` / `POST` `/v2/co/cedula` |
+La compensation prévue à la présente section est accordée sous forme de crédits de service applicables à une consommation future, et non sous forme de remboursement en espèces, sans préjudice des droits dont les parties peuvent se prévaloir en cas de manquement essentiel au titre du contrat commercial applicable.
 
-**Non facturé sur HTTP 404 :** Autres routes RUNT Colombie (y compris consultations propriétaires), tout point de terminaison hors Colombie, et toute route non listée dans cette section. La preuve de vie faciale peut facturer HTTP **409** en cas d'échec de liveness ; elle n'est pas facturée sur HTTP **404**. smartBatch utilise HTTP **404** uniquement pour marquer des lignes comme réussies et ne débite pas de crédits pour ces réponses.
+| Service | Sans compensation | Avec compensation |
+| --- | --- | --- |
+| Bases de données (smartCHECK, DB Screening) | 90,00 % ou plus | 89,99 % ou moins |
+| E-mail/téléphone (smartACCESS, smartENROLL) | 99,00 % ou plus | 98,99 % ou moins |
+| Biométrie (smartACCESS, smartENROLL) | 99,00 % ou plus | 98,99 % ou moins |
+| Numérisation de documents (smartENROLL, smartACCESS) | 99,00 % ou plus | 98,99 % ou moins |
 
-#### **8. Requête dynamique pour le service smartCHECK**
+Les problèmes internes du service de vérification dans les bases de données (consultation de données) excluent les problèmes considérés comme un cas de force majeure (cas fortuit) résultant de migrations, de déconnexions ou d’une intervention extérieure des gouvernements qui détiennent les bases de données. Verifik agit en qualité d’intermédiaire et n’a donc ni pouvoir ni contrôle sur les bases de données consultées.
 
-Dans le cadre de l'architecture standard du service smartCHECK, Verifik met en œuvre un mécanisme de Requête dynamique conçu pour maximiser la disponibilité, la couverture et la fiabilité du service sur les points de terminaison pris en charge.
+## 5. Requête dynamique pour le service smartCHECK {#requete-dynamique}
 
-Le mécanisme de Requête dynamique permet à smartCHECK et DB Screening d'interroger automatiquement et séquentiellement plusieurs sources de données autorisées lorsque la source primaire renvoie une réponse infructueuse, y compris, sans s'y limiter, les réponses de type « non trouvé » ou équivalentes aux erreurs HTTP de niveau 400. Cette architecture vise à améliorer la probabilité d'obtenir un résultat de vérification réussi en s'appuyant sur plusieurs sources éligibles.
+Dans le cadre de l’architecture standard du service smartCHECK, Verifik met en œuvre un mécanisme de requête dynamique conçu pour maximiser la disponibilité, la couverture et la fiabilité du service sur les points de terminaison compatibles.
 
-Le Client reconnaît et accepte que la qualité, l'exhaustivité et la disponibilité des bases de données gouvernementales peuvent varier considérablement selon la juridiction, et que certaines bases peuvent présenter une probabilité plus élevée de réponses infructueuses en raison d'enregistrements incomplets, d'interruptions de service ou d'une couverture de données limitée.
+La requête dynamique permet à smartCHECK et à DB Screening d’interroger automatiquement et séquentiellement plusieurs sources de données autorisées lorsque la source principale renvoie une réponse non satisfaisante, y compris, sans s’y limiter, les réponses « Not Found » ou les réponses équivalentes de niveau HTTP 400. Cette architecture vise à augmenter la probabilité d’obtenir un résultat de vérification satisfaisant en s’appuyant sur plusieurs sources de données éligibles.
 
-Pour atténuer ces limitations, la Requête dynamique est activée par défaut sur tous les points de terminaison smartCHECK applicables et fait partie intégrante de la stratégie de redondance et de basculement de Verifik. Ce mécanisme permet à Verifik de maintenir une disponibilité et une couverture proches de cent pour cent (100 %) sur certains points de terminaison, en acheminant dynamiquement les requêtes vers des sources alternatives disponibles lorsque nécessaire.
+Le client reconnaît et accepte que la qualité, l’intégrité et la disponibilité des bases de données gouvernementales peuvent varier sensiblement selon la juridiction, et que certaines bases peuvent présenter une plus forte probabilité de réponses non satisfaisantes en raison d’enregistrements incomplets, d’interruptions de service ou d’une couverture de données limitée.
 
-Le Client reconnaît et accepte en outre que :
+Pour atténuer ces limites, la requête dynamique est activée par défaut sur tous les points de terminaison smartCHECK applicables et fait partie intégrante de la stratégie de redondance et de basculement de Verifik. Sur certains points de terminaison, ce mécanisme permet à Verifik de maintenir une disponibilité et une couverture du service proches de cent pour cent (100 %) en acheminant dynamiquement les requêtes vers des sources alternatives disponibles lorsque cela est nécessaire.
 
-a) La Requête dynamique vise à augmenter la probabilité de réponses de vérification réussies, mais ne garantit pas une correspondance réussie dans tous les cas ;
+Le client reconnaît et accepte en outre que :
 
-b) Les délais de réponse peuvent varier et, dans certains cas, être plus longs que pour des requêtes standard à source unique, en raison de la nature en cascade de requêtes multiples ;
+a) La requête dynamique vise à augmenter la probabilité d’obtenir des réponses de vérification satisfaisantes, sans garantir une correspondance satisfaisante dans tous les cas.
 
-c) L'efficacité et la disponibilité de la Requête dynamique restent soumises à la disponibilité, l'accessibilité et la qualité des données des sources gouvernementales ou tierces sous-jacentes ; et
+b) Les temps de réponse peuvent varier et, dans certains cas, être supérieurs à ceux des requêtes standard à source unique, en raison du caractère en cascade des requêtes vers plusieurs sources.
 
-d) Verifik se réserve le droit de modifier, prioriser ou substituer des sources de données au sein de l'architecture de Requête dynamique, à sa seule discrétion, pour maintenir la continuité du service, optimiser la couverture et améliorer les performances de vérification.
+c) L’efficacité et la disponibilité de la requête dynamique restent soumises au temps de fonctionnement, à l’accessibilité et à la qualité des données des sources sous-jacentes, tierces ou gouvernementales.
 
-La Requête dynamique est considérée comme une fonctionnalité inhérente au service smartCHECK et s'applique automatiquement à tous les Clients utilisant des points de terminaison éligibles, sauf disposition contraire écrite de Verifik.
+d) Verifik se réserve le droit de modifier, de prioriser ou de remplacer les sources de données au sein de l’architecture de requête dynamique, à sa seule discrétion, afin de maintenir la continuité du service, d’optimiser la couverture et d’améliorer la performance de la vérification.
 
-##### **8.1 Tarification dynamique (facturation)** {#dynamic-pricing-billing}
+La requête dynamique est une caractéristique inhérente du service smartCHECK et s’applique automatiquement à tous les clients qui utilisent des points de terminaison éligibles, sauf disposition écrite contraire de Verifik.
 
-Lorsque la Requête dynamique utilise un chemin de vérification étendu sur un point de terminaison éligible et renvoie une correspondance réussie (HTTP 200), une tarification dynamique peut s'appliquer. Dans ce cas, les crédits sont déduits au niveau premium de cette famille de points de terminaison — et non au niveau standard associé à la route de base.
+Les règles de facturation associées à la requête dynamique, y compris la tarification dynamique de la cédula colombienne, figurent dans la [politique de facturation et de consommation de crédits](/verifik-fr/legal/billing-policy).
 
-La tarification dynamique s'applique aujourd'hui au point de terminaison standard de carte d'identité nationale colombienne (GET/POST /v2/co/cedula) lorsqu'un chemin de vérification étendu aboutit avec succès après l'échec des chemins standard. Les montants de crédits dépendent de la tarification des fonctionnalités configurée pour le Client (tarif standard vs. tarif premium pour cette famille de points de terminaison).
+## 6. Limitations de garantie des sources d’information {#limitations-de-garantie}
 
-La tarification dynamique ne modifie pas les règles de facturation de la Section **7** pour les codes de statut HTTP : les erreurs de validation et serveur (**403**, **409**, **412**, **422**, **500**) et les **délais d'attente** ne sont pas facturés. Les facturations HTTP **404** suivent **uniquement** la Section **7.1** (y compris **`CEDULA NO EXISTE`** sur **`/v2/co/cedula`**, facturé au niveau tarifaire vigencia). Aucune autre réponse HTTP **404** n'est facturée.
+Verifik n’est ni propriétaire ni administrateur des bases de données gouvernementales consultées et n’en contrôle ni la mise à jour, ni la disponibilité, ni l’exactitude. Verifik ne garantit donc ni le temps de réponse, ni le temps moyen de fonctionnement, ni l’exactitude des données provenant de ces sources. Cette limitation s’applique exclusivement aux services smartCHECK (DB Screening) et ne dispense pas Verifik des obligations qu’elle a expressément assumées concernant sa propre infrastructure.
 
-Pour plus de transparence, le Client peut transmettre includeCost=true sur les requêtes éligibles pour recevoir un objet de facturation lorsque des crédits sont débités (y compris lorsque la tarification dynamique s'applique). L'historique des requêtes API enregistre les métadonnées d'ajustement (par exemple montants standard vs. facturés).
+**Contrôle des versions.** Verifik identifie les nouvelles versions du présent accord par leur date de publication. Les modifications des contrats en vigueur suivent les règles de modification convenues dans chaque contrat.
 
-L'appel direct à /v2/co/cedula/premium utilise toujours la tarification premium ; la tarification dynamique décrit l'escalade automatique depuis la route standard /v2/co/cedula.
+<a id="dynamic-pricing-billing"></a>
 
-Voir [Cédula colombienne premium](/verifik-fr/identity-validation/colombia/colombian-cedula-premium#dynamic-pricing) pour les détails de l'API.
-
-#### **9. Indisponibilité de la plateforme**
-
-Les fenêtres de maintenance programmées auront lieu la nuit et/ou le week-end, avec notification préalable par e-mail aux utilisateurs.
-
-#### **10. Nouvelles adaptations ou développements**
-
-Les délais pour développer de nouvelles adaptations en raison de changements imprévus des systèmes de l'Utilisateur s'intégrant à la Plateforme via l'API varieront selon les modifications exigées par l'Utilisateur et ne compteront pas comme Indisponibilité de la plateforme.
+**Documents connexes.** Les règles de facturation et la tarification dynamique figurent dans la [politique de facturation et de consommation de crédits](/verifik-fr/legal/billing-policy#dynamic-pricing-billing).

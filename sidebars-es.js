@@ -1014,6 +1014,7 @@ const sidebars = {
 				"legal/politica-privacidad",
 				"legal/terminos-y-condiciones",
 				"legal/acuerdo-de-niveles-de-servicio",
+				"legal/politica-de-facturacion",
 				"legal/verifik-for-enterprises-hub-esp",
 				"legal/smartcheck-terminos-y-condiciones-de-uso",
 			],

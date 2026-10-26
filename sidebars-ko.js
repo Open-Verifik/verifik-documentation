@@ -466,6 +466,7 @@ const sidebars = {
 				{ type: "doc", id: "legal/privacy-policy", label: "legal/privacy-policy" },
 				{ type: "doc", id: "legal/terms-and-conditions", label: "legal/terms-and-conditions" },
 				{ type: "doc", id: "legal/service-level-agreement", label: "legal/service-level-agreement" },
+				{ type: "doc", id: "legal/billing-policy", label: "크레딧 청구 및 소비 정책" },
 				{ type: "doc", id: "legal/verifik-for-enterprises-hub-eng", label: "legal/verifik-for-enterprises-hub-eng" },
 				{ type: "doc", id: "legal/smartcheck-terms-and-conditions-of-use", label: "legal/smartcheck-terms-and-conditions-of-use" },
 			],

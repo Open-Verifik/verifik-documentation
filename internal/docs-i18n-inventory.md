@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-20T21:46:42.362Z
+Generated: 2026-10-26T23:08:25.408Z
 
-- **Files scanned:** 535
+- **Files scanned:** 536
 - **Unique endpoint URLs:** 231
 - **Duplicate URL groups (SEO / aliases):** 58
-- **Docs without `### Endpoint` block:** 223
+- **Docs without `### Endpoint` block:** 224
 
 ## Summary by priority (canonical primary path only)
 
@@ -519,6 +519,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `integrations/blockdag.md`
 - `intro.md`
 - `legal/access-management-policy.md`
+- `legal/billing-policy.md`
 - `legal/compliance-access-management-response-short.md`
 - `legal/compliance-access-management-response.md`
 - `legal/compliance-access-removal-response.md`

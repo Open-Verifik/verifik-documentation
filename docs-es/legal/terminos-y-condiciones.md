@@ -378,7 +378,7 @@ Entenderemos que has aceptado las modificaciones si continúas utilizando los Se
 
 ### **Acuerdo de Nivel de Servicio (SLA)**
 
-* [Exhibit I - Acuerdo de Nivel de Servicio](https://verifik.gitbook.io/verifik/verifik-llc/service-level-agreement)
+* [Exhibit I - Acuerdo de Nivel de Servicio](/verifik-es/acuerdo-de-niveles-de-servicio)
 
 ### **Procedimiento para Quejas, Reclamos o Notificaciones**
 
