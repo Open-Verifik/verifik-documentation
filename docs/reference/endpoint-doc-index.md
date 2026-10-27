@@ -232,6 +232,21 @@ keywords:
   - "https://api.verifik.co/v2/app-registrations/{id}"
   - "GET v2/app-registrations/{id}"
   - "GET /v2/app-registrations/{id}"
+  - "v2/app-registrations/{id}/data"
+  - "/v2/app-registrations/{id}/data"
+  - "v2/app-registrations/data"
+  - "/v2/app-registrations/data"
+  - "v2 app-registrations data"
+  - "v2 app-registrations {id} data"
+  - "app-registrations/data"
+  - "/app-registrations/data"
+  - "api/app-registrations/data"
+  - "/api/app-registrations/data"
+  - "api app-registrations data"
+  - "api.verifik.co/v2/app-registrations/{id}/data"
+  - "https://api.verifik.co/v2/app-registrations/{id}/data"
+  - "GET v2/app-registrations/{id}/data"
+  - "GET /v2/app-registrations/{id}/data"
   - "v2/app-registrations/{id}/resend-link"
   - "/v2/app-registrations/{id}/resend-link"
   - "v2/app-registrations/resend-link"
@@ -522,20 +537,6 @@ keywords:
   - "https://api.verifik.co/v2/br/vehicle"
   - "GET v2/br/vehicle"
   - "GET /v2/br/vehicle"
-  - "v2/ca/british-columbia/driver-license"
-  - "/v2/ca/british-columbia/driver-license"
-  - "v2 ca british-columbia driver-license"
-  - "ca/british-columbia/driver-license"
-  - "/ca/british-columbia/driver-license"
-  - "api/ca/british-columbia/driver-license"
-  - "/api/ca/british-columbia/driver-license"
-  - "api ca british-columbia driver-license"
-  - "british-columbia/driver-license"
-  - "/british-columbia/driver-license"
-  - "api.verifik.co/v2/ca/british-columbia/driver-license"
-  - "https://api.verifik.co/v2/ca/british-columbia/driver-license"
-  - "GET v2/ca/british-columbia/driver-license"
-  - "GET /v2/ca/british-columbia/driver-license"
   - "v2/ca/company"
   - "/v2/ca/company"
   - "v2 ca company"
@@ -731,6 +732,18 @@ keywords:
   - "https://api.verifik.co/v2/cl/vehicle-stolen"
   - "GET v2/cl/vehicle-stolen"
   - "GET /v2/cl/vehicle-stolen"
+  - "v2/client-settings/data"
+  - "/v2/client-settings/data"
+  - "v2 client-settings data"
+  - "client-settings/data"
+  - "/client-settings/data"
+  - "api/client-settings/data"
+  - "/api/client-settings/data"
+  - "api client-settings data"
+  - "api.verifik.co/v2/client-settings/data"
+  - "https://api.verifik.co/v2/client-settings/data"
+  - "GET v2/client-settings/data"
+  - "GET /v2/client-settings/data"
   - "v2/clients/me"
   - "/v2/clients/me"
   - "v2 clients me"
@@ -862,20 +875,6 @@ keywords:
   - "https://api.verifik.co/v2/co/cedula"
   - "GET v2/co/cedula"
   - "GET /v2/co/cedula"
-  - "v2/co/cedula/barcode"
-  - "/v2/co/cedula/barcode"
-  - "v2 co cedula barcode"
-  - "co/cedula/barcode"
-  - "/co/cedula/barcode"
-  - "api/co/cedula/barcode"
-  - "/api/co/cedula/barcode"
-  - "api co cedula barcode"
-  - "cedula/barcode"
-  - "/cedula/barcode"
-  - "api.verifik.co/v2/co/cedula/barcode"
-  - "https://api.verifik.co/v2/co/cedula/barcode"
-  - "GET v2/co/cedula/barcode"
-  - "GET /v2/co/cedula/barcode"
   - "v2/co/cedula/by-name"
   - "/v2/co/cedula/by-name"
   - "v2 co cedula by-name"
@@ -1740,6 +1739,30 @@ keywords:
   - "https://api.verifik.co/v2/cr/votacion"
   - "GET v2/cr/votacion"
   - "GET /v2/cr/votacion"
+  - "v2/data-retention/erase"
+  - "/v2/data-retention/erase"
+  - "v2 data-retention erase"
+  - "data-retention/erase"
+  - "/data-retention/erase"
+  - "api/data-retention/erase"
+  - "/api/data-retention/erase"
+  - "api data-retention erase"
+  - "api.verifik.co/v2/data-retention/erase"
+  - "https://api.verifik.co/v2/data-retention/erase"
+  - "GET v2/data-retention/erase"
+  - "GET /v2/data-retention/erase"
+  - "v2/data-retention/policy"
+  - "/v2/data-retention/policy"
+  - "v2 data-retention policy"
+  - "data-retention/policy"
+  - "/data-retention/policy"
+  - "api/data-retention/policy"
+  - "/api/data-retention/policy"
+  - "api data-retention policy"
+  - "api.verifik.co/v2/data-retention/policy"
+  - "https://api.verifik.co/v2/data-retention/policy"
+  - "GET v2/data-retention/policy"
+  - "GET /v2/data-retention/policy"
   - "v2/dea"
   - "/v2/dea"
   - "v2 dea"
@@ -1764,6 +1787,21 @@ keywords:
   - "https://api.verifik.co/v2/do/cedula"
   - "GET v2/do/cedula"
   - "GET /v2/do/cedula"
+  - "v2/document-validations/{id}/files"
+  - "/v2/document-validations/{id}/files"
+  - "v2/document-validations/files"
+  - "/v2/document-validations/files"
+  - "v2 document-validations files"
+  - "v2 document-validations {id} files"
+  - "document-validations/files"
+  - "/document-validations/files"
+  - "api/document-validations/files"
+  - "/api/document-validations/files"
+  - "api document-validations files"
+  - "api.verifik.co/v2/document-validations/{id}/files"
+  - "https://api.verifik.co/v2/document-validations/{id}/files"
+  - "GET v2/document-validations/{id}/files"
+  - "GET /v2/document-validations/{id}/files"
   - "v2/document-validations/app-registration"
   - "/v2/document-validations/app-registration"
   - "v2 document-validations app-registration"
@@ -2282,6 +2320,18 @@ keywords:
   - "https://api.verifik.co/v2/look-ups/phone"
   - "GET v2/look-ups/phone"
   - "GET /v2/look-ups/phone"
+  - "v2/mx/cedula-profesional"
+  - "/v2/mx/cedula-profesional"
+  - "v2 mx cedula-profesional"
+  - "mx/cedula-profesional"
+  - "/mx/cedula-profesional"
+  - "api/mx/cedula-profesional"
+  - "/api/mx/cedula-profesional"
+  - "api mx cedula-profesional"
+  - "api.verifik.co/v2/mx/cedula-profesional"
+  - "https://api.verifik.co/v2/mx/cedula-profesional"
+  - "GET v2/mx/cedula-profesional"
+  - "GET /v2/mx/cedula-profesional"
   - "v2/mx/company"
   - "/v2/mx/company"
   - "v2 mx company"
@@ -2306,6 +2356,18 @@ keywords:
   - "https://api.verifik.co/v2/mx/curp"
   - "GET v2/mx/curp"
   - "GET /v2/mx/curp"
+  - "v2/mx/health-worker"
+  - "/v2/mx/health-worker"
+  - "v2 mx health-worker"
+  - "mx/health-worker"
+  - "/mx/health-worker"
+  - "api/mx/health-worker"
+  - "/api/mx/health-worker"
+  - "api mx health-worker"
+  - "api.verifik.co/v2/mx/health-worker"
+  - "https://api.verifik.co/v2/mx/health-worker"
+  - "GET v2/mx/health-worker"
+  - "GET /v2/mx/health-worker"
   - "v2/mx/ine"
   - "/v2/mx/ine"
   - "v2 mx ine"
@@ -2332,6 +2394,20 @@ keywords:
   - "https://api.verifik.co/v2/mx/ine/ocr"
   - "GET v2/mx/ine/ocr"
   - "GET /v2/mx/ine/ocr"
+  - "v2/mx/siged/certificado"
+  - "/v2/mx/siged/certificado"
+  - "v2 mx siged certificado"
+  - "mx/siged/certificado"
+  - "/mx/siged/certificado"
+  - "api/mx/siged/certificado"
+  - "/api/mx/siged/certificado"
+  - "api mx siged certificado"
+  - "siged/certificado"
+  - "/siged/certificado"
+  - "api.verifik.co/v2/mx/siged/certificado"
+  - "https://api.verifik.co/v2/mx/siged/certificado"
+  - "GET v2/mx/siged/certificado"
+  - "GET /v2/mx/siged/certificado"
   - "v2/mx/vehiculo/placa"
   - "/v2/mx/vehiculo/placa"
   - "v2 mx vehiculo placa"
@@ -2344,18 +2420,6 @@ keywords:
   - "https://api.verifik.co/v2/mx/vehiculo/placa"
   - "GET v2/mx/vehiculo/placa"
   - "GET /v2/mx/vehiculo/placa"
-  - "v2/ocr/scan-agent"
-  - "/v2/ocr/scan-agent"
-  - "v2 ocr scan-agent"
-  - "ocr/scan-agent"
-  - "/ocr/scan-agent"
-  - "api/ocr/scan-agent"
-  - "/api/ocr/scan-agent"
-  - "api ocr scan-agent"
-  - "api.verifik.co/v2/ocr/scan-agent"
-  - "https://api.verifik.co/v2/ocr/scan-agent"
-  - "GET v2/ocr/scan-agent"
-  - "GET /v2/ocr/scan-agent"
   - "v2/ocr/scan-prompt"
   - "/v2/ocr/scan-prompt"
   - "v2 ocr scan-prompt"
@@ -2565,6 +2629,21 @@ keywords:
   - "https://api.verifik.co/v2/project-flows"
   - "GET v2/project-flows"
   - "GET /v2/project-flows"
+  - "v2/projects/{id}/data-retention"
+  - "/v2/projects/{id}/data-retention"
+  - "v2/projects/data-retention"
+  - "/v2/projects/data-retention"
+  - "v2 projects data-retention"
+  - "v2 projects {id} data-retention"
+  - "projects/data-retention"
+  - "/projects/data-retention"
+  - "api/projects/data-retention"
+  - "/api/projects/data-retention"
+  - "api projects data-retention"
+  - "api.verifik.co/v2/projects/{id}/data-retention"
+  - "https://api.verifik.co/v2/projects/{id}/data-retention"
+  - "GET v2/projects/{id}/data-retention"
+  - "GET /v2/projects/{id}/data-retention"
   - "v2/projects/email-login"
   - "/v2/projects/email-login"
   - "v2 projects email-login"
@@ -2910,12 +2989,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (233 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (239 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-10-21T20:45:46.260Z_
+_Last regenerated: 2026-10-27T18:45:15.967Z_
 
 ## Argentina
 
@@ -2977,7 +3056,6 @@ _Last regenerated: 2026-10-21T20:45:46.260Z_
 | `v2/co/bogota/vehicle/fines` | v2 co bogota vehicle fines co/bogota/vehicle/fines /co/bogota/vehicle/fines api/co/bogota/vehicle/fines /api/co/bogota/vehicle/fines api co bogota vehicle fines bogota/vehicle/fines /bogota/vehicle/fines vehicle/fines /vehicle/fines api.verifik.co/v2/co/bogota/vehicle/fines https://api.verifik.co/v2/co/bogota/vehicle/fines GET v2/co/bogota/vehicle/fines GET /v2/co/bogota/vehicle/fines | [Vehicle Fines Check](/vehicle-validation/colombia/bogota-vehicle-fines) |
 | `v2/co/bogota/vehicle/tax` | v2 co bogota vehicle tax co/bogota/vehicle/tax /co/bogota/vehicle/tax api/co/bogota/vehicle/tax /api/co/bogota/vehicle/tax api co bogota vehicle tax bogota/vehicle/tax /bogota/vehicle/tax vehicle/tax /vehicle/tax api.verifik.co/v2/co/bogota/vehicle/tax https://api.verifik.co/v2/co/bogota/vehicle/tax GET v2/co/bogota/vehicle/tax GET /v2/co/bogota/vehicle/tax | [Taxes in Bogotá](/vehicle-validation/colombia/bogota-taxes) |
 | `v2/co/cedula` | v2 co cedula co/cedula /co/cedula api/co/cedula /api/co/cedula api co cedula api.verifik.co/v2/co/cedula https://api.verifik.co/v2/co/cedula GET v2/co/cedula GET /v2/co/cedula | [Colombian Citizen](/identity-validation/colombia/colombian-citizen) |
-| `v2/co/cedula/barcode` | v2 co cedula barcode co/cedula/barcode /co/cedula/barcode api/co/cedula/barcode /api/co/cedula/barcode api co cedula barcode cedula/barcode /cedula/barcode api.verifik.co/v2/co/cedula/barcode https://api.verifik.co/v2/co/cedula/barcode GET v2/co/cedula/barcode GET /v2/co/cedula/barcode | [Colombia — Cédula barcode (PDF417)](/identity-validation/colombia/colombian-cedula-barcode) |
 | `v2/co/cedula/by-name` | v2 co cedula by-name co/cedula/by-name /co/cedula/by-name api/co/cedula/by-name /api/co/cedula/by-name api co cedula by-name cedula/by-name /cedula/by-name api.verifik.co/v2/co/cedula/by-name https://api.verifik.co/v2/co/cedula/by-name GET v2/co/cedula/by-name GET /v2/co/cedula/by-name | [Colombia — Citizen lookup by name (SCCRC)](/identity-validation/colombia/colombian-citizen-by-name) |
 | `v2/co/cedula/extra` | v2 co cedula extra co/cedula/extra /co/cedula/extra api/co/cedula/extra /api/co/cedula/extra api co cedula extra cedula/extra /cedula/extra api.verifik.co/v2/co/cedula/extra https://api.verifik.co/v2/co/cedula/extra GET v2/co/cedula/extra GET /v2/co/cedula/extra | [Colombian Citizen with Extra Data](/identity-validation/colombia/colombian-citizen-with-extra-data) |
 | `v2/co/cedula/premium` | v2 co cedula premium co/cedula/premium /co/cedula/premium api/co/cedula/premium /api/co/cedula/premium api co cedula premium cedula/premium /cedula/premium api.verifik.co/v2/co/cedula/premium https://api.verifik.co/v2/co/cedula/premium GET v2/co/cedula/premium GET /v2/co/cedula/premium | [Colombia — National ID premium lookup (CC)](/identity-validation/colombia/colombian-cedula-premium) |
@@ -3094,10 +3172,13 @@ _Last regenerated: 2026-10-21T20:45:46.260Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
+| `v2/mx/cedula-profesional` | v2 mx cedula-profesional mx/cedula-profesional /mx/cedula-profesional api/mx/cedula-profesional /api/mx/cedula-profesional api mx cedula-profesional api.verifik.co/v2/mx/cedula-profesional https://api.verifik.co/v2/mx/cedula-profesional GET v2/mx/cedula-profesional GET /v2/mx/cedula-profesional | [Mexico — Professional License](/identity/mexico-cedula-profesional) |
 | `v2/mx/company` | v2 mx company mx/company /mx/company api/mx/company /api/mx/company api mx company api.verifik.co/v2/mx/company https://api.verifik.co/v2/mx/company GET v2/mx/company GET /v2/mx/company | [Mexican Business Verification](/business-validation/mexican-companies) |
 | `v2/mx/curp` | v2 mx curp mx/curp /mx/curp api/mx/curp /api/mx/curp api mx curp api.verifik.co/v2/mx/curp https://api.verifik.co/v2/mx/curp GET v2/mx/curp GET /v2/mx/curp | [Mexico — CURP](/identity/mexico) |
+| `v2/mx/health-worker` | v2 mx health-worker mx/health-worker /mx/health-worker api/mx/health-worker /api/mx/health-worker api mx health-worker api.verifik.co/v2/mx/health-worker https://api.verifik.co/v2/mx/health-worker GET v2/mx/health-worker GET /v2/mx/health-worker | [Mexico — Health Worker License](/identity/mexico-health-worker) |
 | `v2/mx/ine` | v2 mx ine mx/ine /mx/ine api/mx/ine /api/mx/ine api mx ine api.verifik.co/v2/mx/ine https://api.verifik.co/v2/mx/ine GET v2/mx/ine GET /v2/mx/ine | [Mexico — INE Validation](/identity/mexico-ine) |
 | `v2/mx/ine/ocr` | v2 mx ine ocr mx/ine/ocr /mx/ine/ocr api/mx/ine/ocr /api/mx/ine/ocr api mx ine ocr ine/ocr /ine/ocr api.verifik.co/v2/mx/ine/ocr https://api.verifik.co/v2/mx/ine/ocr GET v2/mx/ine/ocr GET /v2/mx/ine/ocr | [Mexico — INE OCR](/identity/mexico-ine-ocr) |
+| `v2/mx/siged/certificado` | v2 mx siged certificado mx/siged/certificado /mx/siged/certificado api/mx/siged/certificado /api/mx/siged/certificado api mx siged certificado siged/certificado /siged/certificado api.verifik.co/v2/mx/siged/certificado https://api.verifik.co/v2/mx/siged/certificado GET v2/mx/siged/certificado GET /v2/mx/siged/certificado | [Mexico — Education Certificate (folio)](/identity/mexico-siged-certificado) |
 | `v2/mx/vehiculo/placa` | v2 mx vehiculo placa mx/vehiculo/placa /mx/vehiculo/placa api/mx/vehiculo/placa /api/mx/vehiculo/placa api mx vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/mx/vehiculo/placa https://api.verifik.co/v2/mx/vehiculo/placa GET v2/mx/vehiculo/placa GET /v2/mx/vehiculo/placa | [Mexico Vehicle by Plate](/vehicle-validation/mexico) |
 
 ## Panama
@@ -3156,6 +3237,7 @@ _Last regenerated: 2026-10-21T20:45:46.260Z_
 | --- | --- | --- |
 | `v2/app-registrations` | v2 app-registrations app-registrations /app-registrations api/app-registrations /api/app-registrations api app-registrations api.verifik.co/v2/app-registrations https://api.verifik.co/v2/app-registrations GET v2/app-registrations GET /v2/app-registrations | [Create an App Registration](/resources/app-registrations/create-an-app-registration) |
 | `v2/app-registrations/{id}` | v2/app-registrations /v2/app-registrations v2 app-registrations app-registrations /app-registrations api/app-registrations /api/app-registrations api app-registrations | [Get App Registration](/resources/app-registrations/retrieve-an-app-registration) |
+| `v2/app-registrations/{id}/data` | v2/app-registrations/data /v2/app-registrations/data v2 app-registrations data app-registrations/data /app-registrations/data api/app-registrations/data /api/app-registrations/data api app-registrations data | [Delete Enrollee Data (Right to Erasure)](/resources/data-retention/delete-app-registration-data) |
 | `v2/app-registrations/{id}/resend-link` | v2/app-registrations/resend-link /v2/app-registrations/resend-link v2 app-registrations resend-link app-registrations/resend-link /app-registrations/resend-link api/app-registrations/resend-link /api/app-registrations/resend-link api app-registrations resend-link | [Resend an App Registration Link](/resources/app-registrations/resend-an-app-registration-link) |
 | `v2/app-registrations/{id}/sync` | v2/app-registrations/sync /v2/app-registrations/sync v2 app-registrations sync app-registrations/sync /app-registrations/sync api/app-registrations/sync /api/app-registrations/sync api app-registrations sync | [Sync App Registration Status](/resources/app-registrations/sync-app-registration-status) |
 
@@ -3177,7 +3259,6 @@ _Last regenerated: 2026-10-21T20:45:46.260Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
-| `v2/ca/british-columbia/driver-license` | v2 ca british-columbia driver-license ca/british-columbia/driver-license /ca/british-columbia/driver-license api/ca/british-columbia/driver-license /api/ca/british-columbia/driver-license api ca british-columbia driver-license british-columbia/driver-license /british-columbia/driver-license api.verifik.co/v2/ca/british-columbia/driver-license https://api.verifik.co/v2/ca/british-columbia/driver-license GET v2/ca/british-columbia/driver-license GET /v2/ca/british-columbia/driver-license | [Canadian Driver License Validation](/identity/canada) |
 | `v2/ca/company` | v2 ca company ca/company /ca/company api/ca/company /api/ca/company api ca company api.verifik.co/v2/ca/company https://api.verifik.co/v2/ca/company GET v2/ca/company GET /v2/ca/company | [Canadian Business Verification](/business-validation/canada) |
 | `v2/ca/ontario/driver-license` | v2 ca ontario driver-license ca/ontario/driver-license /ca/ontario/driver-license api/ca/ontario/driver-license /api/ca/ontario/driver-license api ca ontario driver-license ontario/driver-license /ontario/driver-license api.verifik.co/v2/ca/ontario/driver-license https://api.verifik.co/v2/ca/ontario/driver-license GET v2/ca/ontario/driver-license GET /v2/ca/ontario/driver-license | [Ontario Driver License](/driver-validation/ontario-driver-license) |
 | `v2/ca/ontario/plate` | v2 ca ontario plate ca/ontario/plate /ca/ontario/plate api/ca/ontario/plate /api/ca/ontario/plate api ca ontario plate ontario/plate /ontario/plate api.verifik.co/v2/ca/ontario/plate https://api.verifik.co/v2/ca/ontario/plate GET v2/ca/ontario/plate GET /v2/ca/ontario/plate | [\U0001F1E8\U0001F1E6 Canada - Ontario Plate Expiry](/vehicle-validation/canada/ontario-plate) |
@@ -3189,11 +3270,24 @@ _Last regenerated: 2026-10-21T20:45:46.260Z_
 | `v2/check-lists` | v2 check-lists check-lists /check-lists api/check-lists /api/check-lists api check-lists api.verifik.co/v2/check-lists https://api.verifik.co/v2/check-lists GET v2/check-lists GET /v2/check-lists | [Create a checklist](/check-list/create-a-check-list) |
 | `v2/check-lists/{id}` | v2/check-lists /v2/check-lists v2 check-lists check-lists /check-lists api/check-lists /api/check-lists api check-lists | [Delete a checklist](/check-list/delete-a-check-list) |
 
+## Client Settings
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/client-settings/data` | v2 client-settings data client-settings/data /client-settings/data api/client-settings/data /api/client-settings/data api client-settings data api.verifik.co/v2/client-settings/data https://api.verifik.co/v2/client-settings/data GET v2/client-settings/data GET /v2/client-settings/data | [Update Account Retention Policy](/resources/data-retention/update-client-retention-policy) |
+
 ## Clients
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/clients/me` | v2 clients me clients/me /clients/me api/clients/me /api/clients/me api clients me api.verifik.co/v2/clients/me https://api.verifik.co/v2/clients/me GET v2/clients/me GET /v2/clients/me | [Account Information](/accounts/clients/account-information) |
+
+## Data Retention
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/data-retention/erase` | v2 data-retention erase data-retention/erase /data-retention/erase api/data-retention/erase /api/data-retention/erase api data-retention erase api.verifik.co/v2/data-retention/erase https://api.verifik.co/v2/data-retention/erase GET v2/data-retention/erase GET /v2/data-retention/erase | [Bulk Erase Data](/resources/data-retention/erase-data-bulk) |
+| `v2/data-retention/policy` | v2 data-retention policy data-retention/policy /data-retention/policy api/data-retention/policy /api/data-retention/policy api data-retention policy api.verifik.co/v2/data-retention/policy https://api.verifik.co/v2/data-retention/policy GET v2/data-retention/policy GET /v2/data-retention/policy | [Retrieve Retention Policy](/resources/data-retention/retrieve-data-retention-policy) |
 
 ## Dea
 
@@ -3205,6 +3299,7 @@ _Last regenerated: 2026-10-21T20:45:46.260Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
+| `v2/document-validations/{id}/files` | v2/document-validations/files /v2/document-validations/files v2 document-validations files document-validations/files /document-validations/files api/document-validations/files /api/document-validations/files api document-validations files | [Delete Document Files](/resources/data-retention/delete-document-validation-files) |
 | `v2/document-validations/app-registration` | v2 document-validations app-registration document-validations/app-registration /document-validations/app-registration api/document-validations/app-registration /api/document-validations/app-registration api document-validations app-registration api.verifik.co/v2/document-validations/app-registration https://api.verifik.co/v2/document-validations/app-registration GET v2/document-validations/app-registration GET /v2/document-validations/app-registration | [Create an App Registration Document Validation](/resources/app-registrations/create-an-app-registration-document-validation) |
 
 ## Email Validations
@@ -3281,7 +3376,6 @@ _Last regenerated: 2026-10-21T20:45:46.260Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
-| `v2/ocr/scan-agent` | v2 ocr scan-agent ocr/scan-agent /ocr/scan-agent api/ocr/scan-agent /api/ocr/scan-agent api ocr scan-agent api.verifik.co/v2/ocr/scan-agent https://api.verifik.co/v2/ocr/scan-agent GET v2/ocr/scan-agent GET /v2/ocr/scan-agent | [Scan Agent (SmartScan)](/ocr-engines/scan-agent) |
 | `v2/ocr/scan-prompt` | v2 ocr scan-prompt ocr/scan-prompt /ocr/scan-prompt api/ocr/scan-prompt /api/ocr/scan-prompt api ocr scan-prompt api.verifik.co/v2/ocr/scan-prompt https://api.verifik.co/v2/ocr/scan-prompt GET v2/ocr/scan-prompt GET /v2/ocr/scan-prompt | [Scan Prompt](/ocr-engines/scan-prompt) |
 | `v2/ocr/scan-prompt/template/:id` | v2 ocr scan-prompt template :id ocr/scan-prompt/template/:id /ocr/scan-prompt/template/:id api/ocr/scan-prompt/template/:id /api/ocr/scan-prompt/template/:id api ocr scan-prompt template :id scan-prompt/template/:id /scan-prompt/template/:id template/:id /template/:id api.verifik.co/v2/ocr/scan-prompt/template/:id https://api.verifik.co/v2/ocr/scan-prompt/template/:id GET v2/ocr/scan-prompt/template/:id GET /v2/ocr/scan-prompt/template/:id | [Delete a Scan Prompt Template](/ocr-engines/scan-prompt/delete-a-scan-prompt-template) |
 | `v2/ocr/scan-prompt/templates` | v2 ocr scan-prompt templates ocr/scan-prompt/templates /ocr/scan-prompt/templates api/ocr/scan-prompt/templates /api/ocr/scan-prompt/templates api ocr scan-prompt templates scan-prompt/templates /scan-prompt/templates api.verifik.co/v2/ocr/scan-prompt/templates https://api.verifik.co/v2/ocr/scan-prompt/templates GET v2/ocr/scan-prompt/templates GET /v2/ocr/scan-prompt/templates | [List of Scan Prompt Templates](/ocr-engines/scan-prompt/list-of-scan-prompt-templates) |
@@ -3323,6 +3417,7 @@ _Last regenerated: 2026-10-21T20:45:46.260Z_
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
+| `v2/projects/{id}/data-retention` | v2/projects/data-retention /v2/projects/data-retention v2 projects data-retention projects/data-retention /projects/data-retention api/projects/data-retention /api/projects/data-retention api projects data-retention | [Update Project Retention Policy](/resources/data-retention/update-project-retention-policy) |
 | `v2/projects/email-login` | v2 projects email-login projects/email-login /projects/email-login api/projects/email-login /api/projects/email-login api projects email-login api.verifik.co/v2/projects/email-login https://api.verifik.co/v2/projects/email-login GET v2/projects/email-login GET /v2/projects/email-login | [API Key Access via Email](/accounts/authentication/api-key-access-via-email) |
 | `v2/projects/phone-login` | v2 projects phone-login projects/phone-login /projects/phone-login api/projects/phone-login /api/projects/phone-login api projects phone-login api.verifik.co/v2/projects/phone-login https://api.verifik.co/v2/projects/phone-login GET v2/projects/phone-login GET /v2/projects/phone-login | [API Key Access via Phone](/authentication/api-key-access-via-phone) |
 

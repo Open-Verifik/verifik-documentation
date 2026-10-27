@@ -1,0 +1,250 @@
+---
+id: mexico-cedula-profesional
+title: México — Licença profissional
+description: Consulte uma licença profissional mexicana por CURP, número da licença ou nome no registro oficial de profissionais.
+slug: /identity/mexico-cedula-profesional
+keywords:
+  - v2/mx/cedula-profesional
+  - /v2/mx/cedula-profesional
+  - v2 mx cedula profesional
+  - api/mx/cedula-profesional
+  - /api/mx/cedula-profesional
+  - api mx cedula profesional
+  - api.verifik.co/v2/mx/cedula-profesional
+  - 'https://api.verifik.co/v2/mx/cedula-profesional'
+  - GET v2/mx/cedula-profesional
+  - GET /v2/mx/cedula-profesional
+  - mx/cedula-profesional
+  - /mx/cedula-profesional
+  - cédula profesional
+  - professional license
+  - mexico professional license
+  - licença profissional
+  - méxico licença profissional
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# México — Licença profissional
+
+Confirma que uma pessoa possui uma licença profissional (cédula profissional) no registro oficial de profissionais. Trata-se de verificação de credencial, não de prova de identidade.
+
+Envie **um documento** ou **um nome**:
+
+- **CURP** (recomendado). O registro é consultado primeiro pelas licenças vinculadas a esse CURP.
+- **Número da licença.** Correspondência exata do número da cédula.
+- **Nome.** Correspondência exata, sem diferenciar acentos, dos nomes próprios mais os dois sobrenomes.
+
+Uma pessoa pode ter várias licenças, por isso `cedulas` é um array. Para o registro civil do titular do CURP, consulte [Cidadão mexicano (CURP)](/verifik-pt/identity/mexico). Para uma credencial de eleitor, consulte [Validação INE](/verifik-pt/identity/mexico-ine). Para licenças apenas da área da saúde, consulte [Licença de profissional de saúde](/verifik-pt/identity/mexico-health-worker).
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/cedula-profesional
+```
+
+Uma correspondência retorna `fullName`, `matchMethod`, `ambiguous` e `cedulas[]` com `licenseNumber`, `title`, `profession`, `institution` e `registrationYear`.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+Envie `documentType` + `documentNumber`, ou `firstName` + `lastName`. Não misture os dois modos.
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | Modo documento | `CURP` ou `CEDULA` (sem diferenciar maiúsculas). | `CURP` |
+| `documentNumber` | string | Com `documentType` | Um CURP de 17–18 caracteres (convertido automaticamente para maiúsculas) ou um número de licença. | `LOPE900501HDFGRN01` |
+| `firstName` | string | Modo nome | Nomes próprios. 2–80 caracteres. | `ANA` |
+| `lastName` | string | Modo nome | Os dois sobrenomes, o paterno primeiro. 2–80 caracteres. | `LOPEZ RUIZ` |
+
+### How matching works
+
+- **CURP.** As licenças vinculadas a esse CURP são retornadas primeiro (`matchMethod: "curp"`). Se nenhuma estiver vinculada diretamente, a Verifik resolve o nome oficial do titular do CURP e busca uma correspondência exata do nome completo. Essa etapa não tem custo adicional (`matchMethod: "curp_to_name"`, com `matchNote`). Prevalecem as linhas que trazem o mesmo CURP. Caso contrário, são retornadas as linhas sem CURP que correspondem ao nome exato.
+- **`ambiguous: true`** significa que essas linhas pertencem a mais de um grupo de instituição e ano de registro, então um homônimo é possível. Revise as linhas ou solicite o número da licença.
+- **CEDULA.** Correspondência exata do número da licença (`matchMethod: "license"`).
+- **Nome.** Correspondência exata do nome completo, sem diferenciar acentos nem maiúsculas (`matchMethod: "name"`). `ambiguous` usa a mesma regra de instituição e ano. Prefira o CURP.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/cedula-profesional", {
+  params: {
+    documentType: "CURP",
+    documentNumber: "LOPE900501HDFGRN01",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/cedula-profesional"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CURP", "documentNumber": "LOPE900501HDFGRN01"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+O modo nome usa `firstName=ANA` e `lastName=LOPEZ RUIZ` e omite `documentType` e `documentNumber`.
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 (CURP)">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      },
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "20050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA EN DERECHO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA EN DERECHO"
+      }
+    ],
+    "curp": "LOPE900501HDFGRN01",
+    "documentNumber": "LOPE900501HDFGRN01",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp",
+    "matchNote": null
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-name" label="200 (name fallback)">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": null,
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10000031",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      }
+    ],
+    "curp": "LOPE000003MDFRRN03",
+    "documentNumber": "LOPE000003MDFRRN03",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp_to_name",
+    "matchNote": "Matched by name after CURP resolution; the registry had no direct CURP hit."
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType and documentNumber, or firstName and lastName, are required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (unavailable)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Um CURP válido cujo titular não tem licença retorna **404**, inclusive no sandbox. Um array `cedulas` vazio não é uma resposta de sucesso.
+- `ambiguous: true` significa que as linhas abrangem mais de uma instituição e ano de registro. Revise-as ou consulte o número da licença.
+- Os resultados ficam em cache por até 7 dias, então uma consulta repetida é rápida.
+- Persona de sandbox `ANA LOPEZ RUIZ`. Qualquer CURP, exceto os gatilhos abaixo, retorna uma correspondência direta com duas licenças.
+- Um CURP que contém `000003` (por exemplo `LOPE000003MDFRRN03`) retorna `matchMethod: "curp_to_name"` e `cedulas[].curp: null`.
+- Um CURP que contém `000002` (por exemplo `LOPE000002MDFRRN02`) retorna **404** (CURP válido, sem licença).
+- O CURP `LOPE900404HDFNTF01`, a licença `90040401` ou `lastName=NOTFOUND` retornam **404**.
+- `documentType=CEDULA` e `documentNumber=10000001` retornam uma licença de direito. `firstName=ANA` e `lastName=AMBIGUA` retornam `ambiguous: true`.
+- Um CURP com menos de 17 ou mais de 18 caracteres, ou um `documentType` inválido, retorna **409** `MissingParameter`.
+- Quando o registro não puder ser consultado, a resposta é **409** `Endpoint_out_of_service`. Tente novamente mais tarde.
+- Relacionados: [Cidadão mexicano (CURP)](/verifik-pt/identity/mexico), [Validação INE](/verifik-pt/identity/mexico-ine), [Licença de profissional de saúde](/verifik-pt/identity/mexico-health-worker), [Certificado de estudos (folio)](/verifik-pt/identity/mexico-siged-certificado).

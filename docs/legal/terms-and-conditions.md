@@ -376,7 +376,7 @@ We will understand that you have accepted the modifications if you continue to u
 
 ### **Service Level Agreement (SLA)**
 
-* [Exhibit I - Service Level Agreement](https://verifik.gitbook.io/verifik/verifik-llc/service-level-agreement)
+* [Exhibit I - Service Level Agreement](/legal/service-level-agreement)
 
 ### **Procedure for Complaints, Claims or Notifications**
 

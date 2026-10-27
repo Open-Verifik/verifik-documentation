@@ -1,153 +1,185 @@
 ---
 id: service-level-agreement
 title: 서비스 수준 계약
-description: Verifik 서비스 수준 계약 및 지원 약관
+description: Verifik 서비스의 지원, 가용성 및 성능
 slug: /legal/service-level-agreement
 ---
 
 # 서비스 수준 계약
 
-### **Service Level Agreement**
+**서비스의 지원, 가용성 및 성능**
 
-#### **1. Service Channels. The User shall have access to the following Verifik service channels:**
+**버전 1.0 | 게시일: 2026년 10월 26일**
 
-1. Chat available on [Verifik.co](http://verifik.co)
-2. Email: support@verifik.co
-3. Customer service WhatsApp channel.
-4. Customer service Discord channel.
+이 계약은 아래에 적힌 Verifik 서비스의 지원 채널, 응대 목표 및 가용성 약속을 설명합니다. 여기에 적힌 지원은 별도의 명시적 상업 약정이 없는 한 추가 비용 없이 포함됩니다.
 
-#### **2. Hours of Operation**
+**범위와 적용.** 이 문서는 이를 명시적으로 지정한 계약에 편입될 수 있습니다. 당사자가 서명한 개별 조건은 충돌이 있을 때 우선합니다. 이후 버전을 게시하는 것만으로 이미 발효 중인 계약이 변경되지는 않습니다.
 
-The User will be able to access the support provided by Verifik, Monday through Friday (business days) from 8:00 AM to 5:00 PM Colombia time.
+## 1. 지원 채널과 운영 시간
 
-#### **3. Criticality Levels**
+고객은 [고객 패널](https://ai.verifik.co/)의 지원 티켓으로 인시던트를 열고 그 후속 조치를 합니다. 이 패널이 공식 지원 채널입니다.
 
-The requests or requirements raised by Users to the support team will be classified according to the impact they have on the User's operation, as follows:
+고객이 고객 패널에 접근할 수 없는 경우, 보조 연락처로 [support@mg.verifik.co](mailto:support@mg.verifik.co)에 연락할 수 있습니다.
 
-| **Critical:** | Total service unavailability.                                                |
-| ------------- | ---------------------------------------------------------------------------- |
-| **Urgent:**   | Loss of specific functionality for all use cases.                            |
-| **Medium:**   | Loss of functionality in specific cases.                                     |
-| **Normal:**   | Other requests or general inquiries that do not affect Service Availability. |
+표준 지원은 월요일부터 금요일까지 오전 8시부터 오후 5시(UTC-5)까지 제공됩니다. 정상 지원 시간은 콜롬비아, 미국 및 캐나다의 국경일을 제외합니다(「정상 지원 시간」).
 
-#### **4. Response Times**
+수준 1(치명) 인시던트에는 온콜 당직 대응이 있습니다. 이 대응은 야간, 주말 및 공휴일에도 적용됩니다. 수준 1의 이십사(24) 시간 해결 목표는 야간, 주말 및 공휴일을 포함하여 연속으로 계산되며, 정상 지원 시간에 한정되지 않습니다.
 
-1. **Definitions:** Terms used in this section, shall have the following meanings:
+프리미엄 지원을 유료로 이용하는 고객에게는 정상 지원 시간과 공휴일 제외가 적용되지 않습니다. 해당 고객의 최초 응답 시간과 해결 시간은 하루 이십사(24) 시간, 주 칠(7) 일로 진행됩니다.
 
-```
-i. Attention: The time elapsed between the request or requirement and the assignment of a service agent.
-ii. Review: The time elapsed between the agent's greeting and the first response regarding the request or requirement.
-iii. Escalation: The time elapsed between the agent's escalation and the case review by the person to whom it was escalated. This time only applies in events where it is necessary to escalate the user's request or requirement.
-iv. Resolution: The time elapsed between the agent's greeting and the moment the case is resolved.
-```
+## 2. 인시던트 응답 및 해결 시간
 
-The response time varies according to the criticality of the requirement, as follows:
+고객이 보고한 인시던트는 심각도, 운영 영향 및 범위에 따라 Verifik이 다음 수준으로 분류합니다.
 
-| **SEVERITY/TIME** | **ATTENTION** | **REVIEW** | **ESCALATION** | **RESOLUTION** |
-| ----------------- | ------------- | ---------- | -------------- | -------------- |
-| **Critical**      | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Urgent**        | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Medium**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
-| **Normal**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
+| 인시던트 심각도 | 설명 | 최초 응답 시간 | 해결 목표 |
+| --- | --- | --- | --- |
+| 수준 1. 치명 | 플랫폼이 완전히 중단되거나, 핵심 기능이 심각하게 영향을 받거나, 치명적인 보안 취약점이 있는 인시던트. 온콜 당직 대응이 적용됩니다. | 정상 지원 시간 밖을 포함하여 한(1) 시간 이내. 온콜 당직 대응이 적용됩니다. | 야간, 주말 및 공휴일을 포함하여 연속으로 계산하는 이십사(24) 시간 이내. |
+| 수준 2. 높음 | 서비스가 현저히 저하되거나, 전체 중단 없이 중요한 기능이 영향을 받는 인시던트. | 정상 지원 시간 기준 네(4) 시간 이내. | 영업일 이(2) 일 이내. |
+| 수준 3. 낮음 | 영향이 제한적이고, 서비스 운영을 현저히 해치지 않는 경미한 오류와 기술 문의. | 정상 지원 시간 기준 여덟(8) 시간 이내. | 영업일 오(5) 일 이내. |
 
-**Note:** 48 hrs means we take up to 48 hours to resolve the incident depending on its complexity.
+### 응대 조건
 
-Response times will be counted from the last message sent by the user.
+a) 최초 응답 시간은 제1조에 정한 정상 지원 시간 안에서만 계산합니다. 다만 온콜 당직 대응이 있는 수준 1(치명) 인시던트와 프리미엄 지원을 유료로 이용하는 고객은 예외입니다. 수준 1의 이십사(24) 시간 해결 목표는 야간, 주말 및 공휴일을 포함하여 연속으로 계산합니다. 프리미엄 지원을 유료로 이용하는 고객의 최초 응답 시간과 해결 시간은, 제1조에 정한 대로, 하루 이십사(24) 시간, 주 칠(7) 일로 진행됩니다.
 
-#### **5. Platform Availability**
+b) 최초 응답은 인시던트를 접수하고 처리 중임을 확인하는 Verifik의 연락입니다. 자동 접수 회신은 이 조의 최초 응답이 아닙니다.
 
-The Platform will be available at least:
+c) 해결 시간은 상업적으로 합리적인 노력의 대상인 운영 목표이며, 정해진 기한 안의 해결을 보증하지 않습니다.
 
-| **Product**  | **Availability**                                                                                      | **Notes**                                                              |
-| ------------ | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| SmartCHECK   | 90.0% > Data API                                                                                      | Data API depends on connections with Government Sources                |
-| smartACCESS  | 99.0% > Email/Tel<br/>98.0% > Biometrics                                                    |                                                                        |
-| smartENROLL  | 99.0% > Email/Tel<br/>98.0% > Biometrics<br/>98.0% > Document Scanning<br/>90.0% > Data API | Data API depends on connections with Government Sources                |
+d) Verifik은 심각도와 기술적 영향을 기준으로 인시던트를 분류하며, 정당한 사정이 있으면 분류를 변경할 수 있습니다.
 
-##### **5.1. 엔드포인트별 가용성 제외 사항**
+e) 해결 시간은 Verifik의 합리적인 통제를 벗어난 사정(정부 출처나 제3자 서비스의 중단, 장애 또는 접근 제한을 포함합니다)의 영향을 받을 수 있습니다.
 
-특정 외부 데이터 소스의 역사적으로 예측 불가능한 운영 가용성 특성으로 인해, 특정 엔드포인트는 본 계약의 플랫폼 가용성 약정 및 다운타임 보상 조항에서 제외됩니다.
+f) 목표 기한 안에 인시던트를 해결할 수 없으면 Verifik은 해결을 위해 상업적으로 합리적인 노력을 계속하고, 상태와 중요한 진행 상황을 고객에게 알립니다.
 
-다음 엔드포인트는 제외됩니다:
+## 3. 서비스 가용성과 응답 시간
+
+서비스 가용성은 예정된 다운타임을 제외하고 표 1에 따라 매월 평가합니다. 예정된 다운타임은 중단을 줄이기 위해 수요가 낮은 시간에 잡는 플랫폼 유지보수 및 업데이트 창을 말합니다.
+
+Verifik은 반복되는 예정 다운타임 창을 주기적으로 게시할 수 있습니다. 「반복 예정 다운타임」이란 반복 일정에 따라 고정된 시간에 발생하고 Verifik API 문서의 일부로 게시되는 불가 창을 말합니다.
+
+Verifik은 게시된 반복 창 밖의 예정 유지보수에 대해 최소 칠(7) 역일 전에 서면으로 알립니다. 다만 서비스의 보안이나 연속성을 지키기 위해 즉시 개입이 필요한 긴급 상황은 예외입니다. 창은 가급적 야간이나 주말에 진행합니다.
+
+### 표 1. 서비스 가용성
+
+| 가용성 | 제품 |
+| --- | --- |
+| 데이터베이스: 90.00% 이상 | smartCHECK, DB Screening |
+| 이메일/전화: 99.00% 이상 | smartACCESS, smartENROLL |
+| 생체 인식: 99.00% 이상 | smartACCESS, smartENROLL |
+| 문서 스캔: 99.00% 이상 | smartENROLL, smartACCESS |
+
+데이터베이스 검증 API는 정부 출처와의 연결에 의존합니다. Verifik은 그 접속 지점을 소유하거나 통제하지 않습니다.
+
+### 3.1. DB Screening / smartCHECK 가용성 제외 {#availability-exclusions}
+
+일부 외부 데이터 출처의 운영 가용성이 역사적으로 예측하기 어렵기 때문에, 특정 엔드포인트는 플랫폼 가용성 약속과 이 계약의 다운타임 보상 규정에서 제외됩니다.
+
+제외되는 엔드포인트는 다음과 같습니다.
 
 - 멕시코 – INE 검증
 - 멕시코 – 차량 번호판 검증
 
-이러한 엔드포인트에 영향을 미치는 중단, 유지보수 기간, 성능 저하, 응답 지연 또는 일시적 이용 불가는 다음으로 간주되지 않습니다:
+이 엔드포인트에 영향을 주는 중단, 유지보수 기간, 성능 저하, 지연된 응답 또는 일시적 불가는 다음을 의미합니다.
 
-- 플랫폼 다운타임으로 간주되지 않음;
-- 플랫폼 가용성 계산에 포함되지 않음;
-- 본 계약에 따른 서비스 크레딧 또는 기타 보상의 대상이 되지 않음.
+- 플랫폼 다운타임으로 보지 않습니다.
+- 플랫폼 가용성 계산에 넣지 않습니다.
+- 이 계약에 따른 서비스 크레딧이나 그 밖의 보상 대상이 되지 않습니다.
 
-Verifik는 가능한 한 연결성을 유지하고 서비스를 복구하기 위해 상업적으로 합리적인 노력을 계속할 것이나, 위에 나열된 엔드포인트에 대해서는 가동 시간 보장이 제공되지 않습니다.
+Verifik은 연결을 유지하고 가능한 경우 서비스를 복구하기 위해 상업적으로 합리적인 노력을 계속합니다. 열거된 엔드포인트에는 가동 시간 보증을 제공하지 않습니다.
 
-#### **6. Downtime Compensation**
+### 3.2. 가용성을 측정하는 방법
 
-Credit Compensation awarded for the affected month will be provided in the form of a credit equivalent to the cost of the failed service call. If the service unavailability is caused by **Internal Issues** of Verifik (database, servers, internal API issues) and is not effectively resolved by the Company, Verifik will compensate as follows:
+가용성은 UTC 기준 각 역월에 대해 계정별로 계산합니다.
 
-| **Service Availability**                                                                                            | **Credit Compensation**               | **Product**                       |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | --------------------------------- |
-| **Data API (Data Query)**<br/>90.00% or higher<br/>89.99% or lower               | No Credit<br/>Compensation | smartCHECK                        |
-| **Email/Tel**<br/>99.00% or higher<br/>98.99% or lower                           | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Biometrics**<br/>98.00% or higher<br/>97.99% or lower                          | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Document Scanning**<br/>98.00% or higher<br/>97.99% or lower                   | No Credit<br/>Compensation | smartENROLL<br/>smartACCESS |
+```
+가용성 = 성공 요청 / (성공 요청 + 서비스 장애)
+```
 
-**Internal Issues** of the Data API service (Data Query) excludes issues considered Force Majeure (Fortuitous Events), whether due to migration, disconnection, or external intervention by the governments that manage the databases. Verifik is an intermediary and therefore does NOT have control over the queried databases.
+서비스 장애는 시간이 초과되거나, 5xx 오류 또는 408·504 응답을 반환하거나, 엔드포인트가 서비스 불능이라고 표시하는 요청입니다.
 
-#### **7. Charging Scheme for smartCHECK**
+고객 오류는 계산에서 제외합니다. 여기에는 잘못되었거나 빠진 매개변수, 출처에서 찾지 못한 기록, 인증 및 권한 오류, 그 밖의 4xx 응답이 포함됩니다.
 
-The charging scheme applies to the smartCHECK solution, which enables queries to government databases. Verifik does not own, manage, or bear responsibility for (does not control or update) the government databases of the various countries we serve; therefore, Verifik reserves the right not to offer guarantees regarding Response Time, Average Up Time, or Data Accuracy.
+고객은 고객 패널에서, 그리고 사용이 설정된 경우 사용량 API에서 서비스별 내역과 함께 월간 가용성을 볼 수 있습니다. 제3.1조의 엔드포인트는 가용성 약속에서 제외됩니다.
 
-If the query returns a **200** or **404**, it will be charged. Otherwise, if the query returns **403**, **409**, **412**, **422**, or **500**, it will not be charged.
+### 3.3. 조회 응답 시간의 운영 목표
 
-| **Charged** | **Not Charged** |
-| ----------- | --------------- |
-| 200         | 403             |
-| 404         | 409             |
-|             | 412             |
-|             | 422             |
-|             | 500             |
+정부 데이터베이스 조회(DB Screening / smartCHECK)의 응답 시간은 Verifik의 운영 성능 목표이며, 서비스를 효율적으로 제공하기 위한 것입니다.
 
-#### **8. smartCHECK 서비스 동적 쿼리**
+정상 운영 조건에서 Verifik은 다음 목표를 달성하도록 노력합니다.
 
-smartCHECK 서비스의 표준 아키텍처의 일부로, Verifik은 지원되는 엔드포인트에서 서비스 가용성, 커버리지 및 신뢰성을 극대화하도록 설계된 동적 쿼리(Dynamic Query) 메커니즘을 구현합니다.
+a) **목표 응답 시간:** 조회에 일(1) 초 이내에 응답하기 위해 상업적으로 합리적인 노력을 합니다.
 
-동적 쿼리 메커니즘을 통해 smartCHECK 및 DB Screening은 주 데이터 소스가 "Not Found" 또는 이에 상응하는 HTTP 400 수준의 오류를 포함하여 성공하지 못한 응답을 반환하는 경우, 여러 승인된 데이터 소스를 자동으로 순차적으로 조회할 수 있습니다. 이 아키텍처는 여러 적격 데이터 소스를 활용하여 성공적인 검증 결과를 얻을 확률을 높이는 것을 목적으로 합니다.
+b) **목표 평균 시간:** 조회당 평균 응답 시간을 삼(3) 초 이하로 유지하며, 월 단위로 측정합니다.
 
-클라이언트는 정부 데이터베이스의 품질, 완전성 및 가용성이 관할권에 따라 크게 달라질 수 있으며, 불완전한 기록, 서비스 중단 또는 제한된 데이터 커버리지로 인해 특정 데이터베이스에서 성공하지 못한 응답의 확률이 더 높을 수 있음을 인정하고 동의합니다.
+c) **목표 최대 시간:** 개별 조회의 응답 시간이 십(10) 초를 넘지 않도록 노력합니다.
 
-이러한 제한을 완화하기 위해 동적 쿼리는 해당되는 모든 smartCHECK 엔드포인트에서 기본적으로 활성화되어 있으며 Verifik의 중복 및 장애 조치 전략의 필수적인 부분을 구성합니다. 이 메커니즘을 통해 Verifik은 필요한 경우 요청을 대체 가능한 소스로 동적으로 라우팅하여 특정 엔드포인트에서 100%에 가까운 서비스 가용성 및 커버리지를 유지할 수 있습니다.
+응답 시간은 정부 또는 제3자 정보 출처의 가용성, 용량, 유지보수, 지연 및 그 밖의 기술적 조건, 그리고 여러 정보 출처를 순차적으로 조회해야 하는 동적 쿼리의 사용에 따라 달라질 수 있습니다. 동적 쿼리의 청구 기준은 [크레딧 청구 및 소비 정책](/verifik-ko/legal/billing-policy)에 따릅니다.
 
-클라이언트는 또한 다음을 인정하고 동의합니다:
+위의 시간은 참고용 운영 목표입니다. 성능 보증, 결과 의무 또는 최대 응답 시간 약속이 아닙니다.
 
-a) 동적 쿼리는 성공적인 검증 응답을 얻을 가능성을 높이는 것을 목적으로 하지만, 모든 경우에 성공적인 일치 또는 결과를 보장하지는 않습니다;
+고객은 응답 시간이 정부 또는 제3자 정보 출처의 가용성, 용량, 유지보수, 지연 및 그 밖의 기술적 조건과, 여러 출처에 순차적으로 접근하는 동적 쿼리의 사용에 따라 달라질 수 있음을 인정합니다.
 
-b) 응답 시간은 변동될 수 있으며, 여러 소스에 대한 요청의 연쇄적 특성으로 인해 경우에 따라 표준 단일 소스 쿼리보다 더 길 수 있습니다;
+측정 목적상 응답 시간은 단일 API 요청의 처리 시간이며, Verifik의 통제 밖에 있는 인터넷 전송 지연은 제외합니다.
 
-c) 동적 쿼리의 효과 및 가용성은 기본적인 제3자 또는 정부 소스의 가동 시간, 접근성 및 데이터 품질의 영향을 받습니다; 및
+이 운영 목표를 충족하지 못한 것만으로 계약 위반이 되거나 보상, 서비스 크레딧 또는 위약금이 발생하지 않습니다. 이는 Verifik이 자체 인프라, 플랫폼 가용성 및 이 계약에 따라 적용되는 그 밖의 약속에 대해 명시적으로 부담한 의무를 면제하지 않습니다.
 
-d) Verifik은 서비스 연속성 유지, 커버리지 최적화 및 검증 성능 개선을 위해 동적 쿼리 아키텍처 내의 데이터 소스를 수정, 우선순위 지정 또는 대체할 권리를 단독 재량으로 보유합니다.
+이 조는 정부 출처에 대한 보증 제한을 다루는 이 계약의 [제6조](#source-warranty-limitations)와 함께 해석합니다.
 
-동적 쿼리는 smartCHECK 서비스의 고유 기능으로 간주되며, Verifik이 서면으로 달리 명시하지 않는 한 적격 엔드포인트를 사용하는 모든 클라이언트에 자동으로 적용됩니다.
+### 3.4. 계약별 목표
 
-#### **8.1 동적 가격 (청구)** {#dynamic-pricing-billing}
+고객 패널과 사용량 API는 smartCHECK의 월간 성과를 90% 기준 목표와 비교할 수 있습니다. 구체적인 계약 목표는 고객의 상업 조건에 명시적으로 포함된 경우에만 적용됩니다. 그 밖의 경우 표시된 수치는 정보 제공용입니다. 표시만으로 제4조에 정한 것 외의 보상이 생기지는 않습니다.
 
-동적 쿼리가 적격 엔드포인트에서 확장 검증 경로를 사용하여 성공적인 일치(**HTTP 200**)를 반환하는 경우 **동적 가격**이 적용될 수 있습니다. 이 경우 크레딧은 기본 경로의 표준 등급이 아닌 해당 엔드포인트 패밀리의 **프리미엄 등급**으로 차감됩니다.
+## 4. 가용성 수준 미달에 대한 보상
 
-동적 가격은 오늘날 표준 경로가 일치를 반환하지 않은 후 확장 검증 경로가 성공적으로 완료될 때 표준 콜롬비아 신분증 엔드포인트(**`GET/POST /v2/co/cedula`**)에 적용됩니다. 크레딧 금액은 **클라이언트에 구성된 기능 가격**(해당 엔드포인트 패밀리의 표준 요금 vs. 프리미엄 요금)에 따라 달라집니다.
+이 계약의 가용성 수준을 충족하지 못한 데 대한 보상은, 불가가 Verifik의 내부 장애에 기인하고 성공적으로 처리되지 않은 API 조회에 대해 고객에게 실제 요금이 발생한 경우에만 적용됩니다.
 
-동적 가격은 **7**절의 청구 규칙을 변경하지 **않습니다**: 유효성 검사 및 서버 오류(**403**, **409**, **412**, **422**, **500**)는 청구되지 않으며, 적용 가능한 경로에서 성공적인 일치가 반환되지 않을 때 **404** 응답은 표준 등급으로 청구됩니다.
+이 경우 보상은 해당 조회에 대해 실제로 차감된 크레딧을 되돌리는 것입니다. 청구되지 않은 요청에 대해 추가 크레딧은 지급되지 않습니다.
 
-투명성을 위해 클라이언트는 적격 요청에 **`includeCost=true`**를 전달하여 크레딧이 청구될 때(동적 가격이 적용될 때 포함) **`billing`** 객체를 받을 수 있습니다. API 요청 기록에는 조정 메타데이터(예: 표준 vs. 청구 금액)가 저장됩니다.
+smartCHECK(DB Screening)의 경우, 정부 출처의 중단이나 제한은 이 계약 [제3.1조](#availability-exclusions) 및 [제6조](#source-warranty-limitations)의 제외와 제한에 따라 보상을 발생시키지 않습니다.
 
-**`/v2/co/cedula/premium`**을 직접 호출하면 항상 프리미엄 가격이 적용됩니다. 동적 가격은 표준 **`/v2/co/cedula`** 경로에서의 자동 에스컬레이션을 설명합니다.
+제3조의 가용성 비율은 서비스 성과를 평가하는 기준 수준입니다. 되돌릴 수 있는 실제 요금이 없으면 이를 충족하지 못해도 자동으로 금전 보상이 발생하지 않습니다.
 
-API 세부 정보는 [콜롬비아 신분증(기본)](/verifik-ko/identity-validation/colombia/colombian-citizen#dynamic-pricing)을 참조하세요.
+이 조의 보상은 향후 소비에 사용할 수 있는 서비스 크레딧으로 인정되며 현금 환불이 아닙니다. 적용되는 상업 계약에 따른 중대한 위반에 대해 당사자에게 인정되는 권리는 영향을 받지 않습니다.
 
-#### **9. 플랫폼 이용 불가**
+| 서비스 | 보상 없음 | 보상 |
+| --- | --- | --- |
+| 데이터베이스(smartCHECK, DB Screening) | 90.00% 이상 | 89.99% 이하 |
+| 이메일/전화(smartACCESS, smartENROLL) | 99.00% 이상 | 98.99% 이하 |
+| 생체 인식(smartACCESS, smartENROLL) | 99.00% 이상 | 98.99% 이하 |
+| 문서 스캔(smartENROLL, smartACCESS) | 99.00% 이상 | 98.99% 이하 |
 
-Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.
+데이터베이스 검증 서비스(데이터 조회)의 내부 문제는 데이터베이스를 보관하는 정부의 마이그레이션, 연결 해제 또는 외부 개입으로 인한 불가항력(우연한 사건)으로 보는 문제를 제외합니다. Verifik은 중개자로서 행동하며, 따라서 조회되는 데이터베이스에 대한 권한이나 통제가 없습니다.
 
-#### **10. 신규 적응 또는 개발**
+## 5. smartCHECK 서비스의 동적 쿼리 {#dynamic-query}
 
-The timeframes for developing new adaptations due to unexpected changes from User systems integrating via API with the Platform will vary according to the changes required by the User and will not count as Platform Downtime.
+smartCHECK 서비스의 표준 아키텍처의 일부로, Verifik은 호환 엔드포인트에서 가용성, 범위 및 신뢰성을 높이기 위한 동적 쿼리 메커니즘을 구현합니다.
+
+동적 쿼리는 기본 데이터 출처가 만족스럽지 않은 응답을 반환할 때 smartCHECK와 DB Screening이 여러 승인된 데이터 출처를 자동으로 순차 조회할 수 있게 합니다. 여기에는 「Not Found」 응답 또는 이에 상응하는 HTTP 400대 응답이 포함되며 이에 한정되지 않습니다. 이 구조는 이용 가능한 여러 데이터 출처를 활용하여 만족스러운 검증 결과를 얻을 가능성을 높이기 위한 것입니다.
+
+고객은 정부 데이터베이스의 품질, 무결성 및 가용성이 관할에 따라 크게 달라질 수 있으며, 기록이 불완전하거나 서비스가 중단되거나 데이터 범위가 제한된 일부 데이터베이스는 만족스럽지 않은 응답의 가능성이 더 클 수 있음을 인정하고 동의합니다.
+
+이러한 제한을 완화하기 위해 동적 쿼리는 적용되는 모든 smartCHECK 엔드포인트에서 기본으로 사용되며 Verifik의 이중화 및 장애 조치 전략의 일부입니다. 이 메커니즘은 필요할 때 이용 가능한 대체 출처로 요청을 동적으로 라우팅하여, 특정 엔드포인트에서 백 퍼센트(100%)에 가까운 서비스 가용성과 범위를 유지할 수 있게 합니다.
+
+고객은 또한 다음을 인정하고 동의합니다.
+
+a) 동적 쿼리는 만족스러운 검증 응답을 얻을 가능성을 높이기 위한 것이며, 모든 경우에 만족스러운 일치를 보증하지 않습니다.
+
+b) 응답 시간은 달라질 수 있으며, 여러 출처에 대한 요청이 연쇄적으로 이루어지므로 단일 출처의 표준 조회보다 길어질 수 있습니다.
+
+c) 동적 쿼리의 효과와 가용성은 기반이 되는 제3자 또는 정부 출처의 가동 시간, 접근성 및 데이터 품질에 계속 좌우됩니다.
+
+d) Verifik은 서비스 연속성을 유지하고 범위를 최적화하며 검증 성능을 개선하기 위해, 자신의 재량으로 동적 쿼리 구조 안의 데이터 출처를 수정, 우선순위 조정 또는 교체할 권리를 보유합니다.
+
+동적 쿼리는 smartCHECK 서비스의 고유 기능이며, Verifik이 서면으로 달리 정하지 않는 한 적격 엔드포인트를 사용하는 모든 고객에게 자동으로 적용됩니다.
+
+콜롬비아 주민등록증의 동적 가격을 포함한 동적 쿼리의 청구 규칙은 [크레딧 청구 및 소비 정책](/verifik-ko/legal/billing-policy)에 있습니다.
+
+## 6. 정보 출처에 대한 보증 제한 {#source-warranty-limitations}
+
+Verifik은 조회되는 정부 데이터베이스의 소유자나 관리자가 아니며, 그 갱신, 가용성 또는 정확성을 통제하지 않습니다. 따라서 해당 출처 데이터의 응답 시간, 평균 가동 시간 또는 정확성을 보증하지 않습니다. 이 제한은 smartCHECK(DB Screening) 서비스에만 적용되며, Verifik이 자체 인프라에 대해 명시적으로 부담한 의무를 면제하지 않습니다.
+
+**버전 관리.** Verifik은 이 계약의 새 버전을 게시일로 식별합니다. 발효 중인 계약의 변경은 각 계약에 합의된 변경 규칙을 따릅니다.
+
+<a id="dynamic-pricing-billing"></a>
+
+**관련 문서.** 청구 규칙과 동적 가격은 [크레딧 청구 및 소비 정책](/verifik-ko/legal/billing-policy#dynamic-pricing-billing)에 있습니다.

@@ -377,7 +377,7 @@ Verifik 서비스를 계속 사용하면 수정 사항에 동의한 것으로 �
 
 ### **서비스 수준 계약(SLA)**
 
-* [부록 I - 서비스 수준 계약](https://verifik.gitbook.io/verifik/verifik-llc/service-level-agreement)
+* [부록 I - 서비스 수준 계약](/verifik-ko/legal/service-level-agreement)
 
 ### **불만, 청구 또는 통지 절차**
 

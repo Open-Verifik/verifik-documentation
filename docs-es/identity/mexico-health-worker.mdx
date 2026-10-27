@@ -1,0 +1,194 @@
+---
+id: mexico-health-worker
+title: México — Licencia de profesionista de salud
+description: Confirma que una persona tiene una licencia profesional mexicana relacionada con la salud. Quien solo tiene licencias ajenas a la salud responde 404.
+slug: /identity/mexico-health-worker
+keywords:
+  - v2/mx/health-worker
+  - /v2/mx/health-worker
+  - v2 mx health worker
+  - api/mx/health-worker
+  - /api/mx/health-worker
+  - api mx health worker
+  - api.verifik.co/v2/mx/health-worker
+  - 'https://api.verifik.co/v2/mx/health-worker'
+  - GET v2/mx/health-worker
+  - GET /v2/mx/health-worker
+  - mx/health-worker
+  - /mx/health-worker
+  - health worker license
+  - mexico health license
+  - profesionista de salud
+  - licencia de profesionista de salud
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# México — Licencia de profesionista de salud
+
+Confirma que una persona tiene al menos una cédula profesional relacionada con la salud en el registro oficial de profesionistas. Aplican los mismos modos de consulta que en [Cédula profesional](/identity/mexico-cedula-profesional): CURP, número de cédula o nombre. Las cédulas ajenas a la salud se eliminan del resultado.
+
+Los títulos de salud incluyen medicina, enfermería, odontología, farmacia, nutrición, psicología clínica, psiquiatría, obstetricia, fisioterapia y optometría. Se excluye la medicina veterinaria. Una persona que solo tiene cédulas ajenas a la salud responde **404**.
+
+Es un filtro de credencial, no una prueba de identidad. Para todas las cédulas, usa [Cédula profesional](/identity/mexico-cedula-profesional). Para el registro civil, usa [Ciudadano mexicano (CURP)](/identity/mexico).
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/mx/health-worker
+```
+
+Una coincidencia devuelve los mismos campos de identidad que el endpoint general de cédulas, más `isHealthWorker: true` y `nonHealthCount` (cuántas cédulas ajenas a la salud se apartaron). `cedulas` contiene solo las cédulas de salud.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+Envía `documentType` + `documentNumber`, o `firstName` + `lastName`. No mezcles los dos modos.
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | Modo documento | `CURP` o `CEDULA` (sin distinguir mayúsculas). Se prefiere CURP para contrataciones de salud. | `CURP` |
+| `documentNumber` | string | Con `documentType` | Una CURP de 17–18 caracteres o un número de cédula. | `LOPE900501HDFGRN01` |
+| `firstName` | string | Modo nombre | Nombres de pila. De 2 a 80 caracteres. | `ANA` |
+| `lastName` | string | Modo nombre | Ambos apellidos, el paterno primero. De 2 a 80 caracteres. | `LOPEZ RUIZ` |
+
+### How matching works
+
+La consulta es la misma que en el endpoint general de cédulas y después se aplica un filtro de salud.
+
+- **CURP** intenta una coincidencia directa (`matchMethod: "curp"`) y luego un respaldo por nombre exacto sin costo adicional (`matchMethod: "curp_to_name"`).
+- **CEDULA** es una coincidencia exacta del número de cédula. Una cédula ajena a la salud responde **404**.
+- **Nombre** es una coincidencia exacta del nombre completo. Si ninguna de las cédulas coincidentes es un título de salud, la respuesta es **404**.
+- `nonHealthCount` es el número de cédulas que se encontraron y se excluyeron. `isHealthWorker` es `true` siempre que este endpoint responde 200.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/health-worker", {
+  params: {
+    documentType: "CURP",
+    documentNumber: "LOPE900501HDFGRN01",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/health-worker"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"documentType": "CURP", "documentNumber": "LOPE900501HDFGRN01"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["ANA", "LOPEZ", "RUIZ"],
+    "cedulas": [
+      {
+        "curp": "LOPE900501HDFGRN01",
+        "firstName": "ANA",
+        "fullName": "ANA LOPEZ RUIZ",
+        "gender": "MUJER",
+        "institution": "UNIVERSIDAD NACIONAL AUTONOMA DE MEXICO",
+        "lastName": "LOPEZ RUIZ",
+        "licenseNumber": "10050101",
+        "licenseType": "C1",
+        "profession": "LICENCIATURA COMO MEDICO CIRUJANO",
+        "registrationYear": 2019,
+        "title": "LICENCIATURA COMO MEDICO CIRUJANO"
+      }
+    ],
+    "curp": "LOPE900501HDFGRN01",
+    "documentNumber": "LOPE900501HDFGRN01",
+    "documentType": "CURP",
+    "firstName": "ANA",
+    "fullName": "ANA LOPEZ RUIZ",
+    "lastName": "LOPEZ RUIZ",
+    "matchMethod": "curp",
+    "matchNote": null,
+    "isHealthWorker": true,
+    "nonHealthCount": 1
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentType and documentNumber, or firstName and lastName, are required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (no disponible)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- **404** significa que no se encontró una cédula de salud. Eso incluye una CURP válida sin ninguna cédula y una persona que solo tiene cédulas ajenas a la salud (por ejemplo, derecho).
+- En Smart Batch, ese 404 es un resultado de filtro completado, no una fila fallida.
+- Los resultados se almacenan en caché hasta 7 días.
+- La CURP de sandbox `LOPE900501HDFGRN01` devuelve una cédula de medicina y `nonHealthCount: 1`.
+- Una CURP que contiene `000003` (por ejemplo `LOPE000003MDFRRN03`) devuelve la cédula de salud del respaldo por nombre.
+- `documentType=CEDULA` y `documentNumber=10000002` devuelven una cédula de enfermería. `10000001` es solo derecho y responde **404**.
+- La CURP `LOPE900404HDFNTF01`, una CURP que contiene `000002` y `lastName=NOTFOUND` responden **404**.
+- Una CURP de menos de 17 o más de 18 caracteres, o un `documentType` no válido, responde **409** `MissingParameter`.
+- Cuando no se puede alcanzar el registro, la respuesta es **409** `Endpoint_out_of_service`. Reintenta más tarde.
+- Relacionado: [Cédula profesional](/identity/mexico-cedula-profesional), [Ciudadano mexicano (CURP)](/identity/mexico), [Validación INE](/identity/mexico-ine).

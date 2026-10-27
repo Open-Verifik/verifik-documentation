@@ -1,0 +1,131 @@
+---
+id: update-client-retention-policy
+title: Update Account Retention Policy
+description: Configure default data retention and storage modes across your entire Verifik account
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Endpoint
+
+```http
+PUT https://api.verifik.co/v2/client-settings/data
+```
+
+Updates the account-wide Data Retention Policy on `ClientSettings.data`. All projects and project flows inherit these settings unless explicitly overridden.
+
+### Headers
+
+| Name | Value |
+| :--- | :--- |
+| `Content-Type` | `application/json` |
+| `Authorization` | `Bearer <token>` |
+
+### Request Body
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `mode` | `string` | No | Default storage mode (`store`, `ephemeral`, `none`) |
+| `types` | `object` | No | Granular settings for `documentImages`, `faceImages`, `ocrExtraction`, and `documentLiveness` |
+| `webhookHoldHours` | `number` | No | Webhook hold duration (24 to 72 hours) |
+| `allowManualDelete` | `boolean` | No | Whether manual erasure routes are enabled |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function updateRetention() {
+  const payload = {
+    mode: "store",
+    types: {
+      documentImages: { mode: "store", retentionHours: 720 },
+      faceImages: { mode: "ephemeral", retentionHours: null },
+      ocrExtraction: { mode: "store", retentionHours: null },
+      documentLiveness: { mode: "none", retentionHours: null }
+    },
+    webhookHoldHours: 24,
+    allowManualDelete: true
+  };
+
+  const res = await fetch("https://api.verifik.co/v2/client-settings/data", {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload)
+  });
+  console.log(await res.json());
+}
+
+updateRetention();
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/client-settings/data"
+headers = {
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+    "Content-Type": "application/json"
+}
+payload = {
+    "mode": "store",
+    "types": {
+        "documentImages": {"mode": "store", "retentionHours": 720},
+        "faceImages": {"mode": "ephemeral", "retentionHours": None},
+        "ocrExtraction": {"mode": "store", "retentionHours": None},
+        "documentLiveness": {"mode": "none", "retentionHours": None}
+    },
+    "webhookHoldHours": 24,
+    "allowManualDelete": True
+}
+
+response = requests.put(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "mode": "store",
+    "types": {
+      "documentImages": { "mode": "store", "retentionHours": 720 },
+      "faceImages": { "mode": "ephemeral", "retentionHours": null },
+      "ocrExtraction": { "mode": "store", "retentionHours": null },
+      "documentLiveness": { "mode": "none", "retentionHours": null }
+    },
+    "webhookHoldHours": 24,
+    "allowManualDelete": true
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "Invalid webhook hold: must be between 24 and 72 hours",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+</Tabs>

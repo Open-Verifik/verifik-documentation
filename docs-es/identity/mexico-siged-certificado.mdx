@@ -1,33 +1,183 @@
 ---
 id: mexico-siged-certificado
-title: México — Certificado SIGED
-description: Valida un certificado electrónico de estudios de la SEP en SIGED por folio.
+title: México — Certificado de estudios (folio)
+description: Valida un certificado electrónico de estudios mexicano por folio contra el registro oficial de certificados.
 slug: /identity/mexico-siged-certificado
 keywords:
   - v2/mx/siged/certificado
-  - SIGED
-  - certificado
-  - SEP
+  - /v2/mx/siged/certificado
+  - v2 mx siged certificado
+  - api/mx/siged/certificado
+  - /api/mx/siged/certificado
+  - api mx siged certificado
+  - api.verifik.co/v2/mx/siged/certificado
+  - 'https://api.verifik.co/v2/mx/siged/certificado'
+  - GET v2/mx/siged/certificado
+  - GET /v2/mx/siged/certificado
+  - mx/siged/certificado
+  - /mx/siged/certificado
+  - education certificate
+  - certificado de estudios
+  - folio
+  - registro oficial de certificados
 ---
 
-# México — Certificado SIGED
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-Comprueba un certificado escolar electrónico en [SIGED](https://siged.sep.gob.mx/SIGED/documentos.html). La consulta es **solo por folio**. No busca por nombre.
+# México — Certificado de estudios (folio)
 
-La SEP marca el resultado como informativo. El documento oficial es el que entrega la escuela.
+Valida un certificado electrónico de estudios mexicano por folio contra el registro oficial de certificados. Opcionalmente envía `fullName` o `curp` para confirmar que el certificado pertenece a esa persona. Cuando se envían ambos, gana `curp`. Una discrepancia responde **409** `name_mismatch`.
 
-## Referencia
+Esto comprueba el registro del certificado. No prueba la identidad por sí solo. Para el registro civil por CURP, consulta [Ciudadano mexicano (CURP)](/identity/mexico). Para una cédula profesional, consulta [Cédula profesional](/identity/mexico-cedula-profesional).
+
+## API reference
+
+### Endpoint
 
 ```
-GET https://api.verifik.co/v2/mx/siged/certificado
+https://api.verifik.co/v2/mx/siged/certificado
 ```
 
-| Parámetro | Obligatorio | Descripción |
-| --- | --- | --- |
-| `folio` | Sí | Folio impreso en el certificado. |
-| `fullName` | No | Nombre esperado. Si no coincide, responde `409` `name_mismatch`. |
-| `curp` | No | Obtiene el nombre oficial de la CURP y lo compara con el certificado. |
+Una coincidencia devuelve `folio`, `fullName`, `status`, `certificateType`, `career`, `institution`, `level`, `studyType`, `average`, `averageText`, `periodStart`, `periodEnd`, `registrationDate`, `laborTraining`, `federalEntity` e `issueDate`. Los campos vacíos son `null`.
 
-Un folio desconocido responde **404**.
+### Headers
 
-Usa solo dominios `*.sep.gob.mx`.
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `folio` | string | Sí | Folio impreso en el certificado electrónico. De 4 a 64 caracteres. | `SIGED10000001` |
+| `fullName` | string | No | Nombre completo esperado. Una discrepancia responde 409 `name_mismatch`. Se ignora cuando también se envía `curp`. De 3 a 160 caracteres. | `Ana Lopez Ruiz` |
+| `curp` | string | No | CURP de la persona. Cuando se envía, prevalece sobre `fullName`. De 17 a 18 caracteres. | `LOPE900501HDFGRN01` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/mx/siged/certificado", {
+  params: {
+    folio: "SIGED10000001",
+    fullName: "Ana Lopez Ruiz",
+  },
+  headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/mx/siged/certificado"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"folio": "SIGED10000001", "fullName": "Ana Lopez Ruiz"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+Para comprobar al titular por CURP, envía `folio` y `curp` y omite `fullName`.
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "average": "9.1",
+    "averageText": "NUEVE PUNTO UNO",
+    "career": "BACHILLERATO TECNOLOGICO",
+    "certificateType": "CERTIFICADO DE TERMINACION DE ESTUDIOS",
+    "federalEntity": null,
+    "firstName": "ANA",
+    "folio": "SIGED10000001",
+    "fullName": "ANA LOPEZ RUIZ",
+    "institution": "DIRECCION GENERAL DE EDUCACION TECNOLOGICA INDUSTRIAL",
+    "issueDate": null,
+    "laborTraining": "TECNICO - PROGRAMACION",
+    "lastName": "LOPEZ RUIZ",
+    "level": "IEMS",
+    "periodEnd": "2021",
+    "periodStart": "2018",
+    "registrationDate": "2021-07-15",
+    "status": "Vigente",
+    "studyType": "EDUCACION MEDIA SUPERIOR"
+  },
+  "signature": {
+    "dateTime": "October 20, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (nombre)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "name_mismatch"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-missing" label="409 (folio faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"folio\" is required"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-down" label="409 (no disponible)">
+
+```json
+{
+  "code": "Conflict",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `folio` es obligatorio. `fullName` y `curp` son comprobaciones opcionales del titular. Cuando se envían ambos, se usa `curp` y se ignora `fullName`.
+- Un folio que no está en el registro responde **404**. Un nombre o una CURP que no pertenece a ese certificado responde **409** `name_mismatch`.
+- Los resultados se almacenan en caché hasta 7 días.
+- El folio de sandbox `SIGED10000001` devuelve el certificado de ejemplo de `ANA LOPEZ RUIZ`. `fullName=Ana Lopez Ruiz` también responde 200.
+- `fullName=Maria Perez` en ese folio responde **409** `name_mismatch`.
+- El folio `FOLIO90040401` responde **404**.
+- `curp=LOPE900501HDFGRN01` con cualquier `fullName` responde 200, porque gana la CURP. `curp=LOPE900404HDFNTF01` responde **404**.
+- Un `folio` ausente responde **409** `MissingParameter`.
+- Cuando no se puede alcanzar el registro, la respuesta es **409** `Endpoint_out_of_service`. Reintenta más tarde.
+- Relacionado: [Ciudadano mexicano (CURP)](/identity/mexico), [Cédula profesional](/identity/mexico-cedula-profesional), [Licencia de profesionista de salud](/identity/mexico-health-worker).

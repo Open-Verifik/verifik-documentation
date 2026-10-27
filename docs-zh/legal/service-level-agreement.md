@@ -1,153 +1,185 @@
 ---
 id: service-level-agreement
 title: 服务级别协议
-description: Verifik服务级别协议与支持条款
+description: Verifik 服务的支持、可用性与性能
 slug: /legal/service-level-agreement
 ---
 
 # 服务级别协议
 
-### **Service Level Agreement**
+**服务的支持、可用性与性能**
 
-#### **1. Service Channels. The User shall have access to the following Verifik service channels:**
+**版本 1.0 | 发布日期：2026 年 10 月 26 日**
 
-1. Chat available on [Verifik.co](http://verifik.co)
-2. Email: support@verifik.co
-3. Customer service WhatsApp channel.
-4. Customer service Discord channel.
+本协议说明下列 Verifik 服务的支持渠道、响应目标以及可用性承诺。除非另有明确的商业约定，所述支持不另行收费。
 
-#### **2. Hours of Operation**
+**范围与适用。** 本文件可纳入明确援引本文件的合同。双方签署的特别条款在发生冲突时优先。仅发布后续版本，本身并不改变已生效的合同。
 
-The User will be able to access the support provided by Verifik, Monday through Friday (business days) from 8:00 AM to 5:00 PM Colombia time.
+## 1. 支持渠道与服务时间
 
-#### **3. Criticality Levels**
+客户通过[客户面板](https://ai.verifik.co/)中的支持工单提出事件并跟进处理。该面板是官方支持渠道。
 
-The requests or requirements raised by Users to the support team will be classified according to the impact they have on the User's operation, as follows:
+如果客户无法访问客户面板，可以作为辅助联系方式写信至 [support@mg.verifik.co](mailto:support@mg.verifik.co)。
 
-| **Critical:** | Total service unavailability.                                                |
-| ------------- | ---------------------------------------------------------------------------- |
-| **Urgent:**   | Loss of specific functionality for all use cases.                            |
-| **Medium:**   | Loss of functionality in specific cases.                                     |
-| **Normal:**   | Other requests or general inquiries that do not affect Service Availability. |
+标准支持时间为周一至周五上午 8:00 至下午 5:00（UTC-5）。正常支持时间不包括哥伦比亚、美国和加拿大的国家法定节假日（“正常支持时间”）。
 
-#### **4. Response Times**
+级别 1（严重）事件设有值班待命（on-call）。该覆盖适用于夜间、周末和节假日。级别 1 的二十四（24）小时解决目标连续计算，包括夜间、周末和节假日，并且不受正常支持时间限制。
 
-1. **Definitions:** Terms used in this section, shall have the following meanings:
+付费购买高级支持（Premium Support）的客户不受正常支持时间和节假日除外的约束。对这些客户，首次响应时间和解决时间按每天二十四（24）小时、每周七（7）天计算。
+
+## 2. 事件响应与解决时间
+
+客户报告的事件由 Verifik 按其严重程度、运营影响和范围分为下列级别：
+
+| 事件严重程度 | 说明 | 首次响应时间 | 解决目标 |
+| --- | --- | --- | --- |
+| 级别 1. 严重 | 导致平台完全中断、严重影响其核心功能，或涉及严重安全漏洞的事件。设有值班待命（on-call）。 | 一（1）小时内，包括正常支持时间之外，并适用值班待命。 | 二十四（24）小时内，连续计算，包括夜间、周末和节假日。 |
+| 级别 2. 高 | 造成服务显著降级，或影响重要功能但未造成完全中断的事件。 | 正常支持时间内四（4）小时内。 | 两（2）个工作日内。 |
+| 级别 3. 低 | 影响有限、不显著妨碍服务运行的轻微错误和技术咨询。 | 正常支持时间内八（8）小时内。 | 五（5）个工作日内。 |
+
+### 受理条件
+
+a) 首次响应时间仅在第 1 条所定正常支持时间内计算，但设有值班待命的级别 1（严重）事件，以及付费购买高级支持的客户除外。级别 1 的二十四（24）小时解决目标连续计算，包括夜间、周末和节假日。对付费购买高级支持的客户，首次响应时间和解决时间按第 1 条的规定，每天二十四（24）小时、每周七（7）天计算。
+
+b) 首次响应是 Verifik 确认已收到并正在处理该事件的一次沟通。自动回执不构成本条所称的首次响应。
+
+c) 解决时间是以商业上合理努力为限的运营目标，并不保证在确定期限内解决。
+
+d) Verifik 根据严重程度和技术影响对事件分级，并可在情况证明有必要时调整分级。
+
+e) 解决时间可能受 Verifik 合理控制之外的情况影响，包括政府来源或第三方服务的中断、故障或访问限制。
+
+f) 若事件不能在目标期限内解决，Verifik 将继续以商业上合理的努力予以解决，并向客户告知状态和相关进展。
+
+## 3. 服务可用性与响应时间
+
+服务可用性按表 1 按月评估，不包括计划停机。计划停机指为减少中断而安排在需求较低时段的平台维护和更新窗口。
+
+Verifik 可以定期公布重复的计划停机窗口。“重复计划停机”指按重复日程在固定时间发生、并作为 Verifik API 文档的一部分予以公布的不可用窗口。
+
+对于已公布的重复窗口之外的计划维护，Verifik 将至少提前七（7）个日历日书面通知，为维护服务安全或连续性而必须立即干预的紧急情况除外。窗口优先安排在夜间或周末。
+
+### 表 1. 服务可用性
+
+| 可用性 | 产品 |
+| --- | --- |
+| 数据库：90.00% 或更高 | smartCHECK、DB Screening |
+| 电子邮件/电话：99.00% 或更高 | smartACCESS、smartENROLL |
+| 生物识别：99.00% 或更高 | smartACCESS、smartENROLL |
+| 证件扫描：99.00% 或更高 | smartENROLL、smartACCESS |
+
+数据库核验 API 依赖与政府来源的连接。Verifik 不拥有也不控制这些接入点。
+
+### 3.1. DB Screening / smartCHECK 的可用性除外 {#availability-exclusions}
+
+由于某些外部数据来源的运行可用性在历史上难以预测，特定端点排除在平台可用性承诺以及本协议的停机补偿规定之外。
+
+下列端点被排除：
+
+- 墨西哥 – INE 核验
+- 墨西哥 – 车牌核验
+
+影响这些端点的中断、维护期、性能下降、响应延迟或暂时不可用：
+
+- 不视为平台停机；
+- 不计入平台可用性计算；
+- 不构成按本协议获得服务积分或其他补偿的理由。
+
+Verifik 将继续以商业上合理的努力维持连通性，并在可能时恢复服务。对所列端点不提供正常运行时间保证。
+
+### 3.2. 如何衡量可用性
+
+可用性按账户、按 UTC 公历月计算：
 
 ```
-i. Attention: The time elapsed between the request or requirement and the assignment of a service agent.
-ii. Review: The time elapsed between the agent's greeting and the first response regarding the request or requirement.
-iii. Escalation: The time elapsed between the agent's escalation and the case review by the person to whom it was escalated. This time only applies in events where it is necessary to escalate the user's request or requirement.
-iv. Resolution: The time elapsed between the agent's greeting and the moment the case is resolved.
+可用性 = 成功请求 / （成功请求 + 服务故障）
 ```
 
-The response time varies according to the criticality of the requirement, as follows:
+服务故障是超时的请求、返回 5xx 错误或 408 或 504 响应的请求，或表明端点已停止服务的请求。
 
-| **SEVERITY/TIME** | **ATTENTION** | **REVIEW** | **ESCALATION** | **RESOLUTION** |
-| ----------------- | ------------- | ---------- | -------------- | -------------- |
-| **Critical**      | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Urgent**        | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Medium**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
-| **Normal**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
+客户错误不计入计算。其中包括无效或缺失的参数、在来源中未找到记录、身份验证和权限错误，以及其他 4xx 响应。
 
-**Note:** 48 hrs means we take up to 48 hours to resolve the incident depending on its complexity.
+客户可在客户面板中查看月度可用性；在启用时，也可通过用量 API 按服务查看明细。第 3.1 条的端点排除在可用性承诺之外。
 
-Response times will be counted from the last message sent by the user.
+### 3.3. 查询响应时间的运营目标
 
-#### **5. Platform Availability**
+对政府数据库查询（DB Screening / smartCHECK）的响应时间，是 Verifik 旨在高效提供服务的运营性能目标。
 
-The Platform will be available at least:
+在正常运行条件下，Verifik 将力求达到下列目标：
 
-| **Product**  | **Availability**                                                                                      | **Notes**                                                              |
-| ------------ | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| SmartCHECK   | 90.0% > Data API                                                                                      | Data API depends on connections with Government Sources                |
-| smartACCESS  | 99.0% > Email/Tel<br/>98.0% > Biometrics                                                    |                                                                        |
-| smartENROLL  | 99.0% > Email/Tel<br/>98.0% > Biometrics<br/>98.0% > Document Scanning<br/>90.0% > Data API | Data API depends on connections with Government Sources                |
+a) **目标响应时间：** 以商业上合理的努力在一（1）秒内响应查询。
 
-##### **5.1. 特定端点可用性排除条款**
+b) **目标平均时间：** 将每次查询的平均响应时间保持在不超过三（3）秒，按月衡量。
 
-由于某些外部数据源在运营可用性方面历史上具有不可预测的特性，特定端点被排除在本协议的平台可用性承诺和停机补偿规定之外。
+c) **目标最长时间：** 力求单次查询的响应时间不超过十（10）秒。
 
-以下端点被排除：
+响应时间可能因政府或第三方信息来源的可用性、容量、维护、延迟及其他技术条件而变化，也可能因必须按顺序查询多个信息来源的动态查询机制而变化。相关计费见[积分计费与消耗政策](/verifik-zh/legal/billing-policy)。
 
-- 墨西哥 – INE 验证
-- 墨西哥 – 车辆牌照验证
+上述时间是参考性运营目标，不构成性能保证、结果义务或最长响应时间承诺。
 
-影响这些端点的中断、维护期、性能下降、响应延迟或暂时不可用，均不得：
+客户确认，响应时间可能因政府或第三方信息来源的可用性、容量、维护、延迟及其他技术条件而变化，也可能因按顺序访问多个来源的动态查询机制而变化。
 
-- 被视为平台停机时间；
-- 纳入平台可用性计算；
-- 有权获得服务抵免或本协议项下的任何其他补偿。
+就衡量而言，响应时间是对单次 API 请求的处理时间，不包括 Verifik 控制之外的互联网传输延迟。
 
-Verifik 将继续尽商业上合理的努力以保持连接并在可能时恢复服务；但对上述所列端点不提供任何正常运行时间保证。
+未达到这些运营目标本身不构成违约，也不产生补偿、服务积分或违约金。这并不免除 Verifik 就其自身基础设施、平台可用性以及本协议项下其他适用承诺所明确承担的义务。
 
-#### **6. Downtime Compensation**
+本条应与本协议关于政府来源保证限制的[第 6 条](#source-warranty-limitations)一并解释。
 
-Credit Compensation awarded for the affected month will be provided in the form of a credit equivalent to the cost of the failed service call. If the service unavailability is caused by **Internal Issues** of Verifik (database, servers, internal API issues) and is not effectively resolved by the Company, Verifik will compensate as follows:
+### 3.4. 合同目标
 
-| **Service Availability**                                                                                            | **Credit Compensation**               | **Product**                       |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | --------------------------------- |
-| **Data API (Data Query)**<br/>90.00% or higher<br/>89.99% or lower               | No Credit<br/>Compensation | smartCHECK                        |
-| **Email/Tel**<br/>99.00% or higher<br/>98.99% or lower                           | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Biometrics**<br/>98.00% or higher<br/>97.99% or lower                          | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Document Scanning**<br/>98.00% or higher<br/>97.99% or lower                   | No Credit<br/>Compensation | smartENROLL<br/>smartACCESS |
+客户面板和用量 API 可以将 smartCHECK 的月度表现与 90% 的参考目标进行比较。具体合同目标仅在明确写入客户商业条款时适用。在其他情况下，所显示的数字仅供参考。该显示不产生第 4 条规定以外的补偿。
 
-**Internal Issues** of the Data API service (Data Query) excludes issues considered Force Majeure (Fortuitous Events), whether due to migration, disconnection, or external intervention by the governments that manage the databases. Verifik is an intermediary and therefore does NOT have control over the queried databases.
+## 4. 未达到可用性水平时的补偿
 
-#### **7. Charging Scheme for smartCHECK**
+仅当不可用可归因于 Verifik 的内部故障，并且客户因未能成功处理的 API 查询而被实际计费时，才就未达到本协议可用性水平给予补偿。
 
-The charging scheme applies to the smartCHECK solution, which enables queries to government databases. Verifik does not own, manage, or bear responsibility for (does not control or update) the government databases of the various countries we serve; therefore, Verifik reserves the right not to offer guarantees regarding Response Time, Average Up Time, or Data Accuracy.
+在此情况下，补偿为退还就该等查询实际扣减的积分。对未计费的请求不另行给予积分。
 
-If the query returns a **200** or **404**, it will be charged. Otherwise, if the query returns **403**, **409**, **412**, **422**, or **500**, it will not be charged.
+就 smartCHECK（DB Screening）而言，政府来源的中断或限制不产生补偿，适用本协议[第 3.1 条](#availability-exclusions)和[第 6 条](#source-warranty-limitations)的除外与限制。
 
-| **Charged** | **Not Charged** |
-| ----------- | --------------- |
-| 200         | 403             |
-| 404         | 409             |
-|             | 412             |
-|             | 422             |
-|             | 500             |
+第 3 条所定可用性百分比是评估服务表现的参考水平。若不存在可以退还的实际费用，未达到该水平并不自动产生金钱补偿。
 
-#### **8. smartCHECK 服务动态查询**
+本条补偿以可用于未来消耗的服务积分发放，而不是现金退款。这不影响双方根据适用商业合同就重大违约所享有的权利。
 
-作为 smartCHECK 服务标准架构的一部分，Verifik 实施了动态查询（Dynamic Query）机制，旨在最大化受支持端点的服务可用性、覆盖范围和可靠性。
+| 服务 | 不补偿 | 补偿 |
+| --- | --- | --- |
+| 数据库（smartCHECK、DB Screening） | 90.00% 或更高 | 89.99% 或更低 |
+| 电子邮件/电话（smartACCESS、smartENROLL） | 99.00% 或更高 | 98.99% 或更低 |
+| 生物识别（smartACCESS、smartENROLL） | 99.00% 或更高 | 98.99% 或更低 |
+| 证件扫描（smartENROLL、smartACCESS） | 99.00% 或更高 | 98.99% 或更低 |
 
-动态查询机制允许 smartCHECK 和 DB Screening 在主要数据源返回不成功响应（包括但不限于“Not Found”或等效的 HTTP 400 级别响应）时，自动且依次查询多个授权数据源。该架构旨在通过利用多个符合条件的数据源来提高获得成功验证结果的概率。
+数据库核验服务（数据查询）的内部问题，不包括因保管数据库的政府进行迁移、断开连接或外部干预而被视为不可抗力（意外事件）的问题。Verifik 作为中介行事，因此对所查询的数据库没有权力，也不加以控制。
 
-客户承认并同意，政府数据库的质量、完整性和可用性可能因司法管辖区而显著不同，某些数据库由于记录不完整、服务中断或数据覆盖范围有限，可能呈现更高的不成功响应概率。
+## 5. smartCHECK 服务的动态查询 {#dynamic-query}
 
-为减轻这些限制，动态查询在所有适用的 smartCHECK 端点上默认启用，并构成 Verifik 冗余和故障转移策略的组成部分。该机制使 Verifik 能够在必要时将请求动态路由到可用的替代来源，从而在某些端点上维持接近百分之百（100%）的服务可用性和覆盖范围。
+作为 smartCHECK 服务标准架构的一部分，Verifik 实施动态查询机制，以便在兼容端点上尽量提高可用性、覆盖范围和可靠性。
 
-客户进一步承认并同意：
+当主要数据来源返回不能令人满意的响应时（包括但不限于 “Not Found” 响应或同等的 HTTP 400 级别响应），动态查询使 smartCHECK 和 DB Screening 能够自动并按顺序查询多个经授权的数据来源。该架构旨在借助多个合格数据来源，提高获得令人满意的核验结果的可能性。
 
-a) 动态查询旨在提高获得成功验证响应的可能性，但不保证在所有情况下都能成功匹配或获得结果；
+客户确认并同意：政府数据库的质量、完整性和可用性可能因司法辖区而显著不同；某些数据库因记录不完整、服务中断或数据覆盖有限，更可能返回不能令人满意的响应。
 
-b) 响应时间可能有所不同，在某些情况下，由于多源请求的级联性质，可能比标准单源查询更长；
+为减轻这些限制，动态查询在所有适用的 smartCHECK 端点上默认启用，并且是 Verifik 冗余和故障切换策略的组成部分。该机制使 Verifik 能够在必要时把请求动态路由到可用的替代来源，从而在某些端点上将服务可用性和覆盖范围维持在接近百分之一百（100%）。
 
-c) 动态查询的有效性和可用性仍受基础第三方或政府来源的正常运行时间、可访问性和数据质量的影响；以及
+客户进一步确认并同意：
 
-d) Verifik 保留在其唯一裁量权下修改、优先排序或替换动态查询架构内数据源的权利，以维持服务连续性、优化覆盖范围并提高验证性能。
+a) 动态查询旨在提高获得令人满意的核验响应的可能性，并不保证在所有情况下都能获得令人满意的匹配。
 
-动态查询应被视为 smartCHECK 服务的固有功能，并应自动适用于使用符合条件端点的所有客户，除非 Verifik 另有书面规定。
+b) 响应时间可能变化，并且由于对多个来源的请求呈级联方式，有时会长于单一来源的标准查询。
 
-#### **8.1 动态定价（计费）** {#dynamic-pricing-billing}
+c) 动态查询的效果和可用性仍取决于底层第三方或政府来源的正常运行时间、可访问性和数据质量。
 
-当动态查询在符合条件的端点上使用扩展验证路径并返回成功匹配（**HTTP 200**）时，可能适用**动态定价**。此时，积分按该端点系列的**高级层级**扣除，而非与基础路由关联的标准层级。
+d) 为维持服务连续性、优化覆盖范围并改进核验表现，Verifik 保留自行决定修改、调整优先级或替换动态查询架构内数据来源的权利。
 
-动态定价目前适用于标准哥伦比亚身份证端点（**`GET/POST /v2/co/cedula`**），即在标准路径未返回匹配且扩展验证路径成功完成时。积分数量取决于**客户配置的功能定价**（该端点系列的标准费率 vs. 高级费率）。
+动态查询是 smartCHECK 服务的固有功能，自动适用于使用合格端点的所有客户，除非 Verifik 另有书面规定。
 
-动态定价**不会**改变**7**节的计费规则：验证和服务器错误（**403**、**409**、**412**、**422**、**500**）不收费；在适用路径均未返回成功匹配时，**404** 响应按标准层级计费。
+与动态查询相关的计费规则，包括哥伦比亚国民身份证的动态定价，见[积分计费与消耗政策](/verifik-zh/legal/billing-policy)。
 
-为便于透明，客户可在符合条件的请求中传递 **`includeCost=true`**，在扣除积分时（包括适用动态定价时）接收 **`billing`** 对象。API 请求历史会记录调整元数据（例如标准金额 vs. 实际扣费金额）。
+## 6. 信息来源的保证限制 {#source-warranty-limitations}
 
-直接调用 **`/v2/co/cedula/premium`** 始终使用高级定价；动态定价描述从标准 **`/v2/co/cedula`** 路由的自动升级。
+Verifik 不是所查询政府数据库的所有人或管理人，也不控制其更新、可用性或准确性。因此，Verifik 不保证来自这些来源的数据的响应时间、平均正常运行时间或准确性。该限制仅适用于 smartCHECK（DB Screening）服务，并不免除 Verifik 就其自身基础设施所明确承担的义务。
 
-API 详情见[哥伦比亚身份证（基础）](/verifik-zh/identity-validation/colombia/colombian-citizen#dynamic-pricing)。
+**版本控制。** Verifik 以发布日期标识本协议的新版本。对已生效合同的修改，遵循各合同约定的修改规则。
 
-#### **9. 平台不可用**
+<a id="dynamic-pricing-billing"></a>
 
-Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.
-
-#### **10. 新适配或开发**
-
-The timeframes for developing new adaptations due to unexpected changes from User systems integrating via API with the Platform will vary according to the changes required by the User and will not count as Platform Downtime.
+**相关文件。** 计费规则和动态定价见[积分计费与消耗政策](/verifik-zh/legal/billing-policy#dynamic-pricing-billing)。

@@ -86,6 +86,7 @@ const sidebars = {
 				"smartenroll/smartenroll-resume",
 				"smartenroll/smartenroll-admin-kyc-review",
 				"smartenroll/smartenroll-api-companion",
+				"smartenroll/data-retention",
 				"smart-enroll-self-hosted/smart-enroll-self-hosted",
 				"smart-scan/smart-scan",
 			],
@@ -324,8 +325,18 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/mexico-cedula-profesional",
+					label: "🇲🇽 Mexico — Professional License",
+				},
+				{
+					type: "doc",
+					id: "identity/mexico-health-worker",
+					label: "🇲🇽 Mexico — Health Worker License",
+				},
+				{
+					type: "doc",
 					id: "identity/mexico-siged-certificado",
-					label: "🇲🇽 Mexico — SIGED Certificate",
+					label: "🇲🇽 Mexico — Education Certificate (folio)",
 				},
 				{
 					type: "doc",
@@ -1276,6 +1287,21 @@ const sidebars = {
 						"resources/webhooks/delete-a-webhook",
 					],
 				},
+				{
+					type: "category",
+					label: "Data Retention & Erasure",
+					collapsible: true,
+					items: [
+						"resources/data-retention/data-retention-overview",
+						"resources/data-retention/the-data-retention-policy-object",
+						"resources/data-retention/retrieve-data-retention-policy",
+						"resources/data-retention/update-client-retention-policy",
+						"resources/data-retention/update-project-retention-policy",
+						"resources/data-retention/delete-document-validation-files",
+						"resources/data-retention/delete-app-registration-data",
+						"resources/data-retention/erase-data-bulk",
+					],
+				},
 			],
 		},
 		{
@@ -1286,6 +1312,7 @@ const sidebars = {
 				"legal/privacy-policy",
 				"legal/terms-and-conditions",
 				"legal/service-level-agreement",
+				"legal/billing-policy",
 				"legal/verifik-for-enterprises-hub-eng",
 				"legal/smartcheck-terms-and-conditions-of-use",
 			],

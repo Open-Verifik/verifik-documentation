@@ -1,153 +1,185 @@
 ---
 id: service-level-agreement
 title: サービスレベル契約
-description: Verifikのサービスレベル契約およびサポート条件
+description: Verifikサービスのサポート、可用性および性能
 slug: /legal/service-level-agreement
 ---
 
 # サービスレベル契約
 
-### **Service Level Agreement**
+**サービスのサポート、可用性および性能**
 
-#### **1. Service Channels. The User shall have access to the following Verifik service channels:**
+**バージョン 1.0 | 公開日: 2026年10月26日**
 
-1. Chat available on [Verifik.co](http://verifik.co)
-2. Email: support@verifik.co
-3. Customer service WhatsApp channel.
-4. Customer service Discord channel.
+本契約は、以下に示す Verifik サービスのサポートチャネル、対応目標および可用性に関する約束を定めます。ここに記載するサポートは、別段の明示的な商業上の合意がない限り、追加料金なしで含まれます。
 
-#### **2. Hours of Operation**
+**範囲と適用。** 本書類は、これを明示的に指定する契約に組み込むことができます。当事者が署名した個別条件は、抵触する場合に優先します。後続版を公開すること自体は、既に効力を有する契約を変更しません。
 
-The User will be able to access the support provided by Verifik, Monday through Friday (business days) from 8:00 AM to 5:00 PM Colombia time.
+## 1. サポートチャネルと受付時間
 
-#### **3. Criticality Levels**
+お客様は、[クライアントパネル](https://ai.verifik.co/)のサポートチケットでインシデントを起票し、その後の対応を行います。このパネルが公式のサポートチャネルです。
 
-The requests or requirements raised by Users to the support team will be classified according to the impact they have on the User's operation, as follows:
+お客様がクライアントパネルにアクセスできない場合は、二次的な連絡先として [support@mg.verifik.co](mailto:support@mg.verifik.co) に連絡できます。
 
-| **Critical:** | Total service unavailability.                                                |
-| ------------- | ---------------------------------------------------------------------------- |
-| **Urgent:**   | Loss of specific functionality for all use cases.                            |
-| **Medium:**   | Loss of functionality in specific cases.                                     |
-| **Normal:**   | Other requests or general inquiries that do not affect Service Availability. |
+標準サポートは、月曜日から金曜日の午前 8 時から午後 5 時（UTC-5）まで提供されます。通常サポート時間は、コロンビア、米国およびカナダの国民の祝日を除きます（「通常サポート時間」）。
 
-#### **4. Response Times**
+レベル 1（重大）のインシデントにはオンコール対応があります。この対応は夜間、週末および祝日にも適用されます。レベル 1 の二十四（24）時間の解決目標は、夜間、週末および祝日を含めて連続して進行し、通常サポート時間に限定されません。
 
-1. **Definitions:** Terms used in this section, shall have the following meanings:
+プレミアムサポートの対価を支払うお客様には、通常サポート時間および祝日の除外は適用されません。当該お客様については、初回応答時間および解決時間が、一日二十四（24）時間、週七（7）日で進行します。
 
-```
-i. Attention: The time elapsed between the request or requirement and the assignment of a service agent.
-ii. Review: The time elapsed between the agent's greeting and the first response regarding the request or requirement.
-iii. Escalation: The time elapsed between the agent's escalation and the case review by the person to whom it was escalated. This time only applies in events where it is necessary to escalate the user's request or requirement.
-iv. Resolution: The time elapsed between the agent's greeting and the moment the case is resolved.
-```
+## 2. インシデントの応答時間と解決時間
 
-The response time varies according to the criticality of the requirement, as follows:
+お客様が報告したインシデントは、重大度、運用上の影響および範囲に応じて Verifik が次の水準に分類します。
 
-| **SEVERITY/TIME** | **ATTENTION** | **REVIEW** | **ESCALATION** | **RESOLUTION** |
-| ----------------- | ------------- | ---------- | -------------- | -------------- |
-| **Critical**      | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Urgent**        | 0.5 hr        | 0.5 hr     | 15 mins        | 48 hrs         |
-| **Medium**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
-| **Normal**        | 1 hr          | 1 hr       | 0.5 hr         | 96 hrs         |
+| インシデントの重大度 | 説明 | 初回応答時間 | 解決目標 |
+| --- | --- | --- | --- |
+| レベル 1. 重大 | プラットフォームの全面停止、不可欠な機能への重大な影響、または重大なセキュリティ脆弱性を伴うインシデント。オンコール対応が適用されます。 | 通常サポート時間外を含め、一（1）時間以内。オンコール対応が適用されます。 | 夜間、週末および祝日を含めて連続して計算する二十四（24）時間以内。 |
+| レベル 2. 高 | 全面停止には至らないものの、サービスの著しい低下または重要な機能への影響を生じるインシデント。 | 通常サポート時間内の四（4）時間以内。 | 二（2）営業日以内。 |
+| レベル 3. 低 | 影響が限定的で、サービスの運用を著しく損なわない軽微な誤りおよび技術的な問い合わせ。 | 通常サポート時間内の八（8）時間以内。 | 五（5）営業日以内。 |
 
-**Note:** 48 hrs means we take up to 48 hours to resolve the incident depending on its complexity.
+### 対応条件
 
-Response times will be counted from the last message sent by the user.
+a) 初回応答時間は、第 1 条に定める通常サポート時間の範囲内でのみ計算します。ただし、オンコール対応があるレベル 1（重大）のインシデント、およびプレミアムサポートの対価を支払うお客様は除きます。レベル 1 の二十四（24）時間の解決目標は、夜間、週末および祝日を含めて連続して計算します。プレミアムサポートの対価を支払うお客様については、第 1 条に定めるとおり、初回応答時間および解決時間が一日二十四（24）時間、週七（7）日で進行します。
 
-#### **5. Platform Availability**
+b) 初回応答とは、インシデントを受領し対応中であることを確認する Verifik からの連絡です。自動の受付返信は、本条における初回応答には当たりません。
 
-The Platform will be available at least:
+c) 解決時間は、商業上合理的な努力の対象となる運用目標であり、所定の期限内の解決を保証するものではありません。
 
-| **Product**  | **Availability**                                                                                      | **Notes**                                                              |
-| ------------ | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| SmartCHECK   | 90.0% > Data API                                                                                      | Data API depends on connections with Government Sources                |
-| smartACCESS  | 99.0% > Email/Tel<br/>98.0% > Biometrics                                                    |                                                                        |
-| smartENROLL  | 99.0% > Email/Tel<br/>98.0% > Biometrics<br/>98.0% > Document Scanning<br/>90.0% > Data API | Data API depends on connections with Government Sources                |
+d) Verifik は、重大度と技術的影響に基づいてインシデントを分類し、正当な事情がある場合には分類を変更できます。
 
-##### **5.1. エンドポイント固有の可用性除外**
+e) 解決時間は、政府情報源または第三者サービスへの中断、障害もしくはアクセス制限を含め、Verifik の合理的な支配を超える事情の影響を受けることがあります。
 
-特定の外部データソースにおける運用可用性の歴史的に予測困難な特性により、特定のエンドポイントは本契約のプラットフォーム可用性に関するコミットメントおよびダウンタイム補償規定から除外されます。
+f) 目標期限内にインシデントを解決できない場合、Verifik は解決に向けて商業上合理的な努力を続け、状況と重要な進捗をお客様に通知します。
 
-除外されるエンドポイントは以下のとおりです:
+## 3. サービスの可用性と応答時間
 
-- メキシコ – INE検証
+サービスの可用性は、計画停止時間を除き、表 1 に従って毎月評価します。計画停止時間とは、中断を抑えるため需要の低い時間帯に設ける、プラットフォームの保守および更新の時間枠です。
+
+Verifik は、反復する計画停止の時間枠を定期的に公開できます。「反復計画停止」とは、反復する日程に従い定刻に発生し、Verifik の API ドキュメントの一部として公開される停止時間枠をいいます。
+
+Verifik は、公開済みの反復時間枠の外で行う計画保守について、少なくとも七（7）暦日前に書面で通知します。ただし、サービスの安全または継続性を守るため即時の介入が必要な緊急時は除きます。時間枠は、夜間または週末に実施することを優先します。
+
+### 表 1. サービスの可用性
+
+| 可用性 | 製品 |
+| --- | --- |
+| データベース: 90.00% 以上 | smartCHECK、DB Screening |
+| メール/電話: 99.00% 以上 | smartACCESS、smartENROLL |
+| 生体認証: 99.00% 以上 | smartACCESS、smartENROLL |
+| 書類スキャン: 99.00% 以上 | smartENROLL、smartACCESS |
+
+データベース検証 API は、政府情報源への接続に依存します。Verifik は当該アクセスポイントを所有せず、管理もしません。
+
+### 3.1. DB Screening / smartCHECK の可用性除外 {#availability-exclusions}
+
+一部の外部データソースの運用可用性は歴史的に予測しにくいため、特定のエンドポイントは、プラットフォームの可用性に関する約束および本契約の停止時間に対する補償の規定から除外されます。
+
+除外されるエンドポイントは次のとおりです。
+
+- メキシコ – INE 検証
 - メキシコ – 車両ナンバープレート検証
 
-これらのエンドポイントに影響する中断、メンテナンス期間、性能低下、応答遅延、または一時的な利用不可は、以下のいずれにも該当しません:
+これらのエンドポイントに影響する中断、保守期間、性能低下、応答の遅延または一時的な利用不能は、次のとおり扱います。
 
-- プラットフォームダウンタイムとみなされないこと;
-- プラットフォーム可用性の計算に含まれないこと;
-- 本契約に基づくサービスクレジットまたはその他の補償の対象とならないこと。
+- プラットフォームの停止時間とはみなしません。
+- プラットフォームの可用性の計算に含めません。
+- 本契約に基づくサービスクレジットその他の補償の対象になりません。
 
-Verifikは、可能な限り接続性を維持しサービスを復旧するために商業上合理的な努力を継続しますが、上記に記載されたエンドポイントについては稼働時間の保証は提供されません。
+Verifik は、接続を維持し、可能な場合にサービスを復旧するため、商業上合理的な努力を続けます。列挙したエンドポイントについて稼働時間の保証は提供しません。
 
-#### **6. Downtime Compensation**
+### 3.2. 可用性の測定方法
 
-Credit Compensation awarded for the affected month will be provided in the form of a credit equivalent to the cost of the failed service call. If the service unavailability is caused by **Internal Issues** of Verifik (database, servers, internal API issues) and is not effectively resolved by the Company, Verifik will compensate as follows:
+可用性は、UTC の各暦月についてアカウント単位で計算します。
 
-| **Service Availability**                                                                                            | **Credit Compensation**               | **Product**                       |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | --------------------------------- |
-| **Data API (Data Query)**<br/>90.00% or higher<br/>89.99% or lower               | No Credit<br/>Compensation | smartCHECK                        |
-| **Email/Tel**<br/>99.00% or higher<br/>98.99% or lower                           | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Biometrics**<br/>98.00% or higher<br/>97.99% or lower                          | No Credit<br/>Compensation | smartACCESS<br/>smartENROLL |
-| **Document Scanning**<br/>98.00% or higher<br/>97.99% or lower                   | No Credit<br/>Compensation | smartENROLL<br/>smartACCESS |
+```
+可用性 = 成功したリクエスト / （成功したリクエスト + サービスの障害）
+```
 
-**Internal Issues** of the Data API service (Data Query) excludes issues considered Force Majeure (Fortuitous Events), whether due to migration, disconnection, or external intervention by the governments that manage the databases. Verifik is an intermediary and therefore does NOT have control over the queried databases.
+サービスの障害とは、タイムアウトしたリクエスト、5xx エラーまたは 408 もしくは 504 の応答を返したリクエスト、またはエンドポイントがサービス停止中であることを示すリクエストです。
 
-#### **7. Charging Scheme for smartCHECK**
+クライアントエラーは計算から除外します。無効または欠落したパラメータ、情報源で記録が見つからないこと、認証および権限のエラー、その他の 4xx 応答が含まれます。
 
-The charging scheme applies to the smartCHECK solution, which enables queries to government databases. Verifik does not own, manage, or bear responsibility for (does not control or update) the government databases of the various countries we serve; therefore, Verifik reserves the right not to offer guarantees regarding Response Time, Average Up Time, or Data Accuracy.
+お客様は、クライアントパネルで、また有効な場合は利用状況 API により、サービス別の内訳とともに月次の可用性を確認できます。第 3.1 条のエンドポイントは可用性の約束から除外されます。
 
-If the query returns a **200** or **404**, it will be charged. Otherwise, if the query returns **403**, **409**, **412**, **422**, or **500**, it will not be charged.
+### 3.3. 照会の応答時間に関する運用目標
 
-| **Charged** | **Not Charged** |
-| ----------- | --------------- |
-| 200         | 403             |
-| 404         | 409             |
-|             | 412             |
-|             | 422             |
-|             | 500             |
+政府データベースへの照会（DB Screening / smartCHECK）の応答時間は、サービスを効率的に提供するための Verifik の運用上の性能目標です。
 
-#### **8. smartCHECKサービスの動的クエリ**
+通常の運用条件下で、Verifik は次の目標の達成に努めます。
 
-smartCHECKサービスの標準アーキテクチャの一環として、Verifikは、サポート対象エンドポイントにおけるサービスの可用性、カバレッジ、信頼性を最大化するために設計された動的クエリ（Dynamic Query）メカニズムを実装しています。
+a) **目標応答時間:** 照会に一（1）秒以内に応答するため、商業上合理的な努力を行います。
 
-動的クエリメカニズムにより、smartCHECKおよびDB Screeningは、主要データソースが「Not Found」または同等のHTTP 400レベルのエラーを含む、成功しない応答を返した場合に、複数の認可されたデータソースを自動的かつ順次に照会することができます。このアーキテクチャは、複数の適格なデータソースを活用することにより、成功した検証結果を得る確率を高めることを目的としています。
+b) **目標平均時間:** 照会あたりの平均応答時間を三（3）秒以下に維持します。月次で測定します。
 
-クライアントは、政府データベースの品質、完全性、可用性が管轄区域によって大きく異なる場合があり、不完全なレコード、サービスの中断、または限定的なデータカバレッジにより、特定のデータベースでは成功しない応答の確率が高くなる場合があることを認識し、同意するものとします。
+c) **目標最大時間:** 個々の照会の応答時間が十（10）秒を超えないように努めます。
 
-これらの制限を軽減するため、動的クエリは、該当するすべてのsmartCHECKエンドポイントでデフォルトで有効化されており、Verifikの冗長化およびフェイルオーバー戦略の不可欠な部分を構成します。このメカニズムにより、Verifikは必要に応じてリクエストを代替の利用可能なソースに動的にルーティングすることで、特定のエンドポイントにおいて100%に近いサービスの可用性およびカバレッジを維持することができます。
+応答時間は、政府または第三者の情報源の可用性、容量、保守、遅延その他の技術的条件、および複数の情報源を順に照会する必要がある動的クエリの利用により変動することがあります。動的クエリに伴う請求は、[クレジット請求・消費ポリシー](/verifik-ja/legal/billing-policy)に従います。
 
-クライアントはさらに以下を認識し、同意するものとします：
+上記の時間は参照用の運用目標です。性能の保証、結果債務、または最大応答時間の約束ではありません。
 
-a) 動的クエリは、成功した検証応答を得る可能性を高めることを目的としていますが、すべてのケースにおいて成功した一致または結果を保証するものではありません；
+お客様は、応答時間が、政府または第三者の情報源の可用性、容量、保守、遅延その他の技術的条件、および複数の情報源へ順にアクセスする動的クエリの利用により変動し得ることを認めます。
 
-b) 応答時間は変動する場合があり、複数ソースへのリクエストのカスケード的な性質により、場合によっては標準的な単一ソースクエリよりも長くなることがあります；
+測定上、応答時間は単一の API リクエストの処理時間であり、Verifik の支配の外にあるインターネット伝送の遅延は除きます。
 
-c) 動的クエリの有効性および可用性は、基盤となる第三者または政府ソースの稼働時間、アクセス可能性、データ品質の影響を受けます；および
+これらの運用目標を満たさないこと自体は契約違反を構成せず、補償、サービスクレジットまたは違約金を生じさせません。これは、Verifik が自らのインフラ、プラットフォームの可用性および本契約に基づき適用されるその他の約束について明示的に引き受けた義務を免除しません。
 
-d) Verifikは、サービスの継続性の維持、カバレッジの最適化、検証パフォーマンスの向上のために、動的クエリアーキテクチャ内のデータソースを変更、優先順位付け、または置換する権利を単独の裁量で留保します。
+本条は、政府情報源に関する保証の制限を定める本契約の[第 6 条](#source-warranty-limitations)と併せて解釈します。
 
-動的クエリは、smartCHECKサービスの固有の機能とみなされ、Verifikが書面で別段定めない限り、適格なエンドポイントを使用するすべてのクライアントに自動的に適用されます。
+### 3.4. 契約上の目標
 
-#### **8.1 動的料金（請求）** {#dynamic-pricing-billing}
+クライアントパネルおよび利用状況 API は、smartCHECK の月次実績を 90% の参照目標と比較できます。個別の契約上の目標は、お客様の商業条件に明示的に含まれる場合にのみ適用されます。それ以外の場合、表示される数値は情報提供のためのものです。表示は、第 4 条に定めるものを超える補償を生じさせません。
 
-動的クエリが適格なエンドポイントで拡張検証パスを使用し、成功した一致（**HTTP 200**）を返す場合、**動的料金**が適用されることがあります。その場合、クレジットはベースルートに関連付けられた標準ティアではなく、そのエンドポイントファミリーの**プレミアムティア**で差し引かれます。
+## 4. 可用性水準を下回った場合の補償
 
-動的料金は、標準パスが一致を返さなかった後に拡張検証パスが正常に完了したとき、標準のコロンビア身分証エンドポイント（**`GET/POST /v2/co/cedula`**）に適用されます。クレジット量は**クライアントに設定された機能価格**（そのエンドポイントファミリーの標準レート vs. プレミアムレート）に依存します。
+本契約の可用性水準を下回ったことに対する補償は、利用不能が Verifik の内部障害に起因し、正常に処理されなかった API 照会についてお客様に実際の課金が生じた場合に限り行われます。
 
-動的料金は**7**条の請求規則を**変更しません**：検証エラーおよびサーバーエラー（**403**、**409**、**412**、**422**、**500**）は請求されず、適用可能なパスで成功した一致が得られない場合の**404**応答は標準ティアで請求されます。
+その場合、補償は当該照会について実際に差し引かれたクレジットの返還です。請求されなかったリクエストについて追加のクレジットは付与されません。
 
-透明性のため、クライアントは適格なリクエストで**`includeCost=true`**を渡し、クレジットが請求される際（動的料金が適用される場合を含む）に**`billing`**オブジェクトを受け取ることができます。APIリクエスト履歴には調整メタデータ（例：標準 vs. 請求額）が記録されます。
+smartCHECK（DB Screening）については、政府情報源の中断または制限は、本契約の[第 3.1 条](#availability-exclusions)および[第 6 条](#source-warranty-limitations)の除外および制限に従い、補償を生じさせません。
 
-**`/v2/co/cedula/premium`**を直接呼び出すと常にプレミアム価格が適用されます。動的料金は標準の**`/v2/co/cedula`**ルートからの自動エスカレーションを説明します。
+第 3 条の可用性の割合は、サービスの実績を評価するための参照水準です。返還し得る実際の課金が存在しない場合、これを下回っても自動的に金銭補償は生じません。
 
-APIの詳細は[コロンビア身分証（プレミアム）](/verifik-ja/identity-validation/colombia/colombian-cedula-premium#dynamic-pricing)を参照してください。
+本条の補償は、将来の消費に充当できるサービスクレジットとして付与され、現金での返金ではありません。適用される商業契約に基づく重大な違反について当事者に認められる権利を害するものではありません。
 
-#### **9. プラットフォームの利用不可**
+| サービス | 補償なし | 補償あり |
+| --- | --- | --- |
+| データベース（smartCHECK、DB Screening） | 90.00% 以上 | 89.99% 以下 |
+| メール/電話（smartACCESS、smartENROLL） | 99.00% 以上 | 98.99% 以下 |
+| 生体認証（smartACCESS、smartENROLL） | 99.00% 以上 | 98.99% 以下 |
+| 書類スキャン（smartENROLL、smartACCESS） | 99.00% 以上 | 98.99% 以下 |
 
-Scheduled maintenance windows will take place at night and/or on weekends, with prior notification via email to users.
+データベース検証サービス（データ照会）の内部問題には、データベースを保管する政府による移行、切断または外部介入に起因し、不可抗力（偶発事象）とみなされる問題は含まれません。Verifik は仲介者として行為するため、照会されるデータベースに対する権限も管理も有しません。
 
-#### **10. 新規の適応または開発**
+## 5. smartCHECK サービスの動的クエリ {#dynamic-query}
 
-The timeframes for developing new adaptations due to unexpected changes from User systems integrating via API with the Platform will vary according to the changes required by the User and will not count as Platform Downtime.
+smartCHECK サービスの標準アーキテクチャの一環として、Verifik は、対応するエンドポイントにおける可用性、網羅性および信頼性を高めるための動的クエリの仕組みを実装します。
+
+動的クエリにより、smartCHECK および DB Screening は、主たるデータソースが不十分な応答を返した場合に、認可された複数のデータソースを自動的かつ順次に照会できます。これには「Not Found」応答またはこれに相当する HTTP 400 番台の応答が含まれ、これらに限りません。この構造は、利用可能な複数のデータソースを用いることで、十分な検証結果を得る可能性を高めることを目的とします。
+
+お客様は、政府データベースの品質、完全性および可用性が管轄により大きく異なり得ること、ならびに記録の不完全、サービスの中断またはデータ範囲の限定により、一部のデータベースでは不十分な応答の可能性が高くなり得ることを認め、これに同意します。
+
+これらの制約を緩和するため、動的クエリは適用対象のすべての smartCHECK エンドポイントで既定で有効であり、Verifik の冗長化およびフェイルオーバー戦略の不可分の一部です。この仕組みにより、Verifik は、必要な場合に利用可能な代替ソースへリクエストを動的に振り分け、一定のエンドポイントにおいて百パーセント（100%）に近いサービスの可用性と網羅性を維持できます。
+
+お客様は、さらに次の事項を認め、これに同意します。
+
+a) 動的クエリは、十分な検証応答を得る可能性を高めることを目的とし、すべての場合に十分な一致を保証するものではありません。
+
+b) 応答時間は変動することがあり、複数ソースへのリクエストが連鎖するため、単一ソースの標準照会より長くなる場合があります。
+
+c) 動的クエリの実効性と可用性は、基礎となる第三者または政府の情報源の稼働時間、到達性およびデータ品質に引き続き左右されます。
+
+d) Verifik は、サービスの継続性を維持し、網羅性を最適化し、検証性能を改善するため、自己の裁量で、動的クエリの構造内のデータソースを変更、優先または置換する権利を留保します。
+
+動的クエリは smartCHECK サービスの固有の機能であり、Verifik が書面で別段の定めをしない限り、対象エンドポイントを利用するすべてのお客様に自動的に適用されます。
+
+コロンビアの国民 ID の動的価格を含む、動的クエリに伴う請求規則は、[クレジット請求・消費ポリシー](/verifik-ja/legal/billing-policy)に記載します。
+
+## 6. 情報源に関する保証の制限 {#source-warranty-limitations}
+
+Verifik は、照会される政府データベースの所有者でも管理者でもなく、その更新、可用性または正確性を管理しません。したがって、当該情報源のデータについて、応答時間、平均稼働時間または正確性を保証しません。この制限は smartCHECK（DB Screening）のサービスにのみ適用され、Verifik が自らのインフラについて明示的に引き受けた義務を免除するものではありません。
+
+**版の管理。** Verifik は、本契約の新しい版を公開日によって識別します。効力を有する契約の変更は、各契約で合意した変更規則に従います。
+
+<a id="dynamic-pricing-billing"></a>
+
+**関連文書。** 請求規則および動的価格は、[クレジット請求・消費ポリシー](/verifik-ja/legal/billing-policy#dynamic-pricing-billing)に記載します。

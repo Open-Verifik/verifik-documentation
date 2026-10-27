@@ -377,7 +377,7 @@ Verifik 与用户均不得在本协议期限内及终止后一（1）年内向�
 
 ### **服务级别协议（SLA）**
 
-* [附件 I - 服务级别协议](https://verifik.gitbook.io/verifik/verifik-llc/service-level-agreement)
+* [附件 I - 服务级别协议](/verifik-zh/legal/service-level-agreement)
 
 ### **投诉、索赔或通知程序**
 
