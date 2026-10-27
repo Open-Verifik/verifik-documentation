@@ -1,0 +1,318 @@
+---
+id: colombian-cedula-barcode
+title: Colombia — Cédula barcode (PDF417)
+description: Decode and optionally cross-check the PDF417 barcode on the back of a Colombian cédula from a rear image via POST /v2/co/cedula/barcode.
+slug: /identity-validation/colombia/colombian-cedula-barcode
+keywords:
+  - v2/co/cedula/barcode
+  - /v2/co/cedula/barcode
+  - v2 co cedula barcode
+  - api/co/cedula/barcode
+  - /api/co/cedula/barcode
+  - api co cedula barcode
+  - api.verifik.co/v2/co/cedula/barcode
+  - 'https://api.verifik.co/v2/co/cedula/barcode'
+  - POST v2/co/cedula/barcode
+  - POST /v2/co/cedula/barcode
+  - co/cedula/barcode
+  - /co/cedula/barcode
+  - colombia cedula barcode
+  - PDF417
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Colombia — Cédula barcode (PDF417)
+
+Read the **PDF417 barcode** printed on the **reverse** of a Colombian *cédula de ciudadanía* (CC). Use this endpoint when you already have a capture of the back of the card and want machine-readable identity fields from the barcode, with optional fuzzy matching against values you collected elsewhere (OCR, user input, or a prior `/v2/co/cedula` lookup).
+
+This is **not** a Registraduría or Procuraduría identity lookup. For official name resolution by document number, use [Colombian Citizen](/identity-validation/colombia/colombian-citizen) (`GET/POST /v2/co/cedula`). For barcode validation inside SmartScan flows, see [Scan Agent — Colombian barcode](/ocr-engines/scan-agent#colombian-barcode-validation).
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/co/cedula/barcode
+```
+
+Same path on the app host: `POST https://verifik.app/v2/co/cedula/barcode`.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `backImage` | string | Yes | Rear of the cédula as **base64** (with or without a `data:` prefix) or a public **HTTPS URL** to the image. The barcode must be visible and in focus. |
+| `documentType` | string | No | Document type. Defaults to **`CC`**. |
+| `documentNumber` | string | No | Cross-check: NUIP / document number to compare against the barcode payload. |
+| `firstName` | string | No | Cross-check: first name(s) to compare. |
+| `lastName` | string | No | Cross-check: last name(s) to compare. |
+| `gender` | string | No | Cross-check: gender code or label to compare. |
+| `dateOfBirth` | string | No | Cross-check: date of birth to compare (use the same format you store for the person, e.g. `DD/MM/YYYY`). |
+| `bloodType` | string | No | Cross-check: blood type to compare. |
+| `crossCheck` | object | No | Alternative to top-level cross-check fields. Same keys: `documentNumber`, `firstName`, `lastName`, `gender`, `dateOfBirth`, `bloodType`. If both are sent, the API merges them with explicit body fields taking precedence. |
+| `barcodeReadAttempts` | number | No | Optional cap on internal read attempts when the image is difficult (glare, blur). When omitted, the service uses its default retry budget. |
+
+**Decode-only:** send only `backImage` (and optional `documentType`). The response `data.verdict` is **`decoded`** or **`unreadable`**.
+
+**Cross-check:** send `backImage` plus any cross-check fields (flat or inside `crossCheck`). The response `data.verdict` is **`confirmed`**, **`mismatch`**, or **`unreadable`**.
+
+### Request
+
+<Tabs>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/co/cedula/barcode" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -d '{
+    "backImage": "https://example.com/sample-cedula-back.jpg",
+    "documentType": "CC"
+  }'
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+  "https://api.verifik.co/v2/co/cedula/barcode",
+  {
+    backImage: "https://example.com/sample-cedula-back.jpg",
+    documentType: "CC",
+    documentNumber: "1234567890",
+    firstName: "MARIA",
+    lastName: "LOPEZ GARCIA",
+    gender: "F",
+    dateOfBirth: "15/03/1992",
+    bloodType: "O+",
+  },
+  {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  }
+);
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/cedula/barcode"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+payload = {
+    "backImage": "https://example.com/sample-cedula-back.jpg",
+    "documentType": "CC",
+    "crossCheck": {
+        "documentNumber": "1234567890",
+        "firstName": "MARIA",
+        "lastName": "LOPEZ GARCIA",
+        "gender": "F",
+        "dateOfBirth": "15/03/1992",
+        "bloodType": "O+",
+    },
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+`data` always includes how many read attempts were used (`attempts`). Barcode payload fields use Registraduría-style naming where applicable.
+
+| Field | When present | Description |
+| --- | --- | --- |
+| `verdict` | Always | **`decoded`** or **`unreadable`** (decode-only), or **`confirmed`**, **`mismatch`**, or **`unreadable`** (cross-check). |
+| `barcode` | When `verdict` is not `unreadable` | Parsed barcode fields (see below). |
+| `decoded` | Decode-only success | Same semantic content as `barcode` for decode-only responses. |
+| `matchScores` | Cross-check | Per-field similarity scores for fields you supplied. |
+| `disagreements` | Cross-check | Fields that did not meet the match threshold. |
+| `reason` | Optional | Human-readable detail when `verdict` is **`unreadable`** (for example poor image quality or no barcode detected). |
+| `attempts` | Always | Number of internal barcode read attempts performed. |
+
+**`barcode` object fields** (when readable):
+
+| Field | Description |
+| --- | --- |
+| `documentNumber` | NUIP / document number |
+| `primerNombre` | First given name |
+| `segundoNombre` | Second given name (may be empty) |
+| `primerApellido` | First surname |
+| `segundoApellido` | Second surname (may be empty) |
+| `gender` | Gender |
+| `dateOfBirth` | Date of birth |
+| `bloodType` | Blood type |
+| `fullName` | Full name assembled from barcode parts |
+
+<Tabs>
+  <TabItem value="200-decoded" label="200 (decoded)">
+
+```json
+{
+  "data": {
+    "verdict": "decoded",
+    "attempts": 1,
+    "decoded": {
+      "documentNumber": "1234567890",
+      "primerNombre": "MARIA",
+      "segundoNombre": "ELENA",
+      "primerApellido": "LOPEZ",
+      "segundoApellido": "GARCIA",
+      "gender": "F",
+      "dateOfBirth": "15/03/1992",
+      "bloodType": "O+",
+      "fullName": "MARIA ELENA LOPEZ GARCIA"
+    },
+    "barcode": {
+      "documentNumber": "1234567890",
+      "primerNombre": "MARIA",
+      "segundoNombre": "ELENA",
+      "primerApellido": "LOPEZ",
+      "segundoApellido": "GARCIA",
+      "gender": "F",
+      "dateOfBirth": "15/03/1992",
+      "bloodType": "O+",
+      "fullName": "MARIA ELENA LOPEZ GARCIA"
+    }
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 21, 2026 2:30 PM"
+  },
+  "id": "BC9A2"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-confirmed" label="200 (cross-check confirmed)">
+
+```json
+{
+  "data": {
+    "verdict": "confirmed",
+    "attempts": 2,
+    "barcode": {
+      "documentNumber": "1234567890",
+      "primerNombre": "MARIA",
+      "segundoNombre": "ELENA",
+      "primerApellido": "LOPEZ",
+      "segundoApellido": "GARCIA",
+      "gender": "F",
+      "dateOfBirth": "15/03/1992",
+      "bloodType": "O+",
+      "fullName": "MARIA ELENA LOPEZ GARCIA"
+    },
+    "matchScores": {
+      "documentNumber": 1,
+      "firstName": 0.98,
+      "lastName": 0.97,
+      "gender": 1,
+      "dateOfBirth": 1,
+      "bloodType": 1
+    },
+    "disagreements": []
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 21, 2026 2:31 PM"
+  },
+  "id": "BC9A3"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-mismatch" label="200 (cross-check mismatch)">
+
+```json
+{
+  "data": {
+    "verdict": "mismatch",
+    "attempts": 1,
+    "barcode": {
+      "documentNumber": "1234567890",
+      "primerNombre": "MARIA",
+      "segundoNombre": "ELENA",
+      "primerApellido": "LOPEZ",
+      "segundoApellido": "GARCIA",
+      "gender": "F",
+      "dateOfBirth": "15/03/1992",
+      "bloodType": "O+",
+      "fullName": "MARIA ELENA LOPEZ GARCIA"
+    },
+    "matchScores": {
+      "documentNumber": 1,
+      "lastName": 0.42
+    },
+    "disagreements": ["lastName"]
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 21, 2026 2:32 PM"
+  },
+  "id": "BC9A4"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-unreadable" label="200 (unreadable)">
+
+```json
+{
+  "data": {
+    "verdict": "unreadable",
+    "attempts": 3,
+    "reason": "Barcode could not be read from the supplied image."
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 21, 2026 2:33 PM"
+  },
+  "id": "BC9A5"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "backImage is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Billing
+
+- **HTTP 200** responses are **charged**, including when `data.verdict` is **`unreadable`** (the service attempted a billable barcode read).
+- **HTTP 409** validation errors (missing `backImage`, invalid payload, and similar) are **not** charged, consistent with the [Billing and Credit Consumption Policy](/legal/billing-policy).
+- Credit amounts depend on your **configured feature pricing** (client panel, Postman collection, or account manager). This page does not list a fixed price.
+
+### Notes
+
+- Use a **rear** image with the PDF417 barcode fully visible; front-only captures will return **`unreadable`**.
+- `backImage` accepts the same **base64** or **HTTPS URL** patterns as other Verifik vision endpoints (for example [Face Detection](/verifik-biometrics-apis/liveness/face-detection)).
+- Cross-check compares your supplied values against the barcode payload; it does **not** call `/v2/co/cedula` or Registraduría on your behalf.
+- Related: [Colombia identity documents guide](/identity-validation/colombia/colombia-identity-documents-guide) · [SmartScan Scan Agent](/ocr-engines/scan-agent) · [App registration document validation](/resources/document-validations/create-an-app-registration-document-validation).

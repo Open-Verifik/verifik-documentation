@@ -112,7 +112,7 @@ const sidebars = {
 			type: "category",
 			label: "SCAN DOCS API'S",
 			collapsible: false,
-			items: ["ocr-engines/escaneo-estudio", "ocr-engines/escaneo-prompt"],
+			items: ["ocr-engines/escaneo-estudio", "ocr-engines/escaneo-prompt", "ocr-engines/scan-agent"],
 		},
 		{
 			type: "category",
@@ -143,6 +143,11 @@ const sidebars = {
 					type: "doc",
 					id: "identity-validation/colombia/colombian-citizen-by-name",
 					label: "🇨🇴 Colombia — Ciudadano por nombre (SCCRC)",
+				},
+				{
+					type: "doc",
+					id: "identity-validation/colombia/colombian-cedula-barcode",
+					label: "🇨🇴 Colombia — Código de barras cédula (PDF417)",
 				},
 				{ type: "doc", id: "identity/colombia-cedula-registraduria", label: "🇨🇴 Colombia — Ciudadano vía Registraduría (SCCRC)" },
 				{ type: "doc", id: "identity/colombia-registraduria-serial", label: "🇨🇴 Colombia — Registro civil por serial" },

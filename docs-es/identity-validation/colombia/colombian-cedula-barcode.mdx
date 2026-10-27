@@ -1,0 +1,267 @@
+---
+id: colombian-cedula-barcode
+title: Colombia — Código de barras de cédula (PDF417)
+description: Decodifica y opcionalmente contrasta el código PDF417 del reverso de una cédula colombiana con POST /v2/co/cedula/barcode.
+slug: /validacion-identidad/colombia/cedula-codigo-barras
+keywords:
+  - v2/co/cedula/barcode
+  - /v2/co/cedula/barcode
+  - v2 co cedula barcode
+  - api/co/cedula/barcode
+  - /api/co/cedula/barcode
+  - api co cedula barcode
+  - api.verifik.co/v2/co/cedula/barcode
+  - 'https://api.verifik.co/v2/co/cedula/barcode'
+  - POST v2/co/cedula/barcode
+  - POST /v2/co/cedula/barcode
+  - co/cedula/barcode
+  - /co/cedula/barcode
+  - codigo barras cedula colombia
+  - PDF417
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Colombia — Código de barras de cédula (PDF417)
+
+Lee el **código de barras PDF417** impreso en el **reverso** de una *cédula de ciudadanía* (CC) colombiana. Usa este endpoint cuando ya tienes una captura del dorso y necesitas los campos de identidad codificados en el código, con comparación opcional contra datos que obtuviste por OCR, formulario o una consulta previa a `/v2/co/cedula`.
+
+**No** es una consulta de identidad ante Registraduría o Procuraduría. Para resolver nombres oficiales por número de documento, usa [Ciudadano colombiano](/verifik-es/validacion-identidad/colombia/ciudadano-colombiano) (`GET/POST /v2/co/cedula`). Para validación de código de barras dentro de flujos SmartScan, consulta [Scan Agent — Código de barras colombiano](/verifik-es/ocr-engines/scan-agent#validacion-codigo-barras-colombiano).
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/co/cedula/barcode
+```
+
+Misma ruta en el host de la app: `POST https://verifik.app/v2/co/cedula/barcode`.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parámetros
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `backImage` | string | Sí | Reverso de la cédula en **base64** (con o sin prefijo `data:`) o **URL HTTPS** pública. El código de barras debe verse nítido. |
+| `documentType` | string | No | Tipo de documento. Por defecto **`CC`**. |
+| `documentNumber` | string | No | Contraste: NUIP / número a comparar con el payload del código. |
+| `firstName` | string | No | Contraste: nombre(s) a comparar. |
+| `lastName` | string | No | Contraste: apellido(s) a comparar. |
+| `gender` | string | No | Contraste: género a comparar. |
+| `dateOfBirth` | string | No | Contraste: fecha de nacimiento (p. ej. `DD/MM/YYYY`). |
+| `bloodType` | string | No | Contraste: tipo de sangre. |
+| `crossCheck` | object | No | Alternativa a los campos planos de contraste. Mismas claves: `documentNumber`, `firstName`, `lastName`, `gender`, `dateOfBirth`, `bloodType`. |
+| `barcodeReadAttempts` | number | No | Límite opcional de reintentos internos de lectura cuando la imagen es difícil (reflejos, desenfoque). |
+
+**Solo decodificación:** envía `backImage` (y opcionalmente `documentType`). `data.verdict` será **`decoded`** o **`unreadable`**.
+
+**Con contraste:** envía `backImage` más los campos de contraste (planos o dentro de `crossCheck`). `data.verdict` será **`confirmed`**, **`mismatch`** o **`unreadable`**.
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/co/cedula/barcode" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  -d '{
+    "backImage": "https://example.com/ejemplo-reverso-cedula.jpg",
+    "documentType": "CC"
+  }'
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.post(
+  "https://api.verifik.co/v2/co/cedula/barcode",
+  {
+    backImage: "https://example.com/ejemplo-reverso-cedula.jpg",
+    documentType: "CC",
+    documentNumber: "1234567890",
+    firstName: "MARIA",
+    lastName: "LOPEZ GARCIA",
+    gender: "F",
+    dateOfBirth: "15/03/1992",
+    bloodType: "O+",
+  },
+  {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+    },
+  }
+);
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/co/cedula/barcode"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}",
+}
+payload = {
+    "backImage": "https://example.com/ejemplo-reverso-cedula.jpg",
+    "documentType": "CC",
+    "crossCheck": {
+        "documentNumber": "1234567890",
+        "firstName": "MARIA",
+        "lastName": "LOPEZ GARCIA",
+        "gender": "F",
+        "dateOfBirth": "15/03/1992",
+        "bloodType": "O+",
+    },
+}
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+`data` incluye siempre `attempts` (intentos de lectura). Los campos del código usan nomenclatura al estilo Registraduría cuando aplica.
+
+| Campo | Cuándo | Descripción |
+| --- | --- | --- |
+| `verdict` | Siempre | **`decoded`** o **`unreadable`** (solo decodificación), o **`confirmed`**, **`mismatch`**, **`unreadable`** (con contraste). |
+| `barcode` | Si no es `unreadable` | Campos parseados del código (tabla inferior). |
+| `decoded` | Decodificación exitiva | Mismo contenido semántico que `barcode` en modo solo decodificación. |
+| `matchScores` | Contraste | Puntajes de similitud por campo enviado. |
+| `disagreements` | Contraste | Campos que no superaron el umbral. |
+| `reason` | Opcional | Detalle cuando `verdict` es **`unreadable`**. |
+| `attempts` | Siempre | Intentos internos de lectura del código. |
+
+**Campos de `barcode`:**
+
+| Campo | Descripción |
+| --- | --- |
+| `documentNumber` | NUIP / número de documento |
+| `primerNombre` | Primer nombre |
+| `segundoNombre` | Segundo nombre (puede ir vacío) |
+| `primerApellido` | Primer apellido |
+| `segundoApellido` | Segundo apellido (puede ir vacío) |
+| `gender` | Género |
+| `dateOfBirth` | Fecha de nacimiento |
+| `bloodType` | Tipo de sangre |
+| `fullName` | Nombre completo armado desde el código |
+
+<Tabs>
+  <TabItem value="200-decoded" label="200 (decoded)">
+
+```json
+{
+  "data": {
+    "verdict": "decoded",
+    "attempts": 1,
+    "decoded": {
+      "documentNumber": "1234567890",
+      "primerNombre": "MARIA",
+      "segundoNombre": "ELENA",
+      "primerApellido": "LOPEZ",
+      "segundoApellido": "GARCIA",
+      "gender": "F",
+      "dateOfBirth": "15/03/1992",
+      "bloodType": "O+",
+      "fullName": "MARIA ELENA LOPEZ GARCIA"
+    },
+    "barcode": {
+      "documentNumber": "1234567890",
+      "primerNombre": "MARIA",
+      "segundoNombre": "ELENA",
+      "primerApellido": "LOPEZ",
+      "segundoApellido": "GARCIA",
+      "gender": "F",
+      "dateOfBirth": "15/03/1992",
+      "bloodType": "O+",
+      "fullName": "MARIA ELENA LOPEZ GARCIA"
+    }
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 21, 2026 2:30 PM"
+  },
+  "id": "BC9A2"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-confirmed" label="200 (confirmed)">
+
+```json
+{
+  "data": {
+    "verdict": "confirmed",
+    "attempts": 2,
+    "barcode": {
+      "documentNumber": "1234567890",
+      "primerNombre": "MARIA",
+      "segundoNombre": "ELENA",
+      "primerApellido": "LOPEZ",
+      "segundoApellido": "GARCIA",
+      "gender": "F",
+      "dateOfBirth": "15/03/1992",
+      "bloodType": "O+",
+      "fullName": "MARIA ELENA LOPEZ GARCIA"
+    },
+    "matchScores": {
+      "documentNumber": 1,
+      "firstName": 0.98,
+      "lastName": 0.97,
+      "gender": 1,
+      "dateOfBirth": 1,
+      "bloodType": 1
+    },
+    "disagreements": []
+  },
+  "signature": {
+    "message": "Certified by Verifik.co",
+    "dateTime": "October 21, 2026 2:31 PM"
+  },
+  "id": "BC9A3"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "backImage is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Facturación
+
+- Las respuestas **HTTP 200** **se cobran**, incluso cuando `data.verdict` es **`unreadable`**.
+- Los errores de validación **HTTP 409** **no** se cobran, según la [Política de facturación y consumo de créditos](/verifik-es/politica-de-facturacion).
+- Los montos de crédito dependen de la **tarificación configurada** en tu cuenta (panel, Postman o ejecutivo de cuenta). Esta página no publica un precio fijo.
+
+### Notas
+
+- Usa imagen del **reverso** con el PDF417 completo; solo el frente devolverá **`unreadable`**.
+- `backImage` acepta **base64** o **URL HTTPS** como otros endpoints de visión de Verifik.
+- El contraste compara tus valores con el payload del código; **no** invoca `/v2/co/cedula` ni Registraduría.
+- Relacionado: [Guía de documentos de identidad](/verifik-es/validacion-identidad/colombia/guia-documentos-identidad-colombia) · [Scan Agent SmartScan](/verifik-es/ocr-engines/scan-agent) · [Validación de documento en registro de aplicación](/verifik-es/resources/registros-aplicacion/crear-una-validacion-documento-registro-aplicacion).
