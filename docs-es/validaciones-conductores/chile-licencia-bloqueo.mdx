@@ -1,0 +1,205 @@
+---
+id: chile-licencia-bloqueo
+title: "🇨🇱 Chile - Bloqueo de Licencia de Conducir (Registro Civil)"
+description: "Consulta el registro nacional de bloqueo de licencias de conducir del Registro Civil de Chile por RUN: verifica si existe bloqueo o suspensión, nombre del titular y detalles legales."
+slug: /validaciones-conductores/chile-licencia-bloqueo
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 🇨🇱 Chile - Bloqueo de Licencia de Conducir (Registro Civil)
+
+Consulta el registro nacional de bloqueo de licencias de conducir del **Servicio de Registro Civil e Identificación** de Chile mediante el RUN del conductor.
+
+A diferencia de las consultas municipales que solo abarcan una comuna específica, este servicio ofrece **cobertura nacional** sobre suspensiones o bloqueos de licencias ordenados por juzgados de policía local o autoridades judiciales en todo Chile.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/cl/driver-license/block
+```
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parámetros
+
+| Name | Type | Required | Description | Example |
+| ---- | ---- | -------- | ----------- | ------- |
+| `documentNumber` | string | **Sí** | RUN chileno con dígito verificador (DV). Puntos y guión son opcionales (`18.347.440-5` o `18347440-5`). El dígito verificador debe ser válido. | `18347440-5` |
+| `force` | boolean | No | Opcional booleano o `1`/`true` para omitir la caché y consultar en tiempo real al Registro Civil. | `false` |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/cl/driver-license/block',
+  params: {
+    documentNumber: '18347440-5'
+  },
+  headers: {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer <tu_token>'
+  }
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/cl/driver-license/block"
+params = {"documentNumber": "18347440-5"}
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/cl/driver-license/block?documentNumber=18347440-5" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => "https://api.verifik.co/v2/cl/driver-license/block?documentNumber=18347440-5",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_HTTPHEADER => array(
+    "Accept: application/json",
+    "Authorization: Bearer <tu_token>"
+  ),
+));
+
+$response = curl_exec($curl);
+curl_close($curl);
+echo $response;
+?>
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuestas
+
+<Tabs>
+  <TabItem value="200-sin-bloqueo" label="200 (Sin bloqueo)">
+
+```json
+{
+  "data": {
+    "documentNumber": "18347440-5",
+    "fullName": "MACÍAS IBARRA LEONARDO ANTONIO",
+    "hasBlock": false,
+    "blockStatusText": "NO SE REGISTRA BLOQUEO para los datos ingresados"
+  },
+  "signature": {
+    "dateTime": "October 27, 2026 10:07 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "B752U"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-bloqueado" label="200 (Con bloqueo)">
+
+```json
+{
+  "data": {
+    "documentNumber": "10000001-6",
+    "fullName": "GONZÁLEZ PÉREZ JUAN CARLOS",
+    "licenseNumber": "10000001",
+    "hasBlock": true,
+    "blockStatusText": "REGISTRA BLOQUEO",
+    "block": {
+      "date": "15/03/2024",
+      "type": "JUDICIAL",
+      "reason": "ORDEN JUDICIAL JUZGADO POLICIA LOCAL",
+      "status": "REGISTRA BLOQUEO",
+      "code": "1"
+    }
+  },
+  "signature": {
+    "dateTime": "October 27, 2026 10:07 PM",
+    "message": "Certified by Verifik.co"
+  },
+  "id": "A1B2C"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404 (No encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+Indica que el RUN consultado no posee registro de licencia en la base del Registro Civil.
+
+  </TabItem>
+  <TabItem value="409-dv" label="409 (Dígito verificador inválido)">
+
+```json
+{
+  "code": "invalid_check_digit",
+  "message": "documentNumber has a check digit (DV) that does not match the RUN/RUT. Send the number with the correct check digit, or without it."
+}
+```
+
+  </TabItem>
+  <TabItem value="409-faltante" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentNumber must be a Chilean RUN with a valid check digit, e.g. 12345678-5"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Características
+
+- **Registro Nacional Oficial**: Fuente directa del Registro Civil e Identificación de Chile.
+- **Detección Inmediata de Bloqueos**: Indica de forma binaria (`hasBlock: true/false`) el estado de la licencia.
+- **Identificación del Titular**: Devuelve el nombre legal asociado a la credencial de conductor.
+- **Metadatos de la Medida**: Detalla fecha de la orden, tipo y motivo judicial cuando existe restricción.
+- **Validación Automática de Módulo 11**: Evita llamadas innecesarias y consumo de créditos si el dígito verificador es incorrecto.

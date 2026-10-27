@@ -632,6 +632,20 @@ keywords:
   - "https://api.verifik.co/v2/cl/driver-license"
   - "GET v2/cl/driver-license"
   - "GET /v2/cl/driver-license"
+  - "v2/cl/driver-license/block"
+  - "/v2/cl/driver-license/block"
+  - "v2 cl driver-license block"
+  - "cl/driver-license/block"
+  - "/cl/driver-license/block"
+  - "api/cl/driver-license/block"
+  - "/api/cl/driver-license/block"
+  - "api cl driver-license block"
+  - "driver-license/block"
+  - "/driver-license/block"
+  - "api.verifik.co/v2/cl/driver-license/block"
+  - "https://api.verifik.co/v2/cl/driver-license/block"
+  - "GET v2/cl/driver-license/block"
+  - "GET /v2/cl/driver-license/block"
   - "v2/cl/registro-civil/certificado"
   - "/v2/cl/registro-civil/certificado"
   - "v2 cl registro-civil certificado"
@@ -3015,12 +3029,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (241 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (242 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-10-27T18:47:46.514Z_
+_Last regenerated: 2026-10-27T22:45:11.106Z_
 
 ## Argentina
 
@@ -3061,6 +3075,7 @@ _Last regenerated: 2026-10-27T18:47:46.514Z_
 | `v2/cl/cedula` | v2 cl cedula cl/cedula /cl/cedula api/cl/cedula /api/cl/cedula api cl cedula api.verifik.co/v2/cl/cedula https://api.verifik.co/v2/cl/cedula GET v2/cl/cedula GET /v2/cl/cedula | [Chilean Citizen](/identity/chile) |
 | `v2/cl/company` | v2 cl company cl/company /cl/company api/cl/company /api/cl/company api cl company api.verifik.co/v2/cl/company https://api.verifik.co/v2/cl/company GET v2/cl/company GET /v2/cl/company | [\U0001F1E8\U0001F1F1 Chile - Business Validation](/business-validation/chilean) |
 | `v2/cl/driver-license` | v2 cl driver-license cl/driver-license /cl/driver-license api/cl/driver-license /api/cl/driver-license api cl driver-license api.verifik.co/v2/cl/driver-license https://api.verifik.co/v2/cl/driver-license GET v2/cl/driver-license GET /v2/cl/driver-license | [\U0001F1E8\U0001F1F1 Chile - Driver License](/driver-validation/chile-driver-license) |
+| `v2/cl/driver-license/block` | v2 cl driver-license block cl/driver-license/block /cl/driver-license/block api/cl/driver-license/block /api/cl/driver-license/block api cl driver-license block driver-license/block /driver-license/block api.verifik.co/v2/cl/driver-license/block https://api.verifik.co/v2/cl/driver-license/block GET v2/cl/driver-license/block GET /v2/cl/driver-license/block | [🇨🇱 Chile - Driver License Block Register](/driver-validation/chile-driver-license-block) |
 | `v2/cl/registro-civil/certificado` | v2 cl registro-civil certificado cl/registro-civil/certificado /cl/registro-civil/certificado api/cl/registro-civil/certificado /api/cl/registro-civil/certificado api cl registro-civil certificado registro-civil/certificado /registro-civil/certificado api.verifik.co/v2/cl/registro-civil/certificado https://api.verifik.co/v2/cl/registro-civil/certificado GET v2/cl/registro-civil/certificado GET /v2/cl/registro-civil/certificado | [Chile - Civil Registry Certificate Verification](/background-check/chile-certificate-verify) |
 | `v2/cl/taxpayer` | v2 cl taxpayer cl/taxpayer /cl/taxpayer api/cl/taxpayer /api/cl/taxpayer api cl taxpayer api.verifik.co/v2/cl/taxpayer https://api.verifik.co/v2/cl/taxpayer GET v2/cl/taxpayer GET /v2/cl/taxpayer | [Chile — Taxpayer (RUT) lookup](/identity/chile-taxpayer) |
 | `v2/cl/transport-vehicle` | v2 cl transport-vehicle cl/transport-vehicle /cl/transport-vehicle api/cl/transport-vehicle /api/cl/transport-vehicle api cl transport-vehicle api.verifik.co/v2/cl/transport-vehicle https://api.verifik.co/v2/cl/transport-vehicle GET v2/cl/transport-vehicle GET /v2/cl/transport-vehicle | [\U0001F1E8\U0001F1F1 Chile - Public Transport Vehicle](/vehicle-validation/chile/transport-vehicle) |

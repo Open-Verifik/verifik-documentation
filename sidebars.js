@@ -843,6 +843,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "driver-validation/chile-driver-license-block",
+					label: "🇨🇱 Chile - Driver License Block (Registro Civil)",
+				},
+				{
+					type: "doc",
 					id: "driver-validation/peru-driver-license",
 					label: "🇵🇪 Peru - Driver License",
 				},

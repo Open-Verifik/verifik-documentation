@@ -310,6 +310,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "validaciones-conductores/chile-licencia-bloqueo",
+					label: "🇨🇱 Chile - Bloqueo de Licencia (Registro Civil)",
+				},
+				{
+					type: "doc",
 					id: "validaciones-conductores/peru-licencia-conducir",
 					label: "🇵🇪 Perú - Licencia de Conducir",
 				},

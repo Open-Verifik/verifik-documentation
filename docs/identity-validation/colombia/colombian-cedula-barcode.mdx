@@ -29,6 +29,10 @@ Read the **PDF417 barcode** printed on the **reverse** of a Colombian *cédula d
 
 This is **not** a Registraduría or Procuraduría identity lookup. For official name resolution by document number, use [Colombian Citizen](/identity-validation/colombia/colombian-citizen) (`GET/POST /v2/co/cedula`). For barcode validation inside SmartScan flows, see [Scan Agent — Colombian barcode](/ocr-engines/scan-agent#colombian-barcode-validation).
 
+:::important Anti-Fraud & Document Alteration Detection
+This endpoint is specifically engineered as a **critical anti-fraud mechanism**. In real-world fraud scenarios, bad actors commonly modify the printed text or photo on the front of a cédula, but are unable to forge the proprietary 2D PDF417 barcode on the back. Cross-checking the barcode against front OCR exposes physical tampering immediately (**`verdict: "mismatch"`**). Furthermore, any attempt to tamper with or smudge the barcode itself breaks its Reed-Solomon error correction codewords, causing the read to fail completely (**`verdict: "unreadable"`**).
+:::
+
 ### Endpoint
 
 ```
@@ -303,6 +307,26 @@ print(r.json())
 
   </TabItem>
 </Tabs>
+
+## Fraud Prevention: How It Detects Altered Cédulas
+
+In Colombian identity fraud, scammers rarely forge a valid 2D barcode from scratch. Instead, bad actors typically doctor the printed text or photo on the front of a stolen or synthetic card using graphic software or physical alterations (e.g. changing the document number or substituting the holder's names).
+
+### Two Primary Attack Vectors and How They Fail
+
+1. **Front-Face Tampering (Altered Names or NUIP)**
+   - The fraudster modifies the front text, but the rear **PDF417 barcode remains unaltered**, retaining the legitimate citizen data encoded by the *Registraduría Nacional del Estado Civil*.
+   - When you supply front OCR values via `crossCheck` (or enable barcode validation in SmartScan / SmartEnroll), Verifik cross-references the front values against the decoded barcode.
+   - Any discrepancy yields **`verdict: "mismatch"`** and pinpoints the exact tampered fields in **`disagreements`** (for example `["documentNumber", "firstName"]`). In SmartEnroll and hosted registration flows, this automatically halts automated onboarding and flags the record for manual verification (`NEEDS_MANUAL_VERIFICATION`).
+
+2. **Barcode Tampering or Synthetic Barcode Insertion**
+   - If a fraudster attempts to physically alter, smudge, or splice the barcode matrix to conceal their identity or match a forged front, the **PDF417 Reed-Solomon error correction** codewords fail.
+   - The decoding engine fails to reconstruct the symbol, returning **`verdict: "unreadable"`** with `reason: "barcode_not_detected"`.
+   - If a fraudster attempts to generate an arbitrary custom barcode, Verifik's parser validates the official Registraduría byte structure. Any invalid format is rejected or results in a `mismatch` when cross-checked against front fields.
+
+:::tip Anti-Fraud Best Practice
+For automated onboarding and KYC risk assessment, always capture both **front** and **back** images of a Colombian Cédula. Any result with `verdict: "mismatch"` should be treated as an explicit indicator of an altered, counterfeit, or fraudulent document.
+:::
 
 ### Billing
 

@@ -29,6 +29,10 @@ Lee el **código de barras PDF417** impreso en el **reverso** de una *cédula de
 
 **No** es una consulta de identidad ante Registraduría o Procuraduría. Para resolver nombres oficiales por número de documento, usa [Ciudadano colombiano](/verifik-es/validacion-identidad/colombia/ciudadano-colombiano) (`GET/POST /v2/co/cedula`). Para validación de código de barras dentro de flujos SmartScan, consulta [Scan Agent — Código de barras colombiano](/verifik-es/ocr-engines/scan-agent#validacion-codigo-barras-colombiano).
 
+:::important Prevención de Fraude y Detección de Alteraciones
+Este endpoint está diseñado específicamente como un **mecanismo crítico contra el fraude de identidad**. En intentos de suplantación, los atacantes suelen alterar el texto impreso o la foto en el frente de la cédula, pero no pueden falsificar el código de barras bidimensional PDF417 del reverso. Al contrastar el código contra el OCR del frente, cualquier manipulación física queda en evidencia de inmediato (**`verdict: "mismatch"`**). Del mismo modo, si intentan alterar o adulterar los módulos del código de barras, fallan los algoritmos de corrección de error Reed-Solomon, impidiendo su lectura (**`verdict: "unreadable"`**).
+:::
+
 ### Endpoint
 
 ```
@@ -252,6 +256,26 @@ print(r.json())
 
   </TabItem>
 </Tabs>
+
+## Prevención de Fraude: Detección de Cédulas Alteradas o Falsificadas
+
+En fraudes con cédulas de ciudadanía colombianas, los estafadores rara vez pueden generar un código PDF417 genuino desde cero. La modalidad habitual consiste en adulterar el texto impreso o la foto frontal de una cédula auténtica o robada (modificando el número de documento o suplantando los nombres).
+
+### Dos vectores de ataque y por qué fracasan
+
+1. **Alteración del frente (Nombres o NUIP manipulados)**
+   - El atacante altera los datos visibles frontales, pero el **código de barras PDF417 del reverso permanece intacto** con los datos auténticos registrados por la *Registraduría Nacional del Estado Civil*.
+   - Al enviar los datos extraídos del frente vía `crossCheck` (o activar la validación en SmartScan / SmartEnroll), Verifik contrasta el frente contra el contenido del código.
+   - Cualquier discrepancia produce **`verdict: "mismatch"`** e identifica exactamente los campos adulterados en **`disagreements`** (por ejemplo `["documentNumber", "firstName"]`). En SmartEnroll y registros de aplicación, esto detiene el onboarding automático y remite el registro a verificación manual (`NEEDS_MANUAL_VERIFICATION`).
+
+2. **Manipulación o inyección de códigos falsos**
+   - Si intentan alterar físicamente, tachar o modificar los pixeles del código bidimensional para acomodarlo a la información fraudulenta del frente, fallan las palabras clave de **corrección de error Reed-Solomon**.
+   - El motor no logra reconstruir la matriz y responde **`verdict: "unreadable"`** con `reason: "barcode_not_detected"`.
+   - Si intentan inyectar un código generado artificialmente, el parser de Verifik valida la sintaxis y codificación oficial de la Registraduría; cualquier inconsistencia es rechazada o genera `mismatch` frente a los datos del titular.
+
+:::tip Buena práctica antifraude
+En procesos de vinculación digital (KYC), captura siempre el **frente** y el **dorso** de la cédula colombiana. Todo resultado con `verdict: "mismatch"` debe ser considerado un indicador explícito de documento adulterado o fraudulento.
+:::
 
 ### Facturación
 

@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-27T18:47:46.463Z
+Generated: 2026-10-27T22:45:11.056Z
 
-- **Files scanned:** 548
-- **Unique endpoint URLs:** 241
+- **Files scanned:** 549
+- **Unique endpoint URLs:** 242
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 225
 
@@ -13,7 +13,7 @@ Generated: 2026-10-27T18:47:46.463Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 190 | identity, biometrics, resources, etc. |
+| P2 | 191 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -276,6 +276,7 @@ Generated: 2026-10-27T18:47:46.463Z
 | P2 | `v2/cl/cedula` | `identity/chile.mdx` |
 | P2 | `v2/cl/company` | `business-validation/chilean.mdx` |
 | P2 | `v2/cl/driver-license` | `driver-validation/chile-driver-license.mdx` |
+| P2 | `v2/cl/driver-license/block` | `driver-validation/chile-driver-license-block.mdx` |
 | P2 | `v2/cl/registro-civil/certificado` | `background-check/chile-certificate-verify.mdx` |
 | P2 | `v2/cl/taxpayer` | `identity/chile-taxpayer.mdx` |
 | P1 | `v2/cl/transport-vehicle` | `vehicle-validation/chile/transport-vehicle.mdx` |
