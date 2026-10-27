@@ -148,7 +148,7 @@ print(r.json())
 ```
 
   </TabItem>
-  <TabItem value="404" label="404">
+  <TabItem value="404" label="404 (Not Found)">
 
 ```json
 {
@@ -157,8 +157,21 @@ print(r.json())
 }
 ```
 
+Returned when the official government registry (RNEC) confirms that the document does not exist or the issue date does not correspond to the document number (verified via 2 consecutive confirmed checks).
+
   </TabItem>
-  <TabItem value="409" label="409">
+  <TabItem value="409" label="409 (Out of Service / Missing Param)">
+
+```json
+{
+	"code": "Conflict",
+	"message": "Endpoint_out_of_service"
+}
+```
+
+Returned when upstream government registries (RNEC / SIMO) are experiencing temporary degradation, maintenance, or connection timeouts. **No credits are deducted**. Clients should retry shortly or route to manual review rather than rejecting the customer.
+
+Also returned if the date parameter is missing or format is invalid:
 
 ```json
 {
@@ -183,6 +196,7 @@ print(r.json())
 ### Notes
 
 - **`date`** is the **document issue date**, not the date of birth.
-- Wrong **`DD/MM/YYYY`** format typically returns **409**.
+- **404 vs 409 semantics**: The **404** status is strictly reserved for confirmed registry non-existence or date mismatch (verified by 2 consecutive checks). Upstream government registry downtime or timeouts return **409 `Endpoint_out_of_service`** without credit deduction.
+- Wrong **`DD/MM/YYYY`** format returns **409 `MissingParameter`**.
 - **`GET`** and **`POST`** share the same handler; use **`POST`** if you prefer a JSON body.
 - Returned fields may include **special-category personal data**; comply with Colombian privacy rules and your contracts.
