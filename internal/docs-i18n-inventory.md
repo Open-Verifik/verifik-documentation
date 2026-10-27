@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-26T23:50:25.359Z
+Generated: 2026-10-27T18:47:46.463Z
 
-- **Files scanned:** 546
-- **Unique endpoint URLs:** 239
+- **Files scanned:** 548
+- **Unique endpoint URLs:** 241
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 225
 
@@ -13,7 +13,7 @@ Generated: 2026-10-26T23:50:25.359Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 188 | identity, biometrics, resources, etc. |
+| P2 | 190 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -294,6 +294,7 @@ Generated: 2026-10-26T23:50:25.359Z
 | P0 | `v2/co/bogota/vehicle/fines` | `vehicle-validation/colombia/bogota-vehicle-fines.mdx` |
 | P0 | `v2/co/bogota/vehicle/tax` | `vehicle-validation/colombia/bogota-taxes.mdx` |
 | P2 | `v2/co/cedula` | `identity-validation/colombia/colombian-citizen.mdx` |
+| P2 | `v2/co/cedula/barcode` | `identity-validation/colombia/colombian-cedula-barcode.mdx` |
 | P2 | `v2/co/cedula/by-name` | `identity-validation/colombia/colombian-citizen-by-name.mdx` |
 | P2 | `v2/co/cedula/extra` | `identity-validation/colombia/colombian-citizen-with-extra-data.mdx` |
 | P2 | `v2/co/cedula/premium` | `identity-validation/colombia/colombian-cedula-premium.mdx` |
@@ -413,6 +414,7 @@ Generated: 2026-10-26T23:50:25.359Z
 | P2 | `v2/mx/ine/ocr` | `identity/mexico-ine-ocr.mdx` |
 | P2 | `v2/mx/siged/certificado` | `identity/mexico-siged-certificado.mdx` |
 | P1 | `v2/mx/vehiculo/placa` | `vehicle-validation/mexico.md` |
+| P2 | `v2/ocr/scan-agent` | `ocr-engines/scan-agent.mdx` |
 | P2 | `v2/ocr/scan-prompt` | `ocr-engines/scan-prompt.mdx` |
 | P2 | `v2/ocr/scan-prompt/template/:id` | `ocr-engines/scan-prompt/delete-a-scan-prompt-template.mdx` |
 | P2 | `v2/ocr/scan-prompt/templates` | `ocr-engines/scan-prompt/list-of-scan-prompt-templates.mdx` |
