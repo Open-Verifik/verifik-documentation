@@ -579,6 +579,8 @@ We may sell and may have sold in the last twelve (12) months the following categ
 
 * Category L: Sensitive personal information
 
+*Note: As stated throughout this policy, the Company does not sell, rent, trade, or monetize biometric data (Category E) to third parties under any circumstances.*
+
 Please note that the categories listed above are those defined in the CCPA/CPRA. This does not mean that all examples of that category of personal information were in fact sold, but reflects our good faith belief to the best of Our knowledge that some of that information from the applicable category may be and may have been shared for value in return.
 
 #### **Sale of Personal Information of Minors Under 16 Years of Age**
