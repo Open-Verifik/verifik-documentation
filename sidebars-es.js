@@ -975,6 +975,7 @@ const sidebars = {
 					items: [
 						"resources/tickets-soporte/tickets-soporte",
 						"resources/tickets-soporte/el-objeto-ticket-soporte",
+						"resources/tickets-soporte/politica-sla-ans",
 						"resources/tickets-soporte/crear-un-ticket-soporte",
 						"resources/tickets-soporte/recuperar-un-ticket-soporte",
 						"resources/tickets-soporte/listar-todos-los-tickets-soporte",

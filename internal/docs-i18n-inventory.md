@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-27T23:28:19.550Z
+Generated: 2026-10-28T03:09:49.899Z
 
-- **Files scanned:** 549
+- **Files scanned:** 550
 - **Unique endpoint URLs:** 242
 - **Duplicate URL groups (SEO / aliases):** 59
-- **Docs without `### Endpoint` block:** 225
+- **Docs without `### Endpoint` block:** 226
 
 ## Summary by priority (canonical primary path only)
 
@@ -631,6 +631,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `resources/support-tickets/create-a-support-ticket.mdx`
 - `resources/support-tickets/list-all-support-tickets.mdx`
 - `resources/support-tickets/retrieve-a-support-ticket.mdx`
+- `resources/support-tickets/sla-ans-policy.mdx`
 - `resources/support-tickets/support-tickets.mdx`
 - `resources/support-tickets/the-support-ticket-object.mdx`
 - `resources/webhooks/create-a-webhook.mdx`

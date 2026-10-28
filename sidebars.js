@@ -1250,6 +1250,7 @@ const sidebars = {
 					items: [
 						"resources/support-tickets/support-tickets",
 						"resources/support-tickets/the-support-ticket-object",
+						"resources/support-tickets/sla-ans-policy",
 						"resources/support-tickets/create-a-support-ticket",
 						"resources/support-tickets/retrieve-a-support-ticket",
 						"resources/support-tickets/list-all-support-tickets",
