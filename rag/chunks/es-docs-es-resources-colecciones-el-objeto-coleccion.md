@@ -1,0 +1,50 @@
+---
+id: "es-docs-es-resources-colecciones-el-objeto-coleccion"
+title: "El Objeto Colección — Descripción general"
+sourcePath: "docs-es/resources/colecciones/el-objeto-coleccion.mdx"
+locale: "es"
+category: "resources"
+tags:
+  - "resources"
+sourceAnchor: "Descripción general"
+slug: "/resources/el-objeto-coleccion"
+url: "https://docs.verifik.co/verifik-es/resources/el-objeto-coleccion"
+---
+
+# El Objeto Colección
+
+## Descripción general
+
+Una colección es el lugar donde se almacenan los rostros generados con los servicios de detección de vida de Verifik. La mayoría de los servicios biométricos requieren una colección; conviene entender cómo crearla y usarla en la API.
+
+### Atributos
+
+| Campo | Tipo | Requerido | Descripción |
+| --- | --- | --- | --- |
+| `name` | String | Sí | Nombre que quieres dar a la colección |
+| `description` | String | No | Breve descripción del uso de la colección o notas |
+| `_id` | string (resource id) | Sí | Identificador único de la colección |
+| `deleted` | Boolean | Sí | Indica si la colección está marcada como eliminada (borrado lógico) |
+| `project` | string (reference id) | No | Referencia al proyecto cuando la colección está ligada a un proyecto |
+| `client` | string (reference id) | Sí | Referencia al cliente dueño de la colección |
+| `code` | String | Sí | Código único (UUID) usado en operaciones con el motor facial (a veces llamado id de colección en otros servicios) |
+| `createdAt` | Date | Sí | Fecha de creación |
+| `updatedAt` | Date | Sí | Última actualización |
+| `__v` | Number | Sí | Clave de versión del documento |
+
+### Objeto de ejemplo
+
+```json
+{
+  "_id": "65b9592267cc4f096dbe743d",
+  "deleted": false,
+  "name": "Ejemplo Ene 30",
+  "project": "65b955fe0577440932c77481",
+  "description": "default collection for project 65b955fe0577440932c77481",
+  "client": "6158e492dd0767a2b8b3f829",
+  "code": "d96db430-27d2-4f43-bcff-c4b239ac6d2e",
+  "updatedAt": "2024-01-30T20:16:34.841Z",
+  "createdAt": "2024-01-30T20:16:34.841Z",
+  "__v": 0
+}
+```
