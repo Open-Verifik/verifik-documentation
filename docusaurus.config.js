@@ -214,7 +214,7 @@ const config = {
 	future: {
 		v4: true, // Improve compatibility with the upcoming Docusaurus v4
 		// Large multi-plugin docs tree: worker SSG can hang locally; keep other Faster flags.
-		experimental_faster: {
+		faster: {
 			ssgWorkerThreads: false,
 		},
 	},
