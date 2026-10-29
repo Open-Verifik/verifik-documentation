@@ -315,6 +315,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/mexico-rfc",
+					label: "🇲🇽 Mexico — RFC by CURP",
+				},
+				{
+					type: "doc",
 					id: "identity/mexico-ine",
 					label: "🇲🇽 Mexico — INE Validation",
 				},

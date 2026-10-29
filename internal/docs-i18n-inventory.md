@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-28T03:09:49.899Z
+Generated: 2026-10-29T02:50:55.435Z
 
-- **Files scanned:** 550
+- **Files scanned:** 551
 - **Unique endpoint URLs:** 242
 - **Duplicate URL groups (SEO / aliases):** 59
-- **Docs without `### Endpoint` block:** 226
+- **Docs without `### Endpoint` block:** 227
 
 ## Summary by priority (canonical primary path only)
 
@@ -523,6 +523,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `identity-validation/peru.mdx`
 - `identity-validation/united-states.mdx`
 - `identity/identity-verification.mdx`
+- `identity/mexico-rfc.mdx`
 - `integrations/avalanche.md`
 - `integrations/blockdag-milestone-four.md`
 - `integrations/blockdag-milestone-one.md`
