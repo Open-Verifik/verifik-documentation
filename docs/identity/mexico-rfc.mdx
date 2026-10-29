@@ -1,0 +1,251 @@
+---
+id: mexico-rfc
+title: Mexico — RFC by CURP
+description: Retrieve and validate official Mexican SAT RFC (Registro Federal de Contribuyentes) and homoclave by CURP with Verifik's KYC API.
+slug: /identity/mexico-rfc
+sidebar_label: 🇲🇽 Mexico — RFC by CURP
+keywords:
+  - v2/mx/rfc
+  - /v2/mx/rfc
+  - v2 mx rfc
+  - api/mx/rfc
+  - /api/mx/rfc
+  - api mx rfc
+  - api.verifik.co/v2/mx/rfc
+  - 'https://api.verifik.co/v2/mx/rfc'
+  - GET v2/mx/rfc
+  - GET /v2/mx/rfc
+  - v2/mx/sat/rfc
+  - /v2/mx/sat/rfc
+  - rfc mexico
+  - mexico rfc
+  - sat rfc
+  - rfc por curp
+  - homoclave
+  - tax id mexico
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "RFC Lookup in Mexico by CURP | Verifik KYC API",
+	description:
+		"Retrieve and validate official Mexican SAT RFC (Registro Federal de Contribuyentes) and homoclave from CURP using Verifik's KYC API.",
+	articleSection: "API Documentation",
+	keywords: "RFC Mexico, SAT RFC, CURP to RFC, Mexican RFC lookup, homoclave, tax ID Mexico, KYC API",
+	about: {
+		"@type": "Thing",
+		name: "RFC Lookup API",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Mexico — RFC by CURP
+
+Verifik's **Mexico RFC API** enables you to look up and validate a citizen's official **RFC** (*Registro Federal de Contribuyentes*) and 3-character **homoclave** directly from their **CURP** (*Clave Única de Registro de Población*).
+
+This endpoint queries official tax records to confirm tax registration, returning the full 13-character RFC, validated personal name (first name, paternal surname, maternal surname), date of birth, gender, and state of registration.
+
+---
+
+## What does this API validate?
+
+- **Official RFC & Homoclave**: Retrieves the active 13-character RFC registered before the tax authority, including its official 3-character homoclave.
+- **Demographic & Name Confirmation**: Returns the registered legal full name parsed into `firstName`, `paternalSurname`, and `maternalSurname`.
+- **Identity Consistency**: Confirms date of birth, biological sex / gender, state of registration, and nationality.
+- **Cryptographic Signature**: Includes a Verifik cryptographic signature with timestamp certifying origin and integrity.
+
+---
+
+## API Reference
+
+### Endpoints
+
+```
+GET https://api.verifik.co/v2/mx/rfc
+```
+
+*Alias endpoint:*
+```
+GET https://api.verifik.co/v2/mx/sat/rfc
+```
+
+### Headers
+
+| Name | Value | Description |
+| --- | --- | --- |
+| `Accept` | `application/json` | Required response content type. |
+| `Authorization` | `Bearer <token>` | Your Verifik API JWT or client token. |
+
+### Parameters
+
+| Name | Type | Required | Default | Description | Example |
+| --- | --- | --- | --- | --- | --- |
+| `documentNumber` | string | **Yes** | — | Mexican CURP (17–18 characters, case-insensitive). | `LOPE900501HDFGRN01` |
+| `documentType` | string | No | `CURP` | Document type. Allowed value: `CURP`. | `CURP` |
+
+---
+
+### Request Examples
+
+<Tabs>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/mx/rfc?documentNumber=LOPE900501HDFGRN01&documentType=CURP" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const response = await axios.get("https://api.verifik.co/v2/mx/rfc", {
+  params: {
+    documentNumber: "LOPE900501HDFGRN01",
+    documentType: "CURP",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+
+console.log(response.data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/mx/rfc"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+params = {
+    "documentNumber": "LOPE900501HDFGRN01",
+    "documentType": "CURP"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Responses
+
+<Tabs>
+  <TabItem value="200" label="200 (Success)">
+
+```json
+{
+  "data": {
+    "documentType": "CURP",
+    "documentNumber": "LOPE900501HDFGRN01",
+    "rfc": "LOPE9005011A8",
+    "homoclave": "1A8",
+    "firstName": "ANA",
+    "lastName": "LOPEZ RUIZ",
+    "fullName": "ANA LOPEZ RUIZ",
+    "paternalSurname": "LOPEZ",
+    "maternalSurname": "RUIZ",
+    "dateOfBirth": "1990-05-01",
+    "gender": "FEMENINO",
+    "sex": "M",
+    "state": "CIUDAD DE MEXICO",
+    "stateCode": "DF",
+    "country": "Mexico",
+    "nationality": "Mexican"
+  },
+  "signature": {
+    "dateTime": "October 28, 2026 10:30 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404 (Not Found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409-invalid" label="409 (Invalid CURP)">
+
+```json
+{
+  "code": "InvalidCurp",
+  "message": "CURP check digit is invalid. The last character should be 0.",
+  "documentation": "https://docs.verifik.co/identity/mexico#curp-format"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-missing" label="409 (Missing Parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"documentNumber\" is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Pricing
+
+| Endpoint Code | Endpoint URL | Price per Successful Query |
+| --- | --- | --- |
+| `mexico_api_rfc_lookup` | `GET /v2/mx/rfc` | **$0.30 USD** |
+
+*Note: As with other Mexican identity endpoints (`/v2/mx/curp`, `/v2/mx/cedula-profesional`), failed queries (such as 404 or 409) do not consume credits.*
+
+---
+
+## Sandbox & Testing
+
+When testing in the **Sandbox environment** (`mode: sandbox`), no live credits are deducted and deterministic mock data is returned:
+
+- **Success Profile**: Use `documentNumber=LOPE900501HDFGRN01`. Returns test persona `ANA LOPEZ RUIZ` with RFC `LOPE9005011A8` and homoclave `1A8`.
+- **404 Trigger**: Use `documentNumber=LOPE900404HDFNTF01`. Returns HTTP 404 `Record not found.`.
+- **Dynamic Sandbox CURPs**: Any other valid 18-character CURP in sandbox generates a deterministic demographic record and calculated RFC homoclave.
+
+---
+
+## Common Use Cases
+
+- **Automated KYC & Tax Onboarding**: Collect both CURP and official SAT RFC during digital user onboarding without requiring manual document uploads.
+- **Fintech & Billing Compliance**: Automatically populate CFDI invoicing details with verified taxpayer RFCs.
+- **Payroll & HR Validation**: Ensure newly hired employees have an active RFC registered before the official tax registry.
+- **Anti-Fraud & Impersonation Prevention**: Cross-reference the name and birth date returned by official sources against user-provided forms.
+
+---
+
+## Related Endpoints
+
+- [🇲🇽 Mexico — CURP](/identity/mexico): Comprehensive demographic validation via CURP.
+- [🇲🇽 Mexico — Professional License](/identity/mexico-cedula-profesional): Query official university degrees and professional licenses.
+- [🇲🇽 Mexico — INE Validation](/identity/mexico-ine): Validate official Mexican voting credentials.
