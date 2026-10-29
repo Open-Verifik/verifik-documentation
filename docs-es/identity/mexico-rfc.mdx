@@ -1,9 +1,9 @@
 ---
 id: mexico-rfc
-title: México — RFC por CURP
-description: Consulta y valida la clave oficial del RFC (Registro Federal de Contribuyentes) y la homoclave a partir de una CURP con la API KYC de Verifik.
+title: México — RFC y Cumplimiento Fiscal (CURP ↔ RFC)
+description: Consulta y valida la clave oficial del RFC (Registro Federal de Contribuyentes), homoclave, resolución inversa de CURP y listas negras del SAT (Art. 69 y 69-B) con la API KYC y KYB de Verifik.
 slug: /identity/mexico-rfc
-sidebar_label: 🇲🇽 México — RFC por CURP
+sidebar_label: 🇲🇽 México — RFC por CURP / RFC
 keywords:
   - v2/mx/rfc
   - /v2/mx/rfc
@@ -21,21 +21,24 @@ keywords:
   - mexico rfc
   - sat rfc
   - rfc por curp
+  - curp por rfc
   - homoclave
+  - sat 69-b
+  - sat articulo 69
   - rfc del sat
 ---
 
 export const structuredData = {
 	"@context": "https://schema.org",
 	"@type": "TechArticle",
-	headline: "Consulta de RFC en México por CURP | API de KYC Verifik",
+	headline: "Consulta Bidireccional de RFC y CURP + Cumplimiento SAT 69/69-B en México | API Verifik",
 	description:
-		"Consulta y valida el RFC oficial del SAT (Registro Federal de Contribuyentes) y su homoclave a partir de una CURP con la API KYC de Verifik.",
+		"Consulta y valida el RFC oficial del SAT (Registro Federal de Contribuyentes), su homoclave, resolución inversa a CURP y verificación en listas del Art. 69 y 69-B con la API KYC y KYB de Verifik.",
 	articleSection: "Documentación API",
-	keywords: "RFC México, RFC SAT, CURP a RFC, consulta RFC México, homoclave, RFC por CURP, API KYC",
+	keywords: "RFC México, RFC SAT, CURP a RFC, RFC a CURP, SAT 69-B, SAT Artículo 69, homoclave, RFC por CURP, API KYC",
 	about: {
 		"@type": "Thing",
-		name: "API de Consulta de RFC",
+		name: "API de Consulta de RFC y Cumplimiento Fiscal",
 	},
 };
 
@@ -44,19 +47,22 @@ export const structuredData = {
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# México — RFC por CURP
+# México — RFC y Cumplimiento Fiscal (`CURP ↔ RFC`)
 
-La **API de RFC para México** de Verifik te permite consultar y validar de forma automatizada la clave oficial del **RFC** (*Registro Federal de Contribuyentes*) y su **homoclave** de 3 caracteres directamente a partir de la **CURP** (*Clave Única de Registro de Población*).
+La **API de RFC para México** de Verifik permite la resolución bidireccional y validación de cumplimiento tributario entre la **CURP** (*Clave Única de Registro de Población*) y el **RFC** (*Registro Federal de Contribuyentes*):
 
-Este servicio consulta los registros oficiales para confirmar el alta tributaria, retornando el RFC completo de 13 caracteres, el nombre legal validado (nombre de pila, apellido paterno, apellido materno), fecha de nacimiento, género y entidad federativa.
+- **Resolución Directa (`CURP → RFC`)**: Envía una CURP de 18 caracteres para obtener el nombre legal validado, perfil demográfico, el RFC completo de 13 caracteres, su homoclave de 3 caracteres y el estatus de cumplimiento fiscal.
+- **Resolución Inversa (`RFC → CURP`) y Consulta de Personas Morales**: Envía un **RFC de Persona Física** (13 caracteres) o un **RFC de Persona Moral** (12 caracteres) para validar su estructura y dígito verificador, recuperar la CURP de 18 caracteres y los datos demográficos del ciudadano, o consultar la razón social y situación fiscal del contribuyente.
+- **Verificación en Listas Oficiales del Art. 69 y 69-B (`satCompliance`)**: Cada consulta verifica automáticamente si el RFC se encuentra reportado en los listados oficiales del Artículo 69-B (operaciones presuntamente inexistentes / EFOS) y del Artículo 69 (créditos firmes, exigibles, no localizados, sentencias condenatorias y cancelados).
 
 ---
 
 ## ¿Qué valida esta API?
 
-- **RFC Oficial y Homoclave**: Obtiene la clave de 13 caracteres registrada ante la autoridad tributaria, incluyendo su homoclave oficial de 3 caracteres.
-- **Confirmación Demográfica y de Nombre**: Retorna el nombre legal registrado desglosado en `firstName`, `paternalSurname` y `maternalSurname`.
-- **Consistencia de Identidad**: Confirma fecha de nacimiento, sexo biológico / género, entidad federativa y nacionalidad.
+- **Resolución Bidireccional `CURP ↔ RFC` y Homoclave**: Obtiene la clave de 13 caracteres y su homoclave de 3 caracteres a partir de una CURP, o resuelve de forma inversa la `curp` de 18 caracteres y la identidad completa a partir de un RFC de 13 caracteres.
+- **Validación Estructural y Dígito Verificador Módulo 11**: Valida tanto RFCs de 12 caracteres (*Persona Moral*) como de 13 caracteres (*Persona Física*) conforme al algoritmo oficial del Anexo III (`checkDigitValid`, `personType`).
+- **Confirmación Demográfica y de Nombre**: Retorna el nombre legal registrado desglosado en `firstName`, `paternalSurname`, `maternalSurname`, `dateOfBirth` (o `incorporationDate` para personas morales), `gender` y `state`.
+- **Monitoreo de Cumplimiento Fiscal (`satCompliance`)**: Cruza el RFC contra los listados oficiales del Artículo 69-B (*Presuntos*, *Definitivos*, *Desvirtuados*, *Sentencia Favorable*) y Artículo 69 (*Créditos Firmes*, *Exigibles*, *No Localizados*, *Sentencias*, *Cancelados*).
 - **Firma Criptográfica**: Incluye una firma digital de Verifik con fecha y hora que certifica el origen y la integridad de los datos.
 
 ---
@@ -85,18 +91,27 @@ GET https://api.verifik.co/v2/mx/sat/rfc
 
 | Nombre | Tipo | Requerido | Valor por defecto | Descripción | Ejemplo |
 | --- | --- | --- | --- | --- | --- |
-| `documentNumber` | string | **Sí** | — | CURP mexicana (17–18 caracteres, insensible a mayúsculas/minúsculas). | `LOPE900501HDFGRN01` |
-| `documentType` | string | No | `CURP` | Tipo de documento. Valor permitido: `CURP`. | `CURP` |
+| `documentNumber` | string | **Sí** | — | **CURP** mexicana (18 caracteres) o **RFC** (12 caracteres *Persona Moral*, 13 caracteres *Persona Física*). Insensible a mayúsculas/minúsculas. | `LOPE900501HDFGRN01` o `LOPE9005011A8` |
+| `documentType` | string | No | Autodetectado | Tipo de documento: `CURP` o `RFC`. Se detecta automáticamente según la longitud de `documentNumber` si se omite. | `CURP` / `RFC` |
 
 ---
 
 ### Ejemplos de Solicitud
 
 <Tabs>
-  <TabItem value="curl" label="cURL">
+  <TabItem value="curl-curp" label="cURL (por CURP)">
 
 ```bash
 curl -X GET "https://api.verifik.co/v2/mx/rfc?documentNumber=LOPE900501HDFGRN01&documentType=CURP" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN"
+```
+
+  </TabItem>
+  <TabItem value="curl-rfc" label="cURL (por RFC)">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/mx/rfc?documentNumber=LOPE9005011A8&documentType=RFC" \
   -H "Accept: application/json" \
   -H "Authorization: Bearer $VERIFIK_TOKEN"
 ```
@@ -110,7 +125,7 @@ import axios from "axios";
 const response = await axios.get("https://api.verifik.co/v2/mx/rfc", {
   params: {
     documentNumber: "LOPE900501HDFGRN01",
-    documentType: "CURP",
+    documentType: "CURP", // o "RFC"
   },
   headers: {
     Accept: "application/json",
@@ -135,7 +150,7 @@ headers = {
 }
 params = {
     "documentNumber": "LOPE900501HDFGRN01",
-    "documentType": "CURP"
+    "documentType": "CURP"  # o "RFC"
 }
 
 response = requests.get(url, headers=headers, params=params)
@@ -150,15 +165,18 @@ print(response.json())
 ### Respuestas
 
 <Tabs>
-  <TabItem value="200" label="200 (Éxito)">
+  <TabItem value="200-clean" label="200 (Persona Física — Sin Alertas)">
 
 ```json
 {
   "data": {
     "documentType": "CURP",
     "documentNumber": "LOPE900501HDFGRN01",
+    "curp": "LOPE900501HDFGRN01",
     "rfc": "LOPE9005011A8",
     "homoclave": "1A8",
+    "personType": "FISICA",
+    "checkDigitValid": true,
     "firstName": "ANA",
     "lastName": "LOPEZ RUIZ",
     "fullName": "ANA LOPEZ RUIZ",
@@ -170,10 +188,73 @@ print(response.json())
     "state": "CIUDAD DE MEXICO",
     "stateCode": "DF",
     "country": "Mexico",
-    "nationality": "Mexican"
+    "nationality": "Mexican",
+    "satCompliance": {
+      "isFlagged": false,
+      "in69B": false,
+      "status69B": null,
+      "inArt69": false,
+      "categoriesArt69": [],
+      "records": []
+    }
   },
   "signature": {
-    "dateTime": "October 28, 2026 10:30 PM",
+    "dateTime": "October 29, 2026 2:30 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-flagged" label="200 (Consulta por RFC — Con Alerta Art. 69 / 69-B)">
+
+```json
+{
+  "data": {
+    "documentType": "RFC",
+    "documentNumber": "AAA080808HL8",
+    "curp": null,
+    "rfc": "AAA080808HL8",
+    "homoclave": "HL8",
+    "personType": "MORAL",
+    "checkDigitValid": true,
+    "firstName": null,
+    "lastName": null,
+    "fullName": "AAA Y ASOCIADOS DISTRIBUIDORA, S.A. DE C.V.",
+    "paternalSurname": null,
+    "maternalSurname": null,
+    "dateOfBirth": null,
+    "incorporationDate": "2008-08-08",
+    "gender": null,
+    "sex": null,
+    "state": null,
+    "stateCode": null,
+    "country": "Mexico",
+    "nationality": "Mexican",
+    "satCompliance": {
+      "isFlagged": true,
+      "in69B": true,
+      "status69B": "Definitivo",
+      "inArt69": false,
+      "categoriesArt69": [],
+      "records": [
+        {
+          "listType": "69B",
+          "taxpayerName": "AAA Y ASOCIADOS DISTRIBUIDORA, S.A. DE C.V.",
+          "personType": "MORAL",
+          "situation": "Definitivo",
+          "presumptionSatNotice": "500-05-2016-39369 de fecha 01 de diciembre de 2016",
+          "presumptionSatDate": "03/01/2017",
+          "presumptionDofDate": "09/01/2017",
+          "definitiveSatNotice": "500-05-2017-16236 de fecha 22 de mayo de 2017",
+          "definitiveSatDate": "22/06/2017",
+          "definitiveDofDate": "10/07/2017"
+        }
+      ]
+    }
+  },
+  "signature": {
+    "dateTime": "October 29, 2026 2:30 PM",
     "message": "Certified by Verifik.co"
   }
 }
@@ -190,13 +271,12 @@ print(response.json())
 ```
 
   </TabItem>
-  <TabItem value="409-invalid" label="409 (CURP Inválida)">
+  <TabItem value="409-invalid" label="409 (Formato Inválido)">
 
 ```json
 {
-  "code": "InvalidCurp",
-  "message": "CURP check digit is invalid. The last character should be 0.",
-  "documentation": "https://docs.verifik.co/identity/mexico#curp-format"
+  "code": "InvalidRfc",
+  "message": "Invalid RFC format. Must be a valid 12-character (Persona Moral) or 13-character (Persona Física) Mexican RFC."
 }
 ```
 
@@ -215,6 +295,28 @@ print(response.json())
 
 ---
 
+## Campos de la Respuesta
+
+| Campo | Tipo | Descripción |
+| --- | --- | --- |
+| `documentType` | string | Tipo de documento solicitado o autodetectado (`"CURP"` o `"RFC"`). |
+| `documentNumber` | string | Identificador normalizado en mayúsculas (`CURP` o `RFC`). |
+| `curp` | string \| null | CURP de 18 caracteres del ciudadano (presente en *Personas Físicas* tanto al consultar por CURP como al resolver inversamente desde un RFC de 13 caracteres). |
+| `rfc` | string | Clave completa del RFC mexicano de 12 caracteres (*Persona Moral*) o 13 caracteres (*Persona Física*). |
+| `homoclave` | string | Homoclave oficial de 3 caracteres (2 caracteres de homonimia + 1 dígito verificador). |
+| `personType` | string | `"FISICA"` (RFC de 13 caracteres) o `"MORAL"` (RFC de 12 caracteres). |
+| `checkDigitValid` | boolean | Indica si el último carácter coincide con el dígito verificador oficial módulo 11 del Anexo III. |
+| `firstName` | string \| null | Nombre(s) de pila (*Personas Físicas*). |
+| `paternalSurname` | string \| null | Primer apellido (*apellido paterno*) para *Personas Físicas*. |
+| `maternalSurname` | string \| null | Segundo apellido (*apellido materno*) para *Personas Físicas*. |
+| `fullName` | string | Nombre legal completo (*Persona Física*) o denominación / razón social (*Persona Moral*). |
+| `dateOfBirth` | string \| null | Fecha de nacimiento en formato `YYYY-MM-DD` (*Personas Físicas*). |
+| `incorporationDate` | string \| null | Fecha de constitución en formato `YYYY-MM-DD` (*Personas Morales* al consultar un RFC de 12 caracteres). |
+| `state` / `stateCode` | string \| null | Nombre de la entidad federativa mexicana y código de 2 letras. |
+| `satCompliance` | object | Resumen oficial de cumplimiento fiscal Art. 69 y 69-B (`isFlagged`, `in69B`, `status69B`, `inArt69`, `categoriesArt69`, `records`). |
+
+---
+
 ## Precios
 
 | Código de Endpoint | URL de Endpoint | Precio por Consulta Exitosa |
@@ -229,18 +331,18 @@ print(response.json())
 
 Al realizar consultas con credenciales en modo **Sandbox** (`mode: sandbox`), no se descuentan créditos reales y se devuelven respuestas deterministas:
 
-- **Perfil de Éxito**: Utiliza `documentNumber=LOPE900501HDFGRN01`. Retorna el usuario de pruebas `ANA LOPEZ RUIZ` con RFC `LOPE9005011A8` y homoclave `1A8`.
-- **Disparador de 404**: Utiliza `documentNumber=LOPE900404HDFNTF01`. Retorna HTTP 404 `Record not found.`.
-- **CURPs Dinámicas en Sandbox**: Cualquier otra CURP válida de 18 caracteres en modo sandbox genera un registro demográfico determinista y calcula su RFC con homoclave correspondiente.
+- **Perfil de Éxito por CURP**: Utiliza `documentNumber=LOPE900501HDFGRN01&documentType=CURP`. Retorna el usuario de pruebas `ANA LOPEZ RUIZ` con RFC `LOPE9005011A8`, `homoclave: "1A8"` y `satCompliance` sin alertas.
+- **Perfil de Éxito por RFC**: Utiliza `documentNumber=LOPE9005011A8&documentType=RFC` (o cualquier RFC válido de 12 o 13 caracteres). Retorna identidad determinista y estructura `satCompliance`.
+- **Disparador de 404**: Utiliza `documentNumber=LOPE900404HDFNTF01` (CURP) o `documentNumber=LOPE900404NTF` (RFC). Retorna HTTP 404 `Record not found.`.
 
 ---
 
 ## Casos de Uso Comunes
 
-- **Onboarding Digital y Cumplimiento Fiscal**: Captura simultáneamente la CURP y el RFC oficial durante el registro de usuarios sin requerir la carga manual de constancias fiscales.
-- **Fintech y Facturación Electrónica**: Autocompleta datos de emisión de CFDI con el RFC verificado del contribuyente.
-- **Gestión de Nómina y Recursos Humanos**: Valida que los colaboradores recién contratados cuenten con registro activo ante la autoridad fiscal.
-- **Prevención de Fraude y Suplantación**: Cruza el nombre y la fecha de nacimiento devueltos por la fuente oficial contra los datos capturados en el formulario de registro.
+- **Onboarding Digital Bidireccional (`CURP ↔ RFC`)**: Obtén tanto la CURP como el RFC oficial sin importar cuál de los dos documentos proporcione el usuario en tu flujo de registro.
+- **Prevención de Riesgo Fiscal y Proveedores (Art. 69-B EFOS)**: Verifica automáticamente que tus proveedores o contrapartes no se encuentren en los listados definitivos o presuntos del Artículo 69-B ni tengan créditos fiscales firmes o no localizados en el Artículo 69 antes de dispersar pagos o deducir facturas CFDI.
+- **Fintech y Facturación Electrónica CFDI 4.0**: Valida que el RFC de 12 o 13 caracteres tenga un dígito verificador válido y coincida con el nombre legal del contribuyente.
+- **Gestión de Nómina y Recursos Humanos**: Confirma la identidad, CURP y RFC activo de colaboradores en segundos.
 
 ---
 

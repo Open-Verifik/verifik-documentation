@@ -1,9 +1,9 @@
 ---
 id: mexico-rfc
-title: Mexico — RFC by CURP
-description: Retrieve and validate official Mexican SAT RFC (Registro Federal de Contribuyentes) and homoclave by CURP with Verifik's KYC API.
+title: Mexico — RFC & Tax Compliance (CURP ↔ RFC)
+description: Retrieve and validate official Mexican SAT RFC (Registro Federal de Contribuyentes), homoclave, reverse CURP resolution, and SAT Art. 69 / 69-B compliance screening with Verifik's KYC & KYB API.
 slug: /identity/mexico-rfc
-sidebar_label: 🇲🇽 Mexico — RFC by CURP
+sidebar_label: 🇲🇽 Mexico — RFC by CURP / RFC
 keywords:
   - v2/mx/rfc
   - /v2/mx/rfc
@@ -21,21 +21,24 @@ keywords:
   - mexico rfc
   - sat rfc
   - rfc por curp
+  - curp por rfc
   - homoclave
+  - sat 69-b
+  - sat articulo 69
   - tax id mexico
 ---
 
 export const structuredData = {
 	"@context": "https://schema.org",
 	"@type": "TechArticle",
-	headline: "RFC Lookup in Mexico by CURP | Verifik KYC API",
+	headline: "Bidirectional RFC & CURP Lookup + SAT 69/69-B Compliance in Mexico | Verifik API",
 	description:
-		"Retrieve and validate official Mexican SAT RFC (Registro Federal de Contribuyentes) and homoclave from CURP using Verifik's KYC API.",
+		"Retrieve and validate official Mexican SAT RFC (Registro Federal de Contribuyentes), homoclave, reverse CURP resolution, and SAT Art. 69 / 69-B blacklist screening using Verifik's KYC & KYB API.",
 	articleSection: "API Documentation",
-	keywords: "RFC Mexico, SAT RFC, CURP to RFC, Mexican RFC lookup, homoclave, tax ID Mexico, KYC API",
+	keywords: "RFC Mexico, SAT RFC, CURP to RFC, RFC to CURP, SAT 69-B, SAT Articulo 69, homoclave, tax ID Mexico, KYC API",
 	about: {
 		"@type": "Thing",
-		name: "RFC Lookup API",
+		name: "RFC Lookup & SAT Compliance API",
 	},
 };
 
@@ -44,19 +47,22 @@ export const structuredData = {
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Mexico — RFC by CURP
+# Mexico — RFC & Tax Compliance (`CURP ↔ RFC`)
 
-Verifik's **Mexico RFC API** enables you to look up and validate a citizen's official **RFC** (*Registro Federal de Contribuyentes*) and 3-character **homoclave** directly from their **CURP** (*Clave Única de Registro de Población*).
+Verifik's **Mexico RFC API** enables bidirectional resolution and tax compliance verification between a Mexican **CURP** (*Clave Única de Registro de Población*) and an official **RFC** (*Registro Federal de Contribuyentes*):
 
-This endpoint queries official tax records to confirm tax registration, returning the full 13-character RFC, validated personal name (first name, paternal surname, maternal surname), date of birth, gender, and state of registration.
+- **Forward Resolution (`CURP → RFC`)**: Pass an 18-character CURP to retrieve the citizen's validated full name, demographic profile, 13-character RFC, 3-character homoclave, and tax compliance status.
+- **Reverse Resolution (`RFC → CURP`) & Entity Lookup**: Pass a 13-character **Persona Física RFC** or a 12-character **Persona Moral RFC** to validate its official structure and check digit, resolve the citizen's 18-character CURP and full demographic record (for individuals), or retrieve the registered entity profile and tax compliance standing.
+- **Official Tax Compliance Screening (Art. 69 & 69-B)**: Every lookup automatically screens the RFC against official tax compliance registries (including Article 69-B simulated operations lists and Article 69 firm, exigible, unlocated, convicted, and canceled tax credit lists).
 
 ---
 
 ## What does this API validate?
 
-- **Official RFC & Homoclave**: Retrieves the active 13-character RFC registered before the tax authority, including its official 3-character homoclave.
-- **Demographic & Name Confirmation**: Returns the registered legal full name parsed into `firstName`, `paternalSurname`, and `maternalSurname`.
-- **Identity Consistency**: Confirms date of birth, biological sex / gender, state of registration, and nationality.
+- **Bidirectional `CURP ↔ RFC` & Homoclave**: Retrieves the active 13-character RFC and 3-character homoclave from a CURP, or reverse-resolves the 18-character `curp` and demographic identity from a 13-character RFC.
+- **Structural & Modulo-11 Check Digit Verification**: Validates both 12-character (*Persona Moral*) and 13-character (*Persona Física*) RFCs against the official Annex III modulo-11 verification algorithm (`checkDigitValid`, `personType`).
+- **Demographic & Name Confirmation**: Returns the registered legal name parsed into `firstName`, `paternalSurname`, `maternalSurname`, `dateOfBirth` (or `incorporationDate` for legal entities), `gender`, and `state`.
+- **Tax Compliance & Blacklist Screening (`satCompliance`)**: Screens the RFC against official Article 69-B (*Presuntos*, *Definitivos*, *Desvirtuados*, *Sentencia Favorable*) and Article 69 (*Créditos Firmes*, *Exigibles*, *No Localizados*, *Sentencias*, *Cancelados*) registries.
 - **Cryptographic Signature**: Includes a Verifik cryptographic signature with timestamp certifying origin and integrity.
 
 ---
@@ -85,18 +91,27 @@ GET https://api.verifik.co/v2/mx/sat/rfc
 
 | Name | Type | Required | Default | Description | Example |
 | --- | --- | --- | --- | --- | --- |
-| `documentNumber` | string | **Yes** | — | Mexican CURP (17–18 characters, case-insensitive). | `LOPE900501HDFGRN01` |
-| `documentType` | string | No | `CURP` | Document type. Allowed value: `CURP`. | `CURP` |
+| `documentNumber` | string | **Yes** | — | Mexican **CURP** (18 chars) or **RFC** (12 chars *Persona Moral*, 13 chars *Persona Física*). Case-insensitive. | `LOPE900501HDFGRN01` or `LOPE9005011A8` |
+| `documentType` | string | No | Auto-detected | Document type: `CURP` or `RFC`. Automatically inferred from `documentNumber` length if omitted. | `CURP` / `RFC` |
 
 ---
 
 ### Request Examples
 
 <Tabs>
-  <TabItem value="curl" label="cURL">
+  <TabItem value="curl-curp" label="cURL (by CURP)">
 
 ```bash
 curl -X GET "https://api.verifik.co/v2/mx/rfc?documentNumber=LOPE900501HDFGRN01&documentType=CURP" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN"
+```
+
+  </TabItem>
+  <TabItem value="curl-rfc" label="cURL (by RFC)">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/mx/rfc?documentNumber=LOPE9005011A8&documentType=RFC" \
   -H "Accept: application/json" \
   -H "Authorization: Bearer $VERIFIK_TOKEN"
 ```
@@ -110,7 +125,7 @@ import axios from "axios";
 const response = await axios.get("https://api.verifik.co/v2/mx/rfc", {
   params: {
     documentNumber: "LOPE900501HDFGRN01",
-    documentType: "CURP",
+    documentType: "CURP", // or "RFC"
   },
   headers: {
     Accept: "application/json",
@@ -135,7 +150,7 @@ headers = {
 }
 params = {
     "documentNumber": "LOPE900501HDFGRN01",
-    "documentType": "CURP"
+    "documentType": "CURP"  # or "RFC"
 }
 
 response = requests.get(url, headers=headers, params=params)
@@ -150,15 +165,18 @@ print(response.json())
 ### Responses
 
 <Tabs>
-  <TabItem value="200" label="200 (Success)">
+  <TabItem value="200-clean" label="200 (Persona Física — Clean)">
 
 ```json
 {
   "data": {
     "documentType": "CURP",
     "documentNumber": "LOPE900501HDFGRN01",
+    "curp": "LOPE900501HDFGRN01",
     "rfc": "LOPE9005011A8",
     "homoclave": "1A8",
+    "personType": "FISICA",
+    "checkDigitValid": true,
     "firstName": "ANA",
     "lastName": "LOPEZ RUIZ",
     "fullName": "ANA LOPEZ RUIZ",
@@ -170,10 +188,73 @@ print(response.json())
     "state": "CIUDAD DE MEXICO",
     "stateCode": "DF",
     "country": "Mexico",
-    "nationality": "Mexican"
+    "nationality": "Mexican",
+    "satCompliance": {
+      "isFlagged": false,
+      "in69B": false,
+      "status69B": null,
+      "inArt69": false,
+      "categoriesArt69": [],
+      "records": []
+    }
   },
   "signature": {
-    "dateTime": "October 28, 2026 10:30 PM",
+    "dateTime": "October 29, 2026 2:30 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-flagged" label="200 (RFC Lookup — Flagged in Art. 69 / 69-B)">
+
+```json
+{
+  "data": {
+    "documentType": "RFC",
+    "documentNumber": "AAA080808HL8",
+    "curp": null,
+    "rfc": "AAA080808HL8",
+    "homoclave": "HL8",
+    "personType": "MORAL",
+    "checkDigitValid": true,
+    "firstName": null,
+    "lastName": null,
+    "fullName": "AAA Y ASOCIADOS DISTRIBUIDORA, S.A. DE C.V.",
+    "paternalSurname": null,
+    "maternalSurname": null,
+    "dateOfBirth": null,
+    "incorporationDate": "2008-08-08",
+    "gender": null,
+    "sex": null,
+    "state": null,
+    "stateCode": null,
+    "country": "Mexico",
+    "nationality": "Mexican",
+    "satCompliance": {
+      "isFlagged": true,
+      "in69B": true,
+      "status69B": "Definitivo",
+      "inArt69": false,
+      "categoriesArt69": [],
+      "records": [
+        {
+          "listType": "69B",
+          "taxpayerName": "AAA Y ASOCIADOS DISTRIBUIDORA, S.A. DE C.V.",
+          "personType": "MORAL",
+          "situation": "Definitivo",
+          "presumptionSatNotice": "500-05-2016-39369 de fecha 01 de diciembre de 2016",
+          "presumptionSatDate": "03/01/2017",
+          "presumptionDofDate": "09/01/2017",
+          "definitiveSatNotice": "500-05-2017-16236 de fecha 22 de mayo de 2017",
+          "definitiveSatDate": "22/06/2017",
+          "definitiveDofDate": "10/07/2017"
+        }
+      ]
+    }
+  },
+  "signature": {
+    "dateTime": "October 29, 2026 2:30 PM",
     "message": "Certified by Verifik.co"
   }
 }
@@ -190,13 +271,12 @@ print(response.json())
 ```
 
   </TabItem>
-  <TabItem value="409-invalid" label="409 (Invalid CURP)">
+  <TabItem value="409-invalid" label="409 (Invalid Format)">
 
 ```json
 {
-  "code": "InvalidCurp",
-  "message": "CURP check digit is invalid. The last character should be 0.",
-  "documentation": "https://docs.verifik.co/identity/mexico#curp-format"
+  "code": "InvalidRfc",
+  "message": "Invalid RFC format. Must be a valid 12-character (Persona Moral) or 13-character (Persona Física) Mexican RFC."
 }
 ```
 
@@ -215,6 +295,28 @@ print(response.json())
 
 ---
 
+## Response Fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `documentType` | string | Requested or auto-detected input document type (`"CURP"` or `"RFC"`). |
+| `documentNumber` | string | Normalized uppercase input identifier (`CURP` or `RFC`). |
+| `curp` | string \| null | Citizen's 18-character CURP (present for *Personas Físicas* both when querying by CURP and when reverse-resolved from a 13-char RFC). |
+| `rfc` | string | Full 12-character (*Persona Moral*) or 13-character (*Persona Física*) Mexican RFC. |
+| `homoclave` | string | Official 3-character SAT homoclave (2 homonymy characters + 1 check digit). |
+| `personType` | string | `"FISICA"` (13-character individual RFC) or `"MORAL"` (12-character corporate RFC). |
+| `checkDigitValid` | boolean | Indicates whether the final character matches the official SAT Annex III modulo-11 check digit. |
+| `firstName` | string \| null | Given name(s) for *Personas Físicas*. |
+| `paternalSurname` | string \| null | First surname (*apellido paterno*) for *Personas Físicas*. |
+| `maternalSurname` | string \| null | Second surname (*apellido materno*) for *Personas Físicas*. |
+| `fullName` | string | Full legal name (*Persona Física*) or corporate legal name (*Razón Social* for *Persona Moral*). |
+| `dateOfBirth` | string \| null | Date of birth in `YYYY-MM-DD` format (*Personas Físicas*). |
+| `incorporationDate` | string \| null | Date of incorporation in `YYYY-MM-DD` format (*Personas Morales* when querying a 12-character RFC). |
+| `state` / `stateCode` | string \| null | Mexican federal entity name and 2-letter RENAPO code. |
+| `satCompliance` | object | Official SAT Article 69 & 69-B tax compliance summary (`isFlagged`, `in69B`, `status69B`, `inArt69`, `categoriesArt69`, `records`). |
+
+---
+
 ## Pricing
 
 | Endpoint Code | Endpoint URL | Price per Successful Query |
@@ -229,18 +331,18 @@ print(response.json())
 
 When testing in the **Sandbox environment** (`mode: sandbox`), no live credits are deducted and deterministic mock data is returned:
 
-- **Success Profile**: Use `documentNumber=LOPE900501HDFGRN01`. Returns test persona `ANA LOPEZ RUIZ` with RFC `LOPE9005011A8` and homoclave `1A8`.
-- **404 Trigger**: Use `documentNumber=LOPE900404HDFNTF01`. Returns HTTP 404 `Record not found.`.
-- **Dynamic Sandbox CURPs**: Any other valid 18-character CURP in sandbox generates a deterministic demographic record and calculated RFC homoclave.
+- **CURP Success Profile**: Use `documentNumber=LOPE900501HDFGRN01&documentType=CURP`. Returns test persona `ANA LOPEZ RUIZ` with RFC `LOPE9005011A8`, `homoclave: "1A8"`, and clean `satCompliance`.
+- **RFC Success Profile**: Use `documentNumber=LOPE9005011A8&documentType=RFC` (or any valid 12/13-char RFC). Returns deterministic identity and `satCompliance` fields.
+- **404 Trigger**: Use `documentNumber=LOPE900404HDFNTF01` (CURP) or `documentNumber=LOPE900404NTF` (RFC). Returns HTTP 404 `Record not found.`.
 
 ---
 
 ## Common Use Cases
 
-- **Automated KYC & Tax Onboarding**: Collect both CURP and official SAT RFC during digital user onboarding without requiring manual document uploads.
-- **Fintech & Billing Compliance**: Automatically populate CFDI invoicing details with verified taxpayer RFCs.
-- **Payroll & HR Validation**: Ensure newly hired employees have an active RFC registered before the official tax registry.
-- **Anti-Fraud & Impersonation Prevention**: Cross-reference the name and birth date returned by official sources against user-provided forms.
+- **Bidirectional KYC & Tax Onboarding**: Collect both CURP and official SAT RFC regardless of whether the user provides their CURP or their RFC.
+- **KYB Supplier & Vendor Screening (Art. 69-B EFOS)**: Automatically screen suppliers and counterparties against official SAT Article 69-B (*Empresas que Facturan Operaciones Simuladas*) and Article 69 tax debtor lists before issuing payments or deducting CFDI invoices.
+- **Fintech & CFDI Billing Compliance**: Validate that a customer's 12 or 13-character RFC has a valid check digit and matches their legal name before issuing electronic invoices.
+- **Payroll & HR Validation**: Verify that newly hired employees have an active RFC and consistent demographic records.
 
 ---
 
@@ -249,4 +351,3 @@ When testing in the **Sandbox environment** (`mode: sandbox`), no live credits a
 - [🇲🇽 Mexico — CURP](/identity/mexico): Comprehensive demographic validation via CURP.
 - [🇲🇽 Mexico — Professional License](/identity/mexico-cedula-profesional): Query official university degrees and professional licenses.
 - [🇲🇽 Mexico — INE Validation](/identity/mexico-ine): Validate official Mexican voting credentials.
-
