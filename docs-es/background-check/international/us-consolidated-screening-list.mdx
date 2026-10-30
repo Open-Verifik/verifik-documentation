@@ -1,0 +1,214 @@
+---
+id: us-consolidated-screening-list
+title: Estados Unidos — Lista Consolidada de Selección (CSL)
+description: Consulta consolidada de las 11 listas de restricciones comerciales, embargos y control de exportaciones de los Departamentos de Comercio, Estado y Tesoro de los Estados Unidos.
+sidebar_label: 🇺🇸 EE. UU. — Lista Consolidada (CSL)
+slug: /background-check/international/us-consolidated-screening-list
+keywords:
+  - v2/csl
+  - /v2/csl
+  - consolidated screening list
+  - csl usa
+  - bis entity list
+  - denied persons list
+  - itar debarred
+  - sanciones comerciales usa
+  - control de exportaciones
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Estados Unidos — Lista Consolidada de Selección (CSL)
+
+El endpoint de la **Lista Consolidada de Selección (Consolidated Screening List - CSL)** agrupa y unifica las listas oficiales de restricciones de exportación, transferencias y comercio internacional mantenidas por las principales agencias del Gobierno Federal de los Estados Unidos:
+- **Departamento de Comercio (BIS):** Entity List, Denied Persons List (DPL), Unverified List (UVL) y Military End User (MEU) List.
+- **Departamento de Estado (ISN & PM/DDTC):** Nonproliferation Sanctions, AECA Debarred / ITAR Debarred List.
+- **Departamento del Tesoro (OFAC):** Sectoral Sanctions Identifications (SSI), Non-SDN Menu-Based Sanctions (NS-MBS), Non-SDN Chinese Military-Industrial Complex Companies (NS-CMIC), y Foreign Sanctions Evaders (FSE).
+
+Permite a empresas de comercio exterior, logística, banca, tecnología y manufactura evaluar de forma inmediata si una persona física o jurídica está sujeta a **prohibiciones de exportación, embargos o denegación de privilegios comerciales con EE. UU.**
+
+---
+
+## Casos de Uso
+
+- **Control de Exportaciones y Re-exportaciones:** Verificación obligatoria para compañías que comercializan productos o componentes regulados bajo la normativa EAR (*Export Administration Regulations*).
+- **Validación de Cadena de Suministro (Supply Chain Compliance):** Evaluación de proveedores, fabricantes y distribuidores internacionales frente a listas negras de defensa y tecnología.
+- **Cumplimiento Financiero y Financiamiento de Comercio Exterior:** Prevención de operaciones de crédito o comercio vinculadas a entidades de la lista de usuarios finales militares o empresas bloqueadas.
+
+---
+
+## Endpoint
+
+```http
+GET https://api.verifik.co/v2/csl
+```
+
+### Encabezados (Headers)
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parámetros de Consulta (Query Params)
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | Condicional | Nombre completo o razón social de la entidad a consultar (ej. `"Aeroflot Russian Airlines"`). Obligatorio si no se incluye `documentNumber`. |
+| `documentNumber` | string | Condicional | Identificador fiscal, registro mercantil o número de pasaporte de la contraparte. Obligatorio si no se incluye `fullName`. |
+
+---
+
+## Ejemplos de Solicitud
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/csl",
+  params: {
+    fullName: "Aeroflot Russian Airlines",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar CSL:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/csl"
+
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+
+params = {
+    "fullName": "Aeroflot Russian Airlines"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/csl?fullName=Aeroflot%20Russian%20Airlines" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Respuestas de la API
+
+<Tabs>
+  <TabItem value="200-found" label="200 (Encontrado en Lista CSL)">
+
+```json
+{
+  "data": {
+    "fullName": "AEROFLOT RUSSIAN AIRLINES",
+    "firstName": "AEROFLOT RUSSIAN",
+    "lastName": "AIRLINES",
+    "arrayName": ["AEROFLOT", "RUSSIAN", "AIRLINES"],
+    "foundInCSL": true,
+    "details": {
+      "id": "csl-bis-denied-aeroflot",
+      "name": "PJSC Aeroflot Russian Airlines",
+      "schema": "Company",
+      "aliases": [
+        "Aeroflot"
+      ],
+      "countries": [
+        "Russia"
+      ],
+      "addresses": [
+        "Arbat Street 10, Moscow, Russia"
+      ],
+      "identifiers": [
+        "OGRN 1027700092661"
+      ],
+      "sanctions": "Export Privileges Denied",
+      "programs": [
+        "BIS Denied Persons List (DPL)"
+      ],
+      "firstSeen": "2022-04-07",
+      "lastSeen": "2026-10-30"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:30:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-clean" label="200 (Sin Restricciones / Registro Limpio)">
+
+```json
+{
+  "data": {
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": ["MATEO", "VERIFIK"],
+    "foundInCSL": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:30:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400 (Parámetros Faltantes)">
+
+```json
+{
+  "error": {
+    "message": "Either fullName or documentNumber must be provided",
+    "code": "MISSING_REQUIRED_PARAMETER"
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+En ambiente Sandbox (`sandbox.verifik.co` o modo sandbox activo), puedes utilizar los siguientes perfiles de prueba:
+
+| Nombre | Comportamiento en Sandbox |
+| :--- | :--- |
+| `"Aeroflot Russian Airlines"` | Retorna coincidencia en la lista de denegación comercial de EE. UU. (`foundInCSL: true`). |
+| `"Mateo Verifik"` | Retorna sin restricciones de exportación ni comercio (`foundInCSL: false`). |

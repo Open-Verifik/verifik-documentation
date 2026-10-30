@@ -596,6 +596,18 @@ keywords:
   - "https://api.verifik.co/v2/check-lists/{id}"
   - "GET v2/check-lists/{id}"
   - "GET /v2/check-lists/{id}"
+  - "v2/cia-world-leaders"
+  - "/v2/cia-world-leaders"
+  - "v2 cia-world-leaders"
+  - "cia-world-leaders"
+  - "/cia-world-leaders"
+  - "api/cia-world-leaders"
+  - "/api/cia-world-leaders"
+  - "api cia-world-leaders"
+  - "api.verifik.co/v2/cia-world-leaders"
+  - "https://api.verifik.co/v2/cia-world-leaders"
+  - "GET v2/cia-world-leaders"
+  - "GET /v2/cia-world-leaders"
   - "v2/cl/cedula"
   - "/v2/cl/cedula"
   - "v2 cl cedula"
@@ -1161,6 +1173,18 @@ keywords:
   - "https://api.verifik.co/v2/co/inpec"
   - "GET v2/co/inpec"
   - "GET /v2/co/inpec"
+  - "v2/co/jcc"
+  - "/v2/co/jcc"
+  - "v2 co jcc"
+  - "co/jcc"
+  - "/co/jcc"
+  - "api/co/jcc"
+  - "/api/co/jcc"
+  - "api co jcc"
+  - "api.verifik.co/v2/co/jcc"
+  - "https://api.verifik.co/v2/co/jcc"
+  - "GET v2/co/jcc"
+  - "GET /v2/co/jcc"
   - "v2/co/medellin/vehicle/fines"
   - "/v2/co/medellin/vehicle/fines"
   - "v2 co medellin vehicle fines"
@@ -1175,6 +1199,18 @@ keywords:
   - "https://api.verifik.co/v2/co/medellin/vehicle/fines"
   - "GET v2/co/medellin/vehicle/fines"
   - "GET /v2/co/medellin/vehicle/fines"
+  - "v2/co/paco"
+  - "/v2/co/paco"
+  - "v2 co paco"
+  - "co/paco"
+  - "/co/paco"
+  - "api/co/paco"
+  - "/api/co/paco"
+  - "api co paco"
+  - "api.verifik.co/v2/co/paco"
+  - "https://api.verifik.co/v2/co/paco"
+  - "GET v2/co/paco"
+  - "GET /v2/co/paco"
   - "v2/co/policia/consultar"
   - "/v2/co/policia/consultar"
   - "v2 co policia consultar"
@@ -1287,6 +1323,20 @@ keywords:
   - "https://api.verifik.co/v2/co/rama/certificado/vigencia"
   - "GET v2/co/rama/certificado/vigencia"
   - "GET /v2/co/rama/certificado/vigencia"
+  - "v2/co/rama/jepms"
+  - "/v2/co/rama/jepms"
+  - "v2 co rama jepms"
+  - "co/rama/jepms"
+  - "/co/rama/jepms"
+  - "api/co/rama/jepms"
+  - "/api/co/rama/jepms"
+  - "api co rama jepms"
+  - "rama/jepms"
+  - "/rama/jepms"
+  - "api.verifik.co/v2/co/rama/jepms"
+  - "https://api.verifik.co/v2/co/rama/jepms"
+  - "GET v2/co/rama/jepms"
+  - "GET /v2/co/rama/jepms"
   - "v2/co/rama/juzgado/expedientes"
   - "/v2/co/rama/juzgado/expedientes"
   - "v2 co rama juzgado expedientes"
@@ -1781,6 +1831,18 @@ keywords:
   - "https://api.verifik.co/v2/cr/votacion"
   - "GET v2/cr/votacion"
   - "GET /v2/cr/votacion"
+  - "v2/csl"
+  - "/v2/csl"
+  - "v2 csl"
+  - "csl"
+  - "/csl"
+  - "api/csl"
+  - "/api/csl"
+  - "api csl"
+  - "api.verifik.co/v2/csl"
+  - "https://api.verifik.co/v2/csl"
+  - "GET v2/csl"
+  - "GET /v2/csl"
   - "v2/data-retention/erase"
   - "/v2/data-retention/erase"
   - "v2 data-retention erase"
@@ -2542,6 +2604,30 @@ keywords:
   - "https://api.verifik.co/v2/ofac"
   - "GET v2/ofac"
   - "GET /v2/ofac"
+  - "v2/offshore-leaks"
+  - "/v2/offshore-leaks"
+  - "v2 offshore-leaks"
+  - "offshore-leaks"
+  - "/offshore-leaks"
+  - "api/offshore-leaks"
+  - "/api/offshore-leaks"
+  - "api offshore-leaks"
+  - "api.verifik.co/v2/offshore-leaks"
+  - "https://api.verifik.co/v2/offshore-leaks"
+  - "GET v2/offshore-leaks"
+  - "GET /v2/offshore-leaks"
+  - "v2/ofsi"
+  - "/v2/ofsi"
+  - "v2 ofsi"
+  - "ofsi"
+  - "/ofsi"
+  - "api/ofsi"
+  - "/api/ofsi"
+  - "api ofsi"
+  - "api.verifik.co/v2/ofsi"
+  - "https://api.verifik.co/v2/ofsi"
+  - "GET v2/ofsi"
+  - "GET /v2/ofsi"
   - "v2/onu"
   - "/v2/onu"
   - "v2 onu"
@@ -2784,6 +2870,18 @@ keywords:
   - "https://api.verifik.co/v2/sv/dui"
   - "GET v2/sv/dui"
   - "GET /v2/sv/dui"
+  - "v2/us-terrorists"
+  - "/v2/us-terrorists"
+  - "v2 us-terrorists"
+  - "us-terrorists"
+  - "/us-terrorists"
+  - "api/us-terrorists"
+  - "/api/us-terrorists"
+  - "api us-terrorists"
+  - "api.verifik.co/v2/us-terrorists"
+  - "https://api.verifik.co/v2/us-terrorists"
+  - "GET v2/us-terrorists"
+  - "GET /v2/us-terrorists"
   - "v2/usa/company"
   - "/v2/usa/company"
   - "v2 usa company"
@@ -3057,12 +3155,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (244 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (252 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-10-30T18:24:18.849Z_
+_Last regenerated: 2026-10-30T22:00:09.074Z_
 
 ## Argentina
 
@@ -3145,7 +3243,9 @@ _Last regenerated: 2026-10-30T18:24:18.849Z_
 | `v2/co/foreigner-id/pep` | v2 co foreigner-id pep co/foreigner-id/pep /co/foreigner-id/pep api/co/foreigner-id/pep /api/co/foreigner-id/pep api co foreigner-id pep foreigner-id/pep /foreigner-id/pep api.verifik.co/v2/co/foreigner-id/pep https://api.verifik.co/v2/co/foreigner-id/pep GET v2/co/foreigner-id/pep GET /v2/co/foreigner-id/pep | [\U0001F1E8\U0001F1F4 Colombia - Special Stay Permit (PEP)](/identity-validation/colombia/special-stay-permit-pep) |
 | `v2/co/foreigner-id/ppt` | v2 co foreigner-id ppt co/foreigner-id/ppt /co/foreigner-id/ppt api/co/foreigner-id/ppt /api/co/foreigner-id/ppt api co foreigner-id ppt foreigner-id/ppt /foreigner-id/ppt api.verifik.co/v2/co/foreigner-id/ppt https://api.verifik.co/v2/co/foreigner-id/ppt GET v2/co/foreigner-id/ppt GET /v2/co/foreigner-id/ppt | [Colombia — PPT (Temporary Protection Permit)](/identity/colombia-ppt) |
 | `v2/co/inpec` | v2 co inpec co/inpec /co/inpec api/co/inpec /api/co/inpec api co inpec api.verifik.co/v2/co/inpec https://api.verifik.co/v2/co/inpec GET v2/co/inpec GET /v2/co/inpec | [Colombia - INPEC Prison Records Check](/background-check/colombia-inpec) |
+| `v2/co/jcc` | v2 co jcc co/jcc /co/jcc api/co/jcc /api/co/jcc api co jcc api.verifik.co/v2/co/jcc https://api.verifik.co/v2/co/jcc GET v2/co/jcc GET /v2/co/jcc | [Colombia — Junta Central de Contadores (JCC) Sanctions](/background-check/colombia-jcc-sanctions) |
 | `v2/co/medellin/vehicle/fines` | v2 co medellin vehicle fines co/medellin/vehicle/fines /co/medellin/vehicle/fines api/co/medellin/vehicle/fines /api/co/medellin/vehicle/fines api co medellin vehicle fines medellin/vehicle/fines /medellin/vehicle/fines vehicle/fines /vehicle/fines api.verifik.co/v2/co/medellin/vehicle/fines https://api.verifik.co/v2/co/medellin/vehicle/fines GET v2/co/medellin/vehicle/fines GET /v2/co/medellin/vehicle/fines | [Medellín - Transit Fines](/vehicle-validation/colombia/medellin-vehicle-fines) |
+| `v2/co/paco` | v2 co paco co/paco /co/paco api/co/paco /api/co/paco api co paco api.verifik.co/v2/co/paco https://api.verifik.co/v2/co/paco GET v2/co/paco GET /v2/co/paco | [Colombia — PACO Anti-Corruption Observatory](/background-check/colombia-paco-anticorruption) |
 | `v2/co/policia/consultar` | v2 co policia consultar co/policia/consultar /co/policia/consultar api/co/policia/consultar /api/co/policia/consultar api co policia consultar policia/consultar /policia/consultar api.verifik.co/v2/co/policia/consultar https://api.verifik.co/v2/co/policia/consultar GET v2/co/policia/consultar GET /v2/co/policia/consultar | [Colombia - Colombian Police Record Check](/background-check/colombia-police-record-check) |
 | `v2/co/policia/rnmc` | v2 co policia rnmc co/policia/rnmc /co/policia/rnmc api/co/policia/rnmc /api/co/policia/rnmc api co policia rnmc policia/rnmc /policia/rnmc api.verifik.co/v2/co/policia/rnmc https://api.verifik.co/v2/co/policia/rnmc GET v2/co/policia/rnmc GET /v2/co/policia/rnmc | [Colombia - Verify Police Compliance with Corrective Measures](/background-check/colombia-police-compliance-corrective-measures) |
 | `v2/co/policia/rnmc/premium` | v2 co policia rnmc premium co/policia/rnmc/premium /co/policia/rnmc/premium api/co/policia/rnmc/premium /api/co/policia/rnmc/premium api co policia rnmc premium policia/rnmc/premium /policia/rnmc/premium rnmc/premium /rnmc/premium api.verifik.co/v2/co/policia/rnmc/premium https://api.verifik.co/v2/co/policia/rnmc/premium GET v2/co/policia/rnmc/premium GET /v2/co/policia/rnmc/premium | [Colombia - Police RNMC premium](/background-check/colombia-police-compliance-corrective-measures-premium) |
@@ -3154,6 +3254,7 @@ _Last regenerated: 2026-10-30T18:24:18.849Z_
 | `v2/co/procuraduria/antecedentes` | v2 co procuraduria antecedentes co/procuraduria/antecedentes /co/procuraduria/antecedentes api/co/procuraduria/antecedentes /api/co/procuraduria/antecedentes api co procuraduria antecedentes procuraduria/antecedentes /procuraduria/antecedentes api.verifik.co/v2/co/procuraduria/antecedentes https://api.verifik.co/v2/co/procuraduria/antecedentes GET v2/co/procuraduria/antecedentes GET /v2/co/procuraduria/antecedentes | [Colombia - Disciplinary Records in Colombia (attorney's office)](/background-check/colombia-disciplinary-records-attorneys-office) |
 | `v2/co/rama/abogados` | v2 co rama abogados co/rama/abogados /co/rama/abogados api/co/rama/abogados /api/co/rama/abogados api co rama abogados rama/abogados /rama/abogados api.verifik.co/v2/co/rama/abogados https://api.verifik.co/v2/co/rama/abogados GET v2/co/rama/abogados GET /v2/co/rama/abogados | [Colombia — Lawyer lookup](/legal/lawyer-verification) |
 | `v2/co/rama/certificado/vigencia` | v2 co rama certificado vigencia co/rama/certificado/vigencia /co/rama/certificado/vigencia api/co/rama/certificado/vigencia /api/co/rama/certificado/vigencia api co rama certificado vigencia rama/certificado/vigencia /rama/certificado/vigencia certificado/vigencia /certificado/vigencia api.verifik.co/v2/co/rama/certificado/vigencia https://api.verifik.co/v2/co/rama/certificado/vigencia GET v2/co/rama/certificado/vigencia GET /v2/co/rama/certificado/vigencia | [Certificate of Validity for Legal Professionals](/legal/certificate-of-validity-for-legal-professionals) |
+| `v2/co/rama/jepms` | v2 co rama jepms co/rama/jepms /co/rama/jepms api/co/rama/jepms /api/co/rama/jepms api co rama jepms rama/jepms /rama/jepms api.verifik.co/v2/co/rama/jepms https://api.verifik.co/v2/co/rama/jepms GET v2/co/rama/jepms GET /v2/co/rama/jepms | [Colombia — Sentence Execution Courts (JEPMS)](/background-check/colombia-rama-jepms) |
 | `v2/co/rama/juzgado/expedientes` | v2 co rama juzgado expedientes co/rama/juzgado/expedientes /co/rama/juzgado/expedientes api/co/rama/juzgado/expedientes /api/co/rama/juzgado/expedientes api co rama juzgado expedientes rama/juzgado/expedientes /rama/juzgado/expedientes juzgado/expedientes /juzgado/expedientes api.verifik.co/v2/co/rama/juzgado/expedientes https://api.verifik.co/v2/co/rama/juzgado/expedientes GET v2/co/rama/juzgado/expedientes GET /v2/co/rama/juzgado/expedientes | [Colombia — Judicial records (court files / expedientes)](/legal/colombia-judicial-records) |
 | `v2/co/rama/proceso` | v2 co rama proceso co/rama/proceso /co/rama/proceso api/co/rama/proceso /api/co/rama/proceso api co rama proceso rama/proceso /rama/proceso api.verifik.co/v2/co/rama/proceso https://api.verifik.co/v2/co/rama/proceso GET v2/co/rama/proceso GET /v2/co/rama/proceso | [Retrieve Details of a Legal Process by Number](/legal/retrieve-details-of-a-legal-process-by-number) |
 | `v2/co/rama/procesos` | v2 co rama procesos co/rama/procesos /co/rama/procesos api/co/rama/procesos /api/co/rama/procesos api co rama procesos rama/procesos /rama/procesos api.verifik.co/v2/co/rama/procesos https://api.verifik.co/v2/co/rama/procesos GET v2/co/rama/procesos GET /v2/co/rama/procesos | [Colombia — Judicial processes](/legal/colombian-legal-processes) |
@@ -3342,6 +3443,12 @@ _Last regenerated: 2026-10-30T18:24:18.849Z_
 | `v2/check-lists` | v2 check-lists check-lists /check-lists api/check-lists /api/check-lists api check-lists api.verifik.co/v2/check-lists https://api.verifik.co/v2/check-lists GET v2/check-lists GET /v2/check-lists | [Create a checklist](/check-list/create-a-check-list) |
 | `v2/check-lists/{id}` | v2/check-lists /v2/check-lists v2 check-lists check-lists /check-lists api/check-lists /api/check-lists api check-lists | [Delete a checklist](/check-list/delete-a-check-list) |
 
+## Cia World Leaders
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/cia-world-leaders` | v2 cia-world-leaders cia-world-leaders /cia-world-leaders api/cia-world-leaders /api/cia-world-leaders api cia-world-leaders api.verifik.co/v2/cia-world-leaders https://api.verifik.co/v2/cia-world-leaders GET v2/cia-world-leaders GET /v2/cia-world-leaders | [CIA World Leaders (Foreign PEP Directory)](/background-check/international/cia-world-leaders) |
+
 ## Client Settings
 
 | Endpoint | Aliases | Page |
@@ -3353,6 +3460,12 @@ _Last regenerated: 2026-10-30T18:24:18.849Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/clients/me` | v2 clients me clients/me /clients/me api/clients/me /api/clients/me api clients me api.verifik.co/v2/clients/me https://api.verifik.co/v2/clients/me GET v2/clients/me GET /v2/clients/me | [Account Information](/accounts/clients/account-information) |
+
+## Csl
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/csl` | v2 csl csl /csl api/csl /api/csl api csl api.verifik.co/v2/csl https://api.verifik.co/v2/csl GET v2/csl GET /v2/csl | [US Consolidated Screening List (CSL)](/background-check/international/us-consolidated-screening-list) |
 
 ## Data Retention
 
@@ -3459,6 +3572,18 @@ _Last regenerated: 2026-10-30T18:24:18.849Z_
 | --- | --- | --- |
 | `v2/ofac` | v2 ofac ofac /ofac api/ofac /api/ofac api ofac api.verifik.co/v2/ofac https://api.verifik.co/v2/ofac GET v2/ofac GET /v2/ofac | [OFAC Background Check](/background-check/international/ofac-background-check) |
 
+## Offshore Leaks
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/offshore-leaks` | v2 offshore-leaks offshore-leaks /offshore-leaks api/offshore-leaks /api/offshore-leaks api offshore-leaks api.verifik.co/v2/offshore-leaks https://api.verifik.co/v2/offshore-leaks GET v2/offshore-leaks GET /v2/offshore-leaks | [ICIJ Offshore Leaks Database](/background-check/international/icij-offshore-leaks) |
+
+## Ofsi
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/ofsi` | v2 ofsi ofsi /ofsi api/ofsi /api/ofsi api ofsi api.verifik.co/v2/ofsi https://api.verifik.co/v2/ofsi GET v2/ofsi GET /v2/ofsi | [UK OFSI Consolidated Sanctions](/background-check/international/uk-ofsi-sanctions) |
+
 ## UN
 
 | Endpoint | Aliases | Page |
@@ -3493,6 +3618,12 @@ _Last regenerated: 2026-10-30T18:24:18.849Z_
 | `v2/projects/{id}/data-retention` | v2/projects/data-retention /v2/projects/data-retention v2 projects data-retention projects/data-retention /projects/data-retention api/projects/data-retention /api/projects/data-retention api projects data-retention | [Update Project Retention Policy](/resources/data-retention/update-project-retention-policy) |
 | `v2/projects/email-login` | v2 projects email-login projects/email-login /projects/email-login api/projects/email-login /api/projects/email-login api projects email-login api.verifik.co/v2/projects/email-login https://api.verifik.co/v2/projects/email-login GET v2/projects/email-login GET /v2/projects/email-login | [API Key Access via Email](/accounts/authentication/api-key-access-via-email) |
 | `v2/projects/phone-login` | v2 projects phone-login projects/phone-login /projects/phone-login api/projects/phone-login /api/projects/phone-login api projects phone-login api.verifik.co/v2/projects/phone-login https://api.verifik.co/v2/projects/phone-login GET v2/projects/phone-login GET /v2/projects/phone-login | [API Key Access via Phone](/authentication/api-key-access-via-phone) |
+
+## Us Terrorists
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/us-terrorists` | v2 us-terrorists us-terrorists /us-terrorists api/us-terrorists /api/us-terrorists api us-terrorists api.verifik.co/v2/us-terrorists https://api.verifik.co/v2/us-terrorists GET v2/us-terrorists GET /v2/us-terrorists | [US State Department Terrorist Designations](/background-check/international/us-state-terrorists) |
 
 ## Usa
 

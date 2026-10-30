@@ -956,6 +956,26 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/colombia-jcc-sanctions",
+					label: "🇨🇴 Colombia - Disciplinary Sanctions (JCC)",
+				},
+				{
+					type: "doc",
+					id: "background-check/colombia-paco-anticorruption",
+					label: "🇨🇴 Colombia - Anti-Corruption Transparency (PACO)",
+				},
+				{
+					type: "doc",
+					id: "background-check/colombia-rama-jepms",
+					label: "🇨🇴 Colombia - Sentence Execution Courts (JEPMS)",
+				},
+				{
+					type: "doc",
+					id: "background-check/adverse-media-google-rss",
+					label: "🌐 Adverse Media & Google News RSS",
+				},
+				{
+					type: "doc",
 					id: "background-check/dea-background-check",
 					label: "🌐 DEA Background Check",
 				},
@@ -983,6 +1003,51 @@ const sidebars = {
 					type: "doc",
 					id: "background-check/onu-background-check",
 					label: "🌐 UN Background Check",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/cia-world-leaders",
+					label: "🌐 CIA World Leaders (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/eu-terrorists-and-sanctions",
+					label: "🌐 EU Terrorists & Financial Sanctions",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/us-consolidated-screening-list",
+					label: "🌐 US Consolidated Screening List (CSL)",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/dss-and-secret-service-most-wanted",
+					label: "🌐 DSS & Secret Service Most Wanted",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/us-state-terrorists",
+					label: "🌐 US State Terrorists & Exclusion List",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/uk-ofsi-sanctions",
+					label: "🌐 UK OFSI Consolidated Sanctions",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/multilateral-world-bank-and-iadb",
+					label: "🌐 World Bank & IDB Debarred Lists",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/icij-offshore-leaks",
+					label: "🌐 ICIJ Offshore Leaks Database",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/sec-and-hhs-exclusions",
+					label: "🌐 SEC Sanctions & HHS Health Exclusions",
 				},
 			],
 		},

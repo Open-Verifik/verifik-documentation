@@ -726,6 +726,26 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/colombia-jcc-sanctions",
+					label: "🇨🇴 Colombia - Junta Central de Contadores (JCC)",
+				},
+				{
+					type: "doc",
+					id: "background-check/colombia-paco-anticorruption",
+					label: "🇨🇴 Colombia - Portal Anticorrupción (PACO)",
+				},
+				{
+					type: "doc",
+					id: "background-check/colombia-rama-jepms",
+					label: "🇨🇴 Colombia - Juzgados de Ejecución de Penas (JEPMS)",
+				},
+				{
+					type: "doc",
+					id: "background-check/adverse-media-google-rss",
+					label: "📰 Medios Adversos - Google RSS",
+				},
+				{
+					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-europol",
 					label: "🌐 Europol - Antecedentes",
 				},
@@ -753,6 +773,51 @@ const sidebars = {
 					type: "doc",
 					id: "verificacion-de-antecedentes/internacional/verificacion-antecedentes-onu",
 					label: "🌐 ONU - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/cia-world-leaders",
+					label: "🌐 CIA - Líderes Mundiales y PEPs",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/eu-terrorists-and-sanctions",
+					label: "🇪🇺 Unión Europea - Terroristas y Sanciones",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/us-consolidated-screening-list",
+					label: "🇺🇸 EE. UU. - Lista Consolidada de Selección (CSL)",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/dss-and-secret-service-most-wanted",
+					label: "🇺🇸 EE. UU. - Más Buscados DSS y Servicio Secreto",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/us-state-terrorists",
+					label: "🇺🇸 EE. UU. - Terroristas Depto. de Estado",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/uk-ofsi-sanctions",
+					label: "🇬🇧 Reino Unido - Sanciones Financieras OFSI",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/multilateral-world-bank-and-iadb",
+					label: "🌐 Multilateral - Banco Mundial y BID",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/icij-offshore-leaks",
+					label: "🌐 ICIJ - Base de Datos Offshore Leaks",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/sec-and-hhs-exclusions",
+					label: "🇺🇸 EE. UU. - Exclusiones SEC y HHS OIG",
 				},
 			],
 		},

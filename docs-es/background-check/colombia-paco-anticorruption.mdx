@@ -1,0 +1,232 @@
+---
+id: colombia-paco-anticorruption
+title: Colombia — Portal Anticorrupción (PACO) Suite Integral de Sanciones
+description: Consulta consolidada de inhabilidades disciplinarias (SIRI), responsabilidades fiscales (SIBOR), multas y sanciones contractuales de SECOP a través del Portal Anticorrupción de Colombia.
+sidebar_label: 🇨🇴 Colombia — PACO Anticorrupción
+slug: /background-check/colombia-paco-anticorruption
+keywords:
+  - v2/co/paco
+  - /v2/co/paco
+  - v2/co/anticorruption
+  - /v2/co/anticorruption
+  - portal anticorrupcion colombia
+  - paco sanciones
+  - inhabilidades siri paco
+  - multas secop contratistas
+  - antecedentes fiscales sibor
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Portal Anticorrupción (PACO) Suite Integral de Sanciones
+
+Verifik ofrece una integración programática centralizada con el **Portal Anticorrupción de Colombia (PACO)**, la plataforma oficial del Estado colombiano que articula la información de contratación pública, inhabilidades e incompatibilidades, sanciones disciplinarias y responsabilidades fiscales.
+
+Este endpoint unifica en una sola llamada de alta velocidad la consulta contra los principales registros oficiales de control:
+1. **Inhabilidades e Incompatibilidades Disciplinarias (SIRI):** Registro de sanciones de la Procuraduría General de la Nación.
+2. **Boletín de Responsables Fiscales (SIBOR):** Registro de juicios fiscales con fallo ejecutoriado de la Contraloría General de la República.
+3. **Multas y Sanciones Contractuales SECOP:** Incumplimientos, multas y declaraciones de caducidad registradas en el Sistema Electrónico para la Contratación Pública (SECOP I, SECOP II y Colombia Compra Eficiente).
+4. **Ficha y Reporte del Contratista:** Resumen consolidado del historial y enlace al certificado oficial en formato PDF.
+
+---
+
+## Casos de Uso
+
+- **Contratación Pública y Licitaciones:** Verificación de capacidad jurídica y ausencia de inhabilidades sobrevinientes para participar en procesos licitatorios del Estado.
+- **Cumplimiento y Debida Diligencia Empresarial (KYC/KYB/AML):** Monitoreo continuo de contratistas, consorcios, uniones temporales y subcontratistas en matrices de riesgo SAGRILAFT.
+- **Prevención de Riesgo Reputacional y de Fraude:** Detección inmediata de personas naturales o empresas multadas o inhabilitadas por entidades estatales.
+
+---
+
+## Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/paco
+```
+
+*Ruta alterna:* `GET https://api.verifik.co/v2/co/anticorruption`
+
+### Encabezados (Headers)
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parámetros de Consulta (Query Params)
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `documentType` | string | No | Tipo de documento de identidad: `CC` (predeterminado), `CE`, `NIT`, `PAS`. |
+| `documentNumber` | string | **Sí** | Número de documento a consultar (cédula o NIT sin dígito de verificación ni guiones, ej. `75086330` o `800197268`). |
+
+---
+
+## Ejemplos de Solicitud
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/paco",
+  params: {
+    documentType: "CC",
+    documentNumber: "75086330",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar PACO:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/paco"
+
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+
+params = {
+    "documentType": "CC",
+    "documentNumber": "75086330"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/paco?documentType=CC&documentNumber=75086330" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Respuestas de la API
+
+<Tabs>
+  <TabItem value="200-sanctions" label="200 (Con Sanciones o Multas Registradas)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "75086330",
+    "contractor": {
+      "name": "CONSTRUCTORA E INGENIERIA EJEMPLO S.A.S.",
+      "documentNumber": "75086330",
+      "documentType": "CC"
+    },
+    "siriSanctions": [],
+    "fiscalSanctions": [],
+    "secopPenalties": [
+      {
+        "entity": "ALCALDÍA MAYOR DE BOGOTÁ D.C.",
+        "penaltyType": "MULTA",
+        "amount": 25000000,
+        "date": "2024-05-12",
+        "resolution": "RES-2024-089",
+        "status": "EJECUTORIADA"
+      }
+    ],
+    "secopDatabases": {
+      "secopI": true,
+      "secopII": true,
+      "colombiaCompraEficiente": true
+    },
+    "hasSanctions": true,
+    "totalSanctions": 1,
+    "reportPdfUrl": "https://api.verifik.co/v2/co/paco/report/75086330.pdf"
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:30:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-clean" label="200 (Sin Sanciones / Contratista Limpio)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "1030584904",
+    "contractor": {
+      "name": "PERSONA CONSULTORA EJEMPLO",
+      "documentNumber": "1030584904",
+      "documentType": "CC"
+    },
+    "siriSanctions": [],
+    "fiscalSanctions": [],
+    "secopPenalties": [],
+    "secopDatabases": {
+      "secopI": false,
+      "secopII": true,
+      "colombiaCompraEficiente": false
+    },
+    "hasSanctions": false,
+    "totalSanctions": 0,
+    "reportPdfUrl": null
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:30:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400 (Parámetros Inválidos)">
+
+```json
+{
+  "error": {
+    "message": "Invalid document number provided",
+    "code": "INVALID_PARAMETERS"
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+En ambiente Sandbox (`sandbox.verifik.co` o modo sandbox activo), puedes utilizar los siguientes perfiles de prueba:
+
+| Documento | Tipo | Comportamiento en Sandbox |
+| :--- | :--- | :--- |
+| `75086330` | `CC` | Contratista con multas contractuales en SECOP (`hasSanctions: true`, 1 multa registrada). |
+| `800197268` | `NIT` | Entidad jurídica con reporte de sanciones fiscales y contractuales (`hasSanctions: true`). |
+| `1030584904` | `CC` | Contratista sin sanciones disciplinarias, fiscales ni multas (`hasSanctions: false`). |
+| `12345678` | `CC` | Registro limpio sin antecedentes en registros de contratación (`hasSanctions: false`). |

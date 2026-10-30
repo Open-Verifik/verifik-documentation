@@ -1,0 +1,209 @@
+---
+id: uk-ofsi-sanctions
+title: Reino Unido — Sanciones Financieras OFSI y FCDO
+description: Consulta de la Lista Consolidada de Sanciones Financieras de la Oficina de Implementación de Sanciones Financieras (OFSI) de HM Treasury y el FCDO del Reino Unido.
+sidebar_label: 🇬🇧 Reino Unido — Sanciones OFSI
+slug: /background-check/international/uk-ofsi-sanctions
+keywords:
+  - v2/ofsi
+  - /v2/ofsi
+  - uk ofsi sanctions
+  - hm treasury sanctions list
+  - fcdo uk sanctions
+  - sanciones reino unido
+  - congelacion de fondos uk
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Reino Unido — Sanciones Financieras OFSI y FCDO
+
+El endpoint de **Sanciones del Reino Unido (UK OFSI / FCDO)** permite consultar programáticamente la **Lista Consolidada de Sanciones Financieras** administrada por la *Office of Financial Sanctions Implementation* (OFSI) del Tesoro de Su Majestad (*HM Treasury*) y el Ministerio de Asuntos Exteriores y de la Mancomunidad (*FCDO*).
+
+Tras la salida del Reino Unido de la Unión Europea (post-Brexit) y la promulgación del *Sanctions and Anti-Money Laundering Act 2018 (SAMLA)*, el régimen de sanciones británico opera de manera autónoma, aplicando órdenes directas de congelación de fondos, prohibición de proveer servicios fiduciarios o marítimos y restricciones de inversión contra regímenes hostiles, oligarcas, redes de corrupción y entidades de defensa.
+
+---
+
+## Casos de Uso
+
+- **Operaciones Financieras y Comerciales con el Reino Unido:** Obligatorio para cualquier entidad que procese pagos en libras esterlinas (GBP), opere con bancos británicos o tenga sucursales en jurisdicción del Reino Unido.
+- **Prevención de Infracciones SAMLA:** Evita penalizaciones severas y sanciones civiles de responsabilidad objetiva impuestas por la OFSI por facilitar transacciones con entidades sancionadas.
+- **Debida Diligencia de Beneficiarios Finales (UBO):** Detección de accionistas controlantes o directores sujetos a sanciones patrimoniales británicas.
+
+---
+
+## Endpoint
+
+```http
+GET https://api.verifik.co/v2/ofsi
+```
+
+### Encabezados (Headers)
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parámetros de Consulta (Query Params)
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | Condicional | Nombre completo de la persona natural o jurídica a consultar (ej. `"Roman Abramovich"`). Obligatorio si no se incluye `documentNumber`. |
+| `documentNumber` | string | Condicional | Número de identificación, pasaporte o registro corporativo. Obligatorio si no se incluye `fullName`. |
+
+---
+
+## Ejemplos de Solicitud
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/ofsi",
+  params: {
+    fullName: "Roman Abramovich",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar sanciones OFSI:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ofsi"
+
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+
+params = {
+    "fullName": "Roman Abramovich"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/ofsi?fullName=Roman%20Abramovich" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Respuestas de la API
+
+<Tabs>
+  <TabItem value="200-found" label="200 (Sancionado por UK OFSI)">
+
+```json
+{
+  "data": {
+    "fullName": "ROMAN ABRAMOVICH",
+    "firstName": "ROMAN",
+    "lastName": "ABRAMOVICH",
+    "arrayName": ["ROMAN", "ABRAMOVICH"],
+    "foundInOFSI": true,
+    "details": {
+      "id": "uk-ofsi-15024",
+      "name": "Roman Arkadyevich ABRAMOVICH",
+      "schema": "Person",
+      "aliases": [
+        "Roman Abramovitsj"
+      ],
+      "birthDate": "1966-10-24",
+      "countries": [
+        "Russia",
+        "Israel",
+        "Portugal"
+      ],
+      "addresses": [
+        "Moscow, Russia"
+      ],
+      "programs": [
+        "Russia (Sanctions) (EU Exit) Regulations 2019"
+      ],
+      "sanctions": "Asset freeze; Director disqualification",
+      "firstSeen": "2022-03-10",
+      "lastSeen": "2026-10-30"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:30:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-clean" label="200 (Sin Sanciones / Registro Limpio)">
+
+```json
+{
+  "data": {
+    "fullName": "MATEO VERIFIK",
+    "firstName": "MATEO",
+    "lastName": "VERIFIK",
+    "arrayName": ["MATEO", "VERIFIK"],
+    "foundInOFSI": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:30:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400 (Parámetros Faltantes)">
+
+```json
+{
+  "error": {
+    "message": "Either fullName or documentNumber must be provided",
+    "code": "MISSING_REQUIRED_PARAMETER"
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+En ambiente Sandbox (`sandbox.verifik.co` o modo sandbox activo), puedes probar con los siguientes identificadores:
+
+| Nombre | Comportamiento en Sandbox |
+| :--- | :--- |
+| `"Roman Abramovich"` | Retorna coincidencia positiva bajo sanciones británicas (`foundInOFSI: true`, congelación de activos). |
+| `"Mateo Verifik"` | Retorna sin coincidencias en listas británicas (`foundInOFSI: false`). |

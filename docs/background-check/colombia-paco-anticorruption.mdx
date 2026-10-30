@@ -1,0 +1,250 @@
+---
+id: colombia-paco-anticorruption
+title: Colombia — PACO Anti-Corruption Observatory
+description: Check consolidated integrity records, SIRI disciplinary sanctions, fiscal liabilities, and SECOP public contract penalties via the official Colombian anti-corruption portal.
+slug: /background-check/colombia-paco-anticorruption
+keywords:
+  - v2/co/paco
+  - /v2/co/paco
+  - v2/co/anticorruption
+  - /v2/co/anticorruption
+  - portal anticorrupcion paco
+  - sanciones secop colombia
+  - siri procuraduria paco
+  - antecedentes fiscales contraloria paco
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — PACO Anti-Corruption Observatory
+
+The **Portal Anticorrupción de Colombia (PACO)** is the national transparency observatory and integrity clearinghouse managed by the **Secretaría de Transparencia de la Presidencia de la República**.
+
+PACO unifies and cross-references data across Colombia's primary oversight bodies:
+1. **SIRI (Sistema de Información de Registro de Inhabilidades y Sanciones)**: Disciplinary disqualifications and sanctions registered by the Procuraduría General de la Nación.
+2. **Boletín de Responsables Fiscales**: Unresolved fiscal liability rulings issued by the Contraloría General de la República.
+3. **SECOP I, SECOP II & Tienda Virtual**: Administrative contract breach fines, forfeiture declarations, and procurement disqualifications (*inhabilidades para contratar con el Estado*).
+4. **Historical Public Contracting History**: Volume and total contract values executed across municipal, departmental, and national public entities.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/paco
+```
+
+*Alias route:* `GET https://api.verifik.co/v2/co/anticorruption`
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Yes** | Document or tax number (NIT or CC without spaces or hyphens). E.g. `900123456` or `75086330`. |
+| `documentType` | string | No | Document type: `CC` (default), `CE`, `NIT`, `TI`, `PAS`. |
+
+### Use Cases
+
+- **Third-Party & Vendor Due Diligence:** Screen prospective suppliers and contractors against government-wide debarment lists before issuing contracts.
+- **M&A and Joint Ventures:** Perform statutory compliance audits on target entities and executive leadership in Colombia.
+- **Public Procurement Compliance:** Verify legal capacity (*habilidad contractual*) to avoid entering into legally void public contracts under Law 80 of 1993 and Law 1474 of 2011 (Anti-Corruption Statute).
+
+---
+
+### Request Examples
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/paco",
+  params: {
+    documentType: "NIT",
+    documentNumber: "900123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+
+conn.request("GET", "/v2/co/paco?documentType=NIT&documentNumber=900123456", headers=headers)
+res = conn.getresponse()
+data = res.read()
+
+print(json.loads(data.decode("utf-8")))
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/paco?documentType=NIT&documentNumber=900123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response Examples
+
+<Tabs>
+<TabItem value="200-sanctions" label="200 (Sanctions / Penalties Detected)">
+
+```json
+{
+  "data": {
+    "documentType": "NIT",
+    "documentNumber": "900123456",
+    "contractorName": "CONSTRUCTORA NACIONAL S.A.S.",
+    "hasSanctions": true,
+    "summary": {
+      "siriDisciplinaryCount": 0,
+      "fiscalLiabilityCount": 1,
+      "secopPenaltyCount": 1,
+      "totalSanctions": 2
+    },
+    "contractSummaryByPlatform": {
+      "secopI": {
+        "count": 4,
+        "totalValue": 1250000000
+      },
+      "secopII": {
+        "count": 8,
+        "totalValue": 3480000000
+      },
+      "colombiaCompraEficiente": {
+        "count": 1,
+        "totalValue": 150000000
+      }
+    },
+    "sanctions": [
+      {
+        "type": "FISCAL",
+        "entity": "CONTRALORÍA GENERAL DE LA REPÚBLICA",
+        "sanctionDate": "2024-03-12",
+        "description": "Fallo con responsabilidad fiscal por ejecución irregular de obra pública",
+        "amount": 185000000,
+        "status": "VIGENTE"
+      },
+      {
+        "type": "PENALIDAD_SECOP",
+        "entity": "ALCALDÍA MAYOR DE BOGOTÁ",
+        "sanctionDate": "2025-01-20",
+        "description": "Declaratoria de incumplimiento contractual con cobro de cláusula penal pecuniaria",
+        "amount": 75000000,
+        "status": "EN_FIRME"
+      }
+    ],
+    "reportPdfUrl": "https://api.verifik.co/storage/reports/paco-900123456-cert.pdf"
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:20:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Clean Compliance Record)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "12345678",
+    "contractorName": "MARIA FERNANDA ROJAS",
+    "hasSanctions": false,
+    "summary": {
+      "siriDisciplinaryCount": 0,
+      "fiscalLiabilityCount": 0,
+      "secopPenaltyCount": 0,
+      "totalSanctions": 0
+    },
+    "contractSummaryByPlatform": {
+      "secopI": {
+        "count": 0,
+        "totalValue": 0
+      },
+      "secopII": {
+        "count": 2,
+        "totalValue": 45000000
+      },
+      "colombiaCompraEficiente": {
+        "count": 0,
+        "totalValue": 0
+      }
+    },
+    "sanctions": [],
+    "reportPdfUrl": null
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:20:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing Parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentNumber is required"
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Sandbox Probes
+
+Test deterministic behaviors in sandbox environments using these profiles:
+
+| Document Number | Type | Expected Behavior |
+| :--- | :--- | :--- |
+| `900123456` | `NIT` | Corporate contractor profile with 1 fiscal liability and 1 SECOP penalty record (`hasSanctions: true`). |
+| `75086330` | `CC` | Individual contractor profile with active SIRI disciplinary sanction. |
+| `12345678` | `CC` | Clean integrity record (`hasSanctions: false`, `totalSanctions: 0`). |

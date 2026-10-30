@@ -1,0 +1,202 @@
+---
+id: colombia-jcc-sanctions
+title: Colombia — Junta Central de Contadores (JCC) Sanctions
+description: Verify disciplinary sanctions, suspensions, and license cancellations of Colombian public accountants and auditing firms via the official JCC registry.
+slug: /background-check/colombia-jcc-sanctions
+keywords:
+  - v2/co/jcc
+  - /v2/co/jcc
+  - v2/co/jcc/sanctions
+  - /v2/co/jcc/sanctions
+  - junta central de contadores
+  - antecedentes contadores colombia
+  - sanciones jcc
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Junta Central de Contadores (JCC) Disciplinary Sanctions
+
+The **Junta Central de Contadores (JCC)** is the official disciplinary tribunal and regulatory authority for the accounting profession in Colombia under Law 43 of 1990 and Decree 1955 of 2010.
+
+Verifik provides direct integration with the official registry to verify whether an individual public accountant (*Contador Público*) or accounting firm (*Sociedad de Contadores Públicos*) has active or historical disciplinary sanctions, suspensions, or cancellations of their professional registration card (*Tarjeta Profesional*).
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/jcc
+```
+
+*Alias route:* `GET https://api.verifik.co/v2/co/jcc/sanctions`
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Yes** | Document number to consult (5 to 15 digits, without dots or hyphens). E.g. `14322443` or `900123456`. |
+| `documentType` | string | No | Document type: `CC` (default), `CE`, or `NIT`. |
+
+### Use Cases
+
+- **Vendor & Auditor Onboarding:** Ensure external audit teams, statutory auditors (*Revisores Fiscales*), and accounting advisors maintain unblemished professional standing.
+- **Corporate Compliance & SOX:** Mitigate financial reporting risk by validating that signing accountants are legally authorized to certify financial statements under Colombian law.
+- **Procurement & Tenders:** Comply with statutory requirements when contracting consulting or accounting firms for public and private tenders.
+
+---
+
+### Request Examples
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/jcc",
+  params: {
+    documentType: "CC",
+    documentNumber: "14322443",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+
+conn.request("GET", "/v2/co/jcc?documentType=CC&documentNumber=14322443", headers=headers)
+res = conn.getresponse()
+data = res.read()
+
+print(json.loads(data.decode("utf-8")))
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/jcc?documentType=CC&documentNumber=14322443" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response Examples
+
+<Tabs>
+<TabItem value="200-sanctions" label="200 (Sanctions Found)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "14322443",
+    "fullName": "CARLOS ARTURO VALENCIA",
+    "hasSanctions": true,
+    "totalSanctions": 1,
+    "sanctions": [
+      {
+        "sanctionType": "SUSPENSIÓN",
+        "accountantName": "CARLOS ARTURO VALENCIA",
+        "documentNumber": "14322443",
+        "legalProcess": "2023-511",
+        "resolution": "T-018-2026",
+        "resolutionDate": "2026-03-26",
+        "effectiveDate": "2026-09-30",
+        "startDate": "2026-10-01",
+        "months": 3,
+        "endDate": "2027-01-01",
+        "registrationDate": "2026-10-01"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:15:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Clean Record / No Sanctions)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "12345678",
+    "fullName": null,
+    "hasSanctions": false,
+    "totalSanctions": 0,
+    "sanctions": []
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:15:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Validation Error)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentNumber is required"
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Sandbox Probes
+
+Use these deterministic test identifiers in sandbox environments:
+
+| Document Number | Type | Expected Result |
+| :--- | :--- | :--- |
+| `14322443` | `CC` | Sanctioned accountant profile (`hasSanctions: true`, active suspension resolution `T-018-2026`). |
+| `75086330` | `CC` | Sanctioned accountant profile (`hasSanctions: true`, 3-month suspension). |
+| `12345678` | `CC` | Clean record (`hasSanctions: false`, `totalSanctions: 0`). |
