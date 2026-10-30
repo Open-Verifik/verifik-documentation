@@ -1,0 +1,143 @@
+---
+id: colombia-sicaac-cases
+title: Colombia — Casos de Conciliación Prejudicial e Insolvencia
+description: Consulta casos de conciliación prejudicial y trámites de insolvencia de persona natural en Colombia por número de documento.
+sidebar_label: Colombia — Conciliación e Insolvencia
+slug: /legal/colombia-sicaac-cases
+keywords:
+  - v2/co/sicaac/cases
+  - /v2/co/sicaac/cases
+  - v2/co/legal/prelitigation
+  - /v2/co/legal/prelitigation
+  - v2/co/sicaac/insolvency
+  - /v2/co/sicaac/insolvency
+  - conciliacion prejudicial colombia
+  - insolvencia persona natural colombia
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Conciliación Prejudicial e Insolvencia de Persona Natural
+
+Verifik ofrece acceso programático al registro oficial de resolución de conflictos e insolvencia económica de Colombia. De conformidad con las Leyes 640 y 2220, la conciliación extrajudicial en derecho es un **requisito de procedibilidad obligatorio** previo a la presentación de demandas civiles, comerciales y laborales.
+
+Este endpoint es una herramienta clave para **prevención de fraude y evaluación crediticia**, ya que detecta litigios inminentes e insolvencias **60 a 120 días antes** de que aparezcan en juzgados (Rama Judicial) o centrales de riesgo.
+
+---
+
+## 1. Casos de Conciliación Prejudicial
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/sicaac/cases
+```
+
+*Ruta alterna:* `GET https://api.verifik.co/v2/co/legal/prelitigation`
+
+### Encabezados
+
+| Nombre        | Valor              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parámetros de Consulta
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `documentType` | string | No | Tipo de documento: `CC` (predeterminado), `CE`, `TI`, `RC`, `PAS`, `NIT`, `NIE`, `PPT`. |
+| `documentNumber` | string | **Sí** | Número de documento a consultar (ej. `75086330` o `900123456`). |
+| `force` | boolean | No | `true` para consultar la fuente oficial en vivo y omitir la caché. |
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "75086330",
+    "mechanism": "CONCILIACION",
+    "hasRecords": true,
+    "totalCases": 1,
+    "summary": {
+      "asConvocado": 1,
+      "asConvocante": 0,
+      "riskLevel": "HIGH"
+    },
+    "cases": [
+      {
+        "caseType": "CONCILIACION",
+        "entityName": "CENTRO DE ARBITRAJE Y CONCILIACION DE LA CÁMARA DE COMERCIO DE MANIZALES POR CALDAS",
+        "role": "CONVOCADO",
+        "filingDate": "2016-06-17",
+        "isInsolvencyCenter": true
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:25:00",
+    "message": "Official consultation completed successfully"
+  }
+}
+```
+
+---
+
+## 2. Registro de Insolvencia de Persona Natural No Comerciante
+
+Verifica si un ciudadano ha radicado trámites de insolvencia económica (negociación de deudas o liquidación patrimonial) bajo la Ley 1564 / Ley 2220.
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/sicaac/insolvency
+```
+
+*Ruta alterna:* `GET https://api.verifik.co/v2/co/legal/insolvency`
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "75086330",
+    "mechanism": "INSOLVENCIA",
+    "hasRecords": true,
+    "totalCases": 1,
+    "summary": {
+      "insolvencyStatus": "EN_TRAMITE",
+      "riskLevel": "CRITICAL"
+    },
+    "cases": [
+      {
+        "caseType": "INSOLVENCIA_PERSONA_NATURAL",
+        "entityName": "CENTRO DE ARBITRAJE Y CONCILIACION DE LA CÁMARA DE COMERCIO DE MANIZALES POR CALDAS",
+        "role": "DEUDOR",
+        "filingDate": "2016-06-17",
+        "status": "EN_TRAMITE"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:25:00",
+    "message": "Official consultation completed successfully"
+  }
+}
+```
+
+---
+
+## Perfiles de Prueba Sandbox
+
+Puedes probar en ambiente sandbox utilizando los siguientes perfiles fijos:
+
+| Documento | Tipo | Comportamiento Esperado |
+| :--- | :--- | :--- |
+| `75086330` | `CC` | Caso activo como `CONVOCADO` (Riesgo Alto) / Insolvencia activa (Riesgo Crítico). |
+| `10254228` | `CC` | Caso como `CONVOCANTE` (Riesgo Bajo). |
+| `900123456` | `NIT` | Casos comerciales de persona jurídica (Riesgo Medio). |
+| `12345678` | `CC` | Registro limpio (`hasRecords: false`, `totalCases: 0`). |
+

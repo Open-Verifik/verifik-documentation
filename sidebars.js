@@ -1052,6 +1052,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "legal/colombia-sicaac-cases",
+					label: "🇨🇴 Colombia — Pre-Litigation & Insolvency",
+				},
+				{
+					type: "doc",
 					id: "legal/colombia-judicial-records",
 					label: "🇨🇴 Colombia — Judicial Records",
 				},

@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-30T17:10:06.183Z
+Generated: 2026-10-30T18:24:18.799Z
 
-- **Files scanned:** 552
-- **Unique endpoint URLs:** 243
+- **Files scanned:** 553
+- **Unique endpoint URLs:** 244
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 227
 
@@ -13,7 +13,7 @@ Generated: 2026-10-30T17:10:06.183Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 192 | identity, biometrics, resources, etc. |
+| P2 | 193 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -343,6 +343,7 @@ Generated: 2026-10-30T17:10:06.183Z
 | P0 | `v2/co/runt/vehiculo` | `vehicle-validation/colombia/runt-vehicle-soat-rtm.md` |
 | P2 | `v2/co/sena/certificados` | `certificates/sena-certificates.mdx` |
 | P0 | `v2/co/sibga/valuation` | `vehicle-validation/colombia/sibga-vehicle-valuation.mdx` |
+| P2 | `v2/co/sicaac/cases` | `legal/colombia-sicaac-cases.mdx` |
 | P2 | `v2/co/sigep/name` | `legal/sigep-public-servant-by-name.mdx` |
 | P2 | `v2/co/sigep/number` | `legal/sigep-public-servant-by-number.mdx` |
 | P0 | `v2/co/simit/acuerdos` | `vehicle-validation/colombia/simit-agreements.mdx` |

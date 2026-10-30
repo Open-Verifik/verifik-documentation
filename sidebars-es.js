@@ -817,6 +817,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "legal/colombia-sicaac-cases",
+					label: "🇨🇴 Colombia — Conciliación e Insolvencia",
+				},
+				{
+					type: "doc",
 					id: "legal/antecedentes-judiciales-colombia",
 					label: "🇨🇴 Colombia — Antecedentes Judiciales",
 				},

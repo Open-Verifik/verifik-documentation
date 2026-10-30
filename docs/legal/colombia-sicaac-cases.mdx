@@ -1,0 +1,143 @@
+---
+id: colombia-sicaac-cases
+title: Colombia — Pre-Litigation & Conciliation Cases
+description: Query pre-litigation conciliation records and personal insolvency filings in Colombia by document number.
+sidebar_label: Colombia — Pre-Litigation & Conciliation
+slug: /legal/colombia-sicaac-cases
+keywords:
+  - v2/co/sicaac/cases
+  - /v2/co/sicaac/cases
+  - v2/co/legal/prelitigation
+  - /v2/co/legal/prelitigation
+  - v2/co/sicaac/insolvency
+  - /v2/co/sicaac/insolvency
+  - pre-litigation conciliation colombia
+  - insolvency persona natural colombia
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Pre-Litigation Conciliation & Personal Insolvency
+
+Verifik provides direct access to the official Colombian statutory dispute resolution and personal insolvency registry. Under Colombian Law (Ley 640 and Ley 2220), extrajudicial conciliation is a mandatory legal prerequisite (*requisito de procedibilidad*) before filing civil, commercial, or labor lawsuits in court.
+
+This API provides **early warning fraud prevention signals**, detecting commercial disputes and insolvency petitions **60 to 120 days before** they appear in court dockets (Rama Judicial) or credit bureaus.
+
+---
+
+## 1. Pre-Litigation Conciliation Cases
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/sicaac/cases
+```
+
+*Alias route:* `GET https://api.verifik.co/v2/co/legal/prelitigation`
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `documentType` | string | No | Document type: `CC` (default), `CE`, `TI`, `RC`, `PAS`, `NIT`, `NIE`, `PPT`. |
+| `documentNumber` | string | **Yes** | Document number (e.g. `75086330` or `900123456`). |
+| `force` | boolean | No | Set to `true` to bypass cache and query the official source live. |
+
+### Response Example
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "75086330",
+    "mechanism": "CONCILIACION",
+    "hasRecords": true,
+    "totalCases": 1,
+    "summary": {
+      "asConvocado": 1,
+      "asConvocante": 0,
+      "riskLevel": "HIGH"
+    },
+    "cases": [
+      {
+        "caseType": "CONCILIACION",
+        "entityName": "CENTRO DE ARBITRAJE Y CONCILIACION DE LA CÁMARA DE COMERCIO DE MANIZALES POR CALDAS",
+        "role": "CONVOCADO",
+        "filingDate": "2016-06-17",
+        "isInsolvencyCenter": true
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:25:00",
+    "message": "Official consultation completed successfully"
+  }
+}
+```
+
+---
+
+## 2. Personal Insolvency Registry (*Persona Natural No Comerciante*)
+
+Verify if an individual has filed for insolvency restructuring or liquidation under Title IV of the Colombian General Code of Process (Ley 1564 / Ley 2220).
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/sicaac/insolvency
+```
+
+*Alias route:* `GET https://api.verifik.co/v2/co/legal/insolvency`
+
+### Response Example
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "75086330",
+    "mechanism": "INSOLVENCIA",
+    "hasRecords": true,
+    "totalCases": 1,
+    "summary": {
+      "insolvencyStatus": "EN_TRAMITE",
+      "riskLevel": "CRITICAL"
+    },
+    "cases": [
+      {
+        "caseType": "INSOLVENCIA_PERSONA_NATURAL",
+        "entityName": "CENTRO DE ARBITRAJE Y CONCILIACION DE LA CÁMARA DE COMERCIO DE MANIZALES POR CALDAS",
+        "role": "DEUDOR",
+        "filingDate": "2016-06-17",
+        "status": "EN_TRAMITE"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:25:00",
+    "message": "Official consultation completed successfully"
+  }
+}
+```
+
+---
+
+## Sandbox Probes
+
+Test in sandbox mode using these deterministic mock profiles:
+
+| Document Number | Type | Expected Behavior |
+| :--- | :--- | :--- |
+| `75086330` | `CC` | Active dispute record as `CONVOCADO` (High Risk) / Active Insolvency (Critical). |
+| `10254228` | `CC` | Conciliation record as `CONVOCANTE` (Low Risk). |
+| `900123456` | `NIT` | Corporate commercial conciliation cases (Medium Risk). |
+| `12345678` | `CC` | Clean record (`hasRecords: false`, `totalCases: 0`). |
+
