@@ -1,0 +1,233 @@
+---
+id: app-features
+title: Funcionalidades de Smart-Agent
+sidebar_label: App Features
+description: Guía completa sobre el catálogo de App Features en Verifik, definición de endpoints, dependencias dinámicas de parámetros, precios y modos de ejecución.
+slug: /resources/app-features
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Catálogo de App Features en Smart-Agent
+
+:::info Motor del Catálogo
+Las **App Features** constituyen las piezas atómicas fundamentales del ecosistema Verifik. Cada servicio de consulta de identidad, antecedentes, vehículos, empresas y biometría se encuentra registrado como una funcionalidad dentro de este catálogo, regulando la validación de parámetros, el consumo de créditos y la renderización dinámica de formularios en **Smart-Agent** en [ai.verifik.co](https://ai.verifik.co).
+:::
+
+En la arquitectura de Verifik, un **App Feature** define el contrato técnico y el comportamiento en tiempo de ejecución de un servicio de verificación específico. En lugar de codificar reglas de validación rígidas en las aplicaciones cliente, Verifik expone este catálogo de manera programática.
+
+Tanto la interfaz web de Smart-Agent como las integraciones de clientes consumen este catálogo para generar dinámicamente formularios de entrada, validar datos antes de enviarlos a la API, calcular costos en créditos y enrutar las solicitudes hacia los microservicios correspondientes.
+
+---
+
+## Estructura del Esquema AppFeature
+
+Cada registro de App Feature cuenta con metadatos descriptivos, reglas de dependencias y configuración de precios:
+
+```json
+{
+  "_id": "64e3f190bc1e92001a123456",
+  "code": "co_citizen",
+  "name": "Colombia - Citizen Identity Validation",
+  "nameES": "Colombia - Validación de Cédula de Ciudadanía",
+  "description": "Validates official identification credentials against national civil registries.",
+  "descriptionES": "Valida documentos de identidad oficiales contra registros civiles nacionales.",
+  "country": "CO",
+  "baseCategory": "identity",
+  "group": "smartCheck",
+  "url": "v2/colombia/citizen",
+  "price": 0.15,
+  "smartCheckPrice": 0.15,
+  "feeType": "fixed",
+  "dependencies": [
+    {
+      "name": "documentType",
+      "label": "Document Type",
+      "labelES": "Tipo de Documento",
+      "type": "string",
+      "required": true,
+      "enum": ["CC", "TI", "CE"],
+      "default": "CC"
+    },
+    {
+      "name": "documentNumber",
+      "label": "Document Number",
+      "labelES": "Número de Documento",
+      "type": "string",
+      "required": true,
+      "regex": "^[0-9]{6,12}$",
+      "placeholder": "ej. 1234567890"
+    }
+  ]
+}
+```
+
+### Campos Principales del Esquema
+
+| Campo | Tipo | Descripción |
+|---|---|---|
+| `code` | `string` | Identificador único del servicio (ej. `co_citizen`, `world_api_dea`, `mx_curp`). |
+| `name` / `nameES` | `string` | Nombre legible en inglés y español para mostrar en paneles y catálogos. |
+| `description` / `descriptionES` | `string` | Descripción detallada del alcance y propósito del servicio de validación. |
+| `country` | `string` | Código ISO 3166-1 alfa-2 del país (ej. `CO`, `US`, `MX`, `BR`, `CL`) o `ALL` para listas internacionales. |
+| `baseCategory` | `string` | Clasificación temática: `identity`, `background-check`, `vehicle`, `business`, `financial`, `biometrics`. |
+| `group` | `string` | Modo de ejecución: `apiRequest` (endpoint directo REST), `smartCheck` (consola interactiva), `biometrics`. |
+| `url` | `string` | Ruta relativa del endpoint de ejecución en la API. |
+| `price` / `smartCheckPrice` | `number` | Costo de consumo en créditos por consulta exitosa. |
+| `feeType` | `string` | Modelo tarifario (`fixed`, `hybrid`, `tiered`). |
+| `dependencies` | `Array<Dependency>` | Matriz de parámetros y reglas de validación para generación de formularios y control de entradas. |
+
+---
+
+## Sistema Dinámico de Dependencias
+
+El arreglo `dependencies` permite a las aplicaciones construir formularios autovalidados sin necesidad de desarrollar componentes individuales para cada servicio.
+
+### Propiedades de Cada Dependencia
+- `name`: Nombre exacto del parámetro esperado por la API en el cuerpo o query string.
+- `label` y `labelES`: Etiquetas localizadas para renderizar títulos de campo.
+- `type`: Tipo de dato (`string`, `number`, `boolean`, `date`, `file`, `select`).
+- `required`: Booleano que indica obligatoriedad.
+- `enum`: Lista de valores aceptados para menús desplegables.
+- `regex`: Expresión regular para validación sintáctica inmediata en cliente y servidor.
+- `requiredWhen`: Lógica condicional (ej. el campo $Y$ es obligatorio solo si el campo $X$ equivale a `"CE"`).
+- `placeholder`: Valor de ejemplo mostrado al usuario.
+
+---
+
+## Generación Dinámica de UI en Smart-Agent
+
+Smart-Agent ([ai.verifik.co](https://ai.verifik.co)) utiliza este catálogo para ofrecer experiencias sin código:
+
+1. **Navegación del Catálogo**: Los usuarios filtran servicios por país, categoría temática y costo.
+2. **Construcción de Formularios**: Al seleccionar un servicio, la interfaz de Smart-Agent genera automáticamente los campos de entrada a partir de `dependencies`, aplicando máscaras de texto y selectores.
+3. **Plantillas para SmartBatch**: El esquema de dependencias genera automáticamente las columnas y validaciones de encabezados requeridas en archivos CSV para procesamiento por lotes.
+
+---
+
+## Consulta del Catálogo mediante API
+
+Puedes consultar programáticamente las funcionalidades disponibles, sus precios y parámetros requeridos utilizando nuestras rutas públicas y autenticadas.
+
+### 1. Listar Todas las Funcionalidades Públicas
+Recupera el catálogo completo de servicios activos:
+
+<Tabs>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/public/app-features?country=CO&category=identity" \
+  -H "Accept: application/json"
+```
+
+</TabItem>
+<TabItem value="nodejs" label="Node.js">
+
+```javascript
+const axios = require('axios');
+
+async function consultarCatalogo() {
+  try {
+    const respuesta = await axios.get('https://api.verifik.co/v2/public/app-features', {
+      params: { country: 'CO', category: 'identity' }
+    });
+    console.log(`Se encontraron ${respuesta.data.data.length} funcionalidades:`);
+    respuesta.data.data.forEach(func => {
+      console.log(`- [${func.code}] ${func.nameES} (${func.url})`);
+    });
+  } catch (error) {
+    console.error('Error al consultar catálogo:', error.message);
+  }
+}
+
+consultarCatalogo();
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/public/app-features"
+params = {"country": "CO", "category": "identity"}
+
+response = requests.get(url, params=params)
+datos = response.json()
+
+for func in datos.get("data", []):
+    print(f"- [{func.get('code')}] {func.get('nameES')} -> {func.get('url')}")
+```
+
+</TabItem>
+</Tabs>
+
+### 2. Inspeccionar una Funcionalidad Específica
+Obtén las dependencias y especificaciones técnicas de un código de servicio:
+
+```bash
+curl -X GET "https://api.verifik.co/v2/public/app-features/co_citizen" \
+  -H "Accept: application/json"
+```
+
+### 3. Listar Funcionalidades Habilitadas para tu Organización
+Consulta las funcionalidades activas en tu suscripción con tus tarifas de crédito personalizadas:
+
+```bash
+curl -X GET "https://api.verifik.co/v2/app-features/my-list" \
+  -H "Authorization: Bearer <tu_token_jwt>"
+```
+
+### 4. Consultar Países con Cobertura
+Obtén la lista de países actualmente cubiertos en la plataforma:
+
+```bash
+curl -X GET "https://api.verifik.co/v2/public/app-features/countries" \
+  -H "Accept: application/json"
+```
+
+---
+
+## Ejecución Dinámica a partir de Metadatos
+
+Una aplicación cliente puede validar y ejecutar un servicio de manera dinámica utilizando los metadatos de la funcionalidad:
+
+```javascript
+const axios = require('axios');
+
+async function ejecutarServicioDinamico(codigoServicio, valoresFormulario, jwtUsuario) {
+  // 1. Obtener metadatos de la funcionalidad
+  const respuestaMeta = await axios.get(`https://api.verifik.co/v2/public/app-features/${codigoServicio}`);
+  const feature = respuestaMeta.data.data;
+
+  // 2. Validar dependencias requeridas
+  for (const dep of feature.dependencies) {
+    if (dep.required && !valoresFormulario[dep.name]) {
+      throw new Error(`Falta el parámetro obligatorio: ${dep.name}`);
+    }
+  }
+
+  // 3. Ejecutar la llamada hacia la URL de destino
+  const respuestaEjecucion = await axios.post(
+    `https://api.verifik.co/${feature.url}`,
+    valoresFormulario,
+    {
+      headers: {
+        'Authorization': `Bearer ${jwtUsuario}`,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+  return respuestaEjecucion.data;
+}
+```
+
+---
+
+## Buenas Prácticas
+
+1. **Almacena el Catálogo en Caché**: Las definiciones de App Features no cambian frecuentemente. Guárdalas en memoria o en caché por hasta 1 hora para optimizar tiempos de carga.
+2. **Aplica Validaciones en Cliente**: Utiliza la propiedad `regex` de cada dependencia para mostrar avisos de formato al usuario antes de enviar la petición.
+3. **Informa el Consumo de Créditos**: Presenta los campos `price` o `smartCheckPrice` antes de que el usuario confirme una consulta interactiva.

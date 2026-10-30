@@ -1,22 +1,289 @@
 ---
 id: webhooks
 title: Webhooks
-description: Los webhooks se usan para enviar información desde nuestro backend a tu backend mediante una URL
+sidebar_label: Webhooks
+description: Guía integral sobre webhooks de Verifik para notificaciones de eventos en tiempo real, esquemas de payload, verificación HMAC y políticas de entrega.
 slug: /resources/webhooks
 ---
 
-### Descripción
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-Los webhooks se usan para enviar información desde nuestro backend a tu backend mediante una URL que puedes configurar durante la creación de un proyecto/projectFlow.
+# Guía de Integración de Webhooks
 
-### Recursos relacionados
+:::info Notificaciones de Eventos en Tiempo Real
+Los webhooks permiten a tu sistema recibir notificaciones HTTP en tiempo real cuando ocurren eventos en tu cuenta de Verifik, eliminando la necesidad de realizar consultas periódicas (polling) en operaciones asíncronas como el procesamiento de archivos en **SmartBatch**, la verificación de identidad en **SmartEnroll** o consultas de antecedentes en múltiples fuentes.
+:::
 
--   [El Objeto Webhook](/verifik-es/resources/webhooks/el-objeto-de-webhook) - Los webhooks se usan para enviar información desde nuestro backend a tu backend mediante una URL
--   [Crear un Webhook](/verifik-es/resources/webhooks/crear-un-webhook)
--   [Actualizar un Webhook](/verifik-es/resources/actualizar-un-webhook)
--   [Eliminar un Webhook](/verifik-es/resources/webhooks/delete-a-webhook)
--   [Recuperar un Webhook](/verifik-es/resources/webhooks/retrieve-a-webhook)
--   [Listar todos los Webhooks](/verifik-es/resources/listar-todos-los-webhooks)
--   [Integración de Webhooks](/verifik-es/resources/integracion-webhook)
--   [Webhooks de Smart Enroll (KYC)](/verifik-es/resources/smart-enroll-kyc-webhooks)
--   [Eventos soportados](/verifik-es/resources/eventos-soportados)
+Verifik utiliza webhooks para enviar notificaciones inmediatas a tu backend cada vez que una tarea asíncrona finaliza o cambia de estado. Al configurar un receptor de webhooks, tu aplicación puede reaccionar de manera inmediata ante validaciones de usuarios, resultados de lotes y alertas de riesgo.
+
+---
+
+## ¿Por Qué Usar Webhooks?
+
+El sondeo tradicional por REST desperdicia ancho de banda, aumenta la latencia y genera consumo innecesario de cuotas de API. Con los webhooks de Verifik:
+- **Notificación Inmediata**: Recibe los datos del evento en milisegundos tras su finalización.
+- **Escalabilidad Eficiente**: Elimina bucles continuos de consulta en flujos de SmartBatch y KYC masivos.
+- **Entrega Resiliente**: Política automática de reintentos con espera exponencial para asegurar la recepción del mensaje.
+- **Seguridad Criptográfica**: Firmas digitales HMAC-SHA256 que verifican la autenticidad e impiden alteraciones.
+
+---
+
+## Tipos de Eventos Soportados
+
+Verifik emite notificaciones estructuradas en sus principales suites de productos:
+
+### SmartEnroll (eKYC e Identidad)
+- `enrollment.started` — El usuario abrió el enlace de verificación e inició el proceso de captura biométrica.
+- `enrollment.completed` — Captura de documentos y selfie finalizada por el usuario; verificación en procesamiento.
+- `enrollment.approved` — Validación de identidad y cotejo biométrico verificados con éxito.
+- `enrollment.rejected` — Verificación rechazada por documento inválido, detección de fraude o inconsistencia.
+
+### SmartBatch (Procesamiento en Lotes)
+- `batch.created` — Lote cargado y estructura de columnas validada.
+- `batch.processing` — Trabajadores asíncronos han comenzado la ejecución de las consultas.
+- `batch.completed` — Todas las filas han sido procesadas; reporte consolidado y archivo CSV listos para descarga.
+- `batch.failed` — Ocurrió un error crítico durante la lectura del archivo o ejecución de la cola.
+
+### Validaciones y Antecedentes
+- `verification.completed` — Finalización de una consulta asíncrona individual de identidad, vehículo o empresa.
+- `background_check.ready` — Estudio integral de antecedentes completado y expediente en PDF generado.
+
+### SmartFleet y Monitoreo
+- `fleet.inspection_expired` — Revisión técnico-mecánica o póliza de seguro vehicular vencida.
+- `vehicle.fine_detected` — Nueva infracción de tránsito detectada para una placa monitoreada.
+
+---
+
+## Esquema del Payload de un Webhook
+
+Cada notificación POST sigue un formato JSON estandarizado:
+
+```json
+{
+  "eventId": "evt_9f83a21b4e6d",
+  "eventType": "enrollment.approved",
+  "createdAt": "2026-10-30T22:25:00.000Z",
+  "attempt": 1,
+  "data": {
+    "enrollmentId": "enr_123456789",
+    "projectFlowId": "flow_8829102",
+    "status": "APPROVED",
+    "subject": {
+      "documentType": "CC",
+      "documentNumber": "1234567890",
+      "fullName": "JUAN CARLOS PEREZ GOMEZ",
+      "country": "CO"
+    },
+    "score": 0.98,
+    "reportUrl": "https://api.verifik.co/v2/reports/enr-123456789.pdf"
+  }
+}
+```
+
+---
+
+## Seguridad y Verificación de Firma HMAC
+
+Para proteger tu servidor contra suplantaciones y ataques de repetición, Verifik firma cada notificación con una **firma criptográfica HMAC-SHA256**.
+
+Al registrar un webhook, Verifik genera un **Secreto de Firma** único (con prefijo `whsec_`).
+
+### Encabezados HTTP
+Cada envío incluye los siguientes encabezados personalizados:
+- `x-verifik-signature`: Firma hexadecimal HMAC-SHA256 generada sobre el cuerpo sin procesar (raw body).
+- `x-verifik-timestamp`: Marca de tiempo Unix (en segundos) en que se emitió el evento.
+- `x-verifik-event-id`: Identificador único del evento emitido (`eventId`).
+
+### Ejemplos de Verificación de Firma
+
+<Tabs>
+<TabItem value="nodejs" label="Node.js (Express)">
+
+```javascript
+const express = require('express');
+const crypto = require('crypto');
+
+const app = express();
+const WEBHOOK_SECRET = process.env.VERIFIK_WEBHOOK_SECRET;
+
+// Utiliza express.raw() para obtener el cuerpo exacto sin procesar
+app.post(
+  '/webhooks/verifik',
+  express.raw({ type: 'application/json' }),
+  (req, res) => {
+    const signature = req.headers['x-verifik-signature'];
+    const timestamp = req.headers['x-verifik-timestamp'];
+
+    // 1. Validar frescura del timestamp para prevenir ataques de repetición (tolerancia: 5 minutos)
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (Math.abs(currentTime - parseInt(timestamp, 10)) > 300) {
+      return res.status(400).send('Timestamp fuera de rango.');
+    }
+
+    // 2. Calcular firma HMAC-SHA256 esperada
+    const expectedSignature = crypto
+      .createHmac('sha256', WEBHOOK_SECRET)
+      .update(req.body)
+      .digest('hex');
+
+    // 3. Comparación de tiempo constante contra ataques de canal lateral
+    const signatureValid = crypto.timingSafeEqual(
+      Buffer.from(signature, 'hex'),
+      Buffer.from(expectedSignature, 'hex')
+    );
+
+    if (!signatureValid) {
+      return res.status(401).send('Firma de webhook no válida.');
+    }
+
+    // 4. Parsear payload y procesar asíncronamente
+    const payload = JSON.parse(req.body.toString('utf8'));
+    console.log('Evento recibido válido:', payload.eventType);
+
+    // Responder 200 OK inmediatamente
+    res.status(200).json({ received: true });
+  }
+);
+
+app.listen(3000, () => console.log('Receptor de webhooks activo en puerto 3000'));
+```
+
+</TabItem>
+<TabItem value="python" label="Python (FastAPI)">
+
+```python
+import os
+import time
+import hmac
+import hashlib
+from fastapi import FastAPI, Request, HTTPException, status
+
+app = FastAPI()
+WEBHOOK_SECRET = os.environ.get("VERIFIK_WEBHOOK_SECRET", "").encode('utf-8')
+
+@app.post("/webhooks/verifik")
+async def handle_verifik_webhook(request: Request):
+    signature = request.headers.get("x-verifik-signature")
+    timestamp = request.headers.get("x-verifik-timestamp")
+    
+    if not signature or not timestamp:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Faltan encabezados de firma")
+
+    # Validar ventana de tiempo de 5 minutos
+    if abs(int(time.time()) - int(timestamp)) > 300:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Timestamp expirado")
+
+    raw_body = await request.body()
+
+    # Calcular firma esperada
+    computed_signature = hmac.new(
+        WEBHOOK_SECRET,
+        msg=raw_body,
+        digestmod=hashlib.sha256
+    ).hexdigest()
+
+    # Comparación segura
+    if not hmac.compare_digest(signature, computed_signature):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Firma no válida")
+
+    payload = await request.json()
+    print(f"Evento procesado: {payload.get('eventType')}")
+
+    return {"received": True}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Garantías de Entrega y Política de Reintentos
+
+Verifik garantiza la **entrega al menos una vez (at-least-once delivery)** de todos los eventos:
+
+### Criterio de Éxito
+Una entrega se considera exitosa cuando tu servidor responde con un código de estado HTTP entre `200` y `299` en menos de **5 segundos**.
+
+### Calendario de Reintentos
+Si tu servidor responde con un error 4xx o 5xx, o no responde dentro del tiempo límite, Verifik programa hasta **5 reintentos automáticos** con espera exponencial:
+1. **Reintento Inmediato**: 15 segundos después del fallo inicial.
+2. **Reintento 2**: 5 minutos después.
+3. **Reintento 3**: 30 minutos después.
+4. **Reintento 4**: 2 horas después.
+5. **Reintento 5**: 8 horas después.
+
+Si se agotan todos los reintentos, el evento queda registrado como fallido en tu panel, permitiendo su reenvío manual.
+
+### Manejo de Idempotencia
+Debido a fluctuaciones de red o tiempos límite, es posible recibir eventos duplicados. Diseña tu receptor para que sea **idempotente**:
+1. Almacena los identificadores `eventId` recibidos en una base de datos o caché (ej. Redis).
+2. Antes de procesar una notificación, comprueba si el `eventId` ya fue gestionado.
+3. Si ya existe, responde de inmediato `200 OK` sin duplicar acciones operativas.
+
+---
+
+## API de Administración de Webhooks
+
+Puedes configurar y administrar tus puntos de enlace programáticamente:
+
+### 1. Registrar un Nuevo Webhook
+```bash
+curl -X POST https://api.verifik.co/v2/webhooks \
+  -H "Authorization: Bearer <tu_token_jwt>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://api.tuempresa.com/webhooks/verifik",
+    "description": "Receptor principal de eventos KYC y SmartBatch",
+    "events": [
+      "enrollment.approved",
+      "enrollment.rejected",
+      "batch.completed"
+    ]
+  }'
+```
+
+### 2. Listar Webhooks Configurados
+```bash
+curl -X GET https://api.verifik.co/v2/webhooks \
+  -H "Authorization: Bearer <tu_token_jwt>"
+```
+
+### 3. Actualizar un Webhook
+```bash
+curl -X PUT https://api.verifik.co/v2/webhooks/wh_98a72b1c4e \
+  -H "Authorization: Bearer <tu_token_jwt>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "events": ["*"]
+  }'
+```
+
+### 4. Eliminar un Webhook
+```bash
+curl -X DELETE https://api.verifik.co/v2/webhooks/wh_98a72b1c4e \
+  -H "Authorization: Bearer <tu_token_jwt>"
+```
+
+---
+
+## Buenas Prácticas
+
+1. **Responde de Inmediato**: Devuelve `200 OK` tan pronto verifiques la firma HMAC. Traslada tareas pesadas (escritura en base de datos, envío de correos, generación de PDF) a una cola asíncrona de trabajo.
+2. **Exige Siempre HTTPS**: Las URLs receptoras deben contar con certificados TLS/SSL válidos y de confianza.
+3. **Protege el Secreto de Firma**: Almacena el secreto del webhook en variables de entorno o bóvedas de claves seguras.
+4. **Verifica Bytes Exactos**: Siempre coteja la firma contra el cuerpo de la solicitud en formato de bytes crudos antes de transformarlo en objeto JSON.
+
+---
+
+## Recursos Relacionados
+
+- [El Objeto Webhook](/verifik-es/resources/webhooks/el-objeto-de-webhook) — Esquema detallado de propiedades de la entidad Webhook.
+- [Crear un Webhook](/verifik-es/resources/webhooks/crear-un-webhook) — Referencia de API para registro de receptores.
+- [Actualizar un Webhook](/verifik-es/resources/actualizar-un-webhook) — Modificación de eventos suscritos y URL de destino.
+- [Eliminar un Webhook](/verifik-es/resources/webhooks/delete-a-webhook) — Eliminación de puntos de enlace inactivos.
+- [Recuperar un Webhook](/verifik-es/resources/webhooks/retrieve-a-webhook) — Inspección de configuración y bitácora de entregas.
+- [Listar todos los Webhooks](/verifik-es/resources/listar-todos-los-webhooks) — Consulta paginada de endpoints registrados.
+- [Integración de Webhooks](/verifik-es/resources/integracion-webhook) — Patrones de arquitectura de integración.
+- [Webhooks de Smart Enroll (KYC)](/verifik-es/resources/smart-enroll-kyc-webhooks) — Payloads de eventos específicos de identidad.
+- [Eventos Soportados](/verifik-es/resources/eventos-soportados) — Catálogo completo de códigos de eventos de la plataforma.
