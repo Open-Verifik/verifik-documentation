@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-29T17:02:39.250Z
+Generated: 2026-10-30T17:05:27.985Z
 
-- **Files scanned:** 551
-- **Unique endpoint URLs:** 242
+- **Files scanned:** 552
+- **Unique endpoint URLs:** 243
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 227
 
@@ -13,7 +13,7 @@ Generated: 2026-10-29T17:02:39.250Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 191 | identity, biometrics, resources, etc. |
+| P2 | 192 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -413,6 +413,7 @@ Generated: 2026-10-29T17:02:39.250Z
 | P2 | `v2/mx/health-worker` | `identity/mexico-health-worker.mdx` |
 | P2 | `v2/mx/ine` | `identity/mexico-ine.mdx` |
 | P2 | `v2/mx/ine/ocr` | `identity/mexico-ine-ocr.mdx` |
+| P2 | `v2/mx/issste/affiliation` | `identity/mexico-issste.mdx` |
 | P2 | `v2/mx/siged/certificado` | `identity/mexico-siged-certificado.mdx` |
 | P1 | `v2/mx/vehiculo/placa` | `vehicle-validation/mexico.md` |
 | P2 | `v2/ocr/scan-agent` | `ocr-engines/scan-agent.mdx` |

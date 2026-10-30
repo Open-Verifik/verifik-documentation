@@ -2422,6 +2422,20 @@ keywords:
   - "https://api.verifik.co/v2/mx/ine/ocr"
   - "GET v2/mx/ine/ocr"
   - "GET /v2/mx/ine/ocr"
+  - "v2/mx/issste/affiliation"
+  - "/v2/mx/issste/affiliation"
+  - "v2 mx issste affiliation"
+  - "mx/issste/affiliation"
+  - "/mx/issste/affiliation"
+  - "api/mx/issste/affiliation"
+  - "/api/mx/issste/affiliation"
+  - "api mx issste affiliation"
+  - "issste/affiliation"
+  - "/issste/affiliation"
+  - "api.verifik.co/v2/mx/issste/affiliation"
+  - "https://api.verifik.co/v2/mx/issste/affiliation"
+  - "GET v2/mx/issste/affiliation"
+  - "GET /v2/mx/issste/affiliation"
   - "v2/mx/siged/certificado"
   - "/v2/mx/siged/certificado"
   - "v2 mx siged certificado"
@@ -3029,12 +3043,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (242 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (243 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-10-29T17:02:39.331Z_
+_Last regenerated: 2026-10-30T17:05:28.037Z_
 
 ## Argentina
 
@@ -3220,6 +3234,7 @@ _Last regenerated: 2026-10-29T17:02:39.331Z_
 | `v2/mx/health-worker` | v2 mx health-worker mx/health-worker /mx/health-worker api/mx/health-worker /api/mx/health-worker api mx health-worker api.verifik.co/v2/mx/health-worker https://api.verifik.co/v2/mx/health-worker GET v2/mx/health-worker GET /v2/mx/health-worker | [Mexico — Health Worker License](/identity/mexico-health-worker) |
 | `v2/mx/ine` | v2 mx ine mx/ine /mx/ine api/mx/ine /api/mx/ine api mx ine api.verifik.co/v2/mx/ine https://api.verifik.co/v2/mx/ine GET v2/mx/ine GET /v2/mx/ine | [Mexico — INE Validation](/identity/mexico-ine) |
 | `v2/mx/ine/ocr` | v2 mx ine ocr mx/ine/ocr /mx/ine/ocr api/mx/ine/ocr /api/mx/ine/ocr api mx ine ocr ine/ocr /ine/ocr api.verifik.co/v2/mx/ine/ocr https://api.verifik.co/v2/mx/ine/ocr GET v2/mx/ine/ocr GET /v2/mx/ine/ocr | [Mexico — INE OCR](/identity/mexico-ine-ocr) |
+| `v2/mx/issste/affiliation` | v2 mx issste affiliation mx/issste/affiliation /mx/issste/affiliation api/mx/issste/affiliation /api/mx/issste/affiliation api mx issste affiliation issste/affiliation /issste/affiliation api.verifik.co/v2/mx/issste/affiliation https://api.verifik.co/v2/mx/issste/affiliation GET v2/mx/issste/affiliation GET /v2/mx/issste/affiliation | [Mexico — ISSSTE Social Security Affiliation](/identity/mexico-issste) |
 | `v2/mx/siged/certificado` | v2 mx siged certificado mx/siged/certificado /mx/siged/certificado api/mx/siged/certificado /api/mx/siged/certificado api mx siged certificado siged/certificado /siged/certificado api.verifik.co/v2/mx/siged/certificado https://api.verifik.co/v2/mx/siged/certificado GET v2/mx/siged/certificado GET /v2/mx/siged/certificado | [Mexico — Education Certificate (folio)](/identity/mexico-siged-certificado) |
 | `v2/mx/vehiculo/placa` | v2 mx vehiculo placa mx/vehiculo/placa /mx/vehiculo/placa api/mx/vehiculo/placa /api/mx/vehiculo/placa api mx vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/mx/vehiculo/placa https://api.verifik.co/v2/mx/vehiculo/placa GET v2/mx/vehiculo/placa GET /v2/mx/vehiculo/placa | [Mexico Vehicle by Plate](/vehicle-validation/mexico) |
 

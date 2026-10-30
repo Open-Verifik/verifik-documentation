@@ -1,0 +1,264 @@
+---
+id: mexico-issste
+title: México — Acreditación de Afiliación ISSSTE
+description: Consulta la acreditación de afiliación o no afiliación al ISSSTE por CURP, incluyendo estatus laboral (activo, inactivo, no localizado), folio oficial, UUID del certificado y sello digital.
+slug: /identity/mexico-issste
+sidebar_label: 🇲🇽 México — Acreditación ISSSTE
+keywords:
+  - v2/mx/issste/affiliation
+  - /v2/mx/issste/affiliation
+  - v2 mx issste affiliation
+  - api/mx/issste/affiliation
+  - /api/mx/issste/affiliation
+  - api mx issste affiliation
+  - api.verifik.co/v2/mx/issste/affiliation
+  - 'https://api.verifik.co/v2/mx/issste/affiliation'
+  - GET v2/mx/issste/affiliation
+  - GET /v2/mx/issste/affiliation
+  - issste
+  - afiliacion issste
+  - no afiliacion issste
+  - constancia no afiliacion issste
+  - acreditacion issste
+  - seguridad social mexico
+  - kyc mexico
+---
+
+export const structuredData = {
+	"@context": "https://schema.org",
+	"@type": "TechArticle",
+	headline: "API de Acreditación de Afiliación y No Afiliación al ISSSTE en México | Verifik",
+	description:
+		"Consulta la acreditación de afiliación o no afiliación al ISSSTE por CURP, incluyendo estatus laboral (activo, inactivo, no localizado), folio oficial, UUID del certificado y sello digital.",
+	articleSection: "Documentación API",
+	keywords: "ISSSTE México, afiliación ISSSTE, no afiliación ISSSTE, constancia ISSSTE, seguridad social México, API KYC México",
+	about: {
+		"@type": "Thing",
+		name: "API de Acreditación ISSSTE",
+	},
+};
+
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# México — Acreditación de Afiliación ISSSTE
+
+La **API de Afiliación al ISSSTE en México** de Verifik permite a empresas, departamentos de recursos humanos y plataformas de cumplimiento verificar el estatus laboral de un ciudadano en el sector público federal y descargar la constancia oficial de no afiliación directamente con su **CURP** (*Clave Única de Registro de Población*):
+
+- **Verificación de Estatus Laboral**: Determina si la persona se encuentra cotizando como trabajadora del sector público federal (*ACTIVO*), si cuenta con registros históricos pero actualmente está inactiva (*INACTIVO*), o si no figura en los registros de derechohabientes (*NO LOCALIZADO*).
+- **Metadatos Oficiales Certificados**: Extrae el folio de registro del código de barras, identificador único (UUID), fecha/hora exacta de emisión y sello digital criptográfico.
+- **Descarga de Constancia en PDF**: Genera y descarga la **Constancia de Acreditación de No Afiliación** oficial firmada digitalmente por el ISSSTE en formato Base64 cuando se solicita (`includePdf=true`).
+- **Validación Demográfica Federal**: Confirma la identidad oficial del titular ante RENAPO desglosando `firstName`, `paternalSurname`, `maternalSurname`, `dateOfBirth`, `sex` y `gender`.
+
+---
+
+## ¿Qué valida esta API?
+
+- **Estatus de Afiliación (`affiliationStatus`)**: Retorna con precisión el vínculo laboral del ciudadano con el Estado mexicano:
+  - `ACTIVO`: Cotizando actualmente como servidor público.
+  - `INACTIVO`: Con historial laboral previo en el sector público federal pero actualmente dado de baja.
+  - `NO LOCALIZADO`: Sin antecedentes de afiliación en el padrón de derechohabientes.
+- **Confirmación Demográfica**: Valida la identidad del titular y retorna sus atributos normalizados: `firstName`, `lastName`, `paternalSurname`, `maternalSurname`, `dateOfBirth` (`AAAA-MM-DD`), `sex` y `gender`.
+- **Certificación Digital (`certificate`)**:
+  - `folio`: Folio oficial emitido junto al código de barras (ej. `082611565`).
+  - `uuid`: Identificador único criptográfico de la constancia.
+  - `issuedAt`: Marca de tiempo oficial de la emisión.
+  - `digitalSeal`: Sello digital que certifica la validez legal del documento.
+  - `pdfBase64`: (Opcional) El archivo PDF oficial completo codificado en Base64.
+- **Firma Criptográfica Verifik**: Cada respuesta es firmada digitalmente para garantizar la integridad y trazabilidad de la consulta.
+
+---
+
+## Referencia de API
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/mx/issste/affiliation
+```
+
+### Encabezados
+
+| Nombre | Valor | Descripción |
+| --- | --- | --- |
+| `Accept` | `application/json` | Formato de respuesta requerido. |
+| `Authorization` | `Bearer <token>` | Token JWT o API key de cliente Verifik. |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Valor por defecto | Descripción | Ejemplo |
+| --- | --- | --- | --- | --- | --- |
+| `documentNumber` | string | **Sí** | — | **CURP** mexicana (18 caracteres). Insensible a mayúsculas/minúsculas. | `LOPE900501HDFGRN01` |
+| `documentType` | string | No | `CURP` | Tipo de documento. Valor permitido: `CURP`. | `CURP` |
+| `includePdf` | boolean | No | `false` | Indica si se debe incluir el PDF oficial firmado codificado en Base64 en `certificate.pdfBase64`. | `true` |
+
+---
+
+### Ejemplos de Solicitud
+
+<Tabs>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/mx/issste/affiliation?documentNumber=LOPE900501HDFGRN01&documentType=CURP" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN"
+```
+
+  </TabItem>
+  <TabItem value="curl-pdf" label="cURL (con PDF)">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/mx/issste/affiliation?documentNumber=LOPE900501HDFGRN01&includePdf=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN"
+```
+
+  </TabItem>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const response = await axios.get("https://api.verifik.co/v2/mx/issste/affiliation", {
+  params: {
+    documentNumber: "LOPE900501HDFGRN01",
+    documentType: "CURP",
+    includePdf: true,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+
+console.log(response.data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/mx/issste/affiliation"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+params = {
+    "documentNumber": "LOPE900501HDFGRN01",
+    "documentType": "CURP",
+    "includePdf": "true"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Respuestas
+
+<Tabs>
+  <TabItem value="200-inactivo" label="200 (Inactivo / No Afiliado)">
+
+```json
+{
+  "data": {
+    "documentType": "CURP",
+    "documentNumber": "LOPE900501HDFGRN01",
+    "curp": "LOPE900501HDFGRN01",
+    "firstName": "MARIA ELENA",
+    "lastName": "LOPEZ GARCIA",
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "paternalSurname": "LOPEZ",
+    "maternalSurname": "GARCIA",
+    "dateOfBirth": "1990-05-01",
+    "sex": "M",
+    "gender": "MUJER",
+    "affiliationStatus": "INACTIVO",
+    "affiliationStatusDescription": "El ciudadano cuenta con registro previo en el ISSSTE pero se encuentra actualmente inactivo (sin relación laboral vigente en el sector público federal).",
+    "certificate": {
+      "institution": "Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado",
+      "certificateType": "Constancia de acreditación de no afiliación",
+      "folio": "082603377",
+      "uuid": "1E031D08-A497-4A4B-B273-C8157CC8100C",
+      "issuedAt": "29/10/2026 11:38:02 p. m.",
+      "digitalSeal": "RCTlkw4xRsjDNzt0AO+/XXv6rWi2sAuzvNpALi7RCcIZ9qJOPOJRcAORXY/2VNtNcxYiE9IfL8KFHiKTYRQmqfQexN2hmQfUSaZVstY7W/2assOHy5L8DA1sK73Qd+ax51CZMbBnoxd8UGWe0r53koHTS2g0jkzf7yE+BQN58qg="
+    }
+  },
+  "signature": {
+    "dateTime": "October 30, 2026 11:30 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404 (No Encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Parámetro Inválido / Faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber\n"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Este endpoint tiene un costo inicial de **`0.50` créditos**.
+- Las consultas que retornan 404 (No encontrado) o 409 (Error de validación) no descuentan créditos.
+- Para descargar el archivo PDF oficial firmado digitalmente, envía el parámetro `includePdf=true`.
+
+---
+
+## Sandbox y Pruebas
+
+Al realizar pruebas en el **entorno Sandbox** (`mode: sandbox`), no se descuentan créditos y se retorna información simulada determinista:
+
+| Perfil de Prueba / Sonda | Número de Documento | Resultado Esperado | Descripción |
+| --- | --- | --- | --- |
+| **Perfil Inactivo Estándar** | `LOPE900501HDFGRN01` | `200 OK` | Retorna el perfil de prueba `MARIA ELENA LOPEZ GARCIA`, estatus `INACTIVO` y folio `082603377`. |
+| **Con Certificado PDF en Base64** | `LOPE900501HDFGRN01` (`includePdf=true`) | `200 OK` | Incluye la constancia en PDF oficial en `certificate.pdfBase64`. |
+| **Perfil Fijo 2** | `PERJ900502HDFRRD02` | `200 OK` | Retorna el perfil de prueba `JOSE ANTONIO PEREZ RODRIGUEZ`. |
+| **Perfil Fijo 3** | `MARF900503HDFRNF03` | `200 OK` | Retorna el perfil de prueba `CARLA ISABEL MARTINEZ FERNANDEZ`. |
+| **Registro No Encontrado (404)** | `LOPE900404HDFNTF01` | `404 Not Found` | Simula una CURP inexistente o no localizada en el padrón. |
+| **Formato de CURP Inválido (409)** | `INVALID123` | `409 Conflict` | Retorna `MissingParameter` o `InvalidDocumentFormat`. |
+
+---
+
+## Casos de Uso Comunes
+
+- **Contratación Laboral y Validación de Incompatibilidad**: Comprueba que los candidatos que ingresan al sector privado no tengan plazas vigentes o conflictos de interés en dependencias públicas.
+- **Inscripciones Universitarias y Becas**: Automatiza la recepción y validación de constancias de no afiliación requeridas a estudiantes para trámites de seguro facultativo o apoyos gubernamentales.
+- **Auditoría Laboral y Legal**: Mantiene expedientes verificables con código de barras, UUID oficial y sello digital.
+
+---
+
+## Endpoints Relacionados
+
+- [🇲🇽 México — CURP](/identity/mexico): Validación completa de identidad por CURP.
+- [🇲🇽 México — RFC y Cumplimiento Fiscal](/identity/mexico-rfc): Validación bidireccional de RFC y listas negras del SAT.
+- [🇲🇽 México — Cédula Profesional](/identity/mexico-cedula-profesional): Consulta de títulos y cédulas profesionales universitarias.

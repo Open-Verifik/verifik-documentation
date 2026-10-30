@@ -320,6 +320,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/mexico-issste",
+					label: "🇲🇽 Mexico — ISSSTE Affiliation",
+				},
+				{
+					type: "doc",
 					id: "identity/mexico-ine",
 					label: "🇲🇽 Mexico — INE Validation",
 				},
