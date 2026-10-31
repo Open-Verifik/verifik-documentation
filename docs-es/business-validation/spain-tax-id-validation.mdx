@@ -1,0 +1,185 @@
+---
+id: business-validation-spain-tax-id-validation
+title: España — Validación de Identificación Fiscal (NIF, NIE, CIF)
+description: Valida de manera algorítmica y mediante la autoridad tributaria oficial números de identificación fiscal españoles (DNI/NIF, NIE y CIF), comprobando dígito de control, tipo de entidad, provincia y registro VIES.
+sidebar_label: 🇪🇸 España — Validación NIF / NIE / CIF
+slug: /business-validation/spain-tax-id-validation
+keywords:
+  - v2/es/tax-id/validate
+  - /v2/es/tax-id/validate
+  - cif espana validacion
+  - nif nie espana
+  - validacion fiscal espana
+  - checksum nif cif
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# España — Validación de Identificación Fiscal (NIF, NIE, CIF)
+
+La API de **Validación de Identificación Fiscal de España** de Verifik ejecuta una verificación integral de números de identificación tributaria españoles, cubriendo:
+
+- **DNI / NIF de Personas Físicas:** 8 dígitos numéricos más letra de control calculada mediante algoritmo Módulo 23 (`TRWAGMYFPDXBNJZSQVHLCKE`).
+- **NIE de Residentes Extranjeros:** Prefijo de letra (`X`, `Y`, `Z`), 7 dígitos numéricos y letra de control Módulo 23.
+- **CIF de Personas Jurídicas:** Letra de tipo de entidad (`A`–`W`), código provincial de 2 dígitos, 5 dígitos correlativos y dígito o letra de control algorítmico.
+
+Adicionalmente, para personas jurídicas con CIF válido, el servicio realiza una comprobación enriquecida no bloqueante contra la autoridad tributaria oficial y el censo europeo VIES para corroborar el alta fiscal y razón social oficial.
+
+---
+
+## Casos de Uso
+
+- **Prevención de Errores de Facturación:** Validación sintáctica y algorítmica inmediata en formularios de registro antes de enviar facturas con NIF/CIF erróneo.
+- **Clasificación Automática de Entidades:** Identificación del tipo societario (Sociedad Anónima, Sociedad Limitada, Cooperativa, etc.) y provincia de origen a partir del CIF.
+- **Onboarding Digital en España:** Verificación de autenticidad en tiempo real sin fricción para autónomos y empresas españolas.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/es/tax-id/validate
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | Sí | Número de identificación fiscal español a validar (ej. `A28015865`, `12345678Z`, `X1234567L`). |
+| `documentType` | string | No | Tipo de documento opcional (`NIF`, `NIE`, `CIF`). Si se omite, el sistema infiere automáticamente la categoría. |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/es/tax-id/validate",
+  params: {
+    documentNumber: "A28015865",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al validar identificación fiscal en España:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/es/tax-id/validate"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "documentNumber": "A28015865"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/es/tax-id/validate?documentNumber=A28015865" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200-cif" label="200 (CIF Válido - Sociedad Anónima)">
+
+```json
+{
+  "data": {
+    "valid": true,
+    "documentNumber": "A28015865",
+    "documentType": "CIF",
+    "category": "CORPORATION_CIF",
+    "entityTypeDescription": "Sociedad Anónima",
+    "province": "Madrid",
+    "viesRegistered": true,
+    "businessName": "TELEFONICA SA"
+  },
+  "signature": {
+    "dateTime": "2026-10-31 00:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-invalid" label="200 (Identificador Inválido)">
+
+```json
+{
+  "data": {
+    "valid": false,
+    "documentNumber": "A28015869",
+    "documentType": "CIF",
+    "error": "Checksum inválido para CIF español"
+  },
+  "signature": {
+    "dateTime": "2026-10-31 00:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentNumber is required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Número de Documento | Tipo Inferido | Descripción de Entidad | Estatus |
+| :--- | :--- | :--- | :--- |
+| `A28015865` | CIF | Sociedad Anónima (Madrid) — TELEFONICA SA | `valid: true` |
+| `B60123456` | CIF | Sociedad de Responsabilidad Limitada (Barcelona) | `valid: true` |
+| `A28015869` | CIF | Dígito de control incorrecto | `valid: false` |

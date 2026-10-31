@@ -1,0 +1,196 @@
+---
+id: business-validation-france-company-sirene
+title: France — SIRENE Company Registry
+description: Verify French legal entities and establishments using official SIRENE registry data via SIREN, SIRET, or corporate legal name.
+slug: /business-validation/france-company-sirene
+keywords:
+  - v2/fr/company
+  - /v2/fr/company
+  - v2 fr company
+  - api.verifik.co/v2/fr/company
+  - GET v2/fr/company
+  - france company verification
+  - siren siret verification
+  - french business registry
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# France — SIRENE Company Registry
+
+The **France Company Verification API** connects to the official corporate registry of France (the SIRENE directory) to authenticate companies, subsidiaries, and physical establishments operating under French jurisdiction.
+
+Verify legal entity status, 9-digit SIREN codes, 14-digit SIRET identifiers, European VAT numbers, corporate governance officers, and annual financial filings to power automated KYB and supplier due diligence workflows.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/fr/company
+```
+
+Query the official French corporate registry using a SIREN identifier, SIRET branch number, or legal entity name.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <token>` | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Conditional** | 9-digit legal entity SIREN or 14-digit establishment SIRET (e.g., `775670417`). Required if `companyName` is omitted. |
+| `companyName` | string | **Conditional** | Official legal entity or registered trade name (e.g., `LVMH`). Required if `documentNumber` is omitted. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/fr/company",
+  params: {
+    documentNumber: "775670417",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/fr/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+params = {
+    "documentNumber": "775670417"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/fr/company?documentNumber=775670417" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Company Found)">
+
+```json
+{
+  "data": {
+    "siren": "775670417",
+    "siret": "77567041700051",
+    "vatNumber": "FR81775670417",
+    "businessName": "LVMH MOET HENNESSY LOUIS VUITTON",
+    "status": "ACTIVE",
+    "headquarters": {
+      "address": "22 AVENUE MONTAIGNE",
+      "postalCode": "75008",
+      "city": "PARIS",
+      "country": "FRANCE"
+    },
+    "officers": [
+      {
+        "role": "Président du Conseil d'Administration",
+        "name": "ARNAULT BERNARD"
+      }
+    ],
+    "financials": [
+      {
+        "year": 2023,
+        "revenue": 86153000000,
+        "netIncome": 15174000000,
+        "currency": "EUR"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="400" label="400 (Bad Request)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or companyName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not Found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "No French corporate record found for the provided identifier."
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Internal Server Error)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official corporate registry service is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- **SIREN vs SIRET:** A **SIREN** is a unique 9-digit identifier assigned to the overarching legal entity. A **SIRET** is 14 digits consisting of the 9-digit SIREN plus a 5-digit NIC (*Numéro Interne de Classement*) representing an individual branch or facility.
+- **Intra-Community VAT Calculation:** In France, the European VAT identification number is derived directly from the SIREN code via modulo 97 arithmetic: `FR + [12 + 3 * (SIREN % 97)] % 97 + SIREN`.
+- **Corporate Governance:** The `officers` array includes legal representatives, managing directors (*Directeurs Généraux*), and board members reported in the official corporate registry.

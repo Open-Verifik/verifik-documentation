@@ -1,0 +1,194 @@
+---
+id: business-validation-world-gleif-lei
+title: Global — Identificador de Entidad Jurídica (GLEIF LEI)
+description: Consulta el registro global de Identificadores de Entidad Jurídica (LEI ISO 17442) para verificar entidades corporativas internacionales, estructura matriz y datos legales.
+sidebar_label: 🌐 Global — Identificador de Entidad Jurídica (LEI)
+slug: /business-validation/world-gleif-lei
+keywords:
+  - v2/world/lei
+  - /v2/world/lei
+  - gleif lei lookup
+  - identificador entidad juridica
+  - iso 17442
+  - kyb global
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Global — Identificador de Entidad Jurídica (GLEIF LEI)
+
+La API de **Identificador de Entidad Jurídica Global (LEI)** de Verifik permite consultar el directorio maestro internacional de entidades legales estandarizado bajo la norma **ISO 17442**, gestionado a través del registro mercantil oficial y la Fundación Global del Identificador de Entidad Jurídica (GLEIF).
+
+El código LEI de 20 caracteres es el estándar dorado en los mercados financieros globales y la regulación bancaria para identificar de manera inequívoca a contrapartes corporativas, fondos de inversión, subsidiarias y entidades matrices controladoras a nivel mundial.
+
+---
+
+## Casos de Uso
+
+- **Cumplimiento Regulatorio Financiero (MiFID II, EMIR, Dodd-Frank):** Validación del código LEI obligatorio en transacciones bursátiles y financieras internacionales.
+- **Mapeo de Estructuras Corporativas y UBO:** Identificación de las relaciones de propiedad entre entidades matrices directas y últimas (*Ultimate Parent*).
+- **Homologación de Proveedores Multinacionales:** Resolución de contrapartes internacionales con una clave unificada que trasciende los formatos locales de registro.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/world/lei
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `lei` | string | **Condicional** | Código alfanumérico LEI de 20 caracteres según norma ISO 17442 (ej. `5493006MHB84DD0ZWV18`). Requerido si no se envía `companyName` ni `registrationNumber`. |
+| `companyName` | string | **Condicional** | Razón social o denominación legal de la entidad internacional (ej. `ALPHABET INC.`). |
+| `registrationNumber` | string | **Condicional** | Número de registro mercantil oficial local de la entidad en su país de origen. |
+| `countryCode` | string | No | Código de país ISO de 2 letras (ej. `US`, `GB`, `DE`) para filtrar y acotar búsquedas por nombre. |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/world/lei",
+  params: {
+    lei: "5493006MHB84DD0ZWV18",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar LEI global:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/world/lei"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "lei": "5493006MHB84DD0ZWV18"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/world/lei?lei=5493006MHB84DD0ZWV18" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 (Entidad LEI Encontrada)">
+
+```json
+{
+  "data": {
+    "lei": "5493006MHB84DD0ZWV18",
+    "businessName": "ALPHABET INC.",
+    "status": "ACTIVE",
+    "jurisdiction": "US-DE",
+    "registrationNumber": "5786925",
+    "legalAddress": {
+      "addressLines": [
+        "1600 Amphitheatre Parkway"
+      ],
+      "city": "Mountain View",
+      "region": "US-CA",
+      "country": "US",
+      "postalCode": "94043"
+    },
+    "headquartersAddress": {
+      "addressLines": [
+        "1600 Amphitheatre Parkway"
+      ],
+      "city": "Mountain View",
+      "region": "US-CA",
+      "country": "US",
+      "postalCode": "94043"
+    },
+    "registrationAuthority": {
+      "id": "RA000602",
+      "name": "Delaware Division of Corporations"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-31 00:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404 (Entidad No Encontrada)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "No entity found in the global LEI registry matching the specified criteria"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either lei, companyName, or registrationNumber must be provided"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Parámetro | Valor | Entidad Esperada | Estatus |
+| :--- | :--- | :--- | :--- |
+| `lei` | `5493006MHB84DD0ZWV18` | ALPHABET INC. (Jurisdicción US-DE) | 200 OK (`status: "ACTIVE"`) |
+| `lei` | `213800LBQA1Y9L22JB70` | BARCLAYS PLC (Jurisdicción GB) | 200 OK (`status: "ACTIVE"`) |
+| `lei` | `00000000000000000000` | Código inexistente | 404 Not Found |

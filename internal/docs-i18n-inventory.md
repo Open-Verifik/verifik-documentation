@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-31T06:10:45.921Z
+Generated: 2026-10-31T07:01:57.412Z
 
-- **Files scanned:** 575
-- **Unique endpoint URLs:** 261
+- **Files scanned:** 583
+- **Unique endpoint URLs:** 269
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 232
 
@@ -12,8 +12,8 @@ Generated: 2026-10-31T06:10:45.921Z
 | Priority | Count | Scope |
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
-| P1 | 24 | vehicle-validation (other countries) |
-| P2 | 210 | identity, biometrics, resources, etc. |
+| P1 | 25 | vehicle-validation (other countries) |
+| P2 | 217 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -382,9 +382,11 @@ Generated: 2026-10-31T06:10:45.921Z
 | P2 | `v2/email-validations/app-registration` | `resources/app-registrations/create-an-app-registration-email-validation.mdx` |
 | P2 | `v2/es/cedula` | `identity-validation/spain-citizen.mdx` |
 | P2 | `v2/es/company` | `business-validation/spain.mdx` |
+| P2 | `v2/es/tax-id/validate` | `business-validation/spain-tax-id-validation.mdx` |
 | P1 | `v2/es/vehicle` | `vehicle-validation/spain.mdx` |
 | P2 | `v2/eu-financial-sanctions` | `background-check/international/eu-financial-sanctions.mdx` |
 | P2 | `v2/eu-terrorists` | `background-check/international/eu-terrorists.mdx` |
+| P2 | `v2/eu/vat` | `business-validation/european-union-vies-vat.mdx` |
 | P2 | `v2/europol` | `background-check/europol-background-check.mdx` |
 | P2 | `v2/face-recognition/collections` | `resources/collections/create-a-collection.mdx` |
 | P2 | `v2/face-recognition/collections/{id}` | `resources/collections/delete-a-collection.mdx` |
@@ -404,6 +406,8 @@ Generated: 2026-10-31T06:10:45.921Z
 | P2 | `v2/face-recognition/search/crops` | `biometrics/search-crops.mdx` |
 | P2 | `v2/face-recognition/verify` | `biometrics/verify-face.mdx` |
 | P2 | `v2/fbi` | `background-check/fbi-background-check.mdx` |
+| P2 | `v2/fr/company` | `business-validation/france-company-sirene.mdx` |
+| P2 | `v2/gb/company` | `business-validation/uk-company-lookup.mdx` |
 | P2 | `v2/gt/cedula` | `identity-validation/guatemala.mdx` |
 | P2 | `v2/gt/cedula/extra` | `identity/guatemala-extra.mdx` |
 | P2 | `v2/health-exclusions` | `background-check/international/health-exclusions.mdx` |
@@ -459,16 +463,20 @@ Generated: 2026-10-31T06:10:45.921Z
 | P2 | `v2/sv/dui` | `identity/el-salvador.mdx` |
 | P2 | `v2/us-terrorists` | `background-check/international/us-state-terrorists.mdx` |
 | P2 | `v2/usa/company` | `business-validation/united-states.mdx` |
+| P2 | `v2/usa/driver-license/barcode` | `identity-validation/united-states/driver-license-barcode.mdx` |
+| P2 | `v2/usa/driver-license/cross-check` | `identity-validation/united-states/driver-license-cross-check.mdx` |
 | P2 | `v2/usa/florida/driver-license` | `driver-validation/florida-driver-license.md` |
 | P2 | `v2/usa/kansas/driver-license` | `driver-validation/kansas-driver-license.md` |
 | P2 | `v2/usa/ssn` | `identity-validation/united-states/ssn-verification-social-security-number.mdx` |
 | P1 | `v2/usa/vehicle` | `vehicle-validation/united-states.mdx` |
 | P1 | `v2/usa/vehicle-by-vin` | `vehicle-validation/united-states/vehicle-by-vin.mdx` |
+| P1 | `v2/usa/vehicle/recalls` | `vehicle-validation/united-states/vehicle-safety-recalls.mdx` |
 | P2 | `v2/usage` | `resources/usage/usage.mdx` |
 | P2 | `v2/uy/cedula` | `identity-validation/uruguay-citizen.mdx` |
 | P2 | `v2/ve/cedula` | `identity-validation/venezuela.mdx` |
 | P2 | `v2/ve/foreigner-id` | `identity/venezuela-foreigner-id.mdx` |
 | P2 | `v2/world-bank` | `background-check/international/world-bank.mdx` |
+| P2 | `v2/world/lei` | `business-validation/world-gleif-lei.mdx` |
 | P1 | `v3/ar/vehicle` | `vehicle-validation/argentina/vehicle-v3.mdx` |
 | P1 | `v3/cl/vehicle` | `vehicle-validation/chile/vehicle-technical-review.mdx` |
 | P2 | `v3/co/ministerio-de-trabajo/certificados` | `certificates/colombia-ministerio-trabajo-certificados-v3.mdx` |

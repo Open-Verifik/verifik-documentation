@@ -1,0 +1,193 @@
+---
+id: business-validation-spain-tax-id-validation
+title: Spain — Tax ID Validation (NIF / NIE / CIF)
+description: Validate Spanish fiscal identification codes (NIF, NIE, CIF) with cryptographic checksum validation, entity type breakdown, and VIES registration status.
+slug: /business-validation/spain-tax-id-validation
+keywords:
+  - v2/es/tax-id/validate
+  - /v2/es/tax-id/validate
+  - v2 es tax-id validate
+  - api.verifik.co/v2/es/tax-id/validate
+  - GET v2/es/tax-id/validate
+  - spain nif validation
+  - spain cif validation
+  - spanish tax id verification
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Spain — Tax ID Validation (NIF / NIE / CIF)
+
+The **Spain Tax ID Validation API** authenticates Spanish fiscal identification codes, verifying natural citizens (*NIF*), foreign residents (*NIE*), and corporate entities (*CIF*).
+
+The service evaluates official check-digit algorithms (modulo 23 control letters for personal NIF/NIE and modulo 11 checksums for corporate CIFs), classifies the legal structure and province of incorporation, and cross-references registration in the European VIES database.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/es/tax-id/validate
+```
+
+Validate a Spanish tax identifier against official cryptographic control formulas and the official tax authority database.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <token>` | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Yes** | Spanish fiscal identifier to validate (e.g., `A28015865`, `12345678Z`, `Y1234567X`). |
+| `documentType` | string | No | Explicit document classification (`NIF`, `NIE`, or `CIF`). If omitted, the service infers type automatically from syntax. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/es/tax-id/validate",
+  params: {
+    documentNumber: "A28015865",
+    documentType: "CIF",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/es/tax-id/validate"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+params = {
+    "documentNumber": "A28015865",
+    "documentType": "CIF"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/es/tax-id/validate?documentNumber=A28015865&documentType=CIF" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Valid Corporate CIF)">
+
+```json
+{
+  "data": {
+    "valid": true,
+    "documentNumber": "A28015865",
+    "documentType": "CIF",
+    "category": "CORPORATION_CIF",
+    "entityTypeDescription": "Sociedad Anónima",
+    "province": "Madrid",
+    "viesRegistered": true,
+    "businessName": "TELEFONICA SA"
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-invalid" label="200 (Invalid Checksum)">
+
+```json
+{
+  "data": {
+    "valid": false,
+    "documentNumber": "A28015869",
+    "documentType": "CIF",
+    "category": "INVALID_CHECKSUM",
+    "entityTypeDescription": null,
+    "province": null,
+    "viesRegistered": false,
+    "businessName": null
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="400" label="400 (Bad Request)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "documentNumber is required."
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Internal Server Error)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official tax authority service is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- **Entity Types in CIFs:** The initial letter designates the legal form (`A`: Sociedad Anónima, `B`: Sociedad de Responsabilidad Limitada, `C`: Sociedad Colectiva, `G`: Asociaciones, etc.).
+- **Province Determination:** The first two digits of the numerical block identify the provincial delegation of incorporation (e.g., `28` for Madrid, `08` for Barcelona).
+- **VIES Registration:** The `viesRegistered` flag indicates whether the entity has an active intra-Community VAT operator listing with the official tax authority.

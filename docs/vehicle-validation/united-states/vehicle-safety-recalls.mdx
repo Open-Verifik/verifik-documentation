@@ -1,0 +1,208 @@
+---
+id: vehicle-validation-usa-vehicle-safety-recalls
+title: United States — Vehicle Safety Recalls
+description: Query official automotive safety recalls, safety campaigns, and defect investigations across US vehicles by VIN or Make/Model/Year.
+slug: /vehicle-validation/united-states/vehicle-safety-recalls
+keywords:
+  - v2/usa/vehicle/recalls
+  - /v2/usa/vehicle/recalls
+  - v2 usa vehicle recalls
+  - api.verifik.co/v2/usa/vehicle/recalls
+  - GET v2/usa/vehicle/recalls
+  - usa vehicle recalls api
+  - vin recall lookup
+  - vehicle safety campaigns
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# United States — Vehicle Safety Recalls
+
+The **United States Vehicle Safety Recalls API** queries official federal vehicle safety records to retrieve active safety campaigns, uncompleted defect remedies, and manufacturer recalls affecting motor vehicles operating on American roads.
+
+Whether checking an individual car by its unique 17-character Vehicle Identification Number (VIN) or screening an entire commercial fleet by manufacturer Make, Model, and Model Year, this endpoint provides defect summaries, risk consequences, remedy actions, and campaign identification numbers directly from the official vehicle safety authority.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/usa/vehicle/recalls
+```
+
+Lookup open automotive safety recalls and defect campaigns by VIN or vehicle make/model/year combination.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <token>` | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `vin` | string | **Conditional** | 17-character standardized Vehicle Identification Number (e.g., `5YJSA1E26MF123456`). Required if `make`, `model`, and `modelYear` are not provided. |
+| `make` | string | **Conditional** | Vehicle manufacturer make (e.g., `TESLA`, `FORD`, `TOYOTA`). Required if `vin` is not provided. |
+| `model` | string | **Conditional** | Vehicle model name (e.g., `MODEL S`, `F-150`, `CAMRY`). Required if `vin` is not provided. |
+| `modelYear` | string | **Conditional** | 4-digit manufacturing model year (e.g., `2021`). Required if `vin` is not provided. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/usa/vehicle/recalls",
+  params: {
+    vin: "5YJSA1E26MF123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/usa/vehicle/recalls"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+params = {
+    "vin": "5YJSA1E26MF123456"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/usa/vehicle/recalls?vin=5YJSA1E26MF123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Active Recalls Found)">
+
+```json
+{
+  "data": {
+    "vin": "5YJSA1E26MF123456",
+    "make": "TESLA",
+    "model": "MODEL S",
+    "modelYear": "2021",
+    "recallsCount": 2,
+    "hasRecalls": true,
+    "recalls": [
+      {
+        "campaignNumber": "21V001000",
+        "component": "FORWARD COLLISION AVOIDANCE",
+        "summary": "The forward-facing cameras may experience intermittent communication loss.",
+        "consequence": "Intermittent camera communication may disable safety assist features, increasing crash risk.",
+        "remedy": "The manufacturer will inspect and deploy an over-the-air firmware update free of charge.",
+        "reportReceivedDate": "2021-01-15"
+      },
+      {
+        "campaignNumber": "21V002000",
+        "component": "SEAT BELTS:FRONT:RETRACTOR",
+        "summary": "Front row seat belt shoulder anchors may not have been secured properly during assembly.",
+        "consequence": "An unanchored seat belt may not adequately restrain an occupant in a collision.",
+        "remedy": "Dealers will inspect and tighten the anchor fasteners to proper torque specification.",
+        "reportReceivedDate": "2021-06-20"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (No Open Recalls)">
+
+```json
+{
+  "data": {
+    "vin": "1HGCR2F83HA000000",
+    "make": "HONDA",
+    "model": "ACCORD",
+    "modelYear": "2017",
+    "recallsCount": 0,
+    "hasRecalls": false,
+    "recalls": []
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="400" label="400 (Bad Request)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either vin or the combination of (make, model, modelYear) must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Internal Server Error)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official vehicle safety authority service is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- **Federal Safety Standards:** Recall campaigns reflect official defect determinations and safety notifications coordinated by the official vehicle safety authority in accordance with Federal Motor Vehicle Safety Standards (FMVSS).
+- **Fleet Management & Underwriting:** Insurance carriers, auto lenders, and fleet managers leverage this endpoint to identify vehicles requiring urgent repairs before approving leases or issuing commercial policies.
+- **Remedy Cost Exemption:** Under US federal law, safety recall repairs are executed free of charge by franchised brand dealerships regardless of vehicle ownership history or warranty status.

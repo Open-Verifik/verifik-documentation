@@ -2056,6 +2056,20 @@ keywords:
   - "https://api.verifik.co/v2/es/company"
   - "GET v2/es/company"
   - "GET /v2/es/company"
+  - "v2/es/tax-id/validate"
+  - "/v2/es/tax-id/validate"
+  - "v2 es tax-id validate"
+  - "es/tax-id/validate"
+  - "/es/tax-id/validate"
+  - "api/es/tax-id/validate"
+  - "/api/es/tax-id/validate"
+  - "api es tax-id validate"
+  - "tax-id/validate"
+  - "/tax-id/validate"
+  - "api.verifik.co/v2/es/tax-id/validate"
+  - "https://api.verifik.co/v2/es/tax-id/validate"
+  - "GET v2/es/tax-id/validate"
+  - "GET /v2/es/tax-id/validate"
   - "v2/es/vehicle"
   - "/v2/es/vehicle"
   - "v2 es vehicle"
@@ -2092,6 +2106,18 @@ keywords:
   - "https://api.verifik.co/v2/eu-terrorists"
   - "GET v2/eu-terrorists"
   - "GET /v2/eu-terrorists"
+  - "v2/eu/vat"
+  - "/v2/eu/vat"
+  - "v2 eu vat"
+  - "eu/vat"
+  - "/eu/vat"
+  - "api/eu/vat"
+  - "/api/eu/vat"
+  - "api eu vat"
+  - "api.verifik.co/v2/eu/vat"
+  - "https://api.verifik.co/v2/eu/vat"
+  - "GET v2/eu/vat"
+  - "GET /v2/eu/vat"
   - "v2/europol"
   - "/v2/europol"
   - "v2 europol"
@@ -2316,6 +2342,30 @@ keywords:
   - "https://api.verifik.co/v2/fbi"
   - "GET v2/fbi"
   - "GET /v2/fbi"
+  - "v2/fr/company"
+  - "/v2/fr/company"
+  - "v2 fr company"
+  - "fr/company"
+  - "/fr/company"
+  - "api/fr/company"
+  - "/api/fr/company"
+  - "api fr company"
+  - "api.verifik.co/v2/fr/company"
+  - "https://api.verifik.co/v2/fr/company"
+  - "GET v2/fr/company"
+  - "GET /v2/fr/company"
+  - "v2/gb/company"
+  - "/v2/gb/company"
+  - "v2 gb company"
+  - "gb/company"
+  - "/gb/company"
+  - "api/gb/company"
+  - "/api/gb/company"
+  - "api gb company"
+  - "api.verifik.co/v2/gb/company"
+  - "https://api.verifik.co/v2/gb/company"
+  - "GET v2/gb/company"
+  - "GET /v2/gb/company"
   - "v2/gt/cedula"
   - "/v2/gt/cedula"
   - "v2 gt cedula"
@@ -2992,6 +3042,34 @@ keywords:
   - "https://api.verifik.co/v2/usa/company"
   - "GET v2/usa/company"
   - "GET /v2/usa/company"
+  - "v2/usa/driver-license/barcode"
+  - "/v2/usa/driver-license/barcode"
+  - "v2 usa driver-license barcode"
+  - "usa/driver-license/barcode"
+  - "/usa/driver-license/barcode"
+  - "api/usa/driver-license/barcode"
+  - "/api/usa/driver-license/barcode"
+  - "api usa driver-license barcode"
+  - "driver-license/barcode"
+  - "/driver-license/barcode"
+  - "api.verifik.co/v2/usa/driver-license/barcode"
+  - "https://api.verifik.co/v2/usa/driver-license/barcode"
+  - "GET v2/usa/driver-license/barcode"
+  - "GET /v2/usa/driver-license/barcode"
+  - "v2/usa/driver-license/cross-check"
+  - "/v2/usa/driver-license/cross-check"
+  - "v2 usa driver-license cross-check"
+  - "usa/driver-license/cross-check"
+  - "/usa/driver-license/cross-check"
+  - "api/usa/driver-license/cross-check"
+  - "/api/usa/driver-license/cross-check"
+  - "api usa driver-license cross-check"
+  - "driver-license/cross-check"
+  - "/driver-license/cross-check"
+  - "api.verifik.co/v2/usa/driver-license/cross-check"
+  - "https://api.verifik.co/v2/usa/driver-license/cross-check"
+  - "GET v2/usa/driver-license/cross-check"
+  - "GET /v2/usa/driver-license/cross-check"
   - "v2/usa/florida/driver-license"
   - "/v2/usa/florida/driver-license"
   - "v2 usa florida driver-license"
@@ -3056,6 +3134,20 @@ keywords:
   - "https://api.verifik.co/v2/usa/vehicle-by-vin"
   - "GET v2/usa/vehicle-by-vin"
   - "GET /v2/usa/vehicle-by-vin"
+  - "v2/usa/vehicle/recalls"
+  - "/v2/usa/vehicle/recalls"
+  - "v2 usa vehicle recalls"
+  - "usa/vehicle/recalls"
+  - "/usa/vehicle/recalls"
+  - "api/usa/vehicle/recalls"
+  - "/api/usa/vehicle/recalls"
+  - "api usa vehicle recalls"
+  - "vehicle/recalls"
+  - "/vehicle/recalls"
+  - "api.verifik.co/v2/usa/vehicle/recalls"
+  - "https://api.verifik.co/v2/usa/vehicle/recalls"
+  - "GET v2/usa/vehicle/recalls"
+  - "GET /v2/usa/vehicle/recalls"
   - "v2/usage"
   - "/v2/usage"
   - "v2 usage"
@@ -3116,6 +3208,18 @@ keywords:
   - "https://api.verifik.co/v2/world-bank"
   - "GET v2/world-bank"
   - "GET /v2/world-bank"
+  - "v2/world/lei"
+  - "/v2/world/lei"
+  - "v2 world lei"
+  - "world/lei"
+  - "/world/lei"
+  - "api/world/lei"
+  - "/api/world/lei"
+  - "api world lei"
+  - "api.verifik.co/v2/world/lei"
+  - "https://api.verifik.co/v2/world/lei"
+  - "GET v2/world/lei"
+  - "GET /v2/world/lei"
   - "v3/ar/vehicle"
   - "/v3/ar/vehicle"
   - "v3 ar vehicle"
@@ -3265,12 +3369,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (261 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (269 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-10-31T06:10:45.977Z_
+_Last regenerated: 2026-10-31T07:01:57.467Z_
 
 ## Argentina
 
@@ -3428,6 +3532,7 @@ _Last regenerated: 2026-10-31T06:10:45.977Z_
 | --- | --- | --- |
 | `v2/es/cedula` | v2 es cedula es/cedula /es/cedula api/es/cedula /api/es/cedula api es cedula api.verifik.co/v2/es/cedula https://api.verifik.co/v2/es/cedula GET v2/es/cedula GET /v2/es/cedula | [Spanish Citizen](/identity-validation/spain-citizen) |
 | `v2/es/company` | v2 es company es/company /es/company api/es/company /api/es/company api es company api.verifik.co/v2/es/company https://api.verifik.co/v2/es/company GET v2/es/company GET /v2/es/company | [Spanish Business Verification](/business-validation/spain) |
+| `v2/es/tax-id/validate` | v2 es tax-id validate es/tax-id/validate /es/tax-id/validate api/es/tax-id/validate /api/es/tax-id/validate api es tax-id validate tax-id/validate /tax-id/validate api.verifik.co/v2/es/tax-id/validate https://api.verifik.co/v2/es/tax-id/validate GET v2/es/tax-id/validate GET /v2/es/tax-id/validate | [Spain — Tax ID Validation (NIF / NIE / CIF)](/business-validation/spain-tax-id-validation) |
 | `v2/es/vehicle` | v2 es vehicle es/vehicle /es/vehicle api/es/vehicle /api/es/vehicle api es vehicle api.verifik.co/v2/es/vehicle https://api.verifik.co/v2/es/vehicle GET v2/es/vehicle GET /v2/es/vehicle | [Spain](/vehicle-validation/spain) |
 
 ## Guatemala
@@ -3613,6 +3718,12 @@ _Last regenerated: 2026-10-31T06:10:45.977Z_
 | `v2/email-validations/{id}/validate` | v2/email-validations/validate /v2/email-validations/validate v2 email-validations validate email-validations/validate /email-validations/validate api/email-validations/validate /api/email-validations/validate api email-validations validate | [Validate an Email Validation](/resources/validate-an-email-validation) |
 | `v2/email-validations/app-registration` | v2 email-validations app-registration email-validations/app-registration /email-validations/app-registration api/email-validations/app-registration /api/email-validations/app-registration api email-validations app-registration api.verifik.co/v2/email-validations/app-registration https://api.verifik.co/v2/email-validations/app-registration GET v2/email-validations/app-registration GET /v2/email-validations/app-registration | [Create an App Registration Email Validation](/resources/app-registrations/create-an-app-registration-email-validation) |
 
+## Eu
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/eu/vat` | v2 eu vat eu/vat /eu/vat api/eu/vat /api/eu/vat api eu vat api.verifik.co/v2/eu/vat https://api.verifik.co/v2/eu/vat GET v2/eu/vat GET /v2/eu/vat | [European Union — VIES VAT Validation](/business-validation/european-union-vies-vat) |
+
 ## Eu Financial Sanctions
 
 | Endpoint | Aliases | Page |
@@ -3658,6 +3769,18 @@ _Last regenerated: 2026-10-31T06:10:45.977Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/fbi` | v2 fbi fbi /fbi api/fbi /api/fbi api fbi api.verifik.co/v2/fbi https://api.verifik.co/v2/fbi GET v2/fbi GET /v2/fbi | [FBI Background Check](/background-check/international/fbi-background-check) |
+
+## Fr
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/fr/company` | v2 fr company fr/company /fr/company api/fr/company /api/fr/company api fr company api.verifik.co/v2/fr/company https://api.verifik.co/v2/fr/company GET v2/fr/company GET /v2/fr/company | [France — SIRENE Company Registry](/business-validation/france-company-sirene) |
+
+## Gb
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/gb/company` | v2 gb company gb/company /gb/company api/gb/company /api/gb/company api gb company api.verifik.co/v2/gb/company https://api.verifik.co/v2/gb/company GET v2/gb/company GET /v2/gb/company | [United Kingdom — Company Lookup](/business-validation/uk-company-lookup) |
 
 ## Health Exclusions
 
@@ -3783,17 +3906,26 @@ _Last regenerated: 2026-10-31T06:10:45.977Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/usa/company` | v2 usa company usa/company /usa/company api/usa/company /api/usa/company api usa company api.verifik.co/v2/usa/company https://api.verifik.co/v2/usa/company GET v2/usa/company GET /v2/usa/company | [United States Business Verification](/business-validation/united-states) |
+| `v2/usa/driver-license/barcode` | v2 usa driver-license barcode usa/driver-license/barcode /usa/driver-license/barcode api/usa/driver-license/barcode /api/usa/driver-license/barcode api usa driver-license barcode driver-license/barcode /driver-license/barcode api.verifik.co/v2/usa/driver-license/barcode https://api.verifik.co/v2/usa/driver-license/barcode GET v2/usa/driver-license/barcode GET /v2/usa/driver-license/barcode | [United States — Driver License Barcode (AAMVA PDF417)](/identity-validation/united-states/driver-license-barcode) |
+| `v2/usa/driver-license/cross-check` | v2 usa driver-license cross-check usa/driver-license/cross-check /usa/driver-license/cross-check api/usa/driver-license/cross-check /api/usa/driver-license/cross-check api usa driver-license cross-check driver-license/cross-check /driver-license/cross-check api.verifik.co/v2/usa/driver-license/cross-check https://api.verifik.co/v2/usa/driver-license/cross-check GET v2/usa/driver-license/cross-check GET /v2/usa/driver-license/cross-check | [United States — Driver License Barcode Cross-Check](/identity-validation/united-states/driver-license-cross-check) |
 | `v2/usa/florida/driver-license` | v2 usa florida driver-license usa/florida/driver-license /usa/florida/driver-license api/usa/florida/driver-license /api/usa/florida/driver-license api usa florida driver-license florida/driver-license /florida/driver-license api.verifik.co/v2/usa/florida/driver-license https://api.verifik.co/v2/usa/florida/driver-license GET v2/usa/florida/driver-license GET /v2/usa/florida/driver-license | [Florida Driver License](/driver-validation/florida-driver-license) |
 | `v2/usa/kansas/driver-license` | v2 usa kansas driver-license usa/kansas/driver-license /usa/kansas/driver-license api/usa/kansas/driver-license /api/usa/kansas/driver-license api usa kansas driver-license kansas/driver-license /kansas/driver-license api.verifik.co/v2/usa/kansas/driver-license https://api.verifik.co/v2/usa/kansas/driver-license GET v2/usa/kansas/driver-license GET /v2/usa/kansas/driver-license | [Kansas Driver License](/driver-validation/kansas-driver-license) |
 | `v2/usa/ssn` | v2 usa ssn usa/ssn /usa/ssn api/usa/ssn /api/usa/ssn api usa ssn api.verifik.co/v2/usa/ssn https://api.verifik.co/v2/usa/ssn GET v2/usa/ssn GET /v2/usa/ssn | [SSN Verification (Social Security Number)](/identity-validation/united-states/ssn-verification-social-security-number) |
 | `v2/usa/vehicle` | v2 usa vehicle usa/vehicle /usa/vehicle api/usa/vehicle /api/usa/vehicle api usa vehicle api.verifik.co/v2/usa/vehicle https://api.verifik.co/v2/usa/vehicle GET v2/usa/vehicle GET /v2/usa/vehicle | [🇺🇸 United States - Vehicle Information](/vehicle-validation/united-states) |
 | `v2/usa/vehicle-by-vin` | v2 usa vehicle-by-vin usa/vehicle-by-vin /usa/vehicle-by-vin api/usa/vehicle-by-vin /api/usa/vehicle-by-vin api usa vehicle-by-vin api.verifik.co/v2/usa/vehicle-by-vin https://api.verifik.co/v2/usa/vehicle-by-vin GET v2/usa/vehicle-by-vin GET /v2/usa/vehicle-by-vin | [United States - Vehicle by VIN](/vehicle-validation/united-states/vehicle-by-vin) |
+| `v2/usa/vehicle/recalls` | v2 usa vehicle recalls usa/vehicle/recalls /usa/vehicle/recalls api/usa/vehicle/recalls /api/usa/vehicle/recalls api usa vehicle recalls vehicle/recalls /vehicle/recalls api.verifik.co/v2/usa/vehicle/recalls https://api.verifik.co/v2/usa/vehicle/recalls GET v2/usa/vehicle/recalls GET /v2/usa/vehicle/recalls | [United States — Vehicle Safety Recalls](/vehicle-validation/united-states/vehicle-safety-recalls) |
 
 ## Usage
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/usage` | v2 usage usage /usage api/usage /api/usage api usage api.verifik.co/v2/usage https://api.verifik.co/v2/usage GET v2/usage GET /v2/usage | [Usage API](/resources/usage) |
+
+## World
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/world/lei` | v2 world lei world/lei /world/lei api/world/lei /api/world/lei api world lei api.verifik.co/v2/world/lei https://api.verifik.co/v2/world/lei GET v2/world/lei GET /v2/world/lei | [Global — Legal Entity Identifier (GLEIF LEI)](/business-validation/world-gleif-lei) |
 
 ## World Bank
 

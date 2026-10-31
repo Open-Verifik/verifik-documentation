@@ -1,0 +1,192 @@
+---
+id: business-validation-world-gleif-lei
+title: Global — Legal Entity Identifier (GLEIF LEI)
+description: Verify global corporate legal entities, parent relationships, and cross-border regulatory identifiers via the 20-character ISO 17442 LEI registry.
+slug: /business-validation/world-gleif-lei
+keywords:
+  - v2/world/lei
+  - /v2/world/lei
+  - v2 world lei
+  - api.verifik.co/v2/world/lei
+  - GET v2/world/lei
+  - gleif lei verification
+  - legal entity identifier api
+  - global corporate lei lookup
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Global — Legal Entity Identifier (GLEIF LEI)
+
+The **Global Legal Entity Identifier (LEI) API** queries the worldwide corporate registry governed by the Global Legal Entity Identifier Foundation (GLEIF) under the international standard **ISO 17442**.
+
+Verify international financial counterparties, multinational corporations, subsidiaries, and institutional trading entities across more than 200 jurisdictions to satisfy mandatory global financial mandates including Dodd-Frank, EMIR, MiFID II, and Basel III.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/world/lei
+```
+
+Lookup an internationally verified entity by its 20-character ISO 17442 LEI code, local business registration number, corporate name, or jurisdiction.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <token>` | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `lei` | string | **Conditional** | 20-character alphanumeric ISO 17442 Legal Entity Identifier (e.g., `5493006MHB84DD0ZWV18`). Required if no other criteria are supplied. |
+| `companyName` | string | **Conditional** | Legal business name to search (e.g., `ALPHABET INC.`). |
+| `registrationNumber` | string | No | Local business registry or chamber of commerce number (e.g., `5786925`). |
+| `countryCode` | string | No | Two-letter ISO 3166-1 alpha-2 country code of the jurisdiction (e.g., `US`, `GB`, `DE`). |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/world/lei",
+  params: {
+    lei: "5493006MHB84DD0ZWV18",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/world/lei"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+params = {
+    "lei": "5493006MHB84DD0ZWV18"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/world/lei?lei=5493006MHB84DD0ZWV18" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Active LEI Record)">
+
+```json
+{
+  "data": {
+    "lei": "5493006MHB84DD0ZWV18",
+    "businessName": "ALPHABET INC.",
+    "status": "ACTIVE",
+    "jurisdiction": "US-DE",
+    "registrationNumber": "5786925",
+    "legalAddress": {
+      "addressLine1": "1600 Amphitheatre Parkway",
+      "city": "Mountain View",
+      "region": "CA",
+      "postalCode": "94043",
+      "country": "US"
+    },
+    "headquartersAddress": {
+      "addressLine1": "1600 Amphitheatre Parkway",
+      "city": "Mountain View",
+      "region": "CA",
+      "postalCode": "94043",
+      "country": "US"
+    }
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="400" label="400 (Bad Request)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one search parameter (lei, companyName, or registrationNumber) must be supplied."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not Found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "No entity found matching the specified LEI identifier."
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Internal Server Error)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official global corporate registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- **ISO 17442 Structure:** An LEI code is a 20-character alphanumeric string: 4 characters identifying the Local Operating Unit (LOU), 2 reserved characters (`00`), 12 characters for the entity identifier, and 2 check digits (modulo 97).
+- **Jurisdiction ISO Codes:** The `jurisdiction` string adopts ISO 3166-2 sub-entity codes where applicable (e.g., `US-DE` for Delaware, USA).
+- **Annual Renewal Audits:** Legal Entity Identifiers must be renewed annually by the registrant. The `status` field reflects current active standing in the official global corporate registry.

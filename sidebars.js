@@ -393,6 +393,16 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity-validation/united-states/identity-validation-usa-driver-license-barcode",
+					label: "🇺🇸 United States — Driver License Barcode (AAMVA PDF417)",
+				},
+				{
+					type: "doc",
+					id: "identity-validation/united-states/identity-validation-usa-driver-license-cross-check",
+					label: "🇺🇸 United States — Driver License Barcode Cross-Check",
+				},
+				{
+					type: "doc",
 					id: "identity/uruguay",
 					label: "🇺🇾 Uruguay",
 				},
@@ -493,6 +503,16 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "business-validation/business-validation-european-union-vies-vat",
+					label: "🇪🇺 European Union — VIES VAT Validation",
+				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-france-company-sirene",
+					label: "🇫🇷 France — SIRENE Company Registry",
+				},
+				{
+					type: "doc",
 					id: "business-validation/mexico",
 					label: "🇲🇽 Mexico",
 					key: "business-mexico",
@@ -522,9 +542,24 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "business-validation/business-validation-spain-tax-id-validation",
+					label: "🇪🇸 Spain — Tax ID Validation (NIF / NIE / CIF)",
+				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-uk-company-lookup",
+					label: "🇬🇧 United Kingdom — Company Lookup",
+				},
+				{
+					type: "doc",
 					id: "business-validation/united-states",
 					label: "🇺🇸 United States",
 					key: "business-united-states",
+				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-world-gleif-lei",
+					label: "🌐 Global — Legal Entity Identifier (GLEIF LEI)",
 				},
 			],
 		},
@@ -840,6 +875,11 @@ const sidebars = {
 							id: "vehicle-validation/united-states/vehicle-by-vin",
 							label: "Vehicle by VIN",
 							key: "vehicle-united-states",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/united-states/vehicle-validation-usa-vehicle-safety-recalls",
+							label: "🇺🇸 United States — Vehicle Safety Recalls",
 						},
 					],
 				},

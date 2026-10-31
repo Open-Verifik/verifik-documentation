@@ -302,6 +302,31 @@ const sidebars = {
 					label: "🇺🇸 Estados Unidos",
 					key: "empresarial-estados-unidos",
 				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-european-union-vies-vat",
+					label: "🇪🇺 Unión Europea — Validación de IVA (VIES)",
+				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-france-company-sirene",
+					label: "🇫🇷 Francia — Registro de Empresas (SIRENE)",
+				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-uk-company-lookup",
+					label: "🇬🇧 Reino Unido — Consulta de Empresas",
+				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-spain-tax-id-validation",
+					label: "🇪🇸 España — Validación NIF / NIE / CIF",
+				},
+				{
+					type: "doc",
+					id: "business-validation/business-validation-world-gleif-lei",
+					label: "🌐 Global — Identificador de Entidad Jurídica (LEI)",
+				},
 			],
 		},
 		{
@@ -338,6 +363,16 @@ const sidebars = {
 					type: "doc",
 					id: "validaciones-vehiculos/licencia-de-manejo-ontario",
 					label: "🇨🇦 Ontario - Licencia de Manejo",
+				},
+				{
+					type: "doc",
+					id: "identity-validation/united-states/identity-validation-usa-driver-license-barcode",
+					label: "🇺🇸 EE. UU. — Código de Barras Licencia (AAMVA PDF417)",
+				},
+				{
+					type: "doc",
+					id: "identity-validation/united-states/identity-validation-usa-driver-license-cross-check",
+					label: "🇺🇸 EE. UU. — Verificación Cruzada Licencia (Frente vs Reverso)",
 				},
 			],
 		},
@@ -648,6 +683,11 @@ const sidebars = {
 							id: "validacion-vehiculos/estados-unidos-vin",
 							label: "Vehículo por VIN",
 							key: "vehiculos-estados-unidos",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/united-states/vehicle-validation-usa-vehicle-safety-recalls",
+							label: "🇺🇸 EE. UU. — Retiros de Seguridad (NHTSA Recalls)",
 						},
 					],
 				},
