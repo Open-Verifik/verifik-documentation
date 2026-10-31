@@ -256,3 +256,16 @@ curl -X POST "https://api.verifik.co/v2/usa/driver-license/cross-check" \
 - **Fraud & Tampering Defense:** Attackers often alter front card details (such as names or birth years to bypass age restrictions) using photo editing software without re-encoding the complex 2D barcode on the reverse side. Cross-checking catches 100% of these front-only alterations.
 - **Verdict Classifications:** The `verdict` property evaluates to `"confirmed"` when all critical fields meet high-confidence thresholds, `"discrepancy"` when one or more key fields diverge, or `"invalid_barcode"` if the reverse barcode payload is malformed or unreadable.
 - **Deterministic Field Scoring:** `fieldScores` provides granular confidence values from `0.0` (complete mismatch) to `1.0` (exact canonical match) for each compared identifier.
+
+---
+
+## Sandbox Probes
+
+Use the following test parameters in Sandbox mode to simulate each response scenario without consuming production credits:
+
+| Scenario | Parameters to Pass | Expected HTTP Status & Result |
+| :--- | :--- | :--- |
+| **Confirmed Authentic Match** | `licenseNumber: "D1234567"`, `firstName: "JOHN"`, `lastName: "DOE"`, `dateOfBirth: "1990-01-15"`, `state: "CA"` | `200 OK` — `verdict: "confirmed"`, `isAuthentic: true`, `matchScore: 1`, `discrepancies: []` |
+| **Tampered / Counterfeit Mismatch** | `licenseNumber: "TAMPERED999"`, `firstName: "JOHN"`, `lastName: "DOE"`, `state: "CA"` | `200 OK` — `verdict: "mismatch"`, `isAuthentic: false`, `discrepancies: ["licenseNumber"]` |
+| **Unreadable Barcode** | `licenseNumber: "UNREADABLE"` | `404 Not Found` — `code: "NotFound"`, `message: "unreadable_barcode"` |
+| **Missing Parameters** | Omit required front/barcode fields | `409 Conflict` — `code: "MissingParameter"` |
