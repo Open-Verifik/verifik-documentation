@@ -1,0 +1,199 @@
+---
+id: identity-validation-usa-driver-license-barcode
+title: Estados Unidos — Código de Barras de Licencia de Conducir (AAMVA PDF417)
+description: Decodifica y valida códigos de barras PDF417 de licencias de conducir e identificaciones de los 50 estados de EE. UU. y territorios según el estándar ANSI/AAMVA v01-v10, incluyendo validación REAL ID.
+sidebar_label: 🇺🇸 EE. UU. — Código de Barras Licencia (AAMVA PDF417)
+slug: /identity-validation/united-states/driver-license-barcode
+keywords:
+  - v2/usa/driver-license/barcode
+  - /v2/usa/driver-license/barcode
+  - aamva pdf417
+  - licencia de conducir usa
+  - usa driver license barcode
+  - real id barcode
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Estados Unidos — Código de Barras de Licencia de Conducir (AAMVA PDF417)
+
+La API de **Código de Barras de Licencia de Conducir de EE. UU.** de Verifik procesa, decodifica y audita códigos bidimensionales **PDF417** presentes en el reverso de licencias de conducir e identificaciones estatales emitidas en los 50 estados de Estados Unidos, Washington D.C., territorios estadounidenses y provincias de Canadá.
+
+Compatible con las versiones **01 a la 10 del estándar ANSI/AAMVA**, la API extrae más de 30 elementos de datos normalizados, mapea el código de emisor (IIN de 6 dígitos) contra la jurisdicción oficial, calcula flags de mayoría de edad (`age`, `isUnder18`, `isUnder21`), detecta fechas de vencimiento y audita el cumplimiento normativo **REAL ID**.
+
+---
+
+## Casos de Uso
+
+- **Onboarding Digital Móvil y Web:** Extracción automática de nombres, dirección, fecha de nacimiento y número de licencia a partir de la captura del reverso del documento, eliminando la digitación manual.
+- **Verificación de Edad en Comercios Regulados:** Comprobación rigurosa de mayoría de edad para plataformas de apuestas en línea, alcohol o servicios restringidos.
+- **Validación Normativa REAL ID:** Confirmación de identificaciones certificadas bajo la ley federal REAL ID para acreditación de identidad.
+
+---
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/usa/driver-license/barcode
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Content-Type` | `application/json` | Sí | Formato de envío JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `rawBarcode` | string | **Condicional** | Contenido en texto sin formato del código de barras PDF417 (con encabezado ANSI/AAMVA). Requerido si no se envía `backImage`. |
+| `backImage` | string | **Condicional** | Imagen del reverso de la licencia con el código de barras legible en formato Base64 o URL HTTPS. Requerido si no se envía `rawBarcode`. |
+| `licenseNumber` | string | No | Número de licencia para comprobación adicional de consistencia. |
+| `state` | string | No | Código postal de 2 letras del estado emisor (ej. `CA`, `FL`, `TX`, `NY`). |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/usa/driver-license/barcode",
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+  data: {
+    backImage: "data:image/jpeg;base64,/9j/4AAQSkZJRg...",
+    state: "CA",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al decodificar código AAMVA:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/usa/driver-license/barcode"
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+payload = {
+    "backImage": "data:image/jpeg;base64,/9j/4AAQSkZJRg...",
+    "state": "CA"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/usa/driver-license/barcode" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <tu_token>" \
+  -d '{
+    "backImage": "data:image/jpeg;base64,/9j/4AAQSkZJRg...",
+    "state": "CA"
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 (Código AAMVA Decodificado)">
+
+```json
+{
+  "data": {
+    "iin": "636014",
+    "issuerName": "California",
+    "state": "CA",
+    "licenseNumber": "D1234567",
+    "firstName": "JOHN",
+    "lastName": "DOE",
+    "middleName": "MICHAEL",
+    "dateOfBirth": "1990-05-15",
+    "expirationDate": "2028-05-15",
+    "issueDate": "2023-05-15",
+    "gender": "M",
+    "address": "123 MARKET ST",
+    "city": "SAN FRANCISCO",
+    "postalCode": "94103",
+    "vehicleClass": "C",
+    "isRealIdCompliant": true,
+    "realIdCategory": "REAL_ID_GOLD_STAR",
+    "age": 36,
+    "isUnder18": false,
+    "isUnder21": false,
+    "isExpired": false,
+    "daysUntilExpiration": 650
+  },
+  "signature": {
+    "dateTime": "2026-10-31 00:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400 (Código Ilegible o Formato No Estándar)">
+
+```json
+{
+  "code": "InvalidBarcode",
+  "message": "Could not locate or decode a valid AAMVA PDF417 barcode from the provided input"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either rawBarcode or backImage must be provided"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Parámetro | Valor de Entrada | Resultado Esperado |
+| :--- | :--- | :--- |
+| `rawBarcode` | Cadena AAMVA estándar con IIN `636014` | Decodificación 200 OK (`issuerName: "California"`, `isRealIdCompliant: true`) |
+| `backImage` | Imagen sintética de prueba AAMVA válida | Extracción óptica de código PDF417 y resolución de campos demográficos |
+| `rawBarcode` | Cadena aleatoria no AAMVA | 400 InvalidBarcode |

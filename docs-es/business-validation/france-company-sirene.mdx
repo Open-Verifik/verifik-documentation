@@ -1,0 +1,189 @@
+---
+id: business-validation-france-company-sirene
+title: Francia — Registro de Empresas (SIRENE / INSEE)
+description: Consulta el registro mercantil oficial de Francia para verificar números SIREN y SIRET, razón social, directivos, código NAF y número de IVA intracomunitario.
+sidebar_label: 🇫🇷 Francia — Registro de Empresas (SIRENE)
+slug: /business-validation/france-company-sirene
+keywords:
+  - v2/fr/company
+  - /v2/fr/company
+  - empresas francia
+  - siren siret verification
+  - registro sirene francia
+  - kyb francia
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Francia — Registro de Empresas (SIRENE / INSEE)
+
+La API de **Registro de Empresas de Francia** de Verifik permite consultar y verificar de manera inmediata la información legal de sociedades mercantiles, asociaciones y trabajadores autónomos inscritos en el registro mercantil oficial francés.
+
+Proporciona acceso a datos estructurados sobre la identificación de la empresa (SIREN de 9 dígitos y SIRET de 14 dígitos), razón social, forma jurídica, actividad económica principal (código NAF/APE), fecha de creación, directivos (*dirigeants*) y cálculo automático de su número de IVA intracomunitario.
+
+---
+
+## Casos de Uso
+
+- **Validación KYB en Francia:** Verificación de existencia legal y vigencia corporativa de proveedores, clientes y socios comerciales radicados en territorio francés.
+- **Identificación de Representantes Legales:** Identificación de directores generales y presidentes registrados oficialmente en el directorio corporativo.
+- **Conciliación Fiscal y Contable:** Cálculo y validación automática del número de IVA francés (*Numéro TVA intracommunautaire*) derivado de la clave SIREN.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/fr/company
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Condicional** | Número de identificación mercantil francés: SIREN (9 dígitos) o SIRET (14 dígitos del establecimiento principal). Requerido si no se envía `companyName`. |
+| `companyName` | string | **Condicional** | Razón social o denominación comercial de la empresa en Francia. Requerido si no se envía `documentNumber`. |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/fr/company",
+  params: {
+    documentNumber: "775670417",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar empresa en Francia:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/fr/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "documentNumber": "775670417"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/fr/company?documentNumber=775670417" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 (Empresa Encontrada)">
+
+```json
+{
+  "data": {
+    "siren": "775670417",
+    "siret": "77567041700051",
+    "vatNumber": "FR81775670417",
+    "businessName": "LVMH MOET HENNESSY LOUIS VUITTON",
+    "legalForm": "Société européenne",
+    "nafCode": "70.10Z",
+    "nafLabel": "Activités des sièges sociaux",
+    "status": "ACTIVE",
+    "creationDate": "1971-01-01",
+    "headquarters": {
+      "address": "22 AVENUE MONTAIGNE",
+      "postalCode": "75008",
+      "city": "PARIS",
+      "country": "FR"
+    },
+    "officers": [
+      {
+        "name": "BERNARD ARNAULT",
+        "role": "Président-directeur général"
+      }
+    ],
+    "financials": {
+      "lastTurnover": "86153000000",
+      "currency": "EUR"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-31 00:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404 (Empresa No Encontrada)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "No company record found matching the specified criteria in the official registry"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or companyName must be provided"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Parámetro | Valor | Entidad Esperada | Estatus |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | `775670417` | LVMH MOET HENNESSY LOUIS VUITTON | 200 OK (`status: "ACTIVE"`) |
+| `documentNumber` | `999999999` | Registro inexistente | 404 Not Found |

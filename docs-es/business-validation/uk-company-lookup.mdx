@@ -1,0 +1,183 @@
+---
+id: business-validation-uk-company-lookup
+title: Reino Unido — Consulta de Empresas (Companies House)
+description: Consulta el registro mercantil oficial del Reino Unido por número de empresa (CRN) o razón social para validar estatus corporativo, LEI, domicilio legal y avisos públicos.
+sidebar_label: 🇬🇧 Reino Unido — Consulta de Empresas
+slug: /business-validation/uk-company-lookup
+keywords:
+  - v2/gb/company
+  - /v2/gb/company
+  - empresas reino unido
+  - companies house uk
+  - kyb uk
+  - company registration number
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Reino Unido — Consulta de Empresas (Companies House)
+
+La API de **Consulta de Empresas del Reino Unido** de Verifik permite acceder a la información legal y corporativa de entidades comerciales registradas en Inglaterra, Gales, Escocia e Irlanda del Norte a través del registro mercantil oficial.
+
+Permite consultar por el Número de Registro de Empresa (CRN de 8 caracteres) o por la razón social, entregando detalles sobre el estatus operacional, fecha de constitución, identificador de entidad jurídica (LEI), domicilio legal registrado y avisos públicos oficiales.
+
+---
+
+## Casos de Uso
+
+- **Debida Diligencia KYB en el Reino Unido:** Verificación exhaustiva de personas jurídicas británicas antes de establecer relaciones contractuales o financieras.
+- **Prevención de Fraude Corporativo:** Validación de números de registro activos y detección de empresas disueltas, en liquidación o inactivas.
+- **Trazabilidad Global:** Asociación directa entre el registro mercantil británico y el Identificador de Entidad Jurídica (LEI) internacional.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/gb/company
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `companyNumber` | string | **Condicional** | Número oficial de registro de la empresa (CRN de 8 caracteres, ej. `00048839`). Requerido si no se envía `companyName`. |
+| `companyName` | string | **Condicional** | Razón social de la empresa en el Reino Unido (ej. `BARCLAYS PLC`). Requerido si no se envía `companyNumber`. |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/gb/company",
+  params: {
+    companyNumber: "00048839",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar empresa en UK:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/gb/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "companyNumber": "00048839"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/gb/company?companyNumber=00048839" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 (Empresa Encontrada)">
+
+```json
+{
+  "data": {
+    "companyNumber": "00048839",
+    "businessName": "BARCLAYS PLC",
+    "lei": "213800LBQA1Y9L22JB70",
+    "status": "ACTIVE",
+    "creationDate": "1896-07-20T00:00:00Z",
+    "jurisdiction": "GB",
+    "legalAddress": {
+      "addressLine1": "1 Churchill Place",
+      "city": "London",
+      "postalCode": "E14 5HP",
+      "country": "GB"
+    },
+    "previousNames": [],
+    "publicNotices": [
+      {
+        "title": "Annual Accounts & Confirmation Statement",
+        "date": "2026-03-15"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "2026-10-31 00:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404 (Empresa No Encontrada)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "No company record found matching the specified criteria in the official registry"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either companyNumber or companyName must be provided"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Parámetro | Valor | Entidad Esperada | Estatus |
+| :--- | :--- | :--- | :--- |
+| `companyNumber` | `00048839` | BARCLAYS PLC | 200 OK (`status: "ACTIVE"`) |
+| `companyNumber` | `99999999` | Registro inexistente | 404 Not Found |

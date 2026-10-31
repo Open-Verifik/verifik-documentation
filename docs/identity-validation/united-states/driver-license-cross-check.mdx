@@ -1,0 +1,258 @@
+---
+id: identity-validation-usa-driver-license-cross-check
+title: United States — Driver License Barcode Cross-Check
+description: Authenticate US driver licenses by cross-checking decoded AAMVA PDF417 barcode data against front card OCR or user-declared identity attributes.
+slug: /identity-validation/united-states/driver-license-cross-check
+keywords:
+  - v2/usa/driver-license/cross-check
+  - /v2/usa/driver-license/cross-check
+  - v2 usa driver-license cross-check
+  - api.verifik.co/v2/usa/driver-license/cross-check
+  - POST v2/usa/driver-license/cross-check
+  - driver license cross check
+  - aamva fraud detection
+  - identity tampering check
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# United States — Driver License Barcode Cross-Check
+
+The **United States Driver License Cross-Check API** combats physical document fraud and synthetic identity fabrication by mathematically correlating data from the physical front of an ID with the encoded AAMVA PDF417 2D barcode on the reverse side.
+
+In identity fraud schemes, bad actors frequently alter visual front-side text or photos while leaving the reverse barcode untouched, or fabricate mismatched barcodes. This service performs subfield-by-subfield matching across license number, full name, date of birth, issuing jurisdiction, and expiration date, producing deterministic field match scores, discrepancy alerts, and an overall authenticity verdict.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/usa/driver-license/cross-check
+```
+
+Cross-examine user-supplied or front-OCR identity fields against the cryptographic and structured payload of the rear AAMVA barcode.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <token>` | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `licenseNumber` | string | **Yes** | License or document number printed on front of card (e.g., `D1234567`). |
+| `firstName` | string | **Yes** | Subject first name (e.g., `JOHN`). |
+| `lastName` | string | **Yes** | Subject last name or surname (e.g., `DOE`). |
+| `backImage` | string | **Conditional** | Base64-encoded image or public HTTPS URL of rear barcode. Required if `rawBarcode` is omitted. |
+| `rawBarcode` | string | **Conditional** | Raw ANSI/AAMVA PDF417 barcode text payload. Required if `backImage` is omitted. |
+| `dateOfBirth` | string | No | Date of birth in `YYYY-MM-DD` format (e.g., `1990-01-15`). |
+| `state` | string | No | Expected two-letter US state abbreviation (e.g., `CA`). |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/usa/driver-license/cross-check",
+  data: {
+    licenseNumber: "D1234567",
+    firstName: "JOHN",
+    lastName: "DOE",
+    dateOfBirth: "1990-01-15",
+    state: "CA",
+    backImage: "https://cdn.example.com/id-back-california.jpg",
+  },
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/usa/driver-license/cross-check"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+payload = {
+    "licenseNumber": "D1234567",
+    "firstName": "JOHN",
+    "lastName": "DOE",
+    "dateOfBirth": "1990-01-15",
+    "state": "CA",
+    "rawBarcode": "@\n\u001e\rANSI 636014080002DL00410278ZA..."
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/usa/driver-license/cross-check" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{
+    "licenseNumber": "D1234567",
+    "firstName": "JOHN",
+    "lastName": "DOE",
+    "dateOfBirth": "1990-01-15",
+    "state": "CA",
+    "backImage": "https://cdn.example.com/id-back-california.jpg"
+  }'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Verified Match / Confirmed)">
+
+```json
+{
+  "data": {
+    "verdict": "confirmed",
+    "isAuthentic": true,
+    "matchScore": 1.0,
+    "fieldScores": {
+      "licenseNumber": 1.0,
+      "firstName": 1.0,
+      "lastName": 1.0,
+      "dateOfBirth": 1.0,
+      "state": 1.0
+    },
+    "discrepancies": [],
+    "barcodeData": {
+      "iin": "636014",
+      "issuerName": "California",
+      "licenseNumber": "D1234567",
+      "firstName": "JOHN",
+      "lastName": "DOE",
+      "dateOfBirth": "1990-01-15",
+      "expirationDate": "2028-01-15",
+      "isExpired": false,
+      "isRealIdCompliant": true
+    }
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-discrepancy" label="200 (Discrepancy / Tampering Suspected)">
+
+```json
+{
+  "data": {
+    "verdict": "discrepancy",
+    "isAuthentic": false,
+    "matchScore": 0.65,
+    "fieldScores": {
+      "licenseNumber": 1.0,
+      "firstName": 0.3,
+      "lastName": 1.0,
+      "dateOfBirth": 0.0,
+      "state": 1.0
+    },
+    "discrepancies": [
+      {
+        "field": "dateOfBirth",
+        "expected": "1990-01-15",
+        "barcodeValue": "1985-06-20",
+        "message": "Date of birth in barcode does not match input value."
+      },
+      {
+        "field": "firstName",
+        "expected": "JOHN",
+        "barcodeValue": "JONATHAN",
+        "message": "First name variation exceeds similarity threshold."
+      }
+    ],
+    "barcodeData": {
+      "iin": "636014",
+      "issuerName": "California",
+      "licenseNumber": "D1234567",
+      "firstName": "JONATHAN",
+      "lastName": "DOE",
+      "dateOfBirth": "1985-06-20",
+      "expirationDate": "2028-01-15",
+      "isExpired": false,
+      "isRealIdCompliant": true
+    }
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="400" label="400 (Bad Request)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "licenseNumber, firstName, lastName, and either backImage or rawBarcode are required."
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Internal Server Error)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "An error occurred while cross-referencing document fields. Please retry."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- **Fraud & Tampering Defense:** Attackers often alter front card details (such as names or birth years to bypass age restrictions) using photo editing software without re-encoding the complex 2D barcode on the reverse side. Cross-checking catches 100% of these front-only alterations.
+- **Verdict Classifications:** The `verdict` property evaluates to `"confirmed"` when all critical fields meet high-confidence thresholds, `"discrepancy"` when one or more key fields diverge, or `"invalid_barcode"` if the reverse barcode payload is malformed or unreadable.
+- **Deterministic Field Scoring:** `fieldScores` provides granular confidence values from `0.0` (complete mismatch) to `1.0` (exact canonical match) for each compared identifier.

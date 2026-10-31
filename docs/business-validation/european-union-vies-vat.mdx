@@ -1,0 +1,192 @@
+---
+id: business-validation-european-union-vies-vat
+title: European Union — VIES VAT Validation
+description: Validate European Union VAT identification numbers in real time against the official European VAT Information Exchange System (VIES).
+slug: /business-validation/european-union-vies-vat
+keywords:
+  - v2/eu/vat
+  - /v2/eu/vat
+  - v2 eu vat
+  - api.verifik.co/v2/eu/vat
+  - GET v2/eu/vat
+  - eu vat validation
+  - vies vat validation
+  - european vat lookup
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# European Union — VIES VAT Validation
+
+The **European Union VIES VAT Validation API** provides real-time verification of value-added tax (VAT) identification numbers for businesses registered across all 27 European Union member states and Northern Ireland (`XI`).
+
+By querying the official European VAT Information Exchange System, this endpoint confirms whether a VAT number is legally active, verifies registered trade names, and retrieves standardized corporate addresses to support intra-Community B2B invoicing, Know Your Business (KYB) compliance, and tax fraud prevention.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/eu/vat
+```
+
+Query the official European tax authority registry to confirm the validity and active registration status of an EU VAT identification number.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <token>` | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `countryCode` | string | **Yes** | Two-letter ISO member state country code (e.g., `IE`, `FR`, `ES`, `DE`, `IT`, `NL`, `XI`). |
+| `vatNumber` | string | **Yes** | VAT identification number excluding the country code prefix (e.g., `6388047V`). |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/eu/vat",
+  params: {
+    countryCode: "IE",
+    vatNumber: "6388047V",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/eu/vat"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+params = {
+    "countryCode": "IE",
+    "vatNumber": "6388047V"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/eu/vat?countryCode=IE&vatNumber=6388047V" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Active VAT Number)">
+
+```json
+{
+  "data": {
+    "valid": true,
+    "countryCode": "IE",
+    "vatNumber": "6388047V",
+    "fullVatNumber": "IE6388047V",
+    "businessName": "GOOGLE IRELAND LIMITED",
+    "address": "3RD FLOOR, GORDON HOUSE, BARROW STREET, DUBLIN 4",
+    "status": "ACTIVE"
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-invalid" label="200 (Invalid / Inactive VAT Number)">
+
+```json
+{
+  "data": {
+    "valid": false,
+    "countryCode": "IE",
+    "vatNumber": "0000000X",
+    "fullVatNumber": "IE0000000X",
+    "businessName": null,
+    "address": null,
+    "status": "INACTIVE"
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="400" label="400 (Bad Request)">
+
+```json
+{
+  "code": "InvalidParameter",
+  "message": "countryCode must be a valid 2-letter ISO EU country code (e.g., IE, FR, ES, DE, IT)."
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Internal Server Error)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official European authority service is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- **Intra-Community Tax Exemption:** Validating VAT registration through the official European authority is mandatory to apply 0% VAT reverse charges on cross-border transactions between EU member states.
+- **Country Prefix Handling:** Provide `countryCode` as the ISO code (e.g., `IE`) and `vatNumber` without the country prefix (e.g., `6388047V`). The API automatically constructs `fullVatNumber`.
+- **Northern Ireland Protocol:** Businesses in Northern Ireland trading goods under the EU Single Market framework use the special territory code `XI`.
+- **National Data Protections:** In certain member states (such as Germany or Spain), business names and addresses may not be publicly disclosed by the authority unless specific bilateral consent is registered.

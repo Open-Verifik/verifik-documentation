@@ -1,0 +1,226 @@
+---
+id: identity-validation-usa-driver-license-barcode
+title: United States — Driver License Barcode (AAMVA PDF417)
+description: Parse and validate American driver license PDF417 barcodes conforming to AAMVA standards from raw barcode strings or rear document images.
+slug: /identity-validation/united-states/driver-license-barcode
+keywords:
+  - v2/usa/driver-license/barcode
+  - /v2/usa/driver-license/barcode
+  - v2 usa driver-license barcode
+  - api.verifik.co/v2/usa/driver-license/barcode
+  - POST v2/usa/driver-license/barcode
+  - aamva pdf417 parser
+  - usa driver license barcode
+  - us real id barcode validation
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# United States — Driver License Barcode (AAMVA PDF417)
+
+The **United States Driver License Barcode API** decodes, standardizes, and validates the PDF417 two-dimensional barcode embedded on the reverse of driver licenses and identification cards issued by all 50 US states, the District of Columbia, and US territories.
+
+Engineered to comply with the American Association of Motor Vehicle Administrators (**AAMVA**) Card Design Standard (CDS), the API extracts demographics, document identifiers, expiration dates, REAL ID compliance indicators, and machine-readable data subfiles from either raw scanner output or camera image captures.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/usa/driver-license/barcode
+```
+
+Parse and extract structured identity data from a rear US driver license barcode payload or image.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <token>` | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `rawBarcode` | string | **Conditional** | Raw ANSI/AAMVA PDF417 text string obtained from a hardware 2D barcode scanner or client SDK. Required if `backImage` is omitted. |
+| `backImage` | string | **Conditional** | Base64-encoded image string or public HTTPS URL of the rear side of the driver license. Required if `rawBarcode` is omitted. |
+| `licenseNumber` | string | No | Expected driver license number to confirm matching during parsing. |
+| `state` | string | No | Expected two-letter US state postal abbreviation (e.g., `CA`, `FL`, `NY`, `TX`). |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/usa/driver-license/barcode",
+  data: {
+    backImage: "https://cdn.example.com/id-back-california.jpg",
+    state: "CA",
+  },
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/usa/driver-license/barcode"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+payload = {
+    "rawBarcode": "@\n\u001e\rANSI 636014080002DL00410278ZA03190014DLDAQD1234567\n...",
+    "state": "CA"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/usa/driver-license/barcode" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{
+    "backImage": "https://cdn.example.com/id-back-california.jpg",
+    "state": "CA"
+  }'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Barcode Decoded Successfully)">
+
+```json
+{
+  "data": {
+    "iin": "636014",
+    "issuerName": "California",
+    "state": "CA",
+    "licenseNumber": "D1234567",
+    "firstName": "JOHN",
+    "middleName": "QUINCY",
+    "lastName": "PUBLIC",
+    "dateOfBirth": "1990-01-15",
+    "age": 36,
+    "expirationDate": "2028-01-15",
+    "issueDate": "2023-01-15",
+    "isExpired": false,
+    "isRealIdCompliant": true,
+    "address": {
+      "street": "123 EL CAMINO REAL",
+      "city": "SACRAMENTO",
+      "state": "CA",
+      "postalCode": "95814"
+    },
+    "licenseClass": "C",
+    "endorsements": "NONE",
+    "restrictions": "NONE",
+    "sex": "M",
+    "height": "5-10",
+    "eyeColor": "BRO",
+    "rawAamva": {
+      "DCA": "C",
+      "DCB": "NONE",
+      "DCD": "NONE",
+      "DBA": "20280115",
+      "DCS": "PUBLIC",
+      "DAC": "JOHN",
+      "DAD": "QUINCY",
+      "DBD": "20230115",
+      "DBB": "19900115",
+      "DBC": "1",
+      "DAY": "BRO",
+      "DAU": "070 in",
+      "DAG": "123 EL CAMINO REAL",
+      "DAI": "SACRAMENTO",
+      "DAJ": "CA",
+      "DAK": "958140000",
+      "DAQ": "D1234567"
+    }
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="400" label="400 (Bad Request)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either rawBarcode or backImage must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="422" label="422 (Unprocessable Entity)">
+
+```json
+{
+  "code": "UnreadableBarcode",
+  "message": "Could not detect or decode a valid AAMVA PDF417 barcode from the provided image. Please ensure sufficient lighting and focus."
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Internal Server Error)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "An error occurred while processing the barcode data. Please retry."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- **AAMVA Issuer Identification Number (IIN):** The 6-digit numeric prefix identifies the issuing jurisdiction (e.g., `636014` designates California, `636010` designates Florida, `636001` designates New York) under official motor vehicle administration standards.
+- **REAL ID Verification:** Documents marked `isRealIdCompliant: true` satisfy federal statutory standards under the REAL ID Act for domestic airline boarding and federal building access.
+- **Calculated Age & Expiration:** The endpoint automatically calculates subject age from the decoded date of birth and computes real-time `isExpired` boolean status against the current UTC date.

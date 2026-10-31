@@ -1,0 +1,187 @@
+---
+id: business-validation-european-union-vies-vat
+title: Unión Europea — Validación de IVA intracomunitario (VIES)
+description: Valida números de IVA (VAT) y consulta información legal de entidades jurídicas en los 27 Estados miembros de la Unión Europea a través de la fuente oficial europea VIES.
+sidebar_label: 🇪🇺 Unión Europea — Validación de IVA (VIES)
+slug: /business-validation/european-union-vies-vat
+keywords:
+  - v2/eu/vat
+  - /v2/eu/vat
+  - iva union europea
+  - vies vat validation
+  - validacion iva ue
+  - vat number eu
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Unión Europea — Validación de IVA intracomunitario (VIES)
+
+La API de **Validación de IVA de la Unión Europea (VIES)** de Verifik permite autenticar en tiempo real el estatus de registro fiscal, razón social oficial y dirección de cualquier entidad comercial registrada a efectos de IVA (VAT) en los 27 Estados miembros de la Unión Europea e Irlanda del Norte.
+
+Esta solución se conecta de manera directa y transparente con la fuente oficial europea para certificar la validez tributaria de empresas antes de emitir facturas exentas de IVA transfronterizo o formalizar contratos B2B en el espacio europeo.
+
+---
+
+## Casos de Uso
+
+- **Facturación Intracomunitaria B2B:** Verificación automática de la validez del NIF-IVA de clientes y proveedores antes de aplicar exenciones tributarias transfronterizas en la Unión Europea.
+- **Onboarding KYB y Debida Diligencia:** Comprobación instantánea de la vigencia legal, razón social y domicilio fiscal de empresas europeas.
+- **Prevención de Fraude Fiscal:** Detección preventiva de empresas fantasma y números de IVA ficticios o dados de baja en el registro oficial.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/eu/vat
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `countryCode` | string | Sí | Código de país ISO de 2 caracteres del Estado miembro de la UE (ej. `IE`, `FR`, `ES`, `DE`, `IT`, `NL`, o `XI` para Irlanda del Norte). |
+| `vatNumber` | string | Sí | Número de identificación fiscal o IVA sin el prefijo de país ni espacios (ej. `6388047V`, `81775670417`). |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/eu/vat",
+  params: {
+    countryCode: "IE",
+    vatNumber: "6388047V",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar IVA UE:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/eu/vat"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "countryCode": "IE",
+    "vatNumber": "6388047V"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/eu/vat?countryCode=IE&vatNumber=6388047V" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200-valid" label="200 (IVA Válido y Activo)">
+
+```json
+{
+  "data": {
+    "valid": true,
+    "countryCode": "IE",
+    "vatNumber": "6388047V",
+    "fullVatNumber": "IE6388047V",
+    "businessName": "GOOGLE IRELAND LIMITED",
+    "address": "3RD FLOOR, GORDON HOUSE, BARROW STREET, DUBLIN 4",
+    "requestDate": "2026-10-31T00:00:00Z",
+    "status": "ACTIVE"
+  },
+  "signature": {
+    "dateTime": "2026-10-31 00:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-invalid" label="200 (IVA Inválido o No Registrado)">
+
+```json
+{
+  "data": {
+    "valid": false,
+    "countryCode": "FR",
+    "vatNumber": "000000000",
+    "fullVatNumber": "FR000000000",
+    "businessName": "---",
+    "address": "---",
+    "requestDate": "2026-10-31T00:00:00Z",
+    "status": "INACTIVE"
+  },
+  "signature": {
+    "dateTime": "2026-10-31 00:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "countryCode and vatNumber are required"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Código de País | Número de IVA | Entidad Esperada | Estatus |
+| :--- | :--- | :--- | :--- |
+| `IE` | `6388047V` | GOOGLE IRELAND LIMITED | `valid: true`, `status: "ACTIVE"` |
+| `FR` | `81775670417` | LVMH MOET HENNESSY LOUIS VUITTON | `valid: true`, `status: "ACTIVE"` |
+| `ES` | `000000000` | No registrado | `valid: false`, `status: "INACTIVE"` |

@@ -1,0 +1,198 @@
+---
+id: vehicle-validation-usa-vehicle-safety-recalls
+title: Estados Unidos — Retiros de Seguridad y Fallas Vehiculares (NHTSA Recalls)
+description: Consulta retiros oficiales de seguridad por defectos de fabricación y campañas de reparación vehicular en Estados Unidos por VIN de 17 caracteres o por Marca, Modelo y Año a través de la autoridad oficial de seguridad vial.
+sidebar_label: 🇺🇸 EE. UU. — Retiros de Seguridad (NHTSA Recalls)
+slug: /vehicle-validation/united-states/vehicle-safety-recalls
+keywords:
+  - v2/usa/vehicle/recalls
+  - /v2/usa/vehicle/recalls
+  - retiros seguridad vehiculos usa
+  - nhtsa recalls api
+  - fallas vehiculares usa
+  - vin recalls
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Estados Unidos — Retiros de Seguridad y Fallas Vehiculares (NHTSA Recalls)
+
+La API de **Retiros de Seguridad y Campañas de Reparación Vehicular de EE. UU.** de Verifik permite consultar el registro de alertas de seguridad emitidas por la autoridad oficial de seguridad vial en los Estados Unidos.
+
+Permite verificar si un vehículo específico (mediante su número VIN de 17 caracteres) o una línea vehicular general (por Marca, Modelo y Año) se encuentra sujeto a llamados a revisión (*safety recalls*) abiertos por defectos de fábrica críticos en componentes como bolsas de aire (airbags), sistemas de frenos, dirección, tren motriz o sistemas de software.
+
+---
+
+## Casos de Uso
+
+- **Gestión de Flotas y Rent-a-Car:** Monitoreo preventivo del parque automotor para atender campañas de seguridad antes de arrendar o movilizar vehículos.
+- **Suscripción de Seguros de Autos:** Evaluación del perfil de riesgo mecánico del vehículo al tarificar pólizas de cobertura y responsabilidad civil.
+- **Marketplaces y Concesionarios de Autos Usados:** Garantía de transparencia para compradores verificando que no existan retiros de seguridad críticos pendientes de reparación.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/usa/vehicle/recalls
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `vin` | string | **Condicional** | Número de Identificación Vehicular estandarizado de 17 caracteres (ej. `5YJSA1E26MF123456`). Si se suministra, el servicio decodifica automáticamente marca, modelo y año. Requerido si no se envían make, model y modelYear. |
+| `make` | string | **Condicional** | Marca fabricante del vehículo (ej. `TESLA`, `FORD`, `TOYOTA`). Requerido si no se envía `vin`. |
+| `model` | string | **Condicional** | Modelo comercial del vehículo (ej. `MODEL S`, `MUSTANG`, `CAMRY`). Requerido si no se envía `vin`. |
+| `modelYear` | string | **Condicional** | Año del modelo del vehículo en formato de 4 dígitos (ej. `2021`). Requerido si no se envía `vin`. |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/usa/vehicle/recalls",
+  params: {
+    vin: "5YJSA1E26MF123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar retiros de seguridad del vehículo:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/usa/vehicle/recalls"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "vin": "5YJSA1E26MF123456"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/usa/vehicle/recalls?vin=5YJSA1E26MF123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200-recalls" label="200 (Con Retiros de Seguridad Abiertos)">
+
+```json
+{
+  "data": {
+    "vehicle": {
+      "vin": "5YJSA1E26MF123456",
+      "make": "TESLA",
+      "model": "MODEL S",
+      "modelYear": "2021"
+    },
+    "recallsCount": 1,
+    "hasOpenRecalls": true,
+    "recalls": [
+      {
+        "campaignNumber": "21V001000",
+        "component": "AIR BAGS",
+        "summary": "El módulo del airbag frontal puede experimentar un despliegue involuntario debido a una anomalía en el arnés de cableado.",
+        "consequence": "Un despliegue imprevisto del airbag incrementa el riesgo de accidentes o lesiones a los ocupantes.",
+        "remedy": "El fabricante reemplazará el conector del arnés de forma gratuita en concesionarios autorizados.",
+        "reportDate": "2021-01-15"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "2026-10-31 00:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-clean" label="200 (Sin Retiros / Vehículo Seguro)">
+
+```json
+{
+  "data": {
+    "vehicle": {
+      "vin": "1FA6P8CF5H5123456",
+      "make": "FORD",
+      "model": "MUSTANG",
+      "modelYear": "2022"
+    },
+    "recallsCount": 0,
+    "hasOpenRecalls": false,
+    "recalls": []
+  },
+  "signature": {
+    "dateTime": "2026-10-31 00:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either vin or the combination of make, model, and modelYear must be provided"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Consulta | Estatus Esperado | Campañas Reportadas |
+| :--- | :--- | :--- |
+| `vin: "5YJSA1E26MF123456"` | 200 OK | `hasOpenRecalls: true`, `recallsCount: 1` |
+| `make: "FORD", model: "MUSTANG", modelYear: "2022"` | 200 OK | `hasOpenRecalls: false`, `recallsCount: 0` |
+| Sin parámetros | 409 MissingParameter | Error de validación |

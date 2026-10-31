@@ -1,0 +1,190 @@
+---
+id: business-validation-uk-company-lookup
+title: United Kingdom — Company Lookup
+description: Lookup and verify British corporations, directors, status, LEI, and public notices through the official corporate registry.
+slug: /business-validation/uk-company-lookup
+keywords:
+  - v2/gb/company
+  - /v2/gb/company
+  - v2 gb company
+  - api.verifik.co/v2/gb/company
+  - GET v2/gb/company
+  - uk company lookup
+  - uk corporate registry verification
+  - british business validation
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# United Kingdom — Company Lookup
+
+The **United Kingdom Company Lookup API** verifies businesses incorporated in England, Wales, Scotland, and Northern Ireland through the official corporate registry of Great Britain.
+
+Retrieve real-time legal status, 8-character company numbers, Legal Entity Identifiers (LEI), corporate creation dates, registered office addresses, and official regulatory filings to automate KYB verification and vendor screening.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/gb/company
+```
+
+Query the official corporate registry of the United Kingdom by company registration number or registered corporate name.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <token>` | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `companyNumber` | string | **Conditional** | 8-character alphanumeric UK company registration number (e.g., `00048839`, `SC123456`, `NI123456`). Required if `companyName` is omitted. |
+| `companyName` | string | **Conditional** | Registered corporate name (e.g., `BARCLAYS PLC`). Required if `companyNumber` is omitted. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/gb/company",
+  params: {
+    companyNumber: "00048839",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/gb/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+params = {
+    "companyNumber": "00048839"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/gb/company?companyNumber=00048839" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Company Found)">
+
+```json
+{
+  "data": {
+    "companyNumber": "00048839",
+    "businessName": "BARCLAYS PLC",
+    "lei": "213800LBQA1Y9L22JB70",
+    "status": "ACTIVE",
+    "creationDate": "1896-07-20T00:00:00Z",
+    "jurisdiction": "GB",
+    "legalAddress": {
+      "addressLine1": "1 Churchill Place",
+      "locality": "London",
+      "postalCode": "E14 5HP",
+      "country": "United Kingdom"
+    },
+    "publicNotices": [
+      {
+        "date": "2024-05-10",
+        "type": "ANNUAL_RETURN",
+        "description": "Confirmation statement with updates"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "October 31, 2026 12:00 AM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="400" label="400 (Bad Request)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either companyNumber or companyName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not Found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "No British corporate record found for the provided query."
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Internal Server Error)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official corporate registry service is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- **Company Number Normalization:** Standard English company numbers are 8 digits long with leading zeroes preserved (e.g., `00048839`). Scottish corporations begin with `SC`, Northern Irish companies with `NI`, and Limited Liability Partnerships with `OC`.
+- **Global LEI Integration:** When available, the response cross-references the 20-character ISO 17442 Legal Entity Identifier (`lei`) associated with the entity for financial reporting compliance under MiFID II and EMIR.
+- **Corporate Filings:** The `publicNotices` list includes the latest confirmation statements, account filings, and status changes recorded by the official corporate registry.
