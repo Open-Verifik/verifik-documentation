@@ -1,0 +1,188 @@
+---
+id: world-bank
+title: World Bank Debarred Firms & Individuals
+description: Screen vendors, contractors, and individuals debarred from World Bank-financed contracts due to corrupt, fraudulent, or collusive practices.
+slug: /background-check/international/world-bank
+keywords:
+  - v2/world-bank
+  - /v2/world-bank
+  - world bank debarred firms
+  - inhabilitados banco mundial
+  - multilateral cross-debarment
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# World Bank Debarred Firms & Individuals
+
+The **World Bank Listing of Ineligible Firms & Individuals** contains businesses and individuals that have been sanctioned and declared ineligible to be awarded World Bank-financed contracts. Debarments are adjudicated under World Bank Group Sanctions Procedures for fraudulent, corrupt, collusive, coercive, or obstructive practices.
+
+Under the 2010 **Agreement for Mutual Enforcement of Debarment Decisions (Multilateral Cross-Debarment Agreement)**, debarments exceeding one year are cross-enforced by participating multilateral development banks (IDB, ADB, EBRD, and AfDB).
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/world-bank
+```
+
+### Headers
+
+| Name          | Value              | Description |
+| ------------- | ------------------ | ----------- |
+| Content-Type  | `application/json` | Request format |
+| Accept        | `application/json` | Response format |
+| Authorization | `Bearer <token>`   | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | **Conditional** | Company or individual name to search. Required if document parameters are not provided. |
+| `documentNumber` | string | **Conditional** | Tax registration ID or national identity number. Required if fullName is not provided. |
+| `documentType` | string | No | Document type (e.g., `NIT`, `EIN`, `CC`, `PAS`). Default: `CC`. |
+
+### Use Cases
+
+- **Procurement & Tender Compliance:** Verify that bidding engineering firms and consultants are not subject to multilateral debarment before contract award.
+- **Multilateral Financing Compliance:** Comply with international development project guidelines prohibiting subcontracting with debarred entities.
+- **Corporate Vendor Onboarding:** Screen global suppliers and consortium partners in public works and infrastructure projects.
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/world-bank",
+  params: {
+    fullName: "MARIA ELENA LOPEZ GARCIA",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/world-bank"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+params = {
+    "fullName": "MARIA ELENA LOPEZ GARCIA"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/world-bank?fullName=MARIA%20ELENA%20LOPEZ%20GARCIA" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200-found" label="200 (Debarment Record Found)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "lastName": "LOPEZ GARCIA",
+    "foundInWorldBank": true,
+    "details": {
+      "supplierId": 999999,
+      "name": "MARIA ELENA LOPEZ GARCIA",
+      "type": "F",
+      "country": "United States",
+      "address": "1818 H Street NW, Washington, DC 20433",
+      "debarFromDate": "2022-01-01",
+      "debarToDate": "2027-01-01",
+      "debarReason": "Fraudulent Practices",
+      "ineligibilityStatus": "Debarred"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Clean / Not Found)">
+
+```json
+{
+  "data": {
+    "fullName": "JOHN DOE",
+    "firstName": "JOHN",
+    "lastName": "DOE",
+    "foundInWorldBank": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing Parameters)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Sandbox Probes
+
+| Subject Query | Endpoint | Expected Result |
+| :--- | :--- | :--- |
+| Odd Document `10000001` | `/v2/world-bank` | Debarred record found (`foundInWorldBank: true`). |
+| Even Document `10000002` | `/v2/world-bank` | Clean record (`foundInWorldBank: false`). |

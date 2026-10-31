@@ -1,0 +1,190 @@
+---
+id: health-exclusions
+title: Estados Unidos — Exclusiones del Sector Salud (HHS OIG LEIE)
+description: Verificación de exclusiones de profesionales y proveedores de salud ante la Oficina del Inspector General de los Estados Unidos (HHS OIG LEIE).
+sidebar_label: 🇺🇸 EE. UU. — Exclusiones Salud HHS OIG
+slug: /background-check/international/health-exclusions
+keywords:
+  - v2/health-exclusions
+  - /v2/health-exclusions
+  - exclusiones salud usa
+  - hhs oig leie
+  - medicare exclusiones
+  - inhabilitaciones salud
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Estados Unidos — Exclusiones de Salud (HHS OIG LEIE)
+
+La **Lista de Personas y Entidades Excluidas (LEIE)** es administrada por la **Oficina del Inspector General del Departamento de Salud y Servicios Humanos de los Estados Unidos (HHS OIG)** en virtud de las Secciones 1128 y 1156 de la Ley de Seguridad Social.
+
+Los profesionales de la salud, clínicas, farmacias y entidades de facturación médica incluidas en la lista LEIE tienen prohibida su participación y cobro en programas federales de salud (Medicare, Medicaid y TRICARE). Contratar a personas o entidades inhabilitadas acarrea sanciones monetarias civiles automáticas (CMP).
+
+---
+
+## Casos de Uso
+
+- **Acreditación de Profesionales de la Salud:** Monitoreo periódico y validación previa a la contratación de médicos, enfermeros y personal asistencial.
+- **Debida Diligencia de Proveedores Médicos:** Comprobación de farmacéuticas, distribuidores de insumos y entidades de facturación antes de procesar reembolsos de salud.
+- **Prevención de Sanciones Civiles Federales (CMP):** Blindaje contra multas millonarias por contratación de entidades excluidas de programas federales de salud.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/health-exclusions
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | **Condicional** | Nombre completo del profesional o razón social de la entidad médica. Requerido si no se envían datos de documento. |
+| `documentNumber` | string | **Condicional** | Identificador NPI (National Provider Identifier), tax ID o cédula. Requerido si no se envía fullName. |
+| `documentType` | string | No | Tipo de documento (ej. `NPI`, `EIN`, `PAS`, `CC`). Predeterminado: `CC`. |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/health-exclusions",
+  params: {
+    fullName: "MARIA ELENA LOPEZ GARCIA",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar exclusiones de salud:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/health-exclusions"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "fullName": "MARIA ELENA LOPEZ GARCIA"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/health-exclusions?fullName=MARIA%20ELENA%20LOPEZ%20GARCIA" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200-found" label="200 (Exclusión Registrada)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "lastName": "LOPEZ GARCIA",
+    "foundInHealthExclusions": true,
+    "details": {
+      "id": "us-hhs-10000001",
+      "name": "MARIA ELENA LOPEZ GARCIA",
+      "schema": "Person",
+      "aliases": "LOPEZ GARCIA, MARIA ELENA",
+      "birthDate": "1980-05-15",
+      "addresses": "123 Federal Way, Miami, FL 33101",
+      "identifiers": "NPI:10000001",
+      "sanctions": "1128(a)(1) - Conviction of program-related crimes",
+      "firstSeen": "2016-07-20",
+      "lastSeen": "2024-01-01"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-clean" label="200 (Sin Registros / Limpio)">
+
+```json
+{
+  "data": {
+    "fullName": "JUAN PEREZ",
+    "firstName": "JUAN",
+    "lastName": "PEREZ",
+    "foundInHealthExclusions": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Consulta de Sujeto | Endpoint | Resultado Esperado |
+| :--- | :--- | :--- |
+| Documento impar `10000001` | `/v2/health-exclusions` | Exclusión encontrada (`foundInHealthExclusions: true`). |
+| Documento par `10000002` | `/v2/health-exclusions` | Registro limpio (`foundInHealthExclusions: false`). |

@@ -1,0 +1,185 @@
+---
+id: dss-most-wanted
+title: Estados Unidos — Más Buscados DSS (Diplomatic Security Service)
+description: Verificación de fugitivos más buscados ante el Servicio de Seguridad Diplomática del Departamento de Estado de los Estados Unidos (DSS / Rewards for Justice).
+sidebar_label: 🇺🇸 EE. UU. — DSS Más Buscados
+slug: /background-check/international/dss-most-wanted
+keywords:
+  - v2/dss-most-wanted
+  - /v2/dss-most-wanted
+  - dss most wanted
+  - rewards for justice
+  - diplomatic security service
+  - fugitivos internacionales
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Estados Unidos — Más Buscados DSS (Rewards for Justice)
+
+El **Diplomatic Security Service (DSS)** es el brazo de seguridad y aplicación de la ley del **Departamento de Estado de los Estados Unidos**. Investiga delitos transnacionales que amenazan la seguridad diplomática, tales como falsificación de pasaportes y visados, tráfico ilícito de personas, contraespionaje y terrorismo internacional.
+
+A través del programa oficial **Rewards for Justice (RFJ)**, el gobierno estadounidense ofrece recompensas monetarias sustanciales por información que conduzca a la captura de fugitivos de alto perfil a nivel mundial.
+
+---
+
+## Casos de Uso
+
+- **Verificación de Identidad y Control Migratorio:** Identificación de personas sospechosas de adulteración de documentos de viaje o suplantación de identidad.
+- **Debida Diligencia de Alto Perfil:** Comprobación de candidatos y contrapartes frente a listas de fugitivos con recompensas federales activas.
+- **Cumplimiento y Gestión de Riesgo Reputacional:** Detección oportuna de sujetos requeridos por agencias de seguridad diplomática internacional.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/dss-most-wanted
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | **Condicional** | Nombre completo de la persona a consultar. Requerido si no se envían datos de documento. |
+| `documentNumber` | string | **Condicional** | Número de documento de identidad o pasaporte. Requerido si no se envía fullName. |
+| `documentType` | string | No | Tipo de documento (ej. `PAS`, `CC`, `DNI`). Predeterminado: `CC`. |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/dss-most-wanted",
+  params: {
+    fullName: "MARIA ELENA LOPEZ GARCIA",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar fugitivos DSS:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/dss-most-wanted"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "fullName": "MARIA ELENA LOPEZ GARCIA"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/dss-most-wanted?fullName=MARIA%20ELENA%20LOPEZ%20GARCIA" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200-found" label="200 (Registro de Fugitivo Encontrado)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "lastName": "LOPEZ GARCIA",
+    "foundInDSS": true,
+    "details": {
+      "id": 10000001,
+      "title": "MARIA ELENA LOPEZ GARCIA",
+      "link": "https://rewardsforjustice.net/rewards/maria-elena-lopez-garcia",
+      "slug": "maria-elena-lopez-garcia",
+      "summary": "Wanted by DSS Rewards for Justice for transnational criminal violations."
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-clean" label="200 (Sin Registros / Limpio)">
+
+```json
+{
+  "data": {
+    "fullName": "JUAN PEREZ",
+    "firstName": "JUAN",
+    "lastName": "PEREZ",
+    "foundInDSS": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Consulta de Sujeto | Endpoint | Resultado Esperado |
+| :--- | :--- | :--- |
+| Documento impar `10000001` | `/v2/dss-most-wanted` | Registro encontrado (`foundInDSS: true`). |
+| Documento par `10000002` | `/v2/dss-most-wanted` | Registro limpio (`foundInDSS: false`). |

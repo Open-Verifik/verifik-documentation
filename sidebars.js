@@ -1011,18 +1011,18 @@ const sidebars = {
 				},
 				{
 					type: "doc",
-					id: "background-check/international/eu-terrorists-and-sanctions",
-					label: "🌐 EU Terrorists & Financial Sanctions",
-				},
-				{
-					type: "doc",
 					id: "background-check/international/us-consolidated-screening-list",
 					label: "🌐 US Consolidated Screening List (CSL)",
 				},
 				{
 					type: "doc",
-					id: "background-check/international/dss-and-secret-service-most-wanted",
-					label: "🌐 DSS & Secret Service Most Wanted",
+					id: "background-check/international/dss-most-wanted",
+					label: "🌐 DSS Most Wanted (Rewards for Justice)",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/secret-service",
+					label: "🌐 Secret Service Most Wanted",
 				},
 				{
 					type: "doc",
@@ -1031,23 +1031,43 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/international/sec-sanctions",
+					label: "🌐 SEC Sanctions & Enforcement",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/health-exclusions",
+					label: "🌐 HHS OIG Health Exclusions (LEIE)",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/eu-terrorists",
+					label: "🇪🇺 EU Terrorists (CP931)",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/eu-financial-sanctions",
+					label: "🇪🇺 EU Financial Sanctions (FSF)",
+				},
+				{
+					type: "doc",
 					id: "background-check/international/uk-ofsi-sanctions",
 					label: "🌐 UK OFSI Consolidated Sanctions",
 				},
 				{
 					type: "doc",
-					id: "background-check/international/multilateral-world-bank-and-iadb",
-					label: "🌐 World Bank & IDB Debarred Lists",
+					id: "background-check/international/world-bank",
+					label: "🌐 World Bank Debarred List",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/iadb-sanctions",
+					label: "🌐 IDB Sanctions",
 				},
 				{
 					type: "doc",
 					id: "background-check/international/icij-offshore-leaks",
 					label: "🌐 ICIJ Offshore Leaks Database",
-				},
-				{
-					type: "doc",
-					id: "background-check/international/sec-and-hhs-exclusions",
-					label: "🌐 SEC Sanctions & HHS Health Exclusions",
 				},
 			],
 		},
