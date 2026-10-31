@@ -1,0 +1,218 @@
+---
+id: colombia-rama-jepms
+title: Colombia — Sentence Execution Courts (JEPMS)
+description: Query penal execution dockets, sentence compliance, custodial status (PPL), and parole orders across 25 Colombian JEPMS judicial districts.
+slug: /background-check/colombia-rama-jepms
+keywords:
+  - v2/co/rama/jepms
+  - /v2/co/rama/jepms
+  - v2/co/rama/juzgado/expedientes
+  - /v2/co/rama/juzgado/expedientes
+  - ejecucion de penas colombia
+  - jepms rama judicial
+  - antecedentes penales rama judicial
+  - consulta reclusos ppl colombia
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Juzgados de Ejecución de Penas y Medidas de Seguridad (JEPMS)
+
+The **Juzgados de Ejecución de Penas y Medidas de Seguridad (JEPMS)** are specialized courts within the Colombian Judiciary (**Rama Judicial**) tasked with supervising the execution, enforcement, and compliance of criminal sentences and security measures under the Colombian Penal Code (*Ley 599 de 2000*) and Criminal Procedure Code (*Ley 906 de 2004*).
+
+Unlike general trial court dockets, JEPMS records specifically track individuals who have received formal criminal convictions. The system provides real-time visibility into prison execution status (*PPL - Persona Privada de la Libertad*), home detention (*prisión domiciliaria*), conditional parole (*libertad condicional*), work-release benefits, and sentence termination orders.
+
+---
+
+## Supported Judicial Districts
+
+The API connects directly to the official judicial information system across **25 judicial districts**:
+
+| Region | Supported City Slugs |
+| :--- | :--- |
+| **Capital & Central** | `bogota`, `tunja`, `ibague`, `neiva`, `villavicencio`, `acacias` |
+| **Antioquia & Coffee Axis** | `medellin`, `pereira`, `manizales`, `armenia` |
+| **Southwestern** | `cali`, `palmira`, `buga`, `popayan`, `pasto`, `florencia` |
+| **Caribbean & Northern** | `barranquilla`, `cartagena`, `santamarta`, `valledupar`, `monteria`, `bucaramanga` |
+| **Frontier & Amazonian** | `arauca`, `quibdo`, `leticia` |
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/rama/jepms
+```
+
+*Alias route:* `GET https://api.verifik.co/v2/co/rama/juzgado/expedientes`
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Conditional** | Colombian national ID or foreigner ID number. Required if `lastName` is not specified. |
+| `documentType` | string | No | Document type: `CC` (default), `CE`, `PAS`, `TI`. |
+| `lastName` | string | **Conditional** | Defendant surname. Required if `documentNumber` is not provided. |
+| `city` | string | No | Judicial city district slug (e.g. `bogota`, `medellin`, `cali`). Defaults to `bogota`. Set to `all` to search all major judicial circuits concurrently. |
+
+### Use Cases
+
+- **Enhanced Criminal Record Verification:** Goes beyond police clearance certificates by identifying active sentence execution proceedings, probation conditions, and pending arrest warrants.
+- **High-Trust Hiring & Security Clearances:** Essential for security guards, bullion transport, armored logistics, education staff, and executive leadership positions.
+- **Legal Compliance:** Ascertain whether an individual is subject to civil rights disqualifications (*inhabilidad para el ejercicio de funciones públicas*) stemming from an ongoing criminal sentence.
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/rama/jepms",
+  params: {
+    documentType: "CC",
+    documentNumber: "75086330",
+    city: "bogota",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+
+conn.request("GET", "/v2/co/rama/jepms?documentType=CC&documentNumber=75086330&city=bogota", headers=headers)
+res = conn.getresponse()
+data = res.read()
+
+print(json.loads(data.decode("utf-8")))
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/rama/jepms?documentType=CC&documentNumber=75086330&city=bogota" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200-records" label="200 (Sentence Docket Found)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "75086330",
+    "city": "BOGOTA",
+    "hasRecords": true,
+    "totalRecords": 1,
+    "records": [
+      {
+        "radicado": "11001600000020180123400",
+        "juzgado": "JUZGADO 15 DE EJECUCION DE PENAS Y MEDIDAS DE SEGURIDAD DE BOGOTA",
+        "delito": "HOMICIDIO CULPOSO / HURTO CALIFICADO",
+        "condena": "48 MESES",
+        "estado": "ACTIVO",
+        "pplStatus": "EN_LIBERTAD_CONDICIONAL",
+        "fechaReparto": "2018-05-14",
+        "ultimaActuacion": "AUTO - LIQUIDACION DEFINITIVA DE PENA",
+        "fechaActuacion": "2024-02-10"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:25:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Clean Record / No Dockets)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "12345678",
+    "city": "BOGOTA",
+    "hasRecords": false,
+    "totalRecords": 0,
+    "records": []
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:25:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing Parameters)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or lastName must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Sandbox Probes
+
+Test deterministic execution scenarios in sandbox environments:
+
+| Identifier | Type | City | Expected Behavior |
+| :--- | :--- | :--- | :--- |
+| `75086330` | `CC` | `bogota` | Active penal execution docket (`hasRecords: true`, `pplStatus: "EN_LIBERTAD_CONDICIONAL"`). |
+| `10254228` | `CC` | `medellin` | Historical docket with completed/extinguished penalty (`pplStatus: "EXTINGUIDA"`). |
+| `12345678` | `CC` | `bogota` | Clean record (`hasRecords: false`, `totalRecords: 0`). |

@@ -1,0 +1,189 @@
+---
+id: iadb-sanctions
+title: BID — Sanciones del Banco Interamericano de Desarrollo
+description: Verificación de empresas y personas sancionadas por el Banco Interamericano de Desarrollo (BID) por prácticas fraudulentas, corruptas o restrictivas.
+sidebar_label: 🌐 BID — Sanciones del Banco Interamericano de Desarrollo
+slug: /background-check/international/iadb-sanctions
+keywords:
+  - v2/iadb-sanctions
+  - /v2/iadb-sanctions
+  - bid sanciones
+  - banco interamericano de desarrollo
+  - iadb sanctions
+  - inhabilitados bid
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# BID — Sanciones del Banco Interamericano de Desarrollo
+
+La **Lista de Sanciones del Banco Interamericano de Desarrollo (BID / IADB)** contiene personas jurídicas y naturales sancionadas por el Comité de Sanciones del Grupo BID tras investigaciones realizadas por la Oficina de Integridad Institucional (OII) por incurrir en prácticas prohibidas (fraude, corrupción, colusión o coerción).
+
+Las inhabilitaciones del Grupo BID son vinculantes y aplicables recíprocamente en las operaciones de financiamiento de los principales bancos multilaterales conforme al Acuerdo de Inhabilitación Cruzada.
+
+---
+
+## Casos de Uso
+
+- **Debida Diligencia en Proyectos de Infraestructura en América Latina:** Verificación preventiva de oferentes y consorcios en proyectos de desarrollo financiados por el BID.
+- **Cumplimiento en Inhabilitación Cruzada:** Mitigación de riesgos de rescisión de contratos por sanciones activas de la banca multilateral.
+- **Programas de Integridad y Cumplimiento Corporativo:** Trazabilidad automatizada de proveedores para mitigar exposición a fraudes contractuales.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/iadb-sanctions
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | **Condicional** | Nombre completo o razón social de la entidad a verificar. Requerido si no se envían datos de documento. |
+| `documentNumber` | string | **Condicional** | Número de documento tributario o cédula. Requerido si no se envía fullName. |
+| `documentType` | string | No | Tipo de documento (ej. `NIT`, `EIN`, `CC`, `PAS`). Predeterminado: `CC`. |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/iadb-sanctions",
+  params: {
+    fullName: "MARIA ELENA LOPEZ GARCIA",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar BID:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/iadb-sanctions"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "fullName": "MARIA ELENA LOPEZ GARCIA"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/iadb-sanctions?fullName=MARIA%20ELENA%20LOPEZ%20GARCIA" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200-found" label="200 (Sanción BID Encontrada)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "lastName": "LOPEZ GARCIA",
+    "foundInIADB": true,
+    "details": {
+      "id": "NK-IADB-001",
+      "name": "MARIA ELENA LOPEZ GARCIA",
+      "schema": "LegalEntity",
+      "aliases": "IADB SANCTIONED ALIAS",
+      "countries": "us",
+      "sanctions": "Sanctioned for Prohibited Practices - Fraud",
+      "programs": "IDB-SANCTIONS",
+      "firstSeen": "2022-06-01T00:00:00",
+      "lastSeen": "2026-10-30T00:00:00"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-clean" label="200 (Sin Registros / Limpio)">
+
+```json
+{
+  "data": {
+    "fullName": "JUAN PEREZ",
+    "firstName": "JUAN",
+    "lastName": "PEREZ",
+    "foundInIADB": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Consulta de Sujeto | Endpoint | Resultado Esperado |
+| :--- | :--- | :--- |
+| Documento impar `10000001` | `/v2/iadb-sanctions` | Sanción registrada (`foundInIADB: true`). |
+| Documento par `10000002` | `/v2/iadb-sanctions` | Registro limpio (`foundInIADB: false`). |

@@ -1,0 +1,194 @@
+---
+id: sec-sanctions
+title: Estados Unidos — Sanciones SEC (Securities and Exchange Commission)
+description: Verificación de sanciones, suspensiones bursátiles y alertas de entidades no registradas (Lista PAUSE) ante la Comisión de Bolsa y Valores de EE. UU. (SEC).
+sidebar_label: 🇺🇸 EE. UU. — Sanciones SEC
+slug: /background-check/international/sec-sanctions
+keywords:
+  - v2/sec
+  - /v2/sec
+  - v2/sec-sanctions
+  - /v2/sec-sanctions
+  - sec sanctions
+  - sec pause list
+  - sanciones bursatiles usa
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Estados Unidos — Sanciones SEC
+
+La **Comisión de Bolsa y Valores de los Estados Unidos (SEC)** es la entidad reguladora federal encargada de proteger a los inversionistas, mantener la integridad del mercado de capitales y sancionar irregularidades financieras y bursátiles.
+
+El registro de enforcement de la SEC hace seguimiento a procedimientos administrativos sancionatorios, acciones judiciales civiles, órdenes de suspensión y la **Lista PAUSE** (*Public Alert: Unregistered Soliciting Entities*), que identifica entidades no autorizadas que captan ilegalmente inversionistas o suplantan a intermediarios registrados.
+
+---
+
+## Casos de Uso
+
+- **Debida Diligencia en Mercados Financieros:** Verificación de intermediarios bursátiles, gestores patrimoniales y asesores de inversión previo a su contratación.
+- **Protección a Inversionistas y Prevención de Fraude:** Identificación de entidades fraudulentas o no registradas en la Lista PAUSE de la SEC.
+- **Fusiones, Adquisiciones y Gobierno Corporativo:** Comprobación de que directivos y directores no presenten inhabilitaciones ante la SEC.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/sec
+```
+
+*Ruta alterna:* `GET https://api.verifik.co/v2/sec-sanctions`
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | **Condicional** | Nombre completo de la persona natural o razón social de la entidad jurídica. Requerido si no se envían datos de documento. |
+| `documentNumber` | string | **Condicional** | Número de identificación tributaria o registro corporativo. Requerido si no se envía fullName. |
+| `documentType` | string | No | Tipo de documento (ej. `EIN`, `PAS`, `CC`). Predeterminado: `CC`. |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/sec",
+  params: {
+    fullName: "MARIA ELENA LOPEZ GARCIA",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar SEC:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/sec"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "fullName": "MARIA ELENA LOPEZ GARCIA"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/sec?fullName=MARIA%20ELENA%20LOPEZ%20GARCIA" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200-found" label="200 (Sanción SEC Encontrada)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "lastName": "LOPEZ GARCIA",
+    "foundInSEC": true,
+    "details": {
+      "id": "us-sec-10000001",
+      "name": "MARIA ELENA LOPEZ GARCIA",
+      "schema": "LegalEntity",
+      "aliases": "LOPEZ GARCIA CAPITAL CORP",
+      "addresses": "100 Wall Street, New York, NY",
+      "phones": "+1-800-555-0199",
+      "emails": "compliance@sample-sec-entity.com",
+      "sanctions": "SEC PAUSE Alert and Enforcement Action",
+      "dataset": "us_sec_pause",
+      "firstSeen": "2019-02-14",
+      "lastSeen": "2024-01-01"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-clean" label="200 (Sin Registros / Limpio)">
+
+```json
+{
+  "data": {
+    "fullName": "JUAN PEREZ",
+    "firstName": "JUAN",
+    "lastName": "PEREZ",
+    "foundInSEC": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Consulta de Sujeto | Endpoint | Resultado Esperado |
+| :--- | :--- | :--- |
+| Documento impar `10000001` | `/v2/sec` | Registro sancionatorio encontrado (`foundInSEC: true`). |
+| Documento par `10000002` | `/v2/sec` | Registro limpio (`foundInSEC: false`). |

@@ -1,0 +1,236 @@
+---
+id: adverse-media-google-rss
+title: Adverse Media & Google News RSS
+description: Real-time adverse media and negative news screening for AML/CFT compliance, cross-referencing subjects against financial crime and corruption news feeds.
+slug: /background-check/adverse-media-google-rss
+keywords:
+  - v2/co/media/adverse
+  - /v2/co/media/adverse
+  - v2/media/google-rss
+  - /v2/media/google-rss
+  - adverse media api
+  - negative news screening
+  - busqueda en medios aml
+  - google news rss background check
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Adverse Media & Negative News Screening
+
+Under **Financial Action Task Force (FATF / GAFI)** recommendations and statutory Anti-Money Laundering and Counter-Terrorist Financing (AML/CFT) regulations, adverse media screening is essential to detect illicit activities before formal convictions or judicial indictments appear on public registries.
+
+Verifik's Adverse Media API performs real-time searches across indexed news articles, regulatory press releases, and investigative journalism reports via Google News RSS feeds, combining subject names with targeted legal and criminal typologies. The API extracts sentiment, filters false positives, deduplicates headlines, and computes a standardized **AML Risk Score (0–100)**.
+
+---
+
+## Targeted Adverse Crime Typologies
+
+The engine automatically expands queries with localized multi-language criminal taxonomy keywords:
+
+- **Financial & Corporate Crimes:** Fraud (*estafa*), embezzlement (*peculado*), bribery (*soborno*), tax evasion (*evasión fiscal*), Ponzi schemes (*captación ilegal*).
+- **AML / CFT:** Money laundering (*lavado de activos*), terrorism financing (*financiación del terrorismo*), shell companies (*empresas de fachada*).
+- **Public Corruption:** Bid-rigging (*cartelización*), influence peddling (*tráfico de influencias*), illicit enrichment (*enriquecimiento ilícito*).
+- **Organized Crime & Penal:** Drug trafficking (*narcotráfico*), extortion (*extorsión*), asset forfeiture (*extinción de dominio*), arrest warrants (*orden de captura*).
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/media/adverse
+```
+
+*Global multi-region news search route:* `GET https://api.verifik.co/v2/media/google-rss`
+
+### Headers
+
+| Name          | Value              |
+| ------------- | ------------------ |
+| Content-Type  | `application/json` |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | **Conditional** | Full name of the individual or registered commercial business name. Required if `documentNumber` is omitted. |
+| `documentNumber` | string | **Conditional** | National ID (CC, NIT, CE). When supplied, the API automatically resolves the official name from national registries before querying. |
+| `documentType` | string | No | Document type: `CC` (default), `NIT`, `CE`, `PAS`. |
+| `country` | string | No | Regional jurisdiction filter: `co` (Colombia, default), `mx` (Mexico), `us` (United States), or `global`. |
+| `lang` | string | No | Language of the media search: `es` (Spanish, default) or `en` (English). |
+| `limit` | number | No | Maximum number of articles returned (default: `20`, maximum: `50`). |
+
+### Use Cases
+
+- **Enhanced Due Diligence (EDD):** Supplement standard watchlist checks for high-risk clients, PEPs, and corporate counterparties.
+- **Merchant & Executive Onboarding:** Safeguard brand reputation by identifying controversies before formal partnerships or hires.
+- **Ongoing AML Monitoring:** Periodically scan supplier bases for early-warning indicators of regulatory probes or criminal investigations.
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/media/adverse",
+  params: {
+    fullName: "PEDRO PABLO RAMIREZ GOMEZ",
+    country: "co",
+    lang: "es",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+import urllib.parse
+import json
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+params = urllib.parse.urlencode({
+    "fullName": "PEDRO PABLO RAMIREZ GOMEZ",
+    "country": "co",
+    "lang": "es"
+})
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+
+conn.request("GET", f"/v2/co/media/adverse?{params}", headers=headers)
+res = conn.getresponse()
+data = res.read()
+
+print(json.loads(data.decode("utf-8")))
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/media/adverse?fullName=PEDRO%20PABLO%20RAMIREZ%20GOMEZ&country=co&lang=es" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200-adverse" label="200 (Adverse Media Detected - High Risk)">
+
+```json
+{
+  "data": {
+    "fullName": "PEDRO PABLO RAMIREZ GOMEZ",
+    "hasAdverseMedia": true,
+    "riskScore": 85,
+    "riskLevel": "HIGH",
+    "totalArticles": 2,
+    "matchedKeywords": [
+      "captura",
+      "fiscalia",
+      "lavado de activos",
+      "extincion de dominio"
+    ],
+    "articles": [
+      {
+        "title": "Fiscalía ocupó bienes por presunto lavado de activos en Bogotá",
+        "url": "https://www.eltiempo.com/justicia/investigacion-lavado-activos-bogota-2025",
+        "sourceName": "El Tiempo",
+        "publishedAt": "2025-08-14T14:32:00.000Z",
+        "snippet": "En operativo conjunto con la Policía Judicial, fue ordenada la captura de presuntos implicados vinculados a operaciones comerciales irregulares...",
+        "matchedKeywords": ["fiscalia", "captura", "lavado de activos"],
+        "severity": "HIGH"
+      },
+      {
+        "title": "Medida cautelar sobre activos societarios en investigación financiera",
+        "url": "https://www.elespectador.com/judicial/medida-cautelar-sociedades-2025",
+        "sourceName": "El Espectador",
+        "publishedAt": "2025-06-20T09:15:00.000Z",
+        "snippet": "Sociedades vinculadas entraron a proceso de extinción de dominio por solicitud de autoridades judiciales...",
+        "matchedKeywords": ["extincion de dominio"],
+        "severity": "MEDIUM"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:30:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Clean / No Adverse Media)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA FERNANDA ROJAS",
+    "hasAdverseMedia": false,
+    "riskScore": 0,
+    "riskLevel": "LOW",
+    "totalArticles": 0,
+    "matchedKeywords": [],
+    "articles": []
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:30:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing Query Parameters)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Sandbox Probes
+
+Test deterministic risk profiles in sandbox mode:
+
+| Input Query | Country | Expected Result |
+| :--- | :--- | :--- |
+| `PEDRO PABLO RAMIREZ GOMEZ` / `75086330` | `co` | High AML Risk profile (`hasAdverseMedia: true`, `riskScore: 85`, `riskLevel: "HIGH"`). |
+| `MARIA FERNANDA ROJAS` / `12345678` | `co` | Clean record (`hasAdverseMedia: false`, `riskScore: 0`, `riskLevel: "LOW"`). |

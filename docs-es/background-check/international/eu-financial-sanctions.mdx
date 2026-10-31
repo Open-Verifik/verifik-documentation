@@ -1,0 +1,192 @@
+---
+id: eu-financial-sanctions
+title: Unión Europea — Sanciones Financieras Consolidadas (FSF)
+description: Verificación de sanciones financieras consolidadas de la Unión Europea (Base de datos FSF) gestionadas por el SEAE (EEAS) y la Comisión Europea (DG FISMA).
+sidebar_label: 🇪🇺 Unión Europea — Sanciones Financieras (FSF)
+slug: /background-check/international/eu-financial-sanctions
+keywords:
+  - v2/eu-financial-sanctions
+  - /v2/eu-financial-sanctions
+  - sanciones financieras ue
+  - eu fsf
+  - sanciones union europea
+  - eeas sanctions
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Unión Europea — Sanciones Financieras Consolidadas (FSF)
+
+La **Base de Datos de Sanciones Financieras Consolidadas de la Unión Europea (EU FSF)** es el registro oficial administrado por el **Servicio Europeo de Acción Exterior (SEAE / EEAS)** y la Dirección General de Estabilidad Financiera, Servicios Financieros y Unión de los Mercados de Capitales (**DG FISMA**).
+
+Contiene a todas las personas físicas, jurídicas, entidades y organismos sujetos a medidas restrictivas de la UE, incluyendo congelación de activos y prohibición expresa de facilitar recursos económicos o financieros.
+
+---
+
+## Casos de Uso
+
+- **Debida Diligencia Obligatoria en la UE:** Cumplimiento de mandatos sancionatorios vinculantes en el sistema financiero europeo.
+- **Control de Exportaciones y Comercio Exterior:** Verificación preventiva de compradores, consignatarios e intermediarios en cadenas de suministro internacionales.
+- **Identificación de Beneficiarios Finales (UBO):** Detección de accionistas mayoritarios o administradores sujetos a regímenes sancionatorios de la Unión Europea.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/eu-financial-sanctions
+```
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | **Condicional** | Nombre completo de la persona o razón social de la entidad. Requerido si no se envían datos de documento. |
+| `documentNumber` | string | **Condicional** | Número de documento de identidad o registro tributario. Requerido si no se envía fullName. |
+| `documentType` | string | No | Tipo de documento (ej. `PAS`, `CC`, `DNI`, `NIT`). Predeterminado: `CC`. |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/eu-financial-sanctions",
+  params: {
+    fullName: "MARIA ELENA LOPEZ GARCIA",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar sanciones UE:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/eu-financial-sanctions"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+params = {
+    "fullName": "MARIA ELENA LOPEZ GARCIA"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/eu-financial-sanctions?fullName=MARIA%20ELENA%20LOPEZ%20GARCIA" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200-found" label="200 (Sanción Financiera Encontrada)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "lastName": "LOPEZ GARCIA",
+    "foundInEUFinancialSanctions": true,
+    "details": {
+      "id": "NK-EU-FSF-001",
+      "name": "MARIA ELENA LOPEZ GARCIA",
+      "schema": "Person",
+      "aliases": "EU SANCTIONS ALIAS",
+      "birthDate": "1980-05-12",
+      "countries": "eu",
+      "addresses": "Rue de la Loi 175, 1048 Brussels, Belgium",
+      "identifiers": "FSF-12345",
+      "programs": "EU-GLOBAL",
+      "sanctions": "Council Regulation (EU) 2020/1998",
+      "firstSeen": "2020-12-07T00:00:00",
+      "lastSeen": "2026-10-30T00:00:00"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-clean" label="200 (Sin Registros / Limpio)">
+
+```json
+{
+  "data": {
+    "fullName": "JUAN PEREZ",
+    "firstName": "JUAN",
+    "lastName": "PEREZ",
+    "foundInEUFinancialSanctions": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+| Consulta de Sujeto | Endpoint | Resultado Esperado |
+| :--- | :--- | :--- |
+| Documento impar `10000001` | `/v2/eu-financial-sanctions` | Sanción registrada (`foundInEUFinancialSanctions: true`). |
+| Documento par `10000002` | `/v2/eu-financial-sanctions` | Registro limpio (`foundInEUFinancialSanctions: false`). |

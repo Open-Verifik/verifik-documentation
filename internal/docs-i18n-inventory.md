@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-30T23:31:22.517Z
+Generated: 2026-10-31T06:10:45.921Z
 
-- **Files scanned:** 558
-- **Unique endpoint URLs:** 244
+- **Files scanned:** 575
+- **Unique endpoint URLs:** 261
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 232
 
@@ -13,7 +13,7 @@ Generated: 2026-10-30T23:31:22.517Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 24 | vehicle-validation (other countries) |
-| P2 | 193 | identity, biometrics, resources, etc. |
+| P2 | 210 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -273,6 +273,7 @@ Generated: 2026-10-30T23:31:22.517Z
 | P1 | `v2/ca/ontario/plate` | `vehicle-validation/canada/ontario-plate.mdx` |
 | P2 | `v2/check-lists` | `check-list/create-a-check-list.mdx` |
 | P2 | `v2/check-lists/{id}` | `check-list/delete-a-check-list.mdx` |
+| P2 | `v2/cia-world-leaders` | `background-check/international/cia-world-leaders.mdx` |
 | P2 | `v2/cl/cedula` | `identity/chile.mdx` |
 | P2 | `v2/cl/company` | `business-validation/chilean.mdx` |
 | P2 | `v2/cl/driver-license` | `driver-validation/chile-driver-license.mdx` |
@@ -315,7 +316,10 @@ Generated: 2026-10-30T23:31:22.517Z
 | P2 | `v2/co/foreigner-id/pep` | `identity-validation/colombia/special-stay-permit-pep.mdx` |
 | P2 | `v2/co/foreigner-id/ppt` | `identity/colombia-ppt.mdx` |
 | P2 | `v2/co/inpec` | `background-check/colombia-inpec.mdx` |
+| P2 | `v2/co/jcc` | `background-check/colombia-jcc-sanctions.mdx` |
 | P0 | `v2/co/medellin/vehicle/fines` | `vehicle-validation/colombia/medellin-vehicle-fines.mdx` |
+| P2 | `v2/co/media/adverse` | `background-check/adverse-media-google-rss.mdx` |
+| P2 | `v2/co/paco` | `background-check/colombia-paco-anticorruption.mdx` |
 | P2 | `v2/co/policia/consultar` | `background-check/colombia-police-record-check.mdx` |
 | P2 | `v2/co/policia/rnmc` | `background-check/colombia-police-compliance-corrective-measures.mdx` |
 | P2 | `v2/co/policia/rnmc/premium` | `background-check/colombia-police-compliance-corrective-measures-premium.mdx` |
@@ -324,6 +328,7 @@ Generated: 2026-10-30T23:31:22.517Z
 | P2 | `v2/co/procuraduria/antecedentes` | `background-check/colombia-disciplinary-records-attorneys-office.mdx` |
 | P2 | `v2/co/rama/abogados` | `legal/lawyer-verification.mdx` |
 | P2 | `v2/co/rama/certificado/vigencia` | `legal/certificate-of-validity-for-legal-professionals.mdx` |
+| P2 | `v2/co/rama/jepms` | `background-check/colombia-rama-jepms.mdx` |
 | P2 | `v2/co/rama/juzgado/expedientes` | `legal/colombia-judicial-records.mdx` |
 | P2 | `v2/co/rama/proceso` | `legal/retrieve-details-of-a-legal-process-by-number.mdx` |
 | P2 | `v2/co/rama/procesos` | `legal/colombian-legal-processes.mdx` |
@@ -360,12 +365,14 @@ Generated: 2026-10-30T23:31:22.517Z
 | P2 | `v2/cr/company` | `business-validation/costa-rica.mdx` |
 | P1 | `v2/cr/vehicle` | `vehicle-validation/costa-rica.mdx` |
 | P2 | `v2/cr/votacion` | `identity/costa-rica/votacion.mdx` |
+| P2 | `v2/csl` | `background-check/international/us-consolidated-screening-list.mdx` |
 | P2 | `v2/data-retention/erase` | `resources/data-retention/erase-data-bulk.mdx` |
 | P2 | `v2/data-retention/policy` | `resources/data-retention/retrieve-data-retention-policy.mdx` |
 | P2 | `v2/dea` | `background-check/dea-background-check.mdx` |
 | P2 | `v2/do/cedula` | `identity/dominican-republic.mdx` |
 | P2 | `v2/document-validations/{id}/files` | `resources/data-retention/delete-document-validation-files.mdx` |
 | P2 | `v2/document-validations/app-registration` | `resources/app-registrations/create-an-app-registration-document-validation.mdx` |
+| P2 | `v2/dss-most-wanted` | `background-check/international/dss-most-wanted.mdx` |
 | P2 | `v2/ec/cedula` | `identity-validation/ecuador.mdx` |
 | P1 | `v2/ec/vehiculo/placa` | `vehicle-validation/ecuador/vehicle-by-plate.mdx` |
 | P1 | `v2/ec/vehiculo/placa/multas` | `vehicle-validation/ecuador.mdx` |
@@ -376,6 +383,8 @@ Generated: 2026-10-30T23:31:22.517Z
 | P2 | `v2/es/cedula` | `identity-validation/spain-citizen.mdx` |
 | P2 | `v2/es/company` | `business-validation/spain.mdx` |
 | P1 | `v2/es/vehicle` | `vehicle-validation/spain.mdx` |
+| P2 | `v2/eu-financial-sanctions` | `background-check/international/eu-financial-sanctions.mdx` |
+| P2 | `v2/eu-terrorists` | `background-check/international/eu-terrorists.mdx` |
 | P2 | `v2/europol` | `background-check/europol-background-check.mdx` |
 | P2 | `v2/face-recognition/collections` | `resources/collections/create-a-collection.mdx` |
 | P2 | `v2/face-recognition/collections/{id}` | `resources/collections/delete-a-collection.mdx` |
@@ -397,12 +406,14 @@ Generated: 2026-10-30T23:31:22.517Z
 | P2 | `v2/fbi` | `background-check/fbi-background-check.mdx` |
 | P2 | `v2/gt/cedula` | `identity-validation/guatemala.mdx` |
 | P2 | `v2/gt/cedula/extra` | `identity/guatemala-extra.mdx` |
+| P2 | `v2/health-exclusions` | `background-check/international/health-exclusions.mdx` |
 | P2 | `v2/hn/cedula` | `identity/honduras.mdx` |
 | P2 | `v2/hn/votacion` | `identity/honduras/votacion.mdx` |
 | P2 | `v2/human-id/decrypt` | `biometrics/zero-knowledge-face-proofs-decrypt.mdx` |
 | P2 | `v2/human-id/encrypt` | `biometrics/zero-knowledge-face-proofs-encrypt.mdx` |
 | P2 | `v2/human-id/encrypt-qr-code` | `biometrics/zero-knowledge-face-proofs-encrypt-qr-code.mdx` |
 | P2 | `v2/human-id/preview` | `biometrics/zero-knowledge-face-proofs-preview.mdx` |
+| P2 | `v2/iadb-sanctions` | `background-check/international/iadb-sanctions.mdx` |
 | P2 | `v2/in/epic` | `legal/epic-eci.mdx` |
 | P2 | `v2/in/epic/votacion` | `legal/voting-eci-epic.mdx` |
 | P2 | `v2/interpol` | `background-check/interpol-background-check.mdx` |
@@ -422,6 +433,8 @@ Generated: 2026-10-30T23:31:22.517Z
 | P2 | `v2/ocr/scan-prompt/template/:id` | `ocr-engines/scan-prompt/delete-a-scan-prompt-template.mdx` |
 | P2 | `v2/ocr/scan-prompt/templates` | `ocr-engines/scan-prompt/list-of-scan-prompt-templates.mdx` |
 | P2 | `v2/ofac` | `background-check/ofac-background-check.mdx` |
+| P2 | `v2/offshore-leaks` | `background-check/international/icij-offshore-leaks.mdx` |
+| P2 | `v2/ofsi` | `background-check/international/uk-ofsi-sanctions.mdx` |
 | P2 | `v2/onu` | `background-check/onu-background-check.mdx` |
 | P2 | `v2/pa/cedula` | `identity/panama.mdx` |
 | P2 | `v2/pa/company` | `business-validation/panama.mdx` |
@@ -441,7 +454,10 @@ Generated: 2026-10-30T23:31:22.517Z
 | P2 | `v2/py/cic` | `identity/paraguay.mdx` |
 | P2 | `v2/py/company` | `business-validation/paraguay.mdx` |
 | P1 | `v2/py/vehicle` | `vehicle-validation/paraguay.mdx` |
+| P2 | `v2/sec` | `background-check/international/sec-sanctions.mdx` |
+| P2 | `v2/secret-service` | `background-check/international/secret-service.mdx` |
 | P2 | `v2/sv/dui` | `identity/el-salvador.mdx` |
+| P2 | `v2/us-terrorists` | `background-check/international/us-state-terrorists.mdx` |
 | P2 | `v2/usa/company` | `business-validation/united-states.mdx` |
 | P2 | `v2/usa/florida/driver-license` | `driver-validation/florida-driver-license.md` |
 | P2 | `v2/usa/kansas/driver-license` | `driver-validation/kansas-driver-license.md` |
@@ -452,6 +468,7 @@ Generated: 2026-10-30T23:31:22.517Z
 | P2 | `v2/uy/cedula` | `identity-validation/uruguay-citizen.mdx` |
 | P2 | `v2/ve/cedula` | `identity-validation/venezuela.mdx` |
 | P2 | `v2/ve/foreigner-id` | `identity/venezuela-foreigner-id.mdx` |
+| P2 | `v2/world-bank` | `background-check/international/world-bank.mdx` |
 | P1 | `v3/ar/vehicle` | `vehicle-validation/argentina/vehicle-v3.mdx` |
 | P1 | `v3/cl/vehicle` | `vehicle-validation/chile/vehicle-technical-review.mdx` |
 | P2 | `v3/co/ministerio-de-trabajo/certificados` | `certificates/colombia-ministerio-trabajo-certificados-v3.mdx` |

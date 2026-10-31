@@ -730,6 +730,26 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/colombia-jcc-sanctions",
+					label: "🇨🇴 Colombia - Junta Central de Contadores (JCC)",
+				},
+				{
+					type: "doc",
+					id: "background-check/colombia-paco-anticorruption",
+					label: "🇨🇴 Colombia - Portal Anticorrupción (PACO)",
+				},
+				{
+					type: "doc",
+					id: "background-check/colombia-rama-jepms",
+					label: "🇨🇴 Colombia - Juzgados de Ejecución de Penas (JEPMS)",
+				},
+				{
+					type: "doc",
+					id: "background-check/adverse-media-google-rss",
+					label: "📰 Medios Adversos - Google RSS",
+				},
+				{
+					type: "doc",
 					id: "verificacion-antecendentes/verificacion-antecendentes-europol",
 					label: "🌐 Europol - Antecedentes",
 				},
@@ -757,6 +777,71 @@ const sidebars = {
 					type: "doc",
 					id: "verificacion-de-antecedentes/internacional/verificacion-antecedentes-onu",
 					label: "🌐 ONU - Antecedentes",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/cia-world-leaders",
+					label: "🌐 CIA — Líderes Mundiales y PEPs",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/us-consolidated-screening-list",
+					label: "🇺🇸 EE. UU. — Lista Consolidada de Control (CSL)",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/dss-most-wanted",
+					label: "🇺🇸 EE. UU. — DSS Más Buscados",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/secret-service",
+					label: "🇺🇸 EE. UU. — Servicio Secreto Más Buscados",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/us-state-terrorists",
+					label: "🇺🇸 EE. UU. — Terroristas Depto. de Estado",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/sec-sanctions",
+					label: "🇺🇸 EE. UU. — Sanciones SEC",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/health-exclusions",
+					label: "🇺🇸 EE. UU. — Exclusiones Salud HHS OIG",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/eu-terrorists",
+					label: "🇪🇺 Unión Europea — Terroristas (CP931)",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/eu-financial-sanctions",
+					label: "🇪🇺 Unión Europea — Sanciones Financieras (FSF)",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/uk-ofsi-sanctions",
+					label: "🇬🇧 Reino Unido — Sanciones Financieras OFSI",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/world-bank",
+					label: "🌐 Banco Mundial — Empresas e Individuos Inhabilitados",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/iadb-sanctions",
+					label: "🌐 BID — Sanciones del Banco Interamericano de Desarrollo",
+				},
+				{
+					type: "doc",
+					id: "background-check/international/icij-offshore-leaks",
+					label: "🌐 ICIJ — Base de Datos Offshore Leaks",
 				},
 			],
 		},

@@ -1,0 +1,192 @@
+---
+id: eu-financial-sanctions
+title: EU Consolidated Financial Sanctions (FSF)
+description: Screen individuals and entities against the European Union Consolidated Financial Sanctions Files (FSF) maintained by the EEAS and DG FISMA.
+slug: /background-check/international/eu-financial-sanctions
+keywords:
+  - v2/eu-financial-sanctions
+  - /v2/eu-financial-sanctions
+  - eu financial sanctions
+  - eu fsf
+  - sanciones financieras ue
+  - eeas sanctions
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# EU Consolidated Financial Sanctions (FSF)
+
+The **European Union Consolidated Financial Sanctions Database (FSF)** is the official database maintained by the **European External Action Service (EEAS)** and Directorate-General for Financial Stability, Financial Services and Capital Markets Union (**DG FISMA**).
+
+It contains all individuals, groups, and entities subject to EU financial sanctions under Council Regulations, including asset freezes, prohibitions on providing funds or economic resources, and sector-specific restrictions.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/eu-financial-sanctions
+```
+
+### Headers
+
+| Name          | Value              | Description |
+| ------------- | ------------------ | ----------- |
+| Content-Type  | `application/json` | Request format |
+| Accept        | `application/json` | Response format |
+| Authorization | `Bearer <token>`   | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | **Conditional** | Full name or company name to search. Required if document parameters are not provided. |
+| `documentNumber` | string | **Conditional** | Document number. Required if fullName is not provided. |
+| `documentType` | string | No | Document type (e.g., `PAS`, `CC`, `DNI`, `NIT`). Default: `CC`. |
+
+### Use Cases
+
+- **Mandatory EU Sanctions Screening:** Comply with European Union asset freezing orders and trade restrictions across financial institutions.
+- **Trade & Export Due Diligence:** Screen trading partners, consignees, and buyers to avoid prohibited transactions with EU-sanctioned actors.
+- **Vendor & Corporate KYC:** Screen beneficial owners and corporate entities against European restrictive measures.
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/eu-financial-sanctions",
+  params: {
+    fullName: "MARIA ELENA LOPEZ GARCIA",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/eu-financial-sanctions"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+params = {
+    "fullName": "MARIA ELENA LOPEZ GARCIA"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/eu-financial-sanctions?fullName=MARIA%20ELENA%20LOPEZ%20GARCIA" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200-found" label="200 (Sanctions Record Found)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "lastName": "LOPEZ GARCIA",
+    "foundInEUFinancialSanctions": true,
+    "details": {
+      "id": "NK-EU-FSF-001",
+      "name": "MARIA ELENA LOPEZ GARCIA",
+      "schema": "Person",
+      "aliases": "EU SANCTIONS ALIAS",
+      "birthDate": "1980-05-12",
+      "countries": "eu",
+      "addresses": "Rue de la Loi 175, 1048 Brussels, Belgium",
+      "identifiers": "FSF-12345",
+      "programs": "EU-GLOBAL",
+      "sanctions": "Council Regulation (EU) 2020/1998",
+      "firstSeen": "2020-12-07T00:00:00",
+      "lastSeen": "2026-10-30T00:00:00"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Clean / Not Found)">
+
+```json
+{
+  "data": {
+    "fullName": "JOHN DOE",
+    "firstName": "JOHN",
+    "lastName": "DOE",
+    "foundInEUFinancialSanctions": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing Parameters)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Sandbox Probes
+
+| Subject Query | Endpoint | Expected Result |
+| :--- | :--- | :--- |
+| Odd Document `10000001` | `/v2/eu-financial-sanctions` | Sanction record found (`foundInEUFinancialSanctions: true`). |
+| Even Document `10000002` | `/v2/eu-financial-sanctions` | Clean record (`foundInEUFinancialSanctions: false`). |

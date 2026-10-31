@@ -1,0 +1,194 @@
+---
+id: sec-sanctions
+title: U.S. SEC Sanctions & Enforcement
+description: Screen individuals and entities against U.S. Securities and Exchange Commission enforcement actions, trading suspensions, and the PAUSE alert list.
+slug: /background-check/international/sec-sanctions
+keywords:
+  - v2/sec
+  - /v2/sec
+  - v2/sec-sanctions
+  - /v2/sec-sanctions
+  - sec sanctions
+  - sec pause list
+  - securities enforcement
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# U.S. SEC Sanctions & Enforcement
+
+The **U.S. Securities and Exchange Commission (SEC)** is the federal regulatory body responsible for protecting investors, maintaining fair, orderly, and efficient markets, and facilitating capital formation.
+
+The SEC enforcement registry tracks civil injunctive actions, administrative proceedings, trading suspensions, and the **PAUSE list** (*Public Alert: Unregistered Soliciting Entities*), which identifies entities falsely claiming to be registered or licensed in the U.S.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/sec
+```
+
+*Alias route:* `GET https://api.verifik.co/v2/sec-sanctions`
+
+### Headers
+
+| Name          | Value              | Description |
+| ------------- | ------------------ | ----------- |
+| Content-Type  | `application/json` | Request format |
+| Accept        | `application/json` | Response format |
+| Authorization | `Bearer <token>`   | Client JWT authentication token |
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `fullName` | string | **Conditional** | Individual name (executive, broker, advisor) or registered legal entity name. Required if document parameters are not provided. |
+| `documentNumber` | string | **Conditional** | Tax identification number or corporate registration code. Required if fullName is not provided. |
+| `documentType` | string | No | Document type (e.g., `EIN`, `PAS`, `CC`). Default: `CC`. |
+
+### Use Cases
+
+- **Capital Markets Due Diligence:** Screen broker-dealers, investment advisors, and fund managers prior to institutional onboarding.
+- **Investor Protection:** Identify solicitations originating from unregistered entities on the SEC PAUSE list.
+- **M&A Executive Screening:** Ensure target company officers and directors have no active SEC disqualifications or penny stock bars.
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/sec",
+  params: {
+    fullName: "MARIA ELENA LOPEZ GARCIA",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/sec"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>"
+}
+params = {
+    "fullName": "MARIA ELENA LOPEZ GARCIA"
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/sec?fullName=MARIA%20ELENA%20LOPEZ%20GARCIA" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200-found" label="200 (Enforcement Record Found)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA ELENA LOPEZ GARCIA",
+    "firstName": "MARIA",
+    "lastName": "LOPEZ GARCIA",
+    "foundInSEC": true,
+    "details": {
+      "id": "us-sec-10000001",
+      "name": "MARIA ELENA LOPEZ GARCIA",
+      "schema": "LegalEntity",
+      "aliases": "LOPEZ GARCIA CAPITAL CORP",
+      "addresses": "100 Wall Street, New York, NY",
+      "phones": "+1-800-555-0199",
+      "emails": "compliance@sample-sec-entity.com",
+      "sanctions": "SEC PAUSE Alert and Enforcement Action",
+      "dataset": "us_sec_pause",
+      "firstSeen": "2019-02-14",
+      "lastSeen": "2024-01-01"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Clean / Not Found)">
+
+```json
+{
+  "data": {
+    "fullName": "JOHN DOE",
+    "firstName": "JOHN",
+    "lastName": "DOE",
+    "foundInSEC": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-10-30 20:50:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing Parameters)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Sandbox Probes
+
+| Subject Query | Endpoint | Expected Result |
+| :--- | :--- | :--- |
+| Odd Document `10000001` | `/v2/sec` | SEC record found (`foundInSEC: true`). |
+| Even Document `10000002` | `/v2/sec` | Clean record (`foundInSEC: false`). |

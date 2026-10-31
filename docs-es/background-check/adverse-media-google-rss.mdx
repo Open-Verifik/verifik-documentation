@@ -1,0 +1,216 @@
+---
+id: adverse-media-google-rss
+title: Búsqueda en Medios Adversos — Google News RSS
+description: Monitoreo y detección de noticias adversas, investigaciones penales, fraudes, lavado de activos y delitos financieros mediante indexación en tiempo real de fuentes informativas y medios de prensa.
+sidebar_label: 📰 Medios Adversos — Google RSS
+slug: /background-check/adverse-media-google-rss
+keywords:
+  - v2/co/media/adverse
+  - /v2/co/media/adverse
+  - v2/media/google-rss
+  - /v2/media/google-rss
+  - adverse media colombia
+  - noticias adversas
+  - monitoreo reputacional
+  - aml lavado de activos
+  - debida diligencia de medios
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Búsqueda en Medios Adversos — Google News RSS
+
+El endpoint de **Medios Adversos (Adverse Media)** de Verifik proporciona una solución automatizada para el escaneo y detección en tiempo real de noticias negativas, investigaciones judiciales, acusaciones de fraude, corrupción, narcotráfico o lavado de activos vinculadas a una persona natural o entidad corporativa.
+
+A través de la indexación de noticias públicas y medios de comunicación oficiales y de alta reputación, este servicio procesa el contenido, calcula un **Puntaje de Riesgo Reputacional (Risk Score de 0 a 100)** y clasifica el nivel de severidad del hallazgo (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`).
+
+---
+
+## Casos de Uso
+
+- **Debida Diligencia Intensificada (EDD - Enhanced Due Diligence):** Requisito fundamental en normativas internacionales GAFI / FATF y normativas locales (SAGRILAFT, SARLAFT, SIPLAFT) para clientes, contrapartes o PEPs con factores de riesgo reputacional.
+- **Onboarding de Personas Expuestas Políticamente (PEPs):** Identificación temprana de investigaciones en curso por parte de autoridades fiscales, penales o disciplinarias antes de que exista una condena formal.
+- **Prevención de Fraude y Riesgo de Contraparte:** Detección de investigaciones preliminares de la Fiscalía o autoridades judiciales reportadas en medios de comunicación.
+
+---
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/media/adverse
+```
+
+*Ruta alterna global:* `GET https://api.verifik.co/v2/media/google-rss`
+
+### Headers
+
+| Nombre | Valor | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `Accept` | `application/json` | Sí | Formato de respuesta JSON |
+| `Authorization` | `Bearer <token>` | Sí | Token JWT de autenticación en Verifik |
+
+### Parameters
+
+| Parámetro | Tipo | Requerido | Descripción |
+| :--- | :--- | :--- | :--- |
+| `name` / `fullName` | string | **Sí** | Nombre completo de la persona natural o razón social de la entidad (ej. `"MAICOL ANGELO GARZON DIAZ"`). |
+| `country` | string | No | Código de país ISO de 2 letras (por defecto `co`). Configura el alcance geográfico de los medios de prensa a consultar. |
+| `keywords` | string | No | Palabras clave negativas adicionales o personalizadas separadas por operadores booleanos. Si se omite, se aplica el filtro estándar de riesgo: `fraude OR captura OR fiscalia OR delito OR corrupcion OR lavado`. |
+| `limit` | number | No | Número máximo de artículos adversos a retornar (valor predeterminado: `20`, máximo: `100`). |
+
+---
+
+### Request
+
+<Tabs>
+  <TabItem value="javascript" label="Node.js (JavaScript)">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/media/adverse",
+  params: {
+    fullName: "MAICOL ANGELO GARZON DIAZ",
+    country: "co",
+    limit: 10,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(JSON.stringify(data, null, 2));
+} catch (error) {
+  console.error("Error al consultar Medios Adversos:", error.response?.data || error.message);
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/media/adverse"
+
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>"
+}
+
+params = {
+    "fullName": "MAICOL ANGELO GARZON DIAZ",
+    "country": "co",
+    "limit": 10
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/media/adverse?fullName=MAICOL%20ANGELO%20GARZON%20DIAZ&country=co&limit=10" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+  <TabItem value="200-adverse" label="200 (Con Medios Adversos / Riesgo Detectado)">
+
+```json
+{
+  "data": {
+    "fullName": "MAICOL ANGELO GARZON DIAZ",
+    "country": "CO",
+    "hasAdverseMedia": true,
+    "totalArticles": 2,
+    "riskScore": 85,
+    "riskLevel": "HIGH",
+    "articles": [
+      {
+        "title": "Fiscalía imputa cargos por presunto fraude y lavado de activos",
+        "link": "https://news.google.com/articles/CAIiEO1w48...",
+        "pubDate": "2026-08-14T14:20:00.000Z",
+        "source": "El Espectador",
+        "snippet": "La Fiscalía General de la Nación formuló pliego acusatorio formal contra los implicados...",
+        "matchedKeywords": ["fraude", "lavado", "fiscalia"]
+      },
+      {
+        "title": "Capturan a presuntos cabecillas de red de desfalco financiero",
+        "link": "https://news.google.com/articles/CAIiEP2k91...",
+        "pubDate": "2026-08-15T09:10:00.000Z",
+        "source": "El Tiempo",
+        "snippet": "En operativo conjunto de la Policía y el CTI se logró la captura...",
+        "matchedKeywords": ["captura", "delito"]
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:30:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-clean" label="200 (Sin Coincidencias Adversas / Registro Limpio)">
+
+```json
+{
+  "data": {
+    "fullName": "PEDRO PABLO PEREZ LIMPIO",
+    "country": "CO",
+    "hasAdverseMedia": false,
+    "totalArticles": 0,
+    "riskScore": 0,
+    "riskLevel": "LOW",
+    "articles": []
+  },
+  "signature": {
+    "dateTime": "2026-10-30 18:30:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400 (Nombre Requerido)">
+
+```json
+{
+  "error": {
+    "message": "The parameter fullName or name is required",
+    "code": "MISSING_REQUIRED_PARAMETER"
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Perfiles de Prueba Sandbox
+
+En ambiente Sandbox (`sandbox.verifik.co` o modo sandbox activo), puedes utilizar los siguientes nombres de prueba:
+
+| Nombre de Consulta | Comportamiento en Sandbox |
+| :--- | :--- |
+| `"MAICOL ANGELO GARZON DIAZ"` | Retorna noticias adversas detectadas (`hasAdverseMedia: true`, `riskScore: 85`, nivel `HIGH`). |
+| `"PEDRO PABLO PEREZ LIMPIO"` | Retorna perfil limpio sin noticias adversas (`hasAdverseMedia: false`, `riskScore: 0`, nivel `LOW`). |
