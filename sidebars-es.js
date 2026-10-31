@@ -37,6 +37,10 @@ const sidebars = {
 			label: "SERVICIOS",
 			collapsible: false,
 			items: [
+				{ type: "doc", id: "services/identity-validation", label: "Validación de Identidad" },
+				{ type: "doc", id: "services/background-check", label: "Validación de Antecedentes" },
+				{ type: "doc", id: "services/vehicle-validation", label: "Validación de Vehículos" },
+				{ type: "doc", id: "services/business-validation", label: "Validación Empresarial" },
 				"smartcheck/verificacion-inteligente",
 				{
 					type: "category",
@@ -947,6 +951,7 @@ const sidebars = {
 			label: "RECURSOS",
 			collapsible: false,
 			items: [
+				{ type: "doc", id: "resources/app-features/app-features", label: "Funcionalidades de Smart-Agent" },
 				{
 					type: "category",
 					label: "Proyectos",

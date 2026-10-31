@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-10-31T00:25:04.846Z
+Generated: 2026-10-31T06:10:45.921Z
 
-- **Files scanned:** 570
+- **Files scanned:** 575
 - **Unique endpoint URLs:** 261
 - **Duplicate URL groups (SEO / aliases):** 59
-- **Docs without `### Endpoint` block:** 227
+- **Docs without `### Endpoint` block:** 232
 
 ## Summary by priority (canonical primary path only)
 
@@ -593,6 +593,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `military.mdx`
 - `phone-validations/sms-and-whatsapp-prices.mdx`
 - `reference/endpoint-doc-index.md`
+- `resources/app-features/app-features.mdx`
 - `resources/app-logins/app-logins.mdx`
 - `resources/app-logins/create-an-app-login.mdx`
 - `resources/app-logins/email-access-example.mdx`
@@ -671,6 +672,10 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `roadmap/q4-2025.md`
 - `roadmap/roadmap-2026.md`
 - `scandocs/scan-prompt.mdx`
+- `services/background-check.mdx`
+- `services/business-validation.mdx`
+- `services/identity-validation.mdx`
+- `services/vehicle-validation.mdx`
 - `services/verifik-enroll-code-solution-via-api/full-api-tutorial.md`
 - `smart-batch/async-queue.mdx`
 - `smart-batch/smart-batch.md`

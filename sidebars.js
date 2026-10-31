@@ -58,6 +58,10 @@ const sidebars = {
 			label: "SERVICES",
 			collapsible: false,
 			items: [
+				"services/identity-validation",
+				"services/background-check",
+				"services/vehicle-validation",
+				"services/business-validation",
 				"smartcheck/smartcheck",
 				{
 					type: "category",
@@ -1182,6 +1186,7 @@ const sidebars = {
 			label: "RESOURCES",
 			collapsible: false,
 			items: [
+				"resources/app-features/app-features",
 				{
 					type: "category",
 					label: "Projects",

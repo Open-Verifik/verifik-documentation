@@ -1,0 +1,204 @@
+---
+id: identity-validation
+title: Identity Validation
+sidebar_label: Identity Validation
+description: Comprehensive identity validation services for verifying personal credentials, biometric liveness, and official documents across multiple jurisdictions.
+slug: /services/identity-validation
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Identity Validation
+
+:::info SmartCheck Integration
+Identity validation is a core pillar of **SmartCheck**, Verifik's unified verification platform. You can test identity endpoints interactively in the SmartCheck console at [ai.verifik.co](https://ai.verifik.co) or automate bulk identity validations via [SmartBatch](/smart-batch).
+:::
+
+Verifik provides real-time **Identity Validation** APIs that verify personal credentials, official government-issued identification documents, and biometric data across more than 20 countries in North America, Latin America, and Europe.
+
+Our identity services connect securely with official government sources and authorized registries to confirm document validity, identity authenticity, and citizen status in milliseconds.
+
+---
+
+## Key Capabilities
+
+Verifik's identity validation suite covers the entire identity verification lifecycle:
+
+### 1. Document Authenticity Verification
+Confirm the existence and active status of official identification documents:
+- **National Identity Cards**: Cédula de Ciudadanía, DNI, RG, CURP/INE, cédula de identidad.
+- **Foreigner Identification**: Foreigner IDs, temporary protection permits, and resident alien cards.
+- **Passports & Visas**: International travel documents and visa validity.
+- **Driver's Licenses**: State and national driver licensing authorities.
+- **Tax & Social Security IDs**: SSN, SIN, CPF, RUT, and national registry numbers.
+
+### 2. Demographic & Biographic Data Cross-Referencing
+Ensure that submitted personal information matches official records:
+- Complete legal name (first name, middle name, paternal and maternal surnames).
+- Date of birth and declared age.
+- Gender and marital status.
+- Document expedition date and issuing municipality/department.
+- Document status (active, cancelled due to death, suspended, or invalid).
+
+### 3. Biometric Liveness & Facial Matching
+Prevent impersonation and spoofing with advanced biometric validation:
+- Passive and active liveness detection (ISO 30107-3 compliant).
+- 1:1 facial matching between a live selfie and official document photo.
+- Anti-spoofing algorithms detecting printed photos, screen replays, and deepfakes.
+
+---
+
+## Geographic Coverage
+
+Verifik supports identity verification across 20+ countries:
+
+| Region | Countries Supported | Key Document Types |
+|---|---|---|
+| **North America** | United States, Canada, Mexico | SSN, Driver's Licenses, Passport, INE, CURP |
+| **South America** | Colombia, Brazil, Argentina, Chile, Peru, Ecuador, Bolivia, Paraguay, Uruguay, Venezuela | Cédula, DNI, RG, CPF, RUT, Foreigner IDs |
+| **Central America & Caribbean** | Costa Rica, Panama, Dominican Republic, Guatemala, El Salvador, Honduras | Cédula, DPI, DNI, Foreigner Resident Cards |
+| **Europe** | Spain | DNI, NIE, CIF |
+
+---
+
+## API Integration
+
+You can integrate identity validation directly into your onboarding flow using Verifik's RESTful API.
+
+### Authentication
+Include your JSON Web Token (JWT) in the `Authorization` header:
+
+```http
+Authorization: Bearer <your_jwt_token>
+```
+
+### Request Example
+
+<Tabs>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST https://api.verifik.co/v2/identity \
+  -H "Authorization: Bearer <your_jwt_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "documentType": "CC",
+    "documentNumber": "1234567890",
+    "country": "CO"
+  }'
+```
+
+</TabItem>
+<TabItem value="nodejs" label="Node.js">
+
+```javascript
+const axios = require('axios');
+
+async function validateIdentity() {
+  try {
+    const response = await axios.post(
+      'https://api.verifik.co/v2/identity',
+      {
+        documentType: 'CC',
+        documentNumber: '1234567890',
+        country: 'CO'
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.VERIFIK_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    console.log('Identity Verification Result:', response.data);
+  } catch (error) {
+    console.error('Validation error:', error.response?.data || error.message);
+  }
+}
+
+validateIdentity();
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/identity"
+headers = {
+    "Authorization": f"Bearer {os.environ.get('VERIFIK_API_KEY')}",
+    "Content-Type": "application/json"
+}
+payload = {
+    "documentType": "CC",
+    "documentNumber": "1234567890",
+    "country": "CO"
+}
+
+response = requests.post(url, json=payload, headers=headers)
+data = response.json()
+print("Identity Verification Result:", data)
+```
+
+</TabItem>
+</Tabs>
+
+### Response Structure
+
+```json
+{
+  "status": "success",
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "1234567890",
+    "firstName": "JUAN",
+    "secondName": "CARLOS",
+    "lastName": "PEREZ",
+    "secondLastName": "GOMEZ",
+    "fullName": "JUAN CARLOS PEREZ GOMEZ",
+    "documentStatus": "ACTIVE",
+    "expeditionDate": "2015-08-12",
+    "verifiedAt": "2026-10-30T22:25:00.000Z",
+    "source": "official_government_source"
+  },
+  "signature": {
+    "dateTime": "2026-10-30T22:25:00.000Z",
+    "message": "Certified response"
+  }
+}
+```
+
+---
+
+## Response Status Codes
+
+| HTTP Status | Description | Action Required |
+|---|---|---|
+| `200 OK` | Validation completed successfully | Process the verified payload |
+| `400 Bad Request` | Missing or malformed parameters | Check required parameters (`documentType`, `documentNumber`) |
+| `401 Unauthorized` | Invalid or expired API token | Regenerate your access token in the dashboard |
+| `404 Not Found` | Document not found in official registry | Confirm input data with the end user |
+| `422 Unprocessable` | Validation failed or inactive status | Review document status flags |
+| `500 Server Error` | Official service temporarily unavailable | Implement exponential backoff retry |
+
+---
+
+## SmartBatch & Bulk Processing
+
+For processing thousands of identities simultaneously:
+1. Navigate to **SmartBatch** at [ai.verifik.co/smart-batch](https://ai.verifik.co/smart-batch).
+2. Create or select a batch configuration targeting the Identity Validation endpoint.
+3. Upload your CSV or Excel file mapping column headers (`documentNumber`, `documentType`).
+4. Execute synchronously or asynchronously with webhook completion alerts.
+
+---
+
+## Security & Compliance
+
+- **Data Privacy**: Verifik does not retain sensitive customer identification documents without explicit customer retention configurations.
+- **Regulatory Standards**: Fully compliant with GDPR, CCPA, and regional statutory data protection frameworks (e.g., Law 1581 in Colombia, LGPD in Brazil).
+- **Transport Security**: All API traffic is strictly enforced over TLS 1.3 with cryptographic SHA-256 payload signatures.
