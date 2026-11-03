@@ -8,6 +8,8 @@
 
 import { themes as prismThemes } from "prism-react-renderer";
 
+const { CLIENT_REDIRECTS, SITEMAP_IGNORE_PATTERNS, shouldDropFromSitemap, lastmodByRoutePath, pathnameOf } = require("./src/seo/endpoint-canonicals");
+
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 /** @type {import('@docusaurus/types').Config} */
@@ -15,7 +17,7 @@ const config = {
 	title: "Verifik",
 	tagline: "Everything you need to verify & authenticate users faster and easier",
 	favicon: "https://cdn.verifik.co/LogoNegroSolo.svg",
-	onDuplicateRoutes: "ignore", // Ignore duplicate routes - we intentionally create duplicate pages for SEO (same content, different URLs)
+	onDuplicateRoutes: "ignore", // Legacy doc trees still overlap. Colombia endpoint duplicates are canonicalized in src/seo/endpoint-canonicals.js.
 
 	// Additional favicon links and SEO metadata
 	headTags: [
@@ -245,6 +247,8 @@ const config = {
 	// Internationalization configuration REMOVED
 	// i18n removed to prevent /es prefix on Spanish routes
 	// Spanish docs will be at /verifik-es/ instead of /es/docs-es/
+	// Follow-up: move Spanish onto Docusaurus i18n so html lang is native.
+	// Until then, src/plugins/hreflang-inject.js sets lang, og:locale, and hreflang.
 
 	presets: [
 		[
@@ -268,6 +272,23 @@ const config = {
 						language: "en",
 					},
 				},
+				sitemap: {
+					// null: the plugin's git-based lastmod overflows on this repo (build/ is committed).
+					// createSitemapItems adds YYYY-MM-DD from the source file mtime.
+					lastmod: null,
+					ignorePatterns: SITEMAP_IGNORE_PATTERNS,
+					async createSitemapItems(params) {
+						const items = await params.defaultCreateSitemapItems(params);
+						const lastmods = lastmodByRoutePath(params.routes);
+						const fallback = new Date().toISOString().slice(0, 10);
+						return items
+							.filter((item) => !shouldDropFromSitemap(item.url))
+							.map((item) => ({
+								...item,
+								lastmod: lastmods.get(pathnameOf(item.url)) || fallback,
+							}));
+					},
+				},
 				theme: {
 					customCss: "./src/css/custom.css",
 				},
@@ -276,6 +297,12 @@ const config = {
 	],
 
 	plugins: [
+		[
+			"@docusaurus/plugin-client-redirects",
+			{
+				redirects: CLIENT_REDIRECTS,
+			},
+		],
 		[
 			"@docusaurus/plugin-content-docs",
 			{

@@ -9,6 +9,8 @@
 const fs = require("fs");
 const path = require("path");
 
+const { isNonCanonicalPermalink } = require("../src/seo/endpoint-canonicals");
+
 const SITE_URL = "https://docs.verifik.co";
 const TRAILING_SLASH = true;
 
@@ -76,12 +78,23 @@ const ES_REL_PATH_TO_CANONICAL = {
 };
 
 /**
+ * Korean citizen page uses the identity-validation path. Fold it into the
+ * same cluster as docs/identity/colombia.mdx.
+ */
+const KO_REL_PATH_TO_CANONICAL = {
+	"identity-validation/colombia/colombian-citizen": "identity/colombia",
+};
+
+/**
  * @param {string} rootFolder
  * @param {string} relPathNoExt
  */
 const canonicalLogicalKey = (rootFolder, relPathNoExt) => {
 	if (rootFolder === "docs-es") {
 		return ES_REL_PATH_TO_CANONICAL[relPathNoExt] || relPathNoExt;
+	}
+	if (rootFolder === "docs-ko") {
+		return KO_REL_PATH_TO_CANONICAL[relPathNoExt] || relPathNoExt;
 	}
 	return relPathNoExt;
 };
@@ -151,6 +164,7 @@ const main = () => {
 			if (!slug) slug = defaultSlugFromRelPath(relNoExt);
 			const pathname = joinUrlPath(plugin.routeBasePath, slug);
 			const permalink = toAbsolutePermalink(pathname);
+			if (isNonCanonicalPermalink(permalink)) continue;
 			const logicalKey = canonicalLogicalKey(plugin.root, relNoExt);
 
 			if (!clusters[logicalKey]) clusters[logicalKey] = {};
