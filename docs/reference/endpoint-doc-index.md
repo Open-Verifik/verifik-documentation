@@ -525,6 +525,18 @@ keywords:
   - "https://api.verifik.co/v2/br/company"
   - "GET v2/br/company"
   - "GET /v2/br/company"
+  - "v2/br/politically-exposed-persons"
+  - "/v2/br/politically-exposed-persons"
+  - "v2 br politically-exposed-persons"
+  - "br/politically-exposed-persons"
+  - "/br/politically-exposed-persons"
+  - "api/br/politically-exposed-persons"
+  - "/api/br/politically-exposed-persons"
+  - "api br politically-exposed-persons"
+  - "api.verifik.co/v2/br/politically-exposed-persons"
+  - "https://api.verifik.co/v2/br/politically-exposed-persons"
+  - "GET v2/br/politically-exposed-persons"
+  - "GET /v2/br/politically-exposed-persons"
   - "v2/br/vehicle"
   - "/v2/br/vehicle"
   - "v2 br vehicle"
@@ -2826,6 +2838,18 @@ keywords:
   - "https://api.verifik.co/v2/pe/foreigner-id/ce"
   - "GET v2/pe/foreigner-id/ce"
   - "GET /v2/pe/foreigner-id/ce"
+  - "v2/pe/politically-exposed-persons"
+  - "/v2/pe/politically-exposed-persons"
+  - "v2 pe politically-exposed-persons"
+  - "pe/politically-exposed-persons"
+  - "/pe/politically-exposed-persons"
+  - "api/pe/politically-exposed-persons"
+  - "/api/pe/politically-exposed-persons"
+  - "api pe politically-exposed-persons"
+  - "api.verifik.co/v2/pe/politically-exposed-persons"
+  - "https://api.verifik.co/v2/pe/politically-exposed-persons"
+  - "GET v2/pe/politically-exposed-persons"
+  - "GET /v2/pe/politically-exposed-persons"
   - "v2/pe/vehiculo/placa"
   - "/v2/pe/vehiculo/placa"
   - "v2 pe vehiculo placa"
@@ -3369,12 +3393,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (269 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (271 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-11-03T20:09:14.284Z_
+_Last regenerated: 2026-11-04T23:43:59.611Z_
 
 ## Argentina
 
@@ -3406,6 +3430,7 @@ _Last regenerated: 2026-11-03T20:09:14.284Z_
 | `v2/br/background-check` | v2 br background-check br/background-check /br/background-check api/br/background-check /api/br/background-check api br background-check api.verifik.co/v2/br/background-check https://api.verifik.co/v2/br/background-check GET v2/br/background-check GET /v2/br/background-check | [Background Check (CPF)](/background-check/brazil) |
 | `v2/br/cedula` | v2 br cedula br/cedula /br/cedula api/br/cedula /api/br/cedula api br cedula api.verifik.co/v2/br/cedula https://api.verifik.co/v2/br/cedula GET v2/br/cedula GET /v2/br/cedula | [Brazilian Citizen](/identity/brazil) |
 | `v2/br/company` | v2 br company br/company /br/company api/br/company /api/br/company api br company api.verifik.co/v2/br/company https://api.verifik.co/v2/br/company GET v2/br/company GET /v2/br/company | [Business Verification (CNPJ)](/business-validation/brazil) |
+| `v2/br/politically-exposed-persons` | v2 br politically-exposed-persons br/politically-exposed-persons /br/politically-exposed-persons api/br/politically-exposed-persons /api/br/politically-exposed-persons api br politically-exposed-persons api.verifik.co/v2/br/politically-exposed-persons https://api.verifik.co/v2/br/politically-exposed-persons GET v2/br/politically-exposed-persons GET /v2/br/politically-exposed-persons | [Brazil — Politically Exposed Persons (PEP / COAF Resolução 40/2021)](/background-check/brazil-politically-exposed-persons) |
 | `v2/br/vehicle` | v2 br vehicle br/vehicle /br/vehicle api/br/vehicle /api/br/vehicle api br vehicle api.verifik.co/v2/br/vehicle https://api.verifik.co/v2/br/vehicle GET v2/br/vehicle GET /v2/br/vehicle | [Vehicle Information](/vehicle-validation/brazil) |
 
 ## Chile
@@ -3583,6 +3608,7 @@ _Last regenerated: 2026-11-03T20:09:14.284Z_
 | --- | --- | --- |
 | `v2/pe/driver-license` | v2 pe driver-license pe/driver-license /pe/driver-license api/pe/driver-license /api/pe/driver-license api pe driver-license api.verifik.co/v2/pe/driver-license https://api.verifik.co/v2/pe/driver-license GET v2/pe/driver-license GET /v2/pe/driver-license | [Peru - Driver License](/driver-validation/peru-driver-license) |
 | `v2/pe/foreigner-id/ce` | v2 pe foreigner-id ce pe/foreigner-id/ce /pe/foreigner-id/ce api/pe/foreigner-id/ce /api/pe/foreigner-id/ce api pe foreigner-id ce foreigner-id/ce /foreigner-id/ce api.verifik.co/v2/pe/foreigner-id/ce https://api.verifik.co/v2/pe/foreigner-id/ce GET v2/pe/foreigner-id/ce GET /v2/pe/foreigner-id/ce | [\U0001F1F5\U0001F1EA Peru - Foreigner Resident](/identity-validation/peru/peruvian-foreigner-resident) |
+| `v2/pe/politically-exposed-persons` | v2 pe politically-exposed-persons pe/politically-exposed-persons /pe/politically-exposed-persons api/pe/politically-exposed-persons /api/pe/politically-exposed-persons api pe politically-exposed-persons api.verifik.co/v2/pe/politically-exposed-persons https://api.verifik.co/v2/pe/politically-exposed-persons GET v2/pe/politically-exposed-persons GET /v2/pe/politically-exposed-persons | [Peru — Politically Exposed Persons (PEP / SBS 2660-2015 & 4349-2016)](/background-check/peru-politically-exposed-persons) |
 | `v2/pe/vehiculo/placa` | v2 pe vehiculo placa pe/vehiculo/placa /pe/vehiculo/placa api/pe/vehiculo/placa /api/pe/vehiculo/placa api pe vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/pe/vehiculo/placa https://api.verifik.co/v2/pe/vehiculo/placa GET v2/pe/vehiculo/placa GET /v2/pe/vehiculo/placa | [Peru - Vehicle Information](/vehicle-validation/peru/peruvian-vehicle) |
 | `v2/pe/vehiculo/soat` | v2 pe vehiculo soat pe/vehiculo/soat /pe/vehiculo/soat api/pe/vehiculo/soat /api/pe/vehiculo/soat api pe vehiculo soat vehiculo/soat /vehiculo/soat api.verifik.co/v2/pe/vehiculo/soat https://api.verifik.co/v2/pe/vehiculo/soat GET v2/pe/vehiculo/soat GET /v2/pe/vehiculo/soat | [Peru - Vehicle Insurance](/vehicle-validation/peru/peruvian-vehicle-insurance) |
 

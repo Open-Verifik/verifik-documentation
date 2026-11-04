@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-11-03T20:09:14.239Z
+Generated: 2026-11-04T23:43:59.558Z
 
-- **Files scanned:** 583
-- **Unique endpoint URLs:** 269
+- **Files scanned:** 585
+- **Unique endpoint URLs:** 271
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 232
 
@@ -13,7 +13,7 @@ Generated: 2026-11-03T20:09:14.239Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 25 | vehicle-validation (other countries) |
-| P2 | 217 | identity, biometrics, resources, etc. |
+| P2 | 219 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -267,6 +267,7 @@ Generated: 2026-11-03T20:09:14.239Z
 | P2 | `v2/br/background-check` | `background-check/brazil.mdx` |
 | P2 | `v2/br/cedula` | `identity/brazil.mdx` |
 | P2 | `v2/br/company` | `business-validation/brazil.mdx` |
+| P2 | `v2/br/politically-exposed-persons` | `background-check/brazil-politically-exposed-persons.mdx` |
 | P1 | `v2/br/vehicle` | `vehicle-validation/brazil.mdx` |
 | P2 | `v2/ca/company` | `business-validation/canada.mdx` |
 | P2 | `v2/ca/ontario/driver-license` | `driver-validation/ontario-driver-license.md` |
@@ -445,6 +446,7 @@ Generated: 2026-11-03T20:09:14.239Z
 | P2 | `v2/passport/us/entries` | `background-check/united-states-passport-entries.mdx` |
 | P2 | `v2/pe/driver-license` | `driver-validation/peru-driver-license.mdx` |
 | P2 | `v2/pe/foreigner-id/ce` | `identity-validation/peru/peruvian-foreigner-resident.mdx` |
+| P2 | `v2/pe/politically-exposed-persons` | `background-check/peru-politically-exposed-persons.mdx` |
 | P1 | `v2/pe/vehiculo/placa` | `vehicle-validation/peru/peruvian-vehicle.mdx` |
 | P1 | `v2/pe/vehiculo/soat` | `vehicle-validation/peru/peruvian-vehicle-insurance.mdx` |
 | P2 | `v2/phone-validations` | `resources/app-registrations/validate-an-app-registration-phone-validation.mdx` |

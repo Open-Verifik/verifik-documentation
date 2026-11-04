@@ -790,6 +790,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/brazil-politically-exposed-persons",
+					label: "🇧🇷 Brasil - Personas Expuestas Políticamente (PEP / COAF)",
+				},
+				{
+					type: "doc",
 					id: "background-check/adverse-media-google-rss",
 					label: "📰 Medios Adversos - Google RSS",
 				},
