@@ -785,6 +785,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/peru-politically-exposed-persons",
+					label: "🇵🇪 Perú - Personas Expuestas Políticamente (PEP / SBS)",
+				},
+				{
+					type: "doc",
 					id: "background-check/adverse-media-google-rss",
 					label: "📰 Medios Adversos - Google RSS",
 				},
