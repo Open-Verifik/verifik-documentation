@@ -1,0 +1,245 @@
+---
+id: brazil-medical-professional
+title: Brazil — Medical Professional (CRM)
+description: Validate and consult Brazilian medical professionals by CRM registration number and State (UF) or by full name, with optional CPF and Date of Birth cross-validation.
+slug: /identity/brazil-medical-professional
+keywords:
+  - v2/br/medical-professional
+  - /v2/br/medical-professional
+  - v2 br medical professional
+  - v2/br/health-worker
+  - /v2/br/health-worker
+  - api.verifik.co/v2/br/medical-professional
+  - 'https://api.verifik.co/v2/br/medical-professional'
+  - GET v2/br/medical-professional
+  - GET /v2/br/medical-professional
+  - brazil medical professional
+  - brazil crm validation
+  - brazil doctor license
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Brazil — Medical Professional (CRM)
+
+Validates and retrieves registration details for physicians registered in Brazil across all 27 state jurisdictions (*Unidades Federativas* — `UF`). You can query by **CRM number and State (`uf`)** or by **Full Name (`fullName`)**.
+
+When querying by CRM number and `uf`, you can also optionally provide the physician's 11-digit `cpf` and `dateOfBirth` (`DD/MM/YYYY`) to cross-validate whether those identity credentials match the registered physician (`identityValidated: true | false`).
+
+## API reference
+
+### Endpoint
+
+```
+https://api.verifik.co/v2/br/medical-professional
+```
+
+*(Also available at alias `https://api.verifik.co/v2/br/health-worker`)*
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+Send **`documentNumber` (or `crm`) + `uf`**, or **`fullName`**.
+
+| Name | Type | Required | Description | Example |
+| --- | --- | --- | --- | --- |
+| `documentType` | string | Optional | Set to `CRM` when querying by CRM registration number. | `CRM` |
+| `documentNumber` | string | CRM mode | Physician's CRM registration number (up to 7 digits). Alias: `crm`. | `123456` |
+| `uf` | string | CRM mode (Optional in Name mode) | 2-letter Brazilian state code (`AC`, `AL`, `AM`, `AP`, `BA`, `CE`, `DF`, `ES`, `GO`, `MA`, `MG`, `MS`, `MT`, `PA`, `PB`, `PE`, `PI`, `PR`, `RJ`, `RN`, `RO`, `RR`, `RS`, `SC`, `SE`, `SP`, `TO`). | `SP` |
+| `cpf` | string | Optional | 11-digit Brazilian CPF (with or without formatting) to cross-validate with `dateOfBirth`. | `12345678909` |
+| `dateOfBirth` | string | Optional | Date of birth in `DD/MM/YYYY` format to cross-validate with `cpf`. | `15/05/1980` |
+| `fullName` | string | Name mode | Physician's full name (minimum 3 characters). | `CARLOS EDUARDO SILVA` |
+
+### Registration Status Codes (`statusCode` / `status`)
+
+| Code | Status Label | `isActive` | Description |
+| :---: | :--- | :---: | :--- |
+| `A` | `Regular` | `true` | Physician is regularly registered and authorized to practice medicine. |
+| `B` | `Suspensão parcial permanente` | `false` | Permanent partial suspension due to disabling condition. |
+| `C` | `Cassado` | `false` | Medical license revoked following final ethical-professional judgment. |
+| `E` | `Inoperante` | `false` | Inactive for more than five years or unknown whereabouts. |
+| `F` | `Falecido` | `false` | Deceased. |
+| `G` | `Sem o exercício da profissão na UF` | `false` | Not practicing in the queried state (`UF`). |
+| `I` | `Interdição cautelar - total` | `false` | Precautionary total interdiction from practicing medicine. |
+| `J` | `Suspenso por ordem judicial - parcial` | `false` | Partial suspension by court order. |
+| `L` | `Cancelado` | `false` | Registration cancelled at holder's request or administrative deadline. |
+| `M` | `Suspensão total temporária` | `false` | Temporary total suspension due to disabling condition. |
+| `N` | `Interdição cautelar - parcial` | `false` | Precautionary partial interdiction. |
+| `O` | `Suspenso por ordem judicial - total` | `false` | Total suspension by court order. |
+| `P` | `Aposentado` | `false` | Registration cancelled due to retirement. |
+| `R` | `Suspensão temporária` | `false` | Temporary suspension (up to 30 days) due to disciplinary proceeding. |
+| `S` | `Suspenso - total` | `false` | Total suspension due to disabling condition. |
+| `T` | `Transferido` | `false` | Transferred registration to another state (`UF`). |
+| `X` | `Suspenso - parcial` | `false` | Partial suspension due to disabling condition. |
+
+### Registration Types (`registrationTypeCode` / `registrationType`)
+
+| Code | Registration Type |
+| :---: | :--- |
+| `P` | `Principal` |
+| `S` | `Secundária` |
+| `V` | `Provisória` |
+| `T` | `Temporária` |
+| `E` | `Estudante Médico Estrangeiro` |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const { data } = await axios.get("https://api.verifik.co/v2/br/medical-professional", {
+  params: {
+    documentType: "CRM",
+    documentNumber: "123456",
+    uf: "SP",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+  },
+});
+console.log(data);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v2/br/medical-professional"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"
+}
+params = {
+    "documentType": "CRM",
+    "documentNumber": "123456",
+    "uf": "SP"
+}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "ambiguous": false,
+    "arrayName": ["CARLOS", "EDUARDO", "SILVA"],
+    "cpf": null,
+    "crm": "123456",
+    "dateOfBirth": null,
+    "documentNumber": "123456",
+    "documentType": "CRM",
+    "firstName": "CARLOS",
+    "fullName": "CARLOS EDUARDO SILVA",
+    "identityValidated": null,
+    "isActive": true,
+    "isHealthWorker": true,
+    "lastName": "EDUARDO SILVA",
+    "licenses": [
+      {
+        "crm": "123456",
+        "fullName": "CARLOS EDUARDO SILVA",
+        "isActive": true,
+        "registrationType": "Principal",
+        "registrationTypeCode": "P",
+        "specialties": [
+          {
+            "name": "CARDIOLOGIA",
+            "raw": "CARDIOLOGIA - RQE Nº: 45120",
+            "rqe": "45120"
+          },
+          {
+            "name": "CLÍNICA MÉDICA",
+            "raw": "CLÍNICA MÉDICA - RQE Nº: 32110",
+            "rqe": "32110"
+          }
+        ],
+        "status": "Regular",
+        "statusCode": "A",
+        "statusDescription": "Médico que está regularmente inscrito no Conselho Regional de Medicina e se encontra apto ao exercício da medicina.",
+        "uf": "SP",
+        "updatedAtDate": "01/11/2026"
+      }
+    ],
+    "matchMethod": "crm_uf",
+    "registrationType": "Principal",
+    "registrationTypeCode": "P",
+    "specialties": [
+      {
+        "name": "CARDIOLOGIA",
+        "raw": "CARDIOLOGIA - RQE Nº: 45120",
+        "rqe": "45120"
+      },
+      {
+        "name": "CLÍNICA MÉDICA",
+        "raw": "CLÍNICA MÉDICA - RQE Nº: 32110",
+        "rqe": "32110"
+      }
+    ],
+    "status": "Regular",
+    "statusCode": "A",
+    "statusDescription": "Médico que está regularmente inscrito no Conselho Regional de Medicina e se encontra apto ao exercício da medicina.",
+    "uf": "SP",
+    "updatedAtDate": "01/11/2026"
+  },
+  "signature": {
+    "dateTime": "November 4, 2026 6:30 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either (documentNumber/crm and uf) or fullName is required."
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Sandbox Test Fixtures
+
+Use these deterministic test identifiers in sandbox environments:
+
+| `documentNumber` (`crm`) | `uf` | `fullName` | Scenario |
+| :--- | :---: | :--- | :--- |
+| `123456` | `SP` | `CARLOS EDUARDO SILVA` | Active physician (`statusCode: "A"`, `status: "Regular"`, `isActive: true`, Cardiology & Internal Medicine specialties). Pass `cpf=12345678909` & `dateOfBirth=15/05/1980` for `identityValidated: true`. |
+| `654321` | `RJ` | `MARIANA COSTA OLIVEIRA` | Temporarily suspended (`statusCode: "R"`, `status: "Suspensão temporária"`, `isActive: false`). |
+| `777777` | `MG` | `ROBERTO ALMEIDA SANTOS` | Retired (`statusCode: "P"`, `status: "Aposentado"`, `isActive: false`). |
+| `999999` or `90040401` | `SP` | — | Returns `404 NotFound` simulation. |
+
