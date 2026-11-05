@@ -1,0 +1,187 @@
+---
+id: chile-health-worker
+title: Chile — Verificación de Prestadores Individuales de Salud y Médicos (SIS / RNPI)
+description: Consulta y valida médicos cirujanos, dentistas, enfermeros, matronas y tecnólogos médicos en Chile por RUT o nombre completo ante el Registro Nacional de Prestadores Individuales de Salud (RNPI) de la Superintendencia de Salud.
+slug: /identity/chile-health-worker
+keywords:
+  - v2/cl/health-worker
+  - /v2/cl/health-worker
+  - v2/cl/medical-professional
+  - /v2/cl/medical-professional
+  - chile profesionales de la salud
+  - chile medicos rnpi
+  - superintendencia de salud chile
+  - registro nacional de prestadores de salud chile
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Chile — Verificación de Prestadores Individuales de Salud y Médicos (SIS / RNPI)
+
+Permite consultar y acreditar la habilitación profesional de médicos cirujanos, cirujanos dentistas, enfermeros, matronas, tecnólogos médicos y especialistas en salud en la República de Chile por **RUT (`documentNumber` o `rut`)** o por **Nombre Completo (`fullName`)**.
+
+La verificación consulta el **Registro Nacional de Prestadores Individuales de Salud (RNPI)** administrado por la **Superintendencia de Salud (SIS)**, certificando el título profesional, especialidades acreditadas, entidad emisora y estado de habilitación para el ejercicio de la profesión médica.
+
+- **Acreditación Profesional Oficial:** Valida títulos emitidos por universidades chilenas o revalidados ante la Universidad de Chile.
+- **Especialidades Médicas Certificadas:** Confirma especialidades médicas y subespecialidades inscritas y certificadas (CONACEM / CONACEO).
+- **Cumplimiento y Telemedicina:** Indispensable para clínicas, centros médicos, plataformas de salud digital y aseguradoras (FONASA / ISAPRE).
+
+---
+
+## Referencia de API
+
+### Punto de acceso
+
+```http
+GET https://api.verifik.co/v2/cl/health-worker
+```
+
+*(También disponible mediante el alias `https://api.verifik.co/v2/cl/medical-professional`)*
+
+### Encabezados
+
+| Nombre | Valor |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Obligatorio | Descripción |
+| :--- | :--- | :--- | :--- |
+| `rut` | string | Condicional | RUT del profesional de salud (ej. `4738039-1` o `12443604-4`). Obligatorio si se omite `fullName`. |
+| `documentNumber` | string | Condicional | Sinónimo de `rut`. |
+| `documentType` | string | No | Tipo de documento: `RUT` (predeterminado). |
+| `fullName` | string | Condicional | Nombre completo del profesional (mínimo 3 caracteres). Obligatorio si se omite el RUT. |
+| `force` | boolean | No | Omite el caché reciente y fuerza una consulta en tiempo real. |
+
+---
+
+### Solicitud
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/cl/health-worker",
+  params: {
+    documentNumber: "4738039-1",
+    documentType: "RUT"
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer SU_TOKEN_AQUI"
+  }
+};
+
+const response = await axios.request(options);
+console.log(response.data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/cl/health-worker"
+params = {
+    "documentNumber": "4738039-1",
+    "documentType": "RUT"
+}
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer SU_TOKEN_AQUI"
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200" label="200 (Éxito)">
+
+```json
+{
+  "data": {
+    "rut": "4738039-1",
+    "documentType": "RUT",
+    "documentNumber": "4738039-1",
+    "fullName": "HERNANDEZ PARRA HECTOR",
+    "profession": "MÉDICO CIRUJANO",
+    "specialty": "CIRUGÍA GENERAL",
+    "region": "BIOBÍO",
+    "city": "CHILLÁN",
+    "isHealthWorker": true,
+    "isActive": true,
+    "totalRegistrations": 1,
+    "registrations": [
+      {
+        "rut": "4738039-1",
+        "fullName": "HERNANDEZ PARRA HECTOR",
+        "profession": "MÉDICO CIRUJANO",
+        "specialty": "CIRUGÍA GENERAL",
+        "category": "CONVENIO MÉDICOS",
+        "entity": "RED NACIONAL DE PRESTADORES DE SALUD",
+        "region": "BIOBÍO",
+        "city": "CHILLÁN",
+        "address": "CONSTITUCIÓN 664 OF. 214",
+        "phone": "42-221469",
+        "status": "ACTIVO",
+        "source": "Datos.gob.cl / Registro Nacional de Prestadores de Salud"
+      }
+    ],
+    "checkedSources": [
+      "DATOS_GOB_CL_PRESTADORES_SALUD",
+      "SUPERSALUD_RNPI_CHILE",
+      "SERVICIOS_DE_SALUD_CHILE"
+    ],
+    "valid": true
+  },
+  "signature": {
+    "dateTime": "November 4, 2026 8:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (No Encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "No se encontró registro del profesional de salud con los datos proporcionados."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Se requiere rut (documentNumber) o fullName."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Envíe `rut` o `fullName` en cada consulta.
+- El RUT se acepta con o sin puntos y guión (ej. `4.738.039-1` o `4738039-1`).
+- En modo Sandbox, los identificadores de prueba incluyen `4738039-1` (Médico Cirujano - Cirugía General) y `12443604-4` (Médico Cirujano - Traumatología).

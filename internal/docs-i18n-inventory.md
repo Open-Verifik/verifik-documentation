@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-11-05T00:44:16.337Z
+Generated: 2026-11-05T03:56:23.938Z
 
-- **Files scanned:** 586
-- **Unique endpoint URLs:** 272
+- **Files scanned:** 592
+- **Unique endpoint URLs:** 278
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 232
 
@@ -13,7 +13,7 @@ Generated: 2026-11-05T00:44:16.337Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 25 | vehicle-validation (other countries) |
-| P2 | 220 | identity, biometrics, resources, etc. |
+| P2 | 226 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -253,6 +253,8 @@ Generated: 2026-11-05T00:44:16.337Z
 | P2 | `v2/ar/cedula/extra` | `identity/argentina-extra.mdx` |
 | P2 | `v2/ar/company` | `business-validation/argentina.mdx` |
 | P2 | `v2/ar/dnrec/antecedentes` | `background-check/argentina-certificate-verify.mdx` |
+| P2 | `v2/ar/health-worker` | `identity/argentina-health-worker.mdx` |
+| P2 | `v2/ar/politically-exposed-persons` | `background-check/argentina-politically-exposed-persons.mdx` |
 | P1 | `v2/ar/rto` | `vehicle-validation/argentina/rto.mdx` |
 | P1 | `v2/ar/vehicle` | `vehicle-validation/argentina.md` |
 | P2 | `v2/auth/session` | `authentication/renew-your-token-jwt.mdx` |
@@ -280,6 +282,8 @@ Generated: 2026-11-05T00:44:16.337Z
 | P2 | `v2/cl/company` | `business-validation/chilean.mdx` |
 | P2 | `v2/cl/driver-license` | `driver-validation/chile-driver-license.mdx` |
 | P2 | `v2/cl/driver-license/block` | `driver-validation/chile-driver-license-block.mdx` |
+| P2 | `v2/cl/health-worker` | `identity/chile-health-worker.mdx` |
+| P2 | `v2/cl/politically-exposed-persons` | `background-check/chile-politically-exposed-persons.mdx` |
 | P2 | `v2/cl/registro-civil/certificado` | `background-check/chile-certificate-verify.mdx` |
 | P2 | `v2/cl/taxpayer` | `identity/chile-taxpayer.mdx` |
 | P1 | `v2/cl/transport-vehicle` | `vehicle-validation/chile/transport-vehicle.mdx` |
@@ -444,6 +448,8 @@ Generated: 2026-11-05T00:44:16.337Z
 | P2 | `v2/onu` | `background-check/onu-background-check.mdx` |
 | P2 | `v2/pa/cedula` | `identity/panama.mdx` |
 | P2 | `v2/pa/company` | `business-validation/panama.mdx` |
+| P2 | `v2/pa/health-worker` | `identity/panama-health-worker.mdx` |
+| P2 | `v2/pa/politically-exposed-persons` | `background-check/panama-politically-exposed-persons.mdx` |
 | P2 | `v2/passport/us/entries` | `background-check/united-states-passport-entries.mdx` |
 | P2 | `v2/pe/driver-license` | `driver-validation/peru-driver-license.mdx` |
 | P2 | `v2/pe/foreigner-id/ce` | `identity-validation/peru/peruvian-foreigner-resident.mdx` |

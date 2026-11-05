@@ -1,0 +1,187 @@
+---
+id: panama-health-worker
+title: Panama — Health Worker & Medical Professional Verification (MINSA / Consejo Técnico de Salud)
+description: Verify Panamanian physicians, specialists, dentists, nurses, pharmacists, and medical technologists by Cédula or full name against the official Ministry of Health (MINSA) personnel and health professional registries.
+slug: /identity/panama-health-worker
+keywords:
+  - v2/pa/health-worker
+  - /v2/pa/health-worker
+  - v2/pa/medical-professional
+  - /v2/pa/medical-professional
+  - panama health worker
+  - panama medical professional
+  - panama minsa
+  - panama idoneidad medica
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Panama — Health Worker & Medical Professional Verification (MINSA / Consejo Técnico de Salud)
+
+Validates and retrieves registration details for physicians, specialists, dentists, nurses, pharmacists, and medical technologists in Panama. Queries can be executed by **Cédula (`documentNumber` or `cedula`)** or by **Full Name (`fullName`)**.
+
+The verification checks official registries maintained by the Ministry of Health (*Ministerio de Salud — MINSA*) and the Technical Health Council (*Consejo Técnico de Salud*), returning professional standing, category, position, institution, and start date.
+
+- **National Coverage:** Covers public health institutions, medical personnel, and licensed professionals throughout the Republic of Panama.
+- **Multi-Profession Identification:** Identifies general practitioners, medical specialists, odontologists, registered nurses, and pharmacy personnel.
+- **Identity Consistency:** Validates official Panamanian Cédula formats (standard `X-XXX-XXXX` and padded `X-XXXX-XXXXX`).
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/pa/health-worker
+```
+
+*(Also available via alias `https://api.verifik.co/v2/pa/medical-professional`)*
+
+### Headers
+
+| Name | Value |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `cedula` | string | Conditional | Panamanian Cédula (e.g. `8-224-2444` or `8-0224-02444`). Required if `fullName` is omitted. |
+| `documentNumber` | string | Conditional | Alias for `cedula`. Standard document number parameter. |
+| `documentType` | string | No | Document type: `CEDULA` (default) or `CCPA`. |
+| `fullName` | string | Conditional | Full name of the health professional (minimum 3 characters). Required if document number is omitted. |
+| `force` | boolean | No | Bypass recent lookup cache and trigger fresh verification. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/pa/health-worker",
+  params: {
+    documentNumber: "8-224-2444",
+    documentType: "CEDULA"
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer YOUR_API_TOKEN"
+  }
+};
+
+const response = await axios.request(options);
+console.log(response.data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/pa/health-worker"
+params = {
+    "documentNumber": "8-224-2444",
+    "documentType": "CEDULA"
+}
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_API_TOKEN"
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Success)">
+
+```json
+{
+  "data": {
+    "cedula": "8-224-2444",
+    "cedulaPadded": "8-0224-02444",
+    "documentType": "CEDULA",
+    "documentNumber": "8-224-2444",
+    "fullName": "LOURDES N SUAREZ",
+    "position": "MEDICO ESPECIALISTA I",
+    "professionCategory": "MÉDICO ESPECIALISTA",
+    "entity": "MINISTERIO DE SALUD DE PANAMÁ (MINSA)",
+    "startDate": "14-01-1993",
+    "contractStatus": "PERMANENTE",
+    "isHealthWorker": true,
+    "isActive": true,
+    "totalRegistrations": 1,
+    "registrations": [
+      {
+        "cedula": "8-224-2444",
+        "cedulaPadded": "8-0224-02444",
+        "fullName": "LOURDES N SUAREZ",
+        "position": "MEDICO ESPECIALISTA I",
+        "professionCategory": "MÉDICO ESPECIALISTA",
+        "entity": "MINISTERIO DE SALUD DE PANAMÁ (MINSA)",
+        "employeeNumber": "42080",
+        "startDate": "14-01-1993",
+        "contractStatus": "PERMANENTE",
+        "status": "ACTIVO",
+        "source": "Ministerio de Salud de Panamá (MINSA) - Registro Oficial de Personal de Salud"
+      }
+    ],
+    "checkedSources": [
+      "MINSA_PANAMA_REGISTRO_PERSONAL_SALUD",
+      "CONSEJO_TECNICO_SALUD_PANAMA"
+    ],
+    "valid": true
+  },
+  "signature": {
+    "dateTime": "November 4, 2026 8:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not Found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Health worker record not found for the provided identifier."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing Parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either cedula (documentNumber) or fullName is required."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- Use either `cedula` / `documentNumber` or `fullName` per query.
+- Panamanian cédula numbers are accepted in hyphenated (`8-224-2444`), zero-padded (`8-0224-02444`), or raw digit format.
+- In sandbox mode (`isSandbox`), use test cédulas `8-224-2444` (Médico Especialista) or `8-222-1461` (Odontólogo).

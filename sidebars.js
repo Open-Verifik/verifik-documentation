@@ -159,6 +159,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/argentina-health-worker",
+					label: "🇦🇷 Argentina — Health Worker & Medical Professional (SISA)",
+				},
+				{
+					type: "doc",
 					id: "identity/bolivia",
 					label: "🇧🇴 Bolivia",
 					key: "identity-bolivia",
@@ -197,6 +202,11 @@ const sidebars = {
 					id: "identity/chile-validate-documents",
 					label: "🇨🇱 Chile — Document validation",
 					key: "identity-chile-validate-documents",
+				},
+				{
+					type: "doc",
+					id: "identity/chile-health-worker",
+					label: "🇨🇱 Chile — Health Worker & Medical Professional (RNPI)",
 				},
 				{
 					type: "doc",
@@ -362,6 +372,11 @@ const sidebars = {
 					id: "identity/panama",
 					label: "🇵🇦 Panama",
 					key: "identity-panama",
+				},
+				{
+					type: "doc",
+					id: "identity/panama-health-worker",
+					label: "🇵🇦 Panama — Health Worker & Medical Professional (MINSA)",
 				},
 				{
 					type: "doc",
@@ -1027,6 +1042,21 @@ const sidebars = {
 					type: "doc",
 					id: "background-check/brazil-politically-exposed-persons",
 					label: "🇧🇷 Brazil - Politically Exposed Persons (PEP / COAF)",
+				},
+				{
+					type: "doc",
+					id: "background-check/chile-politically-exposed-persons",
+					label: "🇨🇱 Chile - Politically Exposed Persons (PEP / UAF)",
+				},
+				{
+					type: "doc",
+					id: "background-check/argentina-politically-exposed-persons",
+					label: "🇦🇷 Argentina - Politically Exposed Persons (PEP / UIF)",
+				},
+				{
+					type: "doc",
+					id: "background-check/panama-politically-exposed-persons",
+					label: "🇵🇦 Panama - Politically Exposed Persons (PEP / SBP)",
 				},
 				{
 					type: "doc",

@@ -357,6 +357,30 @@ keywords:
   - "https://api.verifik.co/v2/ar/dnrec/antecedentes"
   - "GET v2/ar/dnrec/antecedentes"
   - "GET /v2/ar/dnrec/antecedentes"
+  - "v2/ar/health-worker"
+  - "/v2/ar/health-worker"
+  - "v2 ar health-worker"
+  - "ar/health-worker"
+  - "/ar/health-worker"
+  - "api/ar/health-worker"
+  - "/api/ar/health-worker"
+  - "api ar health-worker"
+  - "api.verifik.co/v2/ar/health-worker"
+  - "https://api.verifik.co/v2/ar/health-worker"
+  - "GET v2/ar/health-worker"
+  - "GET /v2/ar/health-worker"
+  - "v2/ar/politically-exposed-persons"
+  - "/v2/ar/politically-exposed-persons"
+  - "v2 ar politically-exposed-persons"
+  - "ar/politically-exposed-persons"
+  - "/ar/politically-exposed-persons"
+  - "api/ar/politically-exposed-persons"
+  - "/api/ar/politically-exposed-persons"
+  - "api ar politically-exposed-persons"
+  - "api.verifik.co/v2/ar/politically-exposed-persons"
+  - "https://api.verifik.co/v2/ar/politically-exposed-persons"
+  - "GET v2/ar/politically-exposed-persons"
+  - "GET /v2/ar/politically-exposed-persons"
   - "v2/ar/rto"
   - "/v2/ar/rto"
   - "v2 ar rto"
@@ -682,6 +706,30 @@ keywords:
   - "https://api.verifik.co/v2/cl/driver-license/block"
   - "GET v2/cl/driver-license/block"
   - "GET /v2/cl/driver-license/block"
+  - "v2/cl/health-worker"
+  - "/v2/cl/health-worker"
+  - "v2 cl health-worker"
+  - "cl/health-worker"
+  - "/cl/health-worker"
+  - "api/cl/health-worker"
+  - "/api/cl/health-worker"
+  - "api cl health-worker"
+  - "api.verifik.co/v2/cl/health-worker"
+  - "https://api.verifik.co/v2/cl/health-worker"
+  - "GET v2/cl/health-worker"
+  - "GET /v2/cl/health-worker"
+  - "v2/cl/politically-exposed-persons"
+  - "/v2/cl/politically-exposed-persons"
+  - "v2 cl politically-exposed-persons"
+  - "cl/politically-exposed-persons"
+  - "/cl/politically-exposed-persons"
+  - "api/cl/politically-exposed-persons"
+  - "/api/cl/politically-exposed-persons"
+  - "api cl politically-exposed-persons"
+  - "api.verifik.co/v2/cl/politically-exposed-persons"
+  - "https://api.verifik.co/v2/cl/politically-exposed-persons"
+  - "GET v2/cl/politically-exposed-persons"
+  - "GET /v2/cl/politically-exposed-persons"
   - "v2/cl/registro-civil/certificado"
   - "/v2/cl/registro-civil/certificado"
   - "v2 cl registro-civil certificado"
@@ -2812,6 +2860,30 @@ keywords:
   - "https://api.verifik.co/v2/pa/company"
   - "GET v2/pa/company"
   - "GET /v2/pa/company"
+  - "v2/pa/health-worker"
+  - "/v2/pa/health-worker"
+  - "v2 pa health-worker"
+  - "pa/health-worker"
+  - "/pa/health-worker"
+  - "api/pa/health-worker"
+  - "/api/pa/health-worker"
+  - "api pa health-worker"
+  - "api.verifik.co/v2/pa/health-worker"
+  - "https://api.verifik.co/v2/pa/health-worker"
+  - "GET v2/pa/health-worker"
+  - "GET /v2/pa/health-worker"
+  - "v2/pa/politically-exposed-persons"
+  - "/v2/pa/politically-exposed-persons"
+  - "v2 pa politically-exposed-persons"
+  - "pa/politically-exposed-persons"
+  - "/pa/politically-exposed-persons"
+  - "api/pa/politically-exposed-persons"
+  - "/api/pa/politically-exposed-persons"
+  - "api pa politically-exposed-persons"
+  - "api.verifik.co/v2/pa/politically-exposed-persons"
+  - "https://api.verifik.co/v2/pa/politically-exposed-persons"
+  - "GET v2/pa/politically-exposed-persons"
+  - "GET /v2/pa/politically-exposed-persons"
   - "v2/passport/us/entries"
   - "/v2/passport/us/entries"
   - "v2 passport us entries"
@@ -3405,12 +3477,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (272 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (278 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-11-05T00:44:16.389Z_
+_Last regenerated: 2026-11-05T03:56:23.989Z_
 
 ## Argentina
 
@@ -3422,6 +3494,8 @@ _Last regenerated: 2026-11-05T00:44:16.389Z_
 | `v2/ar/cedula/extra` | v2 ar cedula extra ar/cedula/extra /ar/cedula/extra api/ar/cedula/extra /api/ar/cedula/extra api ar cedula extra cedula/extra /cedula/extra api.verifik.co/v2/ar/cedula/extra https://api.verifik.co/v2/ar/cedula/extra GET v2/ar/cedula/extra GET /v2/ar/cedula/extra | [Argentina - Complete Argentine Citizen](/identity/argentina-extra) |
 | `v2/ar/company` | v2 ar company ar/company /ar/company api/ar/company /api/ar/company api ar company api.verifik.co/v2/ar/company https://api.verifik.co/v2/ar/company GET v2/ar/company GET /v2/ar/company | [Argentine Business Verification](/business-validation/argentina) |
 | `v2/ar/dnrec/antecedentes` | v2 ar dnrec antecedentes ar/dnrec/antecedentes /ar/dnrec/antecedentes api/ar/dnrec/antecedentes /api/ar/dnrec/antecedentes api ar dnrec antecedentes dnrec/antecedentes /dnrec/antecedentes api.verifik.co/v2/ar/dnrec/antecedentes https://api.verifik.co/v2/ar/dnrec/antecedentes GET v2/ar/dnrec/antecedentes GET /v2/ar/dnrec/antecedentes | [Argentina - Criminal Record Certificate](/background-check/argentina-certificate-verify) |
+| `v2/ar/health-worker` | v2 ar health-worker ar/health-worker /ar/health-worker api/ar/health-worker /api/ar/health-worker api ar health-worker api.verifik.co/v2/ar/health-worker https://api.verifik.co/v2/ar/health-worker GET v2/ar/health-worker GET /v2/ar/health-worker | [Argentina — Health Worker & Medical Professional Verification (SISA / REFEPS)](/identity/argentina-health-worker) |
+| `v2/ar/politically-exposed-persons` | v2 ar politically-exposed-persons ar/politically-exposed-persons /ar/politically-exposed-persons api/ar/politically-exposed-persons /api/ar/politically-exposed-persons api ar politically-exposed-persons api.verifik.co/v2/ar/politically-exposed-persons https://api.verifik.co/v2/ar/politically-exposed-persons GET v2/ar/politically-exposed-persons GET /v2/ar/politically-exposed-persons | [Argentina — Politically Exposed Persons (PEP / UIF Res. 35/2023)](/background-check/argentina-politically-exposed-persons) |
 | `v2/ar/rto` | v2 ar rto ar/rto /ar/rto api/ar/rto /api/ar/rto api ar rto api.verifik.co/v2/ar/rto https://api.verifik.co/v2/ar/rto GET v2/ar/rto GET /v2/ar/rto | [Argentina RTO](/vehicle-validation/argentina/rto) |
 | `v2/ar/vehicle` | v2 ar vehicle ar/vehicle /ar/vehicle api/ar/vehicle /api/ar/vehicle api ar vehicle api.verifik.co/v2/ar/vehicle https://api.verifik.co/v2/ar/vehicle GET v2/ar/vehicle GET /v2/ar/vehicle | [Argentina - Vehicle Information](/vehicle-validation/argentina) |
 
@@ -3454,6 +3528,8 @@ _Last regenerated: 2026-11-05T00:44:16.389Z_
 | `v2/cl/company` | v2 cl company cl/company /cl/company api/cl/company /api/cl/company api cl company api.verifik.co/v2/cl/company https://api.verifik.co/v2/cl/company GET v2/cl/company GET /v2/cl/company | [\U0001F1E8\U0001F1F1 Chile - Business Validation](/business-validation/chilean) |
 | `v2/cl/driver-license` | v2 cl driver-license cl/driver-license /cl/driver-license api/cl/driver-license /api/cl/driver-license api cl driver-license api.verifik.co/v2/cl/driver-license https://api.verifik.co/v2/cl/driver-license GET v2/cl/driver-license GET /v2/cl/driver-license | [\U0001F1E8\U0001F1F1 Chile - Driver License](/driver-validation/chile-driver-license) |
 | `v2/cl/driver-license/block` | v2 cl driver-license block cl/driver-license/block /cl/driver-license/block api/cl/driver-license/block /api/cl/driver-license/block api cl driver-license block driver-license/block /driver-license/block api.verifik.co/v2/cl/driver-license/block https://api.verifik.co/v2/cl/driver-license/block GET v2/cl/driver-license/block GET /v2/cl/driver-license/block | [🇨🇱 Chile - Driver License Block Register](/driver-validation/chile-driver-license-block) |
+| `v2/cl/health-worker` | v2 cl health-worker cl/health-worker /cl/health-worker api/cl/health-worker /api/cl/health-worker api cl health-worker api.verifik.co/v2/cl/health-worker https://api.verifik.co/v2/cl/health-worker GET v2/cl/health-worker GET /v2/cl/health-worker | [Chile — Health Worker & Medical Professional Verification (SIS / RNPI)](/identity/chile-health-worker) |
+| `v2/cl/politically-exposed-persons` | v2 cl politically-exposed-persons cl/politically-exposed-persons /cl/politically-exposed-persons api/cl/politically-exposed-persons /api/cl/politically-exposed-persons api cl politically-exposed-persons api.verifik.co/v2/cl/politically-exposed-persons https://api.verifik.co/v2/cl/politically-exposed-persons GET v2/cl/politically-exposed-persons GET /v2/cl/politically-exposed-persons | [Chile — Politically Exposed Persons (PEP / Ley 19.913 & UAF)](/background-check/chile-politically-exposed-persons) |
 | `v2/cl/registro-civil/certificado` | v2 cl registro-civil certificado cl/registro-civil/certificado /cl/registro-civil/certificado api/cl/registro-civil/certificado /api/cl/registro-civil/certificado api cl registro-civil certificado registro-civil/certificado /registro-civil/certificado api.verifik.co/v2/cl/registro-civil/certificado https://api.verifik.co/v2/cl/registro-civil/certificado GET v2/cl/registro-civil/certificado GET /v2/cl/registro-civil/certificado | [Chile - Civil Registry Certificate Verification](/background-check/chile-certificate-verify) |
 | `v2/cl/taxpayer` | v2 cl taxpayer cl/taxpayer /cl/taxpayer api/cl/taxpayer /api/cl/taxpayer api cl taxpayer api.verifik.co/v2/cl/taxpayer https://api.verifik.co/v2/cl/taxpayer GET v2/cl/taxpayer GET /v2/cl/taxpayer | [Chile — Taxpayer (RUT) lookup](/identity/chile-taxpayer) |
 | `v2/cl/transport-vehicle` | v2 cl transport-vehicle cl/transport-vehicle /cl/transport-vehicle api/cl/transport-vehicle /api/cl/transport-vehicle api cl transport-vehicle api.verifik.co/v2/cl/transport-vehicle https://api.verifik.co/v2/cl/transport-vehicle GET v2/cl/transport-vehicle GET /v2/cl/transport-vehicle | [\U0001F1E8\U0001F1F1 Chile - Public Transport Vehicle](/vehicle-validation/chile/transport-vehicle) |
@@ -3614,6 +3690,8 @@ _Last regenerated: 2026-11-05T00:44:16.389Z_
 | --- | --- | --- |
 | `v2/pa/cedula` | v2 pa cedula pa/cedula /pa/cedula api/pa/cedula /api/pa/cedula api pa cedula api.verifik.co/v2/pa/cedula https://api.verifik.co/v2/pa/cedula GET v2/pa/cedula GET /v2/pa/cedula | [Panamanian Citizen](/identity/panama) |
 | `v2/pa/company` | v2 pa company pa/company /pa/company api/pa/company /api/pa/company api pa company api.verifik.co/v2/pa/company https://api.verifik.co/v2/pa/company GET v2/pa/company GET /v2/pa/company | [Panamanian Business Verification](/business-validation/panama) |
+| `v2/pa/health-worker` | v2 pa health-worker pa/health-worker /pa/health-worker api/pa/health-worker /api/pa/health-worker api pa health-worker api.verifik.co/v2/pa/health-worker https://api.verifik.co/v2/pa/health-worker GET v2/pa/health-worker GET /v2/pa/health-worker | [Panama — Health Worker & Medical Professional Verification (MINSA / Consejo Técnico de Salud)](/identity/panama-health-worker) |
+| `v2/pa/politically-exposed-persons` | v2 pa politically-exposed-persons pa/politically-exposed-persons /pa/politically-exposed-persons api/pa/politically-exposed-persons /api/pa/politically-exposed-persons api pa politically-exposed-persons api.verifik.co/v2/pa/politically-exposed-persons https://api.verifik.co/v2/pa/politically-exposed-persons GET v2/pa/politically-exposed-persons GET /v2/pa/politically-exposed-persons | [Panama — Politically Exposed Persons (PEP / Ley 23 de 2015 & SBP 10-2015)](/background-check/panama-politically-exposed-persons) |
 
 ## Peru
 

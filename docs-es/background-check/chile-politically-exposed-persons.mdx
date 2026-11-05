@@ -1,0 +1,198 @@
+---
+id: chile-politically-exposed-persons
+title: Chile — Consulta de Personas Expuestas Políticamente (PEP / Ley 19.913 y UAF)
+description: Consulta de Personas Expuestas Políticamente (PEP) en Chile conforme a la Ley N° 19.913, Circular UAF N° 49/2012 y registros de altos funcionarios públicos con período de carencia de 2 años por RUT o nombre completo.
+slug: /background-check/chile-politically-exposed-persons
+keywords:
+  - v2/cl/politically-exposed-persons
+  - /v2/cl/politically-exposed-persons
+  - pep chile
+  - chile pep
+  - personas expuestas politicamente chile
+  - ley 19913 chile
+  - circular uaf 49
+  - aml chile
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Chile — Consulta de Personas Expuestas Políticamente (PEP / Ley 19.913 y UAF)
+
+Permite consultar y verificar si un ciudadano o residente chileno ostenta la condición de **Persona Expuesta Políticamente (PEP)** por **RUT (`documentNumber` o `rut`)** o por **Nombre Completo (`fullName`)** conforme al marco legal chileno de prevención del lavado de activos y financiamiento del terrorismo:
+
+- **Ley N° 19.913** (*Crea la Unidad de Análisis Financiero y regula el sistema antilavado de activos*)
+- **Circular UAF N° 49/2012** (Instrucciones para la debida diligencia de Personas Expuestas Políticamente)
+- Período legal de carencia de **2 años posteriores a la dejación del cargo público** (*ex-PEP*).
+
+---
+
+## Referencia de API
+
+### Punto de acceso
+
+```http
+GET https://api.verifik.co/v2/cl/politically-exposed-persons
+```
+
+### Encabezados
+
+| Nombre | Valor |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Obligatorio | Descripción |
+| :--- | :--- | :--- | :--- |
+| `rut` | string | Condicional | RUT chileno (ej. `16152235-6` o `7012456-8`). Obligatorio si se omite `fullName`. |
+| `documentNumber` | string | Condicional | Sinónimo de `rut`. |
+| `documentType` | string | No | Tipo de documento: `RUT` (predeterminado). |
+| `fullName` | string | Condicional | Nombre completo de la persona a consultar. Obligatorio si se omite el RUT. |
+| `includeFormer` | boolean | No | Incluye ex-funcionarios dentro de la ventana de 2 años tras cesar en el cargo. Predeterminado: `true`. |
+| `force` | boolean | No | Omite el caché reciente y fuerza una consulta en tiempo real. |
+
+---
+
+### Solicitud
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/cl/politically-exposed-persons",
+  params: {
+    documentNumber: "16152235-6",
+    includeFormer: true
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer SU_TOKEN_AQUI"
+  }
+};
+
+const response = await axios.request(options);
+console.log(response.data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/cl/politically-exposed-persons"
+params = {
+    "documentNumber": "16152235-6",
+    "includeFormer": "true"
+}
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer SU_TOKEN_AQUI"
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200-pep" label="200 (Coincidencia PEP)">
+
+```json
+{
+  "data": {
+    "documentType": "RUT",
+    "documentNumber": "16152235-6",
+    "fullName": "GABRIEL BORIC FONT",
+    "isPep": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "categories": [
+      "PODER EJECUTIVO - PRESIDENCIA Y MINISTERIOS"
+    ],
+    "matches": [
+      {
+        "fullName": "GABRIEL BORIC FONT",
+        "documentNumber": "16152235-6",
+        "entity": "PRESIDENCIA DE LA REPÚBLICA DE CHILE",
+        "position": "PRESIDENTE DE LA REPÚBLICA",
+        "category": "PODER EJECUTIVO - PRESIDENCIA Y MINISTERIOS",
+        "isActive": true,
+        "isFormer": false,
+        "source": "Gobierno de Chile / Presidencia de la República"
+      }
+    ],
+    "regulation": {
+      "framework": "Ley N° 19.913 / Circular UAF N° 49/2012",
+      "lookbackYears": 2,
+      "authority": "Unidad de Análisis Financiero (UAF Chile)"
+    },
+    "valid": true
+  },
+  "signature": {
+    "dateTime": "November 4, 2026 8:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Sin Coincidencias / No PEP)">
+
+```json
+{
+  "data": {
+    "documentType": "RUT",
+    "documentNumber": "18945612-3",
+    "fullName": "CAMILA ANDREA SILVA SOTO",
+    "isPep": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "categories": [],
+    "matches": [],
+    "regulation": {
+      "framework": "Ley N° 19.913 / Circular UAF N° 49/2012",
+      "lookbackYears": 2,
+      "authority": "Unidad de Análisis Financiero (UAF Chile)"
+    },
+    "valid": true
+  },
+  "signature": {
+    "dateTime": "November 4, 2026 8:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Falta rut (documentNumber) o fullName."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Herramienta de cumplimiento para bancos, corredoras de bolsa, fintechs y sujetos obligados ante la UAF Chile.
+- Si `includeFormer=true`, los ex-funcionarios dentro de la ventana de 2 años se retornan con `isFormerPep: true` e `isPep: true`.
+- En modo Sandbox, los identificadores de prueba incluyen `16152235-6` (Poder Ejecutivo), `7012456-8` (Ministro de Hacienda) y `18945612-3` (Sin registros PEP).

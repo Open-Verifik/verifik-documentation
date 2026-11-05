@@ -1,0 +1,198 @@
+---
+id: argentina-politically-exposed-persons
+title: Argentina — Politically Exposed Persons (PEP / UIF Res. 35/2023)
+description: Screen Argentine citizens (DNI, CUIT, CUIL) and full names against official PEP registries under UIF Resolution 35/2023, Decreto 823/2021, and the National Public Administration with 2-year post-mandate lookback.
+slug: /background-check/argentina-politically-exposed-persons
+keywords:
+  - v2/ar/politically-exposed-persons
+  - /v2/ar/politically-exposed-persons
+  - argentina pep
+  - pep argentina
+  - uif argentina
+  - uif resolucion 35 2023
+  - personas expuestas politicamente argentina
+  - aml argentina
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Argentina — Politically Exposed Persons (PEP / UIF Res. 35/2023)
+
+Screen Argentine citizens by **DNI, CUIT, or CUIL (`documentNumber`)** or **Full Legal Name (`fullName`)** against consolidated official registries of Politically Exposed Persons (PEP) for anti-money laundering and terrorism financing prevention (AML/CFT) under:
+
+- **Resolución UIF N° 35/2023** (*Nómina de Personas Expuestas Políticamente de la Unidad de Información Financiera*)
+- **Decreto N° 823/2021** (Régimen de Integridad y Transparencia de la Administración Pública Nacional)
+- Mandatory **2-year post-mandate lookback window** (*período de carencia* following cessation of public duties).
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/ar/politically-exposed-persons
+```
+
+### Headers
+
+| Name | Value |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | Conditional | Argentine DNI, CUIT, or CUIL (e.g. `12063372` or `22195694`). Required if `fullName` is omitted. |
+| `dni` | string | Conditional | Alias for `documentNumber`. |
+| `documentType` | string | No | Document type: `DNI` (default), `CUIT`, or `CUIL`. |
+| `fullName` | string | Conditional | Full legal name of the individual to screen. Required if document number is omitted. |
+| `includeFormer` | boolean | No | Include former PEPs (*ex-PEP*) within the 2-year statutory lookback window. Defaults to `true`. |
+| `force` | boolean | No | Bypass recent lookup cache and force fresh screening. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/ar/politically-exposed-persons",
+  params: {
+    documentNumber: "12063372",
+    includeFormer: true
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer YOUR_API_TOKEN"
+  }
+};
+
+const response = await axios.request(options);
+console.log(response.data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ar/politically-exposed-persons"
+params = {
+    "documentNumber": "12063372",
+    "includeFormer": "true"
+}
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer YOUR_API_TOKEN"
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200-pep" label="200 (PEP Match)">
+
+```json
+{
+  "data": {
+    "documentType": "DNI",
+    "documentNumber": "12063372",
+    "fullName": "JAVIER GERARDO MILEI",
+    "isPep": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "categories": [
+      "PODER EJECUTIVO NACIONAL - PRESIDENCIA Y MINISTERIOS"
+    ],
+    "matches": [
+      {
+        "fullName": "JAVIER GERARDO MILEI",
+        "documentNumber": "12063372",
+        "entity": "PRESIDENCIA DE LA NACIÓN ARGENTINA",
+        "position": "PRESIDENTE DE LA NACIÓN",
+        "category": "PODER EJECUTIVO NACIONAL - PRESIDENCIA Y MINISTERIOS",
+        "isActive": true,
+        "isFormer": false,
+        "source": "Gobierno de la República Argentina / Presidencia"
+      }
+    ],
+    "regulation": {
+      "framework": "Resolución UIF N° 35/2023 / Decreto N° 823/2021",
+      "lookbackYears": 2,
+      "authority": "Unidad de Información Financiera (UIF Argentina)"
+    },
+    "valid": true
+  },
+  "signature": {
+    "dateTime": "November 4, 2026 8:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Clean / Non-PEP)">
+
+```json
+{
+  "data": {
+    "documentType": "DNI",
+    "documentNumber": "35123456",
+    "fullName": "MARTIN FEDERICO SANCHEZ",
+    "isPep": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "categories": [],
+    "matches": [],
+    "regulation": {
+      "framework": "Resolución UIF N° 35/2023 / Decreto N° 823/2021",
+      "lookbackYears": 2,
+      "authority": "Unidad de Información Financiera (UIF Argentina)"
+    },
+    "valid": true
+  },
+  "signature": {
+    "dateTime": "November 4, 2026 8:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing Parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber (DNI/CUIT) or fullName."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- Regulatory screening for financial institutions, fintechs, exchange houses, insurance companies, and entities supervised by UIF Argentina.
+- When `includeFormer=true`, former public officials within the 2-year statutory lookback window are returned with `isFormerPep: true` and `isPep: true`.
+- In sandbox mode, test DNIs include `12063372` (President of Argentina), `22195694` (Minister of Economy), and `35123456` (Clean / Non-PEP).

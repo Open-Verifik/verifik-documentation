@@ -129,6 +129,7 @@ const sidebars = {
 			items: [
 				{ type: "doc", id: "identity/argentina", label: "🇦🇷 Argentina", key: "identity-argentina" },
 				{ type: "doc", id: "identity/argentina-extra", label: "🇦🇷 Argentina - Extra" },
+				{ type: "doc", id: "identity/argentina-health-worker", label: "🇦🇷 Argentina — Profesional de la Salud (SISA)" },
 				{ type: "doc", id: "identity/bolivia", label: "🇧🇴 Bolivia", key: "identity-bolivia" },
 				{ type: "doc", id: "identity/brazil", label: "🇧🇷 Brasil", key: "identity-brazil" },
 				{ type: "doc", id: "identity/brazil-medical-professional", label: "🇧🇷 Brasil — Profesional Médico (CRM)" },
@@ -136,6 +137,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/chile", label: "🇨🇱 Chile", key: "identity-chile" },
 				{ type: "doc", id: "identity/chile-taxpayer", label: "🇨🇱 Chile — Contribuyente (RUT)", key: "identity-chile-taxpayer" },
 				{ type: "doc", id: "identity/chile-validate-documents", label: "🇨🇱 Chile — Validación de documento", key: "identity-chile-validate-documents" },
+				{ type: "doc", id: "identity/chile-health-worker", label: "🇨🇱 Chile — Profesional de la Salud (RNPI)" },
 				{ type: "doc", id: "identity/colombia", label: "🇨🇴 Ciudadano Colombiano" },
 				{
 					type: "doc",
@@ -184,6 +186,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/mexico-health-worker", label: "🇲🇽 México — Profesionista de salud" },
 				{ type: "doc", id: "identity/mexico-siged-certificado", label: "🇲🇽 México — Certificado de estudios (folio)" },
 				{ type: "doc", id: "identity/panama", label: "🇵🇦 Panamá", key: "identity-panama" },
+				{ type: "doc", id: "identity/panama-health-worker", label: "🇵🇦 Panamá — Profesional de la Salud (MINSA)" },
 				{ type: "doc", id: "identity/paraguay", label: "🇵🇾 Paraguay", key: "identity-paraguay" },
 				{ type: "doc", id: "identity/peru", label: "🇵🇪 Perú", key: "identity-peru" },
 				{ type: "doc", id: "identity/peru-foreigner-id", label: "🇵🇪 Perú - Cédula de Extranjero" },
@@ -793,6 +796,21 @@ const sidebars = {
 					type: "doc",
 					id: "background-check/brazil-politically-exposed-persons",
 					label: "🇧🇷 Brasil - Personas Expuestas Políticamente (PEP / COAF)",
+				},
+				{
+					type: "doc",
+					id: "background-check/chile-politically-exposed-persons",
+					label: "🇨🇱 Chile - Personas Expuestas Políticamente (PEP / UAF)",
+				},
+				{
+					type: "doc",
+					id: "background-check/argentina-politically-exposed-persons",
+					label: "🇦🇷 Argentina - Personas Expuestas Políticamente (PEP / UIF)",
+				},
+				{
+					type: "doc",
+					id: "background-check/panama-politically-exposed-persons",
+					label: "🇵🇦 Panamá - Personas Expuestas Políticamente (PEP / SBP)",
 				},
 				{
 					type: "doc",

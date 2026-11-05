@@ -1,0 +1,182 @@
+---
+id: argentina-health-worker
+title: Argentina — Verificación de Profesionales de la Salud y Médicos (SISA / REFEPS)
+description: Valida médicos, odontólogos, psicólogos, enfermeros y profesionales de la salud en Argentina en jurisdicciones nacionales y provinciales a través del Registro Federal de Profesionales de la Salud (REFEPS / SISA / Ministerio de Salud).
+slug: /identity/argentina-health-worker
+keywords:
+  - v2/ar/health-worker
+  - /v2/ar/health-worker
+  - v2/ar/cedula/medico-profesional
+  - /v2/ar/cedula/medico-profesional
+  - argentina profesionales de la salud
+  - refeps argentina
+  - sisa salud argentina
+  - matricula medica argentina
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Argentina — Verificación de Profesionales de la Salud y Médicos (SISA / REFEPS)
+
+Permite consultar y validar el estado de habilitación profesional y matrículas de médicos, odontólogos, psicólogos, enfermeros y profesionales sanitarios en toda la República Argentina por **DNI (`documentNumber`)** o **Nombre Completo (`fullName`)**, con opción de filtrar por número de **matrícula (`matricula`)**.
+
+La verificación consulta el **Registro Federal de Profesionales de la Salud (REFEPS)** integrado en el **Sistema de Información Sanitaria Argentino (SISA)** del **Ministerio de Salud de la Nación (MSAL)**, certificando matrículas nacionales o provinciales, títulos universitarios, especialidades y vigencia para el ejercicio profesional.
+
+- **Cobertura Federal Consolidada:** Unifica datos de colegios profesionales y ministerios de salud de las 23 provincias y CABA.
+- **Múltiples Disciplinas Sanitarias:** Médicos, cirujanos, odontólogos, psicólogos, farmacéuticos y enfermeros universitarios.
+- **Especialidades Médicas Registradas:** Consulta especialidades clínicas y quirúrgicas certificadas y registradas ante la autoridad sanitaria.
+
+---
+
+## Referencia de API
+
+### Punto de acceso
+
+```http
+GET https://api.verifik.co/v2/ar/health-worker
+```
+
+*(También disponible mediante el alias `https://api.verifik.co/v2/ar/cedula/medico-profesional`)*
+
+### Encabezados
+
+| Nombre | Valor |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Obligatorio | Descripción |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | Condicional | DNI argentino del profesional (ej. `20123456` o `28456789`). Obligatorio si se omite `fullName`. |
+| `documentType` | string | No | Tipo de documento: `DNI` (predeterminado). |
+| `fullName` | string | Condicional | Nombre completo del profesional de salud. Obligatorio si se omite el DNI. |
+| `matricula` | string | No | Número de matrícula provincial o nacional (opcional para acotar búsqueda). |
+| `force` | boolean | No | Omite el caché reciente y fuerza una consulta en tiempo real. |
+
+---
+
+### Solicitud
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/ar/health-worker",
+  params: {
+    documentNumber: "20123456",
+    documentType: "DNI"
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer SU_TOKEN_AQUI"
+  }
+};
+
+const response = await axios.request(options);
+console.log(response.data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ar/health-worker"
+params = {
+    "documentNumber": "20123456",
+    "documentType": "DNI"
+}
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer SU_TOKEN_AQUI"
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+</TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200" label="200 (Éxito)">
+
+```json
+{
+  "data": {
+    "documentType": "DNI",
+    "documentNumber": "20123456",
+    "fullName": "ANDREA GOMEZ",
+    "profession": "MÉDICO",
+    "specialty": "CARDIOLOGÍA",
+    "jurisdiction": "BUENOS AIRES",
+    "licenseNumber": "142857",
+    "isHealthWorker": true,
+    "isActive": true,
+    "totalRegistrations": 1,
+    "registrations": [
+      {
+        "documentNumber": "20123456",
+        "fullName": "ANDREA GOMEZ",
+        "profession": "MÉDICO",
+        "specialty": "CARDIOLOGÍA",
+        "licenseNumber": "142857",
+        "licenseType": "PROVINCIAL",
+        "jurisdiction": "BUENOS AIRES",
+        "status": "HABILITADO",
+        "source": "SISA - Registro Federal de Profesionales de la Salud (REFEPS)"
+      }
+    ],
+    "checkedSources": [
+      "SISA_REFEPS_ARGENTINA",
+      "MINISTERIO_SALUD_ARGENTINA"
+    ],
+    "valid": true
+  },
+  "signature": {
+    "dateTime": "November 4, 2026 8:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (No Encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "No se encontró registro del profesional de salud con los datos proporcionados."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Faltan Parámetros)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Se requiere documentNumber (DNI) o fullName."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Envíe `documentNumber` (DNI) o `fullName` en cada consulta.
+- Se puede especificar opcionalmente `matricula` para validar o filtrar la matrícula profesional concreta.
+- En modo Sandbox, los identificadores de prueba incluyen `20123456` (Médico - Cardiología) y `28456789` (Médico - Pediatría).
