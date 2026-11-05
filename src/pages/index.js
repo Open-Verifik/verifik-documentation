@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import styles from "./index.module.css";
 
 /**
@@ -13,6 +14,9 @@ import styles from "./index.module.css";
  *
  * Official CCPA / GDPR / iBeta / HIPAA badge files are not in static/.
  * The trust row is a typographic treatment of those same standards.
+ *
+ * Hero photo is the verifik.co landing image (wp-content/uploads/2026/07/gggggg.webp),
+ * with the mobile crop from cell.webp. The facial-scan mesh is part of that photo.
  */
 
 const OTHER_LOCALES = [
@@ -180,69 +184,11 @@ function TrustMark({ kind }) {
 	);
 }
 
-function HeroVisual() {
-	return (
-		<div className={styles.visual} aria-hidden="true">
-			<div className={styles.visualGlow} />
-			<svg className={styles.mesh} viewBox="0 0 480 560">
-				<defs>
-					<linearGradient id="vkPanel" x1="0" y1="0" x2="1" y2="1">
-						<stop offset="0%" stopColor="#1c2c6b" />
-						<stop offset="48%" stopColor="#141c42" />
-						<stop offset="100%" stopColor="#0a1026" />
-					</linearGradient>
-					<radialGradient id="vkFace" cx="50%" cy="40%" r="58%">
-						<stop offset="0%" stopColor="#9aafff" stopOpacity="0.42" />
-						<stop offset="62%" stopColor="#3a5afe" stopOpacity="0.08" />
-						<stop offset="100%" stopColor="#3a5afe" stopOpacity="0" />
-					</radialGradient>
-					<clipPath id="vkHead">
-						<path d="M246 104c58 2 104 46 110 112 6 62-16 118-52 156-20 22-40 40-58 48-18-8-38-26-58-48-36-38-58-94-52-156 6-66 52-110 110-112z" />
-					</clipPath>
-				</defs>
-				<rect x="36" y="28" width="408" height="504" rx="36" fill="url(#vkPanel)" stroke="rgba(255,255,255,0.16)" />
-				<ellipse cx="246" cy="250" rx="158" ry="186" fill="url(#vkFace)" />
-				<g clipPath="url(#vkHead)" fill="none" stroke="#d5defa" strokeWidth="1.05" opacity="0.9">
-					<path d="M150 156c32-16 64-24 96-24s64 8 96 24" />
-					<path d="M136 188c36-16 72-24 110-24s74 8 110 24" />
-					<path d="M128 220c40-14 78-20 118-20s78 6 118 20" />
-					<path d="M126 252c42-8 82-12 120-12s78 4 120 12" />
-					<path d="M130 284c40 6 78 10 116 10s76-4 116-10" />
-					<path d="M142 316c36 12 70 18 104 18s68-6 104-18" />
-					<path d="M162 346c28 14 54 20 84 20s56-6 84-20" />
-					<path d="M186 374c20 12 40 16 60 16s40-4 60-16" />
-					<path d="M168 132c18 78 22 160 8 236" />
-					<path d="M198 118c12 86 14 172 2 252" />
-					<path d="M226 112c6 90 6 180 0 258" />
-					<path d="M246 110v262" />
-					<path d="M266 112c-6 90-6 180 0 258" />
-					<path d="M294 118c-12 86-14 172-2 252" />
-					<path d="M324 132c-18 78-22 160-8 236" />
-				</g>
-				<path d="M246 104c58 2 104 46 110 112 6 62-16 118-52 156-20 22-40 40-58 48-18-8-38-26-58-48-36-38-58-94-52-156 6-66 52-110 110-112z" fill="none" stroke="#b7c6ff" strokeWidth="1.5" />
-				<path d="M206 228c10-8 22-10 32-4M254 224c10-6 22-4 32 4" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" opacity="0.9" />
-				<path d="M246 236c-2 18-2 32 0 48" fill="none" stroke="#ffffff" strokeWidth="1.35" strokeLinecap="round" opacity="0.7" />
-				<path d="M228 292c6 8 12 12 18 12s12-4 18-12" fill="none" stroke="#ffffff" strokeWidth="1.35" strokeLinecap="round" opacity="0.75" />
-				<circle cx="246" cy="252" r="172" fill="none" stroke="rgba(90,120,255,0.4)" strokeWidth="1" strokeDasharray="2 7" />
-				<circle cx="186" cy="220" r="2.2" fill="#9eb0ff" />
-				<circle cx="306" cy="220" r="2.2" fill="#9eb0ff" />
-				<circle cx="246" cy="268" r="2.2" fill="#d6defc" />
-				<circle cx="214" cy="312" r="2" fill="#9eb0ff" />
-				<circle cx="278" cy="312" r="2" fill="#9eb0ff" />
-			</svg>
-			<div className={`${styles.floatCard} ${styles.floatTop}`}>
-				<span className={styles.liveDot} />
-				Liveness confirmed
-			</div>
-			<div className={`${styles.floatCard} ${styles.floatBottom}`}>
-				<span className={styles.matchDot} />
-				ID matched
-			</div>
-		</div>
-	);
-}
-
 export default function Home() {
+	const heroDesktop = useBaseUrl("/img/home/hero-1920.webp");
+	const heroDesktopSmall = useBaseUrl("/img/home/hero-1280.webp");
+	const heroMobile = useBaseUrl("/img/home/hero-mobile.webp");
+
 	return (
 		<Layout
 			title="API documentation"
@@ -250,9 +196,20 @@ export default function Home() {
 		>
 			<main className={styles.page}>
 				<section className={styles.hero}>
+					<picture className={styles.heroPhoto}>
+						<source media="(max-width: 700px)" srcSet={heroMobile} type="image/webp" />
+						<source srcSet={`${heroDesktopSmall} 1280w, ${heroDesktop} 1920w`} sizes="100vw" type="image/webp" />
+						<img
+							src={heroDesktop}
+							alt="Person in an office holding a phone, with a facial-scan overlay"
+							width={1920}
+							height={992}
+							fetchPriority="high"
+							decoding="async"
+						/>
+					</picture>
 					<div className={styles.wrap}>
-						<div className={styles.heroGrid}>
-							<div className={styles.heroCopy}>
+						<div className={styles.heroCopy}>
 								<p className={styles.eyebrow}>Identity · Biometrics · Business · Vehicles · Background checks</p>
 								<h1 className={styles.title}>
 									<span className={styles.brand}>Verifik</span>
@@ -304,8 +261,6 @@ export default function Home() {
 									</li>
 								</ul>
 							</div>
-							<HeroVisual />
-						</div>
 					</div>
 				</section>
 
