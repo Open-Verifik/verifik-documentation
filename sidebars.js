@@ -171,6 +171,11 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "identity/brazil-medical-professional",
+					label: "🇧🇷 Brazil — Medical Professional (CRM)",
+				},
+				{
+					type: "doc",
 					id: "identity/canada",
 					label: "🇨🇦 Canada",
 					key: "identity-canada",

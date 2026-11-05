@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-11-04T23:43:59.558Z
+Generated: 2026-11-05T00:44:16.337Z
 
-- **Files scanned:** 585
-- **Unique endpoint URLs:** 271
+- **Files scanned:** 586
+- **Unique endpoint URLs:** 272
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 232
 
@@ -13,7 +13,7 @@ Generated: 2026-11-04T23:43:59.558Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 25 | vehicle-validation (other countries) |
-| P2 | 219 | identity, biometrics, resources, etc. |
+| P2 | 220 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -267,6 +267,7 @@ Generated: 2026-11-04T23:43:59.558Z
 | P2 | `v2/br/background-check` | `background-check/brazil.mdx` |
 | P2 | `v2/br/cedula` | `identity/brazil.mdx` |
 | P2 | `v2/br/company` | `business-validation/brazil.mdx` |
+| P2 | `v2/br/medical-professional` | `identity/brazil-medical-professional.mdx` |
 | P2 | `v2/br/politically-exposed-persons` | `background-check/brazil-politically-exposed-persons.mdx` |
 | P1 | `v2/br/vehicle` | `vehicle-validation/brazil.mdx` |
 | P2 | `v2/ca/company` | `business-validation/canada.mdx` |

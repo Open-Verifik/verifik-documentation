@@ -131,6 +131,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/argentina-extra", label: "🇦🇷 Argentina - Extra" },
 				{ type: "doc", id: "identity/bolivia", label: "🇧🇴 Bolivia", key: "identity-bolivia" },
 				{ type: "doc", id: "identity/brazil", label: "🇧🇷 Brasil", key: "identity-brazil" },
+				{ type: "doc", id: "identity/brazil-medical-professional", label: "🇧🇷 Brasil — Profesional Médico (CRM)" },
 				{ type: "doc", id: "identity/canada", label: "🇨🇦 Canadá", key: "identity-canada" },
 				{ type: "doc", id: "identity/chile", label: "🇨🇱 Chile", key: "identity-chile" },
 				{ type: "doc", id: "identity/chile-taxpayer", label: "🇨🇱 Chile — Contribuyente (RUT)", key: "identity-chile-taxpayer" },

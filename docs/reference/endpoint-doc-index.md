@@ -525,6 +525,18 @@ keywords:
   - "https://api.verifik.co/v2/br/company"
   - "GET v2/br/company"
   - "GET /v2/br/company"
+  - "v2/br/medical-professional"
+  - "/v2/br/medical-professional"
+  - "v2 br medical-professional"
+  - "br/medical-professional"
+  - "/br/medical-professional"
+  - "api/br/medical-professional"
+  - "/api/br/medical-professional"
+  - "api br medical-professional"
+  - "api.verifik.co/v2/br/medical-professional"
+  - "https://api.verifik.co/v2/br/medical-professional"
+  - "GET v2/br/medical-professional"
+  - "GET /v2/br/medical-professional"
   - "v2/br/politically-exposed-persons"
   - "/v2/br/politically-exposed-persons"
   - "v2 br politically-exposed-persons"
@@ -3393,12 +3405,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (271 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (272 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-11-04T23:43:59.611Z_
+_Last regenerated: 2026-11-05T00:44:16.389Z_
 
 ## Argentina
 
@@ -3430,6 +3442,7 @@ _Last regenerated: 2026-11-04T23:43:59.611Z_
 | `v2/br/background-check` | v2 br background-check br/background-check /br/background-check api/br/background-check /api/br/background-check api br background-check api.verifik.co/v2/br/background-check https://api.verifik.co/v2/br/background-check GET v2/br/background-check GET /v2/br/background-check | [Background Check (CPF)](/background-check/brazil) |
 | `v2/br/cedula` | v2 br cedula br/cedula /br/cedula api/br/cedula /api/br/cedula api br cedula api.verifik.co/v2/br/cedula https://api.verifik.co/v2/br/cedula GET v2/br/cedula GET /v2/br/cedula | [Brazilian Citizen](/identity/brazil) |
 | `v2/br/company` | v2 br company br/company /br/company api/br/company /api/br/company api br company api.verifik.co/v2/br/company https://api.verifik.co/v2/br/company GET v2/br/company GET /v2/br/company | [Business Verification (CNPJ)](/business-validation/brazil) |
+| `v2/br/medical-professional` | v2 br medical-professional br/medical-professional /br/medical-professional api/br/medical-professional /api/br/medical-professional api br medical-professional api.verifik.co/v2/br/medical-professional https://api.verifik.co/v2/br/medical-professional GET v2/br/medical-professional GET /v2/br/medical-professional | [Brazil — Medical Professional (CRM)](/identity/brazil-medical-professional) |
 | `v2/br/politically-exposed-persons` | v2 br politically-exposed-persons br/politically-exposed-persons /br/politically-exposed-persons api/br/politically-exposed-persons /api/br/politically-exposed-persons api br politically-exposed-persons api.verifik.co/v2/br/politically-exposed-persons https://api.verifik.co/v2/br/politically-exposed-persons GET v2/br/politically-exposed-persons GET /v2/br/politically-exposed-persons | [Brazil — Politically Exposed Persons (PEP / COAF Resolução 40/2021)](/background-check/brazil-politically-exposed-persons) |
 | `v2/br/vehicle` | v2 br vehicle br/vehicle /br/vehicle api/br/vehicle /api/br/vehicle api br vehicle api.verifik.co/v2/br/vehicle https://api.verifik.co/v2/br/vehicle GET v2/br/vehicle GET /v2/br/vehicle | [Vehicle Information](/vehicle-validation/brazil) |
 
