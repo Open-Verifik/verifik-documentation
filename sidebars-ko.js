@@ -195,7 +195,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 페루 — 차량", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 페루 — 차량(번호판)" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 페루 — 차량(번호판 v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 페루 — SOAT 보험" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 페루 — SETARE 아레키파 허가" },
 					],
 				},
 			],
@@ -382,7 +384,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 페루 — 차량", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 페루 — 차량(번호판)" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 페루 — 차량(번호판 v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 페루 — SOAT 보험" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 페루 — SETARE 아레키파 허가" },
 					],
 				},
 			],
@@ -561,7 +565,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 페루 — 차량", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 페루 — 차량(번호판)" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 페루 — 차량(번호판 v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 페루 — SOAT 보험" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 페루 — SETARE 아레키파 허가" },
 					],
 				},
 			],

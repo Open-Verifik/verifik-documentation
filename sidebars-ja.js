@@ -199,7 +199,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 ペルー — 車両", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 ペルー — 車両（ナンバー）" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 ペルー — 車両（ナンバー v3）" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 ペルー — SOAT保険" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 ペルー — SETARE アレキパ許可" },
 					],
 				},
 				{
@@ -399,7 +401,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 ペルー — 車両", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 ペルー — 車両（ナンバー）" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 ペルー — 車両（ナンバー v3）" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 ペルー — SOAT保険" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 ペルー — SETARE アレキパ許可" },
 					],
 				},
 				{
@@ -591,7 +595,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 ペルー — 車両", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 ペルー — 車両（ナンバー）" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 ペルー — 車両（ナンバー v3）" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 ペルー — SOAT保険" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 ペルー — SETARE アレキパ許可" },
 					],
 				},
 				{

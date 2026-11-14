@@ -1,0 +1,139 @@
+---
+id: peru-vehicle-v3
+title: 秘鲁 — 车辆信息 (v3)
+description: "通过 GET /v3/pe/vehiculo/placa 按车牌查询秘鲁车辆详情，并在可用时返回尺寸等技术规格数据。"
+slug: /vehicle-validation/peru/vehicle-v3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 秘鲁 — 车辆信息 (v3)
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v3/pe/vehiculo/placa
+```
+
+秘鲁车辆信息 v3 服务按车牌号（**`plate`**）返回登记车辆详情，并在可用时返回 `technicalSheet`（`engine`、`performance` 以及包含车长、车宽、车高、轴距、整备质量、油箱容积、车门数与座位数在内的 `dimensions`）。
+
+### 请求头（Headers）
+
+| 名称          | 值                 |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### 参数（Parameters）
+
+| 名称    | 类型   | 必填   | 描述                                       | 示例     |
+| ------- | ------ | ------ | ------------------------------------------ | -------- |
+| `plate` | string | **是** | 要查询的车牌号，不含空格或句点。           | `ABC123` |
+
+### 请求（Request）
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const { data } = await axios.get('https://api.verifik.co/v3/pe/vehiculo/placa', {
+  params: { plate: 'ABC123' },
+  headers: { Accept: 'application/json', Authorization: 'Bearer <您的令牌>' },
+});
+console.log(data);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+headers = {"Accept": "application/json", "Authorization": "Bearer <您的令牌>"}
+conn.request("GET", "/v3/pe/vehiculo/placa?plate=ABC123", headers=headers)
+print(conn.getresponse().read().decode("utf-8"))
+```
+
+</TabItem>
+</Tabs>
+
+### 响应（Response）
+
+<Tabs>
+<TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "brand": "TOYOTA",
+    "chasisSerial": "CH000001",
+    "color": "PLATA METALICO",
+    "engineSerial": "EN000001",
+    "model": "COROLLA XLI",
+    "office": "LIMA",
+    "owners": ["SANDBOX OWNER"],
+    "plate": "ABC10001",
+    "serial": "CH000001",
+    "status": "EN CIRCULACION",
+    "technicalSheet": {
+      "engine": {
+        "engineDescription": "1.5L",
+        "fuel": "GASOLINA",
+        "powerHp": "105"
+      },
+      "performance": {
+        "cityConsumption": "12 km/L",
+        "highwayConsumption": "15 km/L"
+      },
+      "dimensions": {
+        "length": "4630 mm",
+        "width": "1780 mm",
+        "height": "1435 mm",
+        "wheelbase": "2700 mm",
+        "curbWeight": "1280 kg",
+        "fuelTank": "50 l",
+        "doors": "4",
+        "occupants": "5"
+      }
+    },
+    "vin": "CH000001",
+    "year": "2022"
+  },
+  "signature": {
+    "dateTime": "November 13, 2026 5:43 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing plate\n"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 说明
+
+- 当无匹配技术规格数据时，`technicalSheet`（包含 `dimensions` 中的 `length`、`width`、`height`、`wheelbase`、`curbWeight`、`fuelTank`、`doors`、`occupants`）可能为 `null` 或部分填充。
+- 在**沙盒模式**下，`ABC10001`–`ABC10010` 返回稳定的演示车辆档案。

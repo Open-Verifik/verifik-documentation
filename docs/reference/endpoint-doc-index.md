@@ -2946,6 +2946,20 @@ keywords:
   - "https://api.verifik.co/v2/pe/vehiculo/placa"
   - "GET v2/pe/vehiculo/placa"
   - "GET /v2/pe/vehiculo/placa"
+  - "v2/pe/vehiculo/setare-arequipa"
+  - "/v2/pe/vehiculo/setare-arequipa"
+  - "v2 pe vehiculo setare-arequipa"
+  - "pe/vehiculo/setare-arequipa"
+  - "/pe/vehiculo/setare-arequipa"
+  - "api/pe/vehiculo/setare-arequipa"
+  - "/api/pe/vehiculo/setare-arequipa"
+  - "api pe vehiculo setare-arequipa"
+  - "vehiculo/setare-arequipa"
+  - "/vehiculo/setare-arequipa"
+  - "api.verifik.co/v2/pe/vehiculo/setare-arequipa"
+  - "https://api.verifik.co/v2/pe/vehiculo/setare-arequipa"
+  - "GET v2/pe/vehiculo/setare-arequipa"
+  - "GET /v2/pe/vehiculo/setare-arequipa"
   - "v2/pe/vehiculo/soat"
   - "/v2/pe/vehiculo/soat"
   - "v2 pe vehiculo soat"
@@ -3442,6 +3456,13 @@ keywords:
   - "https://api.verifik.co/v3/pe/company"
   - "GET v3/pe/company"
   - "GET /v3/pe/company"
+  - "v3/pe/vehiculo/placa"
+  - "/v3/pe/vehiculo/placa"
+  - "v3 pe vehiculo placa"
+  - "api.verifik.co/v3/pe/vehiculo/placa"
+  - "https://api.verifik.co/v3/pe/vehiculo/placa"
+  - "GET v3/pe/vehiculo/placa"
+  - "GET /v3/pe/vehiculo/placa"
   - "v3/project-flows/{id}"
   - "/v3/project-flows/{id}"
   - "v3/project-flows"
@@ -3477,12 +3498,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (278 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (280 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-11-05T03:56:23.989Z_
+_Last regenerated: 2026-11-14T03:40:34.994Z_
 
 ## Argentina
 
@@ -3701,6 +3722,7 @@ _Last regenerated: 2026-11-05T03:56:23.989Z_
 | `v2/pe/foreigner-id/ce` | v2 pe foreigner-id ce pe/foreigner-id/ce /pe/foreigner-id/ce api/pe/foreigner-id/ce /api/pe/foreigner-id/ce api pe foreigner-id ce foreigner-id/ce /foreigner-id/ce api.verifik.co/v2/pe/foreigner-id/ce https://api.verifik.co/v2/pe/foreigner-id/ce GET v2/pe/foreigner-id/ce GET /v2/pe/foreigner-id/ce | [\U0001F1F5\U0001F1EA Peru - Foreigner Resident](/identity-validation/peru/peruvian-foreigner-resident) |
 | `v2/pe/politically-exposed-persons` | v2 pe politically-exposed-persons pe/politically-exposed-persons /pe/politically-exposed-persons api/pe/politically-exposed-persons /api/pe/politically-exposed-persons api pe politically-exposed-persons api.verifik.co/v2/pe/politically-exposed-persons https://api.verifik.co/v2/pe/politically-exposed-persons GET v2/pe/politically-exposed-persons GET /v2/pe/politically-exposed-persons | [Peru — Politically Exposed Persons (PEP / SBS 2660-2015 & 4349-2016)](/background-check/peru-politically-exposed-persons) |
 | `v2/pe/vehiculo/placa` | v2 pe vehiculo placa pe/vehiculo/placa /pe/vehiculo/placa api/pe/vehiculo/placa /api/pe/vehiculo/placa api pe vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/pe/vehiculo/placa https://api.verifik.co/v2/pe/vehiculo/placa GET v2/pe/vehiculo/placa GET /v2/pe/vehiculo/placa | [Peru - Vehicle Information](/vehicle-validation/peru/peruvian-vehicle) |
+| `v2/pe/vehiculo/setare-arequipa` | v2 pe vehiculo setare-arequipa pe/vehiculo/setare-arequipa /pe/vehiculo/setare-arequipa api/pe/vehiculo/setare-arequipa /api/pe/vehiculo/setare-arequipa api pe vehiculo setare-arequipa vehiculo/setare-arequipa /vehiculo/setare-arequipa api.verifik.co/v2/pe/vehiculo/setare-arequipa https://api.verifik.co/v2/pe/vehiculo/setare-arequipa GET v2/pe/vehiculo/setare-arequipa GET /v2/pe/vehiculo/setare-arequipa | [Peru - SETARE Arequipa Taxi Permit](/vehicle-validation/peru/setare-arequipa) |
 | `v2/pe/vehiculo/soat` | v2 pe vehiculo soat pe/vehiculo/soat /pe/vehiculo/soat api/pe/vehiculo/soat /api/pe/vehiculo/soat api pe vehiculo soat vehiculo/soat /vehiculo/soat api.verifik.co/v2/pe/vehiculo/soat https://api.verifik.co/v2/pe/vehiculo/soat GET v2/pe/vehiculo/soat GET /v2/pe/vehiculo/soat | [Peru - Vehicle Insurance](/vehicle-validation/peru/peruvian-vehicle-insurance) |
 
 ## Paraguay
@@ -4088,6 +4110,7 @@ _Last regenerated: 2026-11-05T03:56:23.989Z_
 | `v3/pe/cedula` | v3 pe cedula pe/cedula /pe/cedula api/pe/cedula /api/pe/cedula api pe cedula api.verifik.co/v3/pe/cedula https://api.verifik.co/v3/pe/cedula GET v3/pe/cedula GET /v3/pe/cedula | [Peruvian Citizen v3](/identity-validation/peru/peru-citizen) |
 | `v3/pe/cedula/extra` | v3 pe cedula extra pe/cedula/extra /pe/cedula/extra api/pe/cedula/extra /api/pe/cedula/extra api pe cedula extra cedula/extra /cedula/extra api.verifik.co/v3/pe/cedula/extra https://api.verifik.co/v3/pe/cedula/extra GET v3/pe/cedula/extra GET /v3/pe/cedula/extra | [\U0001F1F5\U0001F1EA Peru - V3 Peruvian Citizen](/identity-validation/peru/v3-peruvian-citizen) |
 | `v3/pe/company` | v3 pe company pe/company /pe/company api/pe/company /api/pe/company api pe company api.verifik.co/v3/pe/company https://api.verifik.co/v3/pe/company GET v3/pe/company GET /v3/pe/company | [Peruvian Business Verification](/business-validation/peru) |
+| `v3/pe/vehiculo/placa` | v3 pe vehiculo placa pe/vehiculo/placa /pe/vehiculo/placa api/pe/vehiculo/placa /api/pe/vehiculo/placa api pe vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v3/pe/vehiculo/placa https://api.verifik.co/v3/pe/vehiculo/placa GET v3/pe/vehiculo/placa GET /v3/pe/vehiculo/placa | [Peru - Vehicle Information](/vehicle-validation/peru/vehicle-v3) |
 | `v3/project-flows/{id}` | v3/project-flows /v3/project-flows v3 project-flows project-flows /project-flows api/project-flows /api/project-flows api project-flows | [Delete Project Flow](/resources/project-flows/project-flows-delete) |
 | `v3/projects` | v3 projects projects /projects api/projects /api/projects api projects api.verifik.co/v3/projects https://api.verifik.co/v3/projects GET v3/projects GET /v3/projects | [Create Project](/api/projects/projects-create) |
 | `v3/projects/{id}` | v3/projects /v3/projects v3 projects projects /projects api/projects /api/projects api projects | [Delete Project](/resources/projects/projects-delete) |
