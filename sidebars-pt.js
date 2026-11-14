@@ -198,7 +198,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 Peru — Veículos", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 Peru — Veículo por placa" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 Peru — Veículo por placa (v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 Peru — Seguro SOAT" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 Peru — Permissão SETARE Arequipa" },
 					],
 				},
 				{
@@ -396,7 +398,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 Peru — Veículos", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 Peru — Veículo por placa" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 Peru — Veículo por placa (v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 Peru — Seguro SOAT" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 Peru — Permissão SETARE Arequipa" },
 					],
 				},
 				{
@@ -586,7 +590,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 Peru — Veículos", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 Peru — Veículo por placa" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 Peru — Veículo por placa (v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 Peru — Seguro SOAT" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 Peru — Permissão SETARE Arequipa" },
 					],
 				},
 				{
