@@ -672,8 +672,18 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "validacion-vehiculos/peru/peru-informacion-vehiculo-v3",
+							label: "Información de Vehículo (v3)",
+						},
+						{
+							type: "doc",
 							id: "validacion-vehiculos/peru/peru-seguro-vehiculo",
 							label: "Seguro de Vehículo",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/peru/peru-setare-arequipa",
+							label: "Permiso de Taxi SETARE Arequipa",
 						},
 					],
 				},
