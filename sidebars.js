@@ -880,8 +880,18 @@ const sidebars = {
 						},
 						{
 							type: "doc",
+							id: "vehicle-validation/peru/peru-vehicle-v3",
+							label: "Vehicle Information (v3)",
+						},
+						{
+							type: "doc",
 							id: "vehicle-validation/peru/peru-vehicle-insurance",
 							label: "Vehicle Insurance",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/peru/peru-setare-arequipa",
+							label: "SETARE Arequipa Taxi Permit",
 						},
 					],
 				},

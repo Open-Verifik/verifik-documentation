@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-11-05T03:56:23.938Z
+Generated: 2026-11-14T03:40:34.939Z
 
-- **Files scanned:** 592
-- **Unique endpoint URLs:** 278
+- **Files scanned:** 594
+- **Unique endpoint URLs:** 280
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 232
 
@@ -12,7 +12,7 @@ Generated: 2026-11-05T03:56:23.938Z
 | Priority | Count | Scope |
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
-| P1 | 25 | vehicle-validation (other countries) |
+| P1 | 27 | vehicle-validation (other countries) |
 | P2 | 226 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
@@ -455,6 +455,7 @@ Generated: 2026-11-05T03:56:23.938Z
 | P2 | `v2/pe/foreigner-id/ce` | `identity-validation/peru/peruvian-foreigner-resident.mdx` |
 | P2 | `v2/pe/politically-exposed-persons` | `background-check/peru-politically-exposed-persons.mdx` |
 | P1 | `v2/pe/vehiculo/placa` | `vehicle-validation/peru/peruvian-vehicle.mdx` |
+| P1 | `v2/pe/vehiculo/setare-arequipa` | `vehicle-validation/peru/peru-setare-arequipa.mdx` |
 | P1 | `v2/pe/vehiculo/soat` | `vehicle-validation/peru/peruvian-vehicle-insurance.mdx` |
 | P2 | `v2/phone-validations` | `resources/app-registrations/validate-an-app-registration-phone-validation.mdx` |
 | P2 | `v2/phone-validations/{id}` | `resources/phone-validations/retrieve-a-phone-validation.mdx` |
@@ -497,6 +498,7 @@ Generated: 2026-11-05T03:56:23.938Z
 | P2 | `v3/pe/cedula` | `identity-validation/peru/peru-citizen.mdx` |
 | P2 | `v3/pe/cedula/extra` | `identity-validation/peru/v3-peruvian-citizen.mdx` |
 | P2 | `v3/pe/company` | `business-validation/peru.mdx` |
+| P1 | `v3/pe/vehiculo/placa` | `vehicle-validation/peru/peru-vehicle-v3.mdx` |
 | P2 | `v3/project-flows/{id}` | `resources/project-flows/project-flows-delete.mdx` |
 | P2 | `v3/projects` | `api/projects/projects-create.mdx` |
 | P2 | `v3/projects/{id}` | `resources/projects/projects-delete.mdx` |

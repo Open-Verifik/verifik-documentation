@@ -195,7 +195,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 秘鲁 — 车辆", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 秘鲁 — 车辆（号牌）" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 秘鲁 — 车辆（号牌 v3）" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 秘鲁 — SOAT 保险" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 秘鲁 — 阿雷基帕 SETARE 许可" },
 					],
 				},
 			],
@@ -382,7 +384,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 秘鲁 — 车辆", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 秘鲁 — 车辆（号牌）" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 秘鲁 — 车辆（号牌 v3）" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 秘鲁 — SOAT 保险" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 秘鲁 — 阿雷基帕 SETARE 许可" },
 					],
 				},
 			],
@@ -561,7 +565,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 秘鲁 — 车辆", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 秘鲁 — 车辆（号牌）" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 秘鲁 — 车辆（号牌 v3）" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 秘鲁 — SOAT 保险" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 秘鲁 — 阿雷基帕 SETARE 许可" },
 					],
 				},
 			],

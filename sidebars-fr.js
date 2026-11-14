@@ -197,7 +197,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 Pérou — Véhicules", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 Pérou — Véhicule par plaque" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 Pérou — Véhicule par plaque (v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 Pérou — Assurance SOAT" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 Pérou — Permis taxi SETARE Arequipa" },
 					],
 				},
 			],
@@ -386,7 +388,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 Pérou — Véhicules", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 Pérou — Véhicule par plaque" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 Pérou — Véhicule par plaque (v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 Pérou — Assurance SOAT" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 Pérou — Permis taxi SETARE Arequipa" },
 					],
 				},
 			],
@@ -564,7 +568,9 @@ const sidebars = {
 					items: [
 						{ type: "doc", id: "vehicle-validation/peru", label: "🇵🇪 Pérou — Véhicules", key: "vehicle-peru-overview" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-information", label: "🇵🇪 Pérou — Véhicule par plaque" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 Pérou — Véhicule par plaque (v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 Pérou — Assurance SOAT" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 Pérou — Permis taxi SETARE Arequipa" },
 					],
 				},
 			],
