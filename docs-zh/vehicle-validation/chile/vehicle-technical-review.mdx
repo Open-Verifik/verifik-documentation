@@ -1,14 +1,28 @@
 ---
 id: vehicle-validation-chile-vehicle-technical-review
 title: "🇨🇱 智利 - 车辆技术检验"
-description: "通过 GET /v3/cl/vehicle 按车牌查询智利车辆技术检验状态和历史。"
+description: "通过 GET /v3/cl/vehicle 按车牌查询智利车辆技术检验状态、检验历史，以及在可用时返回的技术规格数据。"
 slug: /vehicle-validation/chile/vehicle-technical-review
 sidebar_label: "🇨🇱 智利 - 车辆技术检验"
+keywords:
+  - v3/cl/vehicle
+  - /v3/cl/vehicle
+  - api.verifik.co/v3/cl/vehicle
+  - GET v3/cl/vehicle
 ---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 # 🇨🇱 智利 - 车辆技术检验
 
-此 endpoint 用于按车牌查询智利车辆的 **技术检验 / 检验历史**。一般车辆登记信息请使用 `v2/cl/vehicle`，SOAP 强制保险证书请使用 `v2/cl/vehicle-soap`。
+当您需要按车牌查询智利车辆的 **技术检验 / 检查** 数据时使用此 endpoint：车辆详情、检验站、证书编号、到期日、检验状态，以及在可用时返回的技术规格字段。
+
+相关智利车辆 endpoint：
+
+- **车辆信息 (`v2/cl/vehicle`)**：一般登记数据，例如品牌、型号、车主 RUT、发动机、底盘、罚单与失窃标记。
+- **车辆技术检验 (`v3/cl/vehicle`)**：技术检验状态、历史，以及在可用时返回的技术规格数据。
+- **车辆 SOAP (`v2/cl/vehicle-soap`)**：按车牌与保单号查询强制人身意外保险证书。
 
 ### Endpoint
 
@@ -16,22 +30,59 @@ sidebar_label: "🇨🇱 智利 - 车辆技术检验"
 GET https://api.verifik.co/v3/cl/vehicle
 ```
 
-### 参数
+返回某车牌的智利技术检验数据，包括车辆属性、检验历史，以及在可用时返回的可选 `technicalSheet`（`engine`、`performance`、`dimensions`）。适用于车队合规、保险、理赔或车辆入驻流程。
 
-| 名称 | 类型 | 必填 | 描述 | 示例 |
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <token>` |
+
+### Parameters
+
+| Name | Type | Required | Description | Example |
 | --- | --- | --- | --- | --- |
-| `plate` | string | **是** | v3 支持的智利车牌格式，例如四个字母加两个数字，或两个字母加四个数字。 | `XH6640` |
+| `plate` | string | **Yes** | v3 支持的智利车牌格式，例如四个字母加两个数字，或两个字母加四个数字。 | `XH6640` |
 
-### 请求示例
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
 
 ```javascript
+import axios from "axios";
+
 const { data } = await axios.get("https://api.verifik.co/v3/cl/vehicle", {
 	params: { plate: "XH6640" },
-	headers: { Accept: "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
+	headers: {
+		Accept: "application/json",
+		Authorization: `Bearer ${process.env.VERIFIK_TOKEN}`,
+	},
 });
+console.log(data);
 ```
 
-### 200 响应
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os, requests
+
+url = "https://api.verifik.co/v3/cl/vehicle"
+headers = {"Accept": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
+params = {"plate": "XH6640"}
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
 
 ```json
 {
@@ -57,17 +108,66 @@ const { data } = await axios.get("https://api.verifik.co/v3/cl/vehicle", {
 				"expirationDate": "2027-01-12",
 				"status": "APROBADA"
 			}
-		]
+		],
+		"technicalSheet": {
+			"engine": {
+				"engineDescription": "1.6L",
+				"fuel": "Petrol (Gasoline)",
+				"powerHp": "110 Hp"
+			},
+			"performance": {
+				"cityConsumption": "8.2 l/100 km",
+				"highwayConsumption": "5.9 l/100 km"
+			},
+			"dimensions": {
+				"doors": "4",
+				"occupants": "5",
+				"length": "4300 mm"
+			}
+		}
+	},
+	"signature": {
+		"dateTime": "June 30, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
 	}
 }
 ```
 
-### 错误
+  </TabItem>
+  <TabItem value="404" label="404">
 
-- `404 NotFound`：未找到记录。
-- `409 Invalid_plate_format`：车牌格式无效。
-- `409 timeout_data_source`：外部数据源不可用或超时。
+```json
+{
+	"code": "NotFound",
+	"message": "Record not found."
+}
+```
+
+  </TabItem>
+  <TabItem value="409-format" label="409 Invalid_plate_format">
+
+```json
+{
+	"code": "Invalid_plate_format",
+	"message": "Plate must match Chile vehicle format ABCD12 (4 letters and 2 digits) or XH6640 (2 letters and 4 digits)"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-timeout" label="409 timeout_data_source">
+
+```json
+{
+	"code": "timeout_data_source",
+	"message": "timeout_data_source"
+}
+```
+
+  </TabItem>
+</Tabs>
 
 ### Notes
 
-`XH6640`、`FHDJ31` 和 `DCCH18` 返回固定资料。`BB985` 返回 `409 Invalid_plate_format`。
+- 当无匹配技术数据时，`technicalSheet` 可能为 `null` 或部分填充。
+- `XH6640`、`FHDJ31` 和 `DCCH18` 返回稳定的技术检验资料。
+- `BB985` 因不符合 v3 车牌格式而返回 `409 Invalid_plate_format`。
