@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 L'API de vérification d'identité de Verifik vous permet d'effectuer une vérification d'identité étendue pour les citoyens péruviens à l'aide de leur numéro de DNI (*Documento Nacional de Identidad*). Elle est conçue pour automatiser vos processus KYC (Know Your Customer), prévenir la fraude et vous assurer de respecter sans effort toutes les exigences réglementaires.
 
-Nous avons construit cette intégration pour les entreprises qui ont besoin d'un moyen rapide, sécurisé et automatisé d'accéder à des informations personnelles étendues, notamment le nom complet, l'état civil, la date de naissance, le détail de l'adresse (province, zone, district de résidence) et d'autres champs d'identité associés.
+Nous avons construit cette intégration pour les entreprises qui ont besoin d'un moyen rapide, sécurisé et automatisé d'accéder à des informations personnelles étendues, notamment le nom complet, l'état civil, la date de naissance, le détail de l'adresse (département, province et district) et d'autres champs d'identité associés.
 
 **L'en-tête Authorization est requis pour authentifier l'accès à ces informations en toute sécurité.**
 
@@ -38,7 +38,7 @@ Notre API se connecte directement aux registres officiels péruviens pour valide
 
 -   **Nom complet et numéro de DNI** : prend en charge les documents *Documento Nacional de Identidad* (DNI).
 -   **Correspondance d'identité** : confirme que le nom fourni correspond au numéro de DNI.
--   **Données personnelles étendues** : retourne l'état civil, la date de naissance, le sexe, l'adresse, la province, la zone et le district de résidence.
+-   **Données personnelles étendues** : retourne l'état civil, la date de naissance, le sexe, l'adresse, le département, la province et le district.
 -   **Composantes du nom** : retourne `firstName`, `lastName`, `paternalLastName`, `maternalLastName` et `arrayName`.
 -   **Informations sur le document** : retourne le type et le numéro de document.
 
@@ -52,9 +52,11 @@ En vérifiant ces éléments, vous pouvez avoir la certitude que la personne ave
 GET https://api.verifik.co/v3/pe/cedula/extra
 ```
 
-Retourne les **données DNI RENIEC étendues** pour les citoyens péruviens : nom complet, état civil, date de naissance, adresse (province, zone, district de résidence) et autres champs d'identité associés. Envoyez `documentType=DNI` et le `documentNumber` à 8 chiffres.
+Retourne les **données DNI RENIEC étendues** pour les citoyens péruviens : nom complet, état civil, date de naissance, adresse (département, province et district) et autres champs d'identité associés. Envoyez `documentType=DNI` et le `documentNumber` à 8 chiffres.
 
 `photo`, `expeditionDate`, `expirationDate`, `ubigeoReniec` et `verificationDigit` sont inclus dans la structure de la réponse mais retournent actuellement `not_available`.
+
+Les champs d'adresse suivent la hiérarchie officielle : département, province, puis district. `department` est le département ou la région (par exemple `ANCASH` ou `LA LIBERTAD`). `province` est la province (par exemple `HUAYLAS` ou `TRUJILLO`). `district` est le district (par exemple `CARAZ`). Sur cet endpoint, `homeDistrict` a la même valeur que `district`. `area` n'est pas renvoyé.
 
 ### En-têtes (Headers)
 
@@ -177,8 +179,9 @@ curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documen
     "sex": "M",
     "ubigeoReniec": "not_available",
     "verificationDigit": "not_available",
+    "department": "SAN MARTIN",
     "province": "SAN MARTIN",
-    "area": "SAN MARTIN",
+    "district": "SHAPAJA",
     "homeDistrict": "SHAPAJA"
   },
   "signature": {
@@ -226,7 +229,7 @@ curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documen
 
 | Champ | Valeur typique | Notes |
 | ----- | -------------- | ----- |
-| `address`, `province`, `area`, `homeDistrict` | Chaînes renseignées | Détail de l'adresse issu des registres RENIEC. |
+| `address`, `department`, `province`, `district`, `homeDistrict` | Chaînes renseignées | Hiérarchie officielle : `department` (département ou région, par exemple `ANCASH`), `province` (province, par exemple `HUAYLAS`), `district` (district, par exemple `CARAZ`). `homeDistrict` a la même valeur que `district`. `area` n'est pas renvoyé. |
 | `arrayName`, `firstName`, `lastName`, `paternalLastName`, `maternalLastName`, `fullName` | Chaînes renseignées | Composantes du nom. |
 | `civilStatus`, `dateOfBirth`, `sex` | Chaînes renseignées | Données démographiques. |
 | `documentType`, `documentNumber` | Chaînes renseignées | Identifiant DNI. |

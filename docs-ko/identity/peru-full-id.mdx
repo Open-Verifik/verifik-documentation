@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Verifik의 신원 확인 API는 페루 시민의 DNI(*Documento Nacional de Identidad*) 번호로 확장된 신원 정보를 조회할 수 있게 해 줍니다. KYC(Know Your Customer) 절차를 자동화하고, 사기를 예방하며, 규제 요구사항을 손쉽게 충족할 수 있도록 설계되었습니다.
 
-성명, 시민 상태, 출생일, 주소 세부 정보(주, 지역, 거주 지구) 및 관련 신원 필드를 빠르고 안전하게 자동으로 조회해야 하는 비즈니스를 위해 만들어졌습니다.
+성명, 시민 상태, 출생일, 주소 세부 정보(도, 주, 구) 및 관련 신원 필드를 빠르고 안전하게 자동으로 조회해야 하는 비즈니스를 위해 만들어졌습니다.
 
 **이 정보에 안전하게 접근하려면 Authorization 헤더가 필요합니다.**
 
@@ -38,7 +38,7 @@ Verifik의 신원 확인 API는 페루 시민의 DNI(*Documento Nacional de Iden
 
 -   **성명 및 DNI 번호**: *Documento Nacional de Identidad*(DNI) 문서를 지원합니다.
 -   **신원 일치 여부**: 제공된 이름이 DNI 번호와 일치하는지 확인합니다.
--   **확장 개인 정보**: 시민 상태, 출생일, 성별, 주소, 주, 지역, 거주 지구를 반환합니다.
+-   **확장 개인 정보**: 시민 상태, 출생일, 성별, 주소, 도, 주, 구를 반환합니다.
 -   **이름 구성 요소**: `firstName`, `lastName`, `paternalLastName`, `maternalLastName`, `arrayName`을 반환합니다.
 -   **문서 정보**: 문서 종류와 번호를 반환합니다.
 
@@ -52,9 +52,11 @@ Verifik의 신원 확인 API는 페루 시민의 DNI(*Documento Nacional de Iden
 GET https://api.verifik.co/v3/pe/cedula/extra
 ```
 
-페루 국민의 **RENIEC DNI 확장 데이터**를 반환합니다: 성명, 시민 상태, 출생일, 주소(주, 지역, 거주 지구) 및 관련 신원 필드. `documentType=DNI`와 8자리 `documentNumber`를 전송합니다.
+페루 국민의 **RENIEC DNI 확장 데이터**를 반환합니다: 성명, 시민 상태, 출생일, 주소(도, 주, 구) 및 관련 신원 필드. `documentType=DNI`와 8자리 `documentNumber`를 전송합니다.
 
 `photo`, `expeditionDate`, `expirationDate`, `ubigeoReniec`, `verificationDigit`는 응답 구조에 포함되지만 현재 `not_available`을 반환합니다.
+
+주소 필드는 도, 주, 구의 공식 계층을 따릅니다. `department`는 도 또는 지역입니다(예: `ANCASH`, `LA LIBERTAD`). `province`는 주입니다(예: `HUAYLAS`, `TRUJILLO`). `district`는 구입니다(예: `CARAZ`). 이 엔드포인트에서 `homeDistrict`는 `district`와 같습니다. `area`는 반환되지 않습니다.
 
 ### 헤더(Headers)
 
@@ -177,8 +179,9 @@ curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documen
     "sex": "M",
     "ubigeoReniec": "not_available",
     "verificationDigit": "not_available",
+    "department": "SAN MARTIN",
     "province": "SAN MARTIN",
-    "area": "SAN MARTIN",
+    "district": "SHAPAJA",
     "homeDistrict": "SHAPAJA"
   },
   "signature": {
@@ -226,7 +229,7 @@ curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documen
 
 | 필드 | 일반적인 값 | 설명 |
 | ---- | ----------- | ---- |
-| `address`, `province`, `area`, `homeDistrict` | 채워진 문자열 | RENIEC 기록의 주소 세부 정보. |
+| `address`, `department`, `province`, `district`, `homeDistrict` | 채워진 문자열 | 공식 계층: `department`(도 또는 지역, 예: `ANCASH`), `province`(주, 예: `HUAYLAS`), `district`(구, 예: `CARAZ`). `homeDistrict`는 `district`와 같습니다. `area`는 반환되지 않습니다. |
 | `arrayName`, `firstName`, `lastName`, `paternalLastName`, `maternalLastName`, `fullName` | 채워진 문자열 | 이름 구성 요소. |
 | `civilStatus`, `dateOfBirth`, `sex` | 채워진 문자열 | 인구 통계 데이터. |
 | `documentType`, `documentNumber` | 채워진 문자열 | DNI 식별자. |

@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 A API de verificação de identidade da Verifik permite realizar verificação de identidade estendida para cidadãos peruanos usando o número do DNI (*Documento Nacional de Identidad*). Foi projetada para automatizar seus processos de KYC (Know Your Customer), prevenir fraudes e garantir o cumprimento de todos os requisitos regulatórios sem esforço.
 
-Construímos esta integração para empresas que precisam de uma forma rápida, segura e automatizada de acessar informações pessoais estendidas, incluindo nome completo, estado civil, data de nascimento, detalhamento do endereço (província, área, distrito de residência) e outros campos de identidade relacionados.
+Construímos esta integração para empresas que precisam de uma forma rápida, segura e automatizada de acessar informações pessoais estendidas, incluindo nome completo, estado civil, data de nascimento, detalhamento do endereço (departamento, província e distrito) e outros campos de identidade relacionados.
 
 **O cabeçalho Authorization é obrigatório para autenticar o acesso a essas informações com segurança.**
 
@@ -38,7 +38,7 @@ Nossa API conecta-se diretamente aos registros oficiais peruanos para validar:
 
 -   **Nome completo e número do DNI**: suporta documentos do tipo *Documento Nacional de Identidad* (DNI).
 -   **Correspondência de identidade**: confirma que o nome informado corresponde ao número do DNI.
--   **Dados pessoais estendidos**: retorna estado civil, data de nascimento, sexo, endereço, província, área e distrito de residência.
+-   **Dados pessoais estendidos**: retorna estado civil, data de nascimento, sexo, endereço, departamento, província e distrito.
 -   **Componentes do nome**: retorna `firstName`, `lastName`, `paternalLastName`, `maternalLastName` e `arrayName`.
 -   **Informações do documento**: retorna tipo e número do documento.
 
@@ -52,9 +52,11 @@ Ao validar esses elementos, você pode confiar que a pessoa com quem está negoc
 GET https://api.verifik.co/v3/pe/cedula/extra
 ```
 
-Retorna **dados DNI RENIEC estendidos** para cidadãos peruanos: nome completo, estado civil, data de nascimento, endereço (província, área, distrito de residência) e outros campos de identidade relacionados. Envie `documentType=DNI` e o `documentNumber` de 8 dígitos.
+Retorna **dados DNI RENIEC estendidos** para cidadãos peruanos: nome completo, estado civil, data de nascimento, endereço (departamento, província e distrito) e outros campos de identidade relacionados. Envie `documentType=DNI` e o `documentNumber` de 8 dígitos.
 
 `photo`, `expeditionDate`, `expirationDate`, `ubigeoReniec` e `verificationDigit` estão incluídos na estrutura da resposta, mas atualmente retornam `not_available`.
+
+Os campos de endereço seguem a hierarquia oficial: departamento, província e distrito. `department` é o departamento ou a região (por exemplo `ANCASH` ou `LA LIBERTAD`). `province` é a província (por exemplo `HUAYLAS` ou `TRUJILLO`). `district` é o distrito (por exemplo `CARAZ`). Neste endpoint, `homeDistrict` tem o mesmo valor de `district`. `area` não é retornado.
 
 ### Cabeçalhos (Headers)
 
@@ -177,8 +179,9 @@ curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documen
     "sex": "M",
     "ubigeoReniec": "not_available",
     "verificationDigit": "not_available",
+    "department": "SAN MARTIN",
     "province": "SAN MARTIN",
-    "area": "SAN MARTIN",
+    "district": "SHAPAJA",
     "homeDistrict": "SHAPAJA"
   },
   "signature": {
@@ -226,7 +229,7 @@ curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documen
 
 | Campo | Valor típico | Notas |
 | ----- | ------------ | ----- |
-| `address`, `province`, `area`, `homeDistrict` | Strings preenchidas | Detalhamento do endereço dos registros RENIEC. |
+| `address`, `department`, `province`, `district`, `homeDistrict` | Strings preenchidas | Hierarquia oficial: `department` (departamento ou região, por exemplo `ANCASH`), `province` (província, por exemplo `HUAYLAS`), `district` (distrito, por exemplo `CARAZ`). `homeDistrict` tem o mesmo valor de `district`. `area` não é retornado. |
 | `arrayName`, `firstName`, `lastName`, `paternalLastName`, `maternalLastName`, `fullName` | Strings preenchidas | Componentes do nome. |
 | `civilStatus`, `dateOfBirth`, `sex` | Strings preenchidas | Dados demográficos. |
 | `documentType`, `documentNumber` | Strings preenchidas | Identificador DNI. |
