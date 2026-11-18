@@ -1,0 +1,28 @@
+---
+id: "en-docs-integrations-avalanche-best-practices-2"
+title: "Avalanche Integration — Best Practices"
+sourcePath: "docs/integrations/avalanche.md"
+locale: "en"
+category: "integrations"
+tags:
+  - "integrations"
+sourceAnchor: "Best Practices"
+---
+
+# Avalanche Integration
+
+Learn how to integrate Zelf with the Avalanche blockchain network.
+
+## Best Practices
+
+### Performance
+- Use batch operations when possible
+- Implement proper gas estimation
+- Consider gas price fluctuations
+- Use appropriate gas limits
+
+### Security
+- Validate all inputs
+- Implement proper access controls
+- Use secure random number generation
+- Regular security audits

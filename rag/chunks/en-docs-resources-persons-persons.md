@@ -1,0 +1,51 @@
+---
+id: "en-docs-resources-persons-persons"
+title: "Persons — Overview"
+sourcePath: "docs/resources/persons/persons.mdx"
+locale: "en"
+category: "resources"
+tags:
+  - "face-recognition"
+  - "resources"
+endpoint: "/v2/face-recognition/persons"
+sourceAnchor: "Overview"
+slug: "/resources/persons"
+url: "https://docs.verifik.co/resources/persons"
+---
+
+# Persons
+**API path(s):** /v2/face-recognition/persons
+
+## Overview
+
+The **face recognition** Persons API lets you create, list, retrieve, update, and delete person records used for enrollment, search, and verification. Each record typically includes a **name**, **images** (base64), optional demographics, **collections**, and server-side fields such as **`faceEncodings`**.
+
+For the full field reference, see [The Person Object](/resources/the-person-object).
+
+### API endpoints
+
+Base path: `https://api.verifik.co/v2/face-recognition/persons`
+
+| Action | Method & path | Documentation |
+| --- | --- | --- |
+| Create | `POST /v2/face-recognition/persons` | [Create a Person](/resources/create-a-person) |
+| Create with liveness | `POST /v2/face-recognition/persons/search-live-face` | [Create a Person with Liveness](/resources/create-a-person-with-liveness) |
+| Lookup by name | `GET /v2/face-recognition/persons/lookup` | [Lookup a Person by Name](/resources/lookup-a-person) |
+| List | `GET /v2/face-recognition/persons` | [List All Persons](/resources/list-all-persons) |
+| Retrieve | `GET /v2/face-recognition/persons/{id}` | [Retrieve a Person](/resources/retrieve-a-person) |
+| Update | `PUT /v2/face-recognition/persons/{id}` | [Update a Person](/resources/persons/update-a-person) |
+| Delete | `DELETE /v2/face-recognition/persons/{id}` | [Delete a Person](/resources/persons/delete-a-person) |
+
+### Person status (`status` field)
+
+Common values on list/filter:
+
+- **`active`** — enrolled and usable for matching flows
+- **`inactive`** — not used for new operations
+- **`pending`** — record not fully processed or approved
+
+### Use cases
+
+- **Onboarding** — enroll users from ID capture or live capture flows
+- **Deduplication** — liveness + search flows before creating a duplicate
+- **Access and fraud** — maintain a gallery per collection or project

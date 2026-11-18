@@ -1,0 +1,51 @@
+---
+id: "en-docs-background-check"
+title: "Background Check — Available Services"
+sourcePath: "docs/background-check.mdx"
+locale: "en"
+category: "background-check.mdx"
+tags:
+  - "background-check.mdx"
+sourceAnchor: "Available Services"
+slug: "/background-check"
+url: "https://docs.verifik.co/background-check"
+---
+
+# Background Check
+
+## Available Services
+
+Comprehensive background check and verification services for verifying individual records, criminal history, and other identity-related information across multiple countries and jurisdictions.
+
+## Available Services
+
+### Colombia
+
+- **[Colombia INPEC](/background-check/colombia-inpec)** - Check prison records
+- **[Colombia Contraloría Certificate](/background-check/colombia-comptroller-certificate)** - Verify Contraloría good conduct certificates
+- **[Colombia Disciplinary Records](/background-check/colombia-disciplinary-records-attorneys-office)** - Check disciplinary records
+- **[Colombia Public Contracts](/background-check/colombia-public-contracts)** - Verify public contract records
+
+### International
+
+- **[FBI Background Check](/background-check/international/fbi-background-check)** - Federal Bureau of Investigation records
+- **[DEA Background Check](/background-check/international/dea-background-check)** - Drug Enforcement Administration records
+- **[Interpol Background Check](/background-check/international/interpol-background-check)** - International criminal records
+- **[Europol Background Check](/background-check/international/europol-background-check)** - European police records
+- **[OFAC Background Check](/background-check/international/ofac-background-check)** - Office of Foreign Assets Control sanctions
+- **[UN Background Check](/background-check/international/onu-background-check)** - United Nations records
+
+### Brazil
+
+- **[Brazil Background Check](/background-check/brazil)** - Brazilian background verification services
+
+## Features
+
+- **Criminal History Verification**: Check criminal records and legal status
+- **Identity Verification**: Verify personal information and records
+- **Compliance**: Meet regulatory requirements for background checks
+- **Real-time Data**: Access current and up-to-date information
+- **Multiple Countries**: Support for various jurisdictions
+- **International Coverage**: Access to global databases and records
+
+For detailed API documentation and integration guides, please refer to the specific service documentation.

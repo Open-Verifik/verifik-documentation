@@ -1,0 +1,97 @@
+---
+id: "en-docs-resources-collections-the-collection-object"
+title: "The Collection Object — Overview"
+sourcePath: "docs/resources/collections/the-collection-object.mdx"
+locale: "en"
+category: "resources"
+tags:
+  - "resources"
+sourceAnchor: "Overview"
+slug: "/resources/the-collection-object"
+url: "https://docs.verifik.co/resources/the-collection-object"
+---
+
+# The Collection Object
+
+## Overview
+
+A Collection is the place where all the faces generated using Verifik's Life Detection services will be stored. The majority of services require a Collection for their operation, making it crucial to understand how to generate a Collection and manipulate it at the API level.
+
+### Attributes
+
+#### `name`
+**Type:** String  
+**Required:** Yes
+
+Name that you want to give the collection.
+
+#### `description`
+**Type:** String  
+**Required:** No
+
+Brief description of what the collection is used for or any notes you want to store.
+
+#### `_id`
+**Type:** string (resource id)  
+**Required:** Yes
+
+Unique identifier for the collection.
+
+#### `deleted`
+**Type:** Boolean  
+**Required:** Yes
+
+Whether the collection has been marked as deleted (soft delete flag when applicable).
+
+#### `project`
+**Type:** string (reference id)  
+**Required:** No
+
+Reference to the Project model when the collection is linked to a specific project.
+
+#### `client`
+**Type:** string (reference id)  
+**Required:** Yes
+
+Reference to the Client model, linking the collection to a specific client account.
+
+#### `code`
+**Type:** String  
+**Required:** Yes
+
+Unique code (UUID) for the collection used in API operations with the face engine (sometimes referred to as collection id in other services).
+
+#### `createdAt`
+**Type:** Date  
+**Required:** Yes
+
+Timestamp when the collection was created.
+
+#### `updatedAt`
+**Type:** Date  
+**Required:** Yes
+
+Timestamp when the collection was last updated.
+
+#### `__v`
+**Type:** Number  
+**Required:** Yes
+
+Version key for the collection document.
+
+### Example Object
+
+```json
+{
+  "_id": "65b9592267cc4f096dbe743d",
+  "deleted": false,
+  "name": "Ejemplo Ene 30",
+  "project": "65b955fe0577440932c77481",
+  "description": "default collection for project 65b955fe0577440932c77481",
+  "client": "6158e492dd0767a2b8b3f829",
+  "code": "d96db430-27d2-4f43-bcff-c4b239ac6d2e",
+  "updatedAt": "2024-01-30T20:16:34.841Z",
+  "createdAt": "2024-01-30T20:16:34.841Z",
+  "__v": 0
+}
+```

@@ -1,0 +1,44 @@
+---
+id: "es-docs-es-services-verifik-enroll-code-solution-via-api"
+title: "Verifik Enroll Code Solution — Resumen"
+sourcePath: "docs-es/services/verifik-enroll-code-solution-via-api.mdx"
+locale: "es"
+category: "services"
+tags:
+  - "services"
+sourceAnchor: "Resumen"
+slug: "/services/verifik-enroll-code-solution-via-api"
+url: "https://docs.verifik.co/verifik-es/services/verifik-enroll-code-solution-via-api"
+---
+
+# Verifik Enroll Code Solution
+
+## Resumen
+
+**SmartEnroll** es una solución sin código diseñada para proporcionar incorporaciones seguras y fluidas para los usuarios. Esta plataforma permite a las empresas ofrecer diversas verificaciones de incorporación, incluyendo verificación de correo electrónico, teléfono y biométrica, validaciones de documentos, verificaciones AML, verificaciones de manipulación y más.
+
+## Resumen
+
+SmartEnroll proporciona una solución KYC (Know Your Customer) integral que agiliza el proceso de incorporación de usuarios mientras mantiene los más altos estándares de seguridad. La plataforma ofrece un conjunto completo de herramientas de verificación que pueden personalizarse para satisfacer tus requisitos comerciales específicos.
+
+## Características Clave
+
+- **Verificación de Correo Electrónico**: Valida direcciones de correo electrónico con verificación OTP
+- **Verificación de Teléfono**: Verifica números de teléfono vía SMS y WhatsApp
+- **Verificación Biométrica**: Reconocimiento facial avanzado y detección de vivacidad
+- **Validación de Documentos**: Verificación de documentos de identidad
+- **Verificaciones AML**: Verificación de antecedentes y listas de sanciones
+- **Personalización**: Interfaz personalizable para tu marca
+
+## Tutorial Completo
+
+Para una guía completa paso a paso, visita:
+
+**[Tutorial - Verifik Enroll Code Solution](/verifik-es/services/verifik-enroll-code-solution-via-api/tutorial)**
+
+## Recursos Adicionales
+
+Para más información sobre SmartEnroll, visita:
+- [SmartEnroll Overview](/smartenroll)
+- [SmartEnroll KYC Flow](/smartenroll/smartenroll-kyc-flow)
+- [SmartEnroll Admin Review](/smartenroll/smartenroll-admin-kyc-review)
