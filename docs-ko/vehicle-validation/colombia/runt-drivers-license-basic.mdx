@@ -6,21 +6,65 @@ sidebar_label: RUNT — 운전면허 (Basic)
 slug: /vehicle-validation/colombia/runt-drivers-license-basic
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ### 엔드포인트
 
 ```
 GET https://api.verifik.co/v3/co/runt/conductor
 ```
 
-[Premium v2](/vehicle-validation/colombia/runt-drivers-license) 와 동일한 RUNT 조회이며 **현재 운전자 요금**입니다. `primerApellido` 는 **필수**입니다. 없으면 `409 MissingParameter`.
+[Premium v2](/vehicle-validation/colombia/runt-drivers-license) (`GET /v2/co/runt/conductor`) 와 같은 조회이며 **Basic** 운전자 요금입니다. `TI`를 포함한 모든 문서 유형에 `primerApellido`(최소 2자)가 **필수**입니다. 없으면 `409 MissingParameter`. 이 엔드포인트는 성을 찾지 않으며 RUI 요금을 더하지 않습니다.
+
+v2에서 `primerApellido`를 보내면 같은 Basic 요금입니다.
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| 성 (`primerApellido`) | 선택. **`PA`만 필수**. 생략하면 Verifik가 찾습니다. | 모든 유형에 필수 (최소 2자). |
+| 문서 유형 | `CC`, `TI`, `CE`, `PA`, `PPT` | `CC`, `TI`, `CE`, `PA`, `PPT` |
+| 요금 | 성 생략: **Premium**. `TI`이고 성이 없으면 운전자 정가 + RUI 정가 (`GET /v2/co/rui`). 성을 보내면 v3과 같은 **Basic**. | **Basic**. 성 조회도 RUI 요금도 없습니다. |
 
 ### 파라미터
 
 | 이름 | 유형 | 필수 | 설명 |
 | --- | --- | --- | --- |
-| `documentType` | string | 예 | **`CC`**, **`CE`**, **`PA`**, **`PPT`**. |
+| `documentType` | string | 예 | **`CC`**, **`TI`**, **`CE`**, **`PA`**, **`PPT`**. **`TI`** 는 tarjeta de identidad. |
 | `documentNumber` | string | 예 | 공백 없는 번호. |
-| `primerApellido` | string | **예** | 첫 성 (최소 2자). |
+| `primerApellido` | string | **예** | 첫 성 (최소 2자). `TI` 포함 모든 유형에 필수. |
+
+### curl (TI)
+
+```bash
+curl -G "https://api.verifik.co/v3/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001" \
+  --data-urlencode "primerApellido=EJEMPLO"
+```
+
+값은 가짜입니다. `primerApellido`는 필수입니다. Basic 요금이며 RUI 요금은 없습니다.
+
+### 응답 (가짜 데이터)
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"dueDate": "01/06/2034",
+				"expeditionDate": "01/06/2024"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```

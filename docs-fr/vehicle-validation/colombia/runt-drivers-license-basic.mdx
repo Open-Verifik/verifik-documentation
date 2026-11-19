@@ -15,15 +15,23 @@ import TabItem from '@theme/TabItem';
 GET https://api.verifik.co/v3/co/runt/conductor
 ```
 
-Même consultation RUNT que [Premium v2](/vehicle-validation/colombia/runt-drivers-license), au **tarif conducteur actuel**. `primerApellido` est **obligatoire**. Sans ce champ : `409 MissingParameter`.
+Même consultation que [Premium v2](/vehicle-validation/colombia/runt-drivers-license) (`GET /v2/co/runt/conductor`), au prix **Basic** du conducteur. `primerApellido` est **obligatoire** (2 caractères minimum) pour chaque type, y compris `TI`. Sans ce champ : `409 MissingParameter`. Cet endpoint ne cherche pas le nom et n’ajoute pas le prix RUI.
+
+Envoyer `primerApellido` sur v2 facture ce même prix Basic.
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| Nom de famille (`primerApellido`) | Facultatif, sauf **`PA`**. Verifik le trouve si vous l’omettez. | Obligatoire pour chaque type (2 caractères minimum). |
+| Types de document | `CC`, `TI`, `CE`, `PA`, `PPT` | `CC`, `TI`, `CE`, `PA`, `PPT` |
+| Facturation | Sans nom : **Premium**. `TI` sans nom : prix catalogue conducteur + prix catalogue RUI (`GET /v2/co/rui`). Avec nom : **Basic**, le même prix que v3. | Prix **Basic**. Pas de recherche du nom et pas de prix RUI. |
 
 ### Paramètres
 
 | Nom | Type | Obligatoire | Description |
 | --- | --- | --- | --- |
-| `documentType` | string | Oui | **`CC`**, **`CE`**, **`PA`**, **`PPT`**. |
+| `documentType` | string | Oui | **`CC`**, **`TI`**, **`CE`**, **`PA`**, **`PPT`**. **`TI`** est la tarjeta de identidad. |
 | `documentNumber` | string | Oui | Numéro sans espaces. |
-| `primerApellido` | string | **Oui** | Premier nom de famille (min. 2). |
+| `primerApellido` | string | **Oui** | Premier nom de famille (2 caractères minimum), y compris pour `TI`. |
 
 ### Requête
 
@@ -38,4 +46,46 @@ const { data } = await axios.get("https://api.verifik.co/v3/co/runt/conductor", 
 ```
 
   </TabItem>
+  <TabItem value="curl-ti" label="curl (TI)">
+
+```bash
+curl -G "https://api.verifik.co/v3/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001" \
+  --data-urlencode "primerApellido=EJEMPLO"
+```
+
+Valeurs fictives. `primerApellido` est obligatoire. Prix Basic, sans prix RUI.
+
+  </TabItem>
 </Tabs>
+
+### Réponse
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"dueDate": "01/06/2034",
+				"expeditionDate": "01/06/2024"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
+
+Valeurs fictives. Une réponse réelle utilise les mêmes champs que Premium v2.

@@ -1,7 +1,7 @@
 ---
 id: licencia-conducir-runt
 title: Consulta de Licencia de Conducción por Cédula en RUNT (Premium) | Verifik API Colombia
-description: Valida licencias de conducción en Colombia mediante el número de cédula. Omite primerApellido para pagar Premium (incluye consulta de nombre) o envíalo para pagar la tarifa Básica.
+description: Valida licencias de conducción en Colombia con GET /v2/co/runt/conductor. primerApellido es opcional, salvo para PA. TI sin apellido se cobra como el precio de lista del conductor más el precio de lista de RUI.
 sidebar_label: RUNT - Licencia de Conducir (Premium)
 slug: /validacion-vehiculos/colombia/licencia-conducir-runt
 ---
@@ -27,12 +27,36 @@ La API de validación de licencias de Verifik permite consultar información ofi
 
 Esta integración es esencial para empresas de transporte, agencias de alquiler de vehículos, aseguradoras y plataformas logísticas que necesitan verificar el estado legal y la idoneidad de los conductores antes de la contratación o autorización de uso de vehículos.
 
-RUNT ahora autentica al conductor con el primer apellido (`primerApellido`) y puede devolver nombres enmascarados. Esta ruta **v2** sigue funcionando sin cambios de integración.
+Hay dos endpoints de conductor. Esta página es **Premium**, `GET /v2/co/runt/conductor`. Verifik encuentra el primer apellido (`primerApellido`) cuando usted lo omite, salvo en el pasaporte (`PA`), que siempre lo exige. La ruta [Básica v3](/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt-basico) (`GET /v3/co/runt/conductor`) exige `primerApellido` para todos los tipos de documento.
 
-**Tarifa desde el 1 de septiembre de 2026 (America/Bogota):**
+RUNT autentica al conductor con ese primer apellido y puede devolver nombres enmascarados. Esta ruta v2 sigue funcionando si no envía el apellido.
 
-- Omita `primerApellido` — Verifik resuelve el apellido internamente — **Premium** (conductor + consulta de nombre). Una fila en el historial.
-- Envíe `primerApellido` — se omite la consulta de nombre — tarifa **Básica** (igual que [`/v3/co/runt/conductor`](/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt-basico)). Una fila en el historial.
+### v2 y v3
+
+| | Premium `GET /v2/co/runt/conductor` | Básico `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| Apellido (`primerApellido`) | No es obligatorio, salvo **`PA`**, que sí lo exige (mínimo 2 caracteres). Verifik encuentra el apellido cuando usted lo omite. | Obligatorio para todos los tipos de documento (mínimo 2 caracteres). |
+| Tipos de documento | `CC`, `TI`, `CE`, `PA`, `PPT` | `CC`, `TI`, `CE`, `PA`, `PPT` |
+| Cobro | Sin apellido: **Premium**. Para `TI` sin apellido, el precio de lista del conductor **más** el precio de lista de RUI. Con apellido: **Básico**, el mismo precio que v3. | Precio **Básico** de conductor. Verifik no busca el apellido y no suma el precio de RUI. |
+
+### Tarjeta de identidad (`TI`) en v2
+
+`TI` es la *tarjeta de identidad*. En este endpoint puede omitir `primerApellido`, igual que con `CC`, `CE` y `PPT`.
+
+Cuando `documentType` es `TI` y no envía `primerApellido`, Verifik primero busca el apellido del titular en la consulta de identidad colombiana — los mismos datos que [`GET /v2/co/rui`](/verifik-es/verificacion-antecendentes/verificacion-antecendentes-colombia-rui) — y después hace la consulta del conductor. El nombre de ese registro empieza por el nombre de pila. Verifik usa el primer apellido. Una partícula inicial (`DE`, `DEL`, `LA`, `LAS`, `LOS` o `Y`) se queda con ese apellido. Por ejemplo, `ANA DE LA CRUZ LOPEZ` se usa como `DE LA CRUZ`.
+
+Esa solicitud se cobra como dos consultas: el precio del conductor más el precio de RUI. Use solo precios de lista. Por ejemplo, precio de lista del conductor + precio de lista de RUI = total. El precio de RUI es el precio de lista de `GET /v2/co/rui`.
+
+Si la búsqueda del apellido falla, la llamada responde HTTP 409 y no hay cobro de RUI:
+
+```json
+{
+	"code": "Conflict",
+	"message": "Unable to resolve primer apellido for RUNT conductor"
+}
+```
+
+Enviar `primerApellido` en v2 omite esa búsqueda. La llamada se cobra al precio **Básico**, el mismo que [`GET /v3/co/runt/conductor`](/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt-basico).
 
 Use la ruta [Básica v3](/verifik-es/validacion-vehiculos/colombia/licencia-conducir-runt-basico) si siempre envía `primerApellido` y quiere que sea obligatorio.
 
@@ -68,9 +92,9 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 | Name             | Type   | Required | Description                                                            |
 | ---------------- | ------ | -------- | ---------------------------------------------------------------------- |
-| `documentType`   | string | Yes      | Uno de **`CC`**, **`CE`**, **`PA`**, **`PPT`**. Vea la tabla — **`PA` es pasaporte, `PPT` no lo es**. |
+| `documentType`   | string | Yes      | Uno de **`CC`**, **`TI`**, **`CE`**, **`PA`**, **`PPT`**. Vea la tabla — **`PA` es pasaporte, `PPT` no lo es**. |
 | `documentNumber` | string | Yes      | Número de documento del conductor, sin espacios ni puntos.             |
-| `primerApellido` | string | Condicional | Primer apellido. **Obligatorio para `PA`**. Opcional para `CC`, `CE` y `PPT`. Omítalo para **Premium** (Verifik resuelve el nombre). Envíelo para omitir la consulta de nombre y pagar **Básico**. Procuraduría y `/v2/co/cedula` no consultan pasaportes. |
+| `primerApellido` | string | Condicional | Primer apellido (mínimo 2 caracteres). **Obligatorio para `PA`**. Opcional para `CC`, `TI`, `CE` y `PPT`. Omítalo y Verifik encuentra el apellido (**Premium**). Envíelo para omitir esa búsqueda y pagar **Básico**, el mismo precio que v3. Para `TI` sin apellido, el cobro es el precio de lista del conductor más el de RUI. En un pasaporte no se resuelve el apellido: envíe `primerApellido` para `PA`. |
 
 ### Tipos de documento
 
@@ -79,6 +103,7 @@ No envíe `PPT` cuando RUNT muestra **`P.`** — eso es **pasaporte (`PA`)**. `P
 | Código | Nombre completo | Quién lo tiene | Etiqueta RUNT | `primerApellido` |
 | --- | --- | --- | --- | --- |
 | **`CC`** | *Cédula de Ciudadanía* | Ciudadanos colombianos (cédula nacional) | `C.` | Opcional |
+| **`TI`** | *Tarjeta de Identidad* | Tarjeta de identidad colombiana | — | Opcional. Sin apellido, Verifik usa los mismos datos de identidad que `GET /v2/co/rui` y después consulta al conductor. Se cobra precio de lista del conductor + precio de lista de RUI. |
 | **`CE`** | *Cédula de Extranjería* | Extranjeros residentes en Colombia | `E.` | Opcional |
 | **`PA`** | *Pasaporte* | Titulares de pasaporte | `P.` | **Obligatorio** |
 | **`PPT`** | *Permiso por Protección Temporal* | Permiso temporal venezolano — **no es pasaporte** | `Y.` | Opcional |
@@ -116,6 +141,19 @@ params = {"documentType": "CC", "documentNumber": "123456789"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
+
+  </TabItem>
+  <TabItem value="curl-ti" label="curl (TI)">
+
+```bash
+curl -G "https://api.verifik.co/v2/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001"
+```
+
+El `documentNumber` es ficticio. Si omite `primerApellido`, Verifik busca el apellido en los mismos datos que `GET /v2/co/rui` y después consulta al conductor. El cobro es el precio de lista del conductor + el precio de lista de RUI.
 
   </TabItem>
 </Tabs>
@@ -265,6 +303,55 @@ print(r.json())
 ```
 
   </TabItem>
+  <TabItem value="200-ti" label="200 (TI, datos ficticios)">
+
+Respuesta ilustrativa de una consulta `TI`. Todos los valores son ficticios. Una respuesta real usa los mismos campos que el ejemplo anterior.
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"firstName": "ANA MARIA",
+		"lastName": "EJEMPLO FICTICIO",
+		"arrayName": ["ANA", "MARIA", "EJEMPLO", "FICTICIO"],
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"consultationDateTime": "2026-01-15T12:00:00.000Z",
+		"inscriptionDate": "01/01/2020",
+		"inscriptionNumber": "1002003001",
+		"totalLicenses": "1",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"licenceNumber": "1002003001",
+				"expeditionDate": "01/06/2024",
+				"dueDate": "01/06/2034",
+				"substratum": "1002003001"
+			}
+		],
+		"infractions": {
+			"nroPazYSalvo": "000000000000",
+			"tieneMultas": "NO"
+		},
+		"aptitudeCertificates": [],
+		"medicalCertificates": [],
+		"requests": [],
+		"sicovRequests": [],
+		"ANSVpayments": [],
+		"transitTaxes": {}
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "EXAMP"
+}
+```
+
+  </TabItem>
   <TabItem value="404" label="404">
 
 ```json
@@ -281,13 +368,6 @@ print(r.json())
 {
 	"code": "MissingParameter",
 	"message": "missing documentType. missing documentNumber"
-}
-```
-
-```json
-{
-	"code": "MissingParameter",
-	"message": "documentType must be one of: [CC, CE, PPT, PA, NIT]"
 }
 ```
 
@@ -324,7 +404,10 @@ print(r.json())
 -   Las categorías de licencia incluyen B1 (autos), A2 (motocicletas), C1 (camiones), etc.
 -   El estado "ACTIVA" indica que la licencia está actualmente válida.
 -   Múltiples categorías de licencia pueden estar asociadas con un conductor.
--   `PA` es pasaporte, no PPT. Envíe `primerApellido` al consultar un pasaporte; RUNT autentica al conductor con el primer apellido y enmascara el nombre completo en la interfaz oficial.
+-   `PA` es pasaporte, no PPT. Envíe `primerApellido` al consultar un pasaporte.
+-   Los valores aceptados de `documentType` son **`CC`**, **`TI`**, **`CE`**, **`PA`** y **`PPT`**.
+-   `TI` sin `primerApellido` se cobra como el precio de lista del conductor más el precio de lista de RUI (`GET /v2/co/rui`). Si no se resuelve el apellido, la respuesta es 409 y no hay cobro de RUI.
+-   Enviar `primerApellido` en este endpoint v2 se cobra al precio Básico, el mismo que v3.
 
 ---
 

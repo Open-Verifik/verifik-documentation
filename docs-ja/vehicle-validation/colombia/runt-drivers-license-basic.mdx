@@ -6,21 +6,65 @@ sidebar_label: RUNT — 運転免許 (Basic)
 slug: /vehicle-validation/colombia/runt-drivers-license-basic
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ### エンドポイント
 
 ```
 GET https://api.verifik.co/v3/co/runt/conductor
 ```
 
-[Premium v2](/vehicle-validation/colombia/runt-drivers-license) と同じ RUNT 照会で、**現行の運転者料金**です。`primerApellido` は**必須**です。未指定は `409 MissingParameter`。
+[Premium v2](/vehicle-validation/colombia/runt-drivers-license)（`GET /v2/co/runt/conductor`）と同じ照会で、**Basic** の運転者料金です。`TI` を含むすべての文書種別で `primerApellido`（2文字以上）が**必須**です。未指定は `409 MissingParameter`。このエンドポイントは姓を探さず、RUI 料金も加算しません。
+
+v2 で `primerApellido` を送ると、同じ Basic 料金です。
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| 姓 (`primerApellido`) | 任意。**`PA` のみ必須**。省略すると Verifik が見つけます。 | すべての種別で必須（2文字以上）。 |
+| 文書種別 | `CC`, `TI`, `CE`, `PA`, `PPT` | `CC`, `TI`, `CE`, `PA`, `PPT` |
+| 料金 | 姓を省略: **Premium**。`TI` で姓がない場合は運転者の定価 + RUI の定価（`GET /v2/co/rui`）。姓を送る: v3 と同じ **Basic**。 | **Basic**。姓の照会も RUI 料金もありません。 |
 
 ### パラメータ
 
 | 名前 | 型 | 必須 | 説明 |
 | --- | --- | --- | --- |
-| `documentType` | string | はい | **`CC`**, **`CE`**, **`PA`**, **`PPT`**. |
+| `documentType` | string | はい | **`CC`**、**`TI`**、**`CE`**、**`PA`**、**`PPT`**。**`TI`** は tarjeta de identidad。 |
 | `documentNumber` | string | はい | 空白なしの番号。 |
-| `primerApellido` | string | **はい** | 最初の姓（2文字以上）。 |
+| `primerApellido` | string | **はい** | 最初の姓（2文字以上）。`TI` を含むすべての種別で必須。 |
+
+### curl (TI)
+
+```bash
+curl -G "https://api.verifik.co/v3/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001" \
+  --data-urlencode "primerApellido=EJEMPLO"
+```
+
+値は架空です。`primerApellido` は必須です。Basic 料金で、RUI 料金はありません。
+
+### レスポンス（架空データ）
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"dueDate": "01/06/2034",
+				"expeditionDate": "01/06/2024"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```
