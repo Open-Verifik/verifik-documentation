@@ -17,7 +17,28 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 通过 **`documentType`** 与 **`documentNumber`** 查询 **RUNT** 登记的驾驶证信息。响应可包含状态、准驾类别、证明与申请记录、违法提示等。
 
-省略 `primerApellido`：**Premium**（含姓名查询）。传入 `primerApellido`：**Basic** 价格，见 [`/v3/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license-basic)。
+有两个端点。本页是 **Premium** 的 `GET /v2/co/runt/conductor`。省略姓氏时，Verifik 会自行找到 `primerApellido`。护照（`PA`）始终必填。[Basic v3](/vehicle-validation/colombia/runt-drivers-license-basic)（`GET /v3/co/runt/conductor`）对每种证件都要求 `primerApellido`。
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| 姓氏 (`primerApellido`) | 可选。仅 **`PA` 必填**（至少 2 个字符）。省略时由 Verifik 查找。 | 每种证件都必填（至少 2 个字符）。 |
+| 证件类型 | `CC`、`TI`、`CE`、`PA`、`PPT` | `CC`、`TI`、`CE`、`PA`、`PPT` |
+| 计费 | 省略姓氏：**Premium**。`TI` 且没有姓氏时，为驾驶员标价 **加上** RUI 标价。传入姓氏：与 v3 相同的 **Basic**。 | **Basic** 驾驶员价格。不查询姓氏，也不加 RUI 价格。 |
+
+`TI` 是 *tarjeta de identidad*（身份证）。不传 `primerApellido` 时，Verifik 先用与 `GET /v2/co/rui` 相同的身份数据查找姓氏，再查询驾驶员。该姓名以名字开头。Verifik 取第一个姓。开头的虚词（`DE`、`DEL`、`LA`、`LAS`、`LOS` 或 `Y`）留在该姓中。例如 `ANA DE LA CRUZ LOPEZ` 会用作 `DE LA CRUZ`。
+
+该请求按两次计费：驾驶员价格加上 RUI 价格。只使用标价。例如：驾驶员标价 + RUI 标价 = 合计。
+
+如果姓氏查询失败，返回 HTTP 409，并且没有 RUI 费用：
+
+```json
+{
+	"code": "Conflict",
+	"message": "Unable to resolve primer apellido for RUNT conductor"
+}
+```
+
+在 v2 上传 `primerApellido` 会跳过该查询，并按与 v3 相同的 **Basic** 价格计费。
 
 ### 请求头
 
@@ -30,9 +51,9 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 | 名称 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `documentType` | string | 是 | **`CC`**、**`CE`**、**`PA`**、**`PPT`** 之一。见下表 — **`PA` 是护照，`PPT` 不是**。 |
+| `documentType` | string | 是 | **`CC`**、**`TI`**、**`CE`**、**`PA`**、**`PPT`** 之一。见下表 — **`PA` 是护照，`PPT` 不是**。 |
 | `documentNumber` | string | 是 | 证件号码（无空格和句号）。 |
-| `primerApellido` | string | 条件 | 第一姓氏。**`PA` 必填**。`CC`、`CE`、`PPT` 可选。Procuraduría 与 `/v2/co/cedula` 无法查询护照姓名。 |
+| `primerApellido` | string | 条件 | 第一姓氏（至少 2 个字符）。**`PA` 必填**。`CC`、`TI`、`CE`、`PPT` 可选。省略时 Verifik 查找姓氏（**Premium**）。传入则按与 v3 相同的 **Basic** 计费。`PA` 必须传 `primerApellido`。 |
 
 ### 证件类型
 
@@ -41,6 +62,7 @@ RUNT 显示 **`P.`** 时不要传 `PPT` — 那是**护照（`PA`）**。`PPT` �
 | 代码 | 全称 | 持有人 | RUNT 标识 | `primerApellido` |
 | --- | --- | --- | --- | --- |
 | **`CC`** | *Cédula de Ciudadanía* | 哥伦比亚公民（国民身份证） | `C.` | 可选 |
+| **`TI`** | *Tarjeta de Identidad* | 哥伦比亚 tarjeta de identidad | — | 可选。没有姓氏时，先用与 `GET /v2/co/rui` 相同的数据查找姓氏，再查询驾驶员。驾驶员标价 + RUI 标价。 |
 | **`CE`** | *Cédula de Extranjería* | 在哥伦比亚的外国居民 | `E.` | 可选 |
 | **`PA`** | *Pasaporte*（护照） | 护照持有人 | `P.` | **必填** |
 | **`PPT`** | *Permiso por Protección Temporal* | 委内瑞拉临时保护许可 — **不是护照** | `Y.` | 可选 |
@@ -75,6 +97,19 @@ params = {"documentType": "CC", "documentNumber": "123456789"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
+
+  </TabItem>
+  <TabItem value="curl-ti" label="curl (TI)">
+
+```bash
+curl -G "https://api.verifik.co/v2/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001"
+```
+
+号码是虚构的。省略 `primerApellido` 时，Verifik 用与 `GET /v2/co/rui` 相同的数据查找姓氏。合计为驾驶员标价 + RUI 标价。
 
   </TabItem>
 </Tabs>
@@ -113,6 +148,36 @@ print(r.json())
 ```
 
   </TabItem>
+  <TabItem value="200-ti" label="200（TI，虚构）">
+
+以下数值均为虚构。真实响应使用相同字段。
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"dueDate": "01/06/2034",
+				"expeditionDate": "01/06/2024"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "EXAMP"
+}
+```
+
+  </TabItem>
   <TabItem value="404" label="404">
 
 ```json
@@ -138,5 +203,7 @@ print(r.json())
 ### 说明
 
 - 字段结构以 **RUNT** 返回为准。
-- 本接口校验的证件类型为 **`CC`**、**`CE`**、**`PA`**（护照）、**`PPT`**。
-- `primerApellido` 对 **`PA` 必填**，对 **`CC`**、**`CE`**、**`PPT`** 可选。
+- 本接口接受的证件类型为 **`CC`**、**`TI`**、**`CE`**、**`PA`**（护照）、**`PPT`**。
+- `primerApellido` 对 **`PA` 必填**，对 **`CC`**、**`TI`**、**`CE`**、**`PPT`** 可选。
+- `TI` 且没有 `primerApellido` 时，按驾驶员标价加上 RUI 标价计费。姓氏查不到时返回 409，且没有 RUI 费用。
+- 在 v2 传入 `primerApellido` 时，按与 v3 相同的 Basic 价格计费。

@@ -17,7 +17,28 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 **RUNT** に登録された運転免許情報を、**`documentType`** と **`documentNumber`** で照会します。ステータス、カテゴリ、適性証明・申請履歴、違反の有無などが含まれる場合があります。
 
-`primerApellido` なし: **Premium**（氏名解決込み）。`primerApellido` あり: **Basic** — [`/v3/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license-basic)。
+エンドポイントは2つです。このページは **Premium** の `GET /v2/co/runt/conductor` です。姓を省略すると Verifik が `primerApellido` を見つけます。旅券（`PA`）は常に必須です。[Basic v3](/vehicle-validation/colombia/runt-drivers-license-basic)（`GET /v3/co/runt/conductor`）は、すべての文書種別で `primerApellido` が必須です。
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| 姓 (`primerApellido`) | 任意。**`PA` のみ必須**（2文字以上）。省略すると Verifik が見つけます。 | すべての種別で必須（2文字以上）。 |
+| 文書種別 | `CC`, `TI`, `CE`, `PA`, `PPT` | `CC`, `TI`, `CE`, `PA`, `PPT` |
+| 料金 | 姓を省略: **Premium**。`TI` で姓がない場合は運転者の定価 **＋** RUI の定価。姓を送る: v3 と同じ **Basic**。 | **Basic** の運転者料金。姓の照会も RUI 料金もありません。 |
+
+`TI` は *tarjeta de identidad* です。`primerApellido` がないとき、Verifik はまず `GET /v2/co/rui` と同じ本人データで姓を探し、そのあと運転者照会を実行します。その氏名は名が先です。Verifik は最初の姓を使います。先頭の助詞（`DE`、`DEL`、`LA`、`LAS`、`LOS`、`Y`）はその姓に残ります。例: `ANA DE LA CRUZ LOPEZ` は `DE LA CRUZ` になります。
+
+このリクエストは2件として請求されます。運転者の料金と RUI の料金です。定価だけを使います。例: 運転者の定価 + RUI の定価 = 合計。
+
+姓の照会に失敗すると HTTP 409 で、RUI 料金は加算されません。
+
+```json
+{
+	"code": "Conflict",
+	"message": "Unable to resolve primer apellido for RUNT conductor"
+}
+```
+
+v2 で `primerApellido` を送るとその照会を省略し、v3 と同じ **Basic** 料金になります。
 
 ### ヘッダー
 
@@ -30,9 +51,9 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 | 名前 | 型 | 必須 | 説明 |
 | --- | --- | --- | --- |
-| `documentType` | string | はい | **`CC`**、**`CE`**、**`PA`**、**`PPT`** のいずれか。下表を参照 — **`PA` は旅券、`PPT` は旅券ではありません**。 |
+| `documentType` | string | はい | **`CC`**、**`TI`**、**`CE`**、**`PA`**、**`PPT`** のいずれか。下表を参照 — **`PA` は旅券、`PPT` は旅券ではありません**。 |
 | `documentNumber` | string | はい | 証番号（スペース・句点なし）。 |
-| `primerApellido` | string | 条件付き | 第一姓。**`PA` では必須**。`CC` / `CE` / `PPT` では任意。Procuraduría と `/v2/co/cedula` は旅券を照会しません。 |
+| `primerApellido` | string | 条件付き | 第一姓（2文字以上）。**`PA` では必須**。`CC` / `TI` / `CE` / `PPT` では任意。省略すると Verifik が姓を見つけます（**Premium**）。送ると v3 と同じ **Basic**。`PA` では必ず `primerApellido` を送ってください。 |
 
 ### 文書種別
 
@@ -41,6 +62,7 @@ RUNT に **`P.`** と表示されている場合は `PPT` を送らないでく�
 | コード | 正式名称 | 対象 | RUNT 表示 | `primerApellido` |
 | --- | --- | --- | --- | --- |
 | **`CC`** | *Cédula de Ciudadanía* | コロンビア国民（国民ID） | `C.` | 任意 |
+| **`TI`** | *Tarjeta de Identidad* | コロンビアの tarjeta de identidad | — | 任意。姓がない場合は `GET /v2/co/rui` と同じデータで姓を探し、そのあと運転者を照会します。運転者の定価 + RUI の定価。 |
 | **`CE`** | *Cédula de Extranjería* | コロンビア在住の外国人 | `E.` | 任意 |
 | **`PA`** | *Pasaporte*（旅券） | 旅券保持者 | `P.` | **必須** |
 | **`PPT`** | *Permiso por Protección Temporal* | ベネズエラ一時保護許可 — **旅券ではない** | `Y.` | 任意 |
@@ -75,6 +97,19 @@ params = {"documentType": "CC", "documentNumber": "123456789"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
+
+  </TabItem>
+  <TabItem value="curl-ti" label="curl (TI)">
+
+```bash
+curl -G "https://api.verifik.co/v2/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001"
+```
+
+番号は架空です。`primerApellido` を省略すると、Verifik は `GET /v2/co/rui` と同じデータで姓を探します。合計は運転者の定価 + RUI の定価です。
 
   </TabItem>
 </Tabs>
@@ -113,6 +148,36 @@ print(r.json())
 ```
 
   </TabItem>
+  <TabItem value="200-ti" label="200 (TI、架空)">
+
+以下の値はすべて架空です。実際の応答は同じフィールドを使います。
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"dueDate": "01/06/2034",
+				"expeditionDate": "01/06/2024"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "EXAMP"
+}
+```
+
+  </TabItem>
   <TabItem value="404" label="404">
 
 ```json
@@ -138,5 +203,7 @@ print(r.json())
 ### 注記
 
 - フィールド構成は **RUNT** の返却内容に依存します。
-- 本エンドポイントで検証される文書種別は **`CC`**, **`CE`**, **`PA`**（旅券）、**`PPT`** です。
-- `primerApellido` は **`PA` では必須**、**`CC`** / **`CE`** / **`PPT`** では任意です。
+- 本エンドポイントで受け付ける文書種別は **`CC`**、**`TI`**、**`CE`**、**`PA`**（旅券）、**`PPT`** です。
+- `primerApellido` は **`PA` では必須**、**`CC`** / **`TI`** / **`CE`** / **`PPT`** では任意です。
+- `TI` で `primerApellido` がない場合は、運転者の定価と RUI の定価の合計です。姓が見つからないと 409 で、RUI 料金は加算されません。
+- v2 で `primerApellido` を送ると、v3 と同じ Basic 料金です。

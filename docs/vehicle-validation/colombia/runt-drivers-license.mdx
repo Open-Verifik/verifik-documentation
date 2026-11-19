@@ -1,7 +1,7 @@
 ---
 id: vehicle-validation-colombia-runt-drivers-license
 title: RUNT - Driver's License (Premium)
-description: 'Verify driver''s licenses in Colombia using the document number with the Verifik API. Omit primerApellido to pay Premium (name lookup included) or send it to pay the Basic rate.'
+description: 'Verify driver''s licenses in Colombia with GET /v2/co/runt/conductor. primerApellido is optional except for PA. TI without a surname is billed as the driver list price plus the RUI list price.'
 sidebar_label: RUNT - Driver's License (Premium)
 slug: /vehicle-validation/colombia/runt-drivers-license
 keywords:
@@ -42,12 +42,36 @@ Verifik's Driver's License Validation API allows you to query official informati
 
 This integration is essential for transport companies, car rental agencies, insurers, and logistics platforms that need to verify the legal status and eligibility of drivers before hiring or authorizing vehicle use.
 
-RUNT now authenticates drivers with the first last name (`primerApellido`) and may return masked names. This **v2** path still works without an integration change.
+There are two driver (conductor) endpoints. This page is **Premium**, `GET /v2/co/runt/conductor`. Verifik finds the first last name (`primerApellido`) when you omit it, except for a passport (`PA`), which always requires it. [Basic v3](/vehicle-validation/colombia/runt-drivers-license-basic) (`GET /v3/co/runt/conductor`) requires `primerApellido` for every document type.
 
-**Pricing from 1 September 2026 (America/Bogota):**
+RUNT authenticates the driver with that first last name and may return masked names. This v2 path still works when you do not send the surname.
 
-- Omit `primerApellido` — Verifik resolves the last name internally — **Premium** (conductor + name lookup). One history row.
-- Send `primerApellido` — name lookup is skipped — **Basic** price (same as [`/v3/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license-basic)). One history row.
+### v2 and v3
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| Surname (`primerApellido`) | Not required, except **`PA`**, which requires it (minimum 2 characters). Verifik finds the surname when you omit it. | Required for every document type (minimum 2 characters). |
+| Document types | `CC`, `TI`, `CE`, `PA`, `PPT` | `CC`, `TI`, `CE`, `PA`, `PPT` |
+| Billing | Omit the surname: **Premium**. For `TI` with no surname, the driver list price **plus** the RUI list price. Send the surname: **Basic**, the same price as v3. | **Basic** conductor price. Verifik does not look up the surname and does not add the RUI price. |
+
+### Tarjeta de identidad (`TI`) on v2
+
+`TI` is a *tarjeta de identidad*. On this endpoint you can omit `primerApellido`, the same as `CC`, `CE`, and `PPT`.
+
+When `documentType` is `TI` and you do not send `primerApellido`, Verifik first looks up the holder's surname through the Colombian identity lookup — the same data as [`GET /v2/co/rui`](/background-check/colombia-rui) — and then runs the driver lookup. The name on that record starts with the given name. Verifik uses the first surname. A leading particle (`DE`, `DEL`, `LA`, `LAS`, `LOS`, or `Y`) stays with that surname. For example, `ANA DE LA CRUZ LOPEZ` is used as `DE LA CRUZ`.
+
+That request is billed as two requests: the driver (conductor) price plus the RUI price. Use list prices only. For example, driver list price + RUI list price = total. The RUI price is the list price of `GET /v2/co/rui`.
+
+If the surname lookup fails, the call returns HTTP 409 and there is no RUI charge:
+
+```json
+{
+	"code": "Conflict",
+	"message": "Unable to resolve primer apellido for RUNT conductor"
+}
+```
+
+Sending `primerApellido` on v2 skips that lookup. The call is billed at the **Basic** price, the same price as [`GET /v3/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license-basic).
 
 Use the dedicated [Basic v3](/vehicle-validation/colombia/runt-drivers-license-basic) path if you always send `primerApellido` and want that requirement enforced.
 
@@ -83,9 +107,9 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 | Name             | Type   | Required | Description                                                    |
 | ---------------- | ------ | -------- | -------------------------------------------------------------- |
-| `documentType`   | string | Yes      | One of **`CC`**, **`CE`**, **`PA`**, **`PPT`**. See the table below — **`PA` is passport, `PPT` is not**. |
+| `documentType`   | string | Yes      | One of **`CC`**, **`TI`**, **`CE`**, **`PA`**, **`PPT`**. See the table below — **`PA` is passport, `PPT` is not**. |
 | `documentNumber` | string | Yes      | Driver's document number, without spaces or periods.           |
-| `primerApellido` | string | Conditional | First last name. **Required for `PA`**. Optional for `CC`, `CE`, and `PPT`. Omit it for **Premium** (Verifik resolves the name). Send it to skip the name lookup and pay **Basic**. Procuraduría and `/v2/co/cedula` cannot look up passport names. |
+| `primerApellido` | string | Conditional | First last name (minimum 2 characters). **Required for `PA`**. Optional for `CC`, `TI`, `CE`, and `PPT`. Omit it and Verifik finds the surname (**Premium**). Send it to skip that lookup and pay **Basic**, the same price as v3. For `TI` with no surname, the charge is the driver list price plus the RUI list price. Passport names are not resolved for you: send `primerApellido` for `PA`. |
 
 ### Document types
 
@@ -94,6 +118,7 @@ Do not send `PPT` when RUNT shows **`P.`** — that is a **passport (`PA`)**. `P
 | Code | Full name | Who holds it | RUNT label | `primerApellido` |
 | --- | --- | --- | --- | --- |
 | **`CC`** | *Cédula de Ciudadanía* | Colombian citizens (national ID) | `C.` | Optional |
+| **`TI`** | *Tarjeta de Identidad* | Colombian tarjeta de identidad | — | Optional. With no surname, Verifik uses the same identity data as `GET /v2/co/rui`, then the driver lookup. Billed as driver list price + RUI list price. |
 | **`CE`** | *Cédula de Extranjería* | Foreign residents in Colombia | `E.` | Optional |
 | **`PA`** | *Pasaporte* (passport) | Passport holders | `P.` | **Required** |
 | **`PPT`** | *Permiso por Protección Temporal* | Venezuelan temporary-protection permit — **not a passport** | `Y.` | Optional |
@@ -132,6 +157,19 @@ params = {"documentType": "CC", "documentNumber": "123456789"}  # add primerApel
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
+
+  </TabItem>
+  <TabItem value="curl-ti" label="curl (TI)">
+
+```bash
+curl -G "https://api.verifik.co/v2/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001"
+```
+
+`documentNumber` above is fake. Omit `primerApellido` and Verifik looks up the surname from the same data as `GET /v2/co/rui`, then runs the driver lookup. The charge is the driver list price + the RUI list price.
 
   </TabItem>
 </Tabs>
@@ -281,6 +319,55 @@ print(r.json())
 ```
 
   </TabItem>
+  <TabItem value="200-ti" label="200 (TI, fake data)">
+
+Illustrative response for a `TI` query. Every value below is fake. A live payload uses the same fields as the example above.
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"firstName": "ANA MARIA",
+		"lastName": "EJEMPLO FICTICIO",
+		"arrayName": ["ANA", "MARIA", "EJEMPLO", "FICTICIO"],
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"consultationDateTime": "2026-01-15T12:00:00.000Z",
+		"inscriptionDate": "01/01/2020",
+		"inscriptionNumber": "1002003001",
+		"totalLicenses": "1",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"licenceNumber": "1002003001",
+				"expeditionDate": "01/06/2024",
+				"dueDate": "01/06/2034",
+				"substratum": "1002003001"
+			}
+		],
+		"infractions": {
+			"nroPazYSalvo": "000000000000",
+			"tieneMultas": "NO"
+		},
+		"aptitudeCertificates": [],
+		"medicalCertificates": [],
+		"requests": [],
+		"sicovRequests": [],
+		"ANSVpayments": [],
+		"transitTaxes": {}
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "EXAMP"
+}
+```
+
+  </TabItem>
   <TabItem value="404" label="404">
 
 ```json
@@ -345,7 +432,10 @@ The API connects directly to official sources such as RUNT, ensuring:
 -   License categories include B1 (cars), A2 (motorcycles), C1 (trucks), etc.
 -   Status "ACTIVA" indicates the license is currently valid.
 -   Multiple license categories can be associated with one driver.
--   `PA` is passport, not PPT. Send `primerApellido` when querying a passport; RUNT authenticates drivers with the first last name and masks the full name in the official UI.
+-   `PA` is passport, not PPT. Send `primerApellido` when querying a passport.
+-   Accepted `documentType` values are **`CC`**, **`TI`**, **`CE`**, **`PA`**, and **`PPT`**.
+-   `TI` without `primerApellido` is billed as the driver list price plus the RUI list price (`GET /v2/co/rui`). A failed surname lookup returns 409 and adds no RUI charge.
+-   Sending `primerApellido` on this v2 endpoint is billed at the Basic price, the same as v3.
 
 ## About Verifik
 
