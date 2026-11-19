@@ -17,7 +17,28 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 Interroge le **RUNT** pour le **permis de conduire** avec **`documentType`** et **`documentNumber`**. La réponse peut inclure statut, catégories, certificats, demandes et indication de sanctions.
 
-Sans `primerApellido` : tarif **Premium** (résolution du nom). Avec `primerApellido` : tarif **Basic**, comme [`/v3/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license-basic).
+Deux endpoints. Celui-ci est **Premium** : `GET /v2/co/runt/conductor`. Verifik trouve le premier nom de famille (`primerApellido`) si vous l’omettez, sauf pour le passeport (`PA`), qui l’exige toujours. [Basic v3](/vehicle-validation/colombia/runt-drivers-license-basic) (`GET /v3/co/runt/conductor`) exige `primerApellido` pour chaque type de document.
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| Nom de famille (`primerApellido`) | Facultatif, sauf **`PA`** (obligatoire, 2 caractères minimum). Verifik le trouve si vous l’omettez. | Obligatoire pour chaque type (2 caractères minimum). |
+| Types de document | `CC`, `TI`, `CE`, `PA`, `PPT` | `CC`, `TI`, `CE`, `PA`, `PPT` |
+| Facturation | Sans nom : **Premium**. Pour `TI` sans nom, prix catalogue conducteur **plus** prix catalogue RUI. Avec nom : **Basic**, le même prix que v3. | Prix **Basic** du conducteur. Pas de recherche du nom et pas de prix RUI. |
+
+`TI` est la *tarjeta de identidad*. Sans `primerApellido`, Verifik cherche d’abord le nom de famille dans les mêmes données que `GET /v2/co/rui`, puis lance la consultation conducteur. Le nom de cet enregistrement commence par le prénom. Verifik prend le premier nom de famille. Une particule initiale (`DE`, `DEL`, `LA`, `LAS`, `LOS` ou `Y`) reste avec ce nom. Par exemple, `ANA DE LA CRUZ LOPEZ` devient `DE LA CRUZ`.
+
+Cette requête est facturée comme deux requêtes : le prix conducteur plus le prix RUI. Prix catalogue uniquement. Par exemple, prix catalogue conducteur + prix catalogue RUI = total.
+
+Si la recherche du nom échoue, la réponse est HTTP 409 et il n’y a pas de facturation RUI :
+
+```json
+{
+	"code": "Conflict",
+	"message": "Unable to resolve primer apellido for RUNT conductor"
+}
+```
+
+Envoyer `primerApellido` sur v2 saute cette recherche et facture le prix **Basic**, le même que v3.
 
 ### En-têtes
 
@@ -30,9 +51,9 @@ Sans `primerApellido` : tarif **Premium** (résolution du nom). Avec `primerApel
 
 | Nom | Type | Obligatoire | Description |
 | --- | --- | --- | --- |
-| `documentType` | string | Oui | Un de **`CC`**, **`CE`**, **`PA`**, **`PPT`**. Voir le tableau — **`PA` est le passeport, `PPT` ne l’est pas**. |
+| `documentType` | string | Oui | Un de **`CC`**, **`TI`**, **`CE`**, **`PA`**, **`PPT`**. Voir le tableau — **`PA` est le passeport, `PPT` ne l’est pas**. |
 | `documentNumber` | string | Oui | Numéro sans espaces ni ponctuation. |
-| `primerApellido` | string | Conditionnel | Premier nom de famille. **Obligatoire pour `PA`**. Optionnel pour `CC`, `CE` et `PPT`. Procuraduría et `/v2/co/cedula` ne consultent pas les passeports. |
+| `primerApellido` | string | Conditionnel | Premier nom de famille (2 caractères minimum). **Obligatoire pour `PA`**. Optionnel pour `CC`, `TI`, `CE` et `PPT`. L’omettre : Verifik trouve le nom (**Premium**). L’envoyer : prix **Basic**, le même que v3. Pour `PA`, envoyez toujours `primerApellido`. |
 
 ### Types de document
 
@@ -41,6 +62,7 @@ N’envoyez pas `PPT` lorsque RUNT affiche **`P.`** — c’est un **passeport (
 | Code | Nom complet | Titulaire | Libellé RUNT | `primerApellido` |
 | --- | --- | --- | --- | --- |
 | **`CC`** | *Cédula de Ciudadanía* | Citoyens colombiens (pièce nationale) | `C.` | Optionnel |
+| **`TI`** | *Tarjeta de Identidad* | Tarjeta de identidad colombienne | — | Optionnel. Sans nom : mêmes données que `GET /v2/co/rui`, puis la consultation conducteur. Prix catalogue conducteur + prix catalogue RUI. |
 | **`CE`** | *Cédula de Extranjería* | Résidents étrangers en Colombie | `E.` | Optionnel |
 | **`PA`** | *Pasaporte* (passeport) | Titulaires de passeport | `P.` | **Obligatoire** |
 | **`PPT`** | *Permiso por Protección Temporal* | Permis temporaire vénézuélien — **pas un passeport** | `Y.` | Optionnel |
@@ -75,6 +97,19 @@ params = {"documentType": "CC", "documentNumber": "123456789"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
+
+  </TabItem>
+  <TabItem value="curl-ti" label="curl (TI)">
+
+```bash
+curl -G "https://api.verifik.co/v2/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001"
+```
+
+Le numéro est fictif. Sans `primerApellido`, Verifik cherche le nom dans les mêmes données que `GET /v2/co/rui`. Le total est le prix catalogue conducteur + le prix catalogue RUI.
 
   </TabItem>
 </Tabs>
@@ -113,6 +148,36 @@ print(r.json())
 ```
 
   </TabItem>
+  <TabItem value="200-ti" label="200 (TI, fictif)">
+
+Valeurs fictives. Une réponse réelle reprend les mêmes champs.
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"dueDate": "01/06/2034",
+				"expeditionDate": "01/06/2024"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "EXAMP"
+}
+```
+
+  </TabItem>
   <TabItem value="404" label="404">
 
 ```json
@@ -138,5 +203,7 @@ print(r.json())
 ### Notes
 
 - La structure dépend du retour **RUNT**.
-- Types de document validés sur cet endpoint : **`CC`**, **`CE`**, **`PA`** (passeport), **`PPT`**.
-- `primerApellido` est obligatoire pour **`PA`** et optionnel pour **`CC`**, **`CE`**, **`PPT`**.
+- Types de document validés sur cet endpoint : **`CC`**, **`TI`**, **`CE`**, **`PA`** (passeport), **`PPT`**.
+- `primerApellido` est obligatoire pour **`PA`** et optionnel pour **`CC`**, **`TI`**, **`CE`**, **`PPT`**.
+- `TI` sans `primerApellido` est facturé au prix catalogue conducteur plus le prix catalogue RUI. Un échec de la recherche du nom renvoie 409, sans facturation RUI.
+- Envoyer `primerApellido` sur v2 facture le prix Basic, le même que v3.

@@ -1,7 +1,7 @@
 ---
 id: vehicle-validation-colombia-runt-drivers-license-basic
 title: RUNT - Driver's License (Basic)
-description: 'Verify Colombian driver licenses via RUNT on /v3/co/runt/conductor. primerApellido is required. Billed at the Basic conductor rate.'
+description: 'Verify Colombian driver licenses via GET /v3/co/runt/conductor. primerApellido is required for CC, TI, CE, PA, and PPT. Billed at the Basic conductor price.'
 sidebar_label: RUNT - Driver's License (Basic)
 slug: /vehicle-validation/colombia/runt-drivers-license-basic
 keywords:
@@ -16,9 +16,17 @@ import TabItem from "@theme/TabItem";
 
 # Driver's License Validation in RUNT (Basic)
 
-Same RUNT driver lookup as [Premium v2](/vehicle-validation/colombia/runt-drivers-license), billed at the **current conductor price**. You must send `primerApellido`. Omitting it returns `409 MissingParameter`.
+Same driver lookup as [Premium v2](/vehicle-validation/colombia/runt-drivers-license) (`GET /v2/co/runt/conductor`), billed at the **Basic** conductor price. You must send `primerApellido` (minimum 2 characters) for every document type, including `TI`. Omitting it returns `409 MissingParameter`. This endpoint does not look up the surname and does not add the RUI price.
 
-Use this path when you already know the first last name. If you stay on v2 and send `primerApellido`, you also pay this Basic rate without changing the URL.
+Use this path when you already know the first last name. Sending `primerApellido` on v2 is billed at this same Basic price.
+
+### v2 and v3
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| Surname (`primerApellido`) | Not required, except **`PA`**, which requires it. Verifik finds the surname when you omit it. | Required for every document type (minimum 2 characters). |
+| Document types | `CC`, `TI`, `CE`, `PA`, `PPT` | `CC`, `TI`, `CE`, `PA`, `PPT` |
+| Billing | Omit the surname: **Premium**. For `TI` with no surname, the driver list price **plus** the RUI list price (`GET /v2/co/rui`). Send the surname: **Basic**, the same price as v3. | **Basic** conductor price. No surname lookup and no RUI price. |
 
 ### Endpoint
 
@@ -37,15 +45,16 @@ GET https://api.verifik.co/v3/co/runt/conductor
 
 | Name             | Type   | Required | Description                                                    |
 | ---------------- | ------ | -------- | -------------------------------------------------------------- |
-| `documentType`   | string | Yes      | One of **`CC`**, **`CE`**, **`PA`**, **`PPT`**. **`PA` is passport, `PPT` is not**. |
+| `documentType`   | string | Yes      | One of **`CC`**, **`TI`**, **`CE`**, **`PA`**, **`PPT`**. **`PA` is passport, `PPT` is not**. **`TI`** is *tarjeta de identidad*. |
 | `documentNumber` | string | Yes      | Driver's document number, without spaces or periods.           |
-| `primerApellido` | string | **Yes**  | First last name (min 2 characters). Required for every document type. |
+| `primerApellido` | string | **Yes**  | First last name (minimum 2 characters). Required for every document type, including `TI`. |
 
 ### Document types
 
 | Code | Full name | Who holds it | RUNT label | `primerApellido` |
 | --- | --- | --- | --- | --- |
 | **`CC`** | *Cédula de Ciudadanía* | Colombian citizens (national ID) | `C.` | **Required** |
+| **`TI`** | *Tarjeta de Identidad* | Colombian tarjeta de identidad | — | **Required** |
 | **`CE`** | *Cédula de Extranjería* | Foreign residents in Colombia | `E.` | **Required** |
 | **`PA`** | *Pasaporte* (passport) | Passport holders | `P.` | **Required** |
 | **`PPT`** | *Permiso por Protección Temporal* | Venezuelan temporary-protection permit — **not a passport** | `Y.` | **Required** |
@@ -86,6 +95,20 @@ print(r.json())
 ```
 
   </TabItem>
+  <TabItem value="curl-ti" label="curl (TI)">
+
+```bash
+curl -G "https://api.verifik.co/v3/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001" \
+  --data-urlencode "primerApellido=EJEMPLO"
+```
+
+`documentNumber` and `primerApellido` above are fake. `primerApellido` is required. This call is billed at the Basic conductor price and does not add the RUI price.
+
+  </TabItem>
 </Tabs>
 
 ### Response
@@ -96,26 +119,28 @@ print(r.json())
 ```json
 {
 	"data": {
-		"documentType": "CC",
-		"documentNumber": "63535709",
-		"fullName": "ARLETH PATRICIA RUEDA CORREA",
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
 		"driverStatus": "ACTIVO",
 		"citizenStatus": "ACTIVA",
 		"licenses": [
 			{
-				"category": "B1",
+				"category": "A2",
 				"status": "ACTIVA",
-				"dueDate": "19/09/2034",
-				"expeditionDate": "19/09/2024"
+				"dueDate": "01/06/2034",
+				"expeditionDate": "01/06/2024"
 			}
 		]
 	},
 	"signature": {
-		"dateTime": "October 10, 2025 7:29 PM",
+		"dateTime": "January 15, 2026 12:00 PM",
 		"message": "Certified by Verifik.co"
 	}
 }
 ```
+
+The values above are fake. A live `TI` response uses the same fields as [Premium v2](/vehicle-validation/colombia/runt-drivers-license).
 
   </TabItem>
   <TabItem value="409" label="409">
@@ -132,6 +157,7 @@ print(r.json())
 
 ### Notes
 
-- One API request and one credit row at the Basic conductor price.
-- Without `primerApellido` this endpoint does not fall back to a name lookup.
-- For automatic last-name resolution (Premium), use [`/v2/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license).
+- One API request at the Basic conductor price, including `TI` when you send `primerApellido`.
+- Without `primerApellido` this endpoint does not look up the surname and does not add the RUI price.
+- Accepted `documentType` values are **`CC`**, **`TI`**, **`CE`**, **`PA`**, and **`PPT`**.
+- For automatic surname resolution, use [`/v2/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license). On that endpoint, `TI` without `primerApellido` is billed as the driver list price plus the RUI list price.

@@ -6,21 +6,65 @@ sidebar_label: RUNT — 驾驶证 (Basic)
 slug: /vehicle-validation/colombia/runt-drivers-license-basic
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ### 端点
 
 ```
 GET https://api.verifik.co/v3/co/runt/conductor
 ```
 
-与 [Premium v2](/vehicle-validation/colombia/runt-drivers-license) 相同的 RUNT 查询，按**当前驾驶员价格**计费。`primerApellido` **必填**。缺少时返回 `409 MissingParameter`。
+与 [Premium v2](/vehicle-validation/colombia/runt-drivers-license)（`GET /v2/co/runt/conductor`）相同的查询，按 **Basic** 驾驶员价格计费。包括 `TI` 在内的每种证件都必须提供 `primerApellido`（至少 2 个字符）。缺少时返回 `409 MissingParameter`。此端点不查找姓氏，也不加 RUI 价格。
+
+在 v2 传入 `primerApellido` 时，按同样的 Basic 价格计费。
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| 姓氏 (`primerApellido`) | 可选。仅 **`PA` 必填**。省略时由 Verifik 查找。 | 每种证件都必填（至少 2 个字符）。 |
+| 证件类型 | `CC`、`TI`、`CE`、`PA`、`PPT` | `CC`、`TI`、`CE`、`PA`、`PPT` |
+| 计费 | 省略姓氏：**Premium**。`TI` 且没有姓氏时，为驾驶员标价 + RUI 标价（`GET /v2/co/rui`）。传入姓氏：与 v3 相同的 **Basic**。 | **Basic**。不查询姓氏，也不加 RUI 价格。 |
 
 ### 参数
 
 | 名称 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `documentType` | string | 是 | **`CC`**、**`CE`**、**`PA`**、**`PPT`**。 |
+| `documentType` | string | 是 | **`CC`**、**`TI`**、**`CE`**、**`PA`**、**`PPT`**。**`TI`** 是 tarjeta de identidad。 |
 | `documentNumber` | string | 是 | 不含空格的号码。 |
-| `primerApellido` | string | **是** | 第一个姓氏（至少 2 个字符）。 |
+| `primerApellido` | string | **是** | 第一个姓氏（至少 2 个字符）。包括 `TI` 在内的每种证件都必填。 |
+
+### curl (TI)
+
+```bash
+curl -G "https://api.verifik.co/v3/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001" \
+  --data-urlencode "primerApellido=EJEMPLO"
+```
+
+数值是虚构的。`primerApellido` 必填。按 Basic 计费，没有 RUI 价格。
+
+### 响应（虚构数据）
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"dueDate": "01/06/2034",
+				"expeditionDate": "01/06/2024"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	}
+}
+```

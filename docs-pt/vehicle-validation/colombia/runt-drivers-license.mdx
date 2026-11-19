@@ -17,7 +17,28 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 Consulta a **carteira de habilitação** no **RUNT** com **`documentType`** e **`documentNumber`**. A resposta pode incluir situação da licença, categorias, certificados, solicitações e indicação de multas.
 
-Sem `primerApellido`: tarifa **Premium** (resolução do nome). Com `primerApellido`: tarifa **Basic**, como [`/v3/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license-basic).
+Há dois endpoints. Este é o **Premium**: `GET /v2/co/runt/conductor`. A Verifik encontra o primeiro sobrenome (`primerApellido`) quando você o omite, exceto no passaporte (`PA`), que sempre o exige. O [Basic v3](/vehicle-validation/colombia/runt-drivers-license-basic) (`GET /v3/co/runt/conductor`) exige `primerApellido` para todos os tipos de documento.
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| Sobrenome (`primerApellido`) | Opcional, exceto **`PA`** (obrigatório, mínimo de 2 caracteres). A Verifik o encontra se você omitir. | Obrigatório para todos os tipos (mínimo de 2 caracteres). |
+| Tipos de documento | `CC`, `TI`, `CE`, `PA`, `PPT` | `CC`, `TI`, `CE`, `PA`, `PPT` |
+| Cobrança | Sem sobrenome: **Premium**. Para `TI` sem sobrenome, preço de tabela do condutor **mais** o preço de tabela do RUI. Com sobrenome: **Basic**, o mesmo preço da v3. | Preço **Basic** do condutor. Sem consulta de sobrenome e sem preço de RUI. |
+
+`TI` é a *tarjeta de identidad*. Sem `primerApellido`, a Verifik primeiro busca o sobrenome nos mesmos dados de `GET /v2/co/rui` e depois faz a consulta do condutor. O nome desse registro começa pelo nome próprio. A Verifik usa o primeiro sobrenome. Uma partícula inicial (`DE`, `DEL`, `LA`, `LAS`, `LOS` ou `Y`) permanece com esse sobrenome. Por exemplo, `ANA DE LA CRUZ LOPEZ` é usado como `DE LA CRUZ`.
+
+Essa solicitação é cobrada como duas consultas: o preço do condutor mais o preço do RUI. Use apenas preços de tabela. Por exemplo, preço de tabela do condutor + preço de tabela do RUI = total.
+
+Se a busca do sobrenome falhar, a resposta é HTTP 409 e não há cobrança de RUI:
+
+```json
+{
+	"code": "Conflict",
+	"message": "Unable to resolve primer apellido for RUNT conductor"
+}
+```
+
+Enviar `primerApellido` na v2 pula essa busca e cobra o preço **Basic**, o mesmo da v3.
 
 ### Cabeçalhos
 
@@ -30,9 +51,9 @@ Sem `primerApellido`: tarifa **Premium** (resolução do nome). Com `primerApell
 
 | Nome | Tipo | Obrigatório | Descrição |
 | --- | --- | --- | --- |
-| `documentType` | string | Sim | Um de **`CC`**, **`CE`**, **`PA`**, **`PPT`**. Veja a tabela — **`PA` é passaporte, `PPT` não é**. |
+| `documentType` | string | Sim | Um de **`CC`**, **`TI`**, **`CE`**, **`PA`**, **`PPT`**. Veja a tabela — **`PA` é passaporte, `PPT` não é**. |
 | `documentNumber` | string | Sim | Número do documento sem espaços nem pontos. |
-| `primerApellido` | string | Condicional | Primeiro sobrenome. **Obrigatório para `PA`**. Opcional para `CC`, `CE` e `PPT`. Procuraduría e `/v2/co/cedula` não consultam passaportes. |
+| `primerApellido` | string | Condicional | Primeiro sobrenome (mínimo de 2 caracteres). **Obrigatório para `PA`**. Opcional para `CC`, `TI`, `CE` e `PPT`. Omitir: a Verifik encontra o sobrenome (**Premium**). Enviar: preço **Basic**, o mesmo da v3. Para `PA`, envie sempre `primerApellido`. |
 
 ### Tipos de documento
 
@@ -41,6 +62,7 @@ Não envie `PPT` quando o RUNT mostrar **`P.`** — isso é **passaporte (`PA`)*
 | Código | Nome completo | Quem possui | Rótulo RUNT | `primerApellido` |
 | --- | --- | --- | --- | --- |
 | **`CC`** | *Cédula de Ciudadanía* | Cidadãos colombianos (RG nacional) | `C.` | Opcional |
+| **`TI`** | *Tarjeta de Identidad* | Tarjeta de identidad colombiana | — | Opcional. Sem sobrenome: os mesmos dados de `GET /v2/co/rui` e depois a consulta do condutor. Preço de tabela do condutor + preço de tabela do RUI. |
 | **`CE`** | *Cédula de Extranjería* | Estrangeiros residentes na Colômbia | `E.` | Opcional |
 | **`PA`** | *Pasaporte* (passaporte) | Portadores de passaporte | `P.` | **Obrigatório** |
 | **`PPT`** | *Permiso por Protección Temporal* | Permissão temporária venezuelana — **não é passaporte** | `Y.` | Opcional |
@@ -75,6 +97,19 @@ params = {"documentType": "CC", "documentNumber": "123456789"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
+
+  </TabItem>
+  <TabItem value="curl-ti" label="curl (TI)">
+
+```bash
+curl -G "https://api.verifik.co/v2/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001"
+```
+
+O número é fictício. Sem `primerApellido`, a Verifik busca o sobrenome nos mesmos dados de `GET /v2/co/rui`. O total é o preço de tabela do condutor + o preço de tabela do RUI.
 
   </TabItem>
 </Tabs>
@@ -113,6 +148,36 @@ print(r.json())
 ```
 
   </TabItem>
+  <TabItem value="200-ti" label="200 (TI, fictício)">
+
+Valores fictícios. Uma resposta real usa os mesmos campos.
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"dueDate": "01/06/2034",
+				"expeditionDate": "01/06/2024"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "EXAMP"
+}
+```
+
+  </TabItem>
   <TabItem value="404" label="404">
 
 ```json
@@ -138,5 +203,7 @@ print(r.json())
 ### Observações
 
 - A estrutura segue o retorno do **RUNT**.
-- Tipos de documento validados neste endpoint: **`CC`**, **`CE`**, **`PA`** (passaporte), **`PPT`**.
-- `primerApellido` é obrigatório para **`PA`** e opcional para **`CC`**, **`CE`**, **`PPT`**.
+- Tipos de documento validados neste endpoint: **`CC`**, **`TI`**, **`CE`**, **`PA`** (passaporte), **`PPT`**.
+- `primerApellido` é obrigatório para **`PA`** e opcional para **`CC`**, **`TI`**, **`CE`**, **`PPT`**.
+- `TI` sem `primerApellido` é cobrado como o preço de tabela do condutor mais o preço de tabela do RUI. Se o sobrenome não for resolvido, a resposta é 409 e não há cobrança de RUI.
+- Enviar `primerApellido` na v2 cobra o preço Basic, o mesmo da v3.

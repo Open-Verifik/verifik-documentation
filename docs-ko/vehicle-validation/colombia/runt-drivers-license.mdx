@@ -17,7 +17,28 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 **RUNT** 에 등록된 **운전면허** 정보를 명의자 **`documentType`**·**`documentNumber`** 로 조회합니다. 면허 상태, 카테고리, 적성·의무 교육 관련 데이터, 제재·과태료 요약 등이 응답에 포함될 수 있습니다.
 
-`primerApellido` 생략: **Premium** (이름 조회 포함). `primerApellido` 전송: **Basic** 요금 — [`/v3/co/runt/conductor`](/vehicle-validation/colombia/runt-drivers-license-basic).
+엔드포인트는 두 개입니다. 이 페이지는 **Premium** `GET /v2/co/runt/conductor` 입니다. 성을 생략하면 Verifik가 `primerApellido`를 찾습니다. 여권(`PA`)은 항상 필요합니다. [Basic v3](/vehicle-validation/colombia/runt-drivers-license-basic) (`GET /v3/co/runt/conductor`)는 모든 문서 유형에 `primerApellido`가 필요합니다.
+
+| | Premium `GET /v2/co/runt/conductor` | Basic `GET /v3/co/runt/conductor` |
+| --- | --- | --- |
+| 성 (`primerApellido`) | 선택. **`PA`만 필수** (최소 2자). 생략하면 Verifik가 찾습니다. | 모든 유형에 필수 (최소 2자). |
+| 문서 유형 | `CC`, `TI`, `CE`, `PA`, `PPT` | `CC`, `TI`, `CE`, `PA`, `PPT` |
+| 요금 | 성 생략: **Premium**. `TI`이고 성이 없으면 운전자 정가 **더하기** RUI 정가. 성을 보내면 v3과 같은 **Basic**. | **Basic** 운전자 요금. 성 조회도 RUI 요금도 없습니다. |
+
+`TI`는 *tarjeta de identidad*입니다. `primerApellido`가 없으면 Verifik는 먼저 `GET /v2/co/rui`와 같은 신원 데이터에서 성을 찾고, 그다음 운전자 조회를 합니다. 그 이름의 앞부분은 이름입니다. Verifik는 첫 번째 성을 사용합니다. 앞에 오는 입자(`DE`, `DEL`, `LA`, `LAS`, `LOS`, `Y`)는 그 성에 남습니다. 예: `ANA DE LA CRUZ LOPEZ`는 `DE LA CRUZ`입니다.
+
+이 요청은 두 건으로 청구됩니다. 운전자 요금과 RUI 요금입니다. 정가만 사용합니다. 예: 운전자 정가 + RUI 정가 = 합계.
+
+성 조회가 실패하면 HTTP 409이며 RUI 요금은 없습니다.
+
+```json
+{
+	"code": "Conflict",
+	"message": "Unable to resolve primer apellido for RUNT conductor"
+}
+```
+
+v2에서 `primerApellido`를 보내면 그 조회를 건너뛰고 v3과 같은 **Basic** 요금이 적용됩니다.
 
 ### 헤더(Headers)
 
@@ -30,9 +51,9 @@ GET https://api.verifik.co/v2/co/runt/conductor
 
 | name | type | required | description |
 | --- | --- | --- | --- |
-| `documentType` | string | yes | **`CC`**, **`CE`**, **`PA`**, **`PPT`** 중 하나. 아래 표 참고 — **`PA`는 여권, `PPT`는 여권이 아닙니다**. |
+| `documentType` | string | yes | **`CC`**, **`TI`**, **`CE`**, **`PA`**, **`PPT`** 중 하나. 아래 표 참고 — **`PA`는 여권, `PPT`는 여권이 아닙니다**. |
 | `documentNumber` | string | yes | 운전자 문서 번호(공백·마침표 없음). |
-| `primerApellido` | string | 조건부 | 첫 번째 성. **`PA`는 필수**. `CC`, `CE`, `PPT`는 선택. Procuraduría와 `/v2/co/cedula`는 여권을 조회하지 않습니다. |
+| `primerApellido` | string | 조건부 | 첫 번째 성(최소 2자). **`PA`는 필수**. `CC`, `TI`, `CE`, `PPT`는 선택. 생략하면 Verifik가 성을 찾습니다(**Premium**). 보내면 v3과 같은 **Basic**. `PA`는 항상 `primerApellido`를 보내세요. |
 
 ### 문서 유형
 
@@ -41,6 +62,7 @@ RUNT에 **`P.`** 가 보이면 `PPT`를 보내지 마세요. 그것은 **여권(
 | 코드 | 정식 명칭 | 대상 | RUNT 표시 | `primerApellido` |
 | --- | --- | --- | --- | --- |
 | **`CC`** | *Cédula de Ciudadanía* | 콜롬비아 국민(주민등록증) | `C.` | 선택 |
+| **`TI`** | *Tarjeta de Identidad* | 콜롬비아 tarjeta de identidad | — | 선택. 성이 없으면 `GET /v2/co/rui`와 같은 데이터로 성을 찾은 뒤 운전자를 조회합니다. 운전자 정가 + RUI 정가. |
 | **`CE`** | *Cédula de Extranjería* | 콜롬비아 거주 외국인 | `E.` | 선택 |
 | **`PA`** | *Pasaporte* (여권) | 여권 소지자 | `P.` | **필수** |
 | **`PPT`** | *Permiso por Protección Temporal* | 베네수엘라 임시보호 허가 — **여권이 아님** | `Y.` | 선택 |
@@ -75,6 +97,19 @@ params = {"documentType": "CC", "documentNumber": "123456789"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
 ```
+
+  </TabItem>
+  <TabItem value="curl-ti" label="curl (TI)">
+
+```bash
+curl -G "https://api.verifik.co/v2/co/runt/conductor" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_TOKEN" \
+  --data-urlencode "documentType=TI" \
+  --data-urlencode "documentNumber=1002003001"
+```
+
+번호는 가짜입니다. `primerApellido`를 생략하면 Verifik가 `GET /v2/co/rui`와 같은 데이터에서 성을 찾습니다. 합계는 운전자 정가 + RUI 정가입니다.
 
   </TabItem>
 </Tabs>
@@ -113,6 +148,36 @@ print(r.json())
 ```
 
   </TabItem>
+  <TabItem value="200-ti" label="200 (TI, 가짜)">
+
+아래 값은 모두 가짜입니다. 실제 응답은 같은 필드를 사용합니다.
+
+```json
+{
+	"data": {
+		"documentType": "TI",
+		"documentNumber": "1002003001",
+		"fullName": "ANA MARIA EJEMPLO FICTICIO",
+		"driverStatus": "ACTIVO",
+		"citizenStatus": "ACTIVA",
+		"licenses": [
+			{
+				"category": "A2",
+				"status": "ACTIVA",
+				"dueDate": "01/06/2034",
+				"expeditionDate": "01/06/2024"
+			}
+		]
+	},
+	"signature": {
+		"dateTime": "January 15, 2026 12:00 PM",
+		"message": "Certified by Verifik.co"
+	},
+	"id": "EXAMP"
+}
+```
+
+  </TabItem>
   <TabItem value="404" label="404">
 
 ```json
@@ -138,5 +203,7 @@ print(r.json())
 ### 참고(Notes)
 
 - 응답 필드는 **RUNT** 원천 데이터에 따라 달라질 수 있습니다.
-- 제품 UI에 다른 문서 유형이 보일 수 있으나, 이 경로의 검증은 **`CC`**, **`CE`**, **`PA`**(여권), **`PPT`** 입니다.
-- `primerApellido`는 **`PA`에서 필수**이며 **`CC`**, **`CE`**, **`PPT`** 에서는 선택입니다.
+- 이 경로에서 허용하는 문서 유형은 **`CC`**, **`TI`**, **`CE`**, **`PA`**(여권), **`PPT`** 입니다.
+- `primerApellido`는 **`PA`에서 필수**이며 **`CC`**, **`TI`**, **`CE`**, **`PPT`** 에서는 선택입니다.
+- `TI`이고 `primerApellido`가 없으면 운전자 정가와 RUI 정가를 합산합니다. 성 조회가 실패하면 409이며 RUI 요금은 없습니다.
+- v2에서 `primerApellido`를 보내면 v3과 같은 Basic 요금입니다.
