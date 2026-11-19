@@ -2934,6 +2934,34 @@ keywords:
   - "https://api.verifik.co/v2/pe/politically-exposed-persons"
   - "GET v2/pe/politically-exposed-persons"
   - "GET /v2/pe/politically-exposed-persons"
+  - "v2/pe/vehiculo/captura-lima"
+  - "/v2/pe/vehiculo/captura-lima"
+  - "v2 pe vehiculo captura-lima"
+  - "pe/vehiculo/captura-lima"
+  - "/pe/vehiculo/captura-lima"
+  - "api/pe/vehiculo/captura-lima"
+  - "/api/pe/vehiculo/captura-lima"
+  - "api pe vehiculo captura-lima"
+  - "vehiculo/captura-lima"
+  - "/vehiculo/captura-lima"
+  - "api.verifik.co/v2/pe/vehiculo/captura-lima"
+  - "https://api.verifik.co/v2/pe/vehiculo/captura-lima"
+  - "GET v2/pe/vehiculo/captura-lima"
+  - "GET /v2/pe/vehiculo/captura-lima"
+  - "v2/pe/vehiculo/inspeccion-tecnica"
+  - "/v2/pe/vehiculo/inspeccion-tecnica"
+  - "v2 pe vehiculo inspeccion-tecnica"
+  - "pe/vehiculo/inspeccion-tecnica"
+  - "/pe/vehiculo/inspeccion-tecnica"
+  - "api/pe/vehiculo/inspeccion-tecnica"
+  - "/api/pe/vehiculo/inspeccion-tecnica"
+  - "api pe vehiculo inspeccion-tecnica"
+  - "vehiculo/inspeccion-tecnica"
+  - "/vehiculo/inspeccion-tecnica"
+  - "api.verifik.co/v2/pe/vehiculo/inspeccion-tecnica"
+  - "https://api.verifik.co/v2/pe/vehiculo/inspeccion-tecnica"
+  - "GET v2/pe/vehiculo/inspeccion-tecnica"
+  - "GET /v2/pe/vehiculo/inspeccion-tecnica"
   - "v2/pe/vehiculo/placa"
   - "/v2/pe/vehiculo/placa"
   - "v2 pe vehiculo placa"
@@ -3498,7 +3526,7 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (280 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (282 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
@@ -3721,6 +3749,8 @@ _Last regenerated: 2026-11-14T03:40:34.994Z_
 | `v2/pe/driver-license` | v2 pe driver-license pe/driver-license /pe/driver-license api/pe/driver-license /api/pe/driver-license api pe driver-license api.verifik.co/v2/pe/driver-license https://api.verifik.co/v2/pe/driver-license GET v2/pe/driver-license GET /v2/pe/driver-license | [Peru - Driver License](/driver-validation/peru-driver-license) |
 | `v2/pe/foreigner-id/ce` | v2 pe foreigner-id ce pe/foreigner-id/ce /pe/foreigner-id/ce api/pe/foreigner-id/ce /api/pe/foreigner-id/ce api pe foreigner-id ce foreigner-id/ce /foreigner-id/ce api.verifik.co/v2/pe/foreigner-id/ce https://api.verifik.co/v2/pe/foreigner-id/ce GET v2/pe/foreigner-id/ce GET /v2/pe/foreigner-id/ce | [\U0001F1F5\U0001F1EA Peru - Foreigner Resident](/identity-validation/peru/peruvian-foreigner-resident) |
 | `v2/pe/politically-exposed-persons` | v2 pe politically-exposed-persons pe/politically-exposed-persons /pe/politically-exposed-persons api/pe/politically-exposed-persons /api/pe/politically-exposed-persons api pe politically-exposed-persons api.verifik.co/v2/pe/politically-exposed-persons https://api.verifik.co/v2/pe/politically-exposed-persons GET v2/pe/politically-exposed-persons GET /v2/pe/politically-exposed-persons | [Peru — Politically Exposed Persons (PEP / SBS 2660-2015 & 4349-2016)](/background-check/peru-politically-exposed-persons) |
+| `v2/pe/vehiculo/captura-lima` | v2 pe vehiculo captura-lima pe/vehiculo/captura-lima /pe/vehiculo/captura-lima api/pe/vehiculo/captura-lima /api/pe/vehiculo/captura-lima api pe vehiculo captura-lima vehiculo/captura-lima /vehiculo/captura-lima api.verifik.co/v2/pe/vehiculo/captura-lima https://api.verifik.co/v2/pe/vehiculo/captura-lima GET v2/pe/vehiculo/captura-lima GET /v2/pe/vehiculo/captura-lima | [Peru - Vehicle Capture Order (SAT Lima)](/vehicle-validation/peru/captura-lima) |
+| `v2/pe/vehiculo/inspeccion-tecnica` | v2 pe vehiculo inspeccion-tecnica pe/vehiculo/inspeccion-tecnica /pe/vehiculo/inspeccion-tecnica api/pe/vehiculo/inspeccion-tecnica /api/pe/vehiculo/inspeccion-tecnica api pe vehiculo inspeccion-tecnica vehiculo/inspeccion-tecnica /vehiculo/inspeccion-tecnica api.verifik.co/v2/pe/vehiculo/inspeccion-tecnica https://api.verifik.co/v2/pe/vehiculo/inspeccion-tecnica GET v2/pe/vehiculo/inspeccion-tecnica GET /v2/pe/vehiculo/inspeccion-tecnica | [Peru - Vehicle Technical Inspection (CITV)](/vehicle-validation/peru/inspeccion-tecnica) |
 | `v2/pe/vehiculo/placa` | v2 pe vehiculo placa pe/vehiculo/placa /pe/vehiculo/placa api/pe/vehiculo/placa /api/pe/vehiculo/placa api pe vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/pe/vehiculo/placa https://api.verifik.co/v2/pe/vehiculo/placa GET v2/pe/vehiculo/placa GET /v2/pe/vehiculo/placa | [Peru - Vehicle Information](/vehicle-validation/peru/peruvian-vehicle) |
 | `v2/pe/vehiculo/setare-arequipa` | v2 pe vehiculo setare-arequipa pe/vehiculo/setare-arequipa /pe/vehiculo/setare-arequipa api/pe/vehiculo/setare-arequipa /api/pe/vehiculo/setare-arequipa api pe vehiculo setare-arequipa vehiculo/setare-arequipa /vehiculo/setare-arequipa api.verifik.co/v2/pe/vehiculo/setare-arequipa https://api.verifik.co/v2/pe/vehiculo/setare-arequipa GET v2/pe/vehiculo/setare-arequipa GET /v2/pe/vehiculo/setare-arequipa | [Peru - SETARE Arequipa Taxi Permit](/vehicle-validation/peru/setare-arequipa) |
 | `v2/pe/vehiculo/soat` | v2 pe vehiculo soat pe/vehiculo/soat /pe/vehiculo/soat api/pe/vehiculo/soat /api/pe/vehiculo/soat api pe vehiculo soat vehiculo/soat /vehiculo/soat api.verifik.co/v2/pe/vehiculo/soat https://api.verifik.co/v2/pe/vehiculo/soat GET v2/pe/vehiculo/soat GET /v2/pe/vehiculo/soat | [Peru - Vehicle Insurance](/vehicle-validation/peru/peruvian-vehicle-insurance) |

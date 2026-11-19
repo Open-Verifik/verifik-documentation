@@ -202,6 +202,8 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 ペルー — 車両（ナンバー v3）" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 ペルー — SOAT保険" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 ペルー — SETARE アレキパ許可" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-citv", label: "🇵🇪 ペルー — 車両技術検査 (CITV)" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-sat-captura", label: "🇵🇪 ペルー — 車両差押命令（SATリマ）" },
 					],
 				},
 				{
@@ -404,6 +406,8 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 ペルー — 車両（ナンバー v3）" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 ペルー — SOAT保険" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 ペルー — SETARE アレキパ許可" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-citv", label: "🇵🇪 ペルー — 車両技術検査 (CITV)" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-sat-captura", label: "🇵🇪 ペルー — 車両差押命令（SATリマ）" },
 					],
 				},
 				{
@@ -598,6 +602,8 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 ペルー — 車両（ナンバー v3）" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 ペルー — SOAT保険" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 ペルー — SETARE アレキパ許可" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-citv", label: "🇵🇪 ペルー — 車両技術検査 (CITV)" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-sat-captura", label: "🇵🇪 ペルー — 車両差押命令（SATリマ）" },
 					],
 				},
 				{

@@ -201,6 +201,8 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 Peru — Veículo por placa (v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 Peru — Seguro SOAT" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 Peru — Permissão SETARE Arequipa" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-citv", label: "🇵🇪 Peru — Inspeção técnica (CITV)" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-sat-captura", label: "🇵🇪 Peru — Ordem de captura (SAT Lima)" },
 					],
 				},
 				{
@@ -401,6 +403,8 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 Peru — Veículo por placa (v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 Peru — Seguro SOAT" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 Peru — Permissão SETARE Arequipa" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-citv", label: "🇵🇪 Peru — Inspeção técnica (CITV)" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-sat-captura", label: "🇵🇪 Peru — Ordem de captura (SAT Lima)" },
 					],
 				},
 				{
@@ -593,6 +597,8 @@ const sidebars = {
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-v3", label: "🇵🇪 Peru — Veículo por placa (v3)" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-insurance", label: "🇵🇪 Peru — Seguro SOAT" },
 						{ type: "doc", id: "vehicle-validation/peru/peru-setare-arequipa", label: "🇵🇪 Peru — Permissão SETARE Arequipa" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-citv", label: "🇵🇪 Peru — Inspeção técnica (CITV)" },
+						{ type: "doc", id: "vehicle-validation/peru/peru-vehicle-sat-captura", label: "🇵🇪 Peru — Ordem de captura (SAT Lima)" },
 					],
 				},
 				{
