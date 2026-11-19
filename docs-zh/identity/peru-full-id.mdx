@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Verifik 的身份核验 API 可使用秘鲁公民的 DNI（*Documento Nacional de Identidad*）号码进行扩展身份验证。该 API 旨在简化您的 KYC（了解您的客户）流程、防范欺诈，并轻松满足合规要求。
 
-我们专为需要快速、安全且自动化获取扩展个人信息（包括姓名全称、婚姻状态、出生日期、地址明细（省、区域、居住区）及相关身份字段）的企业打造此集成。
+我们专为需要快速、安全且自动化获取扩展个人信息（包括姓名全称、婚姻状态、出生日期、地址明细（大区、省和区）及相关身份字段）的企业打造此集成。
 
 **为安全访问该信息，必须传入 Authorization 头。**
 
@@ -38,7 +38,7 @@ Verifik 的身份核验 API 可使用秘鲁公民的 DNI（*Documento Nacional d
 
 -   **姓名全称与 DNI 号码**：支持 *Documento Nacional de Identidad*（DNI）证件。
 -   **身份匹配**：确认所提供姓名与 DNI 号码相符。
--   **扩展个人信息**：返回婚姻状态、出生日期、性别、地址、省、区域和居住区。
+-   **扩展个人信息**：返回婚姻状态、出生日期、性别、地址、大区、省和区。
 -   **姓名组成部分**：返回 `firstName`、`lastName`、`paternalLastName`、`maternalLastName` 和 `arrayName`。
 -   **证件信息**：返回证件类型和号码。
 
@@ -52,9 +52,11 @@ Verifik 的身份核验 API 可使用秘鲁公民的 DNI（*Documento Nacional d
 GET https://api.verifik.co/v3/pe/cedula/extra
 ```
 
-返回秘鲁公民的 **RENIEC DNI 扩展数据**：姓名全称、婚姻状态、出生日期、地址（省、区域、居住区）及相关身份字段。请传入 `documentType=DNI` 和 8 位 `documentNumber`。
+返回秘鲁公民的 **RENIEC DNI 扩展数据**：姓名全称、婚姻状态、出生日期、地址（大区、省和区）及相关身份字段。请传入 `documentType=DNI` 和 8 位 `documentNumber`。
 
 `photo`、`expeditionDate`、`expirationDate`、`ubigeoReniec` 和 `verificationDigit` 包含在响应结构中，但当前返回 `not_available`。
+
+地址字段遵循大区、省、区的官方层级。`department` 是大区或地区（例如 `ANCASH` 或 `LA LIBERTAD`）。`province` 是省（例如 `HUAYLAS` 或 `TRUJILLO`）。`district` 是区（例如 `CARAZ`）。在此端点上，`homeDistrict` 与 `district` 相同。不返回 `area`。
 
 ### 请求头（Headers）
 
@@ -177,8 +179,9 @@ curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documen
     "sex": "M",
     "ubigeoReniec": "not_available",
     "verificationDigit": "not_available",
+    "department": "SAN MARTIN",
     "province": "SAN MARTIN",
-    "area": "SAN MARTIN",
+    "district": "SHAPAJA",
     "homeDistrict": "SHAPAJA"
   },
   "signature": {
@@ -226,7 +229,7 @@ curl --location --request GET 'https://api.verifik.co/v3/pe/cedula/extra?documen
 
 | 字段 | 典型值 | 说明 |
 | ---- | ------ | ---- |
-| `address`、`province`、`area`、`homeDistrict` | 已填充的字符串 | 来自 RENIEC 记录的地址明细。 |
+| `address`、`department`、`province`、`district`、`homeDistrict` | 已填充的字符串 | 官方层级：`department`（大区或地区，例如 `ANCASH`）、`province`（省，例如 `HUAYLAS`）、`district`（区，例如 `CARAZ`）。`homeDistrict` 与 `district` 相同。不返回 `area`。 |
 | `arrayName`、`firstName`、`lastName`、`paternalLastName`、`maternalLastName`、`fullName` | 已填充的字符串 | 姓名组成部分。 |
 | `civilStatus`、`dateOfBirth`、`sex` | 已填充的字符串 | 人口统计数据。 |
 | `documentType`、`documentNumber` | 已填充的字符串 | DNI 标识符。 |
