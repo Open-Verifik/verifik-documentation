@@ -1,0 +1,201 @@
+---
+id: peru-orden-captura
+title: Perú - Orden de Captura Vehicular (SAT Lima)
+description: Consulta la orden de captura vehicular del SAT de Lima por placa mediante GET /v2/pe/vehiculo/captura-lima. Una placa sin orden también responde HTTP 200.
+slug: /validacion-vehiculos/peru/captura-lima
+keywords:
+  - v2/pe/vehiculo/captura-lima
+  - /v2/pe/vehiculo/captura-lima
+  - v2 pe vehiculo captura-lima
+  - api/pe/vehiculo/captura-lima
+  - GET v2/pe/vehiculo/captura-lima
+  - orden de captura vehicular sat lima
+  - peru_api_vehicle_sat_captura
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Perú - Orden de Captura Vehicular (SAT Lima)
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/pe/vehiculo/captura-lima
+```
+
+Consulta en el SAT de Lima si una **`placa`** tiene orden de captura en la provincia de Lima. Una placa sin orden es una respuesta exitosa: `hasCaptureOrder` es `false` y `orders` queda vacío. Cuando hay orden, `message` trae el texto oficial del SAT y cada elemento de `orders` incluye `concept`, `amount` en soles, `period` y `documentNumber`. `status` se llena solo cuando el SAT lo envía. `columns` conserva las etiquetas originales de la fuente cuando el formulario público las trae.
+
+### Encabezados
+
+| Nombre          | Valor              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### Parámetros
+
+| Nombre    | Tipo   | Requerido | Descripción                                                                 | Ejemplo  |
+| ------- | ------ | -------- | --------------------------------------------------------------------------- | -------- |
+| `plate` | string | Sí      | Placa del vehículo, de 5 a 8 letras o dígitos, sin espacios. `F1E120` tiene orden. `V0R660` no.  | `F1E120` |
+| `force` | boolean | No      | Opcional. Envía `true` o `1` para omitir el resultado guardado y consultar de nuevo al SAT.  | `true` |
+
+### Solicitud
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/pe/vehiculo/captura-lima',
+  params: { plate: 'F1E120' },
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer <tu_token>',
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>",
+}
+conn.request("GET", "/v2/pe/vehiculo/captura-lima?plate=F1E120", headers=headers)
+res = conn.getresponse()
+print(res.read().decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(
+  url: URL(string: "https://api.verifik.co/v2/pe/vehiculo/captura-lima?plate=F1E120")!,
+  timeoutInterval: Double.infinity
+)
+request.httpMethod = "GET"
+request.setValue("application/json", forHTTPHeaderField: "Accept")
+request.setValue("Bearer <tu_token>", forHTTPHeaderField: "Authorization")
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
+  guard let data = data else { return }
+  print(String(data: data, encoding: .utf8)!)
+}
+task.resume()
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/pe/vehiculo/captura-lima?plate=F1E120');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setHeader('Accept', 'application/json');
+$request->setHeader('Authorization', 'Bearer <tu_token>');
+$response = $request->send();
+echo $response->getBody();
+```
+
+</TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200-no-order" label="Sin orden">
+
+```json
+{
+  "data": {
+    "hasCaptureOrder": false,
+    "message": "El vehículo de placa V0R660 no tiene orden de captura en la provincia de Lima.",
+    "orders": [],
+    "plate": "V0R660",
+    "reportDate": "17/11/2026"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-order" label="Con orden">
+
+```json
+{
+  "data": {
+    "hasCaptureOrder": true,
+    "message": "El vehículo de placa F1E120 TIENE ORDEN DE CAPTURA por los siguientes conceptos:",
+    "orders": [
+      {
+        "concept": "Imp. Vehicular",
+        "amount": "S/ 505.86",
+        "status": "",
+        "period": "2016",
+        "documentNumber": "11614986590",
+        "date": "",
+        "plate": "F1E120"
+      }
+    ],
+    "plate": "F1E120",
+    "reportDate": "17/11/2026"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Placa no encontrada"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "Endpoint_out_of_service",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notas
+
+- La consulta cubre solo la provincia de Lima.
+- Envía `plate` sin espacios ni guiones (de 5 a 8 caracteres alfanuméricos).
+- Una placa sin orden de captura igual responde **HTTP 200**. El **404** es solo para una placa que no tenga de 5 a 8 letras o dígitos.
+- `amount` va en soles (`S/ 505.86`). `status` queda vacío cuando el SAT no envía un estado.
+- `F1E120` tiene orden de captura. `V0R660` no.
+- Si no se puede consultar el SAT, la API responde **409** con `Endpoint_out_of_service`.
+- En **modo sandbox**, `ABC10001` tiene orden de captura y `ABC10002` no.

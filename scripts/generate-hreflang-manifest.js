@@ -35,6 +35,8 @@ const ES_REL_PATH_TO_CANONICAL = {
 	"validacion-vehiculos/spain": "vehicle-validation/spain",
 	"validacion-vehiculos/colombia/runt-vehicle-by-plate-only": "vehicle-validation/colombia/runt-vehicle-by-plate-only",
 	"validacion-vehiculos/colombia/sibga-vehicle-valuation": "vehicle-validation/colombia/sibga-vehicle-valuation",
+	"validacion-vehiculos/peru/peru-inspeccion-tecnica": "vehicle-validation/peru/peru-vehicle-citv",
+	"validacion-vehiculos/peru/peru-orden-captura": "vehicle-validation/peru/peru-vehicle-sat-captura",
 	"validacion-empresarial/spain": "business-validation/spain",
 	"verificacion-antecendentes/verificacion-antecendentes-brasil": "background-check/brazil",
 	"verificacion-antecendentes/verificacion-antecendentes-colombia-inpec": "background-check/colombia-inpec",

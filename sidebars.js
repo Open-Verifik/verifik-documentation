@@ -893,6 +893,16 @@ const sidebars = {
 							id: "vehicle-validation/peru/peru-setare-arequipa",
 							label: "SETARE Arequipa Taxi Permit",
 						},
+						{
+							type: "doc",
+							id: "vehicle-validation/peru/peru-vehicle-citv",
+							label: "Vehicle Technical Inspection (CITV)",
+						},
+						{
+							type: "doc",
+							id: "vehicle-validation/peru/peru-vehicle-sat-captura",
+							label: "Vehicle Capture Order (SAT Lima)",
+						},
 					],
 				},
 				{

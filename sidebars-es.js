@@ -685,6 +685,16 @@ const sidebars = {
 							id: "validacion-vehiculos/peru/peru-setare-arequipa",
 							label: "Permiso de Taxi SETARE Arequipa",
 						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/peru/peru-inspeccion-tecnica",
+							label: "Certificado de Inspección Técnica Vehicular",
+						},
+						{
+							type: "doc",
+							id: "validacion-vehiculos/peru/peru-orden-captura",
+							label: "Orden de Captura Vehicular (SAT Lima)",
+						},
 					],
 				},
 				{

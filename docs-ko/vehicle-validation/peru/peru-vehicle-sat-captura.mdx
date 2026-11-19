@@ -1,0 +1,201 @@
+---
+id: peru-vehicle-sat-captura
+title: 페루 - 차량 압류 명령 (SAT 리마)
+description: GET /v2/pe/vehiculo/captura-lima 로 리마 SAT 차량 압류 명령을 번호판으로 조회합니다. 명령이 없는 번호판도 HTTP 200입니다.
+slug: /vehicle-validation/peru/captura-lima
+keywords:
+  - v2/pe/vehiculo/captura-lima
+  - /v2/pe/vehiculo/captura-lima
+  - v2 pe vehiculo captura-lima
+  - api/pe/vehiculo/captura-lima
+  - GET v2/pe/vehiculo/captura-lima
+  - peru vehicle capture order sat lima
+  - peru_api_vehicle_sat_captura
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 페루 - 차량 압류 명령 (SAT 리마)
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v2/pe/vehiculo/captura-lima
+```
+
+리마 세무 기관(**SAT**)에서 차량 **`plate`** 가 리마 주에 압류 명령이 있는지 조회합니다. 명령이 없는 번호판도 성공 응답입니다. `hasCaptureOrder`는 `false`이고 `orders`는 비어 있습니다. 명령이 있으면 `message`에 SAT 공식 문구가 오고, `orders`의 각 항목에는 `concept`, 솔 금액 `amount`, `period`, `documentNumber`가 있습니다. `status`는 SAT가 보낼 때만 채워집니다. 공개 양식에 열 이름이 있으면 `columns`가 원래 라벨을 유지합니다.
+
+### 헤더
+
+| 이름          | 값              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### 매개변수
+
+| 이름    | 유형   | 필수 | 설명                                                                 | 예시  |
+| ------- | ------ | -------- | --------------------------------------------------------------------------- | -------- |
+| `plate` | string | 예      | 차량 번호판. 5~8자의 영문 또는 숫자, 공백 없음. `F1E120`에는 명령이 있고 `V0R660`에는 없습니다.  | `F1E120` |
+| `force` | boolean | 아니요      | 선택. `true` 또는 `1`을 보내면 저장된 결과를 건너뛰고 SAT를 다시 조회합니다.  | `true` |
+
+### 요청
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/pe/vehiculo/captura-lima',
+  params: { plate: 'F1E120' },
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer <토큰>',
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <토큰>",
+}
+conn.request("GET", "/v2/pe/vehiculo/captura-lima?plate=F1E120", headers=headers)
+res = conn.getresponse()
+print(res.read().decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(
+  url: URL(string: "https://api.verifik.co/v2/pe/vehiculo/captura-lima?plate=F1E120")!,
+  timeoutInterval: Double.infinity
+)
+request.httpMethod = "GET"
+request.setValue("application/json", forHTTPHeaderField: "Accept")
+request.setValue("Bearer <토큰>", forHTTPHeaderField: "Authorization")
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
+  guard let data = data else { return }
+  print(String(data: data, encoding: .utf8)!)
+}
+task.resume()
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/pe/vehiculo/captura-lima?plate=F1E120');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setHeader('Accept', 'application/json');
+$request->setHeader('Authorization', 'Bearer <토큰>');
+$response = $request->send();
+echo $response->getBody();
+```
+
+</TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+<TabItem value="200-no-order" label="명령 없음">
+
+```json
+{
+  "data": {
+    "hasCaptureOrder": false,
+    "message": "El vehículo de placa V0R660 no tiene orden de captura en la provincia de Lima.",
+    "orders": [],
+    "plate": "V0R660",
+    "reportDate": "17/11/2026"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-order" label="명령 있음">
+
+```json
+{
+  "data": {
+    "hasCaptureOrder": true,
+    "message": "El vehículo de placa F1E120 TIENE ORDEN DE CAPTURA por los siguientes conceptos:",
+    "orders": [
+      {
+        "concept": "Imp. Vehicular",
+        "amount": "S/ 505.86",
+        "status": "",
+        "period": "2016",
+        "documentNumber": "11614986590",
+        "date": "",
+        "plate": "F1E120"
+      }
+    ],
+    "plate": "F1E120",
+    "reportDate": "17/11/2026"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Placa no encontrada"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "Endpoint_out_of_service",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 참고
+
+- 조회 범위는 리마 주뿐입니다.
+- `plate`는 공백이나 하이픈 없이 5~8자의 영숫자로 보내세요.
+- 압류 명령이 없는 번호판도 **HTTP 200**입니다. **404**는 5~8자의 영숫자가 아닌 번호판만 해당합니다.
+- `amount`는 솔 표기입니다 (`S/ 505.86`). SAT가 상태를 보내지 않으면 `status`는 비어 있습니다.
+- `F1E120`에는 압류 명령이 있습니다. `V0R660`에는 없습니다.
+- SAT를 조회할 수 없으면 **409**와 `Endpoint_out_of_service`를 반환합니다.
+- **샌드박스**에서 `ABC10001`에는 명령이 있고 `ABC10002`에는 없습니다.

@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-11-14T03:40:34.939Z
+Generated: 2026-11-19T16:02:21.335Z
 
-- **Files scanned:** 594
-- **Unique endpoint URLs:** 280
+- **Files scanned:** 596
+- **Unique endpoint URLs:** 282
 - **Duplicate URL groups (SEO / aliases):** 59
 - **Docs without `### Endpoint` block:** 232
 
@@ -12,7 +12,7 @@ Generated: 2026-11-14T03:40:34.939Z
 | Priority | Count | Scope |
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
-| P1 | 27 | vehicle-validation (other countries) |
+| P1 | 29 | vehicle-validation (other countries) |
 | P2 | 226 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
@@ -454,6 +454,8 @@ Generated: 2026-11-14T03:40:34.939Z
 | P2 | `v2/pe/driver-license` | `driver-validation/peru-driver-license.mdx` |
 | P2 | `v2/pe/foreigner-id/ce` | `identity-validation/peru/peruvian-foreigner-resident.mdx` |
 | P2 | `v2/pe/politically-exposed-persons` | `background-check/peru-politically-exposed-persons.mdx` |
+| P1 | `v2/pe/vehiculo/captura-lima` | `vehicle-validation/peru/peru-vehicle-sat-captura.mdx` |
+| P1 | `v2/pe/vehiculo/inspeccion-tecnica` | `vehicle-validation/peru/peru-vehicle-citv.mdx` |
 | P1 | `v2/pe/vehiculo/placa` | `vehicle-validation/peru/peruvian-vehicle.mdx` |
 | P1 | `v2/pe/vehiculo/setare-arequipa` | `vehicle-validation/peru/peru-setare-arequipa.mdx` |
 | P1 | `v2/pe/vehiculo/soat` | `vehicle-validation/peru/peruvian-vehicle-insurance.mdx` |

@@ -1,0 +1,201 @@
+---
+id: peru-vehicle-sat-captura
+title: 秘鲁 - 车辆扣押令（利马 SAT）
+description: 通过 GET /v2/pe/vehiculo/captura-lima 按车牌查询利马 SAT 车辆扣押令。没有扣押令的车牌同样返回 HTTP 200。
+slug: /vehicle-validation/peru/captura-lima
+keywords:
+  - v2/pe/vehiculo/captura-lima
+  - /v2/pe/vehiculo/captura-lima
+  - v2 pe vehiculo captura-lima
+  - api/pe/vehiculo/captura-lima
+  - GET v2/pe/vehiculo/captura-lima
+  - peru vehicle capture order sat lima
+  - peru_api_vehicle_sat_captura
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 秘鲁 - 车辆扣押令（利马 SAT）
+
+### 接口
+
+```
+GET https://api.verifik.co/v2/pe/vehiculo/captura-lima
+```
+
+向利马税务机构（**SAT**）查询车辆 **`plate`** 在利马省是否有扣押令。没有扣押令也是成功响应：`hasCaptureOrder` 为 `false`，`orders` 为空。有扣押令时，`message` 是 SAT 的官方原文，`orders` 的每一项包含 `concept`、索尔金额 `amount`、`period` 和 `documentNumber`。只有 SAT 提供状态时才会填写 `status`。公开表单带有列名时，`columns` 保留原始标签。
+
+### 请求头
+
+| 名称          | 值              |
+| ------------- | ------------------ |
+| Accept        | `application/json` |
+| Authorization | `Bearer <token>`   |
+
+### 参数
+
+| 名称    | 类型   | 必填 | 说明                                                                 | 示例  |
+| ------- | ------ | -------- | --------------------------------------------------------------------------- | -------- |
+| `plate` | string | 是      | 车辆牌照，5 到 8 位字母或数字，不含空格。`F1E120` 有扣押令，`V0R660` 没有。  | `F1E120` |
+| `force` | boolean | 否      | 可选。传 `true` 或 `1` 可跳过已保存的结果并重新查询 SAT。  | `true` |
+
+### 请求
+
+<Tabs>
+<TabItem value="javascript" label="JavaScript">
+
+```javascript
+import axios from 'axios';
+
+const options = {
+  method: 'GET',
+  url: 'https://api.verifik.co/v2/pe/vehiculo/captura-lima',
+  params: { plate: 'F1E120' },
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Bearer <您的令牌>',
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.verifik.co")
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <您的令牌>",
+}
+conn.request("GET", "/v2/pe/vehiculo/captura-lima?plate=F1E120", headers=headers)
+res = conn.getresponse()
+print(res.read().decode("utf-8"))
+```
+
+</TabItem>
+<TabItem value="swift" label="Swift">
+
+```swift
+var request = URLRequest(
+  url: URL(string: "https://api.verifik.co/v2/pe/vehiculo/captura-lima?plate=F1E120")!,
+  timeoutInterval: Double.infinity
+)
+request.httpMethod = "GET"
+request.setValue("application/json", forHTTPHeaderField: "Accept")
+request.setValue("Bearer <您的令牌>", forHTTPHeaderField: "Authorization")
+
+let task = URLSession.shared.dataTask(with: request) { data, response, error in
+  guard let data = data else { return }
+  print(String(data: data, encoding: .utf8)!)
+}
+task.resume()
+```
+
+</TabItem>
+<TabItem value="php" label="PHP">
+
+```php
+<?php
+require_once 'HTTP/Request2.php';
+$request = new HTTP_Request2();
+$request->setUrl('https://api.verifik.co/v2/pe/vehiculo/captura-lima?plate=F1E120');
+$request->setMethod(HTTP_Request2::METHOD_GET);
+$request->setHeader('Accept', 'application/json');
+$request->setHeader('Authorization', 'Bearer <您的令牌>');
+$response = $request->send();
+echo $response->getBody();
+```
+
+</TabItem>
+</Tabs>
+
+### 响应
+
+<Tabs>
+<TabItem value="200-no-order" label="无扣押令">
+
+```json
+{
+  "data": {
+    "hasCaptureOrder": false,
+    "message": "El vehículo de placa V0R660 no tiene orden de captura en la provincia de Lima.",
+    "orders": [],
+    "plate": "V0R660",
+    "reportDate": "17/11/2026"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-order" label="有扣押令">
+
+```json
+{
+  "data": {
+    "hasCaptureOrder": true,
+    "message": "El vehículo de placa F1E120 TIENE ORDEN DE CAPTURA por los siguientes conceptos:",
+    "orders": [
+      {
+        "concept": "Imp. Vehicular",
+        "amount": "S/ 505.86",
+        "status": "",
+        "period": "2016",
+        "documentNumber": "11614986590",
+        "date": "",
+        "plate": "F1E120"
+      }
+    ],
+    "plate": "F1E120",
+    "reportDate": "17/11/2026"
+  },
+  "signature": {
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Placa no encontrada"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409">
+
+```json
+{
+  "code": "Endpoint_out_of_service",
+  "message": "Endpoint_out_of_service"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### 说明
+
+- 查询范围仅限利马省。
+- `plate` 请去掉空格和连字符（5 到 8 位字母或数字）。
+- 没有扣押令的车牌仍然返回 **HTTP 200**。**404** 只用于不是 5 到 8 位字母或数字的车牌。
+- `amount` 以索尔格式返回（`S/ 505.86`）。SAT 未提供状态时 `status` 为空。
+- `F1E120` 有扣押令。`V0R660` 没有。
+- 无法查询 SAT 时，接口返回 **409** 和 `Endpoint_out_of_service`。
+- **沙盒模式**下，`ABC10001` 有扣押令，`ABC10002` 没有。
