@@ -539,7 +539,7 @@ const sidebars = {
 						{
 							type: "doc",
 							id: "validacion-vehiculos/colombia/registros-vehiculos-por-placa-runt",
-							label: "Registros de Vehículos por Placa",
+							label: "RUNT- Validación de vehículos por placa y cédula",
 						},
 						{
 							type: "doc",
