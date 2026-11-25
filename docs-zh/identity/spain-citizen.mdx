@@ -48,7 +48,7 @@ Verifik 的身份核验 API 可基于政府官方数据对西班牙公民与居�
 GET https://api.verifik.co/v2/es/cedula
 ```
 
-在官方来源核验西班牙自然人身份：需提供 **`documentType`**（`DNIES` 或 `NIE`）、无空格的 **`documentNumber`**，以及 **`date`**（有效期，`DD/MM/YYYY`）。适用于 **KYC**、**反欺诈**与**受监管入驻**。
+在官方来源核验西班牙自然人身份：需提供 **`documentType`**（`DNIES` 或 `NIE`）、无空格的 **`documentNumber`**，以及用于 `DNIES` 和不以 `X`、`Y`、`Z` 开头的 `NIE`（如 `M` 开头 NIE）的有效日期 **`expirationDate`**（`DD/MM/YYYY`）。以 `X`、`Y` 或 `Z` 开头的 `NIE` 必须提供 **`supportNumber`**（欧盟登记证明为 `C` + 8 位数字，TIE 为 `E` + 8 位数字）。适用于 **KYC**、**反欺诈**与**受监管入驻**。
 
 ### 请求头（Headers）
 
@@ -63,7 +63,8 @@ GET https://api.verifik.co/v2/es/cedula
 | ----------------- | ------- | ---- | --------------------------------------------- |
 | `documentType`    | string  | 是   | 证件类型。允许取值：`DNIES`、`NIE`。           |
 | `documentNumber`  | string  | 是   | 证件号码，不含空格。                            |
-| `date`            | string  | 是   | 到期日期，格式为 `DD/MM/YYYY`。                 |
+| `expirationDate`  | string  | 条件必填 | 有效日期，格式为 `DD/MM/YYYY`。`DNIES` 以及不以 `X`、`Y`、`Z` 开头的 `NIE`（如 `M` 开头 NIE）必填。以 `X`、`Y`、`Z` 开头的 `NIE` 不能仅凭此日期验证。 |
+| `supportNumber`   | string  | 条件必填 | 以 `X`、`Y`、`Z` 开头的 `NIE` 必填。支持格式：`C` + 8 位数字（欧盟登记证明）或 `E` + 8 位数字（居留卡 TIE）。`C` 或 `E` 后有 1–7 位数字时会在字母后补零，空格与连字符会被忽略。 |
 
 ### 请求（Request）
 
@@ -73,11 +74,15 @@ GET https://api.verifik.co/v2/es/cedula
 ```javascript
 import axios from "axios";
 
+// DNIES 或不以 X/Y/Z 开头的 NIE（需提供 expirationDate）
 const { data } = await axios.get("https://api.verifik.co/v2/es/cedula", {
-  params: { documentType: "DNIES", documentNumber: "123456789", date: "17/07/2024" },
+  params: { documentType: "DNIES", documentNumber: "123456789", expirationDate: "17/07/2024" },
   headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
 });
 console.log(data);
+
+// 以 X/Y/Z 开头的 NIE（需提供 supportNumber：C + 8 位数字 或 E + 8 位数字）
+// params: { documentType: "NIE", documentNumber: "X1234567L", supportNumber: "E25758657" }
 ```
 
   </TabItem>
@@ -88,9 +93,13 @@ import os, requests
 
 url = "https://api.verifik.co/v2/es/cedula"
 headers = {"Content-Type": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"documentType": "DNIES", "documentNumber": "123456789", "date": "17/07/2024"}
+# DNIES 或不以 X/Y/Z 开头的 NIE（需提供 expirationDate）
+params = {"documentType": "DNIES", "documentNumber": "123456789", "expirationDate": "17/07/2024"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
+
+# 以 X/Y/Z 开头的 NIE（需提供 supportNumber：C + 8 位数字 或 E + 8 位数字）
+# params = {"documentType": "NIE", "documentNumber": "X1234567L", "supportNumber": "E25758657"}
 ```
 
   </TabItem>
@@ -149,8 +158,22 @@ print(r.json())
 
 ```json
 {
-  "message": "\"date\" is required",
-  "code": "MissingParameter"
+  "code": "MissingParameter",
+  "message": "supportNumber is required for NIE numbers starting with X, Y or Z. Use C followed by 8 digits for the EU registration certificate, or E followed by 8 digits for the TIE. expirationDate is not accepted as proof for this NIE type."
+}
+```
+
+```json
+{
+  "code": "InvalidParameter",
+  "message": "supportNumber must be C or E followed by 8 digits (C + 8 digits for the EU registration certificate, E + 8 digits for the TIE)."
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "expirationDate is required for DNIES"
 }
 ```
 
@@ -180,7 +203,8 @@ print(r.json())
 
 ### 备注
 
-- `date` 必须遵循 `DD/MM/YYYY` 格式。
+- `expirationDate` 必须遵循 `DD/MM/YYYY` 格式，且为 `DNIES` 与不以 `X`、`Y`、`Z` 开头的 `NIE`（如 `M` 开头 NIE）的必填项。
+- 以 `X`、`Y` 或 `Z` 开头的 `NIE` 必须提供 `supportNumber`（欧盟登记证明为 `C` + 8 位数字，TIE 为 `E` + 8 位数字）。缺少或格式无效时将返回不计费的 `409`。
 
 ---
 

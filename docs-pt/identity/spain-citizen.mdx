@@ -48,7 +48,7 @@ Ao validar esses elementos, você pode confiar que a pessoa com quem está negoc
 GET https://api.verifik.co/v2/es/cedula
 ```
 
-Verifica a identidade de uma pessoa física na Espanha em fontes oficiais com **`documentType`** (`DNIES` ou `NIE`), **`documentNumber`** (sem espaços) e **`date`** (validade em `DD/MM/YYYY`). Use para **KYC**, **prevenção a fraudes** e **onboarding regulado**.
+Verifica a identidade de uma pessoa física na Espanha em fontes oficiais com **`documentType`** (`DNIES` ou `NIE`), **`documentNumber`** (sem espaços) e **`expirationDate`** (`DD/MM/AAAA`) para `DNIES` e `NIE` que não começam com `X`, `Y` ou `Z` (como NIE iniciados por `M`). `NIE` que começam com `X`, `Y` ou `Z` exigem **`supportNumber`** (`C` + 8 dígitos para o certificado de registro da UE, `E` + 8 dígitos para o TIE). Use para **KYC**, **prevenção a fraudes** e **onboarding regulado**.
 
 ### Cabeçalhos
 
@@ -59,11 +59,12 @@ Verifica a identidade de uma pessoa física na Espanha em fontes oficiais com **
 
 ### Parâmetros
 
-| Nome           | Tipo    | Obrigatório | Descrição                                    |
-| -------------- | ------- | ----------- | -------------------------------------------- |
-| `documentType` | string  | Sim         | Tipo de documento. Valores permitidos: `DNIES`, `NIE`. |
-| `documentNumber` | string | Sim        | Número do documento sem espaços.             |
-| `date`         | string  | Sim         | Data de expiração no formato `DD/MM/AAAA`.   |
+| Nome             | Type / Tipo | Obrigatório | Descrição                                    |
+| ---------------- | ----------- | ----------- | -------------------------------------------- |
+| `documentType`   | string      | Sim         | Tipo de documento. Valores permitidos: `DNIES`, `NIE`. |
+| `documentNumber` | string      | Sim         | Número do documento sem espaços.             |
+| `expirationDate` | string      | Condicional | Data de validade no formato `DD/MM/AAAA`. Obrigatória para `DNIES` e para `NIE` que não começam com `X`, `Y` ou `Z` (ex.: NIE com `M`). Não é aceita como única prova para NIE com `X`, `Y` ou `Z`. |
+| `supportNumber`  | string      | Condicional | Obrigatório para `NIE` que começam com `X`, `Y` ou `Z`. Formatos aceitos: `C` + 8 dígitos (certificado de registro da UE) ou `E` + 8 dígitos (cartão de residência TIE). Valores de `C` ou `E` com 1 a 7 dígitos são completados com zeros após a letra; espaços e hifens são ignorados. |
 
 ### Requisição
 
@@ -73,11 +74,15 @@ Verifica a identidade de uma pessoa física na Espanha em fontes oficiais com **
 ```javascript
 import axios from "axios";
 
+// DNIES ou NIE que não começa com X, Y ou Z (requer expirationDate)
 const { data } = await axios.get("https://api.verifik.co/v2/es/cedula", {
-  params: { documentType: "DNIES", documentNumber: "123456789", date: "17/07/2024" },
+  params: { documentType: "DNIES", documentNumber: "123456789", expirationDate: "17/07/2024" },
   headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
 });
 console.log(data);
+
+// NIE que começa com X, Y ou Z (requer supportNumber: C + 8 dígitos ou E + 8 dígitos)
+// params: { documentType: "NIE", documentNumber: "X1234567L", supportNumber: "E25758657" }
 ```
 
   </TabItem>
@@ -88,9 +93,13 @@ import os, requests
 
 url = "https://api.verifik.co/v2/es/cedula"
 headers = {"Content-Type": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"documentType": "DNIES", "documentNumber": "123456789", "date": "17/07/2024"}
+# DNIES ou NIE que não começa com X, Y ou Z (requer expirationDate)
+params = {"documentType": "DNIES", "documentNumber": "123456789", "expirationDate": "17/07/2024"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
+
+# NIE que começa com X, Y ou Z (requer supportNumber: C + 8 dígitos ou E + 8 dígitos)
+# params = {"documentType": "NIE", "documentNumber": "X1234567L", "supportNumber": "E25758657"}
 ```
 
   </TabItem>
@@ -149,8 +158,22 @@ print(r.json())
 
 ```json
 {
-  "message": "\"date\" is required",
-  "code": "MissingParameter"
+  "code": "MissingParameter",
+  "message": "supportNumber is required for NIE numbers starting with X, Y or Z. Use C followed by 8 digits for the EU registration certificate, or E followed by 8 digits for the TIE. expirationDate is not accepted as proof for this NIE type."
+}
+```
+
+```json
+{
+  "code": "InvalidParameter",
+  "message": "supportNumber must be C or E followed by 8 digits (C + 8 digits for the EU registration certificate, E + 8 digits for the TIE)."
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "expirationDate is required for DNIES"
 }
 ```
 
@@ -180,7 +203,8 @@ print(r.json())
 
 ### Observações
 
-- `date` deve seguir o formato `DD/MM/AAAA`.
+- `expirationDate` deve seguir o formato `DD/MM/AAAA` e é obrigatório para `DNIES` e para `NIE` que não começam com `X`, `Y` ou `Z` (como NIE iniciados por `M`).
+- `NIE` que começam com `X`, `Y` ou `Z` exigem `supportNumber` (`C` + 8 dígitos no certificado da UE, `E` + 8 dígitos no TIE). A ausência ou formato inválido retorna `409` sem cobrança.
 
 ---
 
