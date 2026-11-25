@@ -1,0 +1,333 @@
+---
+id: generate-smart-report-pdf
+title: "Générer le PDF d'un Smart Report"
+description: Générez un PDF à partir d'un SmartReport, calculez un score de vérification en option, émettez des webhooks de génération et recevez la sortie base64 ainsi que les URL de téléchargement.
+slug: /smart-reports/generate-smart-report-pdf
+keywords:
+  - 'v2/smart-reports/{id}/generate'
+  - '/v2/smart-reports/{id}/generate'
+  - v2/smart-reports/generate
+  - /v2/smart-reports/generate
+  - v2 smart-reports generate
+  - 'v2 smart-reports {id} generate'
+  - api/smart-reports/generate
+  - /api/smart-reports/generate
+  - 'api.verifik.co/v2/smart-reports/{id}/generate'
+  - 'https://api.verifik.co/v2/smart-reports/{id}/generate'
+  - 'POST v2/smart-reports/{id}/generate'
+  - 'POST /v2/smart-reports/{id}/generate'
+  - smart-reports
+  - smart_report_generate_pdf
+  - smart-reports/generate
+  - /smart-reports/generate
+  - api smart-reports generate
+  - 'GET v2/smart-reports/{id}/generate'
+  - 'GET /v2/smart-reports/{id}/generate'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Effectuez le rendu d'un PDF pour un `SmartReport` existant à l'aide de `"puppeteer"` ou `"pdfkit"`, calculez `verificationScore` en option et recevez le tampon PDF encodé en base64 accompagné de `downloadUrl` et `htmlUrl`.
+
+En cas de succès, ce point de terminaison passe le rapport à `status: "generated"`, enregistre `verificationScoreSummary` lorsque la notation est activée et émet le webhook `smart_batch_report_generated`. Si la génération du PDF échoue, le rapport passe à `status: "failed"` et le webhook `smart_batch_report_generation_failed` est émis.
+
+### Point de terminaison
+
+```
+POST https://api.verifik.co/v2/smart-reports/{id}/generate
+```
+
+Ce point de terminaison accepte des payloads JSON jusqu'à **64 Mo** (afin de prendre en charge les documents `printHtml` personnalisés). Il est également accessible via le proxy Smart-Agent à l'adresse `https://ai.verifik.co/v2/smart-reports/{id}/generate` en utilisant votre propre en-tête par client `Authorization: Bearer <VERIFIK_JWT>`. L'exécution partagée x402 est bloquée avec `403 Forbidden`.
+
+### En-têtes
+
+| Nom             | Valeur                 | Description                                                |
+| --------------- | ---------------------- | ---------------------------------------------------------- |
+| `Content-Type`  | `application/json`     | Format du payload de la requête (limite de 64 Mo).         |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT limité au client (`authUser.clientId`).                |
+
+### Paramètres
+
+| Nom  | Type   | Requis  | Description |
+| ---- | ------ | ------- | ----------- |
+| `id` | string | **Oui** | ObjectId du `SmartReport`. |
+
+### Corps de la requête
+
+| Nom            | Type    | Requis | Description |
+| -------------- | ------- | ------ | ----------- |
+| `engine`       | string  | Non    | Moteur de rendu PDF : `"pdfkit"` ou `"puppeteer"`. |
+| `rowIndex`     | number  | Non    | Index de ligne basé sur zéro provenant du `SmartBatch` lié. Vaut `0` par défaut. |
+| `printHtml`    | string  | Non    | Chaîne HTML complète (max `64000000` caractères) utilisée pour les modèles non thématiques contenant `<html`. |
+| `score`        | boolean | Non    | Indique s'il faut calculer `verificationScore` et enregistrer `verificationScoreSummary` sur le rapport. |
+| `scoreProfile` | string  | Non    | Identifiant du profil de notation utilisé lorsque `score` est activé. Max `64` caractères. |
+
+#### Comportement de rendu et de notation
+
+- **Sélection de ligne par défaut** : Lorsque `rowIndex` est omis, la génération utilise la ligne `0` par défaut. Demander une ligne hors limites renvoie `409 Conflict` (`row_not_found`).
+- **HTML personnalisé (`printHtml`)** : Lorsque vous travaillez avec des modèles non thématiques fournissant un balisage `<html` complet, passez `printHtml` (jusqu'à `64000000` caractères).
+- **Score de vérification** : Définissez `score: true` (et éventuellement `scoreProfile`) pour calculer `verificationScore`, le renvoyer au niveau racine de la réponse et enregistrer `verificationScoreSummary` sur le `SmartReport`. Les profils inconnus échouent avec `409 Conflict` (`unknown_score_profile`).
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-reports/${id}/generate`,
+    {
+      engine: "puppeteer",
+      rowIndex: 0,
+      score: true,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log({
+    status: data.data.status,
+    pdfSize: data.pdf.size,
+    downloadUrl: data.pdf.downloadUrl,
+  });
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id . "/generate");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "engine" => "puppeteer",
+    "rowIndex" => 0,
+    "score" => true,
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}/generate"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "engine": "puppeteer",
+    "rowIndex": 0,
+    "score": True,
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	body, _ := json.Marshal(map[string]interface{}{
+		"engine":   "puppeteer",
+		"rowIndex": 0,
+		"score":    true,
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-reports/"+id+"/generate", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/generate" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "engine": "puppeteer",
+    "rowIndex": 0,
+    "score": true
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Background Check - Applicant 42",
+    "status": "generated",
+    "pdfEngine": "puppeteer",
+    "pdfSize": 148320,
+    "generationDurationMs": 1840,
+    "generatedAt": "2026-11-24T20:00:04.000Z",
+    "verificationScoreSummary": {},
+    "rowIndex": 0,
+    "externalRefId": "applicant-42"
+  },
+  "pdf": {
+    "buffer": "JVBERi0xLjQK...",
+    "size": 148320,
+    "engine": "puppeteer",
+    "generationDurationMs": 1840,
+    "downloadUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download",
+    "htmlUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html"
+  },
+  "verificationScore": {}
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "template_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "row_not_found",
+  "code": "row_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "InternalServerError",
+  "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### Codes d'erreur
+
+| Statut | Code / Type d'erreur | Cause |
+| ------ | -------------------- | ----- |
+| `401` | `Unauthorized` | JWT manquant ou invalide. |
+| `403` | `Forbidden` | Exécution partagée x402 tentée ; utilisez votre propre JWT par client. |
+| `404` | `not_found` | L'ID du rapport n'existe pas ou appartient à un autre client. |
+| `404` | `template_not_found` | Le modèle lié est introuvable. |
+| `404` | `batch_not_found` | Le `SmartBatch` lié est introuvable. |
+| `409` | `MissingParameter` | La validation Joi a échoué sur un ou plusieurs champs. |
+| `409` | `row_not_found` | Le `rowIndex` demandé n'existe pas dans le lot. |
+| `409` | `unknown_score_profile` | Le `scoreProfile` demandé n'est pas reconnu. |
+| `422` | `UnprocessableEntity` | Erreur de validation Mongoose. |
+| `500` | `InternalServerError` | Échec du rendu PDF ou du traitement interne (marque le rapport `"failed"` et émet `smart_batch_report_generation_failed`). |
+
+### Intégration Webhooks et MCP
+
+- **Webhooks** : Émet `smart_batch_report_generated` en cas de création PDF réussie, ou `smart_batch_report_generation_failed` en cas d'erreur de rendu (et met à jour `status` à `"failed"`). Consultez [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks).
+- **Équivalent MCP** : Les agents IA peuvent générer le PDF d'un rapport directement via l'outil MCP `smart_report_generate_pdf`. Consultez [MCP et Agents IA](/verifik-fr/smart-reports/mcp-and-ai-agents).
+
+### Notes
+
+- `pdf.buffer` contient les octets PDF encodés en base64 directement dans la réponse JSON ; si vous préférez un flux PDF binaire, appelez [Télécharger le PDF d'un Smart Report](/verifik-fr/smart-reports/download-smart-report-pdf).
+- `verificationScore` est inclus dans la réponse lorsque `score` est activé.
+
+### Voir aussi
+
+- [Vue d'ensemble de SmartReports](/verifik-fr/smart-reports)
+- [Guide de l'API Headless](/verifik-fr/smart-reports/headless-api-guide)
+- [MCP et Agents IA](/verifik-fr/smart-reports/mcp-and-ai-agents)
+- [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks)
+- [Télécharger le PDF d'un Smart Report](/verifik-fr/smart-reports/download-smart-report-pdf)
+- [Envoyer un Smart Report par e-mail](/verifik-fr/smart-reports/send-smart-report-email)

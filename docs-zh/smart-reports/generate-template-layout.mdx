@@ -1,0 +1,348 @@
+---
+id: generate-template-layout
+title: 生成模板布局
+description: '使用 AI 根据自然语言提示词生成、追加或编辑结构化的 Smart Report 区块'
+slug: /smart-reports/generate-template-layout
+keywords:
+  - v2/smart-report-templates/generate-layout
+  - /v2/smart-report-templates/generate-layout
+  - v2 smart-report-templates generate-layout
+  - api/smart-report-templates/generate-layout
+  - /api/smart-report-templates/generate-layout
+  - api smart-report-templates generate-layout
+  - api.verifik.co/v2/smart-report-templates/generate-layout
+  - 'https://api.verifik.co/v2/smart-report-templates/generate-layout'
+  - POST v2/smart-report-templates/generate-layout
+  - POST /v2/smart-report-templates/generate-layout
+  - smart-report-templates/generate-layout
+  - /smart-report-templates/generate-layout
+  - GET v2/smart-report-templates/generate-layout
+  - GET /v2/smart-report-templates/generate-layout
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+使用 Gemini（temperature `0.2`）根据自然语言 `prompt` 生成、追加或编辑结构化的 `ReportSection` 定义。在 `previewData` 中传入示例核验数据，以便模型将区块的 `dataPath` 绑定及列布局与你的实际负载结构对齐。
+
+在无头报告构建器与 AI 智能体流水线中，可使用此端点快速搭建完整布局（`"create"`）、向现有模板追加后续区块（`"append"`）或微调单个区块（`"edit"`），而无需手写区块 JSON。将该调用与 [预览模板 HTML](/verifik-zh/smart-reports/preview-template-html) 配合使用，即可在通过 [创建报告模板](/verifik-zh/smart-reports/create-a-report-template) 或 [更新报告模板](/verifik-zh/smart-reports/update-a-report-template) 持久化之前检查渲染输出。
+
+### 端点
+
+```
+POST https://api.verifik.co/v2/smart-report-templates/generate-layout
+```
+
+Smart-Agent 代理（`https://ai.verifik.co`）暴露了完全相同的 `/v2/...` 路径，并同样要求携带你自己的 `Authorization: Bearer <VERIFIK_JWT>` 请求头。
+
+### 请求头
+
+| 名称 | 值 |
+| --- | --- |
+| Content-Type | `application/json` |
+| Accept | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### 请求体参数
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `prompt` | string | 是 | 描述要创建的布局、要追加的区块或在编辑模式下要应用的修改的自然语言指令。 |
+| `mode` | string | 是 | 生成模式：`"create"`、`"edit"` 或 `"append"`。 |
+| `previewData` | object | 否 | 示例核验 JSON（例如 `inputData`、`results`、`batchName`），用于约束生成的 `dataPath` 表达式和列结构。 |
+| `currentSections` | object[] | 否 | 现有的 `ReportSection` 数组。建议在 `"append"` 模式下传入，以便新生成的区块延续现有的 `order` 顺序。 |
+| `selectedSection` | object / null | 否 | 当 `mode` 为 `"edit"` 时要修改的目标 `ReportSection` 对象。如果在 `"edit"` 模式下传入 `null` 或省略该字段，行为会回退为 `"create"`。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch(
+    "https://api.verifik.co/v2/smart-report-templates/generate-layout",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        prompt:
+          "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+        mode: "create",
+        previewData: {
+          batchName: "Driver Onboarding",
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1020304050",
+          },
+          results: {
+            identity: { fullName: "Mateo Rojas", status: "active" },
+            fines: [{ code: "C02", amount: 580000, status: "pending" }],
+          },
+        },
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "prompt" => "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+    "mode" => "create",
+    "previewData" => [
+        "batchName" => "Driver Onboarding",
+        "rowIndex" => 0,
+        "inputData" => [
+            "documentType" => "CC",
+            "documentNumber" => "1020304050",
+        ],
+        "results" => [
+            "identity" => ["fullName" => "Mateo Rojas", "status" => "active"],
+            "fines" => [
+                ["code" => "C02", "amount" => 580000, "status" => "pending"],
+            ],
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/generate-layout");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates/generate-layout"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "prompt": "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+    "mode": "create",
+    "previewData": {
+        "batchName": "Driver Onboarding",
+        "rowIndex": 0,
+        "inputData": {
+            "documentType": "CC",
+            "documentNumber": "1020304050",
+        },
+        "results": {
+            "identity": {"fullName": "Mateo Rojas", "status": "active"},
+            "fines": [{"code": "C02", "amount": 580000, "status": "pending"}],
+        },
+    },
+}
+
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"prompt": "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+		"mode":   "create",
+		"previewData": map[string]interface{}{
+			"batchName": "Driver Onboarding",
+			"rowIndex":  0,
+			"inputData": map[string]interface{}{
+				"documentType":   "CC",
+				"documentNumber": "1020304050",
+			},
+			"results": map[string]interface{}{
+				"identity": map[string]interface{}{"fullName": "Mateo Rojas", "status": "active"},
+				"fines": []map[string]interface{}{
+					{"code": "C02", "amount": 580000, "status": "pending"},
+				},
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates/generate-layout", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates/generate-layout" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "prompt": "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+    "mode": "create",
+    "previewData": {
+      "batchName": "Driver Onboarding",
+      "rowIndex": 0,
+      "inputData": {
+        "documentType": "CC",
+        "documentNumber": "1020304050"
+      },
+      "results": {
+        "identity": { "fullName": "Mateo Rojas", "status": "active" },
+        "fines": [{ "code": "C02", "amount": 580000, "status": "pending" }]
+      }
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200-create" label="200（create / append 模式）">
+
+```json
+{
+  "data": [
+    {
+      "id": "sec-driver-summary",
+      "type": "keyValueGrid",
+      "order": 0,
+      "label": "Driver Summary",
+      "dataPath": "results.identity",
+      "columnsPerRow": 2
+    },
+    {
+      "id": "sec-traffic-fines",
+      "type": "dataTable",
+      "order": 1,
+      "label": "Traffic Citations",
+      "dataPath": "results.fines",
+      "columns": [
+        { "key": "code", "label": "Code" },
+        { "key": "amount", "label": "Amount" },
+        { "key": "status", "label": "Status" }
+      ]
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="200-edit" label="200（edit 模式）">
+
+```json
+{
+  "data": {
+    "id": "sec-driver-summary",
+    "type": "keyValueGrid",
+    "order": 0,
+    "label": "Driver Identity Summary",
+    "dataPath": "results.identity",
+    "columnsPerRow": 3
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"prompt\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "Failed to generate valid report layout from AI response",
+  "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- `"create"` 和 `"append"` 模式返回 `{ "data": [ ...ReportSection ] }`（数组），而传入非空 `selectedSection` 的 `"edit"` 模式返回 `{ "data": { ...ReportSection } }`（单个对象）。
+- 在 `"edit"` 模式下传入 `selectedSection: null` 或省略 `selectedSection` 时，行为会回退为 `"create"` 模式并返回一个数组。
+- 此端点不会写入数据库。请将返回的 `sections` 传入 [预览模板 HTML](/verifik-zh/smart-reports/preview-template-html) 查看 HTML，或传入 [创建报告模板](/verifik-zh/smart-reports/create-a-report-template) 进行保存。
+
+### 相关页面
+
+- [SmartReports 概览](/verifik-zh/smart-reports)
+- [无头 API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)
+- [探测示例数据](/verifik-zh/smart-reports/introspect-sample-data)
+- [预览模板 HTML](/verifik-zh/smart-reports/preview-template-html)
+- [创建报告模板](/verifik-zh/smart-reports/create-a-report-template)
+- [更新报告模板](/verifik-zh/smart-reports/update-a-report-template)

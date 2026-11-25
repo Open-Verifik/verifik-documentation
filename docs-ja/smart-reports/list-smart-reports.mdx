@@ -1,0 +1,306 @@
+---
+id: list-smart-reports
+title: Smart Report 一覧を取得する
+description: 認証済みクライアントの Smart Report を、任意のフィルタ、ソート、ページネーション付きで一覧取得します。
+slug: /smart-reports/list-smart-reports
+keywords:
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - api.verifik.co/v2/smart-reports
+  - 'https://api.verifik.co/v2/smart-reports'
+  - GET v2/smart-reports
+  - GET /v2/smart-reports
+  - smart-reports
+  - /smart-reports
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+認証済みクライアントに属する `SmartReport` レコードを一覧取得します。結果には `template`、`smartBatch`、および `client` が展開（populate）され、`smartBatch`、`template`、`externalRefId`、`createdByChannel` によるフィルタリングと、任意のページネーションおよびソートが可能です。
+
+`page` を渡すと、レスポンスにページネーションメタデータ（`total`、`limit`、`page`、`pages`）が含まれます。`page` を省略すると、ページネーションメタデータなしで一致したリストが `{ data: [...] }` の形式で返されます。
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/smart-reports
+```
+
+このエンドポイントは、お客様自身のクライアント別 `Authorization: Bearer <VERIFIK_JWT>` を使用して Smart-Agent プロキシ経由の `https://ai.verifik.co/v2/smart-reports` からも利用できます。共有 x402 による実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --- | --- | --- |
+| `Content-Type` | `application/json` | リクエストペイロードの形式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアント単位の JWT（`authUser.clientId`）。 |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `smartBatch` | string | いいえ | 特定の `SmartBatch` ObjectId に紐付くレポートでフィルタします。 |
+| `template` | string | いいえ | 特定のテンプレート ObjectId に紐付くレポートでフィルタします。 |
+| `status` | string | いいえ | 許可される値: `"draft"`、`"pending"`、`"generating"`、`"generated"`、`"failed"`、`"sent"`。将来の互換性のために Joi 検証で受け付けられますが、現在の一覧フィルタは `smartBatch`、`template`、`externalRefId`、`createdByChannel` に対して動作します。 |
+| `externalRefId` | string | いいえ | 外部の相関識別子でフィルタします。最大 `200` 文字。 |
+| `createdByChannel` | string | いいえ | 発生元チャネルでフィルタします: `"portal"`、`"api"`、`"mcp"`、`"x402"`、または `"webhook"`。 |
+| `page` | number | いいえ | 取得するページ番号。`page` を指定すると、`total`、`limit`、`page`、`pages` を含むページネーション付き出力が有効になります。 |
+| `limit` | number | いいえ | 1 ページあたりの最大アイテム数。`page` 指定時のデフォルトは `20` です。 |
+| `sort` | string | いいえ | ソートフィールドと方向。`page` 指定時のデフォルトは `"-updatedAt"` です。 |
+
+#### フィルタリングとページネーションの注記
+
+- **前方互換性のある `status` パラメータ**: Joi は `status` を `"draft"`、`"pending"`、`"generating"`、`"generated"`、`"failed"`、`"sent"` に対して検証しますが、実際の一覧クエリは現在 `smartBatch`、`template`、`externalRefId`、および `createdByChannel` でフィルタリングを行います。
+- **2 種類の `200` レスポンス形式**: ダッシュボードや同期ジョブで `total` や `pages` が必要な場合は `page` を送信し、よりシンプルな `{ data: [...] }` ペイロードを取得したい場合は `page` を省略してください。
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.get("https://api.verifik.co/v2/smart-reports", {
+    params: {
+      createdByChannel: "api",
+      externalRefId: "applicant-42",
+      page: 1,
+      limit: 20,
+      sort: "-updatedAt",
+    },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "createdByChannel" => "api",
+    "externalRefId" => "applicant-42",
+    "page" => 1,
+    "limit" => 20,
+    "sort" => "-updatedAt",
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-reports?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-reports"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "createdByChannel": "api",
+    "externalRefId": "applicant-42",
+    "page": 1,
+    "limit": 20,
+    "sort": "-updatedAt",
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	params := url.Values{}
+	params.Set("createdByChannel", "api")
+	params.Set("externalRefId", "applicant-42")
+	params.Set("page", "1")
+	params.Set("limit", "20")
+	params.Set("sort", "-updatedAt")
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-reports?"+params.Encode(), nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-reports?createdByChannel=api&externalRefId=applicant-42&page=1&limit=20&sort=-updatedAt" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200-paginated" label="200 OK（page 指定あり）">
+
+```json
+{
+  "data": [
+    {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+      "name": "Background Check - Applicant 42",
+      "status": "generated",
+      "template": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d2"
+      },
+      "smartBatch": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d3"
+      },
+      "client": {
+        "_id": "507f1f77bcf86cd799439013"
+      },
+      "externalRefId": "applicant-42",
+      "createdByChannel": "api",
+      "rowIndex": 0,
+      "createdAt": "2026-11-24T20:00:00.000Z",
+      "updatedAt": "2026-11-24T20:00:04.000Z"
+    }
+  ],
+  "total": 1,
+  "limit": 20,
+  "page": 1,
+  "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200-unpaginated" label="200 OK（page 指定なし）">
+
+```json
+{
+  "data": [
+    {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+      "name": "Background Check - Applicant 42",
+      "status": "generated",
+      "template": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d2"
+      },
+      "smartBatch": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d3"
+      },
+      "client": {
+        "_id": "507f1f77bcf86cd799439013"
+      },
+      "externalRefId": "applicant-42",
+      "createdByChannel": "api",
+      "rowIndex": 0,
+      "createdAt": "2026-11-24T20:00:00.000Z",
+      "updatedAt": "2026-11-24T20:00:04.000Z"
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"smartBatch\" must be a valid ObjectId",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注記
+
+- `GET /v2/smart-reports` は返却される各 `SmartReport` の `template`、`smartBatch`、および `client` を展開（populate）します。
+- 無効なクエリパラメータ値は Joi 検証により `409 MissingParameter` で失敗します。
+- すぐに利用できる `downloadUrl` および `htmlUrl` フィールド付きで単一のレポートを取得するには、[Smart Report を取得する](/verifik-ja/smart-reports/retrieve-a-smart-report) を使用してください。
+- `SmartBatch` と `SmartReport` レコードを個別に管理せずに新しいレポートをエンドツーエンドで実行するには、[Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report) を使用してください。
+
+### 関連項目
+
+- [SmartReports 概要](/verifik-ja/smart-reports)
+- [ヘッドレス API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を作成する](/verifik-ja/smart-reports/create-a-smart-report)
+- [Smart Report を取得する](/verifik-ja/smart-reports/retrieve-a-smart-report)

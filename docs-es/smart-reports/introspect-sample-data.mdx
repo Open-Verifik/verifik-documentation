@@ -1,0 +1,346 @@
+---
+id: introspect-sample-data
+title: Introspeccionar datos de muestra
+description: 'Inspecciona JSON de verificación de muestra para descubrir rutas de campos, estructuras y configuraciones recomendadas de ReportSection'
+slug: /smart-reports/introspect-sample-data
+keywords:
+  - v2/smart-report-templates/introspect
+  - /v2/smart-report-templates/introspect
+  - v2 smart-report-templates introspect
+  - api/smart-report-templates/introspect
+  - /api/smart-report-templates/introspect
+  - api smart-report-templates introspect
+  - api.verifik.co/v2/smart-report-templates/introspect
+  - 'https://api.verifik.co/v2/smart-report-templates/introspect'
+  - POST v2/smart-report-templates/introspect
+  - POST /v2/smart-report-templates/introspect
+  - smart-report-templates/introspect
+  - /smart-report-templates/introspect
+  - GET v2/smart-report-templates/introspect
+  - GET /v2/smart-report-templates/introspect
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Inspecciona un payload de verificación `sampleData` y recibe un mapa estructurado de rutas de campos, formas de valores, opciones recomendadas de `sectionType`, tipos de sección alternativos, columnas de tabla sugeridas y sugerencias de enlace de datos.
+
+En la creación de reportes headless y pipelines de agentes de IA, llama a este endpoint inmediatamente después de obtener un payload de [Recuperar una respuesta simulada](/verifik-es/smart-reports/retrieve-simulated-response) o capturar una fila de `SmartBatch`. En lugar de adivinar cadenas `dataPath` o escribir lógica frágil de recorrido JSON, tu UI o agente puede utilizar los metadatos `nodes` y `batch` introspeccionados para construir `sections` válidas directamente o enriquecer el contexto del `prompt` para [Generar diseño de plantilla](/verifik-es/smart-reports/generate-template-layout). El analizador recorre hasta una profundidad de `5` y hasta `600` nodos.
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/smart-report-templates/introspect
+```
+
+El proxy de Smart-Agent (`https://ai.verifik.co`) expone las mismas rutas `/v2/...` y requiere tu propio encabezado `Authorization: Bearer <VERIFIK_JWT>`.
+
+### Encabezados
+
+| Nombre        | Valor                  |
+| ------------- | ---------------------- |
+| Content-Type  | `application/json`     |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### Cuerpo
+
+| Nombre       | Tipo   | Requerido | Descripción                                                                                                                         |
+| ------------ | ------ | --------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `sampleData` | object | Sí        | Payload de verificación de muestra con `batchName` (string), `rowIndex` (number), `inputData` (object) y `results` (object) opcionales. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch(
+    "https://api.verifik.co/v2/smart-report-templates/introspect",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        sampleData: {
+          batchName: "Driver Onboarding",
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1020304050",
+          },
+          results: {
+            identity: {
+              fullName: "Mateo Rojas",
+              status: "active",
+            },
+            fines: [
+              { code: "C02", amount: 580000, status: "pending" },
+            ],
+          },
+        },
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "sampleData" => [
+        "batchName" => "Driver Onboarding",
+        "rowIndex" => 0,
+        "inputData" => [
+            "documentType" => "CC",
+            "documentNumber" => "1020304050",
+        ],
+        "results" => [
+            "identity" => [
+                "fullName" => "Mateo Rojas",
+                "status" => "active",
+            ],
+            "fines" => [
+                ["code" => "C02", "amount" => 580000, "status" => "pending"],
+            ],
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/introspect");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates/introspect"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "sampleData": {
+        "batchName": "Driver Onboarding",
+        "rowIndex": 0,
+        "inputData": {
+            "documentType": "CC",
+            "documentNumber": "1020304050",
+        },
+        "results": {
+            "identity": {
+                "fullName": "Mateo Rojas",
+                "status": "active",
+            },
+            "fines": [
+                {"code": "C02", "amount": 580000, "status": "pending"},
+            ],
+        },
+    }
+}
+
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"sampleData": map[string]interface{}{
+			"batchName": "Driver Onboarding",
+			"rowIndex":  0,
+			"inputData": map[string]interface{}{
+				"documentType":   "CC",
+				"documentNumber": "1020304050",
+			},
+			"results": map[string]interface{}{
+				"identity": map[string]interface{}{
+					"fullName": "Mateo Rojas",
+					"status":   "active",
+				},
+				"fines": []map[string]interface{}{
+					{"code": "C02", "amount": 580000, "status": "pending"},
+				},
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates/introspect", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates/introspect" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "sampleData": {
+      "batchName": "Driver Onboarding",
+      "rowIndex": 0,
+      "inputData": {
+        "documentType": "CC",
+        "documentNumber": "1020304050"
+      },
+      "results": {
+        "identity": {
+          "fullName": "Mateo Rojas",
+          "status": "active"
+        },
+        "fines": [
+          { "code": "C02", "amount": 580000, "status": "pending" }
+        ]
+      }
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "nodes": [
+      {
+        "path": "results.identity",
+        "shape": "object",
+        "sectionType": "keyValueGrid",
+        "alternatives": ["card", "table"],
+        "columns": [
+          { "key": "fullName", "label": "Full Name" },
+          { "key": "status", "label": "Status" }
+        ],
+        "suggestion": {
+          "type": "keyValueGrid",
+          "dataPath": "results.identity"
+        }
+      },
+      {
+        "path": "results.fines",
+        "shape": "array",
+        "sectionType": "dataTable",
+        "alternatives": ["repeater", "table"],
+        "columns": [
+          { "key": "code", "label": "Code" },
+          { "key": "amount", "label": "Amount" },
+          { "key": "status", "label": "Status" }
+        ],
+        "suggestion": {
+          "type": "dataTable",
+          "dataPath": "results.fines"
+        }
+      }
+    ],
+    "batch": [
+      {
+        "path": "inputData",
+        "shape": "object",
+        "sectionType": "keyValueGrid"
+      }
+    ],
+    "count": 2,
+    "truncated": false
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"sampleData\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- El recorrido se detiene a una profundidad de `5` y tiene un tope de `600` nodos. Cuando un payload muy grande alcanza el límite, `truncated` es `true`.
+- Este endpoint es de solo lectura y sin estado; no guarda ninguna plantilla ni consume créditos de verificación.
+
+### Relacionados
+
+- [Descripción general de SmartReports](/verifik-es/smart-reports)
+- [Guía de API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [MCP y Agentes de IA](/verifik-es/smart-reports/mcp-and-ai-agents)
+- [Webhooks de SmartReports](/verifik-es/resources/smart-reports-webhooks)
+- [Recuperar una respuesta simulada](/verifik-es/smart-reports/retrieve-simulated-response)
+- [Generar diseño de plantilla](/verifik-es/smart-reports/generate-template-layout)
+- [Crear una plantilla de reporte](/verifik-es/smart-reports/create-a-report-template)

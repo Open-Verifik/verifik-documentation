@@ -1,0 +1,255 @@
+---
+id: retrieve-configuration-input-schema
+title: Obter schema de entrada da configuração
+description: 'Inspecione campos obrigatórios, campos opcionais, JSON Schema, ID do template e entrada de exemplo para uma Configuração de Lote'
+slug: /smart-reports/retrieve-configuration-input-schema
+keywords:
+  - 'v2/batch-configurations/{id}/input-schema'
+  - '/v2/batch-configurations/{id}/input-schema'
+  - v2/batch-configurations/input-schema
+  - /v2/batch-configurations/input-schema
+  - v2 batch-configurations input-schema
+  - 'v2 batch-configurations {id} input-schema'
+  - batch-configurations
+  - /batch-configurations
+  - api/batch-configurations/input-schema
+  - /api/batch-configurations/input-schema
+  - 'api.verifik.co/v2/batch-configurations/{id}/input-schema'
+  - 'https://api.verifik.co/v2/batch-configurations/{id}/input-schema'
+  - 'GET v2/batch-configurations/{id}/input-schema'
+  - 'GET /v2/batch-configurations/{id}/input-schema'
+  - batch-configurations/input-schema
+  - /batch-configurations/input-schema
+  - api batch-configurations input-schema
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Resolva o contrato exato de entrada de uma `BatchConfiguration` salva antes de enviar linhas. Este endpoint retorna `preferredReportTemplate` (fazendo fallback para o `SmartReportTemplate` ativo mais recente vinculado à configuração), `webhookUrl`, `stepCount`, `estimatedCreditsPerRow`, `requiredFields`, `optionalFields`, um `jsonSchema` padrão e um payload `exampleInput` pronto para envio.
+
+O resolvedor ignora automaticamente etapas desabilitadas, opções de `dependencyGroup` inativas, flags internas e campos já fornecidos por meio de `parameterDefaults` ou encadeamento de etapas do `visitaFlow` (`{{results.N.field}}`), enquanto remapeia nomes de colunas de acordo com `inputFieldMapping`. Esta rota é registrada antes de `/{id}` para que `/input-schema` seja resolvido diretamente, e também está disponível como a ferramenta MCP `smart_report_get_input_schema`.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/batch-configurations/{id}/input-schema
+```
+
+Também acessível pelo proxy do Smart-Agent em `https://ai.verifik.co/v2/batch-configurations/{id}/input-schema` usando seu próprio cabeçalho `Authorization: Bearer <VERIFIK_JWT>` por cliente. A execução compartilhada via x402 é bloqueada com `403 Forbidden`.
+
+### Cabeçalhos
+
+| Nome | Valor |
+| ---- | ----- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+O token deve ser um **JWT de cliente**. Credenciais ausentes ou inválidas retornam `401 Unauthorized`.
+
+### Parâmetros
+
+| Nome | Tipo | Obrigatório | Descrição |
+| ---- | ---- | ----------- | --------- |
+| `id` | string | Sim | ObjectId da `BatchConfiguration` a inspecionar. |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const id = "67d1b4a0e4f5a60718293b12";
+    const res = await fetch(`https://api.verifik.co/v2/batch-configurations/${id}/input-schema`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67d1b4a0e4f5a60718293b12";
+$ch = curl_init("https://api.verifik.co/v2/batch-configurations/" . $id . "/input-schema");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+config_id = "67d1b4a0e4f5a60718293b12"
+url = f"https://api.verifik.co/v2/batch-configurations/{config_id}/input-schema"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+r = requests.get(url, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "67d1b4a0e4f5a60718293b12"
+    req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/batch-configurations/"+id+"/input-schema", nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/batch-configurations/67d1b4a0e4f5a60718293b12/input-schema" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "configurationId": "67d1b4a0e4f5a60718293b12",
+        "name": "Colombia Citizen Essential",
+        "country": "CO",
+        "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+        "webhookUrl": "https://example.com/webhooks/smart-reports",
+        "stepCount": 2,
+        "estimatedCreditsPerRow": 0.15,
+        "requiredFields": [
+            {
+                "field": "documentType",
+                "apiField": "documentType",
+                "type": "string",
+                "required": true,
+                "enum": ["CC", "CE"]
+            },
+            {
+                "field": "documentNumber",
+                "apiField": "documentNumber",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "optionalFields": [],
+        "jsonSchema": {
+            "type": "object",
+            "properties": {
+                "documentType": {
+                    "type": "string",
+                    "enum": ["CC", "CE"]
+                },
+                "documentNumber": {
+                    "type": "string"
+                }
+            },
+            "required": ["documentType", "documentNumber"]
+        },
+        "exampleInput": {
+            "documentType": "CC",
+            "documentNumber": "123456789"
+        }
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "not_found",
+    "code": "NotFound"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Inspecionar o schema de entrada não executa consultas e não consome créditos.
+- Se `preferredReportTemplate` não estiver definido na configuração, o servidor faz fallback para o `SmartReportTemplate` ativo mais recente vinculado a `{id}` (ou `null` se nenhum existir).
+- Quando `inputFieldMapping` mapeia uma coluna de entrada para um parâmetro da API, `requiredFields`, `optionalFields`, `jsonSchema` e `exampleInput` expõem o nome da coluna de entrada mapeada em vez do nome bruto do parâmetro da API.
+- Valores de `{id}` ausentes ou de outro cliente retornam `404` (`not_found`), diferentemente de [Obter uma configuração de lote](/verifik-pt/smart-reports/retrieve-a-batch-configuration), que retorna `200` com `data: null`.
+- Para agentes de IA e pipelines headless, este endpoint corresponde à ferramenta MCP `smart_report_get_input_schema`.
+
+### Relacionado
+
+- [Obter uma configuração de lote](/verifik-pt/smart-reports/retrieve-a-batch-configuration)
+- [Clonar um preset de relatório](/verifik-pt/smart-reports/clone-a-report-preset)
+- [Visão geral do Smart Reports](/verifik-pt/smart-reports)
+- [Guia da API Headless](/verifik-pt/smart-reports/headless-api-guide)
+- [MCP e agentes de IA](/verifik-pt/smart-reports/mcp-and-ai-agents)
+- [Webhooks do Smart Reports](/verifik-pt/resources/smart-reports-webhooks)
+- [Executar um Smart Report](/verifik-pt/smart-reports/run-a-smart-report)

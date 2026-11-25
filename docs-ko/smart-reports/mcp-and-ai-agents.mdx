@@ -1,0 +1,449 @@
+---
+id: mcp-and-ai-agents
+title: MCP 및 AI 에이전트
+description: Verifik의 Streamable HTTP MCP 서버, OpenAPI 검색 파일 및 Developer & AI Agent Kit을 사용하여 AI 에이전트를 SmartReports에 연결합니다.
+slug: /smart-reports/mcp-and-ai-agents
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# MCP 및 AI 에이전트
+
+Verifik은 Streamable HTTP JSON-RPC 2.0 서버를 통해 **Model Context Protocol (MCP)** 기반으로 **SmartReports**를 기본 제공하며, 이와 함께 기계 판독 가능한 검색 파일(`/openapi.json`, `/llms.txt`, `/agent-card.json`) 및 Smart-Agent 포털 내장 **Developer & AI Agent Kit**을 지원합니다.
+
+---
+
+## Streamable HTTP MCP 엔드포인트
+
+| 메서드 | 엔드포인트 | 동작 방식 |
+| --- | --- | --- |
+| `POST` | `https://ai.verifik.co/mcp` | 기본 Streamable HTTP JSON-RPC 2.0 MCP 엔드포인트입니다. |
+| `POST` | `https://ai.verifik.co/api/mcp` | Streamable HTTP MCP 엔드포인트의 동일한 `/api` 별칭입니다. |
+| `GET` | `https://ai.verifik.co/mcp` | 인증 없는 검색 메타데이터(`name`, `version`, `protocolVersion`, `transport`, `authentication` 및 도구 목록)를 반환합니다. |
+| `GET` | `https://ai.verifik.co/api/mcp` | 인증 없는 MCP 검색 메타데이터의 동일한 `/api` 별칭입니다. |
+
+### 프로토콜 및 서버 메타데이터
+
+모든 MCP 핸드셰이크 및 JSON-RPC 교환은 다음 규격을 따릅니다.
+
+- **전송 프로토콜(Wire protocol)**: JSON-RPC 2.0 (`"jsonrpc": "2.0"`)
+- **MCP 프로토콜 버전**: `"2025-03-26"`
+- **서버 정보**: `{ "name": "verifik-mcp", "version": "1.0.0" }`
+- **기능(Capabilities)**: `{ "tools": { "listChanged": false } }`
+- **지원 메서드**: `initialize`, `notifications/initialized`, `ping`, `tools/list`, `tools/call` (인식할 수 없는 메서드는 JSON-RPC 오류 `-32601` 반환)
+
+---
+
+## 인증 및 테넌트 격리
+
+MCP 검색(discovery)과 테넌트 과금 실행은 엄격히 분리되어 있습니다.
+
+- **인증 없는 검색**: `GET /mcp`, `initialize`, `ping`, `notifications/initialized`, `tools/list`는 MCP 호스트와 에이전트 프레임워크가 도구 스키마를 검사할 수 있도록 `Authorization` 헤더 없이 바로 동작합니다.
+- **`tools/call`에서 클라이언트별 JWT 엄격 적용**: 모든 `tools/call` 호출은 호출자가 제공하는 **클라이언트별 Verifik Bearer JWT**를 요구합니다.
+
+```text
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+`Authorization` 헤더가 누락되었거나 형식이 잘못되었거나 공유 프록시 서비스 토큰과 일치할 경우, MCP 서버는 **HTTP `401`** 및 JSON-RPC 오류 코드 **`-32001`**로 `tools/call`을 거부합니다.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "error": {
+    "code": -32001,
+    "message": "Per-client Authorization: Bearer <VERIFIK_JWT> header is required to invoke Verifik MCP tools."
+  }
+}
+```
+
+:::danger 보안 규칙: `VERIFIK_JWT`는 서버 측에만 보관하세요
+브라우저 JavaScript, 공개 저장소 또는 클라이언트 측 프롬프트에 `VERIFIK_JWT`를 절대 포함하거나 노출하지 마세요. MCP 헤더는 서버 측 런타임, 로컬 데스크톱 MCP 클라이언트(Claude Desktop, Cursor, Windsurf) 또는 보안 에이전트 도구 실행기에서만 구성하세요.
+:::
+
+### MCP에서의 채널 추적 및 PDF 처리
+
+- 에이전트가 `createdByChannel`을 생략하고 `smart_report_run`을 호출하면, MCP 컨트롤러는 `POST /v2/smart-reports/run`으로 전달하기 전에 자동으로 `"createdByChannel": "mcp"`를 삽입합니다.
+- 에이전트가 `smart_report_download_pdf`를 호출하면, MCP 서버는 Verifik에서 PDF 바이너리를 가져온 뒤 기본적으로 `{ reportId, contentType, byteLength, downloadUrl }`만 반환합니다. 대용량 PDF가 LLM 컨텍스트 창을 초과하지 않도록 `"includeBase64": true`를 명시적으로 요청한 경우에만 `base64`를 포함합니다.
+
+---
+
+## AI 에이전트를 위한 검색(Discovery) 파일
+
+에이전트 프레임워크, OpenAPI 가져오기 도구 및 LLM 크롤러는 다음 네 가지 공개 엔드포인트를 사용하여 SmartReports 기능을 자동으로 검색할 수 있습니다.
+
+| 검색 URL | 형식 | 세부 정보 |
+| --- | --- | --- |
+| `https://ai.verifik.co/mcp` (`GET` & `POST`) | JSON / JSON-RPC 2.0 | 실시간 Streamable HTTP MCP 검색 메타데이터 및 JSON-RPC 도구 실행. |
+| `https://ai.verifik.co/openapi.json` | OpenAPI `3.0.3` | `["SmartReports", "Data"]` 태그 아래 모든 10개 SmartReports 라우트를 포함하며 `security: [{ "bearerAuth": [] }]`를 사용하고 `x-payment-info`는 **없습니다**(호출당 x402 결제 대신 클라이언트별 JWT 필요). |
+| `https://ai.verifik.co/llms.txt` | Markdown (`text/plain`) | SmartReports 헤드리스 REST API 및 MCP 엔드포인트 링크를 포함한 Verifik 제품의 간결한 LLM 판독용 개요. |
+| `https://ai.verifik.co/agent-card.json` | JSON | `"smart-reports"` 및 `"mcp-tools"` 기능과 `endpoints.mcp` (`https://ai.verifik.co/mcp`)를 알리는 에이전트 검색 카드. |
+
+---
+
+## SmartReports MCP 도구 레퍼런스 (10개 도구)
+
+MCP 서버는 **10개의 SmartReports 도구**를 제공합니다(`tools/list`는 SmartLink의 `smart_link_create_session`을 포함해 **총 11개 도구**를 반환합니다).
+
+### 도구 카탈로그
+
+| # | 도구 이름 | HTTP 메서드 및 경로 | 목적 |
+| --- | --- | --- | --- |
+| 1 | `smart_report_list_presets` | `GET /v2/smart-batch-presets` | `systemKey`, 단계 수 및 `inputSchema`와 함께 시스템 프리셋(`citizen`, `company`, `vehicle`) 목록을 조회합니다. |
+| 2 | `smart_report_clone_preset` | `POST /v2/smart-batch-presets/{systemKey}/clone` | 프리셋을 클라이언트 소유 `BatchConfiguration` + `SmartReportTemplate`으로 멱등하게 복제합니다. |
+| 3 | `smart_report_get_input_schema` | `GET /v2/batch-configurations/{id}/input-schema` | 정확한 필수/선택 입력 필드, JSON Schema, `exampleInput` 및 `estimatedCreditsPerRow`를 확인합니다. |
+| 4 | `smart_report_run` | `POST /v2/smart-reports/run` | 종단 간 실행(프리셋 또는 구성 -> 검증 단계 -> Verification Score -> PDF -> 선택적 이메일 및 웹훅). |
+| 5 | `smart_report_get` | `GET /v2/smart-reports/{id}` | 리포트 상태, 메타데이터, `verificationScoreSummary`, `emailHistory`, `downloadUrl` 및 `htmlUrl`을 조회합니다. |
+| 6 | `smart_report_get_html` | `GET /v2/smart-reports/{id}/html` | PDF 렌더링 없이 렌더링된 HTML, 구조화된 행 결과 및 `verificationScore`를 가져옵니다. |
+| 7 | `smart_report_generate_pdf` | `POST /v2/smart-reports/{id}/generate` | 기존 SmartReport의 PDF를 렌더링 또는 재생성하고 `smart_batch_report_generated` 웹훅을 발송합니다. |
+| 8 | `smart_report_download_pdf` | `GET /v2/smart-reports/{id}/download` | PDF 메타데이터 + `downloadUrl`(및 `includeBase64: true`인 경우 선택적 `base64`)을 다운로드합니다. |
+| 9 | `smart_report_send_email` | `POST /v2/smart-reports/{id}/send-email` | 생성된 PDF를 수신자에게 이메일로 전송하고 `smart_batch_report_sent` / `delivery_failed` 웹훅을 트리거합니다. |
+| 10 | `smart_report_list_templates` | `GET /v2/smart-report-templates` | 클라이언트 소유 및 `"System"` SmartReport 템플릿 목록을 조회합니다. |
+
+:::note `tools/list`의 전체 도구 수
+`tools/list`를 호출하면 위에 문서화된 10개의 `smart_report_*` 도구와 서명된 SmartLink 인증 링크를 생성하는 `smart_link_create_session` (`POST /v3/smart-links/sessions`)을 포함하여 **11개 도구**가 반환됩니다.
+:::
+
+### 세부 도구 입력 스키마
+
+#### 1. `smart_report_list_presets`
+- **업스트림**: `GET /v2/smart-batch-presets`
+- **인수**(모두 선택 사항):
+  - `country` (string) — ISO 국가 필터(예: `"CO"`, `"MX"`, `"PE"`, `"US"`).
+  - `category` (string: `"citizen" | "company" | "vehicle"`) — 도메인 필터.
+  - `tier` (string: `"essential" | "comprehensive"`) — 프리셋 등급 필터.
+  - `search` (string) — `name`, `description` 및 `systemKey` 대상 텍스트 검색 필터.
+
+#### 2. `smart_report_clone_preset`
+- **업스트림**: `POST /v2/smart-batch-presets/{systemKey}/clone`
+- **필수**: `systemKey` (string, 예: `"co.citizen.comprehensive"`).
+
+#### 3. `smart_report_get_input_schema`
+- **업스트림**: `GET /v2/batch-configurations/{id}/input-schema`
+- **필수**: `id` (string) — `BatchConfiguration` ObjectId.
+
+#### 4. `smart_report_run`
+- **업스트림**: `POST /v2/smart-reports/run` (`createdByChannel` 생략 시 기본값 `"mcp"`)
+- **인수**:
+  - `systemKey` (string) — `batchConfigurationId` 생략 시 복제/재사용할 시스템 프리셋 키.
+  - `batchConfigurationId` (string) — 기존 클라이언트 `BatchConfiguration` ID.
+  - `templateId` (string) — 선택적 `SmartReportTemplate` ID 재정의.
+  - `name` (string) — 선택적 리포트/배치 표시 이름.
+  - `inputs` (object 또는 최대 `500`개 object 배열) — 검증 대상 입력(예: `{"documentType": "CC", "documentNumber": "123456789"}`).
+  - `mode` (`"sync" | "async"`) — `sync`는 대기하며(최대 `5`행, `90s` 제한 시간), `async`는 즉시 `202 Accepted`를 반환합니다.
+  - `generatePdf` (boolean, 기본값 `true`) — PDF 생성을 건너뛰고 배치 + Verification Score만 반환하려면 `false`로 설정합니다.
+  - `includePdfBase64` (boolean, 기본값 `false`) — JSON 응답에 base64 PDF 바이트를 인라인으로 포함합니다.
+  - `pdfEngine` (`"puppeteer" | "pdfkit"`) — PDF 렌더링 엔진 재정의.
+  - `score` (boolean) — Verification Score 계산 여부.
+  - `scoreProfile` (string) — Verification Score 프로필 식별자(예: `"cabify_driver"`, `"kyc"`, `"kyb"`, `"fleet"`).
+  - `emailTo` (string[]) — 완성된 PDF를 전달할 수신자 이메일 주소 목록.
+  - `emailSubject` (string) — 선택적 사용자 지정 이메일 제목.
+  - `emailLanguage` (`"en" | "es"`, 기본값 `"es"`) — 이메일 본문 언어.
+  - `webhookUrl` (string) — `smart_batch_report_*` 이벤트를 수신할 실행별 HTTPS 웹훅 URL.
+  - `externalRefId` (string) — 리포트에 저장되고 웹훅 페이로드에 포함되는 호출자 상관관계 ID.
+
+#### 5. `smart_report_get`
+- **업스트림**: `GET /v2/smart-reports/{id}`
+- **필수**: `id` (string) — SmartReport ObjectId.
+
+#### 6. `smart_report_get_html`
+- **업스트림**: `GET /v2/smart-reports/{id}/html`
+- **필수**: `id` (string) — SmartReport ObjectId.
+- **선택**: `rowIndex` (number, 0부터 시작, 기본값 `0`), `preview` (boolean).
+
+#### 7. `smart_report_generate_pdf`
+- **업스트림**: `POST /v2/smart-reports/{id}/generate`
+- **필수**: `id` (string) — SmartReport ObjectId.
+- **선택**: `rowIndex` (number), `engine` (`"puppeteer" | "pdfkit"`), `score` (boolean), `scoreProfile` (string).
+
+#### 8. `smart_report_download_pdf`
+- **업스트림**: `GET /v2/smart-reports/{id}/download`
+- **필수**: `id` (string) — SmartReport ObjectId.
+- **선택**: `rowIndex` (number), `includeBase64` (boolean, 기본값 `false`).
+
+#### 9. `smart_report_send_email`
+- **업스트림**: `POST /v2/smart-reports/{id}/send-email`
+- **필수**: `id` (string) — SmartReport ObjectId; `recipients` (string[], 유효한 이메일 주소).
+- **선택**: `subject` (string), `language` (`"en" | "es"`, 기본값 `"es"`), `rowIndex` (number), `sendAll` (boolean, 최대 `50`행을 별도 첨부 파일로 전송).
+
+#### 10. `smart_report_list_templates`
+- **업스트림**: `GET /v2/smart-report-templates`
+- **선택**: `type` (`"System" | "client"`), `country` (string), `category` (string), `search` (string), `limit` (number), `page` (number).
+
+---
+
+## 클라이언트 설정 및 원시 JSON-RPC 2.0 예제
+
+<Tabs>
+  <TabItem value="mcp-clients" label="Claude Desktop / Cursor / Windsurf" default>
+
+클라이언트의 `mcpServers` JSON 설정(`claude_desktop_config.json`, `.cursor/mcp.json`, 또는 Windsurf `mcp_config.json`)에 Verifik Streamable HTTP MCP 서버를 추가합니다.
+
+```json
+{
+  "mcpServers": {
+    "verifik": {
+      "url": "https://ai.verifik.co/mcp",
+      "headers": {
+        "Authorization": "Bearer <VERIFIK_JWT>"
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL (JSON-RPC 2.0)">
+
+```bash
+# 1) Initialize MCP session (no auth required)
+curl -sS -X POST "https://ai.verifik.co/mcp" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+      "protocolVersion": "2025-03-26",
+      "capabilities": {},
+      "clientInfo": { "name": "verifik-cli", "version": "1.0.0" }
+    }
+  }'
+
+# 2) List available MCP tools (no auth required)
+curl -sS -X POST "https://ai.verifik.co/mcp" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/list"
+  }'
+
+# 3) Discover presets (Authorization: Bearer <VERIFIK_JWT> required for tools/call)
+curl -sS -X POST "https://ai.verifik.co/mcp" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+      "name": "smart_report_list_presets",
+      "arguments": { "country": "CO", "category": "citizen" }
+    }
+  }'
+
+# 4) Execute a SmartReport via MCP
+curl -sS -X POST "https://ai.verifik.co/mcp" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 4,
+    "method": "tools/call",
+    "params": {
+      "name": "smart_report_run",
+      "arguments": {
+        "systemKey": "co.citizen.comprehensive",
+        "inputs": { "documentType": "CC", "documentNumber": "123456789" },
+        "mode": "sync",
+        "generatePdf": true,
+        "score": true,
+        "externalRefId": "agent-case-001"
+      }
+    }
+  }'
+```
+
+  </TabItem>
+  <TabItem value="nodejs" label="Node.js">
+
+```javascript
+const MCP_URL = 'https://ai.verifik.co/mcp';
+const JWT = process.env.VERIFIK_JWT;
+
+async function mcpCall(method, params, id, withAuth = false) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (withAuth) {
+    if (!JWT) throw new Error('Set VERIFIK_JWT in your server environment');
+    headers.Authorization = `Bearer ${JWT}`;
+  }
+
+  const res = await fetch(MCP_URL, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ jsonrpc: '2.0', id, method, params }),
+  });
+
+  const body = await res.json();
+  if (body.error) {
+    throw new Error(`MCP error ${body.error.code}: ${body.error.message}`);
+  }
+  return body.result;
+}
+
+async function main() {
+  // 1. Initialize & list tools
+  const init = await mcpCall('initialize', { protocolVersion: '2025-03-26' }, 1);
+  console.log('Connected to:', init.serverInfo, init.protocolVersion);
+
+  const { tools } = await mcpCall('tools/list', {}, 2);
+  console.log('Total MCP tools:', tools.length);
+
+  // 2. Call smart_report_run with per-client Bearer JWT
+  const runResult = await mcpCall(
+    'tools/call',
+    {
+      name: 'smart_report_run',
+      arguments: {
+        systemKey: 'co.citizen.comprehensive',
+        inputs: { documentType: 'CC', documentNumber: '123456789' },
+        mode: 'sync',
+        generatePdf: true,
+        score: true,
+        externalRefId: 'agent-case-001',
+      },
+    },
+    3,
+    true
+  );
+
+  if (runResult.isError) {
+    throw new Error(runResult.content[0].text);
+  }
+
+  const parsed = JSON.parse(runResult.content[0].text);
+  console.log('SmartReport result:', parsed.data.report._id, parsed.data.verificationScore);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import json
+import os
+import requests
+
+MCP_URL = "https://ai.verifik.co/mcp"
+JWT = os.environ["VERIFIK_JWT"]
+
+
+def mcp_call(method: str, params: dict, req_id: int, with_auth: bool = False) -> dict:
+    headers = {"Content-Type": "application/json"}
+    if with_auth:
+        headers["Authorization"] = f"Bearer {JWT}"
+
+    resp = requests.post(
+        MCP_URL,
+        headers=headers,
+        json={"jsonrpc": "2.0", "id": req_id, "method": method, "params": params},
+        timeout=120,
+    )
+    data = resp.json()
+    if "error" in data:
+        raise RuntimeError(f"MCP error {data['error']['code']}: {data['error']['message']}")
+    return data["result"]
+
+
+def main() -> None:
+    # 1. Initialize & list tools
+    init = mcp_call("initialize", {"protocolVersion": "2025-03-26"}, 1)
+    print("Server:", init["serverInfo"], "Protocol:", init["protocolVersion"])
+
+    tools = mcp_call("tools/list", {}, 2)["tools"]
+    print("Available tools:", [t["name"] for t in tools])
+
+    # 2. Execute smart_report_run
+    result = mcp_call(
+        "tools/call",
+        {
+            "name": "smart_report_run",
+            "arguments": {
+                "systemKey": "co.citizen.comprehensive",
+                "inputs": {"documentType": "CC", "documentNumber": "123456789"},
+                "mode": "sync",
+                "generatePdf": True,
+                "score": True,
+                "externalRefId": "agent-case-001",
+            },
+        },
+        3,
+        with_auth=True,
+    )
+
+    if result.get("isError"):
+        raise RuntimeError(result["content"][0]["text"])
+
+    payload = json.loads(result["content"][0]["text"])
+    print("Report ID:", payload["data"]["report"]["_id"])
+    print("Score:", payload["data"].get("verificationScore"))
+
+
+if __name__ == "__main__":
+    main()
+```
+
+  </TabItem>
+</Tabs>
+
+### 바로 사용 가능한 AI 에이전트 시스템 프롬프트
+
+```text
+You are a verification automation assistant connected to the Verifik SmartReports MCP server (https://ai.verifik.co/mcp).
+
+Workflow rules:
+1. Before running any verification, discover required inputs:
+   - Call `smart_report_list_presets` (if running by systemKey) or `smart_report_get_input_schema` (if given a batchConfigurationId).
+   - Confirm that every required field in `inputSchema.requiredFields` is present and valid before spending credits.
+2. Execute the report with `smart_report_run`:
+   - Pass `mode: "sync"` for 1 to 5 rows, or `mode: "async"` for 6 to 500 rows (or slow upstream lookups).
+   - Include a correlation `externalRefId` and optional `webhookUrl` / `emailTo` when provided by the caller.
+3. Handle asynchronous responses:
+   - If `smart_report_run` returns `mode: "async"` (HTTP 202), poll `smart_report_get` until `status` is "generated", "sent", or "failed".
+4. Retrieve results without bloating context:
+   - Use `smart_report_get_html` to inspect structured row findings and `verificationScore`.
+   - Use `smart_report_download_pdf` with `includeBase64: false` to get `downloadUrl` unless raw base64 bytes are explicitly required.
+5. Security:
+   - Never ask the user to paste `VERIFIK_JWT` into chat logs or browser code; rely on the MCP client's server-side Authorization header.
+```
+
+---
+
+## 앱 내 Developer & AI Agent Kit UI
+
+**Smart-Agent** 웹 포털(`https://ai.verifik.co`) 내부의 **Developer & AI Agent Kit**(`SmartReportAgentKitComponent`)은 현재 보고 있는 프리셋, 배치 구성, 템플릿 또는 생성된 리포트에 맞춰 즉시 복사 가능한 연동 코드 스니펫을 자동으로 생성합니다.
+
+### Smart-Agent에서 여는 위치
+
+1. **배치 대시보드**(`BatchDashboardComponent`): 대시보드 헤더에서 **`API & AI Agent`**를 클릭하면 활성 구성의 `Config ID`, `Template ID`, `Preset Key`(복제된 경우), 필수 입력 예제 및 연결된 웹훅 URL이 미리 채워진 확장된 **Developer & AI Agent Kit** 패널을 전환할 수 있습니다.
+2. **리포트 뷰어 모달**(`ReportViewerComponent`): 뷰어 도구 모음에서 **`API & AI Agent`**를 클릭하면 활성 `Report ID`(및 선택된 행 인덱스)를 대상으로 실시간 `/download`, `/html`, `/send-email` 호출이 포함된 **`Developer & AI Agent Kit`** 대화 상자가 열립니다.
+3. **템플릿 미리보기 모달**(`SmartBatchComponent`): 미리보기 모달 헤더에서 **`API / MCP`**를 클릭하여(돌아가려면 **`Back to Preview`** 클릭) 해당 템플릿 또는 시스템 프리셋용으로 미리 채워진 컴팩트 키트를 확인할 수 있습니다.
+
+### 키트 컨트롤, 칩 및 탭
+
+- **헤더**: 아이브로우 텍스트 `HEADLESS API & AI AGENT KIT`, 제목 **`Developer & AI Agent Kit`**, 그리고 **`API Docs`**(`/smart-reports`) 및 **`Report Webhooks`**(`/resources/smart-reports-webhooks`)로 이동하는 직접 링크를 표시합니다.
+- **클릭하여 복사하는 식별자 칩**: **`Config ID`**, **`Template ID`**, **`Preset Key`**, **`Report ID`** 및 연결된 웹훅 URL(있는 경우)에 대한 컨텍스트 배지를 표시합니다.
+- **네 가지 연동 탭**:
+  1. **`AI Agent Prompt`** — 입력 탐색, `POST /v2/smart-reports/run`, 조회 엔드포인트, 웹훅 이벤트 및 MCP 엔드포인트 규칙이 포함되어 코딩 어시스턴트와 자율 에이전트에 바로 붙여넣을 수 있는 지침입니다.
+  2. **`MCP Tool`** — 바로 복사 가능한 `mcpServers.verifik` JSON 블록과 `smart_report_run`용으로 미리 채워진 `sampleToolCall`(활성 리포트를 볼 때는 `followUpTools` 포함)을 제공합니다.
+  3. **`Webhook Handler`** — 빠른 `200 OK` 응답 및 PDF 다운로드 URL 힌트와 함께 6가지 `smart_batch_*` 이벤트 유형을 모두 처리하는 바로 복사 가능한 Express.js 수신기입니다.
+  4. **`cURL Workflow`** — 입력 스키마 검사, `POST /v2/smart-reports/run`, PDF 다운로드 및 이메일 전송을 위한 종단 간 셸 명령어입니다.
+- **실행 버튼**: **`Copy Snippet`**(복사 후 **`Copied!`** 표시)을 클릭하여 활성 탭의 스니펫을 클립보드에 복사합니다.
+
+---
+
+## 관련 문서
+
+- [SmartReports 개요](/verifik-ko/smart-reports)
+- [헤드리스 API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [SmartReports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)
+- [리포트 템플릿 목록 조회](/verifik-ko/smart-reports/list-report-templates)

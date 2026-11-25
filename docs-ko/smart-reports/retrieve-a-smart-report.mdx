@@ -1,0 +1,255 @@
+---
+id: retrieve-a-smart-report
+title: Smart Report 조회
+description: 'ID로 단일 SmartReport를 조회하여 채워진 template, smartBatch, client 참조와 PDF 다운로드 및 HTML URL을 확인합니다.'
+slug: /smart-reports/retrieve-a-smart-report
+keywords:
+  - 'v2/smart-reports/{id}'
+  - '/v2/smart-reports/{id}'
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - 'v2 smart-reports {id}'
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - 'api.verifik.co/v2/smart-reports/{id}'
+  - 'https://api.verifik.co/v2/smart-reports/{id}'
+  - 'GET v2/smart-reports/{id}'
+  - 'GET /v2/smart-reports/{id}'
+  - smart-reports
+  - smart_report_get
+  - /smart-reports
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+ID로 단일 `SmartReport`를 조회합니다. 응답은 `template`, `smartBatch`, `client`를 채워서(populate) 반환하며 바로 사용할 수 있는 `downloadUrl` (`/v2/smart-reports/{id}/download`) 및 `htmlUrl` (`/v2/smart-reports/{id}/html`) 경로를 포함합니다.
+
+이 엔드포인트는 `POST /v2/smart-reports/run`이 `"async"` 모드로 실행되거나 90초 동기 제한 시간 이후 `202 Accepted`로 폴백할 때 반환되는 폴링 대상(`pollUrl`)이기도 합니다. 리포트 ID가 존재하지 않거나 다른 클라이언트에 속한 경우, 이 엔드포인트는 `{ "data": null }`과 함께 HTTP `200 OK`를 반환합니다.
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v2/smart-reports/{id}
+```
+
+이 엔드포인트는 본인의 클라이언트별 `Authorization: Bearer <VERIFIK_JWT>`를 사용하여 Smart-Agent 프록시(`https://ai.verifik.co/v2/smart-reports/{id}`)를 통해서도 호출할 수 있습니다. 공유 x402 실행은 `403 Forbidden`으로 차단됩니다.
+
+### 헤더
+
+| 이름            | 값                     | 설명                                     |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | 요청 페이로드 형식.                      |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 클라이언트 범위 JWT (`authUser.clientId`). |
+
+### 매개변수
+
+| 이름 | 타입   | 필수   | 설명 |
+| ---- | ------ | ------ | ---- |
+| `id` | string | **예** | `POST /v2/smart-reports/run`, `POST /v2/smart-reports` 또는 `GET /v2/smart-reports`가 반환한 `SmartReport` ObjectId. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-reports/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-reports/"+id, nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "name": "Background Check - Applicant 42",
+    "status": "generated",
+    "template": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d2"
+    },
+    "smartBatch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3"
+    },
+    "client": {
+      "_id": "507f1f77bcf86cd799439013"
+    },
+    "pdfEngine": "puppeteer",
+    "pdfSize": 148320,
+    "generationDurationMs": 1840,
+    "generatedAt": "2026-11-24T20:00:04.000Z",
+    "externalRefId": "applicant-42",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+    "downloadUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download",
+    "htmlUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:00:04.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-null" label="200 OK (찾을 수 없음 / Null)">
+
+```json
+{
+  "data": null
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"id\" must be a valid ObjectId",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 웹훅 및 MCP 연동
+
+- **폴링 vs 웹훅**: 비동기 실행의 경우 `data.status`가 최종 상태(`"generated"`, `"sent"` 또는 `"failed"`)가 될 때까지 `GET /v2/smart-reports/{id}`를 폴링하거나 웹훅 이벤트(`smart_batch_report_generated`, `smart_batch_report_generation_failed`, `smart_batch_report_sent`, `smart_batch_report_delivery_failed`)를 구독할 수 있습니다. [SmartReports 웹훅](/verifik-ko/resources/smart-reports-webhooks)을 참조하세요.
+- **MCP 대응 도구**: AI 에이전트는 `smart_report_get` MCP 도구를 사용하여 리포트 레코드를 조회할 수 있습니다. [MCP 및 AI 에이전트](/verifik-ko/smart-reports/mcp-and-ai-agents)를 참조하세요.
+
+### 참고 사항
+
+- 리포트가 존재하지 않거나 다른 클라이언트에 속한 경우 `404` 대신 `{ "data": null }`과 함께 `200 OK`를 반환합니다.
+- `downloadUrl`과 `htmlUrl`은 `https://api.verifik.co`(또는 `https://ai.verifik.co`) 뒤에 붙여서 사용할 수 있는 상대 API 경로입니다.
+
+### 관련 문서
+
+- [SmartReports 개요](/verifik-ko/smart-reports)
+- [헤드리스 API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [MCP 및 AI 에이전트](/verifik-ko/smart-reports/mcp-and-ai-agents)
+- [SmartReports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report PDF 다운로드](/verifik-ko/smart-reports/download-smart-report-pdf)
+- [Smart Report HTML 조회](/verifik-ko/smart-reports/retrieve-smart-report-html)

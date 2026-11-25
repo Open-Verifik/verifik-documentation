@@ -1,0 +1,629 @@
+---
+id: headless-api-guide
+title: 无头 API 指南
+description: 无需打开 UI 界面，通过单次预设执行、异步 Webhook 与轮询、自定义配方以及完整错误处理，100% 自动化运行 SmartReports。
+slug: /smart-reports/headless-api-guide
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 无头 API 指南
+
+你无需打开 Smart-Agent Web UI，即可从后端服务、任务队列或 CI 流水线 100% 自动化运行 **SmartReports**。所有操作均通过 HTTPS 在 `https://api.verifik.co` 和 `https://ai.verifik.co` 上以完全相同的 `/v2/...` 路径提供。
+
+:::warning 必须使用每客户独立的 Bearer JWT
+本指南中的每个请求都需要使用你自己的 Verifik 账户令牌：
+
+```text
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+切勿在浏览器或客户端代码中暴露 `VERIFIK_JWT`。通过 `https://ai.verifik.co` 发送但未携带每客户 Bearer JWT 的请求，会被 `smartReportAuthGuard` 拦截并返回 `403 Forbidden`。
+:::
+
+---
+
+## 选择工作流
+
+| 工作流 | 入口端点 | 行数限制 | 适用场景 |
+| --- | --- | --- | --- |
+| **1. 单次预设执行（同步）** | `POST /v2/smart-reports/run`（`mode: "sync"`） | `1–5` 行 | 在单次 HTTP 请求中立即完成核验 + PDF + 核验评分（`90s` 超时截止，超时自动回退为异步）。 |
+| **2. 异步执行 + Webhooks / 轮询** | `POST /v2/smart-reports/run`（`mode: "async"`） | `1–500` 行 | 多主体批次（`> 5` 行）或响应较慢的政府数据源，通过 `smart_batch_*` Webhook 或轮询驱动。 |
+| **3. 自定义可复用配方** | `POST /v2/smart-batch-presets/{systemKey}/clone` 或 `POST /v2/batch-configurations` + `/v2/smart-batches` | 最多 `20,000` 行（`SMART_BATCH_MAX_ROWS`） | 自定义品牌与布局、AI 生成区块、CSV/XLSX/JSONL 文件上传以及逐行报告生成。 |
+
+---
+
+## 工作流 1：单次预设执行（最快路径）
+
+集成 SmartReports 最快的方式是按 `systemKey` 直接运行 Verifik 内置预设。`POST /v2/smart-reports/run` 会自动克隆或复用你的客户预设配置、校验必填输入、在服务端执行串联的核验步骤、计算 `verificationScore`、渲染 PDF、按需发送邮件给收件人并触发 Webhook。
+
+### 第 1 步：发现预设与所需输入
+
+查询 `GET /v2/smart-batch-presets`（零积分成本）以查看可用预设、步骤数量、可用性状态以及派生的 `inputSchema`：
+
+```http
+GET https://api.verifik.co/v2/smart-batch-presets?country=CO&category=citizen
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+每个预设返回的关键字段：
+
+- `systemKey`：传给 `POST /v2/smart-reports/run` 的稳定标识符（例如 `"co.citizen.comprehensive"`）。
+- `available` 与 `unavailableFeatureCodes`：确认当前环境中所有预设端点均可用。
+- `inputSchema`：
+  - `stepCount` 与 `estimatedCreditsPerRow`：总核验步骤数与每条输入行的预估积分消耗。
+  - `requiredFields` 与 `optionalFields`：精确字段名、类型、枚举值、默认值以及 `requiredWhen` 条件。
+  - `jsonSchema` 与 `exampleInput`：可直接使用的数据 Schema 与示例输入对象。
+
+### 第 2 步：同步执行（`mode: "sync"`）
+
+向 `POST /v2/smart-reports/run` 发送 `systemKey`、`inputs` 与 `mode: "sync"`（发送 `1–5` 行时的默认模式）：
+
+```json
+{
+  "systemKey": "co.citizen.comprehensive",
+  "inputs": {
+    "documentType": "CC",
+    "documentNumber": "123456789"
+  },
+  "mode": "sync",
+  "generatePdf": true,
+  "includePdfBase64": false,
+  "score": true,
+  "emailTo": ["compliance@yourcompany.com"],
+  "emailLanguage": "en",
+  "externalRefId": "applicant-9841"
+}
+```
+
+#### 同步执行与自动 `202` 回退机制
+
+- **行数上限**：同步执行最多接受 **`5` 行**（`MAX_SYNC_ROWS = 5`）。使用 `mode: "sync"` 发送超过 `5` 行将返回 `409 Conflict`（`sync_row_limit_exceeded`）。
+- **`90s` 执行截止时间**：同步执行最多等待 **`90` 秒**（`SYNC_DEADLINE_MS = 90000`）以待上游数据源完成响应。若到达 `90s` 时仍有上游数据源在运行，Verifik 会将该报告标记为后台收尾（`asyncFinalize: true`），并无缝返回 **HTTP `202 Accepted`**（`mode: "async"`）以及 `pollUrl`、`downloadUrl` 与 `htmlUrl`——已执行的进度与消耗的积分不会丢失。
+- **内联 PDF 字节**：设置 `"includePdfBase64": true` 可直接在 `200 OK` JSON 响应中返回 `data.pdf.buffer`（base64 编码的 PDF 字节）。保持默认 `false` 可减小响应体积，并通过 `downloadUrl` 下载二进制 PDF。
+
+### 第 3 步：检查 `200 OK` 响应
+
+```json
+{
+  "data": {
+    "mode": "sync",
+    "report": {
+      "_id": "6740a1b2c3d4e5f678901234",
+      "name": "Colombia Citizen Comprehensive — 2026-11-24",
+      "status": "sent",
+      "smartBatch": "6740a1b2c3d4e5f678901111",
+      "template": "6740a1b2c3d4e5f678902222",
+      "pdfSize": 184320,
+      "pdfEngine": "puppeteer",
+      "externalRefId": "applicant-9841",
+      "createdByChannel": "api",
+      "verificationScoreSummary": {
+        "score": 0.9625,
+        "verdict": "approve",
+        "coverage": 1,
+        "profile": "cabify_driver"
+      }
+    },
+    "batch": {
+      "_id": "6740a1b2c3d4e5f678901111",
+      "status": "completed",
+      "totalRows": 1,
+      "completedRows": 1,
+      "failedRows": 0,
+      "partialRows": 0,
+      "creditsSpent": 6,
+      "rows": [
+        {
+          "rowIndex": 0,
+          "status": "completed",
+          "inputData": {
+            "documentType": "CC",
+            "documentNumber": "123456789"
+          },
+          "results": {},
+          "errors": []
+        }
+      ]
+    },
+    "verificationScore": {
+      "version": "1.1.0",
+      "profile": "cabify_driver",
+      "score": 0.9625,
+      "score100": 96,
+      "decision": "approve",
+      "coverage": 1
+    },
+    "pdf": {
+      "size": 184320,
+      "engine": "puppeteer",
+      "generationDurationMs": 1420,
+      "downloadUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/download",
+      "htmlUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/html"
+    },
+    "email": {
+      "success": true,
+      "recipients": ["compliance@yourcompany.com"],
+      "subject": "SmartReport: Colombia Citizen Comprehensive — 2026-11-24",
+      "messageId": "<msg-123@mailgun>"
+    }
+  }
+}
+```
+
+---
+
+## 工作流 2：异步无头执行 + Webhooks + 轮询
+
+每当提交 **超过 `5` 行**（每次 `POST /v2/smart-reports/run` 调用最多 **`500` 行**），或即使只有 `1–5` 行但仍希望立即收到 `202 Accepted` 入队响应时，请使用 `mode: "async"`。
+
+### 第 1 步：使用 `mode: "async"` 入队
+
+传入 `mode: "async"`、可选的单次运行 `webhookUrl` 覆盖地址、用于业务关联的 `externalRefId` 以及可选的 `emailTo`：
+
+```json
+{
+  "systemKey": "co.citizen.comprehensive",
+  "inputs": [
+    { "documentType": "CC", "documentNumber": "123456789" },
+    { "documentType": "CC", "documentNumber": "987654321" }
+  ],
+  "mode": "async",
+  "webhookUrl": "https://api.yourcompany.com/webhooks/verifik-reports",
+  "externalRefId": "onboarding-batch-42",
+  "emailTo": ["ops@yourcompany.com"],
+  "emailLanguage": "en"
+}
+```
+
+Verifik 会立即返回 **HTTP `202 Accepted`**：
+
+```json
+{
+  "data": {
+    "mode": "async",
+    "report": {
+      "_id": "6740a1b2c3d4e5f678909999",
+      "status": "generating",
+      "smartBatch": "6740a1b2c3d4e5f678908888",
+      "externalRefId": "onboarding-batch-42",
+      "webhookUrl": "https://api.yourcompany.com/webhooks/verifik-reports"
+    },
+    "batch": {
+      "_id": "6740a1b2c3d4e5f678908888",
+      "status": "processing",
+      "totalRows": 2,
+      "completedRows": 0,
+      "failedRows": 0,
+      "partialRows": 0
+    },
+    "pollUrl": "/v2/smart-reports/6740a1b2c3d4e5f678909999",
+    "downloadUrl": "/v2/smart-reports/6740a1b2c3d4e5f678909999/download",
+    "htmlUrl": "/v2/smart-reports/6740a1b2c3d4e5f678909999/html"
+  }
+}
+```
+
+### 第 2 步：接收 Webhook 或轮询状态
+
+`FeatureRunner` 在后台完成批次执行后，Verifik 会自动渲染 PDF、计算 `verificationScore`、发送邮件给 `emailTo`（如果提供）并推送带明确类型的 Webhook 事件：
+
+- **Webhook 驱动（推荐）**：在你的 `webhookUrl`（或 `batchConfiguration.notification.webhookUrl`）上监听 `smart_batch_report_generated`（PDF 已就绪）、`smart_batch_report_generation_failed`、`smart_batch_report_sent` 和 `smart_batch_report_delivery_failed`。具体负载结构与重试规则请参阅 [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)。
+- **轮询兜底**：轮询 `GET /v2/smart-reports/{id}`（即 `202` 返回的 `pollUrl`），直到 `data.status` 脱离 `"generating"` 状态（变为 `"generated"`、`"sent"` 或 `"failed"`）。
+
+### 第 3 步：下载 PDF 或获取 HTML + 评分
+
+- **二进制 PDF 下载**：
+
+```http
+GET https://api.verifik.co/v2/smart-reports/{id}/download
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+返回 `application/pdf`，响应头包含 `Content-Disposition: attachment; filename="Consulta_1.pdf"`。传入 `?rowIndex=1` 可渲染并下载多行批次中的指定行。
+
+- **结构化 HTML + 核验评分 JSON（无需启动 Chromium 生成 PDF）**：
+
+```http
+GET https://api.verifik.co/v2/smart-reports/{id}/html?rowIndex=0&preview=false&score=true
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+返回 `{ data: { reportId, batchId, templateId, rowIndex, html, verificationScore, row } }`。
+
+---
+
+## 工作流 3：自定义可复用配方
+
+当需要自定义品牌风格、自定义区块布局、编辑步骤链或导入超过 `500` 行的电子表格时，请显式管理配置、模板和批次资源。
+
+### 第 1 步：克隆预设或创建配置
+
+- **克隆预设（幂等）**：
+
+```http
+POST https://api.verifik.co/v2/smart-batch-presets/{systemKey}/clone
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+返回 `{ data: { batchConfiguration, template, reused } }`。如果你的客户账号下已经存在对应 `systemKey` 的活跃克隆（且未超出预设额外添加客户端自定义步骤），Verifik 会直接复用并对齐该配置（`reused: true`），避免重复创建。
+
+- **或创建自定义配置**：
+
+```http
+POST https://api.verifik.co/v2/batch-configurations
+Authorization: Bearer <VERIFIK_JWT>
+Content-Type: application/json
+```
+
+指定 `name`、`country`、`steps[]`（按序排列的 `sequence`、`appFeature`、可选的 `parameterDefaults`、`queryMode`、`inputFieldMapping`）、`mergeStrategy`、`preferredReportTemplate` 以及 `notification`（`webhookUrl`、`emailOnCompletion`）。
+
+### 第 2 步：检查精确的输入 Schema
+
+在构建 CSV 表头或提交数据行之前，先查询：
+
+```http
+GET https://api.verifik.co/v2/batch-configurations/{id}/input-schema
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+此接口会返回跨越所有已启用步骤解析后的精确 `requiredFields`、`optionalFields`、`estimatedCreditsPerRow`、`jsonSchema` 与 `exampleInput`（已排除通过 `parameterDefaults` 或 `{{results.N.*}}` 步骤串联提供的字段）。
+
+### 第 3 步：预览并定制报告模板
+
+客户自有的模板（`type: "client"`）支持通过 API 以零积分成本进行探测、生成、实时预览和更新：
+
+1. **发现可用数据路径**：携带 `{ "sampleData": { ... } }` 调用 `POST /v2/smart-report-templates/introspect`，返回用于模板绑定的扁平/嵌套字段面板（点号路径 `dot paths`）。
+2. **使用 AI 生成或编辑布局区块**：携带 `{ "prompt": "...", "previewData": { ... }, "mode": "create" | "edit" | "append" }` 调用 `POST /v2/smart-report-templates/generate-layout`，生成 `sections[]`（或修改单个 `selectedSection`）。
+3. **渲染快速实时 HTML 预览**：`POST /v2/smart-report-templates/preview-html` 会在内存中渲染未保存的模板 + `sampleData`，不启动 Chromium 且不写入 MongoDB，直接返回 `{ data: { html, verificationScore } }`。
+4. **持久化更新**：调用 `PUT /v2/smart-report-templates/{id}` 在客户模板上保存 `sections`、`reportTheme`、`logo`、`watermark`、`signature`、`security`（PDF 密码）或 `pdfEngine`。
+
+:::note 内置系统模板为只读
+对内置 `"System"` 模板执行 `PUT`、`DELETE` 或写入操作会以 `403 Forbidden`（`system_template_readonly`）失败。请先克隆预设（`POST /v2/smart-batch-presets/{systemKey}/clone`）或创建新模板（`POST /v2/smart-report-templates`）。
+:::
+
+### 第 4 步：创建并运行大型批次（最多 `20,000` 行）
+
+对于超过 `/v2/smart-reports/run` `500` 行限制的大型批次：
+
+- **通过 JSON 行数组**：使用 `{ "batchConfiguration": "<CONFIG_ID>", "name": "Monthly Onboarding", "rows": [ ... ] }` 调用 `POST /v2/smart-batches`，然后调用 `POST /v2/smart-batches/{id}/start` 启动执行。
+- **通过 CSV / XLSX / JSONL 文件**：`POST /v2/smart-batches/from-file` 在服务端解析纯文本或 base64 Data URL，并在扣除积分前依据步骤依赖校验每一行（默认上限 `SMART_BATCH_MAX_ROWS = 20000` 行）：
+
+```json
+{
+  "batchConfiguration": "6740a1b2c3d4e5f678901111",
+  "name": "Q4 Driver Screening",
+  "format": "csv",
+  "autoStart": true,
+  "content": "documentType,documentNumber\nCC,123456789\nCC,987654321"
+}
+```
+
+### 第 5 步：生成、发送邮件并下载行报告
+
+一旦批次完成（通过 `GET /v2/smart-batches/{id}/progress` 查询或接收 `smart_batch_batch_completed` Webhook）：
+
+1. 查看单行组合后的报告数据模型：`GET /v2/smart-batches/{id}/rows/{rowIndex}/report`。
+2. 创建绑定到模板和批次的 SmartReport 记录：`POST /v2/smart-reports`，传入 `{ "template": "<TEMPLATE_ID>", "smartBatch": "<BATCH_ID>", "rowIndex": 0, "externalRefId": "row-0", "webhookUrl": "https://..." }`。
+3. 渲染 PDF 与核验评分：`POST /v2/smart-reports/{id}/generate`（支持 `rowIndex`、`engine`、`score`、`scoreProfile`）。
+4. 将单行或最多 `50` 行作为独立 PDF 附件发送邮件：`POST /v2/smart-reports/{id}/send-email`（传入 `{ "recipients": ["client@example.com"], "language": "en", "rowIndex": 0 }` 或 `"sendAll": true`）。
+5. 下载 PDF：`GET /v2/smart-reports/{id}/download`（可选 `?rowIndex=0`）。
+
+---
+
+## 完整端到端代码示例
+
+以下示例展示如何列出预设、调用 `POST /v2/smart-reports/run`、同时处理 `200` 同步与 `202` 异步响应（轮询 `GET /v2/smart-reports/{id}` 直至状态稳定）、查看 `verificationScore` 并下载最终 PDF。
+
+<Tabs>
+  <TabItem value="nodejs" label="Node.js" default>
+
+```javascript
+import fs from 'node:fs/promises';
+
+const BASE_URL = 'https://api.verifik.co';
+const JWT = process.env.VERIFIK_JWT;
+
+if (!JWT) {
+  throw new Error('Set VERIFIK_JWT in your server environment');
+}
+
+const headers = {
+  Authorization: `Bearer ${JWT}`,
+  'Content-Type': 'application/json',
+  Accept: 'application/json',
+};
+
+async function apiFetch(path, options = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    ...options,
+    headers: { ...headers, ...(options.headers || {}) },
+  });
+  const payload = await res.json();
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status} (${payload.code}): ${payload.message}`);
+  }
+  return { status: res.status, data: payload.data };
+}
+
+async function runHeadlessReport() {
+  // 1. Discover presets and required input schema
+  const { data: presets } = await apiFetch('/v2/smart-batch-presets?country=CO&category=citizen');
+  const preset = presets.find((p) => p.systemKey === 'co.citizen.comprehensive' && p.available);
+  if (!preset) throw new Error('Preset co.citizen.comprehensive is not available');
+
+  console.log('Estimated credits/row:', preset.inputSchema.estimatedCreditsPerRow);
+  console.log('Required fields:', preset.inputSchema.requiredFields.map((f) => f.field));
+
+  // 2. Run verification + score + PDF generation in one call
+  const runRes = await apiFetch('/v2/smart-reports/run', {
+    method: 'POST',
+    body: JSON.stringify({
+      systemKey: preset.systemKey,
+      inputs: {
+        documentType: 'CC',
+        documentNumber: '123456789',
+      },
+      mode: 'sync',
+      generatePdf: true,
+      score: true,
+      externalRefId: 'case-12345',
+      // Optional per-run webhook override:
+      // webhookUrl: 'https://api.yourcompany.com/webhooks/verifik-reports',
+    }),
+  });
+
+  let report = runRes.data.report;
+  const reportId = report._id;
+
+  // 3. If 202 async (or >90s fallback), poll GET /v2/smart-reports/{id}
+  if (runRes.status === 202 || runRes.data.mode === 'async') {
+    console.log('Queued async report, polling:', runRes.data.pollUrl);
+    for (let attempt = 0; attempt < 30; attempt += 1) {
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+      const polled = await apiFetch(`/v2/smart-reports/${reportId}`);
+      report = polled.data;
+      if (['generated', 'sent', 'failed'].includes(report.status)) break;
+    }
+    if (report.status === 'failed') {
+      throw new Error(`Report failed: ${report.error?.message}`);
+    }
+  }
+
+  console.log('Report ID:', reportId);
+  console.log('Verification Score:', report.verificationScoreSummary);
+
+  // 4. Download the rendered PDF binary
+  const pdfRes = await fetch(`${BASE_URL}/v2/smart-reports/${reportId}/download`, {
+    headers: { Authorization: `Bearer ${JWT}` },
+  });
+  if (!pdfRes.ok) throw new Error(`Download failed: HTTP ${pdfRes.status}`);
+
+  const pdfBuffer = Buffer.from(await pdfRes.arrayBuffer());
+  await fs.writeFile(`smart-report-${reportId}.pdf`, pdfBuffer);
+  console.log(`Saved smart-report-${reportId}.pdf (${pdfBuffer.length} bytes)`);
+}
+
+runHeadlessReport().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import time
+import requests
+
+BASE_URL = "https://api.verifik.co"
+JWT = os.environ["VERIFIK_JWT"]
+
+HEADERS = {
+    "Authorization": f"Bearer {JWT}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+
+def run_headless_report() -> None:
+    # 1. Discover presets and required fields
+    presets_resp = requests.get(
+        f"{BASE_URL}/v2/smart-batch-presets",
+        params={"country": "CO", "category": "citizen"},
+        headers=HEADERS,
+        timeout=30,
+    )
+    presets_resp.raise_for_status()
+    presets = presets_resp.json()["data"]
+    preset = next((p for p in presets if p["systemKey"] == "co.citizen.comprehensive" and p["available"]), None)
+    if not preset:
+        raise RuntimeError("Preset co.citizen.comprehensive is not available")
+
+    print("Estimated credits/row:", preset["inputSchema"]["estimatedCreditsPerRow"])
+
+    # 2. Execute report headlessly
+    run_resp = requests.post(
+        f"{BASE_URL}/v2/smart-reports/run",
+        headers=HEADERS,
+        json={
+            "systemKey": preset["systemKey"],
+            "inputs": {
+                "documentType": "CC",
+                "documentNumber": "123456789",
+            },
+            "mode": "sync",
+            "generatePdf": True,
+            "score": True,
+            "externalRefId": "case-12345",
+        },
+        timeout=120,
+    )
+    if run_resp.status_code >= 400:
+        raise RuntimeError(f"Run error {run_resp.status_code}: {run_resp.text}")
+
+    payload = run_resp.json()["data"]
+    report = payload["report"]
+    report_id = report["_id"]
+
+    # 3. Poll if 202 Accepted (async mode or >90s fallback)
+    if run_resp.status_code == 202 or payload.get("mode") == "async":
+        print("Polling async report:", payload["pollUrl"])
+        for _ in range(30):
+            time.sleep(4)
+            poll_resp = requests.get(f"{BASE_URL}/v2/smart-reports/{report_id}", headers=HEADERS, timeout=30)
+            poll_resp.raise_for_status()
+            report = poll_resp.json()["data"]
+            if report["status"] in ("generated", "sent", "failed"):
+                break
+        if report["status"] == "failed":
+            raise RuntimeError(f"Report generation failed: {report.get('error')}")
+
+    print("Report ID:", report_id)
+    print("Verification Score Summary:", report.get("verificationScoreSummary"))
+
+    # 4. Download the PDF file
+    pdf_resp = requests.get(
+        f"{BASE_URL}/v2/smart-reports/{report_id}/download",
+        headers={"Authorization": f"Bearer {JWT}"},
+        timeout=60,
+    )
+    pdf_resp.raise_for_status()
+    filename = f"smart-report-{report_id}.pdf"
+    with open(filename, "wb") as f:
+        f.write(pdf_resp.content)
+    print(f"Saved {filename} ({len(pdf_resp.content)} bytes)")
+
+
+if __name__ == "__main__":
+    run_headless_report()
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+# 1) List presets and inspect required fields
+curl -sS "https://api.verifik.co/v2/smart-batch-presets?country=CO&category=citizen" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Accept: application/json"
+
+# 2) Run SmartReport headlessly (sync for 1-5 rows)
+curl -sS -X POST "https://api.verifik.co/v2/smart-reports/run" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "systemKey": "co.citizen.comprehensive",
+    "inputs": {
+      "documentType": "CC",
+      "documentNumber": "123456789"
+    },
+    "mode": "sync",
+    "generatePdf": true,
+    "score": true,
+    "externalRefId": "case-12345"
+  }'
+
+# 3) Poll status if HTTP 202 (async) was returned
+curl -sS "https://api.verifik.co/v2/smart-reports/<REPORT_ID>" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+
+# 4) Retrieve structured HTML + Verification Score JSON
+curl -sS "https://api.verifik.co/v2/smart-reports/<REPORT_ID>/html" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+
+# 5) Download PDF binary
+curl -sS -L "https://api.verifik.co/v2/smart-reports/<REPORT_ID>/download" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  --output smart-report.pdf
+
+# 6) Email the PDF to recipients
+curl -sS -X POST "https://api.verifik.co/v2/smart-reports/<REPORT_ID>/send-email" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"recipients":["client@example.com"],"language":"en"}'
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 错误处理指南
+
+SmartReports 端点会在执行前通过 Joi 校验请求 Schema，并在处理过程中强制执行租户归属及运行时不变量检查。错误响应遵循 `{ "message": "...", "code": "..." }` 格式。
+
+### 错误参考表
+
+| HTTP 状态码 | `code` | `message` / 原因 | 解决方法 |
+| --- | --- | --- | --- |
+| `401` | `Unauthorized` | 请求头 `Authorization: Bearer <VERIFIK_JWT>` 缺失、已过期或无效。 | 刷新或签发有效的每客户 JWT（`POST /v2/auth/...`）。 |
+| `403` | `Forbidden` | 当未携带每客户 Bearer JWT 调用 SmartReports/Batch/Template/Preset 路由时，由 Smart-Agent 的 `smartReportAuthGuard` 返回（禁止使用共享 x402 服务执行）。 | 传入你自己的客户 `Authorization: Bearer <VERIFIK_JWT>`。 |
+| `403` | `Forbidden` | `system_template_readonly` — 试图对内置 System 模板执行 `PUT`、`DELETE` 或写入 `type: "System"`。 | 先克隆预设（`POST /v2/smart-batch-presets/{systemKey}/clone`）或新建客户模板（`POST /v2/smart-report-templates`）。 |
+| `404` | `NotFound` | `batch_configuration_not_found`、`preset_not_found`、`template_not_found`、`batch_not_found` 或 `not_found`。 | 确认该 ID 或 `systemKey` 属于你的客户账户（或是有效的 `"System"` 预设/模板）。 |
+| `409` | `MissingParameter` | Joi Schema 校验失败（缺少 `systemKey`/`batchConfigurationId`、缺少 `inputs`/`rows`、无效的 `mode`，或 `POST /v2/smart-reports/run` 超过 `500` 行）。 | 按端点 Schema 修正请求体结构。 |
+| `409` | `Conflict` | `client_context_required` — 令牌缺少租户 `clientId` 上下文。 | 使用 Verifik 客户账户 JWT 进行身份验证。 |
+| `409` | `Conflict` | `sync_row_limit_exceeded` — 请求 `mode: "sync"` 但超过了 `5` 行。 | 改用 `"mode": "async"` 或使用 `/v2/smart-batches`。 |
+| `409` | `Conflict` | `missing_required_inputs (<fields>)` — 一个或多个输入行缺少 `inputSchema.requiredFields` 中的必填字段。 | 查询 `GET /v2/smart-batch-presets` 或 `GET /v2/batch-configurations/{id}/input-schema` 并补全所有必填字段。 |
+| `409` | `Conflict` | `endpoints_not_in_account <codes>` — 配置或预设中的一个或多个步骤未在你的客户账户中开通。 | 为你的 Verifik 客户账户开通所列功能代码，或从自定义配置中移除它们。 |
+| `409` | `Conflict` | `POST /v2/smart-reports/{id}/send-email` 返回 `send_all_limit` 或 `no_pdf_attachments`。 | `sendAll: true` 单封邮件最多支持 `50` 行；更大批次请指定 `rowIndex`。 |
+| `422` | `UnprocessableEntity` | 持久化模板、配置、批次或报告时 Mongoose Schema 或唯一性校验失败。 | 检查返回的 `message` 中的字段长度或枚举约束。 |
+
+### 错误响应示例
+
+<Tabs>
+  <TabItem value="403-proxy" label="403 代理守卫" default>
+
+```json
+{
+  "code": "Forbidden",
+  "message": "SmartReports, SmartReportTemplates, BatchConfigurations, and SmartBatches require your own per-client Verifik Bearer JWT. They are not available through the shared x402 account."
+}
+```
+
+  </TabItem>
+  <TabItem value="403-readonly" label="403 系统模板">
+
+```json
+{
+  "message": "system_template_readonly",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 缺少参数 (MissingParameter)">
+
+```json
+{
+  "message": "\"value\" must contain at least one of [systemKey, batchConfigurationId]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-runtime" label="409 冲突（运行时）">
+
+```json
+{
+  "message": "missing_required_inputs (documentType, documentNumber)",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 相关页面
+
+- [SmartReports 概览](/verifik-zh/smart-reports)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)
+- [列出报告模板](/verifik-zh/smart-reports/list-report-templates)
+- [SmartBatch](/verifik-zh/smart-batch)

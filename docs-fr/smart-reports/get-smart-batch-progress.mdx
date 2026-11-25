@@ -1,0 +1,286 @@
+---
+id: get-smart-batch-progress
+title: Obtenir la progression d'un Smart Batch
+description: Interroger les compteurs légers de lignes, le mode d'exécution ainsi que les métriques d'exécution FeatureRunner et de consommation de crédits d'un Smart Batch.
+slug: /smart-reports/get-smart-batch-progress
+keywords:
+  - 'v2/smart-batches/{id}/progress'
+  - '/v2/smart-batches/{id}/progress'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches progress
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/progress'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/progress'
+  - 'GET v2/smart-batches/{id}/progress'
+  - 'GET /v2/smart-batches/{id}/progress'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/progress
+  - /v2/smart-batches/progress
+  - 'v2 smart-batches {id} progress'
+  - smart-batches/progress
+  - /smart-batches/progress
+  - api/smart-batches/progress
+  - /api/smart-batches/progress
+  - api smart-batches progress
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Récupérez un résumé léger de la progression d'un `SmartBatch` sans transférer l'intégralité du tableau `rows`. La réponse inclut les compteurs de lignes (`totalRows`, `completedRows`, `failedRows`, `partialRows`, `pendingRows`), les horodatages d'exécution, `creditsSpent` et — lorsqu'il est adossé à une exécution `FeatureRunner` — les détails imbriqués `run` et le grand livre `spend`.
+
+Les exécutions `FeatureRunner` côté serveur émettent également un événement webhook `smart_batch_batch_completed` (incluant `runId` et `creditsSpent`) à la fin du traitement lorsque `batchConfiguration.notification.webhookUrl` est configuré. L'interrogation de ce point de terminaison ne consomme pas de crédits.
+
+### Point de terminaison
+
+```text
+GET https://api.verifik.co/v2/smart-batches/{id}/progress
+```
+
+Ce point de terminaison est également accessible via le proxy Smart-Agent à l'adresse `https://ai.verifik.co/v2/smart-batches/{id}/progress` avec votre propre en-tête `Authorization: Bearer <VERIFIK_JWT>`. L'exécution partagée x402 est bloquée avec `403 Forbidden`.
+
+### En-têtes
+
+| Nom             | Valeur                 | Description                               |
+| --------------- | ---------------------- | ----------------------------------------- |
+| `Content-Type`  | `application/json`     | Format de la charge utile de la requête.  |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT lié au client (`authUser.clientId`).  |
+
+### Paramètres
+
+| Nom  | Type   | Requis | Description |
+| ---- | ------ | ------ | ----------- |
+| `id` | string | Oui    | ObjectId `SmartBatch` à interroger. |
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-batches/${batchId}/progress`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/progress");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/progress"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches/"+batchID+"/progress", nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/progress" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200-run" label="200 OK (Avec FeatureRunner)">
+
+```json
+{
+  "data": {
+    "batchId": "6801a2b3c4d5e6f7a8b9c0d3",
+    "status": "processing",
+    "serverSide": true,
+    "totalRows": 25,
+    "completedRows": 12,
+    "failedRows": 1,
+    "partialRows": 2,
+    "pendingRows": 10,
+    "startedAt": "2026-11-24T20:10:00.000Z",
+    "creditsSpent": 1.6,
+    "run": {
+      "id": "6801a2b3c4d5e6f7a8b9c0e1",
+      "status": "processing",
+      "mergeStrategy": "sequential",
+      "totalItems": 25,
+      "completedItems": 12,
+      "failedItems": 1,
+      "partialItems": 2,
+      "startedAt": "2026-11-24T20:10:00.500Z",
+      "completedAt": null
+    },
+    "spend": {
+      "credits": 1.6,
+      "calls": 28,
+      "billableCalls": 24
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-no-run" label="200 OK (Sans exécution)">
+
+```json
+{
+  "data": {
+    "batchId": "6801a2b3c4d5e6f7a8b9c0d3",
+    "status": "completed",
+    "serverSide": true,
+    "totalRows": 10,
+    "completedRows": 10,
+    "failedRows": 0,
+    "partialRows": 0,
+    "pendingRows": 0,
+    "startedAt": "2026-11-24T20:10:00.000Z",
+    "completedAt": "2026-11-24T20:12:30.000Z",
+    "creditsSpent": 0.4
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"id\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `run` et `spend` sont inclus lorsque le lot est associé à une exécution `FeatureRunner` (`run` vaut `null` si l'enregistrement d'exécution référencé n'est pas renvoyé).
+- Les exécutions `FeatureRunner` côté serveur émettent l'événement webhook `smart_batch_batch_completed` (avec `runId` et `creditsSpent`) lorsqu'elles se terminent si `batchConfiguration.notification.webhookUrl` est défini. Voir [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks).
+- Une fois que le lot atteint un statut terminal, utilisez [Récupérer un Smart Batch](/verifik-fr/smart-reports/retrieve-a-smart-batch) pour inspecter les champs `results` et `errors` au niveau des lignes.
+
+### Voir aussi
+
+- [Présentation de SmartReports](/verifik-fr/smart-reports)
+- [Guide de l'API Headless](/verifik-fr/smart-reports/headless-api-guide)
+- [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks)
+- [Exécuter un Smart Report](/verifik-fr/smart-reports/run-a-smart-report)
+- [Récupérer un Smart Batch](/verifik-fr/smart-reports/retrieve-a-smart-batch)
+- [Mettre en pause un Smart Batch](/verifik-fr/smart-reports/pause-a-smart-batch)

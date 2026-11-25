@@ -1,0 +1,357 @@
+---
+id: download-template-sample
+title: Download template sample
+description: Render a Smart Report template to a downloadable binary PDF file using sample data or custom HTML
+slug: /smart-reports/download-template-sample
+keywords:
+  - 'v2/smart-report-templates/{id}/download-sample'
+  - '/v2/smart-report-templates/{id}/download-sample'
+  - v2/smart-report-templates/download-sample
+  - /v2/smart-report-templates/download-sample
+  - v2 smart-report-templates download-sample
+  - 'v2 smart-report-templates {id} download-sample'
+  - api/smart-report-templates/download-sample
+  - /api/smart-report-templates/download-sample
+  - 'api.verifik.co/v2/smart-report-templates/{id}/download-sample'
+  - 'https://api.verifik.co/v2/smart-report-templates/{id}/download-sample'
+  - 'POST v2/smart-report-templates/{id}/download-sample'
+  - 'POST /v2/smart-report-templates/{id}/download-sample'
+  - smart-report-templates
+  - /smart-report-templates
+  - smart-report-templates/download-sample
+  - /smart-report-templates/download-sample
+  - api smart-report-templates download-sample
+  - 'GET v2/smart-report-templates/{id}/download-sample'
+  - 'GET /v2/smart-report-templates/{id}/download-sample'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Render a saved Smart Report template (`{id}`) into a binary PDF file and stream it directly in the HTTP response (`Content-Type: application/pdf`). You can provide `sampleData` in the request body, omit it to fall back to the template's saved `sampleData`, or supply pre-rendered `printHtml`.
+
+In headless pipelines and CI verification suites, use this endpoint after iterating with [Preview template HTML](/smart-reports/preview-template-html) to inspect real Chromium or PDFKit pagination, custom fonts, watermarks, headers/footers, and page margins on disk before promoting the template to production `SmartBatch` runs. JSON request bodies up to `64MB` are supported.
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/smart-report-templates/{id}/download-sample
+```
+
+The Smart-Agent proxy (`https://ai.verifik.co`) exposes the same `/v2/...` paths and requires your own `Authorization: Bearer <VERIFIK_JWT>` header.
+
+### Headers
+
+| Name          | Value                    |
+| ------------- | ------------------------ |
+| Content-Type  | `application/json`       |
+| Accept        | `application/json`       |
+| Authorization | `Bearer <VERIFIK_JWT>`   |
+
+Note: On a `200` response, the server returns `Content-Type: application/pdf` with `Content-Disposition: attachment; filename="SmartReport_TemplateSample_<id>.pdf"`. Error responses (`401`, `404`, `409`) return JSON.
+
+### Parameters
+
+| Name | Type   | Required | Description                        |
+| ---- | ------ | -------- | ---------------------------------- |
+| `id` | string | Yes      | Smart Report template ObjectId.    |
+
+### Body
+
+Supports JSON payloads up to `64MB`. All body fields are optional.
+
+| Name         | Type   | Required | Description                                                                                                  |
+| ------------ | ------ | -------- | ------------------------------------------------------------------------------------------------------------ |
+| `sampleData` | object | No       | Sample payload (`inputData`, `results`, `batchName`, `rowIndex`). Falls back to `template.sampleData` if omitted. |
+| `printHtml`  | string | No       | Optional pre-rendered HTML string to render directly to PDF.                                                 |
+
+### Request
+
+Because a successful response returns raw binary PDF bytes rather than JSON, configure your HTTP client for binary output (`responseType: "arraybuffer"` / `Buffer` in Node.js, raw response bytes in PHP/Python/Go, or `-o sample.pdf` in cURL).
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fs = require("fs");
+const axios = require("axios");
+
+async function run() {
+  const id = "67c1f94b2d8a1c0012a4b301";
+  const res = await axios.post(
+    `https://api.verifik.co/v2/smart-report-templates/${id}/download-sample`,
+    {
+      sampleData: {
+        batchName: "Driver Onboarding Sample",
+        rowIndex: 0,
+        inputData: {
+          documentType: "CC",
+          documentNumber: "1020304050",
+        },
+        results: {
+          identity: {
+            fullName: "Mateo Rojas",
+            status: "active",
+          },
+        },
+      },
+    },
+    {
+      responseType: "arraybuffer",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  const pdfBuffer = Buffer.from(res.data);
+  fs.writeFileSync("sample.pdf", pdfBuffer);
+  console.log(`Saved sample.pdf (${pdfBuffer.length} bytes)`);
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67c1f94b2d8a1c0012a4b301";
+$payload = [
+    "sampleData" => [
+        "batchName" => "Driver Onboarding Sample",
+        "rowIndex" => 0,
+        "inputData" => [
+            "documentType" => "CC",
+            "documentNumber" => "1020304050",
+        ],
+        "results" => [
+            "identity" => [
+                "fullName" => "Mateo Rojas",
+                "status" => "active",
+            ],
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/" . $id . "/download-sample");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$binary = curl_exec($ch);
+$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($status !== 200) {
+    fwrite(STDERR, "Request failed ($status): $binary\n");
+    exit(1);
+}
+
+file_put_contents("sample.pdf", $binary);
+echo "Saved sample.pdf (" . strlen($binary) . " bytes)\n";
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+template_id = "67c1f94b2d8a1c0012a4b301"
+url = f"https://api.verifik.co/v2/smart-report-templates/{template_id}/download-sample"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "sampleData": {
+        "batchName": "Driver Onboarding Sample",
+        "rowIndex": 0,
+        "inputData": {
+            "documentType": "CC",
+            "documentNumber": "1020304050",
+        },
+        "results": {
+            "identity": {
+                "fullName": "Mateo Rojas",
+                "status": "active",
+            }
+        },
+    }
+}
+
+r = requests.post(url, json=payload, headers=headers)
+r.raise_for_status()
+
+with open("sample.pdf", "wb") as f:
+    f.write(r.content)
+
+print(f"Saved sample.pdf ({len(r.content)} bytes)")
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "67c1f94b2d8a1c0012a4b301"
+	body, _ := json.Marshal(map[string]interface{}{
+		"sampleData": map[string]interface{}{
+			"batchName": "Driver Onboarding Sample",
+			"rowIndex":  0,
+			"inputData": map[string]interface{}{
+				"documentType":   "CC",
+				"documentNumber": "1020304050",
+			},
+			"results": map[string]interface{}{
+				"identity": map[string]interface{}{
+					"fullName": "Mateo Rojas",
+					"status":   "active",
+				},
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates/"+id+"/download-sample", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		errBytes, _ := io.ReadAll(resp.Body)
+		panic(fmt.Sprintf("status %d: %s", resp.StatusCode, string(errBytes)))
+	}
+
+	outFile, err := os.Create("sample.pdf")
+	if err != nil {
+		panic(err)
+	}
+	defer outFile.Close()
+
+	n, err := io.Copy(outFile, resp.Body)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Saved sample.pdf (%d bytes)\n", n)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates/67c1f94b2d8a1c0012a4b301/download-sample" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -f -o sample.pdf \
+  -d '{
+    "sampleData": {
+      "batchName": "Driver Onboarding Sample",
+      "rowIndex": 0,
+      "inputData": {
+        "documentType": "CC",
+        "documentNumber": "1020304050"
+      },
+      "results": {
+        "identity": {
+          "fullName": "Mateo Rojas",
+          "status": "active"
+        }
+      }
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 (Binary PDF)">
+
+```text
+HTTP/1.1 200 OK
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="SmartReport_TemplateSample_67c1f94b2d8a1c0012a4b301.pdf"
+
+<binary PDF byte stream>
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "Template not found",
+  "code": "template_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"sampleData\" must be an object",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Do not call `res.json()` on a `200` response from this endpoint; read the response as a binary buffer (`arraybuffer` / `bytes` / `io.Copy`) and write it to disk or object storage.
+- If you omit `sampleData` and `printHtml` (for example sending `{}`), the endpoint uses the `sampleData` saved on the template itself.
+- For fast iterative layout checks without full PDF generation, use [Preview template HTML](/smart-reports/preview-template-html).
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [MCP & AI Agents](/smart-reports/mcp-and-ai-agents)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Send template sample](/smart-reports/send-template-sample)
+- [Preview template HTML](/smart-reports/preview-template-html)
+- [Retrieve a report template](/smart-reports/retrieve-a-report-template)

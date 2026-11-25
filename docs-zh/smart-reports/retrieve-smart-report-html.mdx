@@ -1,0 +1,294 @@
+---
+id: retrieve-smart-report-html
+title: 获取 Smart Report HTML
+description: '在 JSON 信封中获取已渲染的报告 HTML、批次行数据以及可选的核验评分。'
+slug: /smart-reports/retrieve-smart-report-html
+keywords:
+  - 'v2/smart-reports/{id}/html'
+  - '/v2/smart-reports/{id}/html'
+  - v2/smart-reports/html
+  - /v2/smart-reports/html
+  - v2 smart-reports html
+  - 'v2 smart-reports {id} html'
+  - api/smart-reports/html
+  - /api/smart-reports/html
+  - 'api.verifik.co/v2/smart-reports/{id}/html'
+  - 'https://api.verifik.co/v2/smart-reports/{id}/html'
+  - 'GET v2/smart-reports/{id}/html'
+  - 'GET /v2/smart-reports/{id}/html'
+  - smart-reports
+  - smart_report_get_html
+  - smart-reports/html
+  - /smart-reports/html
+  - api smart-reports html
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+获取 `SmartReport` 渲染后的 HTML，以及关联的 `batchId`、`templateId`、`rowIndex`、可选的 `verificationScore` 和对应的 `row` 负载（`rowIndex`、`status`、`inputData`、`results`、`errors`）。
+
+**重要提示**：此端点返回的响应头为 `Content-Type: application/json`，并将 HTML 字符串放在 `data.html` 字段中，**而不会**直接返回原始 `text/html` 文档。
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/smart-reports/{id}/html
+```
+
+使用你自己的每客户 `Authorization: Bearer <VERIFIK_JWT>`，也可通过 Smart-Agent 代理地址 `https://ai.verifik.co/v2/smart-reports/{id}/html` 访问此端点。共享 x402 执行会被拦截并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称 | 值 | 说明 |
+| --- | --- | --- |
+| `Accept` | `application/json` | JSON 信封响应格式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 客户作用域 JWT（`authUser.clientId`）。 |
+
+### 参数
+
+| 名称 | 位置 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- | --- |
+| `id` | path | string | **是** | `SmartReport` ObjectId。 |
+| `rowIndex` | query | integer | 否 | 从零开始的行索引（`>= 0`）。 |
+| `preview` | query | boolean | 否 | 为 `true` 时以预览模式渲染。 |
+| `score` | query | boolean | 否 | 是否计算并在 `data` 中包含 `verificationScore`。 |
+| `scoreProfile` | query | string | 否 | 启用 `score` 时使用的评分配置标识符（最长 `64` 个字符）。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-reports/${id}/html`, {
+    params: {
+      rowIndex: 0,
+      preview: false,
+      score: true,
+    },
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log({
+    reportId: data.data.reportId,
+    htmlLength: data.data.html.length,
+    rowStatus: data.data.row?.status,
+  });
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$query = http_build_query([
+    "rowIndex" => 0,
+    "preview" => "false",
+    "score" => "true",
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id . "/html?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}/html"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "rowIndex": 0,
+    "preview": False,
+    "score": True,
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	params := url.Values{}
+	params.Set("rowIndex", "0")
+	params.Set("preview", "false")
+	params.Set("score", "true")
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-reports/"+id+"/html?"+params.Encode(), nil)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html?rowIndex=0&preview=false&score=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "reportId": "6801a2b3c4d5e6f7a8b9c0d1",
+    "batchId": "6801a2b3c4d5e6f7a8b9c0d3",
+    "templateId": "6801a2b3c4d5e6f7a8b9c0d2",
+    "rowIndex": 0,
+    "html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\" /></head><body><h1>Verification Report</h1></body></html>",
+    "verificationScore": {},
+    "row": {
+      "rowIndex": 0,
+      "status": "completed",
+      "inputData": {
+        "documentType": "CC",
+        "documentNumber": "1032386359"
+      },
+      "results": {},
+      "errors": []
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "template_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "unknown_score_profile",
+  "code": "unknown_score_profile"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### 错误码说明
+
+| 状态码 | 错误码 / 类型 | 原因 |
+| --- | --- | --- |
+| `401` | `Unauthorized` | JWT 缺失或无效。 |
+| `403` | `Forbidden` | 尝试使用共享 x402 执行；请改用你自己的每客户 JWT。 |
+| `404` | `not_found` | 报告 ID 不存在或属于其他客户。 |
+| `404` | `template_not_found` | 无法找到关联的模板。 |
+| `409` | `MissingParameter` | 查询参数或路径参数未通过 Joi 校验。 |
+| `409` | `row_not_found` | 所请求的 `rowIndex` 在批次中不存在。 |
+| `409` | `unknown_score_profile` | 所提供的 `scoreProfile` 未被识别。 |
+| `422` | `UnprocessableEntity` | Mongoose 校验错误。 |
+
+### Webhooks 与 MCP 集成
+
+- **MCP 等效工具**：AI 智能体可通过 `smart_report_get_html` MCP 工具获取已渲染的报告 HTML 与行结构。详见 [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)。
+- **Webhooks**：`htmlUrl` 路径（`/v2/smart-reports/{id}/html`）包含在 [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)、[获取 Smart Report](/verifik-zh/smart-reports/retrieve-a-smart-report) 与 [生成 Smart Report PDF](/verifik-zh/smart-reports/generate-smart-report-pdf) 的响应中。详见 [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)。
+
+### 注意事项
+
+- 由于 HTTP 响应采用 `application/json`，在将其嵌入 WebView、iframe 或 PDF 渲染器之前，请先从 JSON 负载中提取 `data.html`。
+- 传入 `score=true` 时响应中会包含 `data.verificationScore`。
+- 如果当前上下文没有关联任何批次行对象，`data.row` 将为 `null`。
+
+### 相关页面
+
+- [SmartReports 概览](/verifik-zh/smart-reports)
+- [无头 API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)
+- [生成 Smart Report PDF](/verifik-zh/smart-reports/generate-smart-report-pdf)
+- [下载 Smart Report PDF](/verifik-zh/smart-reports/download-smart-report-pdf)

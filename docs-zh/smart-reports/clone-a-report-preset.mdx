@@ -1,0 +1,328 @@
+---
+id: clone-a-report-preset
+title: 克隆报告预设
+description: 将系统 Smart Report 预设克隆为可编辑的批处理配置及关联的 Smart Report 模板
+slug: /smart-reports/clone-a-report-preset
+keywords:
+  - 'v2/smart-batch-presets/{systemKey}/clone'
+  - '/v2/smart-batch-presets/{systemKey}/clone'
+  - v2/smart-batch-presets/clone
+  - /v2/smart-batch-presets/clone
+  - v2 smart-batch-presets clone
+  - 'v2 smart-batch-presets {systemKey} clone'
+  - smart-batch-presets
+  - /smart-batch-presets
+  - api/smart-batch-presets/clone
+  - /api/smart-batch-presets/clone
+  - 'api.verifik.co/v2/smart-batch-presets/{systemKey}/clone'
+  - 'https://api.verifik.co/v2/smart-batch-presets/{systemKey}/clone'
+  - 'POST v2/smart-batch-presets/{systemKey}/clone'
+  - 'POST /v2/smart-batch-presets/{systemKey}/clone'
+  - smart-batch-presets/clone
+  - /smart-batch-presets/clone
+  - api smart-batch-presets clone
+  - 'GET v2/smart-batch-presets/{systemkey}/clone'
+  - 'GET /v2/smart-batch-presets/{systemkey}/clone'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+将精选的系统 Smart Report 预设克隆到你的客户账户中。该操作会同时返回一个 `BatchConfiguration` 和一个关联的 `SmartReportTemplate`，既可立即运行，也可进一步自定义。
+
+此接口对客户账户而言具有**幂等性**。如果账户中已存在从 `{systemKey}` 克隆的启用中客户模板，服务器会复用该配置和模板（必要时重新映射步骤序号）并返回 `reused: true`。否则，将创建一个新的 `BatchConfiguration`（默认 `inputFormat: "csv"`、`outputFormat: "csv"`、`mergeStrategy: "sequential"`）和一个新的客户 `SmartReportTemplate`（`clonedFromSystemKey` 设为 `{systemKey}`），两者通过 `preferredReportTemplate` 关联，并返回 `reused: false`。该接口同时作为 `smart_report_clone_preset` MCP 工具暴露。
+
+### 接口
+
+```
+POST https://api.verifik.co/v2/smart-batch-presets/{systemKey}/clone
+```
+
+也可以通过 Smart-Agent 代理 `https://ai.verifik.co/v2/smart-batch-presets/{systemKey}/clone` 访问，并使用你自己的客户专属 `Authorization: Bearer <VERIFIK_JWT>` 请求头。共享 x402 执行会被拒绝并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称 | 值 |
+| ---- | -- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+令牌必须是**客户 JWT**。缺少凭证或凭证无效将返回 `401 Unauthorized`。
+
+### 参数
+
+| 名称 | 类型 | 必填 | 描述 |
+| ---- | ---- | ---- | ---- |
+| `systemKey` | string | 是 | 来自[列出报告预设](/verifik-zh/smart-reports/list-report-presets)的预设键。去除首尾空格，最大 `120` 个字符，必须匹配 `/^[a-z0-9][a-z0-9._-]{1,118}$/i`。 |
+
+### 请求体
+
+此接口无需请求体。
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const systemKey = "co.citizen.essential";
+    const res = await fetch(`https://api.verifik.co/v2/smart-batch-presets/${encodeURIComponent(systemKey)}/clone`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$systemKey = "co.citizen.essential";
+$ch = curl_init("https://api.verifik.co/v2/smart-batch-presets/" . rawurlencode($systemKey) . "/clone");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+system_key = "co.citizen.essential"
+url = f"https://api.verifik.co/v2/smart-batch-presets/{system_key}/clone"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+r = requests.post(url, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "net/url"
+    "os"
+)
+
+func main() {
+    systemKey := "co.citizen.essential"
+    endpoint := fmt.Sprintf("https://api.verifik.co/v2/smart-batch-presets/%s/clone", url.PathEscape(systemKey))
+    req, _ := http.NewRequest("POST", endpoint, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS -X POST "https://api.verifik.co/v2/smart-batch-presets/co.citizen.essential/clone" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200-created" label="200（新建）">
+
+```json
+{
+    "data": {
+        "batchConfiguration": {
+            "_id": "67d1b4a0e4f5a60718293b12",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "executor": "browser",
+            "inputFormat": "csv",
+            "outputFormat": "csv",
+            "mergeStrategy": "sequential",
+            "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+            "isActive": true,
+            "steps": [
+                {
+                    "_id": "67d1b4a0e4f5a60718293b13",
+                    "appFeature": {
+                        "_id": "65f0a1b2c3d4e5f607182901",
+                        "name": "Colombian Cédula Validation",
+                        "code": "co-cedula",
+                        "price": 0.05
+                    },
+                    "sequence": 1,
+                    "enabled": true,
+                    "parameterDefaults": {},
+                    "queryMode": "byDocument",
+                    "inputFieldMapping": {},
+                    "outputFieldsToKeep": [],
+                    "maxRetries": 3,
+                    "retryDelayBaseSeconds": 4,
+                    "timeoutSeconds": 30
+                }
+            ],
+            "createdAt": "2026-10-15T14:20:00.000Z",
+            "updatedAt": "2026-10-15T14:20:00.000Z"
+        },
+        "template": {
+            "_id": "67d1b4a1e4f5a60718293b15",
+            "name": "Colombia Citizen Essential",
+            "clonedFromSystemKey": "co.citizen.essential",
+            "batchConfiguration": "67d1b4a0e4f5a60718293b12",
+            "isActive": true,
+            "createdAt": "2026-10-15T14:20:00.000Z",
+            "updatedAt": "2026-10-15T14:20:00.000Z"
+        },
+        "reused": false
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-reused" label="200（复用）">
+
+```json
+{
+    "data": {
+        "batchConfiguration": {
+            "_id": "67d1b4a0e4f5a60718293b12",
+            "name": "Colombia Citizen Essential",
+            "country": "CO",
+            "executor": "browser",
+            "inputFormat": "csv",
+            "outputFormat": "csv",
+            "mergeStrategy": "sequential",
+            "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+            "isActive": true,
+            "steps": []
+        },
+        "template": {
+            "_id": "67d1b4a1e4f5a60718293b15",
+            "name": "Colombia Citizen Essential",
+            "clonedFromSystemKey": "co.citizen.essential",
+            "batchConfiguration": "67d1b4a0e4f5a60718293b12",
+            "isActive": true
+        },
+        "reused": true
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "preset_not_found",
+    "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "\"systemKey\" with value \"bad!key\" fails to match the required pattern: /^[a-z0-9][a-z0-9._-]{1,118}$/i",
+    "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-steps" label="409（无步骤）">
+
+```json
+{
+    "message": "preset_has_no_steps",
+    "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "message": "Internal Server Error",
+    "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 克隆预设不会执行查询，也不会消耗积分。
+- 使用相同的 `{systemKey}` 重复调用此接口对客户账户是安全且幂等的：系统会返回已克隆的配置和模板，并设置 `reused: true`。
+- 当 `{systemKey}` 未通过 Joi 路径校验（例如超过 `120` 个字符或包含不支持的字符）时，将返回 `409 MissingParameter`。如果匹配到的预设未配置任何步骤，则会返回包含 `preset_has_no_steps` 的 `409` 错误。
+- 如果所需预设功能在你的账户中不可用，可能会返回 `500 InternalServerError`。
+- 克隆完成后，请在提交数据行之前使用 `batchConfiguration._id` 调用[获取配置输入模式](/verifik-zh/smart-reports/retrieve-configuration-input-schema)，或者使用 `smart_report_clone_preset` MCP 工具。
+
+### 相关文档
+
+- [列出报告预设](/verifik-zh/smart-reports/list-report-presets)
+- [获取配置输入模式](/verifik-zh/smart-reports/retrieve-configuration-input-schema)
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)

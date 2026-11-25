@@ -1,0 +1,275 @@
+---
+id: pause-a-smart-batch
+title: Pause a Smart Batch
+description: Pause an active or queued Smart Batch without discarding completed row results.
+slug: /smart-reports/pause-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}/pause'
+  - '/v2/smart-batches/{id}/pause'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches pause
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/pause'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/pause'
+  - 'POST v2/smart-batches/{id}/pause'
+  - 'POST /v2/smart-batches/{id}/pause'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/pause
+  - /v2/smart-batches/pause
+  - 'v2 smart-batches {id} pause'
+  - smart-batches/pause
+  - /smart-batches/pause
+  - api/smart-batches/pause
+  - /api/smart-batches/pause
+  - api smart-batches pause
+  - 'GET v2/smart-batches/{id}/pause'
+  - 'GET /v2/smart-batches/{id}/pause'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Pause an active `SmartBatch` (and any attached `FeatureRunner` run) without losing results already written for completed rows. Workers stop claiming remaining rows until you resume the batch.
+
+Queue and browser batches must be in `"processing"` or `"pending"` status (`400 batch_not_pausable` otherwise). Batches backed by a `FeatureRunner` run require the run to be in `"queued"` or `"processing"` status (`400 run_not_pausable` otherwise). Pausing does not spend credits.
+
+### Endpoint
+
+```text
+POST https://api.verifik.co/v2/smart-batches/{id}/pause
+```
+
+This endpoint is also reachable through the Smart-Agent proxy at `https://ai.verifik.co/v2/smart-batches/{id}/pause` using your own per-client `Authorization: Bearer <VERIFIK_JWT>`. Shared x402 execution is blocked with `403 Forbidden`.
+
+### Headers
+
+| Name            | Value                  | Description                              |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | Request payload format.                  |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | Client-scoped JWT (`authUser.clientId`). |
+
+### Parameters
+
+| Name | Type   | Required | Description |
+| ---- | ------ | -------- | ----------- |
+| `id` | string | Yes      | `SmartBatch` ObjectId to pause. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/pause`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/pause");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/pause"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.post(url, json={}, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/"+batchID+"/pause", bytes.NewReader([]byte("{}")))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/pause" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — November",
+    "status": "paused",
+    "executor": "queue",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0.4,
+    "rows": [],
+    "totalRows": 25,
+    "completedRows": 10,
+    "failedRows": 0,
+    "partialRows": 0,
+    "startedAt": "2026-11-24T20:10:00.000Z",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:14:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "batch_not_pausable",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"id\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- To pause a batch programmatically, always use this endpoint rather than `PUT /v2/smart-batches/{id}` (which does not accept `"paused"`).
+- A `FeatureRunner`-backed batch returns `400 BadRequest` with `run_not_pausable` if its run is not in `"queued"` or `"processing"` status.
+- Continue execution later using [Resume a Smart Batch](/smart-reports/resume-a-smart-batch), or terminate permanently with [Cancel a Smart Batch](/smart-reports/cancel-a-smart-batch).
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Run a Smart Report](/smart-reports/run-a-smart-report)
+- [Resume a Smart Batch](/smart-reports/resume-a-smart-batch)
+- [Cancel a Smart Batch](/smart-reports/cancel-a-smart-batch)

@@ -1,0 +1,357 @@
+---
+id: download-template-sample
+title: 下载模板示例
+description: 使用示例数据或自定义 HTML 将 Smart Report 模板渲染为可下载的二进制 PDF 文件
+slug: /smart-reports/download-template-sample
+keywords:
+  - 'v2/smart-report-templates/{id}/download-sample'
+  - '/v2/smart-report-templates/{id}/download-sample'
+  - v2/smart-report-templates/download-sample
+  - /v2/smart-report-templates/download-sample
+  - v2 smart-report-templates download-sample
+  - 'v2 smart-report-templates {id} download-sample'
+  - api/smart-report-templates/download-sample
+  - /api/smart-report-templates/download-sample
+  - 'api.verifik.co/v2/smart-report-templates/{id}/download-sample'
+  - 'https://api.verifik.co/v2/smart-report-templates/{id}/download-sample'
+  - 'POST v2/smart-report-templates/{id}/download-sample'
+  - 'POST /v2/smart-report-templates/{id}/download-sample'
+  - smart-report-templates
+  - /smart-report-templates
+  - smart-report-templates/download-sample
+  - /smart-report-templates/download-sample
+  - api smart-report-templates download-sample
+  - 'GET v2/smart-report-templates/{id}/download-sample'
+  - 'GET /v2/smart-report-templates/{id}/download-sample'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+将已保存的 Smart Report 模板（`{id}`）渲染为二进制 PDF 文件，并在 HTTP 响应中直接以流式返回（`Content-Type: application/pdf`）。你可以在请求体中提供 `sampleData`，省略它以回退使用模板上已保存的 `sampleData`，或直接传入预渲染的 `printHtml`。
+
+在无头流水线和 CI 验证测试套件中，建议先通过[预览模板 HTML](/verifik-zh/smart-reports/preview-template-html)迭代排版，再使用此接口在本地磁盘检查真实的 Chromium 或 PDFKit 分页、自定义字体、水印、页眉/页脚及页边距，确认无误后再将该模板投入生产环境的 `SmartBatch` 运行。支持最大 `64MB` 的 JSON 请求体。
+
+### 接口
+
+```
+POST https://api.verifik.co/v2/smart-report-templates/{id}/download-sample
+```
+
+Smart-Agent 代理（`https://ai.verifik.co`）暴露相同的 `/v2/...` 路径，并且同样需要提供你自己的 `Authorization: Bearer <VERIFIK_JWT>` 请求头。
+
+### 请求头
+
+| 名称          | 值                       |
+| ------------- | ------------------------ |
+| Content-Type  | `application/json`       |
+| Accept        | `application/json`       |
+| Authorization | `Bearer <VERIFIK_JWT>`   |
+
+注意：在 `200` 响应中，服务器会返回 `Content-Type: application/pdf` 以及 `Content-Disposition: attachment; filename="SmartReport_TemplateSample_<id>.pdf"`。错误响应（`401`、`404`、`409`）则以 JSON 格式返回。
+
+### 参数
+
+| 名称 | 类型   | 必填 | 描述                        |
+| ---- | ------ | ---- | --------------------------- |
+| `id` | string | 是   | Smart Report 模板的 ObjectId。 |
+
+### 请求体
+
+支持最大 `64MB` 的 JSON 载荷。所有请求体字段均为可选。
+
+| 名称         | 类型   | 必填 | 描述                                                                                             |
+| ------------ | ------ | ---- | ------------------------------------------------------------------------------------------------ |
+| `sampleData` | object | 否   | 示例数据（`inputData`、`results`、`batchName`、`rowIndex`）。若省略，则回退使用 `template.sampleData`。 |
+| `printHtml`  | string | 否   | 可选的预渲染 HTML 字符串，用于直接渲染为 PDF。                                                     |
+
+### 请求示例
+
+由于成功响应返回的是原始二进制 PDF 字节流而非 JSON，请将你的 HTTP 客户端配置为接收二进制输出（在 Node.js 中使用 `responseType: "arraybuffer"` / `Buffer`，在 PHP/Python/Go 中读取原始响应字节，或在 cURL 中使用 `-o sample.pdf`）。
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fs = require("fs");
+const axios = require("axios");
+
+async function run() {
+  const id = "67c1f94b2d8a1c0012a4b301";
+  const res = await axios.post(
+    `https://api.verifik.co/v2/smart-report-templates/${id}/download-sample`,
+    {
+      sampleData: {
+        batchName: "Driver Onboarding Sample",
+        rowIndex: 0,
+        inputData: {
+          documentType: "CC",
+          documentNumber: "1020304050",
+        },
+        results: {
+          identity: {
+            fullName: "Mateo Rojas",
+            status: "active",
+          },
+        },
+      },
+    },
+    {
+      responseType: "arraybuffer",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  const pdfBuffer = Buffer.from(res.data);
+  fs.writeFileSync("sample.pdf", pdfBuffer);
+  console.log(`Saved sample.pdf (${pdfBuffer.length} bytes)`);
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67c1f94b2d8a1c0012a4b301";
+$payload = [
+    "sampleData" => [
+        "batchName" => "Driver Onboarding Sample",
+        "rowIndex" => 0,
+        "inputData" => [
+            "documentType" => "CC",
+            "documentNumber" => "1020304050",
+        ],
+        "results" => [
+            "identity" => [
+                "fullName" => "Mateo Rojas",
+                "status" => "active",
+            ],
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/" . $id . "/download-sample");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$binary = curl_exec($ch);
+$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($status !== 200) {
+    fwrite(STDERR, "Request failed ($status): $binary\n");
+    exit(1);
+}
+
+file_put_contents("sample.pdf", $binary);
+echo "Saved sample.pdf (" . strlen($binary) . " bytes)\n";
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+template_id = "67c1f94b2d8a1c0012a4b301"
+url = f"https://api.verifik.co/v2/smart-report-templates/{template_id}/download-sample"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "sampleData": {
+        "batchName": "Driver Onboarding Sample",
+        "rowIndex": 0,
+        "inputData": {
+            "documentType": "CC",
+            "documentNumber": "1020304050",
+        },
+        "results": {
+            "identity": {
+                "fullName": "Mateo Rojas",
+                "status": "active",
+            }
+        },
+    }
+}
+
+r = requests.post(url, json=payload, headers=headers)
+r.raise_for_status()
+
+with open("sample.pdf", "wb") as f:
+    f.write(r.content)
+
+print(f"Saved sample.pdf ({len(r.content)} bytes)")
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "67c1f94b2d8a1c0012a4b301"
+	body, _ := json.Marshal(map[string]interface{}{
+		"sampleData": map[string]interface{}{
+			"batchName": "Driver Onboarding Sample",
+			"rowIndex":  0,
+			"inputData": map[string]interface{}{
+				"documentType":   "CC",
+				"documentNumber": "1020304050",
+			},
+			"results": map[string]interface{}{
+				"identity": map[string]interface{}{
+					"fullName": "Mateo Rojas",
+					"status":   "active",
+				},
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates/"+id+"/download-sample", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		errBytes, _ := io.ReadAll(resp.Body)
+		panic(fmt.Sprintf("status %d: %s", resp.StatusCode, string(errBytes)))
+	}
+
+	outFile, err := os.Create("sample.pdf")
+	if err != nil {
+		panic(err)
+	}
+	defer outFile.Close()
+
+	n, err := io.Copy(outFile, resp.Body)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Saved sample.pdf (%d bytes)\n", n)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates/67c1f94b2d8a1c0012a4b301/download-sample" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -f -o sample.pdf \
+  -d '{
+    "sampleData": {
+      "batchName": "Driver Onboarding Sample",
+      "rowIndex": 0,
+      "inputData": {
+        "documentType": "CC",
+        "documentNumber": "1020304050"
+      },
+      "results": {
+        "identity": {
+          "fullName": "Mateo Rojas",
+          "status": "active"
+        }
+      }
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200（二进制 PDF）">
+
+```text
+HTTP/1.1 200 OK
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="SmartReport_TemplateSample_67c1f94b2d8a1c0012a4b301.pdf"
+
+<binary PDF byte stream>
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "Template not found",
+  "code": "template_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"sampleData\" must be an object",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 请勿对此接口的 `200` 响应调用 `res.json()`；请将响应作为二进制缓冲区（`arraybuffer` / `bytes` / `io.Copy`）读取，并写入磁盘或对象存储。
+- 如果同时省略 `sampleData` 和 `printHtml`（例如发送 `{}`），该接口会使用模板自身保存的 `sampleData`。
+- 如需快速迭代检查布局而无需生成完整 PDF，请使用[预览模板 HTML](/verifik-zh/smart-reports/preview-template-html)。
+
+### 相关文档
+
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [发送模板示例](/verifik-zh/smart-reports/send-template-sample)
+- [预览模板 HTML](/verifik-zh/smart-reports/preview-template-html)
+- [查询报告模板](/verifik-zh/smart-reports/retrieve-a-report-template)

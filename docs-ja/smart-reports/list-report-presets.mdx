@@ -1,0 +1,288 @@
+---
+id: list-report-presets
+title: レポートプリセット一覧
+description: アカウントでの利用可否、ワークフローステップ、解決済み入力スキーマを含む精選されたシステム Smart Report プリセットを一覧表示します
+slug: /smart-reports/list-report-presets
+keywords:
+  - v2/smart-batch-presets
+  - /v2/smart-batch-presets
+  - v2 smart-batch-presets
+  - smart-batch-presets
+  - /smart-batch-presets
+  - api/smart-batch-presets
+  - /api/smart-batch-presets
+  - api smart-batch-presets
+  - api.verifik.co/v2/smart-batch-presets
+  - 'https://api.verifik.co/v2/smart-batch-presets'
+  - GET v2/smart-batch-presets
+  - GET /v2/smart-batch-presets
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+ご自身のアカウントで利用可能な、精選されたシステム Smart Report プリセットを一覧表示します。各プリセットには、`systemKey`、メタデータ（`country`、`category`、`tier`）、アカウントでの利用可否（`available`）、順序付き `presetSteps`、およびヘッドレス実行や AI エージェント向けに準備された `exampleInput` 付きの解決済み `inputSchema` が含まれます。
+
+解決済みの `inputSchema` では、内部実行パラメータおよび連鎖した `visitaFlow` 依存関係によってすでに供給されるステップ入力が自動的に除外されるため、呼び出し元が提供する必要のあるフィールドのみが残ります。プリセットの一覧取得は読み取り専用のディスカバリー呼び出しであり、クレジットを消費しません。このエンドポイントは `smart_report_list_presets` MCP ツールとしても公開されています。
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/smart-batch-presets
+```
+
+クライアント単位の `Authorization: Bearer <VERIFIK_JWT>` ヘッダーを使用することで、Smart-Agent プロキシ（`https://ai.verifik.co/v2/smart-batch-presets`）経由でもアクセスできます。共有 x402 実行はこのルートでは `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 |
+| ---- | ----- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+トークンは **クライアント JWT** である必要があります。認証情報がないか無効な場合は `401 Unauthorized` を返します。
+
+### パラメータ
+
+すべてのクエリパラメータは任意です。組み合わせて指定することで、法域、エンティティカテゴリ、ティア、またはキーワードでプリセットを絞り込めます。
+
+| 名前 | 型 | 必須 | 説明 |
+| ---- | ---- | ---- | ----------- |
+| `country` | string | いいえ | 国コードフィルター。サーバー側でトリムおよび大文字化されます（例: `CO`）。 |
+| `category` | string | いいえ | プリセットカテゴリフィルター。許可値: `citizen`、`company`、または `vehicle`。 |
+| `tier` | string | いいえ | プリセット深度フィルター。許可値: `essential` または `comprehensive`。 |
+| `search` | string | いいえ | `name`、`description`、および `systemKey` に対する大文字・小文字を区別しない正規表現一致。 |
+| `text` | string | いいえ | `search` のエイリアス。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const params = new URLSearchParams({
+        country: "CO",
+        category: "citizen",
+        tier: "essential",
+    });
+
+    const res = await fetch(`https://api.verifik.co/v2/smart-batch-presets?${params.toString()}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "country" => "CO",
+    "category" => "citizen",
+    "tier" => "essential"
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batch-presets?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-batch-presets"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "country": "CO",
+    "category": "citizen",
+    "tier": "essential",
+}
+
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "net/url"
+    "os"
+)
+
+func main() {
+    u, _ := url.Parse("https://api.verifik.co/v2/smart-batch-presets")
+    q := u.Query()
+    q.Set("country", "CO")
+    q.Set("category", "citizen")
+    q.Set("tier", "essential")
+    u.RawQuery = q.Encode()
+
+    req, _ := http.NewRequest("GET", u.String(), nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/smart-batch-presets?country=CO&category=citizen&tier=essential" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": [
+        {
+            "templateId": "67d1b2c3e4f5a60718293a01",
+            "systemKey": "co.citizen.essential",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "category": "citizen",
+            "tier": "essential",
+            "stepCount": 2,
+            "available": true,
+            "presetSteps": [
+                {
+                    "sequence": 1,
+                    "appFeatureCode": "co-cedula",
+                    "queryMode": "byDocument",
+                    "featureName": "Colombian Cédula Validation"
+                },
+                {
+                    "sequence": 2,
+                    "appFeatureCode": "co-procuraduria",
+                    "queryMode": "byDocument",
+                    "featureName": "Colombian Procuraduría Check"
+                }
+            ],
+            "inputSchema": {
+                "stepCount": 2,
+                "estimatedCreditsPerRow": 0.15,
+                "requiredFields": [
+                    {
+                        "field": "documentType",
+                        "apiField": "documentType",
+                        "type": "string",
+                        "required": true,
+                        "enum": ["CC", "CE"]
+                    },
+                    {
+                        "field": "documentNumber",
+                        "apiField": "documentNumber",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "optionalFields": [],
+                "jsonSchema": {
+                    "type": "object",
+                    "properties": {
+                        "documentType": {
+                            "type": "string",
+                            "enum": ["CC", "CE"]
+                        },
+                        "documentNumber": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["documentType", "documentNumber"]
+                },
+                "exampleInput": {
+                    "documentType": "CC",
+                    "documentNumber": "123456789"
+                }
+            }
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 補足
+
+- `country` はフィルター処理の前にトリムおよび大文字化されます（例: `co` は `CO` に一致します）。
+- `search` と `text` はどちらも、`name`、`description`、および `systemKey` に対して大文字・小文字を区別しない同じ正規表現一致を実行します。
+- `inputSchema.estimatedCreditsPerRow` は、プリセットの有効化されたステップ全体における 1 行あたりの予想クレジットコストを見積もります。
+- `available` が `true` の場合、`presetSteps` 内のすべての機能が環境で有効になっており、[レポートプリセットを複製する](/verifik-ja/smart-reports/clone-a-report-preset)でそのまま複製できます。
+- AI エージェント連携では、このエンドポイントは `smart_report_list_presets` MCP ツールに対応します。
+
+### 関連
+
+- [レポートプリセットを複製する](/verifik-ja/smart-reports/clone-a-report-preset)
+- [Smart Reports 概要](/verifik-ja/smart-reports)
+- [Headless API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [Smart Reports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)

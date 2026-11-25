@@ -1,0 +1,691 @@
+---
+id: smart-reports-webhooks
+title: Webhooks de SmartReports
+description: Catálogo de eventos webhook, resolución de URL destino, calendario de reintentos y esquemas de payload para callbacks del ciclo de vida de SmartReports y SmartBatch.
+slug: /resources/smart-reports-webhooks
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Descripción general
+
+SmartReports y SmartBatch entregan notificaciones del ciclo de vida a través del pipeline compartido de **Webhook** y **Smart Monitor** de Verifik (`WebhookEvents`). Cada vez que finaliza una fila de lote, se completa un lote, termina de renderizarse (o falla) el PDF de un reporte o se entrega (o rebota) un correo electrónico, Verifik despacha un evento tipado `smart_batch_*` mediante HTTP `POST`.
+
+:::info Formato de entrega HTTP y seguridad
+
+Cada entrega es un HTTP **`POST`** hacia tu URL destino con un tiempo límite (timeout) de **`5000 ms` (`5` segundos)** y un sobre JSON:
+
+```json
+{
+  "type": "smart_batch_report_generated",
+  "object": { }
+}
+```
+
+- **`type`** — Identificador exacto del evento `smart_batch_*` (`smart_batch_report_generated`, `smart_batch_report_sent`, etc.).
+- **`object`** — Payload específico del evento. Si existen campos internos sensibles (`encryptedOcr` y `prompt`), se eliminan automáticamente.
+- **Sin encabezado de firma HMAC**: Las entregas de producto `smart_batch_*` actualmente **no** envían un encabezado `x-verifik-signature`. Utiliza siempre **HTTPS**, protege tu URL receptora con un token secreto en la ruta o en consulta/encabezado dentro de tu URL configurada, y valida `object.reportId` / `object.batchId` y `object.externalRefId` contra `GET https://api.verifik.co/v2/smart-reports/{id}` (usando `Authorization: Bearer <VERIFIK_JWT>`) antes de disparar acciones posteriores irreversibles.
+
+Trata los nuevos campos opcionales en `object` como aditivos.
+
+:::
+
+---
+
+### Cómo se elige la URL destino
+
+La resolución de la URL destino depende de si el evento proviene de una operación de **SmartReport** o de una ejecución de **SmartBatch**:
+
+:::tip Orden de resolución de la URL destino
+
+1. **Eventos de reporte** (`smart_batch_report_generated`, `smart_batch_report_generation_failed`, `smart_batch_report_sent`, `smart_batch_report_delivery_failed`):
+   1. Sobrescritura **`report.webhookUrl`** por reporte / por ejecución (pasada en `POST /v2/smart-reports/run` o `POST /v2/smart-reports`).
+   2. **`batchConfiguration.notification.webhookUrl`** en la `BatchConfiguration` del lote.
+   3. Si no existe ninguna de las dos, **no se envía ningún webhook**.
+2. **Eventos de ejecución de lote y fila** (`smart_batch_row_completed`, `smart_batch_batch_completed`):
+   - Usa `options.webhookUrl` cuando se pasa explícitamente, o **`batchConfiguration.notification.webhook`** / **`batchConfiguration.notification.webhookUrl`**.
+   - *Nota*: Las ejecuciones asíncronas de `FeatureRunner` (`smart-batch-run-sync`) emiten `smart_batch_batch_completed` usando **`batchConfiguration.notification.webhookUrl`** e incluyen `runId` y `creditsSpent` en `object`.
+
+Cuando se resuelve una `webhookUrl`, Verifik busca o crea automáticamente un registro `Webhook` activo del cliente (`Smart Batch — <name>`) y vincula la `BatchConfiguration` para que el historial de entregas aparezca en **Smart Monitor**.
+
+:::
+
+---
+
+### Garantías de entrega y calendario de reintentos
+
+- **Criterio de éxito**: Tu endpoint debe responder con un código HTTP **`2xx`** dentro de **`5000 ms`**. Responde `200 OK` de inmediato y delega descargas de PDF o escrituras en base de datos a un worker en segundo plano.
+- **Calendario de reintentos**: Ante respuestas distintas de `2xx`, timeouts o errores de conexión, Verifik programa hasta **`6` intentos de reintento** usando los intervalos de espera **`[60, 60, 120, 120, 360, 720]` minutos** (1h, 1h, 2h, 2h, 6h, 12h), redondeados al límite de 10 minutos más cercano.
+- **Correos opcionales de notificación de fallo/éxito**: Si el registro `Webhook` vinculado configura `notification.email` y habilita `notification.success` o `notification.fail`, Verifik envía una alerta vía Mailgun en el **intento 1**.
+
+---
+
+### Ciclo de vida de los eventos
+
+```mermaid
+flowchart TD
+    B["Lote en ejecución"] -->|"smart_batch_row_completed\n(modo fila por fila)"| R["Filas finalizan"]
+    B -->|"smart_batch_batch_completed"| F["Lote completado"]
+    R --> F
+    F -->|"Renderizar PDF + puntaje"| G{"Resultado del PDF"}
+    G -->|"éxito"| EV1["smart_batch_report_generated"]
+    G -->|"error"| EV2["smart_batch_report_generation_failed"]
+    EV1 -->|"emailTo / send-email opcional"| E{"Resultado del correo"}
+    E -->|"enviado"| EV3["smart_batch_report_sent"]
+    E -->|"fallido"| EV4["smart_batch_report_delivery_failed"]
+```
+
+---
+
+### Catálogo de eventos
+
+| `type` del evento | `object.event` | Cuándo se dispara | Campos clave de `object` |
+| --- | --- | --- | --- |
+| `smart_batch_report_generated` | `"report.generated"` | El renderizado del PDF del reporte termina con éxito (`POST /v2/smart-reports/run`, `POST /v2/smart-reports/{id}/generate` o finalización de lote async). | `reportId`, `batchId`, `templateId`, `status`, `rowIndex`, `pdfSize`, `pdfEngine`, `generationDurationMs`, `downloadUrl`, `htmlUrl`, `verificationScore`, `externalRefId`, `generatedAt` |
+| `smart_batch_report_generation_failed` | `"report.generation_failed"` | Falla el renderizado del PDF del reporte. | `reportId`, `batchId`, `templateId`, `status`, `error`, `externalRefId`, `failedAt` |
+| `smart_batch_report_sent` | `"report.sent"` | El envío del PDF del reporte por correo termina con éxito (`emailTo` en `/run` o `POST /v2/smart-reports/{id}/send-email`). | `reportId`, `batchId`, `templateId`, `status`, `recipients`, `subject`, `messageId`, `downloadUrl`, `htmlUrl`, `externalRefId`, `sentAt` |
+| `smart_batch_report_delivery_failed` | `"report.delivery_failed"` | El envío del PDF del reporte por correo falla o rebota. | `reportId`, `batchId`, `templateId`, `status`, `recipients`, `subject`, `messageId`, `error`, `downloadUrl`, `htmlUrl`, `externalRefId`, `sentAt` |
+| `smart_batch_batch_completed` | `"batch.completed"` | Todas las filas de un `SmartBatch` alcanzan un estado terminal (`completed` o `failed`). | `batchId`, `runId`, `status`, `creditsSpent`, `stats` |
+| `smart_batch_row_completed` | `"row.completed"` | Una fila no final en un `SmartBatch` alcanza un estado terminal (`completed`, `failed` o `partial`). | `batchId`, `rowIndex`, `status`, `results`, `errors` |
+
+---
+
+### Esquemas de eventos y ejemplos de payload
+
+#### 1. `smart_batch_report_generated`
+
+Se dispara cuando termina el renderizado del PDF de un SmartReport (`status: "generated"`).
+
+| Campo | Tipo | Descripción |
+| --- | --- | --- |
+| `object.event` | string | Siempre `"report.generated"`. |
+| `object.reportId` | string | ObjectId de SmartReport. |
+| `object.batchId` | string | ObjectId de SmartBatch asociado. |
+| `object.templateId` | string | ObjectId de SmartReportTemplate usado para renderizar el PDF. |
+| `object.status` | string | `"generated"`. |
+| `object.rowIndex` | number | Índice base cero de la fila del lote renderizada en el reporte. |
+| `object.pdfSize` | number | Tamaño del archivo PDF renderizado en bytes. |
+| `object.pdfEngine` | string | Motor usado (`"puppeteer"` o `"pdfkit"`). |
+| `object.generationDurationMs` | number | Duración del renderizado PDF en milisegundos. |
+| `object.downloadUrl` | string | Ruta API relativa `/v2/smart-reports/{reportId}/download` para obtener el binario PDF. |
+| `object.htmlUrl` | string | Ruta API relativa `/v2/smart-reports/{reportId}/html` para obtener el JSON de HTML + Puntaje de Verificación. |
+| `object.verificationScore` | object *(opcional)* | Resumen de puntaje (`score`, `verdict`, `coverage`, `profile`) cuando la puntuación está habilitada. |
+| `object.externalRefId` | string *(opcional)* | ID de correlación del llamador pasado en `/run` o al crear el reporte. |
+| `object.generatedAt` | string (ISO 8601) | Marca de tiempo de cuando se completó la generación. |
+
+```json
+{
+  "type": "smart_batch_report_generated",
+  "object": {
+    "event": "report.generated",
+    "reportId": "6740a1b2c3d4e5f678901234",
+    "batchId": "6740a1b2c3d4e5f678901111",
+    "templateId": "6740a1b2c3d4e5f678902222",
+    "status": "generated",
+    "rowIndex": 0,
+    "pdfSize": 184320,
+    "pdfEngine": "puppeteer",
+    "generationDurationMs": 1420,
+    "downloadUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/download",
+    "htmlUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/html",
+    "verificationScore": {
+      "score": 0.9625,
+      "verdict": "approve",
+      "coverage": 1,
+      "profile": "cabify_driver"
+    },
+    "externalRefId": "case-12345",
+    "generatedAt": "2026-11-24T20:15:30.120Z"
+  }
+}
+```
+
+#### 2. `smart_batch_report_generation_failed`
+
+Se dispara cuando falla la generación del PDF (`status: "failed"`).
+
+| Campo | Tipo | Descripción |
+| --- | --- | --- |
+| `object.event` | string | Siempre `"report.generation_failed"`. |
+| `object.reportId` | string | ObjectId de SmartReport. |
+| `object.batchId` | string | ObjectId de SmartBatch asociado. |
+| `object.templateId` | string | ObjectId de SmartReportTemplate. |
+| `object.status` | string | `"failed"`. |
+| `object.error` | string | Mensaje de fallo que describe por qué se abortó el renderizado. |
+| `object.externalRefId` | string *(opcional)* | ID de correlación del llamador si está presente en el reporte. |
+| `object.failedAt` | string (ISO 8601) | Marca de tiempo de cuando ocurrió el fallo. |
+
+```json
+{
+  "type": "smart_batch_report_generation_failed",
+  "object": {
+    "event": "report.generation_failed",
+    "reportId": "6740a1b2c3d4e5f678901234",
+    "batchId": "6740a1b2c3d4e5f678901111",
+    "templateId": "6740a1b2c3d4e5f678902222",
+    "status": "failed",
+    "error": "Chromium page timeout while rendering custom font asset",
+    "externalRefId": "case-12345",
+    "failedAt": "2026-11-24T20:16:02.450Z"
+  }
+}
+```
+
+#### 3. `smart_batch_report_sent`
+
+Se dispara cuando el envío del reporte por correo termina con éxito (`status: "sent"`).
+
+| Campo | Tipo | Descripción |
+| --- | --- | --- |
+| `object.event` | string | Siempre `"report.sent"`. |
+| `object.reportId` | string | ObjectId de SmartReport. |
+| `object.batchId` | string | ObjectId de SmartBatch asociado. |
+| `object.templateId` | string | ObjectId de SmartReportTemplate. |
+| `object.status` | string | `"sent"`. |
+| `object.recipients` | string[] | Direcciones de correo de los destinatarios. |
+| `object.subject` | string | Línea de asunto enviada en el correo. |
+| `object.messageId` | string | ID del mensaje del proveedor de correo. |
+| `object.downloadUrl` | string | Ruta API relativa `/v2/smart-reports/{reportId}/download`. |
+| `object.htmlUrl` | string | Ruta API relativa `/v2/smart-reports/{reportId}/html`. |
+| `object.externalRefId` | string *(opcional)* | ID de correlación del llamador si está presente en el reporte. |
+| `object.sentAt` | string (ISO 8601) | Marca de tiempo de cuando se completó el envío del correo. |
+
+```json
+{
+  "type": "smart_batch_report_sent",
+  "object": {
+    "event": "report.sent",
+    "reportId": "6740a1b2c3d4e5f678901234",
+    "batchId": "6740a1b2c3d4e5f678901111",
+    "templateId": "6740a1b2c3d4e5f678902222",
+    "status": "sent",
+    "recipients": ["compliance@yourcompany.com"],
+    "subject": "SmartReport: Colombia Citizen Comprehensive — 2026-11-24",
+    "messageId": "<20261124201535.1.abc123@mg.verifik.co>",
+    "downloadUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/download",
+    "htmlUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/html",
+    "externalRefId": "case-12345",
+    "sentAt": "2026-11-24T20:15:35.800Z"
+  }
+}
+```
+
+#### 4. `smart_batch_report_delivery_failed`
+
+Se dispara cuando falla el envío del reporte por correo (`status: "failed"`), para que tu integración distinga entre un envío fallido y uno que nunca se intentó.
+
+| Campo | Tipo | Descripción |
+| --- | --- | --- |
+| `object.event` | string | Siempre `"report.delivery_failed"`. |
+| `object.reportId` | string | ObjectId de SmartReport. |
+| `object.batchId` | string | ObjectId de SmartBatch asociado. |
+| `object.templateId` | string | ObjectId de SmartReportTemplate. |
+| `object.status` | string | `"failed"`. |
+| `object.recipients` | string[] | Direcciones de correo de los destinatarios. |
+| `object.subject` | string | Línea de asunto intentada en el correo. |
+| `object.messageId` | string *(opcional)* | ID del mensaje del proveedor de correo si se emitió antes del fallo. |
+| `object.error` | string | Mensaje de error de entrega de correo. |
+| `object.downloadUrl` | string | Ruta API relativa `/v2/smart-reports/{reportId}/download`. |
+| `object.htmlUrl` | string | Ruta API relativa `/v2/smart-reports/{reportId}/html`. |
+| `object.externalRefId` | string *(opcional)* | ID de correlación del llamador si está presente en el reporte. |
+| `object.sentAt` | string (ISO 8601) | Marca de tiempo de cuando terminó el intento fallido de envío. |
+
+```json
+{
+  "type": "smart_batch_report_delivery_failed",
+  "object": {
+    "event": "report.delivery_failed",
+    "reportId": "6740a1b2c3d4e5f678901234",
+    "batchId": "6740a1b2c3d4e5f678901111",
+    "templateId": "6740a1b2c3d4e5f678902222",
+    "status": "failed",
+    "recipients": ["invalid@nonexistent-domain.test"],
+    "subject": "SmartReport: Colombia Citizen Comprehensive — 2026-11-24",
+    "messageId": null,
+    "error": "Mailgun 400: invalid recipient domain",
+    "downloadUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/download",
+    "htmlUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/html",
+    "externalRefId": "case-12345",
+    "sentAt": "2026-11-24T20:15:36.210Z"
+  }
+}
+```
+
+#### 5. `smart_batch_batch_completed`
+
+Se dispara una sola vez cuando un `SmartBatch` pasa a un estado terminal (`"completed"` o `"failed"`).
+
+| Campo | Tipo | Descripción |
+| --- | --- | --- |
+| `object.event` | string | Siempre `"batch.completed"`. |
+| `object.batchId` | string | ObjectId de SmartBatch. |
+| `object.runId` | string *(opcional)* | ObjectId de ejecución de `FeatureRunner` (presente en sincronizaciones async de `FeatureRunner`). |
+| `object.status` | string | `"completed"` o `"failed"`. |
+| `object.creditsSpent` | number *(opcional)* | Total de créditos de Verifik consumidos por la ejecución (presente en sincronizaciones async de `FeatureRunner`). |
+| `object.stats` | object | Conteos agregados: `{ totalRows, completedRows, failedRows, partialRows }`. |
+
+```json
+{
+  "type": "smart_batch_batch_completed",
+  "object": {
+    "event": "batch.completed",
+    "batchId": "6740a1b2c3d4e5f678901111",
+    "runId": "6740a1b2c3d4e5f678903333",
+    "status": "completed",
+    "creditsSpent": 12,
+    "stats": {
+      "totalRows": 2,
+      "completedRows": 2,
+      "failedRows": 0,
+      "partialRows": 0
+    }
+  }
+}
+```
+
+#### 6. `smart_batch_row_completed`
+
+Se dispara en flujos de actualización de lote fila por fila cuando una fila alcanza un estado terminal (`"completed"`, `"failed"` o `"partial"`) antes de que terminen todas las filas del lote.
+
+| Campo | Tipo | Descripción |
+| --- | --- | --- |
+| `object.event` | string | Siempre `"row.completed"`. |
+| `object.batchId` | string | ObjectId de SmartBatch. |
+| `object.rowIndex` | number | Índice de fila base cero dentro del lote. |
+| `object.status` | string | `"completed"`, `"failed"` o `"partial"`. |
+| `object.results` | object | Mapa de salidas de los pasos de verificación indexado por secuencia del paso. |
+| `object.errors` | array | Lista de errores `{ step, message, code }` registrados para pasos fallidos. |
+
+```json
+{
+  "type": "smart_batch_row_completed",
+  "object": {
+    "event": "row.completed",
+    "batchId": "6740a1b2c3d4e5f678901111",
+    "rowIndex": 0,
+    "status": "completed",
+    "results": {
+      "1": {
+        "fullName": "JUAN CARLOS PEREZ GOMEZ",
+        "documentNumber": "123456789"
+      }
+    },
+    "errors": []
+  }
+}
+```
+
+---
+
+### Ejemplos de receptor de webhooks
+
+Las implementaciones receptoras a continuación confirman las solicitudes de inmediato dentro de `5` segundos (`200 OK`), deduplican entregas repetidas de forma idempotente, verifican el reporte vía `GET /v2/smart-reports/{id}` y descargan el PDF usando `Authorization: Bearer <VERIFIK_JWT>`.
+
+<Tabs>
+  <TabItem value="nodejs" label="Node.js (Express)" default>
+
+```javascript
+import express from 'express';
+import fs from 'node:fs/promises';
+
+const app = express();
+app.use(express.json({ limit: '2mb' }));
+
+const VERIFIK_API_URL = 'https://api.verifik.co';
+const VERIFIK_JWT = process.env.VERIFIK_JWT;
+
+// Reemplazar con Redis o un índice único en BD en producción
+const processedEvents = new Set();
+
+async function verifyAndDownloadPdf(obj) {
+  // Verificar el evento directamente contra la API de Verifik antes de confiar en los campos del payload
+  const metaRes = await fetch(`${VERIFIK_API_URL}/v2/smart-reports/${obj.reportId}`, {
+    headers: { Authorization: `Bearer ${VERIFIK_JWT}` },
+  });
+  if (!metaRes.ok) {
+    throw new Error(`Falló la consulta del reporte: HTTP ${metaRes.status}`);
+  }
+  const { data: report } = await metaRes.json();
+
+  const pdfRes = await fetch(`${VERIFIK_API_URL}${obj.downloadUrl}`, {
+    headers: { Authorization: `Bearer ${VERIFIK_JWT}` },
+  });
+  if (!pdfRes.ok) {
+    throw new Error(`Falló la descarga del PDF: HTTP ${pdfRes.status}`);
+  }
+
+  const pdfBuffer = Buffer.from(await pdfRes.arrayBuffer());
+  const outPath = `./reports/${report.externalRefId || obj.reportId}.pdf`;
+  await fs.mkdir('./reports', { recursive: true });
+  await fs.writeFile(outPath, pdfBuffer);
+  console.log(`Guardado ${outPath} (${pdfBuffer.length} bytes), puntaje:`, report.verificationScoreSummary);
+}
+
+app.post('/webhooks/verifik-reports', (req, res) => {
+  const { type, object: obj } = req.body ?? {};
+  if (!type || !obj) {
+    return res.status(400).json({ error: 'Payload de webhook inválido' });
+  }
+
+  const idempotencyKey = `${type}:${obj.reportId || obj.batchId}:${obj.rowIndex ?? ''}:${obj.status || ''}`;
+  if (processedEvents.has(idempotencyKey)) {
+    return res.status(200).json({ received: true, duplicate: true });
+  }
+  processedEvents.add(idempotencyKey);
+
+  // Confirmar dentro de 5 segundos antes de descargar PDFs o actualizar sistemas posteriores
+  res.status(200).json({ received: true });
+
+  setImmediate(async () => {
+    try {
+      switch (type) {
+        case 'smart_batch_report_generated':
+          await verifyAndDownloadPdf(obj);
+          break;
+        case 'smart_batch_report_generation_failed':
+          console.error('Falló generación de reporte:', obj.reportId, obj.externalRefId, obj.error);
+          break;
+        case 'smart_batch_report_sent':
+          console.log('Reporte enviado por correo:', obj.reportId, obj.recipients, obj.messageId);
+          break;
+        case 'smart_batch_report_delivery_failed':
+          console.error('Falló envío de correo:', obj.reportId, obj.recipients, obj.error);
+          break;
+        case 'smart_batch_batch_completed':
+          console.log('Lote completado:', obj.batchId, obj.status, obj.stats, 'créditos:', obj.creditsSpent);
+          break;
+        case 'smart_batch_row_completed':
+          console.log('Fila completada:', obj.batchId, obj.rowIndex, obj.status);
+          break;
+        default:
+          console.log('Evento SmartBatch no manejado:', type);
+      }
+    } catch (err) {
+      console.error('Falló el manejador asíncrono de webhook:', err);
+    }
+  });
+});
+
+app.listen(3000, () => console.log('Receptor de webhooks SmartReports en :3000'));
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python (FastAPI)">
+
+```python
+import os
+from pathlib import Path
+import requests
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Request
+
+app = FastAPI()
+
+VERIFIK_API_URL = "https://api.verifik.co"
+VERIFIK_JWT = os.environ["VERIFIK_JWT"]
+PROCESSED_EVENTS: set[str] = set()
+
+
+def process_smart_report_event(event_type: str, obj: dict) -> None:
+    headers = {"Authorization": f"Bearer {VERIFIK_JWT}"}
+
+    if event_type == "smart_batch_report_generated":
+        report_id = obj["reportId"]
+        # Confirmar el estado auténtico del reporte mediante la API
+        meta = requests.get(f"{VERIFIK_API_URL}/v2/smart-reports/{report_id}", headers=headers, timeout=30)
+        meta.raise_for_status()
+        report = meta.json()["data"]
+
+        pdf_resp = requests.get(f"{VERIFIK_API_URL}{obj['downloadUrl']}", headers=headers, timeout=60)
+        pdf_resp.raise_for_status()
+
+        out_dir = Path("./reports")
+        out_dir.mkdir(parents=True, exist_ok=True)
+        filename = f"{report.get('externalRefId') or report_id}.pdf"
+        (out_dir / filename).write_bytes(pdf_resp.content)
+        print(f"Descargado {filename} ({len(pdf_resp.content)} bytes)")
+    elif event_type == "smart_batch_report_generation_failed":
+        print(f"Falló generación para {obj.get('reportId')}: {obj.get('error')}")
+    elif event_type == "smart_batch_report_sent":
+        print(f"Reporte {obj.get('reportId')} enviado por correo a {obj.get('recipients')}")
+    elif event_type == "smart_batch_report_delivery_failed":
+        print(f"Falló envío de correo para {obj.get('reportId')}: {obj.get('error')}")
+    elif event_type == "smart_batch_batch_completed":
+        print(f"Lote {obj.get('batchId')} {obj.get('status')}: {obj.get('stats')}")
+    elif event_type == "smart_batch_row_completed":
+        print(f"Lote {obj.get('batchId')} fila {obj.get('rowIndex')}: {obj.get('status')}")
+
+
+@app.post("/webhooks/verifik-reports")
+async def receive_webhook(request: Request, background_tasks: BackgroundTasks):
+    payload = await request.json()
+    event_type = payload.get("type")
+    obj = payload.get("object")
+    if not event_type or not isinstance(obj, dict):
+        raise HTTPException(status_code=400, detail="Sobre de webhook inválido")
+
+    key = f"{event_type}:{obj.get('reportId') or obj.get('batchId')}:{obj.get('rowIndex', '')}:{obj.get('status', '')}"
+    if key in PROCESSED_EVENTS:
+        return {"received": True, "duplicate": True}
+
+    PROCESSED_EVENTS.add(key)
+    background_tasks.add_task(process_smart_report_event, event_type, obj)
+    return {"received": True}
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+// webhook-verifik-reports.php
+declare(strict_types=1);
+
+$rawBody = file_get_contents('php://input');
+$payload = json_decode($rawBody ?: '', true);
+
+if (!is_array($payload) || empty($payload['type']) || !is_array($payload['object'] ?? null)) {
+    http_response_code(400);
+    header('Content-Type: application/json');
+    echo json_encode(['error' => 'Invalid webhook payload']);
+    exit;
+}
+
+$type = (string) $payload['type'];
+$obj = $payload['object'];
+
+// Deduplicar usando Redis o base de datos en producción
+$idempotencyKey = implode(':', [
+    $type,
+    $obj['reportId'] ?? $obj['batchId'] ?? 'unknown',
+    $obj['rowIndex'] ?? '',
+    $obj['status'] ?? '',
+]);
+$lockFile = sys_get_temp_dir() . '/verifik_evt_' . sha1($idempotencyKey) . '.lock';
+if (file_exists($lockFile)) {
+    http_response_code(200);
+    header('Content-Type: application/json');
+    echo json_encode(['received' => true, 'duplicate' => true]);
+    exit;
+}
+file_put_contents($lockFile, (string) time());
+
+// Responder 200 OK rápidamente (menos de 5s) antes de descargar archivos
+http_response_code(200);
+header('Content-Type: application/json');
+echo json_encode(['received' => true]);
+if (function_exists('fastcgi_finish_request')) {
+    fastcgi_finish_request();
+}
+
+$jwt = getenv('VERIFIK_JWT') ?: '';
+$apiUrl = 'https://api.verifik.co';
+
+if ($type === 'smart_batch_report_generated' && !empty($obj['downloadUrl']) && $jwt !== '') {
+    $ch = curl_init($apiUrl . $obj['downloadUrl']);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTPHEADER => ["Authorization: Bearer {$jwt}"],
+    ]);
+    $pdfBytes = curl_exec($ch);
+    $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($statusCode === 200 && $pdfBytes !== false) {
+        $ref = preg_replace('/[^a-zA-Z0-9_-]/', '_', (string) ($obj['externalRefId'] ?? $obj['reportId']));
+        file_put_contents(__DIR__ . "/report_{$ref}.pdf", $pdfBytes);
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"sync"
+	"time"
+)
+
+type WebhookEnvelope struct {
+	Type   string                 `json:"type"`
+	Object map[string]interface{} `json:"object"`
+}
+
+var (
+	seenMu sync.Mutex
+	seen   = map[string]bool{}
+)
+
+func stringField(m map[string]interface{}, key string) string {
+	if v, ok := m[key].(string); ok {
+		return v
+	}
+	return ""
+}
+
+func downloadReportPDF(reportID, downloadPath, externalRefID string) {
+	jwt := os.Getenv("VERIFIK_JWT")
+	client := &http.Client{Timeout: 45 * time.Second}
+
+	req, err := http.NewRequest(http.MethodGet, "https://api.verifik.co"+downloadPath, nil)
+	if err != nil {
+		log.Printf("error de solicitud: %v", err)
+		return
+	}
+	req.Header.Set("Authorization", "Bearer "+jwt)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Printf("falló descarga para %s: %v", reportID, err)
+		return
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		log.Printf("estado de descarga inesperado %d para %s", resp.StatusCode, reportID)
+		return
+	}
+
+	pdfBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Printf("error de lectura para %s: %v", reportID, err)
+		return
+	}
+
+	name := externalRefID
+	if name == "" {
+		name = reportID
+	}
+	outPath := fmt.Sprintf("report-%s.pdf", name)
+	if err := os.WriteFile(outPath, pdfBytes, 0o600); err != nil {
+		log.Printf("error de escritura: %v", err)
+		return
+	}
+	log.Printf("guardado %s (%d bytes)", outPath, len(pdfBytes))
+}
+
+func webhookHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var env WebhookEnvelope
+	if err := json.NewDecoder(r.Body).Decode(&env); err != nil || env.Type == "" || env.Object == nil {
+		http.Error(w, "invalid payload", http.StatusBadRequest)
+		return
+	}
+
+	id := stringField(env.Object, "reportId")
+	if id == "" {
+		id = stringField(env.Object, "batchId")
+	}
+	key := fmt.Sprintf("%s:%s:%v:%s", env.Type, id, env.Object["rowIndex"], stringField(env.Object, "status"))
+
+	seenMu.Lock()
+	if seen[key] {
+		seenMu.Unlock()
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"received":true,"duplicate":true}`))
+		return
+	}
+	seen[key] = true
+	seenMu.Unlock()
+
+	// Responder 200 OK inmediatamente dentro de 5 segundos
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write([]byte(`{"received":true}`))
+
+	go func(evt WebhookEnvelope) {
+		switch evt.Type {
+		case "smart_batch_report_generated":
+			downloadReportPDF(
+				stringField(evt.Object, "reportId"),
+				stringField(evt.Object, "downloadUrl"),
+				stringField(evt.Object, "externalRefId"),
+			)
+		case "smart_batch_report_generation_failed":
+			log.Printf("falló generación: report=%s err=%s", stringField(evt.Object, "reportId"), stringField(evt.Object, "error"))
+		case "smart_batch_report_sent":
+			log.Printf("correo enviado: report=%s msg=%s", stringField(evt.Object, "reportId"), stringField(evt.Object, "messageId"))
+		case "smart_batch_report_delivery_failed":
+			log.Printf("falló correo: report=%s err=%s", stringField(evt.Object, "reportId"), stringField(evt.Object, "error"))
+		case "smart_batch_batch_completed":
+			log.Printf("lote completado: batch=%s status=%s", stringField(evt.Object, "batchId"), stringField(evt.Object, "status"))
+		case "smart_batch_row_completed":
+			log.Printf("fila completada: batch=%s row=%v status=%s", stringField(evt.Object, "batchId"), evt.Object["rowIndex"], stringField(evt.Object, "status"))
+		}
+	}(env)
+}
+
+func main() {
+	http.HandleFunc("/webhooks/verifik-reports", webhookHandler)
+	log.Fatal(http.ListenAndServe(":3000", nil))
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Relacionados
+
+- [Eventos soportados](/verifik-es/resources/eventos-soportados)
+- [Descripción general de Webhooks](/verifik-es/resources/webhooks)
+- [Integración de Webhooks](/verifik-es/resources/integracion-webhook)
+- [Guía de API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report)
+- [MCP y Agentes de IA](/verifik-es/smart-reports/mcp-and-ai-agents)

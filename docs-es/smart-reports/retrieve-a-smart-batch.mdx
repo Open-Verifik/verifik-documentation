@@ -1,0 +1,292 @@
+---
+id: retrieve-a-smart-batch
+title: Recuperar un Smart Batch
+description: Recupera un Smart Batch por ID, fusionando resultados de filas almacenados y reparando filas incompletas.
+slug: /smart-reports/retrieve-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}'
+  - '/v2/smart-batches/{id}'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - 'v2 smart-batches {id}'
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}'
+  - 'https://api.verifik.co/v2/smart-batches/{id}'
+  - 'GET v2/smart-batches/{id}'
+  - 'GET /v2/smart-batches/{id}'
+  - smart-batches
+  - /smart-batches
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Recupera un único documento `SmartBatch` por ID para el cliente autenticado. Antes de devolver la carga útil, el servidor fusiona las salidas almacenadas externamente en `smartbatchrows` dentro de `rows[].results` y ejecuta `healIncompleteRows()` para reabrir las filas marcadas como `completed` a las que les falten pasos de configuración habilitados.
+
+Si el lote no existe o pertenece a otra cuenta de cliente, el endpoint devuelve `200` con `{ "data": null }`. Leer un lote no ejecuta comprobaciones ni consume créditos.
+
+### Endpoint
+
+```text
+GET https://api.verifik.co/v2/smart-batches/{id}
+```
+
+Este endpoint también es accesible a través del proxy de Smart-Agent en `https://ai.verifik.co/v2/smart-batches/{id}` usando tu propio encabezado `Authorization: Bearer <VERIFIK_JWT>` por cliente. La ejecución compartida x402 está bloqueada con `403 Forbidden`.
+
+### Encabezados
+
+| Nombre          | Valor                  | Descripción                                         |
+| --------------- | ---------------------- | --------------------------------------------------- |
+| `Content-Type`  | `application/json`     | Formato de carga útil de la solicitud.              |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT delimitado al cliente (`authUser.clientId`).    |
+
+### Parámetros de ruta
+
+| Nombre | Tipo   | Requerido | Descripción                 |
+| ------ | ------ | --------- | --------------------------- |
+| `id`   | string | Sí        | ObjectId de `SmartBatch`.   |
+
+### Parámetros de consulta
+
+| Nombre        | Tipo     | Requerido | Descripción |
+| ------------- | -------- | --------- | ----------- |
+| `select`      | string   | No        | Expresión de proyección de campos (por ejemplo `"-rows"` para excluir las cargas útiles de filas). |
+| `columns`     | string   | No        | Subconjunto de campos a incluir en el documento devuelto. |
+| `populates[]` | string[] | No        | Documentos relacionados a popular: `"batchConfiguration"` y/o `"client"`. |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-batches/${batchId}`, {
+    params: {
+      "populates[]": ["batchConfiguration", "client"],
+    },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$query = "populates%5B%5D=batchConfiguration&populates%5B%5D=client";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = [
+    ("populates[]", "batchConfiguration"),
+    ("populates[]", "client"),
+]
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	params := url.Values{}
+	params.Add("populates[]", "batchConfiguration")
+	params.Add("populates[]", "client")
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches/"+batchID+"?"+params.Encode(), nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3?populates%5B%5D=batchConfiguration&populates%5B%5D=client" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d4",
+      "name": "Colombia Identity Check"
+    },
+    "client": {
+      "_id": "507f1f77bcf86cd799439013"
+    },
+    "name": "Colombia Onboarding — November",
+    "status": "completed",
+    "executor": "browser",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0.04,
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "completed",
+        "results": {
+          "1": {
+            "fullName": "JANE DOE",
+            "documentNumber": "1032386359"
+          }
+        },
+        "errors": [],
+        "creditsSpent": 0.04,
+        "attemptCount": 1,
+        "processedAt": "2026-11-24T20:01:00.000Z"
+      }
+    ],
+    "totalRows": 1,
+    "completedRows": 1,
+    "failedRows": 0,
+    "partialRows": 0,
+    "startedAt": "2026-11-24T20:00:00.000Z",
+    "completedAt": "2026-11-24T20:01:00.000Z",
+    "createdAt": "2026-11-24T19:58:00.000Z",
+    "updatedAt": "2026-11-24T20:01:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-null" label="200 OK (No encontrado)">
+
+```json
+{
+  "data": null
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"id\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Los resultados de pasos externos de `smartbatchrows` se fusionan automáticamente en `rows[].results` al leer el lote.
+- `healIncompleteRows()` inspecciona cada fila `completed` frente a los pasos habilitados de `batchConfiguration` y reabre a `pending` cualquier fila a la que le falte salida o errores de un paso.
+- Para sondeos frecuentes de estado, prefiere [Obtener progreso de Smart Batch](/verifik-es/smart-reports/get-smart-batch-progress) para evitar descargar repetidamente cargas útiles completas de filas.
+
+### Relacionado
+
+- [Descripción general de Smart Reports](/verifik-es/smart-reports)
+- [Guía de la API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [Webhooks de Smart Reports](/verifik-es/resources/smart-reports-webhooks)
+- [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report)
+- [Obtener progreso de Smart Batch](/verifik-es/smart-reports/get-smart-batch-progress)
+- [Actualizar un Smart Batch](/verifik-es/smart-reports/update-a-smart-batch)

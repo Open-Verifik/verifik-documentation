@@ -1,0 +1,275 @@
+---
+id: pause-a-smart-batch
+title: 暂停 Smart Batch
+description: 暂停正在运行或排队中的 Smart Batch，同时保留已完成行的结果。
+slug: /smart-reports/pause-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}/pause'
+  - '/v2/smart-batches/{id}/pause'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches pause
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/pause'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/pause'
+  - 'POST v2/smart-batches/{id}/pause'
+  - 'POST /v2/smart-batches/{id}/pause'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/pause
+  - /v2/smart-batches/pause
+  - 'v2 smart-batches {id} pause'
+  - smart-batches/pause
+  - /smart-batches/pause
+  - api/smart-batches/pause
+  - /api/smart-batches/pause
+  - api smart-batches pause
+  - 'GET v2/smart-batches/{id}/pause'
+  - 'GET /v2/smart-batches/{id}/pause'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+暂停正在运行的 `SmartBatch`（以及任何关联的 `FeatureRunner` 运行），且不会丢失已完成行写入的结果。worker 将停止领取剩余行，直到你恢复该批次。
+
+队列和浏览器模式批次必须处于 `"processing"` 或 `"pending"` 状态（否则返回 `400 batch_not_pausable`）。由 `FeatureRunner` 运行驱动的批次则要求运行记录处于 `"queued"` 或 `"processing"` 状态（否则返回 `400 run_not_pausable`）。暂停操作不消耗积分。
+
+### 接口
+
+```text
+POST https://api.verifik.co/v2/smart-batches/{id}/pause
+```
+
+此接口也可通过 Smart-Agent 代理 `https://ai.verifik.co/v2/smart-batches/{id}/pause` 访问，需使用你自己的客户专属 `Authorization: Bearer <VERIFIK_JWT>`。共享 x402 执行会被拒绝并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称            | 值                     | 描述                                     |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | 请求载荷格式。                           |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 客户作用域的 JWT（`authUser.clientId`）。 |
+
+### 参数
+
+| 名称 | 类型   | 必填 | 描述 |
+| ---- | ------ | ---- | ---- |
+| `id` | string | 是   | 要暂停的 `SmartBatch` ObjectId。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/pause`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/pause");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/pause"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.post(url, json={}, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/"+batchID+"/pause", bytes.NewReader([]byte("{}")))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/pause" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — November",
+    "status": "paused",
+    "executor": "queue",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0.4,
+    "rows": [],
+    "totalRows": 25,
+    "completedRows": 10,
+    "failedRows": 0,
+    "partialRows": 0,
+    "startedAt": "2026-11-24T20:10:00.000Z",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:14:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "batch_not_pausable",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"id\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 若要通过编程方式暂停批次，请始终使用此接口，而非 `PUT /v2/smart-batches/{id}`（该接口不接受 `"paused"`）。
+- 如果由 `FeatureRunner` 驱动的批次运行未处于 `"queued"` 或 `"processing"` 状态，接口将返回 `400 BadRequest` 及 `run_not_pausable`。
+- 稍后可使用[恢复 Smart Batch](/verifik-zh/smart-reports/resume-a-smart-batch)继续执行，或使用[取消 Smart Batch](/verifik-zh/smart-reports/cancel-a-smart-batch)永久终止。
+
+### 相关文档
+
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)
+- [恢复 Smart Batch](/verifik-zh/smart-reports/resume-a-smart-batch)
+- [取消 Smart Batch](/verifik-zh/smart-reports/cancel-a-smart-batch)

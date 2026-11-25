@@ -1,0 +1,264 @@
+---
+id: retrieve-simulated-response
+title: 시뮬레이션 응답 조회
+description: 특정 카탈로그 엔드포인트 코드에 대한 샌드박스 시뮬레이션 페이로드, 필드 개요(outline) 및 빈 데이터/누락 변형을 조회합니다
+slug: /smart-reports/retrieve-simulated-response
+keywords:
+  - 'v2/smart-report-templates/simulated-responses/{code}'
+  - '/v2/smart-report-templates/simulated-responses/{code}'
+  - v2/smart-report-templates/simulated-responses
+  - /v2/smart-report-templates/simulated-responses
+  - v2 smart-report-templates simulated-responses
+  - 'v2 smart-report-templates simulated-responses {code}'
+  - api/smart-report-templates/simulated-responses
+  - /api/smart-report-templates/simulated-responses
+  - api smart-report-templates simulated-responses
+  - 'api.verifik.co/v2/smart-report-templates/simulated-responses/{code}'
+  - 'https://api.verifik.co/v2/smart-report-templates/simulated-responses/{code}'
+  - 'GET v2/smart-report-templates/simulated-responses/{code}'
+  - 'GET /v2/smart-report-templates/simulated-responses/{code}'
+  - smart-report-templates/simulated-responses
+  - /smart-report-templates/simulated-responses
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+[시뮬레이션 응답 목록 조회](/verifik-ko/smart-reports/list-simulated-responses)를 통해 찾은 카탈로그 엔드포인트 `code`의 시뮬레이션된 샌드박스 응답, 필드 `outline`, `dataSample` 및 `emptySample`을 조회합니다. 반환되는 `sample` 상태를 채워진 레코드(`"data"`), 빈 일치 결과(`"empty"`), 또는 누락 데이터(`"missing"`) 간에 전환할 수 있으며 `listSize`로 배열 행 수를 제어할 수 있습니다.
+
+헤드리스 템플릿 설계 및 자동화된 QA 워크플로에서는 템플릿을 저장하거나 프로덕션 `SmartBatch` 파이프라인에 배포하기 전에 빈 테이블, 누락된 선택 필드 또는 다중 페이지 배열(`listSize` `2`~`30`)과 같은 엣지 케이스가 어떻게 렌더링되는지 이 엔드포인트로 검증할 수 있습니다.
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v2/smart-report-templates/simulated-responses/{code}
+```
+
+Smart-Agent 프록시(`https://ai.verifik.co`)도 동일한 `/v2/...` 경로를 제공하며 본인의 `Authorization: Bearer <VERIFIK_JWT>` 헤더가 필요합니다.
+
+### 헤더
+
+| 이름          | 값                     |
+| ------------- | ---------------------- |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### 매개변수
+
+| 이름           | 타입    | 위치  | 필수   | 설명 |
+| -------------- | ------- | ----- | ------ | ---- |
+| `code`         | string  | Path  | 예     | [시뮬레이션 응답 목록 조회](/verifik-ko/smart-reports/list-simulated-responses)에서 가져온 카탈로그 엔드포인트 코드. |
+| `availability` | string  | Query | 아니요 | `sample`에 배치할 시뮬레이션 상태: `"data"`, `"empty"` 또는 `"missing"`. 기본값은 `"data"`입니다. |
+| `listSize`     | integer | Query | 아니요 | 배열/목록 필드에 생성할 합성 항목 수. 유효 범위: `2`~`30`. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const code = "co_cedula";
+  const params = new URLSearchParams({
+    availability: "data",
+    listSize: "5",
+  });
+
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates/simulated-responses/${code}?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$code = "co_cedula";
+$query = http_build_query([
+    "availability" => "data",
+    "listSize" => 5,
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/simulated-responses/" . $code . "?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+code = "co_cedula"
+url = f"https://api.verifik.co/v2/smart-report-templates/simulated-responses/{code}"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "availability": "data",
+    "listSize": 5,
+}
+
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	url := "https://api.verifik.co/v2/smart-report-templates/simulated-responses/co_cedula?availability=data&listSize=5"
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-report-templates/simulated-responses/co_cedula?availability=data&listSize=5" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200-found" label="200 (조회 성공)">
+
+```json
+{
+  "data": {
+    "code": "co_cedula",
+    "found": true,
+    "name": "Colombia National ID Verification",
+    "country": "Colombia",
+    "category": "citizen",
+    "method": "GET",
+    "url": "https://api.verifik.co/v2/co/cedula",
+    "inputs": ["documentType", "documentNumber"],
+    "availability": "data",
+    "outline": {
+      "fullName": "string",
+      "documentNumber": "string",
+      "status": "string"
+    },
+    "sample": {
+      "fullName": "MATEO ROJAS",
+      "documentNumber": "1020304050",
+      "status": "VIGENTE"
+    },
+    "dataSample": {
+      "fullName": "MATEO ROJAS",
+      "documentNumber": "1020304050",
+      "status": "VIGENTE"
+    },
+    "emptySample": {}
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-not-found" label="200 (결과 없음)">
+
+```json
+{
+  "data": {
+    "code": "unknown_code",
+    "found": false,
+    "outline": {},
+    "sample": {},
+    "note": "No simulated response found in sandbox endpoint inventory for the requested code."
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"availability\" must be one of [data, empty, missing]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고 사항
+
+- `{code}`가 샌드박스 인벤토리에 없는 경우, 이 엔드포인트는 `found: false`, 빈 `outline` 및 `sample` 객체, 그리고 설명 `note`와 함께 HTTP `200`을 반환합니다.
+- `listSize`는 `2`부터 `30`까지의 정수를 허용하며 [템플릿 샘플 다운로드](/verifik-ko/smart-reports/download-template-sample)를 통해 다중 페이지 PDF 페이지 나누기를 테스트할 때 유용합니다.
+- 이 엔드포인트는 실시간 검증을 실행하지 않으며 크레딧을 소모하지 않습니다.
+
+### 관련 문서
+
+- [SmartReports 개요](/verifik-ko/smart-reports)
+- [헤드리스 API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [MCP 및 AI 에이전트](/verifik-ko/smart-reports/mcp-and-ai-agents)
+- [SmartReports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [시뮬레이션 응답 목록 조회](/verifik-ko/smart-reports/list-simulated-responses)
+- [샘플 데이터 구조 분석](/verifik-ko/smart-reports/introspect-sample-data)
+- [템플릿 레이아웃 생성](/verifik-ko/smart-reports/generate-template-layout)
+- [템플릿 HTML 미리보기](/verifik-ko/smart-reports/preview-template-html)

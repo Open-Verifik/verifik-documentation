@@ -1,0 +1,349 @@
+---
+id: send-template-sample
+title: Enviar amostra do template
+description: Renderize um PDF de amostra de Smart Report e envie por e-mail para um ou mais destinatários para revisão das partes interessadas
+slug: /smart-reports/send-template-sample
+keywords:
+  - 'v2/smart-report-templates/{id}/send-sample'
+  - '/v2/smart-report-templates/{id}/send-sample'
+  - v2/smart-report-templates/send-sample
+  - /v2/smart-report-templates/send-sample
+  - v2 smart-report-templates send-sample
+  - 'v2 smart-report-templates {id} send-sample'
+  - api/smart-report-templates/send-sample
+  - /api/smart-report-templates/send-sample
+  - 'api.verifik.co/v2/smart-report-templates/{id}/send-sample'
+  - 'https://api.verifik.co/v2/smart-report-templates/{id}/send-sample'
+  - 'POST v2/smart-report-templates/{id}/send-sample'
+  - 'POST /v2/smart-report-templates/{id}/send-sample'
+  - smart-report-templates
+  - /smart-report-templates
+  - smart-report-templates/send-sample
+  - /smart-report-templates/send-sample
+  - api smart-report-templates send-sample
+  - 'GET v2/smart-report-templates/{id}/send-sample'
+  - 'GET /v2/smart-report-templates/{id}/send-sample'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Renderize um template de Smart Report salvo (`{id}`) com `sampleData` e envie o PDF resultante por e-mail diretamente para um ou mais `recipients`. Opcionalmente, forneça `printHtml` para ignorar a geração de HTML ou `pdfBase64` para anexar um buffer de PDF pré-renderizado.
+
+Em pipelines de CI/CD headless, fluxos de aprovação de templates e automações com agentes de IA, use este endpoint para distribuir pré-visualizações formatadas de relatórios a revisores de conformidade ou partes interessadas do produto sem precisar configurar sua própria infraestrutura de e-mail. Corpos de requisição JSON de até `64MB` são aceitos para acomodar fontes incorporadas, logotipos, HTML pré-renderizado ou PDFs em base64.
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/smart-report-templates/{id}/send-sample
+```
+
+O proxy do Smart-Agent (`https://ai.verifik.co`) expõe os mesmos caminhos `/v2/...` e exige o seu próprio cabeçalho `Authorization: Bearer <VERIFIK_JWT>`.
+
+### Cabeçalhos
+
+| Nome          | Valor                  |
+| ------------- | ---------------------- |
+| Content-Type  | `application/json`     |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### Parâmetros
+
+| Nome | Tipo   | Obrigatório | Descrição                             |
+| ---- | ------ | ----------- | ------------------------------------- |
+| `id` | string | Sim         | ObjectId do template de Smart Report. |
+
+### Corpo
+
+Suporta payloads JSON de até `64MB`.
+
+| Nome         | Tipo     | Obrigatório | Descrição                                                                                                                               |
+| ------------ | -------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `recipients` | string[] | Sim         | Array de endereços de e-mail válidos dos destinatários (mínimo de `1`).                                                                 |
+| `sampleData` | object   | Sim         | Payload de exemplo contendo `inputData`, `results`, `batchName` e `rowIndex`.                                                           |
+| `subject`    | string   | Não         | Linha de assunto personalizada do e-mail. Assume `` `Sample Report: <name>` `` como padrão usando o `name` do template.                 |
+| `language`   | string   | Não         | Idioma do texto do e-mail: `"en"` ou `"es"`. O padrão é `"es"`.                                                                         |
+| `printHtml`  | string   | Não         | Documento HTML pré-renderizado opcional para converter em PDF em vez de renderizar a partir das `sections` do template.                |
+| `pdfBase64`  | string   | Não         | Anexo PDF codificado em base64 opcional para enviar diretamente sem geração de PDF no servidor.                                         |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const id = "67c1f94b2d8a1c0012a4b301";
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates/${id}/send-sample`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        recipients: ["compliance@acme.example"],
+        subject: "Sample Report: Colombia Driver Onboarding",
+        language: "en",
+        sampleData: {
+          batchName: "Driver Onboarding Sample",
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1020304050",
+          },
+          results: {
+            identity: {
+              fullName: "Mateo Rojas",
+              status: "active",
+            },
+          },
+        },
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67c1f94b2d8a1c0012a4b301";
+$payload = [
+    "recipients" => ["compliance@acme.example"],
+    "subject" => "Sample Report: Colombia Driver Onboarding",
+    "language" => "en",
+    "sampleData" => [
+        "batchName" => "Driver Onboarding Sample",
+        "rowIndex" => 0,
+        "inputData" => [
+            "documentType" => "CC",
+            "documentNumber" => "1020304050",
+        ],
+        "results" => [
+            "identity" => [
+                "fullName" => "Mateo Rojas",
+                "status" => "active",
+            ],
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/" . $id . "/send-sample");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+template_id = "67c1f94b2d8a1c0012a4b301"
+url = f"https://api.verifik.co/v2/smart-report-templates/{template_id}/send-sample"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "recipients": ["compliance@acme.example"],
+    "subject": "Sample Report: Colombia Driver Onboarding",
+    "language": "en",
+    "sampleData": {
+        "batchName": "Driver Onboarding Sample",
+        "rowIndex": 0,
+        "inputData": {
+            "documentType": "CC",
+            "documentNumber": "1020304050",
+        },
+        "results": {
+            "identity": {
+                "fullName": "Mateo Rojas",
+                "status": "active",
+            }
+        },
+    },
+}
+
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "67c1f94b2d8a1c0012a4b301"
+	body, _ := json.Marshal(map[string]interface{}{
+		"recipients": []string{"compliance@acme.example"},
+		"subject":    "Sample Report: Colombia Driver Onboarding",
+		"language":   "en",
+		"sampleData": map[string]interface{}{
+			"batchName": "Driver Onboarding Sample",
+			"rowIndex":  0,
+			"inputData": map[string]interface{}{
+				"documentType":   "CC",
+				"documentNumber": "1020304050",
+			},
+			"results": map[string]interface{}{
+				"identity": map[string]interface{}{
+					"fullName": "Mateo Rojas",
+					"status":   "active",
+				},
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates/"+id+"/send-sample", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates/67c1f94b2d8a1c0012a4b301/send-sample" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "recipients": ["compliance@acme.example"],
+    "subject": "Sample Report: Colombia Driver Onboarding",
+    "language": "en",
+    "sampleData": {
+      "batchName": "Driver Onboarding Sample",
+      "rowIndex": 0,
+      "inputData": {
+        "documentType": "CC",
+        "documentNumber": "1020304050"
+      },
+      "results": {
+        "identity": {
+          "fullName": "Mateo Rojas",
+          "status": "active"
+        }
+      }
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "success": true,
+  "message": "Sample email sent successfully",
+  "recipients": ["compliance@acme.example"],
+  "messageId": "<a1b2c3d4-5678-90ef-1234-567890abcdef@verifik.co>",
+  "delivery": {
+    "sentAt": "2026-09-10T04:15:22.000Z",
+    "recipients": ["compliance@acme.example"],
+    "subject": "Sample Report: Colombia Driver Onboarding",
+    "status": "sent",
+    "messageId": "<a1b2c3d4-5678-90ef-1234-567890abcdef@verifik.co>",
+    "errorMessage": null
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "Template not found",
+  "code": "template_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"recipients\" must contain at least 1 items",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Diferente de outros endpoints de template que encapsulam payloads em `{ "data": ... }`, `send-sample` retorna os campos `success`, `message`, `recipients`, `messageId` e `delivery` no nível superior.
+- Se `language` for omitido, o e-mail assume `"es"` por padrão. Passe `"en"` para notificações em inglês às partes interessadas.
+- Para salvar o PDF renderizado localmente em vez de enviá-lo por e-mail, use [Baixar amostra do template](/verifik-pt/smart-reports/download-template-sample).
+
+### Relacionados
+
+- [Visão geral do SmartReports](/verifik-pt/smart-reports)
+- [Guia da API Headless](/verifik-pt/smart-reports/headless-api-guide)
+- [MCP e Agentes de IA](/verifik-pt/smart-reports/mcp-and-ai-agents)
+- [Webhooks do SmartReports](/verifik-pt/resources/smart-reports-webhooks)
+- [Baixar amostra do template](/verifik-pt/smart-reports/download-template-sample)
+- [Pré-visualizar HTML do template](/verifik-pt/smart-reports/preview-template-html)
+- [Consultar um template de relatório](/verifik-pt/smart-reports/retrieve-a-report-template)

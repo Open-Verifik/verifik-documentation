@@ -1,0 +1,261 @@
+---
+id: estimate-smart-batch-cost
+title: Estimate Smart Batch cost
+description: 'Preview per-step credit cost, pending row count, available balance, and any shortfall before running a batch.'
+slug: /smart-reports/estimate-smart-batch-cost
+keywords:
+  - 'v2/smart-batches/{id}/estimate'
+  - '/v2/smart-batches/{id}/estimate'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches estimate
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/estimate'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/estimate'
+  - 'GET v2/smart-batches/{id}/estimate'
+  - 'GET /v2/smart-batches/{id}/estimate'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/estimate
+  - /v2/smart-batches/estimate
+  - 'v2 smart-batches {id} estimate'
+  - smart-batches/estimate
+  - /smart-batches/estimate
+  - api/smart-batches/estimate
+  - /api/smart-batches/estimate
+  - api smart-batches estimate
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Calculate a pre-flight credit estimate for all non-terminal rows remaining on a `SmartBatch`. The response breaks down pricing per enabled step in the batch's `BatchConfiguration` and compares the projected cost against your client account's available credit balance.
+
+Calling this endpoint performs no catalog lookups and spends zero credits.
+
+### Endpoint
+
+```text
+GET https://api.verifik.co/v2/smart-batches/{id}/estimate
+```
+
+This endpoint is also reachable through the Smart-Agent proxy at `https://ai.verifik.co/v2/smart-batches/{id}/estimate` using your own per-client `Authorization: Bearer <VERIFIK_JWT>`. Shared x402 execution is blocked with `403 Forbidden`.
+
+### Headers
+
+| Name            | Value                  | Description                              |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | Request payload format.                  |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | Client-scoped JWT (`authUser.clientId`). |
+
+### Parameters
+
+| Name | Type   | Required | Description |
+| ---- | ------ | -------- | ----------- |
+| `id` | string | Yes      | `SmartBatch` ObjectId to estimate. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-batches/${batchId}/estimate`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/estimate");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/estimate"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches/"+batchID+"/estimate", nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/estimate" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "itemCount": 25,
+    "creditsPerItem": 0.12,
+    "totalCredits": 3,
+    "breakdown": [
+      {
+        "sequence": 1,
+        "featureCode": "co-cedula",
+        "price": 0.04,
+        "total": 1
+      },
+      {
+        "sequence": 2,
+        "featureCode": "co-procuraduria",
+        "price": 0.08,
+        "total": 2
+      }
+    ],
+    "pendingRows": 25,
+    "totalRows": 25,
+    "availableCredits": 10.5,
+    "sufficientCredits": true,
+    "shortfall": 0
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "batch_configuration_has_no_steps",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `itemCount` and `pendingRows` reflect only rows not yet in a terminal row status (`completed`, `failed`, or `partial`).
+- `availableCredits` combines your client account's `credits` and `extraCredits`; when `sufficientCredits` is `false`, `shortfall` indicates the additional credits needed.
+- Per-step pricing uses your client account's `ClientFeature` snapshot pricing where applicable.
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Run a Smart Report](/smart-reports/run-a-smart-report)
+- [Start a Smart Batch](/smart-reports/start-a-smart-batch)
+- [Get Smart Batch progress](/smart-reports/get-smart-batch-progress)

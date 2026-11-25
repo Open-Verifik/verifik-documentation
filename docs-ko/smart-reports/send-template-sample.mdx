@@ -1,0 +1,349 @@
+---
+id: send-template-sample
+title: 템플릿 샘플 전송
+description: 이해관계자 검토를 위해 샘플 Smart Report PDF를 렌더링하고 하나 이상의 수신자에게 이메일로 전송합니다
+slug: /smart-reports/send-template-sample
+keywords:
+  - 'v2/smart-report-templates/{id}/send-sample'
+  - '/v2/smart-report-templates/{id}/send-sample'
+  - v2/smart-report-templates/send-sample
+  - /v2/smart-report-templates/send-sample
+  - v2 smart-report-templates send-sample
+  - 'v2 smart-report-templates {id} send-sample'
+  - api/smart-report-templates/send-sample
+  - /api/smart-report-templates/send-sample
+  - 'api.verifik.co/v2/smart-report-templates/{id}/send-sample'
+  - 'https://api.verifik.co/v2/smart-report-templates/{id}/send-sample'
+  - 'POST v2/smart-report-templates/{id}/send-sample'
+  - 'POST /v2/smart-report-templates/{id}/send-sample'
+  - smart-report-templates
+  - /smart-report-templates
+  - smart-report-templates/send-sample
+  - /smart-report-templates/send-sample
+  - api smart-report-templates send-sample
+  - 'GET v2/smart-report-templates/{id}/send-sample'
+  - 'GET /v2/smart-report-templates/{id}/send-sample'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+저장된 Smart Report 템플릿(`{id}`)을 `sampleData`로 렌더링하고 생성된 PDF를 하나 이상의 `recipients`에게 직접 이메일로 전송합니다. 선택적으로 `printHtml`을 제공하여 HTML 생성을 건너뛰거나 `pdfBase64`를 제공해 사전 렌더링된 PDF 버퍼를 첨부할 수 있습니다.
+
+헤드리스 CI/CD 파이프라인, 템플릿 승인 워크플로 및 AI 에이전트 자동화에서는 자체 이메일 인프라를 구축하지 않고도 준법 검토자나 제품 이해관계자에게 서식이 적용된 리포트 미리보기를 배포할 때 이 엔드포인트를 사용하세요. 임베디드 글꼴, 로고, 사전 렌더링된 HTML 또는 base64 PDF를 수용하기 위해 최대 `64MB`의 JSON 요청 본문이 허용됩니다.
+
+### 엔드포인트
+
+```
+POST https://api.verifik.co/v2/smart-report-templates/{id}/send-sample
+```
+
+Smart-Agent 프록시(`https://ai.verifik.co`)도 동일한 `/v2/...` 경로를 제공하며 본인의 `Authorization: Bearer <VERIFIK_JWT>` 헤더가 필요합니다.
+
+### 헤더
+
+| 이름          | 값                     |
+| ------------- | ---------------------- |
+| Content-Type  | `application/json`     |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### 매개변수
+
+| 이름 | 타입   | 필수 | 설명 |
+| ---- | ------ | ---- | ---- |
+| `id` | string | 예   | Smart Report 템플릿 ObjectId. |
+
+### 요청 본문
+
+최대 `64MB`의 JSON 페이로드를 지원합니다.
+
+| 이름         | 타입     | 필수   | 설명 |
+| ------------ | -------- | ------ | ---- |
+| `recipients` | string[] | 예     | 유효한 수신자 이메일 주소 배열(최소 `1`개). |
+| `sampleData` | object   | 예     | `inputData`, `results`, `batchName`, `rowIndex`를 포함하는 샘플 페이로드. |
+| `subject`    | string   | 아니요 | 사용자 지정 이메일 제목. 기본값은 템플릿의 `name`을 사용하는 `` `Sample Report: <name>` ``입니다. |
+| `language`   | string   | 아니요 | 이메일 본문 언어: `"en"` 또는 `"es"`. 기본값은 `"es"`입니다. |
+| `printHtml`  | string   | 아니요 | 템플릿 `sections`에서 렌더링하는 대신 PDF로 변환할 선택적 사전 렌더링 HTML 문서. |
+| `pdfBase64`  | string   | 아니요 | 서버 측 PDF 생성 없이 직접 전송할 선택적 base64 인코딩 PDF 첨부 파일. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const id = "67c1f94b2d8a1c0012a4b301";
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates/${id}/send-sample`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        recipients: ["compliance@acme.example"],
+        subject: "Sample Report: Colombia Driver Onboarding",
+        language: "en",
+        sampleData: {
+          batchName: "Driver Onboarding Sample",
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1020304050",
+          },
+          results: {
+            identity: {
+              fullName: "Mateo Rojas",
+              status: "active",
+            },
+          },
+        },
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67c1f94b2d8a1c0012a4b301";
+$payload = [
+    "recipients" => ["compliance@acme.example"],
+    "subject" => "Sample Report: Colombia Driver Onboarding",
+    "language" => "en",
+    "sampleData" => [
+        "batchName" => "Driver Onboarding Sample",
+        "rowIndex" => 0,
+        "inputData" => [
+            "documentType" => "CC",
+            "documentNumber" => "1020304050",
+        ],
+        "results" => [
+            "identity" => [
+                "fullName" => "Mateo Rojas",
+                "status" => "active",
+            ],
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/" . $id . "/send-sample");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+template_id = "67c1f94b2d8a1c0012a4b301"
+url = f"https://api.verifik.co/v2/smart-report-templates/{template_id}/send-sample"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "recipients": ["compliance@acme.example"],
+    "subject": "Sample Report: Colombia Driver Onboarding",
+    "language": "en",
+    "sampleData": {
+        "batchName": "Driver Onboarding Sample",
+        "rowIndex": 0,
+        "inputData": {
+            "documentType": "CC",
+            "documentNumber": "1020304050",
+        },
+        "results": {
+            "identity": {
+                "fullName": "Mateo Rojas",
+                "status": "active",
+            }
+        },
+    },
+}
+
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "67c1f94b2d8a1c0012a4b301"
+	body, _ := json.Marshal(map[string]interface{}{
+		"recipients": []string{"compliance@acme.example"},
+		"subject":    "Sample Report: Colombia Driver Onboarding",
+		"language":   "en",
+		"sampleData": map[string]interface{}{
+			"batchName": "Driver Onboarding Sample",
+			"rowIndex":  0,
+			"inputData": map[string]interface{}{
+				"documentType":   "CC",
+				"documentNumber": "1020304050",
+			},
+			"results": map[string]interface{}{
+				"identity": map[string]interface{}{
+					"fullName": "Mateo Rojas",
+					"status":   "active",
+				},
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates/"+id+"/send-sample", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates/67c1f94b2d8a1c0012a4b301/send-sample" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "recipients": ["compliance@acme.example"],
+    "subject": "Sample Report: Colombia Driver Onboarding",
+    "language": "en",
+    "sampleData": {
+      "batchName": "Driver Onboarding Sample",
+      "rowIndex": 0,
+      "inputData": {
+        "documentType": "CC",
+        "documentNumber": "1020304050"
+      },
+      "results": {
+        "identity": {
+          "fullName": "Mateo Rojas",
+          "status": "active"
+        }
+      }
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "success": true,
+  "message": "Sample email sent successfully",
+  "recipients": ["compliance@acme.example"],
+  "messageId": "<a1b2c3d4-5678-90ef-1234-567890abcdef@verifik.co>",
+  "delivery": {
+    "sentAt": "2026-09-10T04:15:22.000Z",
+    "recipients": ["compliance@acme.example"],
+    "subject": "Sample Report: Colombia Driver Onboarding",
+    "status": "sent",
+    "messageId": "<a1b2c3d4-5678-90ef-1234-567890abcdef@verifik.co>",
+    "errorMessage": null
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "Template not found",
+  "code": "template_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"recipients\" must contain at least 1 items",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고 사항
+
+- 페이로드를 `{ "data": ... }`로 감싸는 다른 템플릿 엔드포인트와 달리 `send-sample`은 최상위 수준에서 `success`, `message`, `recipients`, `messageId` 및 `delivery` 필드를 반환합니다.
+- `language`를 생략하면 이메일 기본값은 `"es"`입니다. 영어 이해관계자 알림을 위해서는 `"en"`을 전달하세요.
+- 이메일로 전송하는 대신 렌더링된 PDF를 로컬에 저장하려면 [템플릿 샘플 다운로드](/verifik-ko/smart-reports/download-template-sample)를 사용하세요.
+
+### 관련 문서
+
+- [SmartReports 개요](/verifik-ko/smart-reports)
+- [헤드리스 API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [MCP 및 AI 에이전트](/verifik-ko/smart-reports/mcp-and-ai-agents)
+- [SmartReports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [템플릿 샘플 다운로드](/verifik-ko/smart-reports/download-template-sample)
+- [템플릿 HTML 미리보기](/verifik-ko/smart-reports/preview-template-html)
+- [리포트 템플릿 조회](/verifik-ko/smart-reports/retrieve-a-report-template)

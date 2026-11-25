@@ -1,0 +1,347 @@
+---
+id: update-a-smart-batch
+title: Update a Smart Batch
+description: 'Update a Smart Batch name, status, executor, or rows with automatic row stats recalculation.'
+slug: /smart-reports/update-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}'
+  - '/v2/smart-batches/{id}'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - 'v2 smart-batches {id}'
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}'
+  - 'https://api.verifik.co/v2/smart-batches/{id}'
+  - 'PUT v2/smart-batches/{id}'
+  - 'PUT /v2/smart-batches/{id}'
+  - smart-batches
+  - /smart-batches
+  - 'GET v2/smart-batches/{id}'
+  - 'GET /v2/smart-batches/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Update fields on an existing `SmartBatch` owned by the authenticated client. You can update `name`, `status`, `executor`, or replace `rows`. When `rows` is supplied, the server recalculates `totalRows`, `completedRows`, `failedRows`, and `partialRows` and syncs external row snapshots.
+
+Use the dedicated [Pause a Smart Batch](/smart-reports/pause-a-smart-batch) endpoint to transition a batch to `"paused"`. Changing `executor` only takes effect when the batch is currently in `"draft"`, `"pending"`, or `"cancelled"` status.
+
+### Endpoint
+
+```text
+PUT https://api.verifik.co/v2/smart-batches/{id}
+```
+
+This endpoint is also reachable through the Smart-Agent proxy at `https://ai.verifik.co/v2/smart-batches/{id}` using your own per-client `Authorization: Bearer <VERIFIK_JWT>`. Shared x402 execution is blocked with `403 Forbidden`.
+
+### Headers
+
+| Name            | Value                  | Description                              |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | Request payload format.                  |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | Client-scoped JWT (`authUser.clientId`). |
+
+### Parameters
+
+| Name | Type   | Required | Description |
+| ---- | ------ | -------- | ----------- |
+| `id` | string | Yes      | `SmartBatch` ObjectId to update. |
+
+### Body
+
+| Name       | Type     | Required | Description |
+| ---------- | -------- | -------- | ----------- |
+| `name`     | string   | No       | Updated batch display name. Maximum `150` characters. |
+| `status`   | string   | No       | Allowed values: `"draft"`, `"pending"`, `"processing"`, `"completed"`, `"failed"`, or `"cancelled"`. Use `POST /v2/smart-batches/{id}/pause` for `"paused"`. |
+| `executor` | string   | No       | Allowed values: `"queue"`, `"featureRunner"`, or `"browser"`. Only takes effect when the current batch status is `"draft"`, `"pending"`, or `"cancelled"`. |
+| `rows`     | object[] | No       | Replacement row list. Wrapped format requires `rowIndex` and `inputData` and optionally accepts `status`, `results`, `errors`, and `processedAt`; flat rows are normalized automatically. |
+
+Unknown body keys are rejected by Joi validation with `409 MissingParameter`.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.put(
+    `https://api.verifik.co/v2/smart-batches/${batchId}`,
+    {
+      name: "Colombia Onboarding — Updated",
+      executor: "queue",
+      rows: [
+        {
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1032386359",
+          },
+          status: "pending",
+        },
+      ],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$payload = [
+    "name" => "Colombia Onboarding — Updated",
+    "executor" => "queue",
+    "rows" => [
+        [
+            "rowIndex" => 0,
+            "inputData" => [
+                "documentType" => "CC",
+                "documentNumber" => "1032386359",
+            ],
+            "status" => "pending",
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia Onboarding — Updated",
+    "executor": "queue",
+    "rows": [
+        {
+            "rowIndex": 0,
+            "inputData": {
+                "documentType": "CC",
+                "documentNumber": "1032386359",
+            },
+            "status": "pending",
+        }
+    ],
+}
+
+response = requests.put(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":     "Colombia Onboarding — Updated",
+		"executor": "queue",
+		"rows": []map[string]interface{}{
+			{
+				"rowIndex": 0,
+				"inputData": map[string]string{
+					"documentType":   "CC",
+					"documentNumber": "1032386359",
+				},
+				"status": "pending",
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/smart-batches/"+batchID, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia Onboarding — Updated",
+    "executor": "queue",
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "pending"
+      }
+    ]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — Updated",
+    "status": "draft",
+    "executor": "queue",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0,
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": []
+      }
+    ],
+    "totalRows": 1,
+    "completedRows": 0,
+    "failedRows": 0,
+    "partialRows": 0,
+    "createdAt": "2026-11-24T19:58:00.000Z",
+    "updatedAt": "2026-11-24T20:06:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"status\" must be one of [draft, pending, processing, completed, failed, cancelled]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `"paused"` is not accepted in `PUT /v2/smart-batches/{id}`; call [Pause a Smart Batch](/smart-reports/pause-a-smart-batch) instead.
+- Updating `executor` is ignored unless the batch is currently in `"draft"`, `"pending"`, or `"cancelled"` status.
+- To add new rows onto an existing batch without replacing existing ones, use [Append rows to a Smart Batch](/smart-reports/append-smart-batch-rows).
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Run a Smart Report](/smart-reports/run-a-smart-report)
+- [Append rows to a Smart Batch](/smart-reports/append-smart-batch-rows)
+- [Pause a Smart Batch](/smart-reports/pause-a-smart-batch)

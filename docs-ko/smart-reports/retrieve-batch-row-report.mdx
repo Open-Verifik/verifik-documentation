@@ -1,0 +1,345 @@
+---
+id: retrieve-batch-row-report
+title: Smart Batch 행 보고서 조회
+description: 배치 행에 대해 선택적 검증 점수(Verification Score)가 포함된 기본 제공 구성 행 보고서 모델(colombia_vehicle)을 조회합니다.
+slug: /smart-reports/retrieve-batch-row-report
+keywords:
+  - 'v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - '/v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches rows report
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - 'GET v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - 'GET /v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/rows/report
+  - /v2/smart-batches/rows/report
+  - 'v2 smart-batches {id} rows {rowindex} report'
+  - smart-batches/rows/report
+  - /smart-batches/rows/report
+  - api/smart-batches/rows/report
+  - /api/smart-batches/rows/report
+  - api smart-batches rows report
+  - rows/report
+  - /rows/report
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+`SmartBatch`의 단일 행(`rowIndex`)에 대한 구조화된 행 보고서 모델을 구성합니다. 이 엔드포인트는 해당 행의 저장된 단계 출력에 대해 Verifik의 기본 제공 보고서 컴포저(`colombia_vehicle`)를 실행하며, `score` 또는 `scoreProfile`이 전달되면 선택적으로 `verificationScore`를 첨부합니다.
+
+배치의 `BatchConfiguration`이 기본 제공 컴포저와 일치하지 않으면 이 엔드포인트는 `409 Conflict` (`no_report_composer_for_configuration`)를 반환합니다. 임의의 사용자 지정 보고서 템플릿의 경우 대신 `POST /v2/smart-reports/run`, `GET /v2/smart-reports/{id}/html` 또는 `/generate`를 사용하세요. 이 엔드포인트를 읽어도 크레딧이 소비되지 않습니다.
+
+### 엔드포인트
+
+```text
+GET https://api.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report
+```
+
+클라이언트별 `Authorization: Bearer <VERIFIK_JWT>`를 사용하여 Smart-Agent 프록시(`https://ai.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report`)를 통해서도 호출할 수 있습니다. 공유 x402 실행은 `403 Forbidden`으로 차단됩니다.
+
+### 헤더
+
+| 이름 | 값 | 설명 |
+| ---- | -- | ---- |
+| `Content-Type` | `application/json` | 요청 페이로드 형식. |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 클라이언트 범위 JWT (`authUser.clientId`). |
+
+### 경로 매개변수
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `id` | string | 예 | `SmartBatch` ObjectId. |
+| `rowIndex` | number | 예 | 배치 내부 행의 `0` 기반 인덱스. |
+
+### 쿼리 매개변수
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `score` | boolean or string | 아니요 | 응답에 `verificationScore`를 계산하여 포함하려면 `true` 또는 `"1"`을 전달합니다. |
+| `scoreProfile` | string | 아니요 | 채점 프로필 식별자. `scoreProfile`을 제공하면 `score`도 함께 활성화됩니다. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+  const rowIndex = 0;
+
+  const { data } = await axios.get(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/rows/${rowIndex}/report`,
+    {
+      params: {
+        score: true,
+        scoreProfile: "fleet_standard",
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$rowIndex = 0;
+$query = http_build_query([
+    "score" => "true",
+    "scoreProfile" => "fleet_standard",
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/rows/" . $rowIndex . "/report?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+row_index = 0
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/rows/{row_index}/report"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "score": "true",
+    "scoreProfile": "fleet_standard",
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	rowIndex := "0"
+	params := url.Values{}
+	params.Set("score", "true")
+	params.Set("scoreProfile", "fleet_standard")
+
+	endpoint := fmt.Sprintf("https://api.verifik.co/v2/smart-batches/%s/rows/%s/report?%s", batchID, rowIndex, params.Encode())
+	req, _ := http.NewRequest("GET", endpoint, nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/rows/0/report?score=true&scoreProfile=fleet_standard" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "reportType": "colombia_vehicle",
+    "meta": {
+      "plate": "ABC123",
+      "documentType": "CC",
+      "documentNumber": "1032386359",
+      "vin": "9FB4SRAC2NM123456",
+      "batchName": "Colombia Fleet Inspection",
+      "rowIndex": 0,
+      "generatedAt": "2026-11-24T20:30:00.000Z"
+    },
+    "summary": {
+      "soatVigente": "VIGENTE",
+      "soatVencimiento": "2027-03-15",
+      "rtmVigente": "SI",
+      "rtmVencimiento": "2027-04-01",
+      "tieneGravamenes": "NO",
+      "blindado": "NO",
+      "pazSalvo": "SI",
+      "comparendoCount": 0,
+      "sinisterCount": 0
+    },
+    "blocks": {
+      "runt_vehicle_by_plate": {
+        "featureCode": "colombia_api_vehicle_complete_by_plate",
+        "title": "RUNT — Vehículo",
+        "status": "ok",
+        "sequence": 1,
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identificación",
+            "priority": "high"
+          }
+        ],
+        "displayRows": [],
+        "tables": []
+      }
+    },
+    "blockOrder": [
+      "runt_vehicle_by_plate"
+    ],
+    "verificationScore": {
+      "version": 1,
+      "profile": "fleet_standard",
+      "profileLabel": "Fleet Standard",
+      "score": 0.96,
+      "score100": 96,
+      "decision": "approve",
+      "band": "low_risk",
+      "coverage": 1,
+      "coveragePercent": 100
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-batch" label="404 (배치)">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-row" label="404 (행)">
+
+```json
+{
+  "message": "batch_row_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-composer" label="409 (컴포저 없음)">
+
+```json
+{
+  "message": "no_report_composer_for_configuration",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 (MissingParameter)">
+
+```json
+{
+  "message": "\"rowIndex\" must be a number",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- 이 엔드포인트는 기본 제공 구성 행 보고서(`colombia_vehicle`)만 제공합니다. 그 외의 다른 구성은 `409 Conflict` (`no_report_composer_for_configuration`)를 반환합니다.
+- 모든 구성에서 사용자 지정 템플릿, 테마가 적용된 HTML 렌더링 또는 PDF 문서를 생성하려면 `POST /v2/smart-reports/run`, `GET /v2/smart-reports/{id}/html` 또는 `/generate`를 사용하세요([Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report) 참조).
+- `score=true`, `score=1` 또는 `scoreProfile`이 제공되지 않으면 `verificationScore`는 생략됩니다.
+
+### 관련
+
+- [Smart Reports 개요](/verifik-ko/smart-reports)
+- [Headless API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [Smart Reports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)
+- [Smart Batch 조회](/verifik-ko/smart-reports/retrieve-a-smart-batch)
+- [Smart Report PDF 생성](/verifik-ko/smart-reports/generate-smart-report-pdf)

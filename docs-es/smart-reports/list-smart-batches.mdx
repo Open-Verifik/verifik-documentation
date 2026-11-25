@@ -1,0 +1,313 @@
+---
+id: list-smart-batches
+title: Listar Smart Batches
+description: Lista los Smart Batches del cliente autenticado con filtrado, búsqueda, ordenamiento y paginación opcional.
+slug: /smart-reports/list-smart-batches
+keywords:
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - api.verifik.co/v2/smart-batches
+  - 'https://api.verifik.co/v2/smart-batches'
+  - GET v2/smart-batches
+  - GET /v2/smart-batches
+  - smart-batches
+  - /smart-batches
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Lista los registros `SmartBatch` pertenecientes a la cuenta de cliente autenticada. Por defecto, los resultados se devuelven de más reciente a más antiguo (`-createdAt`) y excluyen el arreglo `rows` a menos que pases explícitamente `includeRows=true`, manteniendo compactas las respuestas de listado.
+
+Envía `page` para habilitar la salida paginada con los metadatos `total`, `limit`, `page` y `pages`. Omite `page` para recibir `{ data }` con el arreglo de lotes coincidente sin campos de paginación. Listar lotes no ejecuta comprobaciones y no consume créditos.
+
+### Endpoint
+
+```text
+GET https://api.verifik.co/v2/smart-batches
+```
+
+Este endpoint también es accesible a través del proxy de Smart-Agent en `https://ai.verifik.co/v2/smart-batches` usando tu propio encabezado `Authorization: Bearer <VERIFIK_JWT>` por cliente. La ejecución compartida x402 está bloqueada con `403 Forbidden`.
+
+### Encabezados
+
+| Nombre          | Valor                  | Descripción                                         |
+| --------------- | ---------------------- | --------------------------------------------------- |
+| `Content-Type`  | `application/json`     | Formato de carga útil de la solicitud.              |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT delimitado al cliente (`authUser.clientId`).    |
+
+### Parámetros
+
+| Nombre               | Tipo    | Requerido | Descripción |
+| -------------------- | ------- | --------- | ----------- |
+| `batchConfiguration` | string  | No        | Filtra los lotes por ObjectId de `BatchConfiguration`. |
+| `status`             | string  | No        | Filtra por estado del lote: `"draft"`, `"pending"`, `"processing"`, `"paused"`, `"completed"`, `"failed"` o `"cancelled"`. |
+| `page`               | number  | No        | Número de página (`>= 1`). Habilita la paginación y agrega `total`, `limit`, `page` y `pages` a la respuesta. |
+| `limit`              | number  | No        | Número máximo de elementos por respuesta (`1` a `200`). |
+| `perPage`            | number  | No        | Tamaño de página (`1` a `200`) cuando `page` está definido. Por defecto `20`. |
+| `includeRows`        | boolean | No        | Establece `true` para incluir `rows` en cada lote devuelto. Si se omite o es `false`, `rows` se excluye. |
+| `search`             | string  | No        | Búsqueda por expresión regular sin distinción de mayúsculas sobre el campo `name` del lote. |
+| `sort`               | string  | No        | Campo y dirección de ordenamiento. Por defecto `"-createdAt"`. |
+| `sortBy`             | string  | No        | Nombre del campo de ordenamiento cuando se combina con `sortOrder`. |
+| `sortOrder`          | string  | No        | Dirección de ordenamiento para `sortBy`: `"asc"` o `"desc"`. |
+
+Los parámetros de consulta desconocidos son rechazados por la validación Joi con `409 MissingParameter`.
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.get("https://api.verifik.co/v2/smart-batches", {
+    params: {
+      status: "processing",
+      page: 1,
+      perPage: 20,
+      search: "Colombia",
+      sort: "-createdAt",
+    },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "status" => "processing",
+    "page" => 1,
+    "perPage" => 20,
+    "search" => "Colombia",
+    "sort" => "-createdAt",
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-batches"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "status": "processing",
+    "page": 1,
+    "perPage": 20,
+    "search": "Colombia",
+    "sort": "-createdAt",
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	params := url.Values{}
+	params.Set("status", "processing")
+	params.Set("page", "1")
+	params.Set("perPage", "20")
+	params.Set("search", "Colombia")
+	params.Set("sort", "-createdAt")
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches?"+params.Encode(), nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches?status=processing&page=1&perPage=20&search=Colombia&sort=-createdAt" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200-paginated" label="200 OK (Con page)">
+
+```json
+{
+  "data": [
+    {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "batchConfiguration": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d4",
+        "name": "Colombia Identity Check"
+      },
+      "client": {
+        "_id": "507f1f77bcf86cd799439013"
+      },
+      "name": "Colombia Onboarding — November",
+      "status": "processing",
+      "executor": "browser",
+      "source": "smart_batch",
+      "headlessRun": false,
+      "creditsSpent": 0.4,
+      "totalRows": 25,
+      "completedRows": 10,
+      "failedRows": 0,
+      "partialRows": 0,
+      "startedAt": "2026-11-24T19:50:00.000Z",
+      "createdAt": "2026-11-24T19:48:00.000Z",
+      "updatedAt": "2026-11-24T19:52:00.000Z"
+    }
+  ],
+  "total": 1,
+  "limit": 20,
+  "page": 1,
+  "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200-unpaginated" label="200 OK (Sin page)">
+
+```json
+{
+  "data": [
+    {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "batchConfiguration": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d4",
+        "name": "Colombia Identity Check"
+      },
+      "client": {
+        "_id": "507f1f77bcf86cd799439013"
+      },
+      "name": "Colombia Onboarding — November",
+      "status": "processing",
+      "executor": "browser",
+      "source": "smart_batch",
+      "headlessRun": false,
+      "creditsSpent": 0.4,
+      "totalRows": 25,
+      "completedRows": 10,
+      "failedRows": 0,
+      "partialRows": 0,
+      "startedAt": "2026-11-24T19:50:00.000Z",
+      "createdAt": "2026-11-24T19:48:00.000Z",
+      "updatedAt": "2026-11-24T19:52:00.000Z"
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"status\" must be one of [draft, pending, processing, paused, completed, failed, cancelled]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Los resultados están delimitados al cliente autenticado (`clientId` en tu JWT).
+- Omitir `includeRows` o establecerlo en `false` mantiene las respuestas de listado pequeñas; obtén el detalle completo de `rows` para un lote usando [Recuperar un Smart Batch](/verifik-es/smart-reports/retrieve-a-smart-batch).
+- Los valores de consulta inválidos o claves desconocidas fallan la validación Joi con `409 MissingParameter`.
+- Cuando se proporciona `page` (`>= 1`), `perPage` toma por defecto `20` y admite de `1` a `200`.
+
+### Relacionado
+
+- [Descripción general de Smart Reports](/verifik-es/smart-reports)
+- [Guía de la API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [Webhooks de Smart Reports](/verifik-es/resources/smart-reports-webhooks)
+- [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report)
+- [Crear un Smart Batch](/verifik-es/smart-reports/create-a-smart-batch)
+- [Recuperar un Smart Batch](/verifik-es/smart-reports/retrieve-a-smart-batch)

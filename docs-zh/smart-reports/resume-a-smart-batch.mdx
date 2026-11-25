@@ -1,0 +1,285 @@
+---
+id: resume-a-smart-batch
+title: 恢复 Smart Batch
+description: 重新检查账户功能授权后，恢复处于已暂停状态的 Smart Batch。
+slug: /smart-reports/resume-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}/resume'
+  - '/v2/smart-batches/{id}/resume'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches resume
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/resume'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/resume'
+  - 'POST v2/smart-batches/{id}/resume'
+  - 'POST /v2/smart-batches/{id}/resume'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/resume
+  - /v2/smart-batches/resume
+  - 'v2 smart-batches {id} resume'
+  - smart-batches/resume
+  - /smart-batches/resume
+  - api/smart-batches/resume
+  - /api/smart-batches/resume
+  - api smart-batches resume
+  - 'GET v2/smart-batches/{id}/resume'
+  - 'GET /v2/smart-batches/{id}/resume'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+恢复已暂停的 `SmartBatch`（以及任何底层的 `FeatureRunner` 运行）。服务器会重新验证你的客户账户是否仍拥有所有已配置步骤的功能授权（如果任何端点访问权限已被吊销，则返回 `409 endpoints_not_in_account`），检查批次是否处于 `"paused"` 状态，然后将其重新转为 `"processing"`。
+
+如果批次当前并非 `"paused"` 状态，请求将失败并返回 `400 BadRequest`（`batch_not_paused`，或当底层 `FeatureRunner` 运行未处于暂停状态时返回 `run_not_paused`）。
+
+### 接口
+
+```text
+POST https://api.verifik.co/v2/smart-batches/{id}/resume
+```
+
+此接口也可通过 Smart-Agent 代理 `https://ai.verifik.co/v2/smart-batches/{id}/resume` 访问，需使用你自己的客户专属 `Authorization: Bearer <VERIFIK_JWT>`。共享 x402 执行会被拒绝并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称            | 值                     | 描述                                     |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | 请求载荷格式。                           |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 客户作用域的 JWT（`authUser.clientId`）。 |
+
+### 参数
+
+| 名称 | 类型   | 必填 | 描述 |
+| ---- | ------ | ---- | ---- |
+| `id` | string | 是   | 要恢复的 `SmartBatch` ObjectId。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/resume`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/resume");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/resume"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.post(url, json={}, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/"+batchID+"/resume", bytes.NewReader([]byte("{}")))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/resume" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — November",
+    "status": "processing",
+    "executor": "queue",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0.4,
+    "rows": [],
+    "totalRows": 25,
+    "completedRows": 10,
+    "failedRows": 0,
+    "partialRows": 0,
+    "startedAt": "2026-11-24T20:10:00.000Z",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:16:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "batch_not_paused",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-grants" label="409（缺少权限）">
+
+```json
+{
+  "message": "endpoints_not_in_account co-cedula",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409（MissingParameter）">
+
+```json
+{
+  "message": "\"id\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 恢复操作会重新校验客户的功能授权；如果任何步骤端点在你的账户上不再启用，请求将被拒绝并返回 `409 endpoints_not_in_account`。
+- 已完成的行会保留其存储的结果，恢复时不会重复执行或重复扣费。
+- 如果批次处于 `"draft"`、`"pending"` 或 `"cancelled"` 状态，请改用[启动 Smart Batch](/verifik-zh/smart-reports/start-a-smart-batch)。
+
+### 相关文档
+
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)
+- [暂停 Smart Batch](/verifik-zh/smart-reports/pause-a-smart-batch)
+- [获取 Smart Batch 进度](/verifik-zh/smart-reports/get-smart-batch-progress)

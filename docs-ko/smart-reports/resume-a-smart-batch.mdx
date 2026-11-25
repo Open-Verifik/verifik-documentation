@@ -1,0 +1,285 @@
+---
+id: resume-a-smart-batch
+title: Smart Batch 재개
+description: 계정 기능 권한을 다시 확인한 후 일시 중지된 Smart Batch를 재개합니다.
+slug: /smart-reports/resume-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}/resume'
+  - '/v2/smart-batches/{id}/resume'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches resume
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/resume'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/resume'
+  - 'POST v2/smart-batches/{id}/resume'
+  - 'POST /v2/smart-batches/{id}/resume'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/resume
+  - /v2/smart-batches/resume
+  - 'v2 smart-batches {id} resume'
+  - smart-batches/resume
+  - /smart-batches/resume
+  - api/smart-batches/resume
+  - /api/smart-batches/resume
+  - api smart-batches resume
+  - 'GET v2/smart-batches/{id}/resume'
+  - 'GET /v2/smart-batches/{id}/resume'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+일시 중지된 `SmartBatch`(및 기반 `FeatureRunner` 실행)를 재개합니다. 서버는 클라이언트 계정이 구성된 모든 단계에 대한 기능 권한을 여전히 보유하고 있는지 확인하고(엔드포인트 액세스가 취소된 경우 `409 endpoints_not_in_account`), 배치가 `"paused"` 상태인지 검사한 다음 `"processing"` 상태로 다시 전환합니다.
+
+배치가 현재 `"paused"` 상태가 아니면 요청이 `400 BadRequest`로 실패합니다(`batch_not_paused`, 또는 기반 `FeatureRunner` 실행이 일시 중지 상태가 아닌 경우 `run_not_paused`).
+
+### 엔드포인트
+
+```text
+POST https://api.verifik.co/v2/smart-batches/{id}/resume
+```
+
+클라이언트별 `Authorization: Bearer <VERIFIK_JWT>`를 사용하여 Smart-Agent 프록시(`https://ai.verifik.co/v2/smart-batches/{id}/resume`)를 통해서도 호출할 수 있습니다. 공유 x402 실행은 `403 Forbidden`으로 차단됩니다.
+
+### 헤더
+
+| 이름 | 값 | 설명 |
+| ---- | -- | ---- |
+| `Content-Type` | `application/json` | 요청 페이로드 형식. |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 클라이언트 범위 JWT (`authUser.clientId`). |
+
+### 매개변수
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `id` | string | 예 | 재개할 `SmartBatch` ObjectId. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/resume`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/resume");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/resume"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.post(url, json={}, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/"+batchID+"/resume", bytes.NewReader([]byte("{}")))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/resume" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — November",
+    "status": "processing",
+    "executor": "queue",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0.4,
+    "rows": [],
+    "totalRows": 25,
+    "completedRows": 10,
+    "failedRows": 0,
+    "partialRows": 0,
+    "startedAt": "2026-11-24T20:10:00.000Z",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:16:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "batch_not_paused",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-grants" label="409 (권한 누락)">
+
+```json
+{
+  "message": "endpoints_not_in_account co-cedula",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 (MissingParameter)">
+
+```json
+{
+  "message": "\"id\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- 재개 시 클라이언트 기능 권한을 다시 검증하며, 계정에 더 이상 활성화되지 않은 단계 엔드포인트가 있는 경우 `409 endpoints_not_in_account`로 요청을 거부합니다.
+- 완료된 행은 저장된 결과를 그대로 유지하며, 재개 시 다시 실행되거나 중복 과금되지 않습니다.
+- 배치가 `"draft"`, `"pending"` 또는 `"cancelled"` 상태였던 경우 대신 [Smart Batch 시작](/verifik-ko/smart-reports/start-a-smart-batch)을 사용하세요.
+
+### 관련
+
+- [Smart Reports 개요](/verifik-ko/smart-reports)
+- [Headless API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [Smart Reports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)
+- [Smart Batch 일시 중지](/verifik-ko/smart-reports/pause-a-smart-batch)
+- [Smart Batch 진행률 조회](/verifik-ko/smart-reports/get-smart-batch-progress)

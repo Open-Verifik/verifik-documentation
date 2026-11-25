@@ -1,0 +1,262 @@
+---
+id: list-report-templates
+title: レポートテンプレート一覧を取得する
+description: クライアントアカウントで利用可能な Smart Report テンプレート（カスタムテンプレートおよび組み込みのシステムスターターを含む）を一覧取得します
+slug: /smart-reports/list-report-templates
+keywords:
+  - v2/smart-report-templates
+  - /v2/smart-report-templates
+  - v2 smart-report-templates
+  - api/smart-report-templates
+  - /api/smart-report-templates
+  - api smart-report-templates
+  - api.verifik.co/v2/smart-report-templates
+  - 'https://api.verifik.co/v2/smart-report-templates'
+  - GET v2/smart-report-templates
+  - GET /v2/smart-report-templates
+  - smart-report-templates
+  - /smart-report-templates
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+認証済みクライアントが利用できる Smart Report テンプレートを一覧取得します。デフォルトでは、クライアント所有のカスタムテンプレートと Verifik 組み込みの `"System"` テンプレートの両方を返すため、再利用可能なテンプレート ID（`_id`）の検索、レイアウトやテーマ設定の確認、`SmartBatch` 実行やサンプルレンダリング前のテンプレート選択を行えます。
+
+ヘッドレス検証パイプラインや AI エージェントのワークフローでは、まずこのエンドポイントを呼び出して `batchConfiguration` に紐付いた既存テンプレートを見つけたり、組み込み `"System"` テンプレートを `country`・`category`・`tier` でフィルタリングしたり、クローンや更新の前にカスタムテンプレートが有効かどうかを確認したりします。テンプレートの一覧取得では PDF のレンダリングやクレジットの消費は行われません。
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/smart-report-templates
+```
+
+Smart-Agent プロキシ（`https://ai.verifik.co`）も同じ `/v2/...` パスを公開しており、お客様自身の `Authorization: Bearer <VERIFIK_JWT>` ヘッダーが必要です。
+
+レスポンスでは `batchConfiguration` と `client` が展開（populate）され、`+thumbnail.image` が選択されるため、ダッシュボードやヘッドレスプレビューは追加のリクエストなしでテンプレートのサムネイルを取得できます。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### パラメータ
+
+すべてのクエリパラメータは任意です。
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `batchConfiguration` | string | いいえ | 特定の `SmartBatch` 設定 ObjectId にリンクされたテンプレートでフィルタします。 |
+| `type` | string | いいえ | 作成元でフィルタします: `"client"` または `"System"`。省略すると、クライアント自身のテンプレートと組み込み `"System"` テンプレートの両方が返されます。 |
+| `country` | string | いいえ | 国フィルタ。サーバー上で自動的に大文字へ変換されます（例: `CO`、`MX`、`COLOMBIA`）。 |
+| `category` | string | いいえ | ドメインカテゴリフィルタ: `"citizen"`、`"company"`、または `"vehicle"`。 |
+| `tier` | string | いいえ | テンプレートティアフィルタ: `"essential"` または `"comprehensive"`。 |
+| `isActive` | boolean | いいえ | 有効状態（`true` または `false`）でフィルタします。 |
+| `search` | string | いいえ | `name` と `systemKey` に対する大文字・小文字を区別しない正規表現検索。`type` を指定せずに `search` を送信すると、自社テンプレートと `"System"` テンプレートの両方に一致します。 |
+| `page` | integer | いいえ | ページ番号（1 始まり）。このモジュールでページネーションを有効にするには、`page` と `limit` の両方を同時に指定する必要があります。 |
+| `limit` | integer | いいえ | ページサイズ。結果をページネーションするには `page` とともに指定する必要があります。 |
+| `sort` | string | いいえ | ソート指定。デフォルトは `type: 1, createdAt: -1`（テンプレート種別順、新しい順）です。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const params = new URLSearchParams({
+    category: "citizen",
+    isActive: "true",
+    page: "1",
+    limit: "20",
+  });
+
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "category" => "citizen",
+    "isActive" => "true",
+    "page" => 1,
+    "limit" => 20,
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "category": "citizen",
+    "isActive": "true",
+    "page": 1,
+    "limit": 20,
+}
+
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	url := "https://api.verifik.co/v2/smart-report-templates?category=citizen&isActive=true&page=1&limit=20"
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-report-templates?category=citizen&isActive=true&page=1&limit=20" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": [
+    {
+      "_id": "67c1f94b2d8a1c0012a4b301",
+      "name": "Driver Background Report",
+      "description": "Standard onboarding report for Colombia driver checks",
+      "client": {
+        "_id": "507f1f77bcf86cd799439013",
+        "name": "Acme Mobility"
+      },
+      "batchConfiguration": {
+        "_id": "67c1f8102d8a1c0012a4b210",
+        "name": "Colombia Driver Onboarding"
+      },
+      "country": "CO",
+      "category": "citizen",
+      "isActive": true,
+      "pageSize": "A4",
+      "orientation": "portrait",
+      "pdfEngine": "puppeteer",
+      "primaryColor": "#4F46E5",
+      "identityColor": "#000000",
+      "pageBackgroundColor": "#ffffff",
+      "reportTheme": "light_cards",
+      "thumbnail": {
+        "image": "data:image/png;base64,iVBORw0KGgo..."
+      },
+      "createdAt": "2026-09-10T03:32:00.000Z",
+      "updatedAt": "2026-09-10T03:35:12.000Z"
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"category\" must be one of [citizen, company, vehicle]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注記
+
+- 結果をページネーションするには、`page` と `limit` の両方を一緒に指定する必要があります。片方のみを送信してもページネーションは有効になりません。
+- 一覧で返される組み込みの `"System"` テンプレートは読み取り専用です。これらを変更または削除しようとすると `403`（`system_template_readonly`）が返されます。スターターをカスタマイズするには、そのレイアウトを [レポートテンプレートを作成する](/verifik-ja/smart-reports/create-a-report-template) に渡してください。
+- `reportTheme` ごとに整理されたクリーンなスターターブループリントを取得したい場合は、[テーマスターター一覧を取得する](/verifik-ja/smart-reports/list-theme-starters) を使用してください。
+
+### 関連項目
+
+- [SmartReports 概要](/verifik-ja/smart-reports)
+- [ヘッドレス API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [レポートテンプレートを作成する](/verifik-ja/smart-reports/create-a-report-template)
+- [レポートテンプレートを取得する](/verifik-ja/smart-reports/retrieve-a-report-template)
+- [テーマスターター一覧を取得する](/verifik-ja/smart-reports/list-theme-starters)

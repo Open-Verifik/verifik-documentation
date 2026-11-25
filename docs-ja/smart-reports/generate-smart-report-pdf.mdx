@@ -1,0 +1,333 @@
+---
+id: generate-smart-report-pdf
+title: Smart Report PDF を生成する
+description: SmartReport から PDF をレンダリングし、任意で検証スコアを計算して生成 Webhook を発火させ、base64 出力とダウンロード URL を受け取ります。
+slug: /smart-reports/generate-smart-report-pdf
+keywords:
+  - 'v2/smart-reports/{id}/generate'
+  - '/v2/smart-reports/{id}/generate'
+  - v2/smart-reports/generate
+  - /v2/smart-reports/generate
+  - v2 smart-reports generate
+  - 'v2 smart-reports {id} generate'
+  - api/smart-reports/generate
+  - /api/smart-reports/generate
+  - 'api.verifik.co/v2/smart-reports/{id}/generate'
+  - 'https://api.verifik.co/v2/smart-reports/{id}/generate'
+  - 'POST v2/smart-reports/{id}/generate'
+  - 'POST /v2/smart-reports/{id}/generate'
+  - smart-reports
+  - smart_report_generate_pdf
+  - smart-reports/generate
+  - /smart-reports/generate
+  - api smart-reports generate
+  - 'GET v2/smart-reports/{id}/generate'
+  - 'GET /v2/smart-reports/{id}/generate'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+既存の `SmartReport` に対して `"puppeteer"` または `"pdfkit"` を使用して PDF をレンダリングし、任意で `verificationScore` を算出して、`downloadUrl` と `htmlUrl` とともに base64 エンコードされた PDF バッファを受け取ります。
+
+成功すると、このエンドポイントはレポートを `status: "generated"` にマークし、スコアリングが有効な場合は `verificationScoreSummary` を保存して、`smart_batch_report_generated` Webhook を発火させます。PDF 生成が失敗した場合、レポートは `status: "failed"` にマークされ、`smart_batch_report_generation_failed` Webhook が発火されます。
+
+### エンドポイント
+
+```
+POST https://api.verifik.co/v2/smart-reports/{id}/generate
+```
+
+このエンドポイントは（カスタム `printHtml` ドキュメントに対応するため）最大 **64 MB** の JSON ペイロードを受け付けます。お客様自身のクライアント別 `Authorization: Bearer <VERIFIK_JWT>` を使用して Smart-Agent プロキシ経由の `https://ai.verifik.co/v2/smart-reports/{id}/generate` からも利用できます。共有 x402 による実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --- | --- | --- |
+| `Content-Type` | `application/json` | リクエストペイロードの形式（上限 64 MB）。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアント単位の JWT（`authUser.clientId`）。 |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `id` | string | **はい** | `SmartReport` ObjectId。 |
+
+### ボディ
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `engine` | string | いいえ | PDF レンダリングエンジン: `"pdfkit"` または `"puppeteer"`。 |
+| `rowIndex` | number | いいえ | リンクされた `SmartBatch` からの 0 始まりの行インデックス。デフォルトは行 `0` です。 |
+| `printHtml` | string | いいえ | `<html` を含むテーマなしテンプレートで使用する完全な HTML 文字列（最大 `64000000` 文字）。 |
+| `score` | boolean | いいえ | `verificationScore` を計算し、レポートに `verificationScoreSummary` を保存するかどうか。 |
+| `scoreProfile` | string | いいえ | `score` が有効な場合に使用するスコアリングプロファイル識別子。最大 `64` 文字。 |
+
+#### レンダリングとスコアリングの動作
+
+- **デフォルトの行選択**: `rowIndex` を省略すると、生成は行 `0` がデフォルトになります。範囲外の行をリクエストすると `409 Conflict`（`row_not_found`）が返ります。
+- **カスタム HTML（`printHtml`）**: 完全な `<html` マークアップを提供するテーマなしテンプレートを扱う場合は、`printHtml`（最大 `64000000` 文字）を渡します。
+- **検証スコアリング**: `score: true`（および任意で `scoreProfile`）を設定すると、`verificationScore` を計算してレスポンスのトップレベルに返し、`SmartReport` に `verificationScoreSummary` を保存します。不明なプロファイルは `409 Conflict`（`unknown_score_profile`）で失敗します。
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-reports/${id}/generate`,
+    {
+      engine: "puppeteer",
+      rowIndex: 0,
+      score: true,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log({
+    status: data.data.status,
+    pdfSize: data.pdf.size,
+    downloadUrl: data.pdf.downloadUrl,
+  });
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id . "/generate");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "engine" => "puppeteer",
+    "rowIndex" => 0,
+    "score" => true,
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}/generate"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "engine": "puppeteer",
+    "rowIndex": 0,
+    "score": True,
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	body, _ := json.Marshal(map[string]interface{}{
+		"engine":   "puppeteer",
+		"rowIndex": 0,
+		"score":    true,
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-reports/"+id+"/generate", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/generate" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "engine": "puppeteer",
+    "rowIndex": 0,
+    "score": true
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Background Check - Applicant 42",
+    "status": "generated",
+    "pdfEngine": "puppeteer",
+    "pdfSize": 148320,
+    "generationDurationMs": 1840,
+    "generatedAt": "2026-11-24T20:00:04.000Z",
+    "verificationScoreSummary": {},
+    "rowIndex": 0,
+    "externalRefId": "applicant-42"
+  },
+  "pdf": {
+    "buffer": "JVBERi0xLjQK...",
+    "size": 148320,
+    "engine": "puppeteer",
+    "generationDurationMs": 1840,
+    "downloadUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download",
+    "htmlUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html"
+  },
+  "verificationScore": {}
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "template_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "row_not_found",
+  "code": "row_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "InternalServerError",
+  "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### エラーコード
+
+| ステータス | エラーコード / 種別 | 原因 |
+| --- | --- | --- |
+| `401` | `Unauthorized` | JWT が欠落または無効です。 |
+| `403` | `Forbidden` | 共有 x402 による実行が試行されました。クライアント別 JWT を使用してください。 |
+| `404` | `not_found` | レポート ID が存在しないか、別のクライアントに属しています。 |
+| `404` | `template_not_found` | リンクされたテンプレートが見つかりませんでした。 |
+| `404` | `batch_not_found` | リンクされた `SmartBatch` が見つかりませんでした。 |
+| `409` | `MissingParameter` | 1 つ以上のフィールドで Joi 検証に失敗しました。 |
+| `409` | `row_not_found` | 要求された `rowIndex` がバッチ内に存在しません。 |
+| `409` | `unknown_score_profile` | 要求された `scoreProfile` が認識されません。 |
+| `422` | `UnprocessableEntity` | Mongoose 検証エラーです。 |
+| `500` | `InternalServerError` | PDF レンダリングまたは内部処理の失敗（レポートを `"failed"` にマークし `smart_batch_report_generation_failed` を発火します）。 |
+
+### Webhook と MCP 統合
+
+- **Webhook**: PDF 作成が成功すると `smart_batch_report_generated` を発火し、レンダリングエラーが発生すると `smart_batch_report_generation_failed` を発火します（同時に `status` を `"failed"` に更新します）。詳細は [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks) を参照してください。
+- **MCP 相当ツール**: AI エージェントは `smart_report_generate_pdf` MCP ツールを使用してレポート PDF を直接レンダリングできます。詳細は [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents) を参照してください。
+
+### 注記
+
+- `pdf.buffer` には base64 エンコードされた PDF バイト列が JSON レスポンス内に直接含まれます。バイナリ PDF ストリームをご希望の場合は、[Smart Report PDF をダウンロードする](/verifik-ja/smart-reports/download-smart-report-pdf) を呼び出してください。
+- `score` が有効な場合、レスポンスに `verificationScore` が含まれます。
+
+### 関連項目
+
+- [SmartReports 概要](/verifik-ja/smart-reports)
+- [ヘッドレス API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report PDF をダウンロードする](/verifik-ja/smart-reports/download-smart-report-pdf)
+- [Smart Report をメールで送信する](/verifik-ja/smart-reports/send-smart-report-email)

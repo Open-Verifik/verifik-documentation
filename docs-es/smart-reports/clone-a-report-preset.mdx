@@ -1,0 +1,328 @@
+---
+id: clone-a-report-preset
+title: Clonar un preset de reporte
+description: Clona un preset de Smart Report del sistema en una Batch Configuration editable y una Smart Report Template vinculada
+slug: /smart-reports/clone-a-report-preset
+keywords:
+  - 'v2/smart-batch-presets/{systemKey}/clone'
+  - '/v2/smart-batch-presets/{systemKey}/clone'
+  - v2/smart-batch-presets/clone
+  - /v2/smart-batch-presets/clone
+  - v2 smart-batch-presets clone
+  - 'v2 smart-batch-presets {systemKey} clone'
+  - smart-batch-presets
+  - /smart-batch-presets
+  - api/smart-batch-presets/clone
+  - /api/smart-batch-presets/clone
+  - 'api.verifik.co/v2/smart-batch-presets/{systemKey}/clone'
+  - 'https://api.verifik.co/v2/smart-batch-presets/{systemKey}/clone'
+  - 'POST v2/smart-batch-presets/{systemKey}/clone'
+  - 'POST /v2/smart-batch-presets/{systemKey}/clone'
+  - smart-batch-presets/clone
+  - /smart-batch-presets/clone
+  - api smart-batch-presets clone
+  - 'GET v2/smart-batch-presets/{systemkey}/clone'
+  - 'GET /v2/smart-batch-presets/{systemkey}/clone'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Clona un preset del sistema seleccionado de Smart Report en tu cuenta de cliente. La operación devuelve tanto una `BatchConfiguration` como una `SmartReportTemplate` vinculada, listas para ejecutarse de inmediato o personalizarse aún más.
+
+Este endpoint es **idempotente** para cuentas de cliente. Si ya existe una plantilla de cliente activa clonada desde `{systemKey}`, el servidor reutiliza esa configuración y plantilla (reasignando secuencias de pasos si es necesario) y devuelve `reused: true`. De lo contrario, crea una nueva `BatchConfiguration` (con `inputFormat: "csv"`, `outputFormat: "csv"`, `mergeStrategy: "sequential"`) y una nueva `SmartReportTemplate` de cliente (con `clonedFromSystemKey` establecido en `{systemKey}`) vinculada mediante `preferredReportTemplate` con `reused: false`. Este endpoint también está expuesto como la herramienta MCP `smart_report_clone_preset`.
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/smart-batch-presets/{systemKey}/clone
+```
+
+También es accesible a través del proxy de Smart-Agent en `https://ai.verifik.co/v2/smart-batch-presets/{systemKey}/clone` usando tu propio encabezado `Authorization: Bearer <VERIFIK_JWT>` por cliente. La ejecución compartida x402 está bloqueada con `403 Forbidden`.
+
+### Encabezados
+
+| Nombre        | Valor                  |
+| ------------- | ---------------------- |
+| Content-Type  | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+El token debe ser un **JWT de cliente**. Las credenciales faltantes o inválidas devuelven `401 Unauthorized`.
+
+### Parámetros
+
+| Nombre      | Tipo   | Requerido | Descripción                                                                                                                                    |
+| ----------- | ------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `systemKey` | string | Sí        | Clave del preset obtenida de [Listar presets de reportes](/verifik-es/smart-reports/list-report-presets). Recortada, máximo `120` caracteres, debe coincidir con `/^[a-z0-9][a-z0-9._-]{1,118}$/i`. |
+
+### Cuerpo
+
+No se requiere cuerpo de solicitud para este endpoint.
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const systemKey = "co.citizen.essential";
+    const res = await fetch(`https://api.verifik.co/v2/smart-batch-presets/${encodeURIComponent(systemKey)}/clone`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$systemKey = "co.citizen.essential";
+$ch = curl_init("https://api.verifik.co/v2/smart-batch-presets/" . rawurlencode($systemKey) . "/clone");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+system_key = "co.citizen.essential"
+url = f"https://api.verifik.co/v2/smart-batch-presets/{system_key}/clone"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+r = requests.post(url, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "net/url"
+    "os"
+)
+
+func main() {
+    systemKey := "co.citizen.essential"
+    endpoint := fmt.Sprintf("https://api.verifik.co/v2/smart-batch-presets/%s/clone", url.PathEscape(systemKey))
+    req, _ := http.NewRequest("POST", endpoint, nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS -X POST "https://api.verifik.co/v2/smart-batch-presets/co.citizen.essential/clone" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200-created" label="200 creado">
+
+```json
+{
+    "data": {
+        "batchConfiguration": {
+            "_id": "67d1b4a0e4f5a60718293b12",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "executor": "browser",
+            "inputFormat": "csv",
+            "outputFormat": "csv",
+            "mergeStrategy": "sequential",
+            "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+            "isActive": true,
+            "steps": [
+                {
+                    "_id": "67d1b4a0e4f5a60718293b13",
+                    "appFeature": {
+                        "_id": "65f0a1b2c3d4e5f607182901",
+                        "name": "Colombian Cédula Validation",
+                        "code": "co-cedula",
+                        "price": 0.05
+                    },
+                    "sequence": 1,
+                    "enabled": true,
+                    "parameterDefaults": {},
+                    "queryMode": "byDocument",
+                    "inputFieldMapping": {},
+                    "outputFieldsToKeep": [],
+                    "maxRetries": 3,
+                    "retryDelayBaseSeconds": 4,
+                    "timeoutSeconds": 30
+                }
+            ],
+            "createdAt": "2026-10-15T14:20:00.000Z",
+            "updatedAt": "2026-10-15T14:20:00.000Z"
+        },
+        "template": {
+            "_id": "67d1b4a1e4f5a60718293b15",
+            "name": "Colombia Citizen Essential",
+            "clonedFromSystemKey": "co.citizen.essential",
+            "batchConfiguration": "67d1b4a0e4f5a60718293b12",
+            "isActive": true,
+            "createdAt": "2026-10-15T14:20:00.000Z",
+            "updatedAt": "2026-10-15T14:20:00.000Z"
+        },
+        "reused": false
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-reused" label="200 reutilizado">
+
+```json
+{
+    "data": {
+        "batchConfiguration": {
+            "_id": "67d1b4a0e4f5a60718293b12",
+            "name": "Colombia Citizen Essential",
+            "country": "CO",
+            "executor": "browser",
+            "inputFormat": "csv",
+            "outputFormat": "csv",
+            "mergeStrategy": "sequential",
+            "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+            "isActive": true,
+            "steps": []
+        },
+        "template": {
+            "_id": "67d1b4a1e4f5a60718293b15",
+            "name": "Colombia Citizen Essential",
+            "clonedFromSystemKey": "co.citizen.essential",
+            "batchConfiguration": "67d1b4a0e4f5a60718293b12",
+            "isActive": true
+        },
+        "reused": true
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "preset_not_found",
+    "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+    "message": "\"systemKey\" with value \"bad!key\" fails to match the required pattern: /^[a-z0-9][a-z0-9._-]{1,118}$/i",
+    "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-steps" label="409 sin pasos">
+
+```json
+{
+    "message": "preset_has_no_steps",
+    "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+    "message": "Internal Server Error",
+    "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Clonar un preset no ejecuta consultas y no consume créditos.
+- Llamar repetidamente a este endpoint con el mismo `{systemKey}` es seguro e idempotente para una cuenta de cliente: se devuelven la configuración y la plantilla clonadas existentes con `reused: true`.
+- Se devuelve `409 MissingParameter` cuando `{systemKey}` falla la validación de ruta de Joi (por ejemplo, si supera los `120` caracteres o contiene caracteres no permitidos). Se devuelve `409` con `preset_has_no_steps` si el preset coincidente no tiene pasos configurados.
+- Puede ocurrir `500 InternalServerError` si una funcionalidad requerida por el preset no está disponible en tu cuenta.
+- Una vez clonado, llama a [Recuperar el esquema de entrada de una configuración](/verifik-es/smart-reports/retrieve-configuration-input-schema) con `batchConfiguration._id` antes de enviar filas, o usa la herramienta MCP `smart_report_clone_preset`.
+
+### Relacionado
+
+- [Listar presets de reportes](/verifik-es/smart-reports/list-report-presets)
+- [Recuperar el esquema de entrada de una configuración](/verifik-es/smart-reports/retrieve-configuration-input-schema)
+- [Descripción general de Smart Reports](/verifik-es/smart-reports)
+- [Guía de la API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [MCP y agentes de IA](/verifik-es/smart-reports/mcp-and-ai-agents)
+- [Webhooks de Smart Reports](/verifik-es/resources/smart-reports-webhooks)
+- [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report)

@@ -1,0 +1,528 @@
+---
+id: create-a-report-template
+title: Créer un modèle de rapport
+description: Créez un modèle Smart Report personnalisé avec votre image de marque, vos sections de mise en page, la configuration du thème et les paramètres PDF.
+slug: /smart-reports/create-a-report-template
+keywords:
+  - v2/smart-report-templates
+  - /v2/smart-report-templates
+  - v2 smart-report-templates
+  - api/smart-report-templates
+  - /api/smart-report-templates
+  - api smart-report-templates
+  - api.verifik.co/v2/smart-report-templates
+  - 'https://api.verifik.co/v2/smart-report-templates'
+  - POST v2/smart-report-templates
+  - POST /v2/smart-report-templates
+  - smart-report-templates
+  - /smart-report-templates
+  - GET v2/smart-report-templates
+  - GET /v2/smart-report-templates
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Créez un modèle Smart Report personnalisé appartenant au client authentifié. Seul `name` est requis ; toutes les options d'image de marque, de mise en page `sections`, `reportTheme`, `sampleData` et de moteur PDF sont facultatives et peuvent être mises à jour ultérieurement avec [Mettre à jour un modèle de rapport](/verifik-fr/smart-reports/update-a-report-template).
+
+Dans les pipelines headless et pilotés par l'IA, utilisez ce point de terminaison pour enregistrer les mises en page produites par [Générer la mise en page d'un modèle](/verifik-fr/smart-reports/generate-template-layout), cloner et personnaliser un modèle de démarrage de [Lister les thèmes de démarrage](/verifik-fr/smart-reports/list-theme-starters), ou provisionner par code des modèles PDF spécifiques à un environnement pour vos pipelines `SmartBatch`. L'enregistrement d'un modèle déclenche la génération asynchrone de sa vignette et renvoie **HTTP `200`** (et non `201`) avec le document créé dans `{ "data": ... }`.
+
+### Point de terminaison
+
+```
+POST https://api.verifik.co/v2/smart-report-templates
+```
+
+Le proxy Smart-Agent (`https://ai.verifik.co`) expose les mêmes chemins `/v2/...` et exige votre propre en-tête `Authorization: Bearer <VERIFIK_JWT>`.
+
+### En-têtes
+
+| Nom           | Valeur                 |
+| ------------- | ---------------------- |
+| Content-Type  | `application/json`     |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### Corps de la requête
+
+| Nom                   | Type             | Requis | Description                                                                                                                                        |
+| --------------------- | ---------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                | string           | Oui    | Nom d'affichage du modèle. Maximum `150` caractères.                                                                                               |
+| `description`         | string           | Non    | Description lisible du modèle. Maximum `500` caractères.                                                                                           |
+| `batchConfiguration`  | string           | Non    | ObjectId d'une configuration `SmartBatch` associée.                                                                                                |
+| `country`             | string           | Non    | Identifiant ou libellé du pays. Maximum `60` caractères.                                                                                           |
+| `category`            | string           | Non    | Domaine de vérification : `"citizen"`, `"company"` ou `"vehicle"`.                                                                                 |
+| `isActive`            | boolean          | Non    | Indique si le modèle est actif. Vaut `true` par défaut.                                                                                            |
+| `logo`                | string           | Non    | URL du logo de marque ou URI de données base64.                                                                                                    |
+| `primaryColor`        | string           | Non    | Couleur hexadécimale d'accentuation principale. Vaut `"#4F46E5"` par défaut.                                                                       |
+| `identityColor`       | string           | Non    | Couleur hexadécimale d'accentuation secondaire/d'identité. Vaut `"#000000"` par défaut.                                                            |
+| `pageBackgroundColor` | string           | Non    | Couleur hexadécimale d'arrière-plan de page. Vaut `"#ffffff"` par défaut.                                                                          |
+| `header`              | object           | Non    | Configuration personnalisée de mise en page et de contenu de l'en-tête.                                                                            |
+| `footer`              | object           | Non    | Configuration personnalisée de mise en page et de contenu du pied de page.                                                                         |
+| `legend`              | string           | Non    | Texte de légende en pied de page ou mention de conformité. Maximum `2000` caractères.                                                             |
+| `legendPosition`      | string           | Non    | Alignement de la légende : `"left"`, `"center"` ou `"right"`.                                                                                      |
+| `termsAndConditions`  | string           | Non    | Texte des conditions générales légales. Maximum `4000` caractères.                                                                                 |
+| `termsPosition`       | string           | Non    | Alignement des conditions : `"left"`, `"center"` ou `"right"`.                                                                                     |
+| `sections`            | object[]         | Non    | Tableau ordonné d'objets `ReportSection` définissant les blocs de contenu et liaisons de données (voir [Propriétés de `ReportSection`](#propriétés-de-reportsection)). |
+| `pageSize`            | string           | Non    | Format de papier PDF : `"A4"`, `"Letter"` ou `"Legal"`. Vaut `"A4"` par défaut.                                                                    |
+| `layoutVersion`       | integer          | Non    | Version du moteur de mise en page : `1` ou `2`.                                                                                                    |
+| `orientation`         | string           | Non    | Orientation de la page : `"portrait"` ou `"landscape"`. Vaut `"portrait"` par défaut.                                                              |
+| `margins`             | object           | Non    | Objet de marges `{ "top": 40, "right": 40, "bottom": 40, "left": 40 }`. Vaut `40` par défaut sur les quatre côtés.                                 |
+| `pdfEngine`           | string           | Non    | Moteur de rendu PDF : `"puppeteer"` ou `"pdfkit"`. Vaut `"puppeteer"` par défaut.                                                                  |
+| `showPageNumbers`     | boolean          | Non    | Afficher les numéros de page sur les PDF générés.                                                                                                  |
+| `pageNumberPosition`  | string           | Non    | Position du numéro de page : `"top-left"`, `"top-center"`, `"top-right"`, `"bottom-left"`, `"bottom-center"` ou `"bottom-right"`.                  |
+| `pageNumberDivider`   | boolean / string | Non    | Configuration du séparateur de numéro de page.                                                                                                     |
+| `watermark`           | object           | Non    | Paramètres du calque de filigrane.                                                                                                                 |
+| `security`            | object           | Non    | Paramètres de chiffrement PDF `{ "enabled": true, "password": "..." }`.                                                                            |
+| `signature`           | object           | Non    | Configuration du bloc de signature.                                                                                                                |
+| `logoSettings`        | object           | Non    | Configuration de la taille et du placement du logo.                                                                                                |
+| `sheetImages`         | object[]         | Non    | Ressources d'images intégrées au modèle. Maximum `12` éléments.                                                                                    |
+| `customFonts`         | object[]         | Non    | Déclarations de polices personnalisées (Google Fonts, URL externe ou fichier téléversé). Maximum `6` éléments.                                     |
+| `headerLogos`         | object[]         | Non    | Logos supplémentaires affichés dans l'en-tête. Maximum `16` éléments.                                                                              |
+| `bodyTopPadding`      | number           | Non    | Espacement supérieur appliqué au corps du document, de `0` à `600`.                                                                                |
+| `sampleData`          | object           | Non    | Payload de vérification d'exemple (`inputData`, `results`, `batchName`, `rowIndex`) utilisé comme jeu de données de repli pour les aperçus et téléchargements d'exemples. |
+| `endpointDesign`      | object           | Non    | Métadonnées de présentation spécifiques au point de terminaison.                                                                                   |
+| `reportTheme`         | string / object  | Non    | ID de préréglage de thème (`"premium_dark"`, `"light_cards"`, `"editorial"`, `"dashboard"`) ou objet complet de configuration du thème (voir [Configuration du thème](#configuration-du-thème)). |
+
+#### Propriétés de `ReportSection`
+
+Chaque élément de `sections` décrit un bloc dans le rapport. Les propriétés courantes incluent `id`, `type`, `order`, `dataPath`, `label`, `staticContent`, `columns`, `columnsPerRow`, `keyOverrides`, `valueRules`, `chartKind`, `style`, `condition` et `frame`.
+
+Les valeurs `type` prises en charge incluent :
+
+- **Mise en page de base** : `header`, `text`, `table`, `field`, `image`, `divider`, `spacer`, `shape`
+- **Blocs structurés** : `dataTable`, `card`, `badge`, `keyValueGrid`, `repeater`, `reportBlocks`, `themeBlock`
+- **Blocs de vérification thématiques** : `coverPage`, `scoreGauge`, `categoryBreakdown`, `checkTable`, `findings`, `sources`, `sourceCards`
+
+#### Configuration du thème
+
+`reportTheme` accepte soit une chaîne de préréglage (`"premium_dark"`, `"light_cards"`, `"editorial"`, `"dashboard"`), soit un objet contenant :
+
+`{ id, scoreScale, scoreEnabled, scoreProfile, locale, density, eyebrow, coverTitle, headlines, legalNote, showVerifiedBadge, showWeights, showDeductions, showFields, showHowItWorks, blocks, tokens }`
+
+Lors de la migration d'un payload testé sur [Prévisualiser le HTML d'un modèle](/verifik-fr/smart-reports/preview-template-html), déplacez les assistants d'aperçu de niveau racine (`scoreScale`, `themeTokens`, `scoreSettings`) dans `reportTheme` (`reportTheme.scoreScale`, `reportTheme.tokens`, `reportTheme.scoreEnabled` et `reportTheme.scoreProfile`) avant d'enregistrer.
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch("https://api.verifik.co/v2/smart-report-templates", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+    body: JSON.stringify({
+      name: "Colombia Driver Onboarding Report",
+      description: "Themed driver verification report for fleet onboarding",
+      country: "CO",
+      category: "citizen",
+      isActive: true,
+      pageSize: "A4",
+      layoutVersion: 2,
+      orientation: "portrait",
+      margins: { top: 40, right: 40, bottom: 40, left: 40 },
+      pdfEngine: "puppeteer",
+      primaryColor: "#4F46E5",
+      identityColor: "#111827",
+      pageBackgroundColor: "#ffffff",
+      showPageNumbers: true,
+      pageNumberPosition: "bottom-right",
+      reportTheme: {
+        id: "light_cards",
+        scoreEnabled: true,
+        scoreProfile: "cabify_driver",
+        scoreScale: "percent",
+        locale: "en",
+        showVerifiedBadge: true,
+      },
+      sections: [
+        {
+          id: "sec-header",
+          type: "header",
+          order: 0,
+          label: "Driver Verification Report",
+        },
+        {
+          id: "sec-score",
+          type: "scoreGauge",
+          order: 1,
+          label: "Verification Score",
+        },
+        {
+          id: "sec-subject",
+          type: "keyValueGrid",
+          order: 2,
+          label: "Subject Details",
+          dataPath: "inputData",
+          columnsPerRow: 2,
+        },
+      ],
+    }),
+  });
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "name" => "Colombia Driver Onboarding Report",
+    "description" => "Themed driver verification report for fleet onboarding",
+    "country" => "CO",
+    "category" => "citizen",
+    "isActive" => true,
+    "pageSize" => "A4",
+    "layoutVersion" => 2,
+    "orientation" => "portrait",
+    "margins" => ["top" => 40, "right" => 40, "bottom" => 40, "left" => 40],
+    "pdfEngine" => "puppeteer",
+    "primaryColor" => "#4F46E5",
+    "identityColor" => "#111827",
+    "pageBackgroundColor" => "#ffffff",
+    "showPageNumbers" => true,
+    "pageNumberPosition" => "bottom-right",
+    "reportTheme" => [
+        "id" => "light_cards",
+        "scoreEnabled" => true,
+        "scoreProfile" => "cabify_driver",
+        "scoreScale" => "percent",
+        "locale" => "en",
+        "showVerifiedBadge" => true,
+    ],
+    "sections" => [
+        [
+            "id" => "sec-header",
+            "type" => "header",
+            "order" => 0,
+            "label" => "Driver Verification Report",
+        ],
+        [
+            "id" => "sec-score",
+            "type" => "scoreGauge",
+            "order" => 1,
+            "label" => "Verification Score",
+        ],
+        [
+            "id" => "sec-subject",
+            "type" => "keyValueGrid",
+            "order" => 2,
+            "label" => "Subject Details",
+            "dataPath" => "inputData",
+            "columnsPerRow" => 2,
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia Driver Onboarding Report",
+    "description": "Themed driver verification report for fleet onboarding",
+    "country": "CO",
+    "category": "citizen",
+    "isActive": True,
+    "pageSize": "A4",
+    "layoutVersion": 2,
+    "orientation": "portrait",
+    "margins": {"top": 40, "right": 40, "bottom": 40, "left": 40},
+    "pdfEngine": "puppeteer",
+    "primaryColor": "#4F46E5",
+    "identityColor": "#111827",
+    "pageBackgroundColor": "#ffffff",
+    "showPageNumbers": True,
+    "pageNumberPosition": "bottom-right",
+    "reportTheme": {
+        "id": "light_cards",
+        "scoreEnabled": True,
+        "scoreProfile": "cabify_driver",
+        "scoreScale": "percent",
+        "locale": "en",
+        "showVerifiedBadge": True,
+    },
+    "sections": [
+        {
+            "id": "sec-header",
+            "type": "header",
+            "order": 0,
+            "label": "Driver Verification Report",
+        },
+        {
+            "id": "sec-score",
+            "type": "scoreGauge",
+            "order": 1,
+            "label": "Verification Score",
+        },
+        {
+            "id": "sec-subject",
+            "type": "keyValueGrid",
+            "order": 2,
+            "label": "Subject Details",
+            "dataPath": "inputData",
+            "columnsPerRow": 2,
+        },
+    ],
+}
+
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":                "Colombia Driver Onboarding Report",
+		"description":         "Themed driver verification report for fleet onboarding",
+		"country":             "CO",
+		"category":            "citizen",
+		"isActive":            true,
+		"pageSize":            "A4",
+		"layoutVersion":       2,
+		"orientation":         "portrait",
+		"margins":             map[string]int{"top": 40, "right": 40, "bottom": 40, "left": 40},
+		"pdfEngine":           "puppeteer",
+		"primaryColor":        "#4F46E5",
+		"identityColor":       "#111827",
+		"pageBackgroundColor": "#ffffff",
+		"showPageNumbers":     true,
+		"pageNumberPosition":  "bottom-right",
+		"reportTheme": map[string]interface{}{
+			"id":                "light_cards",
+			"scoreEnabled":      true,
+			"scoreProfile":      "cabify_driver",
+			"scoreScale":        "percent",
+			"locale":            "en",
+			"showVerifiedBadge": true,
+		},
+		"sections": []map[string]interface{}{
+			{"id": "sec-header", "type": "header", "order": 0, "label": "Driver Verification Report"},
+			{"id": "sec-score", "type": "scoreGauge", "order": 1, "label": "Verification Score"},
+			{"id": "sec-subject", "type": "keyValueGrid", "order": 2, "label": "Subject Details", "dataPath": "inputData", "columnsPerRow": 2},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia Driver Onboarding Report",
+    "description": "Themed driver verification report for fleet onboarding",
+    "country": "CO",
+    "category": "citizen",
+    "isActive": true,
+    "pageSize": "A4",
+    "layoutVersion": 2,
+    "orientation": "portrait",
+    "margins": { "top": 40, "right": 40, "bottom": 40, "left": 40 },
+    "pdfEngine": "puppeteer",
+    "primaryColor": "#4F46E5",
+    "identityColor": "#111827",
+    "pageBackgroundColor": "#ffffff",
+    "showPageNumbers": true,
+    "pageNumberPosition": "bottom-right",
+    "reportTheme": {
+      "id": "light_cards",
+      "scoreEnabled": true,
+      "scoreProfile": "cabify_driver",
+      "scoreScale": "percent",
+      "locale": "en",
+      "showVerifiedBadge": true
+    },
+    "sections": [
+      { "id": "sec-header", "type": "header", "order": 0, "label": "Driver Verification Report" },
+      { "id": "sec-score", "type": "scoreGauge", "order": 1, "label": "Verification Score" },
+      { "id": "sec-subject", "type": "keyValueGrid", "order": 2, "label": "Subject Details", "dataPath": "inputData", "columnsPerRow": 2 }
+    ]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "_id": "67c1f94b2d8a1c0012a4b301",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Driver Onboarding Report",
+    "description": "Themed driver verification report for fleet onboarding",
+    "country": "CO",
+    "category": "citizen",
+    "isActive": true,
+    "pageSize": "A4",
+    "layoutVersion": 2,
+    "orientation": "portrait",
+    "margins": {
+      "top": 40,
+      "right": 40,
+      "bottom": 40,
+      "left": 40
+    },
+    "pdfEngine": "puppeteer",
+    "primaryColor": "#4F46E5",
+    "identityColor": "#111827",
+    "pageBackgroundColor": "#ffffff",
+    "showPageNumbers": true,
+    "pageNumberPosition": "bottom-right",
+    "reportTheme": {
+      "id": "light_cards",
+      "scoreEnabled": true,
+      "scoreProfile": "cabify_driver",
+      "scoreScale": "percent",
+      "locale": "en",
+      "showVerifiedBadge": true
+    },
+    "sections": [
+      {
+        "id": "sec-header",
+        "type": "header",
+        "order": 0,
+        "label": "Driver Verification Report"
+      },
+      {
+        "id": "sec-score",
+        "type": "scoreGauge",
+        "order": 1,
+        "label": "Verification Score"
+      },
+      {
+        "id": "sec-subject",
+        "type": "keyValueGrid",
+        "order": 2,
+        "label": "Subject Details",
+        "dataPath": "inputData",
+        "columnsPerRow": 2
+      }
+    ],
+    "createdAt": "2026-09-10T03:32:00.000Z",
+    "updatedAt": "2026-09-10T03:32:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"name\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "Validation failed",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Une création réussie renvoie HTTP **`200`** (et non `201`) et déclenche la génération asynchrone de la vignette en arrière-plan.
+- Les assistants d'aperçu de niveau racine (`scoreScale`, `themeTokens`, `scoreSettings`) utilisés par [Prévisualiser le HTML d'un modèle](/verifik-fr/smart-reports/preview-template-html) ne sont pas stockés en tant que champs racine du modèle. Placez-les dans `reportTheme` (`scoreScale`, `tokens`, `scoreEnabled`/`scoreProfile`) lors de l'enregistrement d'un modèle.
+- Conservez le `_id` renvoyé pour générer des exemples PDF, envoyer des aperçus aux parties prenantes ou associer le modèle à des tâches automatisées `SmartBatch`.
+
+### Voir aussi
+
+- [Vue d'ensemble de SmartReports](/verifik-fr/smart-reports)
+- [Guide de l'API Headless](/verifik-fr/smart-reports/headless-api-guide)
+- [MCP et Agents IA](/verifik-fr/smart-reports/mcp-and-ai-agents)
+- [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks)
+- [Lister les modèles de rapport](/verifik-fr/smart-reports/list-report-templates)
+- [Générer la mise en page d'un modèle](/verifik-fr/smart-reports/generate-template-layout)
+- [Prévisualiser le HTML d'un modèle](/verifik-fr/smart-reports/preview-template-html)
+- [Lister les thèmes de démarrage](/verifik-fr/smart-reports/list-theme-starters)

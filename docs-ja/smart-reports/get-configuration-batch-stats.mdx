@@ -1,0 +1,243 @@
+---
+id: get-configuration-batch-stats
+title: 設定ごとのバッチ統計を取得する
+description: 'バッチ設定に関する集計バッチ数、行完了合計、およびステータス内訳を取得します。'
+slug: /smart-reports/get-configuration-batch-stats
+keywords:
+  - 'v2/smart-batches/stats/{configId}'
+  - '/v2/smart-batches/stats/{configId}'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches stats
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/stats/{configId}'
+  - 'https://api.verifik.co/v2/smart-batches/stats/{configId}'
+  - 'GET v2/smart-batches/stats/{configId}'
+  - 'GET /v2/smart-batches/stats/{configId}'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/stats
+  - /v2/smart-batches/stats
+  - 'v2 smart-batches stats {configid}'
+  - smart-batches/stats
+  - /smart-batches/stats
+  - api/smart-batches/stats
+  - /api/smart-batches/stats
+  - api smart-batches stats
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+認証済みクライアントアカウント上で、特定の `BatchConfiguration` に属するすべての `SmartBatch` レコード全体の集計実行統計を取得します。レスポンスでは、バッチ数、行完了合計、および `"draft"`、`"pending"`、`"processing"`、`"completed"`、`"failed"`、`"cancelled"` ごとのステータス内訳が返されます。
+
+設定の統計情報を読み取ってもチェックは実行されず、クレジットも消費されません。
+
+### エンドポイント
+
+```text
+GET https://api.verifik.co/v2/smart-batches/stats/{configId}
+```
+
+このエンドポイントは、クライアント単位の `Authorization: Bearer <VERIFIK_JWT>` を使用することで Smart-Agent プロキシ（`https://ai.verifik.co/v2/smart-batches/stats/{configId}`）経由でもアクセスできます。共有 x402 実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type` | `application/json` | リクエストペイロード形式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアントスコープの JWT（`authUser.clientId`）。 |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| ---------- | ------ | ---- | ----------- |
+| `configId` | string | はい | バッチ統計を集計する `BatchConfiguration` の ObjectId。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const configId = "6801a2b3c4d5e6f7a8b9c0d4";
+
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-batches/stats/${configId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$configId = "6801a2b3c4d5e6f7a8b9c0d4";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/stats/" . $configId);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+config_id = "6801a2b3c4d5e6f7a8b9c0d4"
+url = f"https://api.verifik.co/v2/smart-batches/stats/{config_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	configID := "6801a2b3c4d5e6f7a8b9c0d4"
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches/stats/"+configID, nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/stats/6801a2b3c4d5e6f7a8b9c0d4" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "totalBatches": 4,
+    "totalRows": 120,
+    "completedRows": 95,
+    "failedRows": 5,
+    "partialRows": 4,
+    "pendingRows": 16,
+    "statusBreakdown": {
+      "draft": 0,
+      "pending": 1,
+      "processing": 1,
+      "completed": 2,
+      "failed": 0,
+      "cancelled": 0
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"configId\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 補足
+
+- 統計情報は認証済みクライアント（JWT 上の `clientId`）にスコープされます。
+- `pendingRows` は `totalRows - completedRows - failedRows - partialRows` として計算されます。
+- この設定に属する個別のバッチを確認するには、[Smart Batch 一覧](/verifik-ja/smart-reports/list-smart-batches)に `batchConfiguration` を指定してください。
+
+### 関連
+
+- [Smart Reports 概要](/verifik-ja/smart-reports)
+- [Headless API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [Smart Reports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)
+- [Smart Batch 一覧](/verifik-ja/smart-reports/list-smart-batches)
+- [Smart Batch の進捗を取得する](/verifik-ja/smart-reports/get-smart-batch-progress)

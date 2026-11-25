@@ -1,0 +1,629 @@
+---
+id: headless-api-guide
+title: "Guide de l'API Headless"
+description: Exécutez SmartReports 100 % sans interface utilisateur grâce à l'exécution directe de préréglages, aux webhooks asynchrones et au polling, aux recettes personnalisées et à la gestion complète des erreurs.
+slug: /smart-reports/headless-api-guide
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Guide de l'API Headless
+
+Vous pouvez automatiser **SmartReports** à 100 % depuis votre backend, votre file de workers ou votre pipeline CI sans jamais ouvrir l'interface web Smart-Agent. Chaque opération est exposée en HTTPS à la fois sur `https://api.verifik.co` et `https://ai.verifik.co` via des chemins `/v2/...` identiques.
+
+:::warning JWT Bearer par client requis
+Chaque requête de ce guide nécessite le jeton de votre propre compte Verifik :
+
+```text
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+N'exposez jamais `VERIFIK_JWT` dans un navigateur ou dans du code côté client. Les requêtes envoyées sans JWT Bearer par client via `https://ai.verifik.co` sont rejetées par `smartReportAuthGuard` avec `403 Forbidden`.
+:::
+
+---
+
+## Choisir un workflow
+
+| Workflow | Point de terminaison d'entrée | Limite de lignes | Idéal pour |
+| --- | --- | --- | --- |
+| **1. Exécution directe de préréglage (Sync)** | `POST /v2/smart-reports/run` (`mode: "sync"`) | `1–5` lignes | Vérification immédiate + PDF + Verification Score en une seule requête HTTP (délai de `90s` avec repli asynchrone automatique). |
+| **2. Exécution asynchrone + Webhooks / Polling** | `POST /v2/smart-reports/run` (`mode: "async"`) | `1–500` lignes | Lots multi-sujets (`> 5` lignes) ou sources gouvernementales lentes pilotés par webhooks `smart_batch_*` ou par polling. |
+| **3. Recette personnalisée réutilisable** | `POST /v2/smart-batch-presets/{systemKey}/clone` ou `POST /v2/batch-configurations` + `/v2/smart-batches` | Jusqu'à `20,000` lignes (`SMART_BATCH_MAX_ROWS`) | Image de marque et mises en page personnalisées, sections générées par IA, téléversement de fichiers CSV/XLSX/JSONL et génération de rapports par ligne. |
+
+---
+
+## Workflow 1 : Exécution directe de préréglage (chemin le plus rapide)
+
+La manière la plus rapide d'intégrer SmartReports consiste à exécuter un préréglage intégré Verifik via son `systemKey`. `POST /v2/smart-reports/run` clone ou réutilise automatiquement la configuration de préréglage de votre client, valide les entrées requises, exécute les étapes de vérification chaînées côté serveur, calcule le `verificationScore`, effectue le rendu PDF, envoie les e-mails aux destinataires en option et déclenche les webhooks.
+
+### Étape 1 : Découvrir les préréglages et les entrées requises
+
+Interrogez `GET /v2/smart-batch-presets` (aucun crédit consommé) pour consulter les préréglages disponibles, le nombre d'étapes, la disponibilité et le schéma `inputSchema` dérivé :
+
+```http
+GET https://api.verifik.co/v2/smart-batch-presets?country=CO&category=citizen
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+Champs clés renvoyés pour chaque préréglage :
+
+- `systemKey` : Identifiant stable à transmettre à `POST /v2/smart-reports/run` (par exemple `"co.citizen.comprehensive"`).
+- `available` et `unavailableFeatureCodes` : Confirme que tous les points de terminaison du préréglage sont disponibles dans l'environnement.
+- `inputSchema` :
+  - `stepCount` et `estimatedCreditsPerRow` : Nombre total d'étapes de vérification et dépense estimée en crédits par ligne d'entrée.
+  - `requiredFields` et `optionalFields` : Noms exacts des champs, types, énumérations, valeurs par défaut et conditions `requiredWhen`.
+  - `jsonSchema` et `exampleInput` : JSON Schema prêt à l'emploi et objet d'exemple en entrée.
+
+### Étape 2 : Exécuter en mode synchrone (`mode: "sync"`)
+
+Envoyez `POST /v2/smart-reports/run` avec `systemKey`, `inputs` et `mode: "sync"` (valeur par défaut pour `1–5` lignes) :
+
+```json
+{
+  "systemKey": "co.citizen.comprehensive",
+  "inputs": {
+    "documentType": "CC",
+    "documentNumber": "123456789"
+  },
+  "mode": "sync",
+  "generatePdf": true,
+  "includePdfBase64": false,
+  "score": true,
+  "emailTo": ["compliance@yourcompany.com"],
+  "emailLanguage": "en",
+  "externalRefId": "applicant-9841"
+}
+```
+
+#### Exécution synchrone et repli automatique `202`
+
+- **Plafond de lignes** : L'exécution synchrone accepte au maximum **`5` lignes** (`MAX_SYNC_ROWS = 5`). Envoyer plus de `5` lignes avec `mode: "sync"` renvoie `409 Conflict` (`sync_row_limit_exceeded`).
+- **Délai d'exécution de `90s`** : L'exécution synchrone attend jusqu'à **`90` secondes** (`SYNC_DEADLINE_MS = 90000`) que les registres amont répondent. Si une source amont est toujours en cours de traitement au bout de `90s`, Verifik marque le rapport pour finalisation en arrière-plan (`asyncFinalize: true`) et renvoie de façon transparente **HTTP `202 Accepted`** (`mode: "async"`) avec `pollUrl`, `downloadUrl` et `htmlUrl` — votre exécution et les crédits déjà consommés ne sont jamais perdus.
+- **Intégration des octets PDF** : Définissez `"includePdfBase64": true` pour inclure `data.pdf.buffer` (octets PDF encodés en base64) directement dans la réponse JSON `200 OK`. Laissez-le à `false` (par défaut) pour garder des charges utiles légères et récupérer le PDF binaire via `downloadUrl`.
+
+### Étape 3 : Inspecter la réponse `200 OK`
+
+```json
+{
+  "data": {
+    "mode": "sync",
+    "report": {
+      "_id": "6740a1b2c3d4e5f678901234",
+      "name": "Colombia Citizen Comprehensive — 2026-11-24",
+      "status": "sent",
+      "smartBatch": "6740a1b2c3d4e5f678901111",
+      "template": "6740a1b2c3d4e5f678902222",
+      "pdfSize": 184320,
+      "pdfEngine": "puppeteer",
+      "externalRefId": "applicant-9841",
+      "createdByChannel": "api",
+      "verificationScoreSummary": {
+        "score": 0.9625,
+        "verdict": "approve",
+        "coverage": 1,
+        "profile": "cabify_driver"
+      }
+    },
+    "batch": {
+      "_id": "6740a1b2c3d4e5f678901111",
+      "status": "completed",
+      "totalRows": 1,
+      "completedRows": 1,
+      "failedRows": 0,
+      "partialRows": 0,
+      "creditsSpent": 6,
+      "rows": [
+        {
+          "rowIndex": 0,
+          "status": "completed",
+          "inputData": {
+            "documentType": "CC",
+            "documentNumber": "123456789"
+          },
+          "results": {},
+          "errors": []
+        }
+      ]
+    },
+    "verificationScore": {
+      "version": "1.1.0",
+      "profile": "cabify_driver",
+      "score": 0.9625,
+      "score100": 96,
+      "decision": "approve",
+      "coverage": 1
+    },
+    "pdf": {
+      "size": 184320,
+      "engine": "puppeteer",
+      "generationDurationMs": 1420,
+      "downloadUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/download",
+      "htmlUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/html"
+    },
+    "email": {
+      "success": true,
+      "recipients": ["compliance@yourcompany.com"],
+      "subject": "SmartReport: Colombia Citizen Comprehensive — 2026-11-24",
+      "messageId": "<msg-123@mailgun>"
+    }
+  }
+}
+```
+
+---
+
+## Workflow 2 : Exécution asynchrone + Webhooks + Polling
+
+Utilisez `mode: "async"` dès que vous soumettez **plus de `5` lignes** (jusqu'à **`500` lignes** par appel `POST /v2/smart-reports/run`), ou lorsque vous préférez une mise en file immédiate en `202 Accepted` même pour `1–5` lignes.
+
+### Étape 1 : Mettre en file avec `mode: "async"`
+
+Passez `mode: "async"`, une surcharge facultative `webhookUrl` pour cette exécution, `externalRefId` pour la corrélation et `emailTo` en option :
+
+```json
+{
+  "systemKey": "co.citizen.comprehensive",
+  "inputs": [
+    { "documentType": "CC", "documentNumber": "123456789" },
+    { "documentType": "CC", "documentNumber": "987654321" }
+  ],
+  "mode": "async",
+  "webhookUrl": "https://api.yourcompany.com/webhooks/verifik-reports",
+  "externalRefId": "onboarding-batch-42",
+  "emailTo": ["ops@yourcompany.com"],
+  "emailLanguage": "en"
+}
+```
+
+Verifik renvoie immédiatement **HTTP `202 Accepted`** :
+
+```json
+{
+  "data": {
+    "mode": "async",
+    "report": {
+      "_id": "6740a1b2c3d4e5f678909999",
+      "status": "generating",
+      "smartBatch": "6740a1b2c3d4e5f678908888",
+      "externalRefId": "onboarding-batch-42",
+      "webhookUrl": "https://api.yourcompany.com/webhooks/verifik-reports"
+    },
+    "batch": {
+      "_id": "6740a1b2c3d4e5f678908888",
+      "status": "processing",
+      "totalRows": 2,
+      "completedRows": 0,
+      "failedRows": 0,
+      "partialRows": 0
+    },
+    "pollUrl": "/v2/smart-reports/6740a1b2c3d4e5f678909999",
+    "downloadUrl": "/v2/smart-reports/6740a1b2c3d4e5f678909999/download",
+    "htmlUrl": "/v2/smart-reports/6740a1b2c3d4e5f678909999/html"
+  }
+}
+```
+
+### Étape 2 : Recevoir les webhooks ou interroger le statut (polling)
+
+Une fois que `FeatureRunner` a terminé le lot en arrière-plan, Verifik génère automatiquement le PDF, calcule `verificationScore`, envoie les e-mails à `emailTo` (le cas échéant) et livre des événements webhook typés :
+
+- **Piloté par webhook (recommandé)** : Écoutez `smart_batch_report_generated` (PDF prêt), `smart_batch_report_generation_failed`, `smart_batch_report_sent` et `smart_batch_report_delivery_failed` sur votre `webhookUrl` (ou `batchConfiguration.notification.webhookUrl`). Consultez [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks) pour les schémas exacts et les règles de relance.
+- **Repli par polling** : Interrogez `GET /v2/smart-reports/{id}` (l'URL `pollUrl` renvoyée dans le `202`) jusqu'à ce que `data.status` quitte l'état `"generating"` (`"generated"`, `"sent"` ou `"failed"`).
+
+### Étape 3 : Télécharger le PDF ou récupérer le HTML + Score
+
+- **Téléchargement du PDF binaire** :
+
+```http
+GET https://api.verifik.co/v2/smart-reports/{id}/download
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+Renvoie `application/pdf` avec `Content-Disposition: attachment; filename="Consulta_1.pdf"`. Passez `?rowIndex=1` pour générer et télécharger une ligne précise d'un lot multi-lignes.
+
+- **JSON structuré HTML + Verification Score (sans lancement de Chromium PDF)** :
+
+```http
+GET https://api.verifik.co/v2/smart-reports/{id}/html?rowIndex=0&preview=false&score=true
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+Renvoie `{ data: { reportId, batchId, templateId, rowIndex, html, verificationScore, row } }`.
+
+---
+
+## Workflow 3 : Recette personnalisée réutilisable
+
+Lorsque vous souhaitez une image de marque personnalisée, des mises en page de sections sur mesure, des chaînes d'étapes modifiées ou l'ingestion de feuilles de calcul au-delà de `500` lignes, gérez explicitement les ressources de configuration, de modèle et de lot.
+
+### Étape 1 : Cloner un préréglage ou créer une configuration
+
+- **Cloner un préréglage (idempotent)** :
+
+```http
+POST https://api.verifik.co/v2/smart-batch-presets/{systemKey}/clone
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+Renvoie `{ data: { batchConfiguration, template, reused } }`. Si votre client dispose déjà d'un clone actif pour ce `systemKey` (sans étapes supplémentaires ajoutées par le client au-delà du préréglage), Verifik le réutilise et l'aligne (`reused: true`) au lieu de dupliquer les configurations.
+
+- **Ou créer une configuration personnalisée** :
+
+```http
+POST https://api.verifik.co/v2/batch-configurations
+Authorization: Bearer <VERIFIK_JWT>
+Content-Type: application/json
+```
+
+Spécifiez `name`, `country`, `steps[]` (`sequence` ordonné, `appFeature`, `parameterDefaults` facultatifs, `queryMode`, `inputFieldMapping`), `mergeStrategy`, `preferredReportTemplate` et `notification` (`webhookUrl`, `emailOnCompletion`).
+
+### Étape 2 : Inspecter le schéma d'entrée exact
+
+Avant de construire des en-têtes CSV ou de soumettre des lignes, interrogez :
+
+```http
+GET https://api.verifik.co/v2/batch-configurations/{id}/input-schema
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+Cet appel renvoie exactement `requiredFields`, `optionalFields`, `estimatedCreditsPerRow`, `jsonSchema` et `exampleInput` résolus sur l'ensemble des étapes activées (en excluant les champs déjà fournis via `parameterDefaults` ou les chaînages `{{results.N.*}}`).
+
+### Étape 3 : Prévisualiser et personnaliser le modèle de rapport
+
+Les modèles appartenant au client (`type: "client"`) peuvent être inspectés, générés, prévisualisés sans frais de crédits et mis à jour via l'API :
+
+1. **Découvrir les chemins de données disponibles** : `POST /v2/smart-report-templates/introspect` avec `{ "sampleData": { ... } }` renvoie la palette de champs plats/imbriqués (`dot paths`) pour la liaison du modèle.
+2. **Générer ou modifier des sections par IA** : `POST /v2/smart-report-templates/generate-layout` avec `{ "prompt": "...", "previewData": { ... }, "mode": "create" | "edit" | "append" }` génère `sections[]` (ou modifie une seule section `selectedSection`).
+3. **Afficher un aperçu HTML rapide en direct** : `POST /v2/smart-report-templates/preview-html` effectue le rendu en mémoire d'un modèle non enregistré + `sampleData` sans ouvrir Chromium ni persister dans MongoDB, en renvoyant `{ data: { html, verificationScore } }`.
+4. **Enregistrer les modifications** : `PUT /v2/smart-report-templates/{id}` sauvegarde `sections`, `reportTheme`, `logo`, `watermark`, `signature`, `security` (mot de passe PDF) ou `pdfEngine` sur votre modèle client.
+
+:::note Les modèles système intégrés sont en lecture seule
+Tenter un `PUT` ou `DELETE` sur un modèle intégré `"System"` échoue avec `403 Forbidden` (`system_template_readonly`). Clonez d'abord un préréglage (`POST /v2/smart-batch-presets/{systemKey}/clone`) ou créez un nouveau modèle (`POST /v2/smart-report-templates`).
+:::
+
+### Étape 4 : Créer et exécuter de grands lots (jusqu'à `20,000` lignes)
+
+Pour les grands lots dépassant la limite de `500` lignes de `/v2/smart-reports/run` :
+
+- **À partir de lignes JSON** : `POST /v2/smart-batches` avec `{ "batchConfiguration": "<CONFIG_ID>", "name": "Monthly Onboarding", "rows": [ ... ] }`, puis démarrez l'exécution avec `POST /v2/smart-batches/{id}/start`.
+- **À partir de fichiers CSV / XLSX / JSONL** : `POST /v2/smart-batches/from-file` analyse côté serveur du texte brut ou des URL de données en base64 et valide chaque ligne selon les dépendances des étapes avant de consommer des crédits (plafond par défaut `SMART_BATCH_MAX_ROWS = 20000` lignes) :
+
+```json
+{
+  "batchConfiguration": "6740a1b2c3d4e5f678901111",
+  "name": "Q4 Driver Screening",
+  "format": "csv",
+  "autoStart": true,
+  "content": "documentType,documentNumber\nCC,123456789\nCC,987654321"
+}
+```
+
+### Étape 5 : Générer, envoyer par e-mail et télécharger les rapports par ligne
+
+Une fois le lot terminé (`GET /v2/smart-batches/{id}/progress` ou webhook `smart_batch_batch_completed`) :
+
+1. Inspectez le modèle de données composé du rapport d'une seule ligne : `GET /v2/smart-batches/{id}/rows/{rowIndex}/report`.
+2. Créez un enregistrement SmartReport lié à votre modèle et à votre lot : `POST /v2/smart-reports` avec `{ "template": "<TEMPLATE_ID>", "smartBatch": "<BATCH_ID>", "rowIndex": 0, "externalRefId": "row-0", "webhookUrl": "https://..." }`.
+3. Générez le PDF et le Verification Score : `POST /v2/smart-reports/{id}/generate` (prend en charge `rowIndex`, `engine`, `score`, `scoreProfile`).
+4. Envoyez par e-mail une ligne ou jusqu'à `50` lignes en pièces jointes PDF distinctes : `POST /v2/smart-reports/{id}/send-email` (`{ "recipients": ["client@example.com"], "language": "en", "rowIndex": 0 }` ou `"sendAll": true`).
+5. Téléchargez le PDF : `GET /v2/smart-reports/{id}/download` (avec `?rowIndex=0` en option).
+
+---
+
+## Exemples complets de bout en bout
+
+Les exemples ci-dessous listent les préréglages, exécutent `POST /v2/smart-reports/run`, gèrent à la fois les réponses synchrones `200` et asynchrones `202` (avec polling de `GET /v2/smart-reports/{id}` jusqu'à finalisation), inspectent `verificationScore` et téléchargent le PDF généré.
+
+<Tabs>
+  <TabItem value="nodejs" label="Node.js" default>
+
+```javascript
+import fs from 'node:fs/promises';
+
+const BASE_URL = 'https://api.verifik.co';
+const JWT = process.env.VERIFIK_JWT;
+
+if (!JWT) {
+  throw new Error('Set VERIFIK_JWT in your server environment');
+}
+
+const headers = {
+  Authorization: `Bearer ${JWT}`,
+  'Content-Type': 'application/json',
+  Accept: 'application/json',
+};
+
+async function apiFetch(path, options = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    ...options,
+    headers: { ...headers, ...(options.headers || {}) },
+  });
+  const payload = await res.json();
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status} (${payload.code}): ${payload.message}`);
+  }
+  return { status: res.status, data: payload.data };
+}
+
+async function runHeadlessReport() {
+  // 1. Découvrir les préréglages et le schéma d'entrée requis
+  const { data: presets } = await apiFetch('/v2/smart-batch-presets?country=CO&category=citizen');
+  const preset = presets.find((p) => p.systemKey === 'co.citizen.comprehensive' && p.available);
+  if (!preset) throw new Error('Preset co.citizen.comprehensive is not available');
+
+  console.log('Estimated credits/row:', preset.inputSchema.estimatedCreditsPerRow);
+  console.log('Required fields:', preset.inputSchema.requiredFields.map((f) => f.field));
+
+  // 2. Exécuter vérification + score + génération PDF en un seul appel
+  const runRes = await apiFetch('/v2/smart-reports/run', {
+    method: 'POST',
+    body: JSON.stringify({
+      systemKey: preset.systemKey,
+      inputs: {
+        documentType: 'CC',
+        documentNumber: '123456789',
+      },
+      mode: 'sync',
+      generatePdf: true,
+      score: true,
+      externalRefId: 'case-12345',
+      // Surcharge webhook facultative par exécution :
+      // webhookUrl: 'https://api.yourcompany.com/webhooks/verifik-reports',
+    }),
+  });
+
+  let report = runRes.data.report;
+  const reportId = report._id;
+
+  // 3. Si 202 async (ou repli >90s), interroger GET /v2/smart-reports/{id}
+  if (runRes.status === 202 || runRes.data.mode === 'async') {
+    console.log('Queued async report, polling:', runRes.data.pollUrl);
+    for (let attempt = 0; attempt < 30; attempt += 1) {
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+      const polled = await apiFetch(`/v2/smart-reports/${reportId}`);
+      report = polled.data;
+      if (['generated', 'sent', 'failed'].includes(report.status)) break;
+    }
+    if (report.status === 'failed') {
+      throw new Error(`Report failed: ${report.error?.message}`);
+    }
+  }
+
+  console.log('Report ID:', reportId);
+  console.log('Verification Score:', report.verificationScoreSummary);
+
+  // 4. Télécharger le PDF binaire généré
+  const pdfRes = await fetch(`${BASE_URL}/v2/smart-reports/${reportId}/download`, {
+    headers: { Authorization: `Bearer ${JWT}` },
+  });
+  if (!pdfRes.ok) throw new Error(`Download failed: HTTP ${pdfRes.status}`);
+
+  const pdfBuffer = Buffer.from(await pdfRes.arrayBuffer());
+  await fs.writeFile(`smart-report-${reportId}.pdf`, pdfBuffer);
+  console.log(`Saved smart-report-${reportId}.pdf (${pdfBuffer.length} bytes)`);
+}
+
+runHeadlessReport().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import time
+import requests
+
+BASE_URL = "https://api.verifik.co"
+JWT = os.environ["VERIFIK_JWT"]
+
+HEADERS = {
+    "Authorization": f"Bearer {JWT}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+
+def run_headless_report() -> None:
+    # 1. Découvrir les préréglages et les champs requis
+    presets_resp = requests.get(
+        f"{BASE_URL}/v2/smart-batch-presets",
+        params={"country": "CO", "category": "citizen"},
+        headers=HEADERS,
+        timeout=30,
+    )
+    presets_resp.raise_for_status()
+    presets = presets_resp.json()["data"]
+    preset = next((p for p in presets if p["systemKey"] == "co.citizen.comprehensive" and p["available"]), None)
+    if not preset:
+        raise RuntimeError("Preset co.citizen.comprehensive is not available")
+
+    print("Estimated credits/row:", preset["inputSchema"]["estimatedCreditsPerRow"])
+
+    # 2. Exécuter le rapport en mode headless
+    run_resp = requests.post(
+        f"{BASE_URL}/v2/smart-reports/run",
+        headers=HEADERS,
+        json={
+            "systemKey": preset["systemKey"],
+            "inputs": {
+                "documentType": "CC",
+                "documentNumber": "123456789",
+            },
+            "mode": "sync",
+            "generatePdf": True,
+            "score": True,
+            "externalRefId": "case-12345",
+        },
+        timeout=120,
+    )
+    if run_resp.status_code >= 400:
+        raise RuntimeError(f"Run error {run_resp.status_code}: {run_resp.text}")
+
+    payload = run_resp.json()["data"]
+    report = payload["report"]
+    report_id = report["_id"]
+
+    # 3. Polling si 202 Accepted (mode async ou repli >90s)
+    if run_resp.status_code == 202 or payload.get("mode") == "async":
+        print("Polling async report:", payload["pollUrl"])
+        for _ in range(30):
+            time.sleep(4)
+            poll_resp = requests.get(f"{BASE_URL}/v2/smart-reports/{report_id}", headers=HEADERS, timeout=30)
+            poll_resp.raise_for_status()
+            report = poll_resp.json()["data"]
+            if report["status"] in ("generated", "sent", "failed"):
+                break
+        if report["status"] == "failed":
+            raise RuntimeError(f"Report generation failed: {report.get('error')}")
+
+    print("Report ID:", report_id)
+    print("Verification Score Summary:", report.get("verificationScoreSummary"))
+
+    # 4. Télécharger le fichier PDF
+    pdf_resp = requests.get(
+        f"{BASE_URL}/v2/smart-reports/{report_id}/download",
+        headers={"Authorization": f"Bearer {JWT}"},
+        timeout=60,
+    )
+    pdf_resp.raise_for_status()
+    filename = f"smart-report-{report_id}.pdf"
+    with open(filename, "wb") as f:
+        f.write(pdf_resp.content)
+    print(f"Saved {filename} ({len(pdf_resp.content)} bytes)")
+
+
+if __name__ == "__main__":
+    run_headless_report()
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+# 1) Lister les préréglages et inspecter les champs requis
+curl -sS "https://api.verifik.co/v2/smart-batch-presets?country=CO&category=citizen" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Accept: application/json"
+
+# 2) Exécuter SmartReport en mode headless (sync pour 1 à 5 lignes)
+curl -sS -X POST "https://api.verifik.co/v2/smart-reports/run" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "systemKey": "co.citizen.comprehensive",
+    "inputs": {
+      "documentType": "CC",
+      "documentNumber": "123456789"
+    },
+    "mode": "sync",
+    "generatePdf": true,
+    "score": true,
+    "externalRefId": "case-12345"
+  }'
+
+# 3) Interroger le statut si HTTP 202 (async) a été renvoyé
+curl -sS "https://api.verifik.co/v2/smart-reports/<REPORT_ID>" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+
+# 4) Récupérer le JSON structuré HTML + Verification Score
+curl -sS "https://api.verifik.co/v2/smart-reports/<REPORT_ID>/html" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+
+# 5) Télécharger le PDF binaire
+curl -sS -L "https://api.verifik.co/v2/smart-reports/<REPORT_ID>/download" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  --output smart-report.pdf
+
+# 6) Envoyer le PDF par e-mail aux destinataires
+curl -sS -X POST "https://api.verifik.co/v2/smart-reports/<REPORT_ID>/send-email" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"recipients":["client@example.com"],"language":"en"}'
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Guide de gestion des erreurs
+
+Les points de terminaison SmartReports valident les schémas de requête avec Joi avant l'exécution et appliquent la propriété par locataire ainsi que les invariants d'exécution durant le traitement. Les erreurs suivent le format `{ "message": "...", "code": "..." }`.
+
+### Tableau de référence des erreurs
+
+| Statut HTTP | `code` | `message` / Cause | Résolution |
+| --- | --- | --- | --- |
+| `401` | `Unauthorized` | En-tête `Authorization: Bearer <VERIFIK_JWT>` manquant, expiré ou invalide. | Renouvelez ou émettez un JWT par client valide (`POST /v2/auth/...`). |
+| `403` | `Forbidden` | Renvoyé par `smartReportAuthGuard` de Smart-Agent lorsqu'une route SmartReports/Batch/Template/Preset est appelée sans JWT Bearer par client (l'exécution via le service partagé x402 est bloquée). | Transmettez votre propre en-tête client `Authorization: Bearer <VERIFIK_JWT>`. |
+| `403` | `Forbidden` | `system_template_readonly` — tentative de `PUT`, `DELETE` ou d'écriture `type: "System"` sur un modèle système intégré. | Clonez un préréglage (`POST /v2/smart-batch-presets/{systemKey}/clone`) ou créez un modèle client (`POST /v2/smart-report-templates`). |
+| `404` | `NotFound` | `batch_configuration_not_found`, `preset_not_found`, `template_not_found`, `batch_not_found` ou `not_found`. | Vérifiez que l'ID ou `systemKey` appartient à votre compte client (ou correspond à un préréglage/modèle `"System"` actif). |
+| `409` | `MissingParameter` | La validation du schéma Joi a échoué (`systemKey`/`batchConfigurationId` manquant, `inputs`/`rows` manquant, `mode` invalide ou `> 500` lignes dans `POST /v2/smart-reports/run`). | Corrigez la structure de la requête pour correspondre au schéma du point de terminaison. |
+| `409` | `Conflict` | `client_context_required` — le jeton ne possède pas de contexte locataire `clientId`. | Authentifiez-vous avec le JWT d'un compte client Verifik. |
+| `409` | `Conflict` | `sync_row_limit_exceeded` — `mode: "sync"` demandé avec `> 5` lignes. | Passez à `"mode": "async"` ou utilisez `/v2/smart-batches`. |
+| `409` | `Conflict` | `missing_required_inputs (<fields>)` — une ou plusieurs lignes d'entrée omettent des champs requis par `inputSchema.requiredFields`. | Inspectez `GET /v2/smart-batch-presets` ou `GET /v2/batch-configurations/{id}/input-schema` et fournissez tous les champs requis. |
+| `409` | `Conflict` | `endpoints_not_in_account <codes>` — une ou plusieurs étapes de la configuration/du préréglage ne sont pas activées sur votre compte client. | Activez les codes de fonctionnalités listés sur votre compte client Verifik ou retirez-les de votre configuration personnalisée. |
+| `409` | `Conflict` | `send_all_limit` ou `no_pdf_attachments` sur `POST /v2/smart-reports/{id}/send-email`. | `sendAll: true` prend en charge au maximum `50` lignes par e-mail ; spécifiez `rowIndex` pour les lots plus grands. |
+| `422` | `UnprocessableEntity` | La validation de schéma Mongoose ou d'unicité a échoué lors de la persistance d'un modèle, d'une configuration, d'un lot ou d'un rapport. | Vérifiez les contraintes de longueur de champ ou d'énumération dans le `message` renvoyé. |
+
+### Exemples de réponses d'erreur
+
+<Tabs>
+  <TabItem value="403-proxy" label="403 Garde du proxy" default>
+
+```json
+{
+  "code": "Forbidden",
+  "message": "SmartReports, SmartReportTemplates, BatchConfigurations, and SmartBatches require your own per-client Verifik Bearer JWT. They are not available through the shared x402 account."
+}
+```
+
+  </TabItem>
+  <TabItem value="403-readonly" label="403 Modèle système">
+
+```json
+{
+  "message": "system_template_readonly",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 MissingParameter">
+
+```json
+{
+  "message": "\"value\" must contain at least one of [systemKey, batchConfigurationId]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-runtime" label="409 Conflit (Exécution)">
+
+```json
+{
+  "message": "missing_required_inputs (documentType, documentNumber)",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## Voir aussi
+
+- [Vue d'ensemble de SmartReports](/verifik-fr/smart-reports)
+- [MCP et Agents IA](/verifik-fr/smart-reports/mcp-and-ai-agents)
+- [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks)
+- [Exécuter un Smart Report](/verifik-fr/smart-reports/run-a-smart-report)
+- [Lister les modèles de rapport](/verifik-fr/smart-reports/list-report-templates)
+- [SmartBatch](/verifik-fr/smart-batch)

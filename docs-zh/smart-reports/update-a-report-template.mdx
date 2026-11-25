@@ -1,0 +1,389 @@
+---
+id: update-a-report-template
+title: 更新报告模板
+description: '更新自定义 Smart Report 模板的元数据、区块、主题配置或 PDF 设置'
+slug: /smart-reports/update-a-report-template
+keywords:
+  - 'v2/smart-report-templates/{id}'
+  - '/v2/smart-report-templates/{id}'
+  - v2/smart-report-templates
+  - /v2/smart-report-templates
+  - v2 smart-report-templates
+  - 'v2 smart-report-templates {id}'
+  - api/smart-report-templates
+  - /api/smart-report-templates
+  - api smart-report-templates
+  - 'api.verifik.co/v2/smart-report-templates/{id}'
+  - 'https://api.verifik.co/v2/smart-report-templates/{id}'
+  - 'PUT v2/smart-report-templates/{id}'
+  - 'PUT /v2/smart-report-templates/{id}'
+  - smart-report-templates
+  - /smart-report-templates
+  - 'GET v2/smart-report-templates/{id}'
+  - 'GET /v2/smart-report-templates/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+更新属于你客户账户的自定义 Smart Report 模板。可发送任意需要更新的元数据、布局 `sections`、`reportTheme`、`sampleData` 或 PDF 渲染选项的子集；请求负载中省略的字段将保留其原有值。
+
+在无头与 AI 流水线中，可使用此端点迭代由 [生成模板布局](/verifik-zh/smart-reports/generate-template-layout) 产出的布局、刷新品牌资源（`logo`、`primaryColor`、`customFonts`）、更新 `SmartBatch` 绑定关系，或切换 `isActive` 状态。内置的 `"System"` 模板为只读，若将其作为目标将返回 `403`（`system_template_readonly`）。
+
+### 端点
+
+```
+PUT https://api.verifik.co/v2/smart-report-templates/{id}
+```
+
+Smart-Agent 代理（`https://ai.verifik.co`）暴露了完全相同的 `/v2/...` 路径，并同样要求携带你自己的 `Authorization: Bearer <VERIFIK_JWT>` 请求头。
+
+### 请求头
+
+| 名称 | 值 |
+| --- | --- |
+| Content-Type | `application/json` |
+| Accept | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### 参数
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `id` | string | 是 | Smart Report 模板 ObjectId。 |
+
+### 请求体参数
+
+更新时所有请求体字段均为可选。
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `name` | string | 否 | 更新后的模板显示名称。最多 `150` 个字符。 |
+| `description` | string | 否 | 更新后的模板描述。最多 `500` 个字符。 |
+| `batchConfiguration` | string | 否 | 关联 `SmartBatch` 配置的 ObjectId。 |
+| `country` | string | 否 | 国家标识符或标签。最多 `60` 个字符。 |
+| `category` | string | 否 | 核验领域：`"citizen"`、`"company"` 或 `"vehicle"`。 |
+| `isActive` | boolean | 否 | 启用或停用该模板。 |
+| `logo` | string | 否 | 品牌 Logo URL 或 base64 Data URI。 |
+| `primaryColor` | string | 否 | 主品牌强调色十六进制颜色。 |
+| `identityColor` | string | 否 | 次要/身份识别强调色十六进制颜色。 |
+| `pageBackgroundColor` | string | 否 | 页面背景十六进制颜色。 |
+| `header` | object | 否 | 自定义页眉布局与内容配置。 |
+| `footer` | object | 否 | 自定义页脚布局与内容配置。 |
+| `legend` | string | 否 | 页脚说明文字或合规声明文本。最多 `2000` 个字符。 |
+| `legendPosition` | string | 否 | 说明文字对齐方式：`"left"`、`"center"` 或 `"right"`。 |
+| `termsAndConditions` | string | 否 | 法律条款与条件文本。最多 `4000` 个字符。 |
+| `termsPosition` | string | 否 | 条款对齐方式：`"left"`、`"center"` 或 `"right"`。 |
+| `sections` | object[] | 否 | `ReportSection` 对象数组（`id`、`type`、`order`、`dataPath`、`label`、`staticContent`、`columns`、`columnsPerRow`、`keyOverrides`、`valueRules`、`chartKind`、`style`、`condition`、`frame` 等）。 |
+| `pageSize` | string | 否 | PDF 纸张尺寸：`"A4"`、`"Letter"` 或 `"Legal"`。 |
+| `layoutVersion` | integer | 否 | 布局渲染器版本：`1` 或 `2`。 |
+| `orientation` | string | 否 | 页面方向：`"portrait"` 或 `"landscape"`。 |
+| `margins` | object | 否 | 页边距对象 `` `{ "top": 40, "right": 40, "bottom": 40, "left": 40 }` ``。 |
+| `pdfEngine` | string | 否 | PDF 渲染引擎：`"puppeteer"` 或 `"pdfkit"`。 |
+| `showPageNumbers` | boolean | 否 | 在渲染后的 PDF 上显示页码。 |
+| `pageNumberPosition` | string | 否 | 页码位置：`"top-left"`、`"top-center"`、`"top-right"`、`"bottom-left"`、`"bottom-center"` 或 `"bottom-right"`。 |
+| `pageNumberDivider` | boolean / string | 否 | 页码分隔符配置。 |
+| `watermark` | object | 否 | 水印叠加设置。 |
+| `security` | object | 否 | PDF 保护设置 `` `{ "enabled": true, "password": "..." }` ``。传入 `"******"` 或省略 `password` 将保留现有的加密密码。 |
+| `signature` | object | 否 | 签名区块配置。 |
+| `logoSettings` | object | 否 | Logo 尺寸与摆放配置。 |
+| `sheetImages` | object[] | 否 | 嵌入的模板图片资源。最多 `12` 项。 |
+| `customFonts` | object[] | 否 | 自定义字体声明（Google Fonts、外部 URL 或上传文件）。最多 `6` 项。 |
+| `headerLogos` | object[] | 否 | 显示在页眉中的附加 Logo。最多 `16` 项。 |
+| `bodyTopPadding` | number | 否 | 应用于文档正文的顶部内边距，范围 `0` 到 `600`。 |
+| `sampleData` | object | 否 | 与模板一起保存的示例核验负载，用于预览与示例下载。 |
+| `endpointDesign` | object | 否 | 特定于端点的展示元数据。 |
+| `reportTheme` | string / object | 否 | 主题预设 ID（`"premium_dark"`、`"light_cards"`、`"editorial"`、`"dashboard"`）或主题配置对象（`id`、`scoreScale`、`scoreEnabled`、`scoreProfile`、`locale`、`density`、`eyebrow`、`coverTitle`、`headlines`、`legalNote`、`showVerifiedBadge`、`showWeights`、`showDeductions`、`showFields`、`showHowItWorks`、`blocks`、`tokens`）。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const id = "67c1f94b2d8a1c0012a4b301";
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        name: "Colombia Driver Onboarding Report v2",
+        primaryColor: "#0F766E",
+        isActive: true,
+        security: {
+          enabled: true,
+          password: "******",
+        },
+        reportTheme: {
+          id: "light_cards",
+          scoreEnabled: true,
+          scoreProfile: "cabify_driver",
+          scoreScale: "percent",
+          density: "compact",
+        },
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67c1f94b2d8a1c0012a4b301";
+$payload = [
+    "name" => "Colombia Driver Onboarding Report v2",
+    "primaryColor" => "#0F766E",
+    "isActive" => true,
+    "security" => [
+        "enabled" => true,
+        "password" => "******",
+    ],
+    "reportTheme" => [
+        "id" => "light_cards",
+        "scoreEnabled" => true,
+        "scoreProfile" => "cabify_driver",
+        "scoreScale" => "percent",
+        "density" => "compact",
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+template_id = "67c1f94b2d8a1c0012a4b301"
+url = f"https://api.verifik.co/v2/smart-report-templates/{template_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": True,
+    "security": {
+        "enabled": True,
+        "password": "******",
+    },
+    "reportTheme": {
+        "id": "light_cards",
+        "scoreEnabled": True,
+        "scoreProfile": "cabify_driver",
+        "scoreScale": "percent",
+        "density": "compact",
+    },
+}
+
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "67c1f94b2d8a1c0012a4b301"
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":         "Colombia Driver Onboarding Report v2",
+		"primaryColor": "#0F766E",
+		"isActive":     true,
+		"security": map[string]interface{}{
+			"enabled":  true,
+			"password": "******",
+		},
+		"reportTheme": map[string]interface{}{
+			"id":           "light_cards",
+			"scoreEnabled": true,
+			"scoreProfile": "cabify_driver",
+			"scoreScale":   "percent",
+			"density":      "compact",
+		},
+	})
+
+	req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/smart-report-templates/"+id, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/smart-report-templates/67c1f94b2d8a1c0012a4b301" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": true,
+    "security": {
+      "enabled": true,
+      "password": "******"
+    },
+    "reportTheme": {
+      "id": "light_cards",
+      "scoreEnabled": true,
+      "scoreProfile": "cabify_driver",
+      "scoreScale": "percent",
+      "density": "compact"
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "_id": "67c1f94b2d8a1c0012a4b301",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": true,
+    "security": {
+      "enabled": true
+    },
+    "reportTheme": {
+      "id": "light_cards",
+      "scoreEnabled": true,
+      "scoreProfile": "cabify_driver",
+      "scoreScale": "percent",
+      "density": "compact"
+    },
+    "updatedAt": "2026-09-10T04:10:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "system_template_readonly",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"pageSize\" must be one of [A4, Letter, Legal]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "Validation failed",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 传入 `security.password: "******"` 或省略 `security.password` 会保留模板原有的加密密码，而不是覆盖它。
+- 内置 `"System"` 模板不可更新（返回 `403` `system_template_readonly`）。如需自定义系统起步模板，请通过 [创建报告模板](/verifik-zh/smart-reports/create-a-report-template) 创建自定义副本。
+- 保存更改时，请将预览辅助字段（`scoreScale`、`themeTokens`、`scoreSettings`）放入 `reportTheme`（`scoreScale`、`tokens`、`scoreEnabled`/`scoreProfile`）中。
+
+### 相关页面
+
+- [SmartReports 概览](/verifik-zh/smart-reports)
+- [无头 API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)
+- [获取报告模板](/verifik-zh/smart-reports/retrieve-a-report-template)
+- [生成模板布局](/verifik-zh/smart-reports/generate-template-layout)
+- [预览模板 HTML](/verifik-zh/smart-reports/preview-template-html)
+- [删除报告模板](/verifik-zh/smart-reports/delete-a-report-template)

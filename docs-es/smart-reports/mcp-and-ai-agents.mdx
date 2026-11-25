@@ -1,0 +1,449 @@
+---
+id: mcp-and-ai-agents
+title: MCP y Agentes de IA
+description: Conecta agentes de IA a SmartReports mediante el servidor MCP por HTTP transmitible de Verifik, archivos de descubrimiento OpenAPI y el Developer & AI Agent Kit.
+slug: /smart-reports/mcp-and-ai-agents
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# MCP y Agentes de IA
+
+Verifik expone **SmartReports** de forma nativa sobre el **Model Context Protocol (MCP)** mediante un servidor JSON-RPC 2.0 por HTTP transmitible, junto con archivos de descubrimiento legibles por máquina (`/openapi.json`, `/llms.txt`, `/agent-card.json`) y un **Developer & AI Agent Kit** integrado dentro del portal Smart-Agent.
+
+---
+
+## Endpoints MCP por HTTP transmitible
+
+| Método | Endpoint | Comportamiento |
+| --- | --- | --- |
+| `POST` | `https://ai.verifik.co/mcp` | Endpoint MCP principal por HTTP transmitible JSON-RPC 2.0. |
+| `POST` | `https://ai.verifik.co/api/mcp` | Alias equivalente bajo `/api` para el endpoint MCP por HTTP transmitible. |
+| `GET` | `https://ai.verifik.co/mcp` | Metadatos de descubrimiento sin autenticación (`name`, `version`, `protocolVersion`, `transport`, `authentication` y lista de herramientas). |
+| `GET` | `https://ai.verifik.co/api/mcp` | Alias equivalente bajo `/api` para los metadatos de descubrimiento MCP sin autenticación. |
+
+### Protocolo y metadatos del servidor
+
+Cada saludo (handshake) MCP e intercambio JSON-RPC cumple con:
+
+- **Protocolo de transporte**: JSON-RPC 2.0 (`"jsonrpc": "2.0"`)
+- **Versión del protocolo MCP**: `"2025-03-26"`
+- **Información del servidor**: `{ "name": "verifik-mcp", "version": "1.0.0" }`
+- **Capacidades**: `{ "tools": { "listChanged": false } }`
+- **Métodos soportados**: `initialize`, `notifications/initialized`, `ping`, `tools/list` y `tools/call` (los métodos no reconocidos devuelven el error JSON-RPC `-32601`).
+
+---
+
+## Autenticación y aislamiento por tenant
+
+El descubrimiento MCP está separado de la ejecución facturada por tenant:
+
+- **Descubrimiento sin autenticación**: `GET /mcp`, `initialize`, `ping`, `notifications/initialized` y `tools/list` funcionan directamente sin encabezado `Authorization` para que los hosts MCP y frameworks de agentes puedan inspeccionar los esquemas de herramientas.
+- **JWT estricto por cliente en `tools/call`**: Cada invocación a `tools/call` exige un **Bearer JWT de Verifik por cliente** suministrado por el llamador:
+
+```text
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+Si falta el encabezado `Authorization`, tiene formato incorrecto o coincide con el token de servicio compartido del proxy, el servidor MCP rechaza `tools/call` con **HTTP `401`** y el código de error JSON-RPC **`-32001`**:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "error": {
+    "code": -32001,
+    "message": "Per-client Authorization: Bearer <VERIFIK_JWT> header is required to invoke Verifik MCP tools."
+  }
+}
+```
+
+:::danger Regla de seguridad: mantén `VERIFIK_JWT` en el lado del servidor
+Nunca incrustes ni expongas `VERIFIK_JWT` en JavaScript de navegador, repositorios públicos ni prompts visibles para clientes. Configura los encabezados MCP únicamente en entornos de ejecución del servidor, clientes MCP locales de escritorio (Claude Desktop, Cursor, Windsurf) o ejecutores seguros de herramientas de agentes.
+:::
+
+### Seguimiento de canal y manejo de PDF en MCP
+
+- Cuando un agente invoca `smart_report_run` y omite `createdByChannel`, el controlador MCP inyecta automáticamente `"createdByChannel": "mcp"` antes de reenviar a `POST /v2/smart-reports/run`.
+- Cuando un agente invoca `smart_report_download_pdf`, el servidor MCP obtiene el binario PDF desde Verifik y devuelve `{ reportId, contentType, byteLength, downloadUrl }` de forma predeterminada—incrustando `base64` únicamente cuando se solicita explícitamente `"includeBase64": true` para que los PDF grandes no desborden las ventanas de contexto del LLM.
+
+---
+
+## Archivos de descubrimiento para agentes de IA
+
+Los frameworks de agentes, importadores OpenAPI y rastreadores de LLM pueden descubrir automáticamente las capacidades de SmartReports usando cuatro endpoints públicos:
+
+| URL de descubrimiento | Formato | Detalles |
+| --- | --- | --- |
+| `https://ai.verifik.co/mcp` (`GET` y `POST`) | JSON / JSON-RPC 2.0 | Metadatos de descubrimiento MCP por HTTP transmitible en vivo y ejecución de herramientas JSON-RPC. |
+| `https://ai.verifik.co/openapi.json` | OpenAPI `3.0.3` | Incluye las 10 rutas de SmartReports bajo las etiquetas `["SmartReports", "Data"]` con `security: [{ "bearerAuth": [] }]` y **sin** `x-payment-info` (requiere JWT por cliente en lugar de x402 de pago por llamada). |
+| `https://ai.verifik.co/llms.txt` | Markdown (`text/plain`) | Resumen conciso legible por LLM sobre los productos de Verifik, incluidos los enlaces a la API REST headless y al endpoint MCP de SmartReports. |
+| `https://ai.verifik.co/agent-card.json` | JSON | Tarjeta de descubrimiento de agente que anuncia las capacidades `"smart-reports"` y `"mcp-tools"` y `endpoints.mcp` (`https://ai.verifik.co/mcp`). |
+
+---
+
+## Referencia de herramientas MCP de SmartReports (10 herramientas)
+
+El servidor MCP expone **10 herramientas de SmartReports** (más `smart_link_create_session` de SmartLink, para un total de **11 herramientas** devueltas por `tools/list`).
+
+### Catálogo de herramientas
+
+| # | Nombre de herramienta | Método HTTP y ruta | Propósito |
+| --- | --- | --- | --- |
+| 1 | `smart_report_list_presets` | `GET /v2/smart-batch-presets` | Lista presets del sistema (`citizen`, `company`, `vehicle`) con `systemKey`, número de pasos e `inputSchema`. |
+| 2 | `smart_report_clone_preset` | `POST /v2/smart-batch-presets/{systemKey}/clone` | Clona de forma idempotente un preset en una `BatchConfiguration` + `SmartReportTemplate` propiedad del cliente. |
+| 3 | `smart_report_get_input_schema` | `GET /v2/batch-configurations/{id}/input-schema` | Inspecciona los campos exactos requeridos/opcionales, JSON Schema, `exampleInput` y `estimatedCreditsPerRow`. |
+| 4 | `smart_report_run` | `POST /v2/smart-reports/run` | Ejecución de extremo a extremo (preset o configuración -> pasos de verificación -> Puntaje de Verificación -> PDF -> correo y webhooks opcionales). |
+| 5 | `smart_report_get` | `GET /v2/smart-reports/{id}` | Recupera estado del reporte, metadatos, `verificationScoreSummary`, `emailHistory`, `downloadUrl` y `htmlUrl`. |
+| 6 | `smart_report_get_html` | `GET /v2/smart-reports/{id}/html` | Obtiene HTML renderizado, resultados estructurados por fila y `verificationScore` sin renderizar PDF. |
+| 7 | `smart_report_generate_pdf` | `POST /v2/smart-reports/{id}/generate` | Renderiza o regenera un PDF para un SmartReport existente y emite webhooks `smart_batch_report_generated`. |
+| 8 | `smart_report_download_pdf` | `GET /v2/smart-reports/{id}/download` | Descarga metadatos del PDF + `downloadUrl` (y `base64` opcional cuando `includeBase64: true`). |
+| 9 | `smart_report_send_email` | `POST /v2/smart-reports/{id}/send-email` | Envía por correo un PDF generado a destinatarios y dispara webhooks `smart_batch_report_sent` / `delivery_failed`. |
+| 10 | `smart_report_list_templates` | `GET /v2/smart-report-templates` | Lista plantillas SmartReport propiedad del cliente y del sistema (`"System"`). |
+
+:::note Total de herramientas en `tools/list`
+Llamar a `tools/list` devuelve **11 herramientas**: las 10 herramientas `smart_report_*` documentadas arriba más `smart_link_create_session` (`POST /v3/smart-links/sessions`) para generar enlaces firmados de verificación SmartLink.
+:::
+
+### Esquemas de entrada detallados por herramienta
+
+#### 1. `smart_report_list_presets`
+- **Origen**: `GET /v2/smart-batch-presets`
+- **Argumentos** (todos opcionales):
+  - `country` (string) — Filtro de país ISO (p. ej. `"CO"`, `"MX"`, `"PE"`, `"US"`).
+  - `category` (string: `"citizen" | "company" | "vehicle"`) — Filtro de dominio.
+  - `tier` (string: `"essential" | "comprehensive"`) — Filtro de nivel de preset.
+  - `search` (string) — Filtro de texto sobre `name`, `description` y `systemKey`.
+
+#### 2. `smart_report_clone_preset`
+- **Origen**: `POST /v2/smart-batch-presets/{systemKey}/clone`
+- **Requerido**: `systemKey` (string, p. ej. `"co.citizen.comprehensive"`).
+
+#### 3. `smart_report_get_input_schema`
+- **Origen**: `GET /v2/batch-configurations/{id}/input-schema`
+- **Requerido**: `id` (string) — ObjectId de `BatchConfiguration`.
+
+#### 4. `smart_report_run`
+- **Origen**: `POST /v2/smart-reports/run` (establece `createdByChannel` a `"mcp"` de forma predeterminada si se omite)
+- **Argumentos**:
+  - `systemKey` (string) — Clave de preset del sistema a clonar/reutilizar cuando se omite `batchConfigurationId`.
+  - `batchConfigurationId` (string) — ID de una `BatchConfiguration` existente del cliente.
+  - `templateId` (string) — Sobrescritura opcional de ID de `SmartReportTemplate`.
+  - `name` (string) — Nombre visible opcional del reporte/lote.
+  - `inputs` (objeto o arreglo de hasta `500` objetos) — Entradas del sujeto de verificación (p. ej. `{"documentType": "CC", "documentNumber": "123456789"}`).
+  - `mode` (`"sync" | "async"`) — `sync` espera (hasta `5` filas, límite de `90s`); `async` devuelve `202 Accepted` de inmediato.
+  - `generatePdf` (boolean, predeterminado `true`) — Establece `false` para omitir la generación de PDF y devolver solo el lote + Puntaje de Verificación.
+  - `includePdfBase64` (boolean, predeterminado `false`) — Incluye los bytes PDF en base64 dentro de la respuesta JSON.
+  - `pdfEngine` (`"puppeteer" | "pdfkit"`) — Sobrescritura del motor de renderizado PDF.
+  - `score` (boolean) — Si se debe calcular el Puntaje de Verificación.
+  - `scoreProfile` (string) — Identificador de perfil de Puntaje de Verificación (p. ej. `"cabify_driver"`, `"kyc"`, `"kyb"`, `"fleet"`).
+  - `emailTo` (string[]) — Direcciones de correo de destinatarios para enviar el PDF terminado.
+  - `emailSubject` (string) — Asunto personalizado opcional del correo.
+  - `emailLanguage` (`"en" | "es"`, predeterminado `"es"`) — Idioma del cuerpo del correo.
+  - `webhookUrl` (string) — URL webhook HTTPS por ejecución que recibirá eventos `smart_batch_report_*`.
+  - `externalRefId` (string) — ID de correlación del llamador guardado en el reporte e incluido en los payloads webhook.
+
+#### 5. `smart_report_get`
+- **Origen**: `GET /v2/smart-reports/{id}`
+- **Requerido**: `id` (string) — ObjectId de SmartReport.
+
+#### 6. `smart_report_get_html`
+- **Origen**: `GET /v2/smart-reports/{id}/html`
+- **Requerido**: `id` (string) — ObjectId de SmartReport.
+- **Opcional**: `rowIndex` (número, base cero, predeterminado `0`), `preview` (boolean).
+
+#### 7. `smart_report_generate_pdf`
+- **Origen**: `POST /v2/smart-reports/{id}/generate`
+- **Requerido**: `id` (string) — ObjectId de SmartReport.
+- **Opcional**: `rowIndex` (número), `engine` (`"puppeteer" | "pdfkit"`), `score` (boolean), `scoreProfile` (string).
+
+#### 8. `smart_report_download_pdf`
+- **Origen**: `GET /v2/smart-reports/{id}/download`
+- **Requerido**: `id` (string) — ObjectId de SmartReport.
+- **Opcional**: `rowIndex` (número), `includeBase64` (boolean, predeterminado `false`).
+
+#### 9. `smart_report_send_email`
+- **Origen**: `POST /v2/smart-reports/{id}/send-email`
+- **Requerido**: `id` (string) — ObjectId de SmartReport; `recipients` (string[], correos válidos).
+- **Opcional**: `subject` (string), `language` (`"en" | "es"`, predeterminado `"es"`), `rowIndex` (número), `sendAll` (boolean, hasta `50` filas como adjuntos independientes).
+
+#### 10. `smart_report_list_templates`
+- **Origen**: `GET /v2/smart-report-templates`
+- **Opcional**: `type` (`"System" | "client"`), `country` (string), `category` (string), `search` (string), `limit` (número), `page` (número).
+
+---
+
+## Configuración de clientes y ejemplos JSON-RPC 2.0 puros
+
+<Tabs>
+  <TabItem value="mcp-clients" label="Claude Desktop / Cursor / Windsurf" default>
+
+Agrega el servidor MCP por HTTP transmitible de Verifik a la configuración JSON `mcpServers` de tu cliente (`claude_desktop_config.json`, `.cursor/mcp.json` o `mcp_config.json` de Windsurf):
+
+```json
+{
+  "mcpServers": {
+    "verifik": {
+      "url": "https://ai.verifik.co/mcp",
+      "headers": {
+        "Authorization": "Bearer <VERIFIK_JWT>"
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL (JSON-RPC 2.0)">
+
+```bash
+# 1) Inicializar sesión MCP (no requiere autenticación)
+curl -sS -X POST "https://ai.verifik.co/mcp" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+      "protocolVersion": "2025-03-26",
+      "capabilities": {},
+      "clientInfo": { "name": "verifik-cli", "version": "1.0.0" }
+    }
+  }'
+
+# 2) Listar herramientas MCP disponibles (no requiere autenticación)
+curl -sS -X POST "https://ai.verifik.co/mcp" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/list"
+  }'
+
+# 3) Descubrir presets (Authorization: Bearer <VERIFIK_JWT> requerido para tools/call)
+curl -sS -X POST "https://ai.verifik.co/mcp" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+      "name": "smart_report_list_presets",
+      "arguments": { "country": "CO", "category": "citizen" }
+    }
+  }'
+
+# 4) Ejecutar un SmartReport mediante MCP
+curl -sS -X POST "https://ai.verifik.co/mcp" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 4,
+    "method": "tools/call",
+    "params": {
+      "name": "smart_report_run",
+      "arguments": {
+        "systemKey": "co.citizen.comprehensive",
+        "inputs": { "documentType": "CC", "documentNumber": "123456789" },
+        "mode": "sync",
+        "generatePdf": true,
+        "score": true,
+        "externalRefId": "agent-case-001"
+      }
+    }
+  }'
+```
+
+  </TabItem>
+  <TabItem value="nodejs" label="Node.js">
+
+```javascript
+const MCP_URL = 'https://ai.verifik.co/mcp';
+const JWT = process.env.VERIFIK_JWT;
+
+async function mcpCall(method, params, id, withAuth = false) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (withAuth) {
+    if (!JWT) throw new Error('Define VERIFIK_JWT en tu entorno de servidor');
+    headers.Authorization = `Bearer ${JWT}`;
+  }
+
+  const res = await fetch(MCP_URL, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ jsonrpc: '2.0', id, method, params }),
+  });
+
+  const body = await res.json();
+  if (body.error) {
+    throw new Error(`Error MCP ${body.error.code}: ${body.error.message}`);
+  }
+  return body.result;
+}
+
+async function main() {
+  // 1. Inicializar y listar herramientas
+  const init = await mcpCall('initialize', { protocolVersion: '2025-03-26' }, 1);
+  console.log('Conectado a:', init.serverInfo, init.protocolVersion);
+
+  const { tools } = await mcpCall('tools/list', {}, 2);
+  console.log('Total herramientas MCP:', tools.length);
+
+  // 2. Llamar a smart_report_run con Bearer JWT por cliente
+  const runResult = await mcpCall(
+    'tools/call',
+    {
+      name: 'smart_report_run',
+      arguments: {
+        systemKey: 'co.citizen.comprehensive',
+        inputs: { documentType: 'CC', documentNumber: '123456789' },
+        mode: 'sync',
+        generatePdf: true,
+        score: true,
+        externalRefId: 'agent-case-001',
+      },
+    },
+    3,
+    true
+  );
+
+  if (runResult.isError) {
+    throw new Error(runResult.content[0].text);
+  }
+
+  const parsed = JSON.parse(runResult.content[0].text);
+  console.log('Resultado SmartReport:', parsed.data.report._id, parsed.data.verificationScore);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import json
+import os
+import requests
+
+MCP_URL = "https://ai.verifik.co/mcp"
+JWT = os.environ["VERIFIK_JWT"]
+
+
+def mcp_call(method: str, params: dict, req_id: int, with_auth: bool = False) -> dict:
+    headers = {"Content-Type": "application/json"}
+    if with_auth:
+        headers["Authorization"] = f"Bearer {JWT}"
+
+    resp = requests.post(
+        MCP_URL,
+        headers=headers,
+        json={"jsonrpc": "2.0", "id": req_id, "method": method, "params": params},
+        timeout=120,
+    )
+    data = resp.json()
+    if "error" in data:
+        raise RuntimeError(f"Error MCP {data['error']['code']}: {data['error']['message']}")
+    return data["result"]
+
+
+def main() -> None:
+    # 1. Inicializar y listar herramientas
+    init = mcp_call("initialize", {"protocolVersion": "2025-03-26"}, 1)
+    print("Servidor:", init["serverInfo"], "Protocolo:", init["protocolVersion"])
+
+    tools = mcp_call("tools/list", {}, 2)["tools"]
+    print("Herramientas disponibles:", [t["name"] for t in tools])
+
+    # 2. Ejecutar smart_report_run
+    result = mcp_call(
+        "tools/call",
+        {
+            "name": "smart_report_run",
+            "arguments": {
+                "systemKey": "co.citizen.comprehensive",
+                "inputs": {"documentType": "CC", "documentNumber": "123456789"},
+                "mode": "sync",
+                "generatePdf": True,
+                "score": True,
+                "externalRefId": "agent-case-001",
+            },
+        },
+        3,
+        with_auth=True,
+    )
+
+    if result.get("isError"):
+        raise RuntimeError(result["content"][0]["text"])
+
+    payload = json.loads(result["content"][0]["text"])
+    print("Report ID:", payload["data"]["report"]["_id"])
+    print("Puntaje:", payload["data"].get("verificationScore"))
+
+
+if __name__ == "__main__":
+    main()
+```
+
+  </TabItem>
+</Tabs>
+
+### Prompt de sistema listo para usar en agentes de IA
+
+```text
+Eres un asistente de automatización de verificaciones conectado al servidor MCP de Verifik SmartReports (https://ai.verifik.co/mcp).
+
+Reglas del flujo de trabajo:
+1. Antes de ejecutar cualquier verificación, descubre las entradas requeridas:
+   - Llama a `smart_report_list_presets` (si ejecutas por systemKey) o a `smart_report_get_input_schema` (si te dieron un batchConfigurationId).
+   - Confirma que cada campo requerido en `inputSchema.requiredFields` esté presente y sea válido antes de consumir créditos.
+2. Ejecuta el reporte con `smart_report_run`:
+   - Pasa `mode: "sync"` para 1 a 5 filas, o `mode: "async"` para 6 a 500 filas (o consultas externas lentas).
+   - Incluye un `externalRefId` de correlación y opcionalmente `webhookUrl` / `emailTo` cuando los proporcione el llamador.
+3. Maneja respuestas asíncronas:
+   - Si `smart_report_run` devuelve `mode: "async"` (HTTP 202), consulta `smart_report_get` hasta que `status` sea "generated", "sent" o "failed".
+4. Recupera resultados sin saturar el contexto:
+   - Usa `smart_report_get_html` para inspeccionar hallazgos estructurados por fila y `verificationScore`.
+   - Usa `smart_report_download_pdf` con `includeBase64: false` para obtener `downloadUrl`, salvo que se requieran explícitamente los bytes base64 en bruto.
+5. Seguridad:
+   - Nunca pidas al usuario pegar `VERIFIK_JWT` en historiales de chat ni en código de navegador; confía en el encabezado Authorization del lado del servidor del cliente MCP.
+```
+
+---
+
+## Interfaz integrada Developer & AI Agent Kit
+
+Dentro del portal web **Smart-Agent** (`https://ai.verifik.co`), el **Developer & AI Agent Kit** (`SmartReportAgentKitComponent`) genera automáticamente fragmentos listos para copiar adaptados al preset, configuración de lote, plantilla o reporte generado que estés viendo.
+
+### Dónde abrirlo en Smart-Agent
+
+1. **Panel de Lotes (`BatchDashboardComponent`)**: Haz clic en **`API & AI Agent`** en el encabezado del panel para alternar el panel expandido **Developer & AI Agent Kit** precargado con el `Config ID`, `Template ID`, `Preset Key` (si fue clonado), ejemplo de entrada requerido y URL webhook vinculada de la configuración activa.
+2. **Modal Visor de Reportes (`ReportViewerComponent`)**: Haz clic en **`API & AI Agent`** en la barra de herramientas del visor para abrir el diálogo **`Developer & AI Agent Kit`** enfocado en el `Report ID` activo (y el índice de fila seleccionado), incluyendo llamadas en vivo a `/download`, `/html` y `/send-email`.
+3. **Modal de Vista Previa de Plantilla (`SmartBatchComponent`)**: Haz clic en **`API / MCP`** en el encabezado del modal de vista previa (haz clic en **`Back to Preview`** para volver) para inspeccionar el kit compacto prellenado para esa plantilla o preset del sistema.
+
+### Controles, chips y pestañas del kit
+
+- **Encabezado**: Muestra el antetítulo `HEADLESS API & AI AGENT KIT`, el título **`Developer & AI Agent Kit`** y enlaces directos a **`API Docs`** (`/verifik-es/smart-reports`) y **`Report Webhooks`** (`/verifik-es/resources/smart-reports-webhooks`).
+- **Chips de identificadores copiables al clic**: Muestra insignias contextuales para **`Config ID`**, **`Template ID`**, **`Preset Key`**, **`Report ID`** y la URL webhook vinculada cuando está presente.
+- **Cuatro pestañas de integración**:
+  1. **`AI Agent Prompt`** — Instrucciones listas para pegar para asistentes de código y agentes autónomos con descubrimiento de entradas, `POST /v2/smart-reports/run`, endpoints de consulta, eventos webhook y reglas del endpoint MCP.
+  2. **`MCP Tool`** — Bloque JSON listo para copiar de `mcpServers.verifik` más un `sampleToolCall` prellenado para `smart_report_run` (y `followUpTools` al visualizar un reporte activo).
+  3. **`Webhook Handler`** — Receptor Express.js listo para copiar que maneja los 6 tipos de evento `smart_batch_*` con confirmación rápida `200 OK` e indicaciones de URL de descarga de PDF.
+  4. **`cURL Workflow`** — Comandos shell de extremo a extremo para inspección de `input-schema`, `POST /v2/smart-reports/run`, descarga de PDF y entrega por correo.
+- **Botón de acción**: Haz clic en **`Copy Snippet`** (muestra **`Copied!`** después de copiar) para copiar el fragmento de la pestaña activa al portapapeles.
+
+---
+
+## Relacionados
+
+- [Descripción general de SmartReports](/verifik-es/smart-reports)
+- [Guía de API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [Webhooks de SmartReports](/verifik-es/resources/smart-reports-webhooks)
+- [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report)
+- [Listar plantillas de reporte](/verifik-es/smart-reports/list-report-templates)

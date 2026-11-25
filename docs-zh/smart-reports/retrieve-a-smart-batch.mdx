@@ -1,0 +1,292 @@
+---
+id: retrieve-a-smart-batch
+title: 查询 Smart Batch
+description: 根据 ID 查询 Smart Batch，合并存储的行结果并修复未完成的行。
+slug: /smart-reports/retrieve-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}'
+  - '/v2/smart-batches/{id}'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - 'v2 smart-batches {id}'
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}'
+  - 'https://api.verifik.co/v2/smart-batches/{id}'
+  - 'GET v2/smart-batches/{id}'
+  - 'GET /v2/smart-batches/{id}'
+  - smart-batches
+  - /smart-batches
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+根据 ID 为已认证客户获取单个 `SmartBatch` 文档。在返回载荷之前，服务器会将外部存储的 `smartbatchrows` 输出合并到 `rows[].results` 中，并执行 `healIncompleteRows()`，以重新打开已标记为 `completed` 但缺少已启用配置步骤输出的行。
+
+如果该批次不存在或属于另一个客户账户，接口将返回 `200` 及 `{ "data": null }`。读取批次不会执行核验，也不会消耗积分。
+
+### 接口
+
+```text
+GET https://api.verifik.co/v2/smart-batches/{id}
+```
+
+此接口也可通过 Smart-Agent 代理 `https://ai.verifik.co/v2/smart-batches/{id}` 访问，需使用你自己的客户专属 `Authorization: Bearer <VERIFIK_JWT>`。共享 x402 执行会被拒绝并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称            | 值                     | 描述                                     |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | 请求载荷格式。                           |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 客户作用域的 JWT（`authUser.clientId`）。 |
+
+### 路径参数
+
+| 名称 | 类型   | 必填 | 描述 |
+| ---- | ------ | ---- | ---- |
+| `id` | string | 是   | `SmartBatch` ObjectId。 |
+
+### 查询参数
+
+| 名称          | 类型     | 必填 | 描述 |
+| ------------- | -------- | ---- | ---- |
+| `select`      | string   | 否   | 字段投影表达式（例如 `"-rows"` 表示排除行载荷）。 |
+| `columns`     | string   | 否   | 要在返回文档中包含的字段子集。 |
+| `populates[]` | string[] | 否   | 要填充的关联文档：`"batchConfiguration"` 和/或 `"client"`。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-batches/${batchId}`, {
+    params: {
+      "populates[]": ["batchConfiguration", "client"],
+    },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$query = "populates%5B%5D=batchConfiguration&populates%5B%5D=client";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = [
+    ("populates[]", "batchConfiguration"),
+    ("populates[]", "client"),
+]
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	params := url.Values{}
+	params.Add("populates[]", "batchConfiguration")
+	params.Add("populates[]", "client")
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches/"+batchID+"?"+params.Encode(), nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3?populates%5B%5D=batchConfiguration&populates%5B%5D=client" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d4",
+      "name": "Colombia Identity Check"
+    },
+    "client": {
+      "_id": "507f1f77bcf86cd799439013"
+    },
+    "name": "Colombia Onboarding — November",
+    "status": "completed",
+    "executor": "browser",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0.04,
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "completed",
+        "results": {
+          "1": {
+            "fullName": "JANE DOE",
+            "documentNumber": "1032386359"
+          }
+        },
+        "errors": [],
+        "creditsSpent": 0.04,
+        "attemptCount": 1,
+        "processedAt": "2026-11-24T20:01:00.000Z"
+      }
+    ],
+    "totalRows": 1,
+    "completedRows": 1,
+    "failedRows": 0,
+    "partialRows": 0,
+    "startedAt": "2026-11-24T20:00:00.000Z",
+    "completedAt": "2026-11-24T20:01:00.000Z",
+    "createdAt": "2026-11-24T19:58:00.000Z",
+    "updatedAt": "2026-11-24T20:01:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-null" label="200 OK（未找到）">
+
+```json
+{
+  "data": null
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"id\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 读取批次时，外部 `smartbatchrows` 步骤结果会自动合并到 `rows[].results` 中。
+- `healIncompleteRows()` 会对照已启用的 `batchConfiguration` 步骤检查每个 `completed` 行，并将任何缺少步骤输出或错误信息（errors）的行重新打开为 `pending`。
+- 若需频繁轮询状态，建议优先使用[获取 Smart Batch 进度](/verifik-zh/smart-reports/get-smart-batch-progress)，以避免重复拉取完整的行载荷。
+
+### 相关文档
+
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)
+- [获取 Smart Batch 进度](/verifik-zh/smart-reports/get-smart-batch-progress)
+- [更新 Smart Batch](/verifik-zh/smart-reports/update-a-smart-batch)

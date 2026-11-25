@@ -1,0 +1,388 @@
+---
+id: append-smart-batch-rows
+title: 向 Smart Batch 追加行
+description: 向现有 Smart Batch 追加新的输入行，由服务器分配连续的 rowIndex 值。
+slug: /smart-reports/append-smart-batch-rows
+keywords:
+  - 'v2/smart-batches/{id}/rows/append'
+  - '/v2/smart-batches/{id}/rows/append'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches rows append
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/rows/append'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/rows/append'
+  - 'POST v2/smart-batches/{id}/rows/append'
+  - 'POST /v2/smart-batches/{id}/rows/append'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/rows/append
+  - /v2/smart-batches/rows/append
+  - 'v2 smart-batches {id} rows append'
+  - smart-batches/rows/append
+  - /smart-batches/rows/append
+  - api/smart-batches/rows/append
+  - /api/smart-batches/rows/append
+  - api smart-batches rows append
+  - rows/append
+  - /rows/append
+  - 'GET v2/smart-batches/{id}/rows/append'
+  - 'GET /v2/smart-batches/{id}/rows/append'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+向现有 `SmartBatch` 追加新的输入行，且不会覆盖已有行或已存储的结果。同时支持包装格式行（`{ rowIndex?, inputData }`）与扁平格式行（`{ rowIndex?, ...inputFields }`），服务器会从 `maxExisting + 1` 开始分配连续的行索引。
+
+当批次处于 `"processing"` 状态时，禁止追加行（返回 `400 batch_append_not_allowed_while_processing`）。如果批次此前处于 `"completed"` 或 `"failed"` 状态，追加行会将 `status` 重置为 `"pending"` 并清除 `completedAt`，以便新行得以运行。
+
+### 接口
+
+```text
+POST https://api.verifik.co/v2/smart-batches/{id}/rows/append
+```
+
+此接口也可通过 Smart-Agent 代理 `https://ai.verifik.co/v2/smart-batches/{id}/rows/append` 访问，需使用你自己的客户专属 `Authorization: Bearer <VERIFIK_JWT>`。共享 x402 执行会被拒绝并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称            | 值                     | 描述                                     |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | 请求载荷格式。                           |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 客户作用域的 JWT（`authUser.clientId`）。 |
+
+### 参数
+
+| 名称 | 类型   | 必填 | 描述 |
+| ---- | ------ | ---- | ---- |
+| `id` | string | 是   | 要追加行的 `SmartBatch` ObjectId。 |
+
+### 请求体
+
+| 名称   | 类型     | 必填 | 描述 |
+| ------ | -------- | ---- | ---- |
+| `rows` | object[] | 是   | 非空的包装格式（`{ rowIndex?, inputData }`）或扁平格式（`{ rowIndex?, ...inputFields }`）输入行数组（`min 1`）。服务器会按 `rowIndex = maxExisting + 1` 顺序分配索引。 |
+
+未知请求体键或空的 `rows` 数组将被 Joi 校验拒绝，并返回 `409 MissingParameter`。
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/rows/append`,
+    {
+      rows: [
+        {
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1020304050",
+          },
+        },
+        {
+          documentType: "CC",
+          documentNumber: "1098765432",
+        },
+      ],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$payload = [
+    "rows" => [
+        [
+            "inputData" => [
+                "documentType" => "CC",
+                "documentNumber" => "1020304050",
+            ],
+        ],
+        [
+            "documentType" => "CC",
+            "documentNumber" => "1098765432",
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/rows/append");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/rows/append"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "rows": [
+        {
+            "inputData": {
+                "documentType": "CC",
+                "documentNumber": "1020304050",
+            }
+        },
+        {
+            "documentType": "CC",
+            "documentNumber": "1098765432",
+        },
+    ]
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	body, _ := json.Marshal(map[string]interface{}{
+		"rows": []map[string]interface{}{
+			{
+				"inputData": map[string]string{
+					"documentType":   "CC",
+					"documentNumber": "1020304050",
+				},
+			},
+			{
+				"documentType":   "CC",
+				"documentNumber": "1098765432",
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/"+batchID+"/rows/append", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/rows/append" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "rows": [
+      {
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1020304050"
+        }
+      },
+      {
+        "documentType": "CC",
+        "documentNumber": "1098765432"
+      }
+    ]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — November",
+    "status": "pending",
+    "executor": "browser",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0.04,
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "completed",
+        "results": {
+          "1": {
+            "fullName": "JANE DOE"
+          }
+        },
+        "errors": []
+      },
+      {
+        "rowIndex": 1,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1020304050"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": []
+      },
+      {
+        "rowIndex": 2,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1098765432"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": []
+      }
+    ],
+    "totalRows": 3,
+    "completedRows": 1,
+    "failedRows": 0,
+    "partialRows": 0,
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:28:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "batch_append_not_allowed_while_processing",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"rows\" must contain at least 1 items",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 追加行不会执行核验或消耗积分；随后可通过[启动 Smart Batch](/verifik-zh/smart-reports/start-a-smart-batch)启动该批次。
+- 客户端传入的任何 `rowIndex` 均会被忽略，服务器将从 `maxExisting + 1` 开始按顺序分配编号。
+- 如果批次原状态为 `"completed"` 或 `"failed"`，其 `status` 会重置为 `"pending"`，且 `completedAt` 会被清除。
+
+### 相关文档
+
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)
+- [启动 Smart Batch](/verifik-zh/smart-reports/start-a-smart-batch)
+- [更新 Smart Batch](/verifik-zh/smart-reports/update-a-smart-batch)

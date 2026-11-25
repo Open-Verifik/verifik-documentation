@@ -1,0 +1,255 @@
+---
+id: retrieve-a-smart-report
+title: 获取 Smart Report
+description: '按 ID 获取单份 SmartReport，包含已填充的 template、smartBatch、client 引用以及 PDF 下载和 HTML URL。'
+slug: /smart-reports/retrieve-a-smart-report
+keywords:
+  - 'v2/smart-reports/{id}'
+  - '/v2/smart-reports/{id}'
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - 'v2 smart-reports {id}'
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - 'api.verifik.co/v2/smart-reports/{id}'
+  - 'https://api.verifik.co/v2/smart-reports/{id}'
+  - 'GET v2/smart-reports/{id}'
+  - 'GET /v2/smart-reports/{id}'
+  - smart-reports
+  - smart_report_get
+  - /smart-reports
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+按 ID 获取单个 `SmartReport`。响应会填充 `template`、`smartBatch` 与 `client` 引用，并附带可直接使用的 `downloadUrl`（`/v2/smart-reports/{id}/download`）和 `htmlUrl`（`/v2/smart-reports/{id}/html`）路径。
+
+当 `POST /v2/smart-reports/run` 以 `"async"` 模式执行或超过 90 秒同步截止时间回退为 `202 Accepted` 时，此端点也是返回的轮询目标（`pollUrl`）。如果报告 ID 不存在或属于其他客户，该端点会返回 HTTP `200 OK` 与 `{ "data": null }`。
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/smart-reports/{id}
+```
+
+使用你自己的每客户 `Authorization: Bearer <VERIFIK_JWT>`，也可通过 Smart-Agent 代理地址 `https://ai.verifik.co/v2/smart-reports/{id}` 访问此端点。共享 x402 执行会被拦截并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称 | 值 | 说明 |
+| --- | --- | --- |
+| `Content-Type` | `application/json` | 请求体负载格式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 客户作用域 JWT（`authUser.clientId`）。 |
+
+### 参数
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `id` | string | **是** | 由 `POST /v2/smart-reports/run`、`POST /v2/smart-reports` 或 `GET /v2/smart-reports` 返回的 `SmartReport` ObjectId。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-reports/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-reports/"+id, nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "name": "Background Check - Applicant 42",
+    "status": "generated",
+    "template": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d2"
+    },
+    "smartBatch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3"
+    },
+    "client": {
+      "_id": "507f1f77bcf86cd799439013"
+    },
+    "pdfEngine": "puppeteer",
+    "pdfSize": 148320,
+    "generationDurationMs": 1840,
+    "generatedAt": "2026-11-24T20:00:04.000Z",
+    "externalRefId": "applicant-42",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+    "downloadUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download",
+    "htmlUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:00:04.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-null" label="200 OK（未找到 / Null）">
+
+```json
+{
+  "data": null
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"id\" must be a valid ObjectId",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Webhooks 与 MCP 集成
+
+- **轮询与 Webhooks 对比**：对于异步运行，你既可以轮询 `GET /v2/smart-reports/{id}` 直至 `data.status` 稳定（`"generated"`、`"sent"` 或 `"failed"`），也可以订阅 Webhook 事件（`smart_batch_report_generated`、`smart_batch_report_generation_failed`、`smart_batch_report_sent`、`smart_batch_report_delivery_failed`）。详见 [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)。
+- **MCP 等效工具**：AI 智能体可使用 `smart_report_get` MCP 工具获取报告记录。详见 [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)。
+
+### 注意事项
+
+- 不存在或属于其他客户的报告会返回 `200 OK` 及 `{ "data": null }`，而不是 `404`。
+- `downloadUrl` 与 `htmlUrl` 是相对 API 路径，可直接拼接到 `https://api.verifik.co`（或 `https://ai.verifik.co`）后使用。
+
+### 相关页面
+
+- [SmartReports 概览](/verifik-zh/smart-reports)
+- [无头 API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)
+- [下载 Smart Report PDF](/verifik-zh/smart-reports/download-smart-report-pdf)
+- [获取 Smart Report HTML](/verifik-zh/smart-reports/retrieve-smart-report-html)

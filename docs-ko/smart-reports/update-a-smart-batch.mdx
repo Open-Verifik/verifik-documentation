@@ -1,0 +1,347 @@
+---
+id: update-a-smart-batch
+title: Smart Batch 수정
+description: 행 통계를 자동으로 재계산하면서 Smart Batch 이름, 상태, 실행기 또는 행을 수정합니다.
+slug: /smart-reports/update-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}'
+  - '/v2/smart-batches/{id}'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - 'v2 smart-batches {id}'
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}'
+  - 'https://api.verifik.co/v2/smart-batches/{id}'
+  - 'PUT v2/smart-batches/{id}'
+  - 'PUT /v2/smart-batches/{id}'
+  - smart-batches
+  - /smart-batches
+  - 'GET v2/smart-batches/{id}'
+  - 'GET /v2/smart-batches/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+인증된 클라이언트가 소유한 기존 `SmartBatch`의 필드를 수정합니다. `name`, `status`, `executor`를 수정하거나 `rows`를 교체할 수 있습니다. `rows`를 제공하면 서버는 `totalRows`, `completedRows`, `failedRows`, `partialRows`를 다시 계산하고 외부 행 스냅샷을 동기화합니다.
+
+배치를 `"paused"` 상태로 전환하려면 전용 [Smart Batch 일시 중지](/verifik-ko/smart-reports/pause-a-smart-batch) 엔드포인트를 사용하세요. `executor` 변경은 배치가 현재 `"draft"`, `"pending"` 또는 `"cancelled"` 상태일 때만 적용됩니다.
+
+### 엔드포인트
+
+```text
+PUT https://api.verifik.co/v2/smart-batches/{id}
+```
+
+클라이언트별 `Authorization: Bearer <VERIFIK_JWT>`를 사용하여 Smart-Agent 프록시(`https://ai.verifik.co/v2/smart-batches/{id}`)를 통해서도 호출할 수 있습니다. 공유 x402 실행은 `403 Forbidden`으로 차단됩니다.
+
+### 헤더
+
+| 이름 | 값 | 설명 |
+| ---- | -- | ---- |
+| `Content-Type` | `application/json` | 요청 페이로드 형식. |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 클라이언트 범위 JWT (`authUser.clientId`). |
+
+### 매개변수
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `id` | string | 예 | 수정할 `SmartBatch` ObjectId. |
+
+### 본문
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `name` | string | 아니요 | 수정된 배치 표시 이름. 최대 `150`자. |
+| `status` | string | 아니요 | 허용 값: `"draft"`, `"pending"`, `"processing"`, `"completed"`, `"failed"` 또는 `"cancelled"`. `"paused"` 상태로 변경하려면 `POST /v2/smart-batches/{id}/pause`를 사용하세요. |
+| `executor` | string | 아니요 | 허용 값: `"queue"`, `"featureRunner"` 또는 `"browser"`. 현재 배치 상태가 `"draft"`, `"pending"` 또는 `"cancelled"`일 때만 적용됩니다. |
+| `rows` | object[] | 아니요 | 교체할 행 목록. 래핑된 형식에는 `rowIndex`와 `inputData`가 필요하며 선택적으로 `status`, `results`, `errors`, `processedAt`을 허용합니다. 평면 행은 자동으로 정규화됩니다. |
+
+알 수 없는 본문 키는 Joi 검증에 의해 `409 MissingParameter`로 거부됩니다.
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.put(
+    `https://api.verifik.co/v2/smart-batches/${batchId}`,
+    {
+      name: "Colombia Onboarding — Updated",
+      executor: "queue",
+      rows: [
+        {
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1032386359",
+          },
+          status: "pending",
+        },
+      ],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$payload = [
+    "name" => "Colombia Onboarding — Updated",
+    "executor" => "queue",
+    "rows" => [
+        [
+            "rowIndex" => 0,
+            "inputData" => [
+                "documentType" => "CC",
+                "documentNumber" => "1032386359",
+            ],
+            "status" => "pending",
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia Onboarding — Updated",
+    "executor": "queue",
+    "rows": [
+        {
+            "rowIndex": 0,
+            "inputData": {
+                "documentType": "CC",
+                "documentNumber": "1032386359",
+            },
+            "status": "pending",
+        }
+    ],
+}
+
+response = requests.put(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":     "Colombia Onboarding — Updated",
+		"executor": "queue",
+		"rows": []map[string]interface{}{
+			{
+				"rowIndex": 0,
+				"inputData": map[string]string{
+					"documentType":   "CC",
+					"documentNumber": "1032386359",
+				},
+				"status": "pending",
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/smart-batches/"+batchID, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia Onboarding — Updated",
+    "executor": "queue",
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "pending"
+      }
+    ]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — Updated",
+    "status": "draft",
+    "executor": "queue",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0,
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": []
+      }
+    ],
+    "totalRows": 1,
+    "completedRows": 0,
+    "failedRows": 0,
+    "partialRows": 0,
+    "createdAt": "2026-11-24T19:58:00.000Z",
+    "updatedAt": "2026-11-24T20:06:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"status\" must be one of [draft, pending, processing, completed, failed, cancelled]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- `PUT /v2/smart-batches/{id}`에서는 `"paused"`가 허용되지 않습니다. 대신 [Smart Batch 일시 중지](/verifik-ko/smart-reports/pause-a-smart-batch)를 호출하세요.
+- 배치가 현재 `"draft"`, `"pending"` 또는 `"cancelled"` 상태가 아니면 `executor` 수정은 무시됩니다.
+- 기존 행을 교체하지 않고 기존 배치에 새 행을 추가하려면 [Smart Batch에 행 추가](/verifik-ko/smart-reports/append-smart-batch-rows)를 사용하세요.
+
+### 관련
+
+- [Smart Reports 개요](/verifik-ko/smart-reports)
+- [Headless API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [Smart Reports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)
+- [Smart Batch에 행 추가](/verifik-ko/smart-reports/append-smart-batch-rows)
+- [Smart Batch 일시 중지](/verifik-ko/smart-reports/pause-a-smart-batch)

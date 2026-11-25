@@ -1,0 +1,325 @@
+---
+id: retry-batch-row-steps
+title: Retry Smart Batch row steps
+description: Re-run specific step sequences on a single Smart Batch row while preserving results from all other steps.
+slug: /smart-reports/retry-batch-row-steps
+keywords:
+  - 'v2/smart-batches/{id}/retry-steps'
+  - '/v2/smart-batches/{id}/retry-steps'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches retry-steps
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/retry-steps'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/retry-steps'
+  - 'POST v2/smart-batches/{id}/retry-steps'
+  - 'POST /v2/smart-batches/{id}/retry-steps'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/retry-steps
+  - /v2/smart-batches/retry-steps
+  - 'v2 smart-batches {id} retry-steps'
+  - smart-batches/retry-steps
+  - /smart-batches/retry-steps
+  - api/smart-batches/retry-steps
+  - /api/smart-batches/retry-steps
+  - api smart-batches retry-steps
+  - 'GET v2/smart-batches/{id}/retry-steps'
+  - 'GET /v2/smart-batches/{id}/retry-steps'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Clear and re-queue only specific `sequences` on a single row (`rowIndex`) of a `SmartBatch`, leaving every other step's stored output and every other row untouched. Both `rowIndex` and `sequences` are required.
+
+The server rejects the request with `409 Conflict` if the batch, target row, underlying `FeatureRunner` run, or run item is currently processing (`batch_is_processing`, `row_is_processing`, `run_is_processing`, `item_is_processing`).
+
+### Endpoint
+
+```text
+POST https://api.verifik.co/v2/smart-batches/{id}/retry-steps
+```
+
+This endpoint is also reachable through the Smart-Agent proxy at `https://ai.verifik.co/v2/smart-batches/{id}/retry-steps` using your own per-client `Authorization: Bearer <VERIFIK_JWT>`. Shared x402 execution is blocked with `403 Forbidden`.
+
+### Headers
+
+| Name            | Value                  | Description                              |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | Request payload format.                  |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | Client-scoped JWT (`authUser.clientId`). |
+
+### Parameters
+
+| Name | Type   | Required | Description |
+| ---- | ------ | -------- | ----------- |
+| `id` | string | Yes      | `SmartBatch` ObjectId. |
+
+### Body
+
+| Name        | Type      | Required | Description |
+| ----------- | --------- | -------- | ----------- |
+| `rowIndex`  | integer   | Yes      | `0`-based index (`>= 0`) of the row to partially retry. |
+| `sequences` | integer[] | Yes      | Step sequence numbers (`>= 0`, minimum `1`, maximum `200` items) to clear and re-execute on that row. |
+
+Unknown body keys or missing required fields are rejected by Joi validation with `409 MissingParameter`.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/retry-steps`,
+    {
+      rowIndex: 2,
+      sequences: [2, 3],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$payload = [
+    "rowIndex" => 2,
+    "sequences" => [2, 3],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/retry-steps");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/retry-steps"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "rowIndex": 2,
+    "sequences": [2, 3],
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	body, _ := json.Marshal(map[string]interface{}{
+		"rowIndex":  2,
+		"sequences": []int{2, 3},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/"+batchID+"/retry-steps", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/retry-steps" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "rowIndex": 2,
+    "sequences": [2, 3]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "batch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+      "client": "507f1f77bcf86cd799439013",
+      "name": "Colombia Onboarding — November",
+      "status": "processing",
+      "executor": "featureRunner",
+      "source": "smart_batch",
+      "headlessRun": true,
+      "creditsSpent": 0.4,
+      "totalRows": 10,
+      "completedRows": 9,
+      "failedRows": 0,
+      "partialRows": 0,
+      "createdAt": "2026-11-24T20:00:00.000Z",
+      "updatedAt": "2026-11-24T20:22:00.000Z"
+    },
+    "retried": 2
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "retry_steps_invalid",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-batch" label="404 (Batch)">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-row" label="404 (Row)">
+
+```json
+{
+  "message": "row_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-processing" label="409 (Processing)">
+
+```json
+{
+  "message": "batch_is_processing",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 (MissingParameter)">
+
+```json
+{
+  "message": "\"sequences\" must contain at least 1 items",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Stored `results` and `errors` are cleared only for the specified `sequences` on `rowIndex`; outcomes for all other step sequences remain intact.
+- Possible `409 Conflict` reasons are `batch_is_processing`, `row_is_processing`, `run_is_processing`, and `item_is_processing`.
+- Passing invalid or empty step sequence references returns `400 BadRequest` (`retry_steps_invalid`).
+- To retry entire failed or partial rows across the batch, use [Retry failed Smart Batch rows](/smart-reports/retry-failed-batch-rows).
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Run a Smart Report](/smart-reports/run-a-smart-report)
+- [Retry failed Smart Batch rows](/smart-reports/retry-failed-batch-rows)
+- [Get Smart Batch progress](/smart-reports/get-smart-batch-progress)

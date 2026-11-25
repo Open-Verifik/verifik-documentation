@@ -1,0 +1,328 @@
+---
+id: preview-template-html
+title: Previsualizar HTML de plantilla
+description: Renderiza una plantilla de Smart Report a HTML en memoria sin guardar en la base de datos ni iniciar Chromium
+slug: /smart-reports/preview-template-html
+keywords:
+  - v2/smart-report-templates/preview-html
+  - /v2/smart-report-templates/preview-html
+  - v2 smart-report-templates preview-html
+  - api/smart-report-templates/preview-html
+  - /api/smart-report-templates/preview-html
+  - api smart-report-templates preview-html
+  - api.verifik.co/v2/smart-report-templates/preview-html
+  - 'https://api.verifik.co/v2/smart-report-templates/preview-html'
+  - POST v2/smart-report-templates/preview-html
+  - POST /v2/smart-report-templates/preview-html
+  - smart-report-templates/preview-html
+  - /smart-report-templates/preview-html
+  - GET v2/smart-report-templates/preview-html
+  - GET /v2/smart-report-templates/preview-html
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Renderiza cualquier definición de plantilla de Smart Report en un documento HTML independiente completamente en memoria. No se crea ni actualiza ningún registro en la base de datos y no se inicia Chromium durante el renderizado de vista previa, manteniendo tiempos de respuesta rápidos para editores interactivos de plantillas, comprobaciones de verificación en CI y ciclos de diseño con IA.
+
+En pipelines headless y de IA, usa este endpoint para iterar sobre `sections`, `reportTheme`, márgenes y ajustes del puntaje de verificación (`score`, `scoreProfile`, `scoreScale`) antes de persistir la plantilla con [Crear una plantilla de reporte](/verifik-es/smart-reports/create-a-report-template) o [Actualizar una plantilla de reporte](/verifik-es/smart-reports/update-a-report-template). Si renderizas una plantilla con tema o puntuación sin proporcionar `steps` ni `results` dentro de `sampleData`, el renderizador inyecta automáticamente datos sintéticos de muestra de conductor para que tu vista previa se muestre completa.
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/smart-report-templates/preview-html
+```
+
+El proxy de Smart-Agent (`https://ai.verifik.co`) expone las mismas rutas `/v2/...` y requiere tu propio encabezado `Authorization: Bearer <VERIFIK_JWT>`.
+
+### Encabezados
+
+| Nombre        | Valor                  |
+| ------------- | ---------------------- |
+| Content-Type  | `application/json`     |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### Cuerpo
+
+Este endpoint acepta campos auxiliares de vista previa y puntuación además de todos los campos públicos de diseño de plantilla (`sections`, `reportTheme`, `sampleData`, `margins`, `pageSize`, `orientation`, `pdfEngine`, `primaryColor`, `identityColor`, `pageBackgroundColor`, `logo`, `header`, `footer`, `legend`, `termsAndConditions`, `watermark`, `showPageNumbers`, `customFonts`, etc.).
+
+| Nombre          | Tipo            | Requerido | Descripción                                                                                                                                    |
+| --------------- | --------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`          | string          | No        | Título opcional del reporte mostrado en el encabezado o metadatos de la vista previa.                                                          |
+| `preview`       | boolean         | No        | Indicador de modo vista previa. Toma por defecto `true`.                                                                                       |
+| `score`         | boolean         | No        | Habilita el cálculo del puntaje de verificación e incluye `verificationScore` en la respuesta.                                                 |
+| `scoreProfile`  | string          | No        | ID de perfil de puntaje de [Listar perfiles de puntaje](/verifik-es/smart-reports/list-score-profiles). Máximo `64` caracteres.                |
+| `scoreScale`    | string          | No        | Escala de visualización del puntaje: `"unit"` o `"percent"`. Auxiliar de nivel superior para vista previa; guárdalo en `reportTheme.scoreScale` al persistir. |
+| `themeTokens`   | object          | No        | Sobrescrituras personalizadas de tokens del tema. Auxiliar de nivel superior para vista previa; guárdalo en `reportTheme.tokens` al persistir. |
+| `scoreSettings` | object          | No        | Ajustes de presentación del puntaje. Auxiliar de nivel superior para vista previa; guárdalo en `reportTheme` (`scoreEnabled`, `scoreProfile`) al persistir. |
+| `sections`      | object[]        | No        | Arreglo de bloques `ReportSection` a renderizar.                                                                                               |
+| `reportTheme`   | string / object | No        | ID de preset de tema (`"premium_dark"`, `"light_cards"`, `"editorial"`, `"dashboard"`) u objeto completo de configuración `reportTheme`.          |
+| `sampleData`    | object          | No        | Payload de muestra de verificación (`inputData`, `results`, `batchName`, `rowIndex`). Si se omite en vistas previas con tema o puntaje, se inyecta una muestra sintética de conductor. |
+| `pageSize`      | string          | No        | `"A4"`, `"Letter"` o `"Legal"`. Toma por defecto `"A4"`.                                                                                       |
+| `orientation`   | string          | No        | `"portrait"` o `"landscape"`. Toma por defecto `"portrait"`.                                                                                   |
+| `margins`       | object          | No        | Objeto de márgenes `{ "top": 40, "right": 40, "bottom": 40, "left": 40 }`.                                                                     |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch(
+    "https://api.verifik.co/v2/smart-report-templates/preview-html",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        name: "Driver Background Preview",
+        preview: true,
+        score: true,
+        scoreProfile: "cabify_driver",
+        scoreScale: "percent",
+        pageSize: "A4",
+        orientation: "portrait",
+        margins: { top: 40, right: 40, bottom: 40, left: 40 },
+        reportTheme: "light_cards",
+        sections: [
+          {
+            id: "sec-score",
+            type: "scoreGauge",
+            order: 0,
+            label: "Overall Score",
+          },
+          {
+            id: "sec-breakdown",
+            type: "categoryBreakdown",
+            order: 1,
+            label: "Category Breakdown",
+          },
+        ],
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "name" => "Driver Background Preview",
+    "preview" => true,
+    "score" => true,
+    "scoreProfile" => "cabify_driver",
+    "scoreScale" => "percent",
+    "pageSize" => "A4",
+    "orientation" => "portrait",
+    "margins" => ["top" => 40, "right" => 40, "bottom" => 40, "left" => 40],
+    "reportTheme" => "light_cards",
+    "sections" => [
+        ["id" => "sec-score", "type" => "scoreGauge", "order" => 0, "label" => "Overall Score"],
+        ["id" => "sec-breakdown", "type" => "categoryBreakdown", "order" => 1, "label" => "Category Breakdown"],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/preview-html");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates/preview-html"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Driver Background Preview",
+    "preview": True,
+    "score": True,
+    "scoreProfile": "cabify_driver",
+    "scoreScale": "percent",
+    "pageSize": "A4",
+    "orientation": "portrait",
+    "margins": {"top": 40, "right": 40, "bottom": 40, "left": 40},
+    "reportTheme": "light_cards",
+    "sections": [
+        {"id": "sec-score", "type": "scoreGauge", "order": 0, "label": "Overall Score"},
+        {"id": "sec-breakdown", "type": "categoryBreakdown", "order": 1, "label": "Category Breakdown"},
+    ],
+}
+
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":         "Driver Background Preview",
+		"preview":      true,
+		"score":        true,
+		"scoreProfile": "cabify_driver",
+		"scoreScale":   "percent",
+		"pageSize":     "A4",
+		"orientation":  "portrait",
+		"margins":      map[string]int{"top": 40, "right": 40, "bottom": 40, "left": 40},
+		"reportTheme":  "light_cards",
+		"sections": []map[string]interface{}{
+			{"id": "sec-score", "type": "scoreGauge", "order": 0, "label": "Overall Score"},
+			{"id": "sec-breakdown", "type": "categoryBreakdown", "order": 1, "label": "Category Breakdown"},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates/preview-html", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates/preview-html" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Driver Background Preview",
+    "preview": true,
+    "score": true,
+    "scoreProfile": "cabify_driver",
+    "scoreScale": "percent",
+    "pageSize": "A4",
+    "orientation": "portrait",
+    "margins": { "top": 40, "right": 40, "bottom": 40, "left": 40 },
+    "reportTheme": "light_cards",
+    "sections": [
+      { "id": "sec-score", "type": "scoreGauge", "order": 0, "label": "Overall Score" },
+      { "id": "sec-breakdown", "type": "categoryBreakdown", "order": 1, "label": "Category Breakdown" }
+    ]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\" />...</head><body>...</body></html>",
+    "verificationScore": {
+      "profile": "cabify_driver",
+      "scale": "percent",
+      "score": 92
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-profile" label="409 (unknown_score_profile)">
+
+```json
+{
+  "message": "unknown_score_profile",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-param" label="409 (MissingParameter)">
+
+```json
+{
+  "message": "\"pageSize\" must be one of [A4, Letter, Legal]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- `verificationScore` se incluye en `data` únicamente cuando la puntuación de verificación está activa (`score: true` o habilitada en `reportTheme`).
+- Debido a que este endpoint renderiza puramente en memoria sin escrituras en base de datos ni lanzamiento de Chromium, resulta ideal para iterar rápidamente el diseño antes de llamar a [Descargar muestra de plantilla](/verifik-es/smart-reports/download-template-sample) para la inspección final de paginación del PDF.
+- Al persistir un diseño previsualizado mediante [Crear una plantilla de reporte](/verifik-es/smart-reports/create-a-report-template) o [Actualizar una plantilla de reporte](/verifik-es/smart-reports/update-a-report-template), ubica los campos auxiliares de vista previa de nivel superior (`scoreScale`, `themeTokens`, `scoreSettings`) dentro de `reportTheme` (`reportTheme.scoreScale`, `reportTheme.tokens`, `reportTheme.scoreEnabled`/`reportTheme.scoreProfile`).
+
+### Relacionados
+
+- [Descripción general de SmartReports](/verifik-es/smart-reports)
+- [Guía de API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [MCP y Agentes de IA](/verifik-es/smart-reports/mcp-and-ai-agents)
+- [Webhooks de SmartReports](/verifik-es/resources/smart-reports-webhooks)
+- [Listar perfiles de puntaje](/verifik-es/smart-reports/list-score-profiles)
+- [Generar diseño de plantilla](/verifik-es/smart-reports/generate-template-layout)
+- [Descargar muestra de plantilla](/verifik-es/smart-reports/download-template-sample)
+- [Crear una plantilla de reporte](/verifik-es/smart-reports/create-a-report-template)

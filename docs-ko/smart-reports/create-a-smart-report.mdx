@@ -1,0 +1,290 @@
+---
+id: create-a-smart-report
+title: Smart Report 생성
+description: PDF 생성이나 이메일 전송 전에 기존 템플릿 및 SmartBatch에 연결된 초안 SmartReport를 생성합니다.
+slug: /smart-reports/create-a-smart-report
+keywords:
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - api.verifik.co/v2/smart-reports
+  - 'https://api.verifik.co/v2/smart-reports'
+  - POST v2/smart-reports
+  - POST /v2/smart-reports
+  - smart-reports
+  - /smart-reports
+  - GET v2/smart-reports
+  - GET /v2/smart-reports
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+기존 `template` 및 `smartBatch`에 연결된 초안 `SmartReport` 레코드(`status: "draft"`)를 생성합니다. 이미 완료되었거나 진행 중인 `SmartBatch`가 있고 리포트 생성, PDF 생성, HTML 조회 및 이메일 전송을 개별 단계로 관리하려는 경우 이 엔드포인트를 사용하세요.
+
+초안 레코드가 생성되면 `{ data }`에 새 `SmartReport`를 담아 HTTP **`200 OK`**를 반환합니다. 이 호출 자체만으로는 검증 단계를 실행하거나 PDF를 렌더링하지 않으므로, 후속으로 [Smart Report PDF 생성](/verifik-ko/smart-reports/generate-smart-report-pdf) 또는 [이메일로 Smart Report 전송](/verifik-ko/smart-reports/send-smart-report-email)을 호출해야 합니다. 단일 요청으로 검증 단계 실행과 리포트 생성을 모두 처리하려면 [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)을 사용하세요.
+
+### 엔드포인트
+
+```
+POST https://api.verifik.co/v2/smart-reports
+```
+
+이 엔드포인트는 본인의 클라이언트별 `Authorization: Bearer <VERIFIK_JWT>`를 사용하여 Smart-Agent 프록시(`https://ai.verifik.co/v2/smart-reports`)를 통해서도 호출할 수 있습니다. 공유 x402 실행은 `403 Forbidden`으로 차단됩니다.
+
+### 헤더
+
+| 이름            | 값                     | 설명                                     |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | 요청 페이로드 형식.                      |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 클라이언트 범위 JWT (`authUser.clientId`). |
+
+### 요청 본문
+
+| 이름               | 타입    | 필수   | 설명 |
+| ------------------ | ------- | ------ | ---- |
+| `template`         | string  | **예** | 이 리포트를 렌더링할 기준 템플릿 ObjectId. |
+| `smartBatch`       | string  | **예** | 검증 행 결과를 제공하는 `SmartBatch` ObjectId. |
+| `name`             | string  | 아니요 | 리포트의 표시 이름. 최대 `150`자. |
+| `externalRefId`    | string  | 아니요 | 호출자 상관관계 식별자. 최대 `200`자. |
+| `webhookUrl`       | string  | 아니요 | 리포트별 `http` 또는 `https` 웹훅 재정의 URL. 최대 `2048`자. |
+| `rowIndex`         | integer | 아니요 | 연결된 `SmartBatch`에서 0부터 시작하는 행 인덱스(`>= 0`). |
+| `createdByChannel` | string  | 아니요 | 발생 채널: `"portal"`, `"api"`, `"mcp"`, `"x402"` 또는 `"webhook"`. 기본값 `"portal"`. |
+
+#### 단계별 워크플로 vs 헤드리스 실행
+
+- 워크플로에서 이미 `SmartBatch`(예: SmartBatch UI 또는 큐 API를 통해)를 실행했고 먼저 초안 `SmartReport`(`status: "draft"`)를 만든 뒤 [Smart Report HTML 조회](/verifik-ko/smart-reports/retrieve-smart-report-html)로 HTML을 미리 보고, [Smart Report PDF 생성](/verifik-ko/smart-reports/generate-smart-report-pdf)으로 PDF를 렌더링하며, [이메일로 Smart Report 전송](/verifik-ko/smart-reports/send-smart-report-email)으로 전달하려는 경우 `POST /v2/smart-reports`를 사용하세요.
+- 이 라우트에서 `createdByChannel`의 기본값은 `"portal"`이므로, 채널 기여도 추적이 필요한 API 연동에서는 `createdByChannel: "api"`를 설정하세요.
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.post(
+    "https://api.verifik.co/v2/smart-reports",
+    {
+      template: "6801a2b3c4d5e6f7a8b9c0d2",
+      smartBatch: "6801a2b3c4d5e6f7a8b9c0d3",
+      name: "Applicant 42 Draft Report",
+      externalRefId: "applicant-42",
+      webhookUrl: "https://webhooks.example.com/verifik",
+      rowIndex: 0,
+      createdByChannel: "api",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/smart-reports");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "template" => "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch" => "6801a2b3c4d5e6f7a8b9c0d3",
+    "name" => "Applicant 42 Draft Report",
+    "externalRefId" => "applicant-42",
+    "webhookUrl" => "https://webhooks.example.com/verifik",
+    "rowIndex" => 0,
+    "createdByChannel" => "api",
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-reports"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Applicant 42 Draft Report",
+    "externalRefId": "applicant-42",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"template":         "6801a2b3c4d5e6f7a8b9c0d2",
+		"smartBatch":       "6801a2b3c4d5e6f7a8b9c0d3",
+		"name":             "Applicant 42 Draft Report",
+		"externalRefId":    "applicant-42",
+		"webhookUrl":       "https://webhooks.example.com/verifik",
+		"rowIndex":         0,
+		"createdByChannel": "api",
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-reports", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-reports" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Applicant 42 Draft Report",
+    "externalRefId": "applicant-42",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api"
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Applicant 42 Draft Report",
+    "status": "draft",
+    "externalRefId": "applicant-42",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:00:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"template\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 웹훅 및 MCP 연동
+
+- **웹훅**: 초안 `SmartReport`에 `webhookUrl`과 `externalRefId`를 저장하면, 이후 PDF 생성(`smart_batch_report_generated`, `smart_batch_report_generation_failed`) 및 이메일 전송(`smart_batch_report_sent`, `smart_batch_report_delivery_failed`) 호출 시 리포트별 콜백 대상과 상관관계 식별자를 상속합니다. [SmartReports 웹훅](/verifik-ko/resources/smart-reports-webhooks)을 참조하세요.
+- **MCP 연동**: AI 에이전트에서 단일 호출 헤드리스 리포트 실행이 필요한 경우 `smart_report_run`을 사용하세요. [MCP 및 AI 에이전트](/verifik-ko/smart-reports/mcp-and-ai-agents)를 참조하세요.
+
+### 참고 사항
+
+- 생성에 성공하면 `201`이 아닌 HTTP `200`과 함께 `status: "draft"`를 반환합니다.
+- 이후 [Smart Report 조회](/verifik-ko/smart-reports/retrieve-a-smart-report), [Smart Report PDF 생성](/verifik-ko/smart-reports/generate-smart-report-pdf), [Smart Report PDF 다운로드](/verifik-ko/smart-reports/download-smart-report-pdf), [Smart Report HTML 조회](/verifik-ko/smart-reports/retrieve-smart-report-html) 및 [이메일로 Smart Report 전송](/verifik-ko/smart-reports/send-smart-report-email) 호출을 위해 `data._id`를 저장해 두세요.
+
+### 관련 문서
+
+- [SmartReports 개요](/verifik-ko/smart-reports)
+- [헤드리스 API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [MCP 및 AI 에이전트](/verifik-ko/smart-reports/mcp-and-ai-agents)
+- [SmartReports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)
+- [Smart Report PDF 생성](/verifik-ko/smart-reports/generate-smart-report-pdf)

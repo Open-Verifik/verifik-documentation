@@ -1,0 +1,255 @@
+---
+id: retrieve-configuration-input-schema
+title: 获取配置输入模式
+description: 查看批处理配置的必填字段、可选字段、JSON Schema、模板 ID 以及示例输入
+slug: /smart-reports/retrieve-configuration-input-schema
+keywords:
+  - 'v2/batch-configurations/{id}/input-schema'
+  - '/v2/batch-configurations/{id}/input-schema'
+  - v2/batch-configurations/input-schema
+  - /v2/batch-configurations/input-schema
+  - v2 batch-configurations input-schema
+  - 'v2 batch-configurations {id} input-schema'
+  - batch-configurations
+  - /batch-configurations
+  - api/batch-configurations/input-schema
+  - /api/batch-configurations/input-schema
+  - 'api.verifik.co/v2/batch-configurations/{id}/input-schema'
+  - 'https://api.verifik.co/v2/batch-configurations/{id}/input-schema'
+  - 'GET v2/batch-configurations/{id}/input-schema'
+  - 'GET /v2/batch-configurations/{id}/input-schema'
+  - batch-configurations/input-schema
+  - /batch-configurations/input-schema
+  - api batch-configurations input-schema
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+在提交数据行之前，解析已保存的 `BatchConfiguration` 所需的准确输入契约。此接口会返回 `preferredReportTemplate`（若未设置，则回退至关联到该配置的最新启用中 `SmartReportTemplate`）、`webhookUrl`、`stepCount`、`estimatedCreditsPerRow`、`requiredFields`、`optionalFields`、标准的 `jsonSchema` 以及可直接发送的 `exampleInput` 载荷。
+
+解析器会自动跳过已禁用的步骤、未启用的 `dependencyGroup` 选项、内部标志，以及已通过 `parameterDefaults` 或 `visitaFlow` 步骤链（`{{results.N.field}}`）传入的字段，同时根据 `inputFieldMapping` 重新映射列名。该路由注册在 `/{id}` 之前，因此 `/input-schema` 会直接解析；同时它也作为 `smart_report_get_input_schema` MCP 工具提供。
+
+### 接口
+
+```
+GET https://api.verifik.co/v2/batch-configurations/{id}/input-schema
+```
+
+也可以通过 Smart-Agent 代理 `https://ai.verifik.co/v2/batch-configurations/{id}/input-schema` 访问，并使用你自己的客户专属 `Authorization: Bearer <VERIFIK_JWT>` 请求头。共享 x402 执行会被拒绝并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称 | 值 |
+| ---- | -- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+令牌必须是**客户 JWT**。缺少凭证或凭证无效将返回 `401 Unauthorized`。
+
+### 参数
+
+| 名称 | 类型 | 必填 | 描述 |
+| ---- | ---- | ---- | ---- |
+| `id` | string | 是 | 要查看的 `BatchConfiguration` ObjectId。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const id = "67d1b4a0e4f5a60718293b12";
+    const res = await fetch(`https://api.verifik.co/v2/batch-configurations/${id}/input-schema`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67d1b4a0e4f5a60718293b12";
+$ch = curl_init("https://api.verifik.co/v2/batch-configurations/" . $id . "/input-schema");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+config_id = "67d1b4a0e4f5a60718293b12"
+url = f"https://api.verifik.co/v2/batch-configurations/{config_id}/input-schema"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+r = requests.get(url, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "67d1b4a0e4f5a60718293b12"
+    req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/batch-configurations/"+id+"/input-schema", nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/batch-configurations/67d1b4a0e4f5a60718293b12/input-schema" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "configurationId": "67d1b4a0e4f5a60718293b12",
+        "name": "Colombia Citizen Essential",
+        "country": "CO",
+        "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+        "webhookUrl": "https://example.com/webhooks/smart-reports",
+        "stepCount": 2,
+        "estimatedCreditsPerRow": 0.15,
+        "requiredFields": [
+            {
+                "field": "documentType",
+                "apiField": "documentType",
+                "type": "string",
+                "required": true,
+                "enum": ["CC", "CE"]
+            },
+            {
+                "field": "documentNumber",
+                "apiField": "documentNumber",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "optionalFields": [],
+        "jsonSchema": {
+            "type": "object",
+            "properties": {
+                "documentType": {
+                    "type": "string",
+                    "enum": ["CC", "CE"]
+                },
+                "documentNumber": {
+                    "type": "string"
+                }
+            },
+            "required": ["documentType", "documentNumber"]
+        },
+        "exampleInput": {
+            "documentType": "CC",
+            "documentNumber": "123456789"
+        }
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "not_found",
+    "code": "NotFound"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 查看输入模式不会执行查询，也不会消耗积分。
+- 如果配置上未设置 `preferredReportTemplate`，服务器将回退使用关联到 `{id}` 的最新启用中 `SmartReportTemplate`（若不存在则为 `null`）。
+- 当 `inputFieldMapping` 将输入列名映射为 API 参数时，`requiredFields`、`optionalFields`、`jsonSchema` 和 `exampleInput` 将暴露映射后的输入列名，而非原始的 API 参数名。
+- 不存在或跨客户的 `{id}` 会返回 `404`（`not_found`），这与返回 `200` 及 `data: null` 的[查询批处理配置](/verifik-zh/smart-reports/retrieve-a-batch-configuration)不同。
+- 对于 AI 智能体和无头流水线，该接口对应于 `smart_report_get_input_schema` MCP 工具。
+
+### 相关文档
+
+- [查询批处理配置](/verifik-zh/smart-reports/retrieve-a-batch-configuration)
+- [克隆报告预设](/verifik-zh/smart-reports/clone-a-report-preset)
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)

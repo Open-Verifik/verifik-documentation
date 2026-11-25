@@ -1,0 +1,288 @@
+---
+id: download-smart-report-pdf
+title: Smart Report PDF をダウンロードする
+description: SmartReport 行のレンダリング済みバイナリ PDF ストリームをダウンロードします。
+slug: /smart-reports/download-smart-report-pdf
+keywords:
+  - 'v2/smart-reports/{id}/download'
+  - '/v2/smart-reports/{id}/download'
+  - v2/smart-reports/download
+  - /v2/smart-reports/download
+  - v2 smart-reports download
+  - 'v2 smart-reports {id} download'
+  - api/smart-reports/download
+  - /api/smart-reports/download
+  - 'api.verifik.co/v2/smart-reports/{id}/download'
+  - 'https://api.verifik.co/v2/smart-reports/{id}/download'
+  - 'GET v2/smart-reports/{id}/download'
+  - 'GET /v2/smart-reports/{id}/download'
+  - smart-reports
+  - smart_report_download_pdf
+  - smart-reports/download
+  - /smart-reports/download
+  - api smart-reports download
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+`SmartReport` のレンダリング済み PDF ファイルをバイナリストリーム（`Content-Type: application/pdf`）としてダウンロードします。バックエンド、ポータル、または統合システムで、[Smart Report PDF を生成する](/verifik-ja/smart-reports/generate-smart-report-pdf) が返す base64 JSON エンベロープではなく生の PDF バイト列が必要な場合にこのエンドポイントを使用してください。
+
+任意の `rowIndex` クエリパラメータにより、リンクされた `SmartBatch` 内のどの行をレンダリングまたはダウンロードするかを選択できます。`rowIndex` を省略した場合、エンドポイントは `SmartReport` 上の `dataSnapshot.rowIndex` にフォールバックし、さらに `0` にフォールバックします。
+
+### エンドポイント
+
+```
+GET https://api.verifik.co/v2/smart-reports/{id}/download
+```
+
+このエンドポイントは、お客様自身のクライアント別 `Authorization: Bearer <VERIFIK_JWT>` を使用して Smart-Agent プロキシ経由の `https://ai.verifik.co/v2/smart-reports/{id}/download` からも利用できます。共有 x402 による実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --- | --- | --- |
+| `Accept` | `application/pdf` | バイナリ PDF レスポンスストリーム。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアント単位の JWT（`authUser.clientId`）。 |
+
+### パラメータ
+
+| 名前 | 場所 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| `id` | `path` | string | **はい** | `SmartReport` ObjectId。 |
+| `rowIndex` | `query` | number | いいえ | ダウンロードする 0 始まりの行インデックス。`dataSnapshot.rowIndex`、次いで `0` にフォールバックします。 |
+
+### リクエスト
+
+このエンドポイントは JSON ではなく生のバイナリ PDF バイト列をストリーム配信するため、HTTP クライアントは JSON としてパースせずバイナリバッファとして読み取るように設定してください。
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import fs from "fs";
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const response = await axios.get(`https://api.verifik.co/v2/smart-reports/${id}/download`, {
+    params: { rowIndex: 0 },
+    responseType: "arraybuffer",
+    headers: {
+      Accept: "application/pdf",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  fs.writeFileSync("report.pdf", Buffer.from(response.data));
+  console.log(`Saved report.pdf (${response.data.byteLength} bytes)`);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id . "/download?rowIndex=0");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/pdf",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$pdfBytes = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($httpCode === 200) {
+    file_put_contents("report.pdf", $pdfBytes);
+    echo "Saved report.pdf (" . strlen($pdfBytes) . " bytes)\n";
+} else {
+    echo "Download failed ($httpCode): $pdfBytes\n";
+}
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}/download"
+headers = {
+    "Accept": "application/pdf",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {"rowIndex": 0}
+
+resp = requests.get(url, params=params, headers=headers)
+resp.raise_for_status()
+
+with open("report.pdf", "wb") as f:
+    f.write(resp.content)
+
+print(f"Saved report.pdf ({len(resp.content)} bytes)")
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-reports/"+id+"/download?rowIndex=0", nil)
+	req.Header.Set("Accept", "application/pdf")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	pdfBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		fmt.Printf("Download failed (%d): %s\n", resp.StatusCode, string(pdfBytes))
+		return
+	}
+
+	if err := os.WriteFile("report.pdf", pdfBytes, 0644); err != nil {
+		panic(err)
+	}
+	fmt.Printf("Saved report.pdf (%d bytes)\n", len(pdfBytes))
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download?rowIndex=0" \
+  -H "Accept: application/pdf" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -o report.pdf
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200 OK（バイナリ PDF）">
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="Consulta_1.pdf"
+Content-Length: 148320
+
+%PDF-1.4
+... (binary PDF stream) ...
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "template_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "row_not_found",
+  "code": "row_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### レスポンスヘッダー（`200 OK`）
+
+| ヘッダー | 値 / 形式 | 説明 |
+| --- | --- | --- |
+| `Content-Type` | `application/pdf` | バイナリ PDF の MIME タイプ。 |
+| `Content-Disposition` | `attachment; filename="Consulta_<rowIndex+1>.pdf"` | 1 始まりの行番号を使用した添付ファイル名（例: `rowIndex: 0` の場合は `Consulta_1.pdf`）。 |
+| `Content-Length` | 整数のバイト長 | ストリーム配信される PDF の正確なバイトサイズ。 |
+
+#### エラーコード
+
+| ステータス | エラーコード / 種別 | 原因 |
+| --- | --- | --- |
+| `401` | `Unauthorized` | JWT が欠落または無効です。 |
+| `403` | `Forbidden` | 共有 x402 による実行が試行されました。クライアント別 JWT を使用してください。 |
+| `404` | `not_found` | レポート ID が存在しないか、別のクライアントに属しています。 |
+| `404` | `template_not_found` | リンクされたテンプレートが見つかりませんでした。 |
+| `409` | `MissingParameter` | クエリまたはパスパラメータで Joi 検証に失敗しました。 |
+| `409` | `row_not_found` | 解決された `rowIndex` がバッチ内に存在しません。 |
+| `422` | `UnprocessableEntity` | Mongoose 検証エラーです。 |
+
+### Webhook と MCP 統合
+
+- **Webhook**: `downloadUrl` パス（`/v2/smart-reports/{id}/download`）は、[Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)、[Smart Report を取得する](/verifik-ja/smart-reports/retrieve-a-smart-report)、および [Smart Report PDF を生成する](/verifik-ja/smart-reports/generate-smart-report-pdf) から返されるほか、[SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks) に記載されているレポートライフサイクル通知にも含まれます。
+- **MCP 相当ツール**: AI エージェントは `smart_report_download_pdf` MCP ツールを使用してレポート PDF ダウンロードを取得できます。詳細は [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents) を参照してください。
+
+### 関連項目
+
+- [SmartReports 概要](/verifik-ja/smart-reports)
+- [ヘッドレス API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report PDF を生成する](/verifik-ja/smart-reports/generate-smart-report-pdf)
+- [Smart Report HTML を取得する](/verifik-ja/smart-reports/retrieve-smart-report-html)

@@ -1,0 +1,361 @@
+---
+id: create-a-smart-batch
+title: Criar um Smart Batch
+description: Crie um Smart Batch com linhas de entrada vinculadas a uma BatchConfiguration existente.
+slug: /smart-reports/create-a-smart-batch
+keywords:
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - api.verifik.co/v2/smart-batches
+  - 'https://api.verifik.co/v2/smart-batches'
+  - POST v2/smart-batches
+  - POST /v2/smart-batches
+  - smart-batches
+  - /smart-batches
+  - GET v2/smart-batches
+  - GET /v2/smart-batches
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Crie um `SmartBatch` vinculado a uma `BatchConfiguration` existente. Você fornece um `name` de exibição e pelo menos uma linha de entrada em `rows`. Criar o lote persiste as linhas de entrada com `status: "draft"` e não executa etapas do catálogo nem consome créditos até que a execução seja iniciada.
+
+Cada entrada em `rows` aceita um objeto encapsulado (`{ rowIndex?, inputData }`) ou um objeto plano (`{ rowIndex?, ...inputFields }`), que a camada de validação normaliza para `{ rowIndex, inputData }`. **Não** inclua `status`, `results` ou `errors` na criação.
+
+### Endpoint
+
+```text
+POST https://api.verifik.co/v2/smart-batches
+```
+
+Este endpoint também é acessível pelo proxy do Smart-Agent em `https://ai.verifik.co/v2/smart-batches` usando seu próprio `Authorization: Bearer <VERIFIK_JWT>` por cliente. A execução compartilhada via x402 é bloqueada com `403 Forbidden`.
+
+### Cabeçalhos
+
+| Nome            | Valor                  | Descrição                                      |
+| --------------- | ---------------------- | ---------------------------------------------- |
+| `Content-Type`  | `application/json`     | Formato do payload da requisição.              |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT com escopo de cliente (`authUser.clientId`). |
+
+### Corpo
+
+| Nome                 | Tipo     | Obrigatório | Descrição |
+| -------------------- | -------- | ----------- | --------- |
+| `batchConfiguration` | string   | Sim         | ObjectId da `BatchConfiguration` que define as etapas do fluxo de trabalho. |
+| `name`               | string   | Sim         | Nome de exibição do lote. Máximo de `150` caracteres. |
+| `executor`           | string   | Não         | Modo de execução: `"queue"`, `"featureRunner"` ou `"browser"`. Quando derivado de `batchConfiguration`, é normalizado para `"queue"` ou `"browser"`. |
+| `source`             | string   | Não         | Identificador do produto de origem: `"smart_batch"` (padrão) ou `"smart_fleet"`. |
+| `rows`               | object[] | Sim         | Array com pelo menos `1` linha (`min 1`). Aceita `{ rowIndex?, inputData }` encapsulado ou `{ rowIndex?, ...inputFields }` plano. **Não** envie `status`, `results` ou `errors` na criação. |
+
+Chaves desconhecidas e propriedades de linha não permitidas (`status`, `results`, `errors`) são rejeitadas pela validação Joi com `409 MissingParameter`.
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.post(
+    "https://api.verifik.co/v2/smart-batches",
+    {
+      batchConfiguration: "6801a2b3c4d5e6f7a8b9c0d4",
+      name: "Colombia Onboarding — November",
+      source: "smart_batch",
+      rows: [
+        {
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1032386359",
+          },
+        },
+        {
+          documentType: "CC",
+          documentNumber: "1007463534",
+        },
+      ],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "batchConfiguration" => "6801a2b3c4d5e6f7a8b9c0d4",
+    "name" => "Colombia Onboarding — November",
+    "source" => "smart_batch",
+    "rows" => [
+        [
+            "rowIndex" => 0,
+            "inputData" => [
+                "documentType" => "CC",
+                "documentNumber" => "1032386359",
+            ],
+        ],
+        [
+            "documentType" => "CC",
+            "documentNumber" => "1007463534",
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-batches"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "name": "Colombia Onboarding — November",
+    "source": "smart_batch",
+    "rows": [
+        {
+            "rowIndex": 0,
+            "inputData": {
+                "documentType": "CC",
+                "documentNumber": "1032386359",
+            },
+        },
+        {
+            "documentType": "CC",
+            "documentNumber": "1007463534",
+        },
+    ],
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+		"name":               "Colombia Onboarding — November",
+		"source":             "smart_batch",
+		"rows": []map[string]interface{}{
+			{
+				"rowIndex": 0,
+				"inputData": map[string]string{
+					"documentType":   "CC",
+					"documentNumber": "1032386359",
+				},
+			},
+			{
+				"documentType":   "CC",
+				"documentNumber": "1007463534",
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "name": "Colombia Onboarding — November",
+    "source": "smart_batch",
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        }
+      },
+      {
+        "documentType": "CC",
+        "documentNumber": "1007463534"
+      }
+    ]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — November",
+    "status": "draft",
+    "executor": "browser",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0,
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": [],
+        "creditsSpent": 0,
+        "attemptCount": 0,
+        "attempts": []
+      },
+      {
+        "rowIndex": 1,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1007463534"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": [],
+        "creditsSpent": 0,
+        "attemptCount": 0,
+        "attempts": []
+      }
+    ],
+    "totalRows": 2,
+    "completedRows": 0,
+    "failedRows": 0,
+    "partialRows": 0,
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:00:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"rows[0].status\" is not allowed",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Nunca passe `status`, `results` ou `errors` dentro de `rows` ao criar um lote; linhas recém-criadas sempre começam no status `pending`.
+- Se `executor` for omitido, ele é resolvido a partir de `batchConfiguration.executor` e normalizado para `"queue"` ou `"browser"`.
+- Após a criação, chame [Estimar custo do Smart Batch](/verifik-pt/smart-reports/estimate-smart-batch-cost) para pré-visualizar as cobranças de créditos e [Iniciar um Smart Batch](/verifik-pt/smart-reports/start-a-smart-batch) para iniciar o processamento.
+- Para importações em massa de CSV, XLSX ou JSONL com validação de dependências e execução imediata opcional, use [Criar um Smart Batch a partir de arquivo](/verifik-pt/smart-reports/create-smart-batch-from-file).
+
+### Relacionado
+
+- [Visão geral do Smart Reports](/verifik-pt/smart-reports)
+- [Guia da API Headless](/verifik-pt/smart-reports/headless-api-guide)
+- [Webhooks do Smart Reports](/verifik-pt/resources/smart-reports-webhooks)
+- [Executar um Smart Report](/verifik-pt/smart-reports/run-a-smart-report)
+- [Criar um Smart Batch a partir de arquivo](/verifik-pt/smart-reports/create-smart-batch-from-file)
+- [Iniciar um Smart Batch](/verifik-pt/smart-reports/start-a-smart-batch)
