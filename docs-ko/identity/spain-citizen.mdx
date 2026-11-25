@@ -48,7 +48,7 @@ Verifik의 신원 확인 API는 정부 공식 데이터를 활용해 스페인 �
 GET https://api.verifik.co/v2/es/cedula
 ```
 
-스페인 개인의 신원을 공식 출처와 대조합니다. **`documentType`**(`DNIES` 또는 `NIE`), 공백 없는 **`documentNumber`**, 만료일 **`date`**(`DD/MM/YYYY`)를 전달합니다. **KYC**, **사기 방지**, **규제 대상 온보딩**에 적합합니다.
+스페인 개인의 신원을 공식 출처와 대조합니다. **`documentType`**(`DNIES` 또는 `NIE`), 공백 없는 **`documentNumber`**와 함께, `DNIES` 및 `X`, `Y`, `Z`로 시작하지 않는 `NIE`(`M`으로 시작하는 NIE 등)에는 유효일 **`expirationDate`**(`DD/MM/YYYY`)를 전달하고, `X`, `Y`, `Z`로 시작하는 `NIE`에는 **`supportNumber`**(EU 등록 증명서 `C` + 숫자 8자리, TIE `E` + 숫자 8자리)를 전달해야 합니다. **KYC**, **사기 방지**, **규제 대상 온보딩**에 적합합니다.
 
 ### 헤더(Headers)
 
@@ -59,11 +59,12 @@ GET https://api.verifik.co/v2/es/cedula
 
 ### 매개변수(Parameters)
 
-| 이름             | 형식    | 필수 | 설명                                            |
-| ---------------- | ------- | ---- | ----------------------------------------------- |
-| `documentType`   | string  | 예   | 문서 종류. 허용 값: `DNIES`, `NIE`.             |
-| `documentNumber` | string  | 예   | 공백 없이 입력한 문서 번호.                     |
-| `date`           | string  | 예   | `DD/MM/YYYY` 형식의 만료일.                     |
+| 이름             | 형식    | 필수   | 설명                                            |
+| ---------------- | ------- | ------ | ----------------------------------------------- |
+| `documentType`   | string  | 예     | 문서 종류. 허용 값: `DNIES`, `NIE`.             |
+| `documentNumber` | string  | 예     | 공백 없이 입력한 문서 번호.                     |
+| `expirationDate` | string  | 조건부 | `DD/MM/YYYY` 형식의 유효일. `DNIES`와 `X`, `Y`, `Z`로 시작하지 않는 `NIE`(`M` NIE 등)에 필수입니다. `X`, `Y`, `Z`로 시작하는 `NIE`에서는 이 값만으로 조회할 수 없습니다. |
+| `supportNumber`  | string  | 조건부 | `X`, `Y`, `Z`로 시작하는 `NIE`에 필수입니다. 허용 형식: `C` + 숫자 8자리(EU 등록 증명서) 또는 `E` + 숫자 8자리(거주 카드 TIE). `C` 또는 `E` 뒤에 1~7자리 숫자가 오면 문자 바로 뒤에 0을 채우며 공백과 하이픈은 무시됩니다. |
 
 ### 요청(Request)
 
@@ -73,11 +74,15 @@ GET https://api.verifik.co/v2/es/cedula
 ```javascript
 import axios from "axios";
 
+// DNIES 또는 X/Y/Z로 시작하지 않는 NIE (expirationDate 필수)
 const { data } = await axios.get("https://api.verifik.co/v2/es/cedula", {
-  params: { documentType: "DNIES", documentNumber: "123456789", date: "17/07/2024" },
+  params: { documentType: "DNIES", documentNumber: "123456789", expirationDate: "17/07/2024" },
   headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
 });
 console.log(data);
+
+// X/Y/Z로 시작하는 NIE (supportNumber 필수: C + 숫자 8자리 또는 E + 숫자 8자리)
+// params: { documentType: "NIE", documentNumber: "X1234567L", supportNumber: "E25758657" }
 ```
 
   </TabItem>
@@ -88,9 +93,13 @@ import os, requests
 
 url = "https://api.verifik.co/v2/es/cedula"
 headers = {"Content-Type": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"documentType": "DNIES", "documentNumber": "123456789", "date": "17/07/2024"}
+# DNIES 또는 X/Y/Z로 시작하지 않는 NIE (expirationDate 필수)
+params = {"documentType": "DNIES", "documentNumber": "123456789", "expirationDate": "17/07/2024"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
+
+# X/Y/Z로 시작하는 NIE (supportNumber 필수: C + 숫자 8자리 또는 E + 숫자 8자리)
+# params = {"documentType": "NIE", "documentNumber": "X1234567L", "supportNumber": "E25758657"}
 ```
 
   </TabItem>
@@ -149,8 +158,22 @@ print(r.json())
 
 ```json
 {
-  "message": "\"date\" is required",
-  "code": "MissingParameter"
+  "code": "MissingParameter",
+  "message": "supportNumber is required for NIE numbers starting with X, Y or Z. Use C followed by 8 digits for the EU registration certificate, or E followed by 8 digits for the TIE. expirationDate is not accepted as proof for this NIE type."
+}
+```
+
+```json
+{
+  "code": "InvalidParameter",
+  "message": "supportNumber must be C or E followed by 8 digits (C + 8 digits for the EU registration certificate, E + 8 digits for the TIE)."
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "expirationDate is required for DNIES"
 }
 ```
 
@@ -180,7 +203,8 @@ print(r.json())
 
 ### 비고
 
-- `date`는 `DD/MM/YYYY` 형식을 따라야 합니다.
+- `expirationDate`는 `DD/MM/YYYY` 형식을 따라야 하며, `DNIES`와 `X`, `Y`, `Z`로 시작하지 않는 `NIE`(`M` NIE 등)에 필수입니다.
+- `X`, `Y`, `Z`로 시작하는 `NIE`는 `supportNumber`(EU 등록 증명서 `C` + 숫자 8자리, TIE `E` + 숫자 8자리)가 필수이며, 누락되거나 형식이 올바르지 않으면 과금되지 않는 `409` 오류를 반환합니다.
 
 ---
 

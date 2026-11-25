@@ -48,7 +48,7 @@ Verifik の本人確認 API は、公的な政府データを利用してスペ�
 GET https://api.verifik.co/v2/es/cedula
 ```
 
-スペイン国民・居住者の本人確認を公式ソースと照合します。**`documentType`**（`DNIES` または `NIE`）、スペースなしの **`documentNumber`**、有効期限 **`date`**（`DD/MM/YYYY`）を指定します。**KYC**、**不正防止**、**規制対応オンボーディング**向けです。
+スペイン国民・居住者の本人確認を公式ソースと照合します。**`documentType`**（`DNIES` または `NIE`）、スペースなしの **`documentNumber`** を指定し、`DNIES` および `X`・`Y`・`Z` で始まらない `NIE`（`M` で始まる NIE など）では有効日 **`expirationDate`**（`DD/MM/YYYY`）を指定します。`X`・`Y`・`Z` で始まる `NIE` は **`supportNumber`**（EU 登録証明書は `C` + 数字 8 桁、TIE は `E` + 数字 8 桁）が必須です。**KYC**、**不正防止**、**規制対応オンボーディング**向けです。
 
 ### ヘッダー
 
@@ -59,11 +59,12 @@ GET https://api.verifik.co/v2/es/cedula
 
 ### パラメーター
 
-| 名前             | 型     | 必須 | 説明                                       |
-| ---------------- | ------ | ---- | ------------------------------------------ |
-| `documentType`   | string | はい | 文書タイプ。許可される値: `DNIES`, `NIE`。   |
-| `documentNumber` | string | はい | スペースを含まない文書番号。                 |
-| `date`           | string | はい | 有効期限（`DD/MM/YYYY` 形式）。              |
+| 名前             | 型     | 必須   | 説明                                       |
+| ---------------- | ------ | ------ | ------------------------------------------ |
+| `documentType`   | string | はい   | 文書タイプ。許可される値: `DNIES`, `NIE`。   |
+| `documentNumber` | string | はい   | スペースを含まない文書番号。                 |
+| `expirationDate` | string | 条件付き | 有効日（`DD/MM/YYYY` 形式）。`DNIES`、および `X`・`Y`・`Z` で始まらない `NIE`（`M` NIE など）では必須です。`X`・`Y`・`Z` で始まる `NIE` ではこの日付だけでは照会できません。 |
+| `supportNumber`  | string | 条件付き | `X`・`Y`・`Z` で始まる `NIE` では必須です。対応形式は `C` + 数字 8 桁（EU 登録証明書）または `E` + 数字 8 桁（居住カード TIE）です。`C` または `E` の後が 1〜7 桁の場合は文字の直後に 0 で埋められ、空白やハイフンは無視されます。 |
 
 ### リクエスト
 
@@ -73,11 +74,15 @@ GET https://api.verifik.co/v2/es/cedula
 ```javascript
 import axios from "axios";
 
+// DNIES または X/Y/Z で始まらない NIE（expirationDate が必須）
 const { data } = await axios.get("https://api.verifik.co/v2/es/cedula", {
-  params: { documentType: "DNIES", documentNumber: "123456789", date: "17/07/2024" },
+  params: { documentType: "DNIES", documentNumber: "123456789", expirationDate: "17/07/2024" },
   headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.VERIFIK_TOKEN}` },
 });
 console.log(data);
+
+// X/Y/Z で始まる NIE（supportNumber が必須: C + 数字 8 桁 または E + 数字 8 桁）
+// params: { documentType: "NIE", documentNumber: "X1234567L", supportNumber: "E25758657" }
 ```
 
   </TabItem>
@@ -88,9 +93,13 @@ import os, requests
 
 url = "https://api.verifik.co/v2/es/cedula"
 headers = {"Content-Type": "application/json", "Authorization": f"Bearer {os.getenv('VERIFIK_TOKEN')}"}
-params = {"documentType": "DNIES", "documentNumber": "123456789", "date": "17/07/2024"}
+# DNIES または X/Y/Z で始まらない NIE（expirationDate が必須）
+params = {"documentType": "DNIES", "documentNumber": "123456789", "expirationDate": "17/07/2024"}
 r = requests.get(url, headers=headers, params=params)
 print(r.json())
+
+# X/Y/Z で始まる NIE（supportNumber が必須: C + 数字 8 桁 または E + 数字 8 桁）
+# params = {"documentType": "NIE", "documentNumber": "X1234567L", "supportNumber": "E25758657"}
 ```
 
   </TabItem>
@@ -149,8 +158,22 @@ print(r.json())
 
 ```json
 {
-  "message": "\"date\" is required",
-  "code": "MissingParameter"
+  "code": "MissingParameter",
+  "message": "supportNumber is required for NIE numbers starting with X, Y or Z. Use C followed by 8 digits for the EU registration certificate, or E followed by 8 digits for the TIE. expirationDate is not accepted as proof for this NIE type."
+}
+```
+
+```json
+{
+  "code": "InvalidParameter",
+  "message": "supportNumber must be C or E followed by 8 digits (C + 8 digits for the EU registration certificate, E + 8 digits for the TIE)."
+}
+```
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "expirationDate is required for DNIES"
 }
 ```
 
@@ -180,7 +203,8 @@ print(r.json())
 
 ### メモ
 
-- `date` は `DD/MM/YYYY` の形式に従ってください。
+- `expirationDate` は `DD/MM/YYYY` 形式に従う必要があり、`DNIES` および `X`・`Y`・`Z` で始まらない `NIE`（`M` NIE など）で必須です。
+- `X`・`Y`・`Z` で始まる `NIE` は `supportNumber`（EU 登録証明書は `C` + 数字 8 桁、TIE は `E` + 数字 8 桁）が必須です。未指定または形式不正の場合は課金されない `409` を返します。
 
 ---
 
