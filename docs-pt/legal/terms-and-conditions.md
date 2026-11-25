@@ -7,7 +7,7 @@ slug: /legal/terms-and-conditions
 
 # Termos e Condições
 
-**Última atualização: 22 de junho de 2026**
+**Última atualização: 25 de novembro de 2026**
 
 **Vigência: 9 de março de 2023**
 
@@ -229,7 +229,17 @@ O App, soluções e designs, gráficos, textos, imagens, logotipos, código-font
 
 Você não poderá reproduzir, adaptar, distribuir, alugar, arrendar, vender, licenciar ou de outra forma transferir o App, incluindo os códigos de programação. Além disso, deve cumprir as condições mínimas de segurança da informação exigidas para o uso do App, ou seja, dispor de sistema de gestão de acesso e de antivírus.
 
-Seus sinais distintivos são de sua propriedade exclusiva, mas você autoriza a Verifik a utilizar suas marcas apenas para publicar seu logotipo em nosso App e em nosso site. Se precisarmos utilizar suas marcas para qualquer outra finalidade, a Verifik solicitará sua autorização antes do uso.
+Seus sinais distintivos são de sua propriedade exclusiva. O uso que a Verifik pode fazer deles para identificá-lo como cliente é regido pela seção "A Verifik pode identificá-lo como cliente?" destes Termos e Condições.
+
+### **A Verifik pode identificá-lo como cliente?**
+
+Sim. A Verifik reserva-se o direito de utilizar o nome, o nome comercial, o logotipo e as marcas do Usuário (os "Sinais Distintivos") para identificar o Usuário como cliente da Verifik em seu site, no App, em materiais comerciais e de marketing, apresentações, estudos de caso, redes sociais e em qualquer parte da marca da Verifik, com a finalidade de divulgar quem são seus clientes.
+
+Ao aceitar estes Termos e Condições, o Usuário concede à Verifik uma licença não exclusiva, de abrangência mundial, isenta de royalties e intransferível para utilizar seus Sinais Distintivos para a finalidade descrita nesta seção, enquanto a conta do Usuário permanecer ativa. A Verifik utilizará os Sinais Distintivos de acordo com quaisquer diretrizes de marca razoáveis fornecidas pelo Usuário e não os alterará nem dará a entender que o Usuário endossa qualquer produto ou declaração específica sem a autorização prévia do Usuário.
+
+Usuários com um plano Enterprise ativo podem solicitar por escrito, por e-mail para legal@verifik.co, a exclusão das listagens públicas de clientes. A Verifik processará a solicitação no prazo de trinta (30) dias corridos a partir do seu recebimento. Esta opção de exclusão não está disponível para os demais planos.
+
+Após o término do Contrato, a Verifik deixará de incluir os Sinais Distintivos do Usuário em novos materiais dentro de um prazo razoável, mas não será obrigada a retirar materiais já impressos, distribuídos ou publicados antes do término.
 
 ### **Quais são as restrições e proibições como Usuário dos Serviços?**
 
