@@ -1,0 +1,345 @@
+---
+id: retrieve-batch-row-report
+title: 获取 Smart Batch 行报告
+description: 获取批次单行的内置组合报告模型（colombia_vehicle），并支持可选的 Verification Score 核验评分。
+slug: /smart-reports/retrieve-batch-row-report
+keywords:
+  - 'v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - '/v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches rows report
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - 'GET v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - 'GET /v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/rows/report
+  - /v2/smart-batches/rows/report
+  - 'v2 smart-batches {id} rows {rowindex} report'
+  - smart-batches/rows/report
+  - /smart-batches/rows/report
+  - api/smart-batches/rows/report
+  - /api/smart-batches/rows/report
+  - api smart-batches rows report
+  - rows/report
+  - /rows/report
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+为 `SmartBatch` 的单行（`rowIndex`）组装结构化行报告模型。该接口会在该行已存储的步骤输出上运行 Verifik 的内置报告编排器（`colombia_vehicle`），并在传入 `score` 或 `scoreProfile` 时可选地附加 `verificationScore`。
+
+如果批次的 `BatchConfiguration` 未匹配任何内置编排器，此接口将返回 `409 Conflict`（`no_report_composer_for_configuration`）。对于任意自定义报告模板，请改用 `POST /v2/smart-reports/run`、`GET /v2/smart-reports/{id}/html` 或 `/generate`。读取此接口不消耗积分。
+
+### 接口
+
+```text
+GET https://api.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report
+```
+
+此接口也可通过 Smart-Agent 代理 `https://ai.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report` 访问，需使用你自己的客户专属 `Authorization: Bearer <VERIFIK_JWT>`。共享 x402 执行会被拒绝并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称            | 值                     | 描述                                     |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | 请求载荷格式。                           |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 客户作用域的 JWT（`authUser.clientId`）。 |
+
+### 路径参数
+
+| 名称       | 类型   | 必填 | 描述 |
+| ---------- | ------ | ---- | ---- |
+| `id`       | string | 是   | `SmartBatch` ObjectId。 |
+| `rowIndex` | number | 是   | 该行在批次内从 `0` 开始的索引。 |
+
+### 查询参数
+
+| 名称           | 类型              | 必填 | 描述 |
+| -------------- | ----------------- | ---- | ---- |
+| `score`        | boolean 或 string | 否   | 传入 `true` 或 `"1"` 以计算并在响应中包含 `verificationScore`。 |
+| `scoreProfile` | string            | 否   | 评分配置方案标识符。提供 `scoreProfile` 也会同时启用 `score`。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+  const rowIndex = 0;
+
+  const { data } = await axios.get(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/rows/${rowIndex}/report`,
+    {
+      params: {
+        score: true,
+        scoreProfile: "fleet_standard",
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$rowIndex = 0;
+$query = http_build_query([
+    "score" => "true",
+    "scoreProfile" => "fleet_standard",
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/rows/" . $rowIndex . "/report?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+row_index = 0
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/rows/{row_index}/report"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "score": "true",
+    "scoreProfile": "fleet_standard",
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	rowIndex := "0"
+	params := url.Values{}
+	params.Set("score", "true")
+	params.Set("scoreProfile", "fleet_standard")
+
+	endpoint := fmt.Sprintf("https://api.verifik.co/v2/smart-batches/%s/rows/%s/report?%s", batchID, rowIndex, params.Encode())
+	req, _ := http.NewRequest("GET", endpoint, nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/rows/0/report?score=true&scoreProfile=fleet_standard" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "reportType": "colombia_vehicle",
+    "meta": {
+      "plate": "ABC123",
+      "documentType": "CC",
+      "documentNumber": "1032386359",
+      "vin": "9FB4SRAC2NM123456",
+      "batchName": "Colombia Fleet Inspection",
+      "rowIndex": 0,
+      "generatedAt": "2026-11-24T20:30:00.000Z"
+    },
+    "summary": {
+      "soatVigente": "VIGENTE",
+      "soatVencimiento": "2027-03-15",
+      "rtmVigente": "SI",
+      "rtmVencimiento": "2027-04-01",
+      "tieneGravamenes": "NO",
+      "blindado": "NO",
+      "pazSalvo": "SI",
+      "comparendoCount": 0,
+      "sinisterCount": 0
+    },
+    "blocks": {
+      "runt_vehicle_by_plate": {
+        "featureCode": "colombia_api_vehicle_complete_by_plate",
+        "title": "RUNT — Vehículo",
+        "status": "ok",
+        "sequence": 1,
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identificación",
+            "priority": "high"
+          }
+        ],
+        "displayRows": [],
+        "tables": []
+      }
+    },
+    "blockOrder": [
+      "runt_vehicle_by_plate"
+    ],
+    "verificationScore": {
+      "version": 1,
+      "profile": "fleet_standard",
+      "profileLabel": "Fleet Standard",
+      "score": 0.96,
+      "score100": 96,
+      "decision": "approve",
+      "band": "low_risk",
+      "coverage": 1,
+      "coveragePercent": 100
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-batch" label="404（批次不存在）">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-row" label="404（行不存在）">
+
+```json
+{
+  "message": "batch_row_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-composer" label="409（无报告编排器）">
+
+```json
+{
+  "message": "no_report_composer_for_configuration",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409（MissingParameter）">
+
+```json
+{
+  "message": "\"rowIndex\" must be a number",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 此接口仅提供内置的组合行报告（`colombia_vehicle`）。其他任何配置都会返回 `409 Conflict`（`no_report_composer_for_configuration`）。
+- 对于跨任意配置的自定义模板、主题化 HTML 渲染或 PDF 档案，请使用 `POST /v2/smart-reports/run`、`GET /v2/smart-reports/{id}/html` 或 `/generate`（请参阅[运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)）。
+- 除非提供 `score=true`、`score=1` 或 `scoreProfile`，否则响应中将省略 `verificationScore`。
+
+### 相关文档
+
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)
+- [查询 Smart Batch](/verifik-zh/smart-reports/retrieve-a-smart-batch)
+- [生成 Smart Report PDF](/verifik-zh/smart-reports/generate-smart-report-pdf)

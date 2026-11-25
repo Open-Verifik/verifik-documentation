@@ -1,0 +1,255 @@
+---
+id: retrieve-a-smart-report
+title: Retrieve a Smart Report
+description: 'Fetch a single SmartReport by ID with populated template, smartBatch, and client references plus PDF download and HTML URLs.'
+slug: /smart-reports/retrieve-a-smart-report
+keywords:
+  - 'v2/smart-reports/{id}'
+  - '/v2/smart-reports/{id}'
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - 'v2 smart-reports {id}'
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - 'api.verifik.co/v2/smart-reports/{id}'
+  - 'https://api.verifik.co/v2/smart-reports/{id}'
+  - 'GET v2/smart-reports/{id}'
+  - 'GET /v2/smart-reports/{id}'
+  - smart-reports
+  - smart_report_get
+  - /smart-reports
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Retrieve a single `SmartReport` by its ID. The response populates `template`, `smartBatch`, and `client`, and attaches ready-to-use `downloadUrl` (`/v2/smart-reports/{id}/download`) and `htmlUrl` (`/v2/smart-reports/{id}/html`) paths.
+
+This endpoint is also the polling target (`pollUrl`) returned when `POST /v2/smart-reports/run` executes in `"async"` mode or falls back to `202 Accepted` after the 90-second sync deadline. If the report ID does not exist or belongs to a different client, the endpoint returns HTTP `200 OK` with `{ "data": null }`.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/smart-reports/{id}
+```
+
+This endpoint is also reachable through the Smart-Agent proxy at `https://ai.verifik.co/v2/smart-reports/{id}` using your own per-client `Authorization: Bearer <VERIFIK_JWT>`. Shared x402 execution is blocked with `403 Forbidden`.
+
+### Headers
+
+| Name            | Value                  | Description                              |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | Request payload format.                  |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | Client-scoped JWT (`authUser.clientId`). |
+
+### Parameters
+
+| Name | Type   | Required | Description |
+| ---- | ------ | -------- | ----------- |
+| `id` | string | **Yes**  | `SmartReport` ObjectId returned by `POST /v2/smart-reports/run`, `POST /v2/smart-reports`, or `GET /v2/smart-reports`. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-reports/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-reports/"+id, nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "name": "Background Check - Applicant 42",
+    "status": "generated",
+    "template": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d2"
+    },
+    "smartBatch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3"
+    },
+    "client": {
+      "_id": "507f1f77bcf86cd799439013"
+    },
+    "pdfEngine": "puppeteer",
+    "pdfSize": 148320,
+    "generationDurationMs": 1840,
+    "generatedAt": "2026-11-24T20:00:04.000Z",
+    "externalRefId": "applicant-42",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+    "downloadUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download",
+    "htmlUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:00:04.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-null" label="200 OK (Not Found / Null)">
+
+```json
+{
+  "data": null
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"id\" must be a valid ObjectId",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Webhooks & MCP Integration
+
+- **Polling vs Webhooks**: For asynchronous runs, you can either poll `GET /v2/smart-reports/{id}` until `data.status` settles (`"generated"`, `"sent"`, or `"failed"`), or subscribe to webhook events (`smart_batch_report_generated`, `smart_batch_report_generation_failed`, `smart_batch_report_sent`, `smart_batch_report_delivery_failed`). See [Smart Reports Webhooks](/resources/smart-reports-webhooks).
+- **MCP Equivalent**: AI agents can retrieve a report record using the `smart_report_get` MCP tool. See [MCP and AI Agents](/smart-reports/mcp-and-ai-agents).
+
+### Notes
+
+- Missing reports or reports belonging to another client return `200 OK` with `{ "data": null }` rather than `404`.
+- `downloadUrl` and `htmlUrl` are relative API paths that can be appended to `https://api.verifik.co` (or `https://ai.verifik.co`).
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [MCP and AI Agents](/smart-reports/mcp-and-ai-agents)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Download Smart Report PDF](/smart-reports/download-smart-report-pdf)
+- [Retrieve Smart Report HTML](/smart-reports/retrieve-smart-report-html)

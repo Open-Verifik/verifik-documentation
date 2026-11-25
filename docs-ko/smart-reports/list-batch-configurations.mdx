@@ -1,0 +1,316 @@
+---
+id: list-batch-configurations
+title: 배치 구성 목록
+description: 클라이언트 계정에 저장된 배치 구성을 선택적 검색 및 페이지네이션과 함께 조회합니다
+slug: /smart-reports/list-batch-configurations
+keywords:
+  - v2/batch-configurations
+  - /v2/batch-configurations
+  - v2 batch-configurations
+  - batch-configurations
+  - /batch-configurations
+  - api/batch-configurations
+  - /api/batch-configurations
+  - api batch-configurations
+  - api.verifik.co/v2/batch-configurations
+  - 'https://api.verifik.co/v2/batch-configurations'
+  - GET v2/batch-configurations
+  - GET /v2/batch-configurations
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+인증된 클라이언트 계정이 소유한 배치 구성(`BatchConfiguration`) 목록을 조회합니다. 결과는 JWT의 클라이언트 범위로 제한되며 최신순(`createdAt` 내림차순)으로 정렬되고, 채워진 `steps.appFeature` 메타데이터 및 클라이언트별 `ClientFeature` 가격 정보와 함께 반환됩니다.
+
+`total`, `limit`, `page`, `pages` 메타데이터가 포함된 페이지네이션 결과가 필요하면 `page`를 전달하세요. `data`에서 일치하는 배열을 직접 받으려면 `page`를 생략하세요. 구성을 나열해도 조회가 실행되지 않으며 크레딧이 소비되지 않습니다.
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v2/batch-configurations
+```
+
+클라이언트별 `Authorization: Bearer <VERIFIK_JWT>` 헤더를 사용하여 Smart-Agent 프록시(`https://ai.verifik.co/v2/batch-configurations`)에서도 호출할 수 있습니다. 공유 x402 실행은 `403 Forbidden`으로 차단됩니다.
+
+### 헤더
+
+| 이름 | 값 |
+| ---- | -- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+토큰은 **클라이언트 JWT**여야 합니다. 자격 증명이 누락되었거나 유효하지 않으면 `401 Unauthorized`가 반환됩니다.
+
+### 매개변수
+
+모든 쿼리 매개변수는 선택 사항입니다.
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `search` | string | 아니요 | 저장된 구성에 적용되는 대소문자 구분 없는 이름 필터. |
+| `text` | string | 아니요 | `search`의 별칭. |
+| `page` | integer | 아니요 | 페이지 번호(`1`부터 시작). 제공하면 응답에서 페이지네이션 메타데이터(`total`, `limit`, `page`, `pages`)가 활성화됩니다. |
+| `limit` | integer | 아니요 | 페이지당 반환할 최대 구성 수. |
+| `perPage` | integer | 아니요 | `limit`의 별칭. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const params = new URLSearchParams({
+        search: "Colombia",
+        page: "1",
+        limit: "20",
+    });
+
+    const res = await fetch(`https://api.verifik.co/v2/batch-configurations?${params.toString()}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "search" => "Colombia",
+    "page" => 1,
+    "limit" => 20
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/batch-configurations?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/batch-configurations"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "search": "Colombia",
+    "page": 1,
+    "limit": 20,
+}
+
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "net/url"
+    "os"
+)
+
+func main() {
+    u, _ := url.Parse("https://api.verifik.co/v2/batch-configurations")
+    q := u.Query()
+    q.Set("search", "Colombia")
+    q.Set("page", "1")
+    q.Set("limit", "20")
+    u.RawQuery = q.Encode()
+
+    req, _ := http.NewRequest("GET", u.String(), nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/batch-configurations?search=Colombia&page=1&limit=20" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200-page" label="200 (page 포함)">
+
+```json
+{
+    "data": [
+        {
+            "_id": "67d1b4a0e4f5a60718293b12",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "executor": "browser",
+            "inputFormat": "csv",
+            "outputFormat": "csv",
+            "mergeStrategy": "sequential",
+            "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+            "isActive": true,
+            "steps": [
+                {
+                    "_id": "67d1b4a0e4f5a60718293b13",
+                    "appFeature": {
+                        "_id": "65f0a1b2c3d4e5f607182901",
+                        "name": "Colombian Cédula Validation",
+                        "code": "co-cedula",
+                        "url": "/v2/co/cedula",
+                        "method": "GET",
+                        "price": 0.05,
+                        "smartCheckPrice": 0.05,
+                        "country": "Colombia"
+                    },
+                    "sequence": 1,
+                    "enabled": true,
+                    "parameterDefaults": {},
+                    "queryMode": "byDocument",
+                    "inputFieldMapping": {},
+                    "outputFieldsToKeep": [],
+                    "maxRetries": 3,
+                    "retryDelayBaseSeconds": 4,
+                    "timeoutSeconds": 30
+                }
+            ],
+            "createdAt": "2026-10-15T14:20:00.000Z",
+            "updatedAt": "2026-10-15T14:20:00.000Z"
+        }
+    ],
+    "total": 1,
+    "limit": 20,
+    "page": 1,
+    "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200-no-page" label="200 (page 미포함)">
+
+```json
+{
+    "data": [
+        {
+            "_id": "67d1b4a0e4f5a60718293b12",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "executor": "browser",
+            "inputFormat": "csv",
+            "outputFormat": "csv",
+            "mergeStrategy": "sequential",
+            "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+            "isActive": true,
+            "steps": [
+                {
+                    "_id": "67d1b4a0e4f5a60718293b13",
+                    "appFeature": {
+                        "_id": "65f0a1b2c3d4e5f607182901",
+                        "name": "Colombian Cédula Validation",
+                        "code": "co-cedula",
+                        "url": "/v2/co/cedula",
+                        "method": "GET",
+                        "price": 0.05,
+                        "smartCheckPrice": 0.05,
+                        "country": "Colombia"
+                    },
+                    "sequence": 1,
+                    "enabled": true,
+                    "parameterDefaults": {},
+                    "queryMode": "byDocument",
+                    "inputFieldMapping": {},
+                    "outputFieldsToKeep": [],
+                    "maxRetries": 3,
+                    "retryDelayBaseSeconds": 4,
+                    "timeoutSeconds": 30
+                }
+            ],
+            "createdAt": "2026-10-15T14:20:00.000Z",
+            "updatedAt": "2026-10-15T14:20:00.000Z"
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- 결과는 인증된 클라이언트 JWT 범위로 자동 제한되며 최신순(`-createdAt`)으로 정렬됩니다.
+- 각 단계의 `steps.appFeature`는 구성된 경우 계정의 `ClientFeature` 가격으로 채워지고 보강됩니다.
+- `perPage`는 `limit`의 별칭이고 `text`는 `search`의 별칭입니다.
+- 페이지네이션 메타데이터(`total`, `limit`, `page`, `pages`)는 쿼리 문자열에 `page`가 제공된 경우에만 포함됩니다.
+
+### 관련
+
+- [배치 구성 생성](/verifik-ko/smart-reports/create-a-batch-configuration)
+- [배치 구성 조회](/verifik-ko/smart-reports/retrieve-a-batch-configuration)
+- [Smart Reports 개요](/verifik-ko/smart-reports)
+- [Headless API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [MCP 및 AI 에이전트](/verifik-ko/smart-reports/mcp-and-ai-agents)
+- [Smart Reports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)

@@ -1,0 +1,348 @@
+---
+id: generate-template-layout
+title: テンプレートレイアウトを生成する
+description: AI を使用して自然言語から構造化された Smart Report セクションを生成、追加、または編集します
+slug: /smart-reports/generate-template-layout
+keywords:
+  - v2/smart-report-templates/generate-layout
+  - /v2/smart-report-templates/generate-layout
+  - v2 smart-report-templates generate-layout
+  - api/smart-report-templates/generate-layout
+  - /api/smart-report-templates/generate-layout
+  - api smart-report-templates generate-layout
+  - api.verifik.co/v2/smart-report-templates/generate-layout
+  - 'https://api.verifik.co/v2/smart-report-templates/generate-layout'
+  - POST v2/smart-report-templates/generate-layout
+  - POST /v2/smart-report-templates/generate-layout
+  - smart-report-templates/generate-layout
+  - /smart-report-templates/generate-layout
+  - GET v2/smart-report-templates/generate-layout
+  - GET /v2/smart-report-templates/generate-layout
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Gemini（temperature `0.2`）を使用して、自然言語の `prompt` から構造化された `ReportSection` 定義を生成、追加、または編集します。`previewData` にサンプルの検証データを渡すことで、モデルがセクションの `dataPath` バインディングや列レイアウトを実際のペイロード構造に合わせます。
+
+ヘッドレスレポートビルダーや AI エージェントパイプラインでは、セクション JSON を手書きすることなく、完全なレイアウトのひな形作成（`"create"`）、既存テンプレートへの後続セクションの追加（`"append"`）、または単一セクションの調整（`"edit"`）にこのエンドポイントを使用します。この呼び出しと [テンプレート HTML をプレビューする](/verifik-ja/smart-reports/preview-template-html) を組み合わせてレンダリング出力を確認したうえで、[レポートテンプレートを作成する](/verifik-ja/smart-reports/create-a-report-template) または [レポートテンプレートを更新する](/verifik-ja/smart-reports/update-a-report-template) で永続化してください。
+
+### エンドポイント
+
+```
+POST https://api.verifik.co/v2/smart-report-templates/generate-layout
+```
+
+Smart-Agent プロキシ（`https://ai.verifik.co`）も同じ `/v2/...` パスを公開しており、お客様自身の `Authorization: Bearer <VERIFIK_JWT>` ヘッダーが必要です。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Content-Type | `application/json` |
+| Accept | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### ボディ
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `prompt` | string | **はい** | 作成するレイアウト、追加するセクション、または編集モードで適用する変更内容を説明する自然言語の指示文。 |
+| `mode` | string | **はい** | 生成モード: `"create"`、`"edit"`、または `"append"`。 |
+| `previewData` | object | いいえ | 生成される `dataPath` 式や列を実際のデータ構造に合わせるためのサンプル検証 JSON（例: `inputData`、`results`、`batchName`）。 |
+| `currentSections` | object[] | いいえ | 既存の `ReportSection` 配列。新しく生成されたセクションが既存の `order` 連番を引き継ぐように、`"append"` モードでの指定を推奨します。 |
+| `selectedSection` | object / null | いいえ | `mode` が `"edit"` のときに変更対象となる `ReportSection` オブジェクト。`"edit"` モードで `null` または省略された場合、動作は `"create"` にフォールバックします。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch(
+    "https://api.verifik.co/v2/smart-report-templates/generate-layout",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        prompt:
+          "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+        mode: "create",
+        previewData: {
+          batchName: "Driver Onboarding",
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1020304050",
+          },
+          results: {
+            identity: { fullName: "Mateo Rojas", status: "active" },
+            fines: [{ code: "C02", amount: 580000, status: "pending" }],
+          },
+        },
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "prompt" => "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+    "mode" => "create",
+    "previewData" => [
+        "batchName" => "Driver Onboarding",
+        "rowIndex" => 0,
+        "inputData" => [
+            "documentType" => "CC",
+            "documentNumber" => "1020304050",
+        ],
+        "results" => [
+            "identity" => ["fullName" => "Mateo Rojas", "status" => "active"],
+            "fines" => [
+                ["code" => "C02", "amount" => 580000, "status" => "pending"],
+            ],
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/generate-layout");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates/generate-layout"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "prompt": "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+    "mode": "create",
+    "previewData": {
+        "batchName": "Driver Onboarding",
+        "rowIndex": 0,
+        "inputData": {
+            "documentType": "CC",
+            "documentNumber": "1020304050",
+        },
+        "results": {
+            "identity": {"fullName": "Mateo Rojas", "status": "active"},
+            "fines": [{"code": "C02", "amount": 580000, "status": "pending"}],
+        },
+    },
+}
+
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"prompt": "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+		"mode":   "create",
+		"previewData": map[string]interface{}{
+			"batchName": "Driver Onboarding",
+			"rowIndex":  0,
+			"inputData": map[string]interface{}{
+				"documentType":   "CC",
+				"documentNumber": "1020304050",
+			},
+			"results": map[string]interface{}{
+				"identity": map[string]interface{}{"fullName": "Mateo Rojas", "status": "active"},
+				"fines": []map[string]interface{}{
+					{"code": "C02", "amount": 580000, "status": "pending"},
+				},
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates/generate-layout", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates/generate-layout" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "prompt": "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+    "mode": "create",
+    "previewData": {
+      "batchName": "Driver Onboarding",
+      "rowIndex": 0,
+      "inputData": {
+        "documentType": "CC",
+        "documentNumber": "1020304050"
+      },
+      "results": {
+        "identity": { "fullName": "Mateo Rojas", "status": "active" },
+        "fines": [{ "code": "C02", "amount": 580000, "status": "pending" }]
+      }
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200-create" label="200（create / append）">
+
+```json
+{
+  "data": [
+    {
+      "id": "sec-driver-summary",
+      "type": "keyValueGrid",
+      "order": 0,
+      "label": "Driver Summary",
+      "dataPath": "results.identity",
+      "columnsPerRow": 2
+    },
+    {
+      "id": "sec-traffic-fines",
+      "type": "dataTable",
+      "order": 1,
+      "label": "Traffic Citations",
+      "dataPath": "results.fines",
+      "columns": [
+        { "key": "code", "label": "Code" },
+        { "key": "amount", "label": "Amount" },
+        { "key": "status", "label": "Status" }
+      ]
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="200-edit" label="200（edit）">
+
+```json
+{
+  "data": {
+    "id": "sec-driver-summary",
+    "type": "keyValueGrid",
+    "order": 0,
+    "label": "Driver Identity Summary",
+    "dataPath": "results.identity",
+    "columnsPerRow": 3
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"prompt\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "Failed to generate valid report layout from AI response",
+  "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注記
+
+- `"create"` および `"append"` モードでは `{ "data": [ ...ReportSection ] }`（配列）を返し、`selectedSection` が null 以外の `"edit"` モードでは `{ "data": { ...ReportSection } }`（単一オブジェクト）を返します。
+- `selectedSection: null` または `selectedSection` を省略して `"edit"` を呼び出すと、`"create"` モードにフォールバックして配列を返します。
+- このエンドポイントはデータベースへの書き込みを行いません。返された `sections` を [テンプレート HTML をプレビューする](/verifik-ja/smart-reports/preview-template-html) に渡して HTML を確認するか、[レポートテンプレートを作成する](/verifik-ja/smart-reports/create-a-report-template) に渡して保存してください。
+
+### 関連項目
+
+- [SmartReports 概要](/verifik-ja/smart-reports)
+- [ヘッドレス API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [サンプルデータをイントロスペクトする](/verifik-ja/smart-reports/introspect-sample-data)
+- [テンプレート HTML をプレビューする](/verifik-ja/smart-reports/preview-template-html)
+- [レポートテンプレートを作成する](/verifik-ja/smart-reports/create-a-report-template)
+- [レポートテンプレートを更新する](/verifik-ja/smart-reports/update-a-report-template)

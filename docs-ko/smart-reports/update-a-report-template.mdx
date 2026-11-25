@@ -1,0 +1,389 @@
+---
+id: update-a-report-template
+title: 리포트 템플릿 수정
+description: '사용자 지정 Smart Report 템플릿의 메타데이터, 섹션, 테마 구성 또는 PDF 설정을 수정합니다'
+slug: /smart-reports/update-a-report-template
+keywords:
+  - 'v2/smart-report-templates/{id}'
+  - '/v2/smart-report-templates/{id}'
+  - v2/smart-report-templates
+  - /v2/smart-report-templates
+  - v2 smart-report-templates
+  - 'v2 smart-report-templates {id}'
+  - api/smart-report-templates
+  - /api/smart-report-templates
+  - api smart-report-templates
+  - 'api.verifik.co/v2/smart-report-templates/{id}'
+  - 'https://api.verifik.co/v2/smart-report-templates/{id}'
+  - 'PUT v2/smart-report-templates/{id}'
+  - 'PUT /v2/smart-report-templates/{id}'
+  - smart-report-templates
+  - /smart-report-templates
+  - 'GET v2/smart-report-templates/{id}'
+  - 'GET /v2/smart-report-templates/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+클라이언트 계정이 소유한 사용자 지정 Smart Report 템플릿을 수정합니다. 수정할 수 있는 메타데이터, 레이아웃 `sections`, `reportTheme`, `sampleData` 또는 PDF 렌더링 옵션의 임의 하위 집합만 전송하세요. 페이로드에서 생략된 필드는 기존 값을 유지합니다.
+
+헤드리스 및 AI 파이프라인에서는 [템플릿 레이아웃 생성](/verifik-ko/smart-reports/generate-template-layout)으로 만든 레이아웃을 반복 개선하거나, 브랜드 자산(`logo`, `primaryColor`, `customFonts`)을 갱신하거나, `SmartBatch` 바인딩을 업데이트하거나, `isActive`를 전환할 때 이 엔드포인트를 사용하세요. 기본 제공 `"System"` 템플릿은 읽기 전용이며 대상으로 지정하면 `403` (`system_template_readonly`)을 반환합니다.
+
+### 엔드포인트
+
+```
+PUT https://api.verifik.co/v2/smart-report-templates/{id}
+```
+
+Smart-Agent 프록시(`https://ai.verifik.co`)도 동일한 `/v2/...` 경로를 제공하며 본인의 `Authorization: Bearer <VERIFIK_JWT>` 헤더가 필요합니다.
+
+### 헤더
+
+| 이름          | 값                     |
+| ------------- | ---------------------- |
+| Content-Type  | `application/json`     |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### 매개변수
+
+| 이름 | 타입   | 필수 | 설명 |
+| ---- | ------ | ---- | ---- |
+| `id` | string | 예   | Smart Report 템플릿 ObjectId. |
+
+### 요청 본문
+
+수정 시 모든 본문 필드는 선택 사항입니다.
+
+| 이름                  | 타입             | 필수   | 설명 |
+| --------------------- | ---------------- | ------ | ---- |
+| `name`                | string           | 아니요 | 업데이트된 템플릿 표시 이름. 최대 `150`자. |
+| `description`         | string           | 아니요 | 업데이트된 템플릿 설명. 최대 `500`자. |
+| `batchConfiguration`  | string           | 아니요 | 연결된 `SmartBatch` 구성의 ObjectId. |
+| `country`             | string           | 아니요 | 국가 식별자 또는 라벨. 최대 `60`자. |
+| `category`            | string           | 아니요 | 검증 도메인: `"citizen"`, `"company"` 또는 `"vehicle"`. |
+| `isActive`            | boolean          | 아니요 | 템플릿을 활성화 또는 비활성화합니다. |
+| `logo`                | string           | 아니요 | 브랜드 로고 URL 또는 base64 데이터 URI. |
+| `primaryColor`        | string           | 아니요 | 기본 브랜드 강조 16진수(hex) 색상. |
+| `identityColor`       | string           | 아니요 | 보조/신원 강조 16진수(hex) 색상. |
+| `pageBackgroundColor` | string           | 아니요 | 페이지 배경 16진수(hex) 색상. |
+| `header`              | object           | 아니요 | 사용자 지정 머리글 레이아웃 및 콘텐츠 구성. |
+| `footer`              | object           | 아니요 | 사용자 지정 바닥글 레이아웃 및 콘텐츠 구성. |
+| `legend`              | string           | 아니요 | 바닥글 범례 또는 준법 고지 문구. 최대 `2000`자. |
+| `legendPosition`      | string           | 아니요 | 범례 정렬: `"left"`, `"center"` 또는 `"right"`. |
+| `termsAndConditions`  | string           | 아니요 | 법적 이용 약관 텍스트. 최대 `4000`자. |
+| `termsPosition`       | string           | 아니요 | 약관 정렬: `"left"`, `"center"` 또는 `"right"`. |
+| `sections`            | object[]         | 아니요 | `ReportSection` 객체 배열(`id`, `type`, `order`, `dataPath`, `label`, `staticContent`, `columns`, `columnsPerRow`, `keyOverrides`, `valueRules`, `chartKind`, `style`, `condition`, `frame` 등). |
+| `pageSize`            | string           | 아니요 | PDF 용지 크기: `"A4"`, `"Letter"` 또는 `"Legal"`. |
+| `layoutVersion`       | integer          | 아니요 | 레이아웃 렌더러 버전: `1` 또는 `2`. |
+| `orientation`         | string           | 아니요 | 페이지 방향: `"portrait"` 또는 `"landscape"`. |
+| `margins`             | object           | 아니요 | 여백 객체 `` `{ "top": 40, "right": 40, "bottom": 40, "left": 40 }` ``. |
+| `pdfEngine`           | string           | 아니요 | PDF 렌더링 엔진: `"puppeteer"` 또는 `"pdfkit"`. |
+| `showPageNumbers`     | boolean          | 아니요 | 렌더링된 PDF에 페이지 번호 표시 여부. |
+| `pageNumberPosition`  | string           | 아니요 | 페이지 번호 위치: `"top-left"`, `"top-center"`, `"top-right"`, `"bottom-left"`, `"bottom-center"` 또는 `"bottom-right"`. |
+| `pageNumberDivider`   | boolean / string | 아니요 | 페이지 번호 구분선 구성. |
+| `watermark`           | object           | 아니요 | 워터마크 오버레이 설정. |
+| `security`            | object           | 아니요 | PDF 보호 설정 `` `{ "enabled": true, "password": "..." }` ``. `"******"`를 전달하거나 `password`를 생략하면 기존에 암호화된 비밀번호가 유지됩니다. |
+| `signature`           | object           | 아니요 | 서명 블록 구성. |
+| `logoSettings`        | object           | 아니요 | 로고 크기 및 배치 구성. |
+| `sheetImages`         | object[]         | 아니요 | 템플릿에 내장된 이미지 자산. 최대 `12`개. |
+| `customFonts`         | object[]         | 아니요 | 사용자 지정 글꼴 선언(Google Fonts, 외부 URL 또는 업로드된 파일). 최대 `6`개. |
+| `headerLogos`         | object[]         | 아니요 | 머리글에 표시되는 추가 로고. 최대 `16`개. |
+| `bodyTopPadding`      | number           | 아니요 | 문서 본문에 적용할 상단 여백(`0`~`600`). |
+| `sampleData`          | object           | 아니요 | 미리보기 및 샘플 다운로드를 위해 템플릿과 함께 저장되는 샘플 검증 페이로드. |
+| `endpointDesign`      | object           | 아니요 | 엔드포인트별 프레젠테이션 메타데이터. |
+| `reportTheme`         | string / object  | 아니요 | 테마 프리셋 ID(`"premium_dark"`, `"light_cards"`, `"editorial"`, `"dashboard"`) 또는 객체(`id`, `scoreScale`, `scoreEnabled`, `scoreProfile`, `locale`, `density`, `eyebrow`, `coverTitle`, `headlines`, `legalNote`, `showVerifiedBadge`, `showWeights`, `showDeductions`, `showFields`, `showHowItWorks`, `blocks`, `tokens`). |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const id = "67c1f94b2d8a1c0012a4b301";
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        name: "Colombia Driver Onboarding Report v2",
+        primaryColor: "#0F766E",
+        isActive: true,
+        security: {
+          enabled: true,
+          password: "******",
+        },
+        reportTheme: {
+          id: "light_cards",
+          scoreEnabled: true,
+          scoreProfile: "cabify_driver",
+          scoreScale: "percent",
+          density: "compact",
+        },
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67c1f94b2d8a1c0012a4b301";
+$payload = [
+    "name" => "Colombia Driver Onboarding Report v2",
+    "primaryColor" => "#0F766E",
+    "isActive" => true,
+    "security" => [
+        "enabled" => true,
+        "password" => "******",
+    ],
+    "reportTheme" => [
+        "id" => "light_cards",
+        "scoreEnabled" => true,
+        "scoreProfile" => "cabify_driver",
+        "scoreScale" => "percent",
+        "density" => "compact",
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+template_id = "67c1f94b2d8a1c0012a4b301"
+url = f"https://api.verifik.co/v2/smart-report-templates/{template_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": True,
+    "security": {
+        "enabled": True,
+        "password": "******",
+    },
+    "reportTheme": {
+        "id": "light_cards",
+        "scoreEnabled": True,
+        "scoreProfile": "cabify_driver",
+        "scoreScale": "percent",
+        "density": "compact",
+    },
+}
+
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "67c1f94b2d8a1c0012a4b301"
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":         "Colombia Driver Onboarding Report v2",
+		"primaryColor": "#0F766E",
+		"isActive":     true,
+		"security": map[string]interface{}{
+			"enabled":  true,
+			"password": "******",
+		},
+		"reportTheme": map[string]interface{}{
+			"id":           "light_cards",
+			"scoreEnabled": true,
+			"scoreProfile": "cabify_driver",
+			"scoreScale":   "percent",
+			"density":      "compact",
+		},
+	})
+
+	req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/smart-report-templates/"+id, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/smart-report-templates/67c1f94b2d8a1c0012a4b301" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": true,
+    "security": {
+      "enabled": true,
+      "password": "******"
+    },
+    "reportTheme": {
+      "id": "light_cards",
+      "scoreEnabled": true,
+      "scoreProfile": "cabify_driver",
+      "scoreScale": "percent",
+      "density": "compact"
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "_id": "67c1f94b2d8a1c0012a4b301",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": true,
+    "security": {
+      "enabled": true
+    },
+    "reportTheme": {
+      "id": "light_cards",
+      "scoreEnabled": true,
+      "scoreProfile": "cabify_driver",
+      "scoreScale": "percent",
+      "density": "compact"
+    },
+    "updatedAt": "2026-09-10T04:10:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "system_template_readonly",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"pageSize\" must be one of [A4, Letter, Legal]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "Validation failed",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고 사항
+
+- `security.password: "******"`를 전달하거나 `security.password`를 생략하면 템플릿의 기존 암호화된 비밀번호가 덮어쓰여지지 않고 유지됩니다.
+- 기본 제공 `"System"` 템플릿은 수정할 수 없습니다(`403` `system_template_readonly`). 시스템 스타터를 사용자 지정하려면 [리포트 템플릿 생성](/verifik-ko/smart-reports/create-a-report-template)을 통해 사용자 지정 사본을 만드세요.
+- 변경 사항을 저장할 때는 미리보기 도우미(`scoreScale`, `themeTokens`, `scoreSettings`)를 `reportTheme`(`scoreScale`, `tokens`, `scoreEnabled`/`scoreProfile`) 아래에 저장하세요.
+
+### 관련 문서
+
+- [SmartReports 개요](/verifik-ko/smart-reports)
+- [헤드리스 API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [MCP 및 AI 에이전트](/verifik-ko/smart-reports/mcp-and-ai-agents)
+- [SmartReports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [리포트 템플릿 조회](/verifik-ko/smart-reports/retrieve-a-report-template)
+- [템플릿 레이아웃 생성](/verifik-ko/smart-reports/generate-template-layout)
+- [템플릿 HTML 미리보기](/verifik-ko/smart-reports/preview-template-html)
+- [리포트 템플릿 삭제](/verifik-ko/smart-reports/delete-a-report-template)

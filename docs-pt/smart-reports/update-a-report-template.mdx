@@ -1,0 +1,389 @@
+---
+id: update-a-report-template
+title: Atualizar um template de relatório
+description: 'Atualize os metadados, seções, configuração de tema ou definições de PDF de um template de Smart Report personalizado'
+slug: /smart-reports/update-a-report-template
+keywords:
+  - 'v2/smart-report-templates/{id}'
+  - '/v2/smart-report-templates/{id}'
+  - v2/smart-report-templates
+  - /v2/smart-report-templates
+  - v2 smart-report-templates
+  - 'v2 smart-report-templates {id}'
+  - api/smart-report-templates
+  - /api/smart-report-templates
+  - api smart-report-templates
+  - 'api.verifik.co/v2/smart-report-templates/{id}'
+  - 'https://api.verifik.co/v2/smart-report-templates/{id}'
+  - 'PUT v2/smart-report-templates/{id}'
+  - 'PUT /v2/smart-report-templates/{id}'
+  - smart-report-templates
+  - /smart-report-templates
+  - 'GET v2/smart-report-templates/{id}'
+  - 'GET /v2/smart-report-templates/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Atualize um template de Smart Report personalizado pertencente à sua conta de cliente. Envie qualquer subconjunto de metadados atualizáveis, `sections` de layout, `reportTheme`, `sampleData` ou opções de renderização de PDF; os campos omitidos no payload mantêm seus valores atuais.
+
+Em pipelines headless e de IA, use este endpoint para iterar sobre layouts gerados por [Gerar layout do template](/verifik-pt/smart-reports/generate-template-layout), atualizar ativos da marca (`logo`, `primaryColor`, `customFonts`), atualizar vínculos do `SmartBatch` ou alternar `isActive`. Templates `"System"` integrados são somente leitura e retornam `403` (`system_template_readonly`) caso sejam alvo de atualização.
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v2/smart-report-templates/{id}
+```
+
+O proxy do Smart-Agent (`https://ai.verifik.co`) expõe os mesmos caminhos `/v2/...` e exige o seu próprio cabeçalho `Authorization: Bearer <VERIFIK_JWT>`.
+
+### Cabeçalhos
+
+| Nome          | Valor                  |
+| ------------- | ---------------------- |
+| Content-Type  | `application/json`     |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### Parâmetros
+
+| Nome | Tipo   | Obrigatório | Descrição                             |
+| ---- | ------ | ----------- | ------------------------------------- |
+| `id` | string | Sim         | ObjectId do template de Smart Report. |
+
+### Corpo
+
+Todos os campos do corpo são opcionais na atualização.
+
+| Nome                  | Tipo             | Obrigatório | Descrição                                                                                                                                        |
+| --------------------- | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `name`                | string           | Não         | Nome de exibição atualizado do template. Máximo de `150` caracteres.                                                                             |
+| `description`         | string           | Não         | Descrição atualizada do template. Máximo de `500` caracteres.                                                                                    |
+| `batchConfiguration`  | string           | Não         | ObjectId de uma configuração `SmartBatch` associada.                                                                                             |
+| `country`             | string           | Não         | Identificador ou rótulo do país. Máximo de `60` caracteres.                                                                                      |
+| `category`            | string           | Não         | Domínio de verificação: `"citizen"`, `"company"` ou `"vehicle"`.                                                                                 |
+| `isActive`            | boolean          | Não         | Ativa ou desativa o template.                                                                                                                    |
+| `logo`                | string           | Não         | URL do logotipo da marca ou data URI em base64.                                                                                                  |
+| `primaryColor`        | string           | Não         | Cor hexadecimal de destaque principal da marca.                                                                                                  |
+| `identityColor`       | string           | Não         | Cor hexadecimal de destaque secundário/identidade.                                                                                               |
+| `pageBackgroundColor` | string           | Não         | Cor hexadecimal do fundo da página.                                                                                                              |
+| `header`              | object           | Não         | Configuração personalizada de layout e conteúdo do cabeçalho.                                                                                    |
+| `footer`              | object           | Não         | Configuração personalizada de layout e conteúdo do rodapé.                                                                                       |
+| `legend`              | string           | Não         | Texto de legenda no rodapé ou aviso de conformidade. Máximo de `2000` caracteres.                                                                |
+| `legendPosition`      | string           | Não         | Alinhamento da legenda: `"left"`, `"center"` ou `"right"`.                                                                                       |
+| `termsAndConditions`  | string           | Não         | Texto dos termos e condições legais. Máximo de `4000` caracteres.                                                                                |
+| `termsPosition`       | string           | Não         | Alinhamento dos termos: `"left"`, `"center"` ou `"right"`.                                                                                       |
+| `sections`            | object[]         | Não         | Array de objetos `ReportSection` (`id`, `type`, `order`, `dataPath`, `label`, `staticContent`, `columns`, `columnsPerRow`, `keyOverrides`, `valueRules`, `chartKind`, `style`, `condition`, `frame`, etc.). |
+| `pageSize`            | string           | Não         | Tamanho do papel do PDF: `"A4"`, `"Letter"` ou `"Legal"`.                                                                                        |
+| `layoutVersion`       | integer          | Não         | Versão do renderizador de layout: `1` ou `2`.                                                                                                    |
+| `orientation`         | string           | Não         | Orientação da página: `"portrait"` ou `"landscape"`.                                                                                             |
+| `margins`             | object           | Não         | Objeto de margens `` `{ "top": 40, "right": 40, "bottom": 40, "left": 40 }` ``.                                                                  |
+| `pdfEngine`           | string           | Não         | Motor de renderização de PDF: `"puppeteer"` ou `"pdfkit"`.                                                                                       |
+| `showPageNumbers`     | boolean          | Não         | Exibe números de página nos PDFs renderizados.                                                                                                   |
+| `pageNumberPosition`  | string           | Não         | Posição do número de página: `"top-left"`, `"top-center"`, `"top-right"`, `"bottom-left"`, `"bottom-center"` ou `"bottom-right"`.                |
+| `pageNumberDivider`   | boolean / string | Não         | Configuração do divisor do número de página.                                                                                                     |
+| `watermark`           | object           | Não         | Configurações da camada de marca d'água.                                                                                                         |
+| `security`            | object           | Não         | Configurações de proteção do PDF `` `{ "enabled": true, "password": "..." }` ``. Enviar `"******"` ou omitir `password` preserva a senha criptografada existente. |
+| `signature`           | object           | Não         | Configuração do bloco de assinatura.                                                                                                             |
+| `logoSettings`        | object           | Não         | Configuração de tamanho e posicionamento do logotipo.                                                                                            |
+| `sheetImages`         | object[]         | Não         | Recursos de imagem incorporados ao template. Máximo de `12` itens.                                                                               |
+| `customFonts`         | object[]         | Não         | Declarações de fontes personalizadas (Google Fonts, URL externa ou arquivo enviado). Máximo de `6` itens.                                        |
+| `headerLogos`         | object[]         | Não         | Logotipos adicionais exibidos no cabeçalho. Máximo de `16` itens.                                                                                |
+| `bodyTopPadding`      | number           | Não         | Espaçamento superior aplicado ao corpo do documento, de `0` a `600`.                                                                             |
+| `sampleData`          | object           | Não         | Payload de verificação de exemplo armazenado com o template para pré-visualizações e downloads de amostra.                                       |
+| `endpointDesign`      | object           | Não         | Metadados de apresentação específicos do endpoint.                                                                                               |
+| `reportTheme`         | string / object  | Não         | ID da predefinição de tema (`"premium_dark"`, `"light_cards"`, `"editorial"`, `"dashboard"`) ou objeto (`id`, `scoreScale`, `scoreEnabled`, `scoreProfile`, `locale`, `density`, `eyebrow`, `coverTitle`, `headlines`, `legalNote`, `showVerifiedBadge`, `showWeights`, `showDeductions`, `showFields`, `showHowItWorks`, `blocks`, `tokens`). |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const id = "67c1f94b2d8a1c0012a4b301";
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        name: "Colombia Driver Onboarding Report v2",
+        primaryColor: "#0F766E",
+        isActive: true,
+        security: {
+          enabled: true,
+          password: "******",
+        },
+        reportTheme: {
+          id: "light_cards",
+          scoreEnabled: true,
+          scoreProfile: "cabify_driver",
+          scoreScale: "percent",
+          density: "compact",
+        },
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67c1f94b2d8a1c0012a4b301";
+$payload = [
+    "name" => "Colombia Driver Onboarding Report v2",
+    "primaryColor" => "#0F766E",
+    "isActive" => true,
+    "security" => [
+        "enabled" => true,
+        "password" => "******",
+    ],
+    "reportTheme" => [
+        "id" => "light_cards",
+        "scoreEnabled" => true,
+        "scoreProfile" => "cabify_driver",
+        "scoreScale" => "percent",
+        "density" => "compact",
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+template_id = "67c1f94b2d8a1c0012a4b301"
+url = f"https://api.verifik.co/v2/smart-report-templates/{template_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": True,
+    "security": {
+        "enabled": True,
+        "password": "******",
+    },
+    "reportTheme": {
+        "id": "light_cards",
+        "scoreEnabled": True,
+        "scoreProfile": "cabify_driver",
+        "scoreScale": "percent",
+        "density": "compact",
+    },
+}
+
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "67c1f94b2d8a1c0012a4b301"
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":         "Colombia Driver Onboarding Report v2",
+		"primaryColor": "#0F766E",
+		"isActive":     true,
+		"security": map[string]interface{}{
+			"enabled":  true,
+			"password": "******",
+		},
+		"reportTheme": map[string]interface{}{
+			"id":           "light_cards",
+			"scoreEnabled": true,
+			"scoreProfile": "cabify_driver",
+			"scoreScale":   "percent",
+			"density":      "compact",
+		},
+	})
+
+	req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/smart-report-templates/"+id, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/smart-report-templates/67c1f94b2d8a1c0012a4b301" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": true,
+    "security": {
+      "enabled": true,
+      "password": "******"
+    },
+    "reportTheme": {
+      "id": "light_cards",
+      "scoreEnabled": true,
+      "scoreProfile": "cabify_driver",
+      "scoreScale": "percent",
+      "density": "compact"
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "_id": "67c1f94b2d8a1c0012a4b301",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": true,
+    "security": {
+      "enabled": true
+    },
+    "reportTheme": {
+      "id": "light_cards",
+      "scoreEnabled": true,
+      "scoreProfile": "cabify_driver",
+      "scoreScale": "percent",
+      "density": "compact"
+    },
+    "updatedAt": "2026-09-10T04:10:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "system_template_readonly",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"pageSize\" must be one of [A4, Letter, Legal]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "Validation failed",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Passar `security.password: "******"` ou omitir `security.password` preserva a senha criptografada existente do template em vez de sobrescrevê-la.
+- Templates `"System"` integrados não podem ser atualizados (`403` `system_template_readonly`). Crie uma cópia personalizada via [Criar um template de relatório](/verifik-pt/smart-reports/create-a-report-template) ao personalizar um modelo inicial de sistema.
+- Armazene auxiliares de pré-visualização (`scoreScale`, `themeTokens`, `scoreSettings`) dentro de `reportTheme` (`scoreScale`, `tokens`, `scoreEnabled`/`scoreProfile`) ao salvar alterações.
+
+### Relacionados
+
+- [Visão geral do SmartReports](/verifik-pt/smart-reports)
+- [Guia da API Headless](/verifik-pt/smart-reports/headless-api-guide)
+- [MCP e Agentes de IA](/verifik-pt/smart-reports/mcp-and-ai-agents)
+- [Webhooks do SmartReports](/verifik-pt/resources/smart-reports-webhooks)
+- [Consultar um template de relatório](/verifik-pt/smart-reports/retrieve-a-report-template)
+- [Gerar layout do template](/verifik-pt/smart-reports/generate-template-layout)
+- [Pré-visualizar HTML do template](/verifik-pt/smart-reports/preview-template-html)
+- [Excluir um template de relatório](/verifik-pt/smart-reports/delete-a-report-template)

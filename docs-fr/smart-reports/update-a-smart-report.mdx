@@ -1,0 +1,298 @@
+---
+id: update-a-smart-report
+title: Mettre à jour un Smart Report
+description: Mettez à jour les champs d'un enregistrement SmartReport existant, notamment le nom, le statut, les instantanés, les métadonnées, le résumé de score ou les paramètres webhook.
+slug: /smart-reports/update-a-smart-report
+keywords:
+  - 'v2/smart-reports/{id}'
+  - '/v2/smart-reports/{id}'
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - 'v2 smart-reports {id}'
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - 'api.verifik.co/v2/smart-reports/{id}'
+  - 'https://api.verifik.co/v2/smart-reports/{id}'
+  - 'PUT v2/smart-reports/{id}'
+  - 'PUT /v2/smart-reports/{id}'
+  - smart-reports
+  - /smart-reports
+  - 'GET v2/smart-reports/{id}'
+  - 'GET /v2/smart-reports/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Mettez à jour un `SmartReport` existant appartenant au client authentifié. Envoyez uniquement les champs que vous souhaitez modifier ; les champs omis dans la requête restent inchangés.
+
+Si l'ID du rapport n'existe pas ou appartient à un autre client, le point de terminaison renvoie `404 Not Found` (`{ "message": "not_found", "code": "NotFound" }`).
+
+### Point de terminaison
+
+```
+PUT https://api.verifik.co/v2/smart-reports/{id}
+```
+
+Ce point de terminaison est également accessible via le proxy Smart-Agent à l'adresse `https://ai.verifik.co/v2/smart-reports/{id}` en utilisant votre propre en-tête par client `Authorization: Bearer <VERIFIK_JWT>`. L'exécution partagée x402 est bloquée avec `403 Forbidden`.
+
+### En-têtes
+
+| Nom             | Valeur                 | Description                                 |
+| --------------- | ---------------------- | ------------------------------------------- |
+| `Content-Type`  | `application/json`     | Format du payload de la requête.            |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT limité au client (`authUser.clientId`). |
+
+### Paramètres
+
+| Nom  | Type   | Requis  | Description |
+| ---- | ------ | ------- | ----------- |
+| `id` | string | **Oui** | ObjectId du `SmartReport` à mettre à jour. |
+
+### Corps de la requête
+
+Tous les champs du corps sont facultatifs ; fournissez uniquement les attributs que vous souhaitez mettre à jour.
+
+| Nom                        | Type             | Requis | Description |
+| -------------------------- | ---------------- | ------ | ----------- |
+| `name`                     | string           | Non    | Nom d'affichage du rapport. |
+| `status`                   | string           | Non    | Statut du rapport : `"draft"`, `"generating"`, `"generated"`, `"sent"` ou `"failed"`. |
+| `pdfUrl`                   | string           | Non    | URL enregistrée de l'artefact PDF généré. |
+| `pdfSize`                  | number           | Non    | Taille du PDF généré en octets. |
+| `htmlSnapshot`             | string           | Non    | Instantané HTML enregistré du rapport généré. |
+| `pageCount`                | number           | Non    | Nombre de pages du PDF généré. |
+| `pdfEngine`                | string           | Non    | Moteur de rendu : `"pdfkit"` ou `"puppeteer"`. |
+| `generatedAt`              | string           | Non    | Horodatage ISO 8601 de génération du rapport. |
+| `generationDurationMs`     | number           | Non    | Durée de génération du PDF en millisecondes. |
+| `dataSnapshot`             | object           | Non    | Instantané des données de ligne ou d'entrée utilisées pour le rapport. |
+| `externalRefId`            | string           | Non    | Identifiant de corrélation de l'appelant. |
+| `webhookUrl`               | string           | Non    | URL de surcharge webhook `http` ou `https` spécifique au rapport. |
+| `rowIndex`                 | number           | Non    | Index de ligne basé sur zéro associé à ce rapport. |
+| `createdByChannel`         | string           | Non    | Canal d'origine : `"portal"`, `"api"`, `"mcp"`, `"x402"` ou `"webhook"`. |
+| `verificationScoreSummary` | object           | Non    | Métadonnées récapitulatives issues du calcul de score de vérification. |
+| `error`                    | object ou string | Non    | Payload ou message d'erreur enregistré pour les états d'échec. |
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.put(
+    `https://api.verifik.co/v2/smart-reports/${id}`,
+    {
+      name: "Background Check - Applicant 42 (Reviewed)",
+      externalRefId: "applicant-42-v2",
+      webhookUrl: "https://webhooks.example.com/verifik",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "Background Check - Applicant 42 (Reviewed)",
+    "externalRefId" => "applicant-42-v2",
+    "webhookUrl" => "https://webhooks.example.com/verifik",
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Background Check - Applicant 42 (Reviewed)",
+    "externalRefId": "applicant-42-v2",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+}
+
+response = requests.put(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":          "Background Check - Applicant 42 (Reviewed)",
+		"externalRefId": "applicant-42-v2",
+		"webhookUrl":    "https://webhooks.example.com/verifik",
+	})
+
+	req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/smart-reports/"+id, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Background Check - Applicant 42 (Reviewed)",
+    "externalRefId": "applicant-42-v2",
+    "webhookUrl": "https://webhooks.example.com/verifik"
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Background Check - Applicant 42 (Reviewed)",
+    "status": "generated",
+    "externalRefId": "applicant-42-v2",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:05:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"status\" must be one of [draft, generating, generated, sent, failed]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Intégration Webhooks et MCP
+
+- La mise à jour de `webhookUrl` ou `externalRefId` actualise l'URL de callback cible et l'identifiant de corrélation utilisés par les appels ultérieurs à [Générer le PDF d'un Smart Report](/verifik-fr/smart-reports/generate-smart-report-pdf) et [Envoyer un Smart Report par e-mail](/verifik-fr/smart-reports/send-smart-report-email). Consultez [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks).
+- Pour inspecter l'enregistrement mis à jour ou exécuter des opérations de rapport headless via un agent IA, consultez [MCP et Agents IA](/verifik-fr/smart-reports/mcp-and-ai-agents).
+
+### Notes
+
+- La mise à jour d'un `SmartReport` modifie uniquement les champs enregistrés sur le rapport ; elle ne régénère pas automatiquement de PDF et n'envoie pas d'e-mails. Appelez [Générer le PDF d'un Smart Report](/verifik-fr/smart-reports/generate-smart-report-pdf) ou [Envoyer un Smart Report par e-mail](/verifik-fr/smart-reports/send-smart-report-email) lorsque vous souhaitez effectuer un nouveau rendu ou une livraison.
+
+### Voir aussi
+
+- [Vue d'ensemble de SmartReports](/verifik-fr/smart-reports)
+- [Guide de l'API Headless](/verifik-fr/smart-reports/headless-api-guide)
+- [MCP et Agents IA](/verifik-fr/smart-reports/mcp-and-ai-agents)
+- [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks)
+- [Récupérer un Smart Report](/verifik-fr/smart-reports/retrieve-a-smart-report)
+- [Supprimer un Smart Report](/verifik-fr/smart-reports/delete-a-smart-report)

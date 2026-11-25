@@ -1,0 +1,288 @@
+---
+id: list-report-presets
+title: List report presets
+description: List curated system Smart Report presets with account availability, workflow steps, and resolved input schemas
+slug: /smart-reports/list-report-presets
+keywords:
+  - v2/smart-batch-presets
+  - /v2/smart-batch-presets
+  - v2 smart-batch-presets
+  - smart-batch-presets
+  - /smart-batch-presets
+  - api/smart-batch-presets
+  - /api/smart-batch-presets
+  - api smart-batch-presets
+  - api.verifik.co/v2/smart-batch-presets
+  - 'https://api.verifik.co/v2/smart-batch-presets'
+  - GET v2/smart-batch-presets
+  - GET /v2/smart-batch-presets
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+List curated system Smart Report presets available for your account. Each preset includes its `systemKey`, metadata (`country`, `category`, `tier`), account availability (`available`), ordered `presetSteps`, and a resolved `inputSchema` with `exampleInput` ready for headless execution or AI agents.
+
+The resolved `inputSchema` automatically excludes internal execution parameters and step inputs already supplied through chained `visitaFlow` dependencies, leaving only the fields your caller needs to provide. Listing presets is a read-only discovery call and does not consume credits. This endpoint is also exposed as the `smart_report_list_presets` MCP tool.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/smart-batch-presets
+```
+
+Also reachable via the Smart-Agent proxy at `https://ai.verifik.co/v2/smart-batch-presets` using your own per-client `Authorization: Bearer <VERIFIK_JWT>` header. Shared x402 execution is blocked on this route with `403 Forbidden`.
+
+### Headers
+
+| Name | Value |
+| ---- | ----- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+The token must be a **client JWT**. Missing or invalid credentials return `401 Unauthorized`.
+
+### Parameters
+
+All query parameters are optional. Combine them to narrow presets by jurisdiction, entity category, tier, or keyword.
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| `country` | string | No | Country code filter. Trimmed and uppercased by the server (for example, `CO`). |
+| `category` | string | No | Preset category filter. Allowed values: `citizen`, `company`, or `vehicle`. |
+| `tier` | string | No | Preset depth filter. Allowed values: `essential` or `comprehensive`. |
+| `search` | string | No | Case-insensitive regex match across `name`, `description`, and `systemKey`. |
+| `text` | string | No | Alias for `search`. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const params = new URLSearchParams({
+        country: "CO",
+        category: "citizen",
+        tier: "essential",
+    });
+
+    const res = await fetch(`https://api.verifik.co/v2/smart-batch-presets?${params.toString()}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "country" => "CO",
+    "category" => "citizen",
+    "tier" => "essential"
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batch-presets?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-batch-presets"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "country": "CO",
+    "category": "citizen",
+    "tier": "essential",
+}
+
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "net/url"
+    "os"
+)
+
+func main() {
+    u, _ := url.Parse("https://api.verifik.co/v2/smart-batch-presets")
+    q := u.Query()
+    q.Set("country", "CO")
+    q.Set("category", "citizen")
+    q.Set("tier", "essential")
+    u.RawQuery = q.Encode()
+
+    req, _ := http.NewRequest("GET", u.String(), nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/smart-batch-presets?country=CO&category=citizen&tier=essential" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": [
+        {
+            "templateId": "67d1b2c3e4f5a60718293a01",
+            "systemKey": "co.citizen.essential",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "category": "citizen",
+            "tier": "essential",
+            "stepCount": 2,
+            "available": true,
+            "presetSteps": [
+                {
+                    "sequence": 1,
+                    "appFeatureCode": "co-cedula",
+                    "queryMode": "byDocument",
+                    "featureName": "Colombian Cédula Validation"
+                },
+                {
+                    "sequence": 2,
+                    "appFeatureCode": "co-procuraduria",
+                    "queryMode": "byDocument",
+                    "featureName": "Colombian Procuraduría Check"
+                }
+            ],
+            "inputSchema": {
+                "stepCount": 2,
+                "estimatedCreditsPerRow": 0.15,
+                "requiredFields": [
+                    {
+                        "field": "documentType",
+                        "apiField": "documentType",
+                        "type": "string",
+                        "required": true,
+                        "enum": ["CC", "CE"]
+                    },
+                    {
+                        "field": "documentNumber",
+                        "apiField": "documentNumber",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "optionalFields": [],
+                "jsonSchema": {
+                    "type": "object",
+                    "properties": {
+                        "documentType": {
+                            "type": "string",
+                            "enum": ["CC", "CE"]
+                        },
+                        "documentNumber": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["documentType", "documentNumber"]
+                },
+                "exampleInput": {
+                    "documentType": "CC",
+                    "documentNumber": "123456789"
+                }
+            }
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `country` is trimmed and uppercased before filtering (for example, `co` matches `CO`).
+- `search` and `text` run the same case-insensitive regular-expression match against `name`, `description`, and `systemKey`.
+- `inputSchema.estimatedCreditsPerRow` estimates the per-row credit cost across the preset's enabled steps.
+- When `available` is `true`, all features in `presetSteps` are active for the environment and ready to clone with [Clone a report preset](/smart-reports/clone-a-report-preset).
+- For AI agent integrations, this endpoint corresponds to the `smart_report_list_presets` MCP tool.
+
+### Related
+
+- [Clone a report preset](/smart-reports/clone-a-report-preset)
+- [Smart Reports overview](/smart-reports)
+- [Headless API guide](/smart-reports/headless-api-guide)
+- [MCP and AI agents](/smart-reports/mcp-and-ai-agents)
+- [Smart Reports webhooks](/resources/smart-reports-webhooks)
+- [Run a Smart Report](/smart-reports/run-a-smart-report)

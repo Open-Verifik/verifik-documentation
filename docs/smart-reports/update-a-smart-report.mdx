@@ -1,0 +1,298 @@
+---
+id: update-a-smart-report
+title: Update a Smart Report
+description: 'Update fields on an existing SmartReport record, including name, status, snapshots, metadata, scoring summary, or webhook settings.'
+slug: /smart-reports/update-a-smart-report
+keywords:
+  - 'v2/smart-reports/{id}'
+  - '/v2/smart-reports/{id}'
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - 'v2 smart-reports {id}'
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - 'api.verifik.co/v2/smart-reports/{id}'
+  - 'https://api.verifik.co/v2/smart-reports/{id}'
+  - 'PUT v2/smart-reports/{id}'
+  - 'PUT /v2/smart-reports/{id}'
+  - smart-reports
+  - /smart-reports
+  - 'GET v2/smart-reports/{id}'
+  - 'GET /v2/smart-reports/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Update an existing `SmartReport` belonging to the authenticated client. Send only the fields you want to modify; fields omitted from the request remain unchanged.
+
+If the report ID does not exist or belongs to another client, the endpoint returns `404 Not Found` (`{ "message": "not_found", "code": "NotFound" }`).
+
+### Endpoint
+
+```
+PUT https://api.verifik.co/v2/smart-reports/{id}
+```
+
+This endpoint is also reachable through the Smart-Agent proxy at `https://ai.verifik.co/v2/smart-reports/{id}` using your own per-client `Authorization: Bearer <VERIFIK_JWT>`. Shared x402 execution is blocked with `403 Forbidden`.
+
+### Headers
+
+| Name            | Value                  | Description                              |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | Request payload format.                  |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | Client-scoped JWT (`authUser.clientId`). |
+
+### Parameters
+
+| Name | Type   | Required | Description |
+| ---- | ------ | -------- | ----------- |
+| `id` | string | **Yes**  | `SmartReport` ObjectId to update. |
+
+### Body
+
+All body fields are optional; provide only the attributes you want to update.
+
+| Name                       | Type   | Required | Description |
+| -------------------------- | ------ | -------- | ----------- |
+| `name`                     | string | No       | Display name for the report. |
+| `status`                   | string | No       | Report status: `"draft"`, `"generating"`, `"generated"`, `"sent"`, or `"failed"`. |
+| `pdfUrl`                   | string | No       | Stored URL for the generated PDF artifact. |
+| `pdfSize`                  | number | No       | Size of the generated PDF in bytes. |
+| `htmlSnapshot`             | string | No       | Saved HTML snapshot of the rendered report. |
+| `pageCount`                | number | No       | Page count of the generated PDF. |
+| `pdfEngine`                | string | No       | Rendering engine: `"pdfkit"` or `"puppeteer"`. |
+| `generatedAt`              | string | No       | ISO 8601 timestamp when the report was generated. |
+| `generationDurationMs`     | number | No       | PDF generation duration in milliseconds. |
+| `dataSnapshot`             | object | No       | Snapshot of row or input data used for the report. |
+| `externalRefId`            | string | No       | Caller correlation identifier. |
+| `webhookUrl`               | string | No       | Per-report `http` or `https` webhook override URL. |
+| `rowIndex`                 | number | No       | Zero-based row index associated with this report. |
+| `createdByChannel`         | string | No       | Origin channel: `"portal"`, `"api"`, `"mcp"`, `"x402"`, or `"webhook"`. |
+| `verificationScoreSummary` | object | No       | Summary metadata from verification scoring. |
+| `error`                    | object or string | No | Error payload or message recorded for failed states. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.put(
+    `https://api.verifik.co/v2/smart-reports/${id}`,
+    {
+      name: "Background Check - Applicant 42 (Reviewed)",
+      externalRefId: "applicant-42-v2",
+      webhookUrl: "https://webhooks.example.com/verifik",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "Background Check - Applicant 42 (Reviewed)",
+    "externalRefId" => "applicant-42-v2",
+    "webhookUrl" => "https://webhooks.example.com/verifik",
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Background Check - Applicant 42 (Reviewed)",
+    "externalRefId": "applicant-42-v2",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+}
+
+response = requests.put(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":          "Background Check - Applicant 42 (Reviewed)",
+		"externalRefId": "applicant-42-v2",
+		"webhookUrl":    "https://webhooks.example.com/verifik",
+	})
+
+	req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/smart-reports/"+id, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Background Check - Applicant 42 (Reviewed)",
+    "externalRefId": "applicant-42-v2",
+    "webhookUrl": "https://webhooks.example.com/verifik"
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Background Check - Applicant 42 (Reviewed)",
+    "status": "generated",
+    "externalRefId": "applicant-42-v2",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:05:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"status\" must be one of [draft, generating, generated, sent, failed]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Webhooks & MCP Integration
+
+- Updating `webhookUrl` or `externalRefId` updates the target callback URL and correlation ID used by subsequent [Generate Smart Report PDF](/smart-reports/generate-smart-report-pdf) and [Send Smart Report by Email](/smart-reports/send-smart-report-email) calls. See [Smart Reports Webhooks](/resources/smart-reports-webhooks).
+- To inspect the updated record or run headless report operations via an AI agent, see [MCP and AI Agents](/smart-reports/mcp-and-ai-agents).
+
+### Notes
+
+- Updating a `SmartReport` only updates stored report fields; it does not automatically regenerate a PDF or dispatch emails. Call [Generate Smart Report PDF](/smart-reports/generate-smart-report-pdf) or [Send Smart Report by Email](/smart-reports/send-smart-report-email) when you want to re-render or deliver.
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [MCP and AI Agents](/smart-reports/mcp-and-ai-agents)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Retrieve a Smart Report](/smart-reports/retrieve-a-smart-report)
+- [Delete a Smart Report](/smart-reports/delete-a-smart-report)

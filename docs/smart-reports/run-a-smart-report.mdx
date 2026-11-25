@@ -1,0 +1,466 @@
+---
+id: run-a-smart-report
+title: Run a Smart Report
+description: 'Execute verification steps, create a SmartBatch and SmartReport, compute optional scoring, render PDF/HTML, email recipients, and dispatch webhooks in one headless API call.'
+slug: /smart-reports/run-a-smart-report
+keywords:
+  - v2/smart-reports/run
+  - /v2/smart-reports/run
+  - v2 smart-reports run
+  - api/smart-reports/run
+  - /api/smart-reports/run
+  - api smart-reports run
+  - api.verifik.co/v2/smart-reports/run
+  - 'https://api.verifik.co/v2/smart-reports/run'
+  - POST v2/smart-reports/run
+  - POST /v2/smart-reports/run
+  - smart-reports
+  - smart_report_run
+  - smart-reports/run
+  - /smart-reports/run
+  - GET v2/smart-reports/run
+  - GET /v2/smart-reports/run
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Execute a complete verification and report pipeline in a single request. `POST /v2/smart-reports/run` is the primary **headless all-in-one execution endpoint** for Reports: it resolves a preset (`systemKey`) or an existing `BatchConfiguration` (`batchConfigurationId`), validates your inputs against the configuration input schema, verifies account feature grants, runs every verification step in `FeatureRunner`, creates both the `SmartBatch` (`headlessRun: true`) and the `SmartReport`, optionally computes `verificationScore`, renders PDF/HTML output, optionally sends emails, and dispatches webhooks.
+
+For smaller runs (up to 5 rows), execution defaults to synchronous (`mode: "sync"`) and returns `200 OK` once settled within the 90-second sync window. Larger batches or runs that exceed the 90-second sync deadline automatically switch to asynchronous execution and return `202 Accepted` with polling and download URLs.
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/smart-reports/run
+```
+
+This endpoint is also reachable through the Smart-Agent proxy at `https://ai.verifik.co/v2/smart-reports/run` when authenticating with your own per-client `Authorization: Bearer <VERIFIK_JWT>` header. Shared x402 execution is blocked with `403 Forbidden`.
+
+### Headers
+
+| Name            | Value                  | Description                                                      |
+| --------------- | ---------------------- | ---------------------------------------------------------------- |
+| `Content-Type`  | `application/json`     | Request payload format.                                          |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | Client-scoped JWT (`authUser.clientId`).                         |
+
+A client-scoped JWT (`authUser.clientId`) is required. Tokens missing `clientId` return `409 Conflict` (`client_context_required`). Missing or invalid JWTs return `401 Unauthorized`.
+
+### Body
+
+| Name                   | Type                                     | Required    | Description |
+| ---------------------- | ---------------------------------------- | ----------- | ----------- |
+| `systemKey`            | string                                   | Conditional | Preset identifier. Trimmed, max `120` characters, pattern `/^[a-z0-9][a-z0-9._-]{1,118}$/i`. At least one of `systemKey` or `batchConfigurationId` is required. |
+| `batchConfigurationId` | string                                   | Conditional | Existing `BatchConfiguration` ObjectId. At least one of `systemKey` or `batchConfigurationId` is required. |
+| `templateId`           | string                                   | No          | Report template ObjectId. Overrides the preferred template on the configuration or preset. |
+| `name`                 | string                                   | No          | Custom display name for the generated report and batch. Max `150` characters. |
+| `inputs`               | object or object[]                       | Conditional | Single input object or array of input objects (`min 1`, `max 500`). At least one of `inputs` or `rows` is required; `inputs` takes precedence if both are sent. |
+| `rows`                 | object[]                                 | Conditional | Array of `1` to `500` row entries, formatted either as flat objects (`{ ... }`) or structured row objects (`{ rowIndex, inputData }`). At least one of `inputs` or `rows` is required. |
+| `mode`                 | string                                   | No          | `"sync"` or `"async"`. Defaults to `"sync"` when row count is `<= 5`, and `"async"` when row count is `> 5`. Passing `mode: "sync"` with `> 5` rows returns `409 Conflict` (`sync_row_limit_exceeded`). |
+| `generatePdf`          | boolean                                  | No          | Whether to render a PDF during the run. Default `true`. Note: if `emailTo` is provided, a PDF is rendered even when `generatePdf` is `false`. |
+| `includePdfBase64`     | boolean                                  | No          | Whether to include the base64-encoded PDF in `data.pdf.buffer`. Default `false`. |
+| `pdfEngine`            | string                                   | No          | PDF rendering engine: `"puppeteer"` or `"pdfkit"`. Defaults to the template setting or `"puppeteer"`. |
+| `score`                | boolean                                  | No          | Whether to calculate and attach `verificationScore`. |
+| `scoreProfile`         | string                                   | No          | Scoring profile identifier used when `score` is enabled. Max `64` characters. |
+| `rowIndex`             | integer                                  | No          | Zero-based row index (`>= 0`) used for PDF/HTML/scoring output. Default `0`. |
+| `emailTo`              | string[]                                 | No          | Array of valid recipient email addresses (max `20`) to deliver the report to. |
+| `emailSubject`         | string                                   | No          | Custom email subject line. Max `250` characters. |
+| `emailLanguage`        | string                                   | No          | Email template language: `"en"` or `"es"`. Default `"es"`. |
+| `webhookUrl`           | string                                   | No          | Per-report `http` or `https` webhook override URL. Max `2048` characters. |
+| `externalRefId`        | string                                   | No          | Caller-supplied correlation ID (max `200` characters), echoed in the report and webhook payloads. |
+| `createdByChannel`     | string                                   | No          | Origin channel: `"portal"`, `"api"`, `"mcp"`, `"x402"`, or `"webhook"`. Default `"api"`. |
+
+#### Execution behavior and parameter rules
+
+- **Target resolution (`systemKey` vs `batchConfigurationId`)**: Provide either a preset `systemKey` or an existing `batchConfigurationId`. Unknown IDs or presets return `404 Not Found` (`batch_configuration_not_found`, `preset_not_found`, or `template_not_found`). Configurations or presets without steps return `409 Conflict` (`preset_has_no_steps` or `batch_configuration_has_no_steps`).
+- **Account feature grants**: Every step in the resolved preset or batch configuration is checked against your client account's active feature grants before execution. Unentitled steps fail with `409 Conflict` (`endpoints_not_in_account`).
+- **Sync deadline and automatic fallback**: Synchronous runs wait up to `90000` ms (`SYNC_DEADLINE_MS = 90s`). If verification or rendering does not settle within 90 seconds, the API automatically returns `202 Accepted` with `mode: "async"` and a `pollUrl` so your integration can poll [Retrieve a Smart Report](/smart-reports/retrieve-a-smart-report) or wait for webhooks.
+- **Email triggers PDF generation**: Setting `emailTo` guarantees PDF generation for delivery even if you explicitly set `generatePdf: false`.
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.post(
+    "https://api.verifik.co/v2/smart-reports/run",
+    {
+      systemKey: "example-preset",
+      name: "Background Check - Applicant 42",
+      inputs: {
+        documentType: "CC",
+        documentNumber: "1032386359",
+      },
+      mode: "sync",
+      generatePdf: true,
+      includePdfBase64: false,
+      pdfEngine: "puppeteer",
+      score: true,
+      emailTo: ["compliance@example.com"],
+      emailLanguage: "en",
+      webhookUrl: "https://webhooks.example.com/verifik",
+      externalRefId: "applicant-42",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/run");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "systemKey" => "example-preset",
+    "name" => "Background Check - Applicant 42",
+    "inputs" => [
+        "documentType" => "CC",
+        "documentNumber" => "1032386359",
+    ],
+    "mode" => "sync",
+    "generatePdf" => true,
+    "includePdfBase64" => false,
+    "pdfEngine" => "puppeteer",
+    "score" => true,
+    "emailTo" => ["compliance@example.com"],
+    "emailLanguage" => "en",
+    "webhookUrl" => "https://webhooks.example.com/verifik",
+    "externalRefId" => "applicant-42",
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-reports/run"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "systemKey": "example-preset",
+    "name": "Background Check - Applicant 42",
+    "inputs": {
+        "documentType": "CC",
+        "documentNumber": "1032386359",
+    },
+    "mode": "sync",
+    "generatePdf": True,
+    "includePdfBase64": False,
+    "pdfEngine": "puppeteer",
+    "score": True,
+    "emailTo": ["compliance@example.com"],
+    "emailLanguage": "en",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "externalRefId": "applicant-42",
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"systemKey": "example-preset",
+		"name":      "Background Check - Applicant 42",
+		"inputs": map[string]interface{}{
+			"documentType":   "CC",
+			"documentNumber": "1032386359",
+		},
+		"mode":             "sync",
+		"generatePdf":      true,
+		"includePdfBase64": false,
+		"pdfEngine":        "puppeteer",
+		"score":            true,
+		"emailTo":          []string{"compliance@example.com"},
+		"emailLanguage":    "en",
+		"webhookUrl":       "https://webhooks.example.com/verifik",
+		"externalRefId":    "applicant-42",
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-reports/run", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-reports/run" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "systemKey": "example-preset",
+    "name": "Background Check - Applicant 42",
+    "inputs": {
+      "documentType": "CC",
+      "documentNumber": "1032386359"
+    },
+    "mode": "sync",
+    "generatePdf": true,
+    "includePdfBase64": false,
+    "pdfEngine": "puppeteer",
+    "score": true,
+    "emailTo": ["compliance@example.com"],
+    "emailLanguage": "en",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "externalRefId": "applicant-42"
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 OK (Sync)">
+
+```json
+{
+  "data": {
+    "mode": "sync",
+    "report": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+      "name": "Background Check - Applicant 42",
+      "status": "sent",
+      "template": "6801a2b3c4d5e6f7a8b9c0d2",
+      "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+      "rowIndex": 0,
+      "externalRefId": "applicant-42",
+      "createdByChannel": "api",
+      "createdAt": "2026-11-24T20:00:00.000Z",
+      "updatedAt": "2026-11-24T20:00:04.000Z"
+    },
+    "batch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "name": "Background Check - Applicant 42",
+      "status": "completed",
+      "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+      "totalRows": 1,
+      "completedRows": 1,
+      "failedRows": 0,
+      "partialRows": 0,
+      "creditsSpent": 2,
+      "rows": [
+        {
+          "rowIndex": 0,
+          "status": "completed",
+          "inputData": {
+            "documentType": "CC",
+            "documentNumber": "1032386359"
+          },
+          "results": {},
+          "errors": []
+        }
+      ]
+    },
+    "verificationScore": {},
+    "pdf": {
+      "size": 148320,
+      "engine": "puppeteer",
+      "generationDurationMs": 1840,
+      "downloadUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download",
+      "htmlUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html"
+    },
+    "email": {
+      "success": true,
+      "recipients": ["compliance@example.com"],
+      "subject": "Verification Report",
+      "messageId": "<message-id@example.com>"
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="202" label="202 Accepted (Async)">
+
+```json
+{
+  "data": {
+    "mode": "async",
+    "report": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+      "name": "Background Check - Applicant 42",
+      "status": "pending",
+      "template": "6801a2b3c4d5e6f7a8b9c0d2",
+      "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+      "externalRefId": "applicant-42",
+      "createdByChannel": "api"
+    },
+    "batch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "name": "Background Check - Applicant 42",
+      "status": "pending",
+      "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+      "totalRows": 10,
+      "completedRows": 0,
+      "failedRows": 0,
+      "partialRows": 0,
+      "creditsSpent": 0,
+      "rows": []
+    },
+    "pollUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1",
+    "downloadUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download",
+    "htmlUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "preset_not_found",
+  "code": "preset_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "sync_row_limit_exceeded",
+  "code": "sync_row_limit_exceeded"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "InternalServerError",
+  "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### Error codes
+
+| Status | Error Code / Type | Cause |
+| ------ | ----------------- | ----- |
+| `401` | `Unauthorized` | Missing or invalid JWT in the `Authorization` header. |
+| `403` | `Forbidden` | Shared x402 execution was attempted; supply your own per-client JWT. |
+| `404` | `batch_configuration_not_found` | The specified `batchConfigurationId` does not exist for your client. |
+| `404` | `preset_not_found` | The specified `systemKey` preset could not be resolved. |
+| `404` | `template_not_found` | The specified `templateId` or configured report template was not found. |
+| `409` | `MissingParameter` | Joi schema validation failed on one or more request fields. |
+| `409` | `client_context_required` | The JWT does not carry a valid `authUser.clientId`. |
+| `409` | `missing_inputs` | Neither `inputs` nor `rows` was provided. |
+| `409` | `max_rows_exceeded` | More than `500` rows/inputs were supplied. |
+| `409` | `sync_row_limit_exceeded` | `mode: "sync"` was requested with more than `5` rows. |
+| `409` | `missing_required_inputs` | One or more inputs required by the batch configuration schema are missing. |
+| `409` | `preset_has_no_steps` | The resolved preset has no verification steps configured. |
+| `409` | `batch_configuration_has_no_steps` | The target `BatchConfiguration` has no verification steps configured. |
+| `409` | `endpoints_not_in_account` | Your client account does not have feature grants for one or more configured steps. |
+| `409` | `row_not_found` | The requested `rowIndex` does not exist in the batch. |
+| `409` | `unknown_score_profile` | The supplied `scoreProfile` is not recognized. |
+| `422` | `UnprocessableEntity` | Mongoose validation failure or duplicate key conflict. |
+| `500` | `InternalServerError` | Unexpected server error during execution or rendering. |
+
+### Webhooks & MCP Integration
+
+- **Webhooks**: When `webhookUrl` is provided (or configured on the preset/`BatchConfiguration`), Verifik emits `smart_batch_report_generated` or `smart_batch_report_generation_failed` for report generation, and `smart_batch_report_sent` or `smart_batch_report_delivery_failed` when `emailTo` delivery runs. Your `externalRefId` is echoed in both the report document and webhook events. See [Smart Reports Webhooks](/resources/smart-reports-webhooks).
+- **MCP Equivalent**: AI agents connected via MCP can invoke the `smart_report_run` tool with the same headless parameters. See [MCP and AI Agents](/smart-reports/mcp-and-ai-agents).
+
+### Notes
+
+- `data.pdf` is included only when `generatePdf` is `true` (or `emailTo` triggers PDF rendering); `data.pdf.buffer` is included only when `includePdfBase64` is `true`.
+- `data.email` is included only when `emailTo` is supplied; if delivery fails, `data.email.error` contains the failure reason.
+- `data.verificationScore` is populated when `score` is enabled.
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [MCP and AI Agents](/smart-reports/mcp-and-ai-agents)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Retrieve a Smart Report](/smart-reports/retrieve-a-smart-report)
+- [Download Smart Report PDF](/smart-reports/download-smart-report-pdf)

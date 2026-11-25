@@ -1,0 +1,262 @@
+---
+id: list-report-templates
+title: Listar templates de relatório
+description: Liste os templates de Smart Report disponíveis na sua conta de cliente, incluindo templates personalizados e modelos iniciais de sistema integrados
+slug: /smart-reports/list-report-templates
+keywords:
+  - v2/smart-report-templates
+  - /v2/smart-report-templates
+  - v2 smart-report-templates
+  - api/smart-report-templates
+  - /api/smart-report-templates
+  - api smart-report-templates
+  - api.verifik.co/v2/smart-report-templates
+  - 'https://api.verifik.co/v2/smart-report-templates'
+  - GET v2/smart-report-templates
+  - GET /v2/smart-report-templates
+  - smart-report-templates
+  - /smart-report-templates
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Liste os templates de Smart Report disponíveis para o cliente autenticado. Por padrão, este endpoint retorna tanto os templates personalizados pertencentes ao seu cliente quanto os templates `"System"` integrados da Verifik para que você possa descobrir IDs de templates reutilizáveis (`_id`), inspecionar configurações de layout e tema e escolher um template antes de disparar execuções `SmartBatch` ou renderizações de amostra.
+
+Em pipelines de verificação headless e fluxos com agentes de IA, chame este endpoint primeiro para localizar um template existente vinculado a uma `batchConfiguration`, filtrar templates `"System"` integrados por `country`, `category` ou `tier`, ou verificar se um template personalizado está ativo antes de cloná-lo ou atualizá-lo. Listar templates não renderiza PDFs nem consome créditos.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/smart-report-templates
+```
+
+O proxy do Smart-Agent (`https://ai.verifik.co`) expõe os mesmos caminhos `/v2/...` e exige o seu próprio cabeçalho `Authorization: Bearer <VERIFIK_JWT>`.
+
+As respostas populam `batchConfiguration` e `client` e selecionam `+thumbnail.image` para que dashboards e pré-visualizações headless possam inspecionar miniaturas dos templates sem uma requisição adicional.
+
+### Cabeçalhos
+
+| Nome          | Valor                  |
+| ------------- | ---------------------- |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### Parâmetros
+
+Todos os parâmetros de consulta são opcionais.
+
+| Nome                 | Tipo    | Obrigatório | Descrição                                                                                                                                                   |
+| -------------------- | ------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `batchConfiguration` | string  | Não         | Filtra templates vinculados a um ObjectId específico de configuração `SmartBatch`.                                                                          |
+| `type`               | string  | Não         | Filtra por origem: `"client"` ou `"System"`. Quando omitido, retorna os templates do próprio cliente junto com os templates `"System"` integrados.           |
+| `country`            | string  | Não         | Filtro de país. Convertido automaticamente para maiúsculas no servidor (por exemplo, `CO`, `MX` ou `COLOMBIA`).                                             |
+| `category`           | string  | Não         | Filtro de categoria de domínio: `"citizen"`, `"company"` ou `"vehicle"`.                                                                                    |
+| `tier`               | string  | Não         | Filtro de nível do template: `"essential"` ou `"comprehensive"`.                                                                                            |
+| `isActive`           | boolean | Não         | Filtra pelo estado ativo (`true` ou `false`).                                                                                                               |
+| `search`             | string  | Não         | Busca regex sem distinção entre maiúsculas e minúsculas em `name` e `systemKey`. Quando `search` é enviado sem `type`, busca nos seus templates e nos templates `"System"`. |
+| `page`               | integer | Não         | Número da página (base 1). Tanto `page` quanto `limit` devem ser fornecidos juntos para habilitar a paginação neste módulo.                                 |
+| `limit`              | integer | Não         | Tamanho da página. Deve ser fornecido junto com `page` para paginar os resultados.                                                                          |
+| `sort`               | string  | Não         | Especificação de ordenação. O padrão é `type: 1, createdAt: -1` (ordenando por tipo de template e mais recentes primeiro).                                  |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const params = new URLSearchParams({
+    category: "citizen",
+    isActive: "true",
+    page: "1",
+    limit: "20",
+  });
+
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "category" => "citizen",
+    "isActive" => "true",
+    "page" => 1,
+    "limit" => 20,
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "category": "citizen",
+    "isActive": "true",
+    "page": 1,
+    "limit": 20,
+}
+
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	url := "https://api.verifik.co/v2/smart-report-templates?category=citizen&isActive=true&page=1&limit=20"
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-report-templates?category=citizen&isActive=true&page=1&limit=20" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": [
+    {
+      "_id": "67c1f94b2d8a1c0012a4b301",
+      "name": "Driver Background Report",
+      "description": "Standard onboarding report for Colombia driver checks",
+      "client": {
+        "_id": "507f1f77bcf86cd799439013",
+        "name": "Acme Mobility"
+      },
+      "batchConfiguration": {
+        "_id": "67c1f8102d8a1c0012a4b210",
+        "name": "Colombia Driver Onboarding"
+      },
+      "country": "CO",
+      "category": "citizen",
+      "isActive": true,
+      "pageSize": "A4",
+      "orientation": "portrait",
+      "pdfEngine": "puppeteer",
+      "primaryColor": "#4F46E5",
+      "identityColor": "#000000",
+      "pageBackgroundColor": "#ffffff",
+      "reportTheme": "light_cards",
+      "thumbnail": {
+        "image": "data:image/png;base64,iVBORw0KGgo..."
+      },
+      "createdAt": "2026-09-10T03:32:00.000Z",
+      "updatedAt": "2026-09-10T03:35:12.000Z"
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"category\" must be one of [citizen, company, vehicle]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Tanto `page` quanto `limit` devem ser fornecidos juntos para paginar os resultados. Enviar apenas um parâmetro sem o outro não ativa a paginação.
+- Templates `"System"` integrados retornados na lista são somente leitura. Tentar modificá-los ou excluí-los retorna `403` (`system_template_readonly`). Para personalizar um modelo inicial, envie o layout dele para [Criar um template de relatório](/verifik-pt/smart-reports/create-a-report-template).
+- Use [Listar temas iniciais](/verifik-pt/smart-reports/list-theme-starters) quando quiser modelos iniciais limpos agrupados por `reportTheme`.
+
+### Relacionados
+
+- [Visão geral do SmartReports](/verifik-pt/smart-reports)
+- [Guia da API Headless](/verifik-pt/smart-reports/headless-api-guide)
+- [MCP e Agentes de IA](/verifik-pt/smart-reports/mcp-and-ai-agents)
+- [Webhooks do SmartReports](/verifik-pt/resources/smart-reports-webhooks)
+- [Criar um template de relatório](/verifik-pt/smart-reports/create-a-report-template)
+- [Consultar um template de relatório](/verifik-pt/smart-reports/retrieve-a-report-template)
+- [Listar temas iniciais](/verifik-pt/smart-reports/list-theme-starters)

@@ -1,0 +1,328 @@
+---
+id: preview-template-html
+title: テンプレート HTML をプレビューする
+description: データベースに保存したり Chromium を起動したりすることなく、メモリ上で Smart Report テンプレートを HTML にレンダリングします
+slug: /smart-reports/preview-template-html
+keywords:
+  - v2/smart-report-templates/preview-html
+  - /v2/smart-report-templates/preview-html
+  - v2 smart-report-templates preview-html
+  - api/smart-report-templates/preview-html
+  - /api/smart-report-templates/preview-html
+  - api smart-report-templates preview-html
+  - api.verifik.co/v2/smart-report-templates/preview-html
+  - 'https://api.verifik.co/v2/smart-report-templates/preview-html'
+  - POST v2/smart-report-templates/preview-html
+  - POST /v2/smart-report-templates/preview-html
+  - smart-report-templates/preview-html
+  - /smart-report-templates/preview-html
+  - GET v2/smart-report-templates/preview-html
+  - GET /v2/smart-report-templates/preview-html
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+任意の Smart Report テンプレート定義を、完全にメモリ上でスタンドアロンの HTML ドキュメントへとレンダリングします。データベースレコードの作成や更新は行われず、プレビューのレンダリング中に Chromium も起動されないため、対話型テンプレートエディタ、CI 検証チェック、および AI デザインループでの応答時間を高速に保てます。
+
+ヘッドレスおよび AI パイプラインでは、[レポートテンプレートを作成する](/verifik-ja/smart-reports/create-a-report-template) や [レポートテンプレートを更新する](/verifik-ja/smart-reports/update-a-report-template) でテンプレートを永続化する前に、`sections`、`reportTheme`、余白、および検証スコア設定（`score`、`scoreProfile`、`scoreScale`）を反復調整するためにこのエンドポイントを使用します。`sampleData` 内に `steps` や `results` を指定せずにテーマ付きまたはスコア付きのテンプレートをレンダリングした場合、プレビューが完全な状態になるようレンダラーが合成ドライバーサンプルデータを自動的に挿入します。
+
+### エンドポイント
+
+```
+POST https://api.verifik.co/v2/smart-report-templates/preview-html
+```
+
+Smart-Agent プロキシ（`https://ai.verifik.co`）も同じ `/v2/...` パスを公開しており、お客様自身の `Authorization: Bearer <VERIFIK_JWT>` ヘッダーが必要です。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Content-Type | `application/json` |
+| Accept | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### ボディ
+
+このエンドポイントは、プレビュー/スコアリング用ヘルパーに加えて、公開されているすべてのテンプレートデザインフィールド（`sections`、`reportTheme`、`sampleData`、`margins`、`pageSize`、`orientation`、`pdfEngine`、`primaryColor`、`identityColor`、`pageBackgroundColor`、`logo`、`header`、`footer`、`legend`、`termsAndConditions`、`watermark`、`showPageNumbers`、`customFonts` など）を受け付けます。
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `name` | string | いいえ | プレビューヘッダー/メタデータに表示される任意のレポートタイトル。 |
+| `preview` | boolean | いいえ | プレビューモードの切り替え。デフォルトは `true` です。 |
+| `score` | boolean | いいえ | 検証スコアの計算を有効にし、レスポンスに `verificationScore` を含めます。 |
+| `scoreProfile` | string | いいえ | [スコアプロファイル一覧を取得する](/verifik-ja/smart-reports/list-score-profiles) のスコアプロファイル ID。最大 `64` 文字。 |
+| `scoreScale` | string | いいえ | スコア表示スケール: `"unit"` または `"percent"`。トップレベルのプレビュー用ヘルパーのため、永続化する際は `reportTheme.scoreScale` 配下に保存してください。 |
+| `themeTokens` | object | いいえ | カスタムテーマトークンの上書き。トップレベルのプレビュー用ヘルパーのため、永続化する際は `reportTheme.tokens` 配下に保存してください。 |
+| `scoreSettings` | object | いいえ | スコア表示設定。トップレベルのプレビュー用ヘルパーのため、永続化する際は `reportTheme`（`scoreEnabled`、`scoreProfile`）配下に保存してください。 |
+| `sections` | object[] | いいえ | レンダリングする `ReportSection` ブロックの配列。 |
+| `reportTheme` | string / object | いいえ | テーマプリセット ID（`"premium_dark"`、`"light_cards"`、`"editorial"`、`"dashboard"`）または完全な `reportTheme` 設定オブジェクト。 |
+| `sampleData` | object | いいえ | 検証サンプルペイロード（`inputData`、`results`、`batchName`、`rowIndex`）。テーマ付き/スコア付きプレビューで省略された場合は、合成ドライバーサンプルが挿入されます。 |
+| `pageSize` | string | いいえ | `"A4"`、`"Letter"`、または `"Legal"`。デフォルトは `"A4"` です。 |
+| `orientation` | string | いいえ | `"portrait"` または `"landscape"`。デフォルトは `"portrait"` です。 |
+| `margins` | object | いいえ | 余白オブジェクト `` `{ "top": 40, "right": 40, "bottom": 40, "left": 40 }` ``。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch(
+    "https://api.verifik.co/v2/smart-report-templates/preview-html",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        name: "Driver Background Preview",
+        preview: true,
+        score: true,
+        scoreProfile: "cabify_driver",
+        scoreScale: "percent",
+        pageSize: "A4",
+        orientation: "portrait",
+        margins: { top: 40, right: 40, bottom: 40, left: 40 },
+        reportTheme: "light_cards",
+        sections: [
+          {
+            id: "sec-score",
+            type: "scoreGauge",
+            order: 0,
+            label: "Overall Score",
+          },
+          {
+            id: "sec-breakdown",
+            type: "categoryBreakdown",
+            order: 1,
+            label: "Category Breakdown",
+          },
+        ],
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "name" => "Driver Background Preview",
+    "preview" => true,
+    "score" => true,
+    "scoreProfile" => "cabify_driver",
+    "scoreScale" => "percent",
+    "pageSize" => "A4",
+    "orientation" => "portrait",
+    "margins" => ["top" => 40, "right" => 40, "bottom" => 40, "left" => 40],
+    "reportTheme" => "light_cards",
+    "sections" => [
+        ["id" => "sec-score", "type" => "scoreGauge", "order" => 0, "label" => "Overall Score"],
+        ["id" => "sec-breakdown", "type" => "categoryBreakdown", "order" => 1, "label" => "Category Breakdown"],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/preview-html");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates/preview-html"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Driver Background Preview",
+    "preview": True,
+    "score": True,
+    "scoreProfile": "cabify_driver",
+    "scoreScale": "percent",
+    "pageSize": "A4",
+    "orientation": "portrait",
+    "margins": {"top": 40, "right": 40, "bottom": 40, "left": 40},
+    "reportTheme": "light_cards",
+    "sections": [
+        {"id": "sec-score", "type": "scoreGauge", "order": 0, "label": "Overall Score"},
+        {"id": "sec-breakdown", "type": "categoryBreakdown", "order": 1, "label": "Category Breakdown"},
+    ],
+}
+
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":         "Driver Background Preview",
+		"preview":      true,
+		"score":        true,
+		"scoreProfile": "cabify_driver",
+		"scoreScale":   "percent",
+		"pageSize":     "A4",
+		"orientation":  "portrait",
+		"margins":      map[string]int{"top": 40, "right": 40, "bottom": 40, "left": 40},
+		"reportTheme":  "light_cards",
+		"sections": []map[string]interface{}{
+			{"id": "sec-score", "type": "scoreGauge", "order": 0, "label": "Overall Score"},
+			{"id": "sec-breakdown", "type": "categoryBreakdown", "order": 1, "label": "Category Breakdown"},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates/preview-html", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates/preview-html" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Driver Background Preview",
+    "preview": true,
+    "score": true,
+    "scoreProfile": "cabify_driver",
+    "scoreScale": "percent",
+    "pageSize": "A4",
+    "orientation": "portrait",
+    "margins": { "top": 40, "right": 40, "bottom": 40, "left": 40 },
+    "reportTheme": "light_cards",
+    "sections": [
+      { "id": "sec-score", "type": "scoreGauge", "order": 0, "label": "Overall Score" },
+      { "id": "sec-breakdown", "type": "categoryBreakdown", "order": 1, "label": "Category Breakdown" }
+    ]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\" />...</head><body>...</body></html>",
+    "verificationScore": {
+      "profile": "cabify_driver",
+      "scale": "percent",
+      "score": 92
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-profile" label="409（unknown_score_profile）">
+
+```json
+{
+  "message": "unknown_score_profile",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-param" label="409（MissingParameter）">
+
+```json
+{
+  "message": "\"pageSize\" must be one of [A4, Letter, Legal]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注記
+
+- 検証スコアリングが有効な場合（`score: true` または `reportTheme` で有効化）にのみ、`data` に `verificationScore` が含まれます。
+- このエンドポイントはデータベース書き込みや Chromium 起動を行わずに完全にメモリ上でレンダリングするため、最終的な PDF 改ページ確認のために [テンプレートサンプルをダウンロードする](/verifik-ja/smart-reports/download-template-sample) を呼び出す前の迅速なレイアウト反復調整に最適です。
+- プレビューしたデザインを [レポートテンプレートを作成する](/verifik-ja/smart-reports/create-a-report-template) または [レポートテンプレートを更新する](/verifik-ja/smart-reports/update-a-report-template) で永続化する際は、トップレベルのプレビュー用ヘルパー（`scoreScale`、`themeTokens`、`scoreSettings`）を `reportTheme` 内（`reportTheme.scoreScale`、`reportTheme.tokens`、`reportTheme.scoreEnabled`/`reportTheme.scoreProfile`）に配置してください。
+
+### 関連項目
+
+- [SmartReports 概要](/verifik-ja/smart-reports)
+- [ヘッドレス API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [スコアプロファイル一覧を取得する](/verifik-ja/smart-reports/list-score-profiles)
+- [テンプレートレイアウトを生成する](/verifik-ja/smart-reports/generate-template-layout)
+- [テンプレートサンプルをダウンロードする](/verifik-ja/smart-reports/download-template-sample)
+- [レポートテンプレートを作成する](/verifik-ja/smart-reports/create-a-report-template)

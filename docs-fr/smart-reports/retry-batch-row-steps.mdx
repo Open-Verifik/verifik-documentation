@@ -1,0 +1,325 @@
+---
+id: retry-batch-row-steps
+title: Relancer les étapes d'une ligne de Smart Batch
+description: Réexécuter des séquences d'étapes spécifiques sur une seule ligne d'un Smart Batch tout en préservant les résultats de toutes les autres étapes.
+slug: /smart-reports/retry-batch-row-steps
+keywords:
+  - 'v2/smart-batches/{id}/retry-steps'
+  - '/v2/smart-batches/{id}/retry-steps'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches retry-steps
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/retry-steps'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/retry-steps'
+  - 'POST v2/smart-batches/{id}/retry-steps'
+  - 'POST /v2/smart-batches/{id}/retry-steps'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/retry-steps
+  - /v2/smart-batches/retry-steps
+  - 'v2 smart-batches {id} retry-steps'
+  - smart-batches/retry-steps
+  - /smart-batches/retry-steps
+  - api/smart-batches/retry-steps
+  - /api/smart-batches/retry-steps
+  - api smart-batches retry-steps
+  - 'GET v2/smart-batches/{id}/retry-steps'
+  - 'GET /v2/smart-batches/{id}/retry-steps'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Effacez et remettez en file d'attente uniquement les `sequences` spécifiées sur une seule ligne (`rowIndex`) d'un `SmartBatch`, en laissant intactes les sorties enregistrées de chaque autre étape et de chaque autre ligne. `rowIndex` et `sequences` sont tous deux obligatoires.
+
+Le serveur rejette la requête avec `409 Conflict` si le lot, la ligne cible, l'exécution `FeatureRunner` sous-jacente ou l'élément d'exécution est en cours de traitement (`batch_is_processing`, `row_is_processing`, `run_is_processing`, `item_is_processing`).
+
+### Point de terminaison
+
+```text
+POST https://api.verifik.co/v2/smart-batches/{id}/retry-steps
+```
+
+Ce point de terminaison est également accessible via le proxy Smart-Agent à l'adresse `https://ai.verifik.co/v2/smart-batches/{id}/retry-steps` avec votre propre en-tête `Authorization: Bearer <VERIFIK_JWT>`. L'exécution partagée x402 est bloquée avec `403 Forbidden`.
+
+### En-têtes
+
+| Nom             | Valeur                 | Description                               |
+| --------------- | ---------------------- | ----------------------------------------- |
+| `Content-Type`  | `application/json`     | Format de la charge utile de la requête.  |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT lié au client (`authUser.clientId`).  |
+
+### Paramètres
+
+| Nom  | Type   | Requis | Description |
+| ---- | ------ | ------ | ----------- |
+| `id` | string | Oui    | ObjectId `SmartBatch`. |
+
+### Corps de la requête
+
+| Nom         | Type      | Requis | Description |
+| ----------- | --------- | ------ | ----------- |
+| `rowIndex`  | integer   | Oui    | Index basé sur `0` (`>= 0`) de la ligne à relancer partiellement. |
+| `sequences` | integer[] | Oui    | Numéros de séquence d'étapes (`>= 0`, minimum `1`, maximum `200` éléments) à effacer et réexécuter sur cette ligne. |
+
+Les clés de corps inconnues ou les champs obligatoires manquants sont rejetés par la validation Joi avec `409 MissingParameter`.
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/retry-steps`,
+    {
+      rowIndex: 2,
+      sequences: [2, 3],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$payload = [
+    "rowIndex" => 2,
+    "sequences" => [2, 3],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/retry-steps");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/retry-steps"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "rowIndex": 2,
+    "sequences": [2, 3],
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	body, _ := json.Marshal(map[string]interface{}{
+		"rowIndex":  2,
+		"sequences": []int{2, 3},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/"+batchID+"/retry-steps", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/retry-steps" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "rowIndex": 2,
+    "sequences": [2, 3]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "batch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+      "client": "507f1f77bcf86cd799439013",
+      "name": "Colombia Onboarding — November",
+      "status": "processing",
+      "executor": "featureRunner",
+      "source": "smart_batch",
+      "headlessRun": true,
+      "creditsSpent": 0.4,
+      "totalRows": 10,
+      "completedRows": 9,
+      "failedRows": 0,
+      "partialRows": 0,
+      "createdAt": "2026-11-24T20:00:00.000Z",
+      "updatedAt": "2026-11-24T20:22:00.000Z"
+    },
+    "retried": 2
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "retry_steps_invalid",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-batch" label="404 (Lot)">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-row" label="404 (Ligne)">
+
+```json
+{
+  "message": "row_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-processing" label="409 (En cours de traitement)">
+
+```json
+{
+  "message": "batch_is_processing",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 (MissingParameter)">
+
+```json
+{
+  "message": "\"sequences\" must contain at least 1 items",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Les champs `results` et `errors` stockés ne sont effacés que pour les `sequences` spécifiées sur `rowIndex` ; les résultats de toutes les autres séquences d'étapes restent intacts.
+- Les motifs possibles pour `409 Conflict` sont `batch_is_processing`, `row_is_processing`, `run_is_processing` et `item_is_processing`.
+- La transmission de références de séquences d'étapes invalides ou vides renvoie `400 BadRequest` (`retry_steps_invalid`).
+- Pour relancer des lignes entières en échec ou partielles sur l'ensemble du lot, utilisez [Relancer les lignes en échec d'un Smart Batch](/verifik-fr/smart-reports/retry-failed-batch-rows).
+
+### Voir aussi
+
+- [Présentation de SmartReports](/verifik-fr/smart-reports)
+- [Guide de l'API Headless](/verifik-fr/smart-reports/headless-api-guide)
+- [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks)
+- [Exécuter un Smart Report](/verifik-fr/smart-reports/run-a-smart-report)
+- [Relancer les lignes en échec d'un Smart Batch](/verifik-fr/smart-reports/retry-failed-batch-rows)
+- [Obtenir la progression d'un Smart Batch](/verifik-fr/smart-reports/get-smart-batch-progress)

@@ -1,0 +1,347 @@
+---
+id: update-a-smart-batch
+title: 更新 Smart Batch
+description: 更新 Smart Batch 的名称、状态、执行器或行数据，并自动重新计算行统计信息。
+slug: /smart-reports/update-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}'
+  - '/v2/smart-batches/{id}'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - 'v2 smart-batches {id}'
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}'
+  - 'https://api.verifik.co/v2/smart-batches/{id}'
+  - 'PUT v2/smart-batches/{id}'
+  - 'PUT /v2/smart-batches/{id}'
+  - smart-batches
+  - /smart-batches
+  - 'GET v2/smart-batches/{id}'
+  - 'GET /v2/smart-batches/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+更新由已认证客户拥有的现有 `SmartBatch` 字段。你可以更新 `name`、`status`、`executor`，或替换 `rows`。当请求中提供 `rows` 时，服务器会重新计算 `totalRows`、`completedRows`、`failedRows` 和 `partialRows`，并同步外部行快照。
+
+若要将批次切换为 `"paused"` 状态，请使用专用的[暂停 Smart Batch](/verifik-zh/smart-reports/pause-a-smart-batch) 接口。仅当批次当前处于 `"draft"`、`"pending"` 或 `"cancelled"` 状态时，修改 `executor` 才会生效。
+
+### 接口
+
+```text
+PUT https://api.verifik.co/v2/smart-batches/{id}
+```
+
+此接口也可通过 Smart-Agent 代理 `https://ai.verifik.co/v2/smart-batches/{id}` 访问，需使用你自己的客户专属 `Authorization: Bearer <VERIFIK_JWT>`。共享 x402 执行会被拒绝并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称            | 值                     | 描述                                     |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | 请求载荷格式。                           |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 客户作用域的 JWT（`authUser.clientId`）。 |
+
+### 参数
+
+| 名称 | 类型   | 必填 | 描述 |
+| ---- | ------ | ---- | ---- |
+| `id` | string | 是   | 要更新的 `SmartBatch` ObjectId。 |
+
+### 请求体
+
+| 名称       | 类型     | 必填 | 描述 |
+| ---------- | -------- | ---- | ---- |
+| `name`     | string   | 否   | 更新后的批次显示名称。最多 `150` 个字符。 |
+| `status`   | string   | 否   | 允许的值：`"draft"`、`"pending"`、`"processing"`、`"completed"`、`"failed"` 或 `"cancelled"`。如需设为 `"paused"`，请使用 `POST /v2/smart-batches/{id}/pause`。 |
+| `executor` | string   | 否   | 允许的值：`"queue"`、`"featureRunner"` 或 `"browser"`。仅当当前批次状态为 `"draft"`、`"pending"` 或 `"cancelled"` 时生效。 |
+| `rows`     | object[] | 否   | 用于替换的行列表。包装格式需包含 `rowIndex` 和 `inputData`，并可选传入 `status`、`results`、`errors` 和 `processedAt`；扁平格式行会自动标准化。 |
+
+未知请求体键将被 Joi 校验拒绝，并返回 `409 MissingParameter`。
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.put(
+    `https://api.verifik.co/v2/smart-batches/${batchId}`,
+    {
+      name: "Colombia Onboarding — Updated",
+      executor: "queue",
+      rows: [
+        {
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1032386359",
+          },
+          status: "pending",
+        },
+      ],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$payload = [
+    "name" => "Colombia Onboarding — Updated",
+    "executor" => "queue",
+    "rows" => [
+        [
+            "rowIndex" => 0,
+            "inputData" => [
+                "documentType" => "CC",
+                "documentNumber" => "1032386359",
+            ],
+            "status" => "pending",
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia Onboarding — Updated",
+    "executor": "queue",
+    "rows": [
+        {
+            "rowIndex": 0,
+            "inputData": {
+                "documentType": "CC",
+                "documentNumber": "1032386359",
+            },
+            "status": "pending",
+        }
+    ],
+}
+
+response = requests.put(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":     "Colombia Onboarding — Updated",
+		"executor": "queue",
+		"rows": []map[string]interface{}{
+			{
+				"rowIndex": 0,
+				"inputData": map[string]string{
+					"documentType":   "CC",
+					"documentNumber": "1032386359",
+				},
+				"status": "pending",
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/smart-batches/"+batchID, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia Onboarding — Updated",
+    "executor": "queue",
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "pending"
+      }
+    ]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — Updated",
+    "status": "draft",
+    "executor": "queue",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0,
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": []
+      }
+    ],
+    "totalRows": 1,
+    "completedRows": 0,
+    "failedRows": 0,
+    "partialRows": 0,
+    "createdAt": "2026-11-24T19:58:00.000Z",
+    "updatedAt": "2026-11-24T20:06:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"status\" must be one of [draft, pending, processing, completed, failed, cancelled]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- `PUT /v2/smart-batches/{id}` 不接受 `"paused"` 状态；请改用[暂停 Smart Batch](/verifik-zh/smart-reports/pause-a-smart-batch)。
+- 除非批次当前处于 `"draft"`、`"pending"` 或 `"cancelled"` 状态，否则对 `executor` 的更新将被忽略。
+- 若要在不替换现有行的前提下向现有批次追加新行，请使用[向 Smart Batch 追加行](/verifik-zh/smart-reports/append-smart-batch-rows)。
+
+### 相关文档
+
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)
+- [向 Smart Batch 追加行](/verifik-zh/smart-reports/append-smart-batch-rows)
+- [暂停 Smart Batch](/verifik-zh/smart-reports/pause-a-smart-batch)

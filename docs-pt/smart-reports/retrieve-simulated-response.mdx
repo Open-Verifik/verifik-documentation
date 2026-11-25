@@ -1,0 +1,264 @@
+---
+id: retrieve-simulated-response
+title: Consultar uma resposta simulada
+description: Obtenha um payload simulado de sandbox, estrutura de campos e variantes vazias ou ausentes para um código específico de endpoint do catálogo
+slug: /smart-reports/retrieve-simulated-response
+keywords:
+  - 'v2/smart-report-templates/simulated-responses/{code}'
+  - '/v2/smart-report-templates/simulated-responses/{code}'
+  - v2/smart-report-templates/simulated-responses
+  - /v2/smart-report-templates/simulated-responses
+  - v2 smart-report-templates simulated-responses
+  - 'v2 smart-report-templates simulated-responses {code}'
+  - api/smart-report-templates/simulated-responses
+  - /api/smart-report-templates/simulated-responses
+  - api smart-report-templates simulated-responses
+  - 'api.verifik.co/v2/smart-report-templates/simulated-responses/{code}'
+  - 'https://api.verifik.co/v2/smart-report-templates/simulated-responses/{code}'
+  - 'GET v2/smart-report-templates/simulated-responses/{code}'
+  - 'GET /v2/smart-report-templates/simulated-responses/{code}'
+  - smart-report-templates/simulated-responses
+  - /smart-report-templates/simulated-responses
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Obtenha a resposta simulada de sandbox, o `outline` de campos, `dataSample` e `emptySample` para um `code` de endpoint do catálogo descoberto via [Listar respostas simuladas](/verifik-pt/smart-reports/list-simulated-responses). Você pode alternar o estado retornado em `sample` entre registros preenchidos (`"data"`), correspondências vazias (`"empty"`) ou dados ausentes (`"missing"`), e controlar a quantidade de linhas em arrays com `listSize`.
+
+Em design de templates headless e fluxos de trabalho automatizados de QA, este endpoint permite validar como seu template renderiza casos extremos — como tabelas vazias, campos opcionais ausentes ou arrays com várias páginas (`listSize` de `2` a `30`) — antes de salvar ou publicar um template para pipelines `SmartBatch` em produção.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/smart-report-templates/simulated-responses/{code}
+```
+
+O proxy do Smart-Agent (`https://ai.verifik.co`) expõe os mesmos caminhos `/v2/...` e exige o seu próprio cabeçalho `Authorization: Bearer <VERIFIK_JWT>`.
+
+### Cabeçalhos
+
+| Nome          | Valor                  |
+| ------------- | ---------------------- |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### Parâmetros
+
+| Nome           | Tipo    | Localização | Obrigatório | Descrição                                                                                            |
+| -------------- | ------- | ----------- | ----------- | ---------------------------------------------------------------------------------------------------- |
+| `code`         | string  | Path        | Sim         | Código do endpoint do catálogo obtido em [Listar respostas simuladas](/verifik-pt/smart-reports/list-simulated-responses). |
+| `availability` | string  | Query       | Não         | Estado simulado a retornar em `sample`: `"data"`, `"empty"` ou `"missing"`. O padrão é `"data"`.     |
+| `listSize`     | integer | Query       | Não         | Quantidade de itens sintéticos a gerar para campos de array/lista. Intervalo válido: `2` a `30`.     |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const code = "co_cedula";
+  const params = new URLSearchParams({
+    availability: "data",
+    listSize: "5",
+  });
+
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates/simulated-responses/${code}?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$code = "co_cedula";
+$query = http_build_query([
+    "availability" => "data",
+    "listSize" => 5,
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/simulated-responses/" . $code . "?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+code = "co_cedula"
+url = f"https://api.verifik.co/v2/smart-report-templates/simulated-responses/{code}"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "availability": "data",
+    "listSize": 5,
+}
+
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	url := "https://api.verifik.co/v2/smart-report-templates/simulated-responses/co_cedula?availability=data&listSize=5"
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-report-templates/simulated-responses/co_cedula?availability=data&listSize=5" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200-found" label="200 (Encontrado)">
+
+```json
+{
+  "data": {
+    "code": "co_cedula",
+    "found": true,
+    "name": "Colombia National ID Verification",
+    "country": "Colombia",
+    "category": "citizen",
+    "method": "GET",
+    "url": "https://api.verifik.co/v2/co/cedula",
+    "inputs": ["documentType", "documentNumber"],
+    "availability": "data",
+    "outline": {
+      "fullName": "string",
+      "documentNumber": "string",
+      "status": "string"
+    },
+    "sample": {
+      "fullName": "MATEO ROJAS",
+      "documentNumber": "1020304050",
+      "status": "VIGENTE"
+    },
+    "dataSample": {
+      "fullName": "MATEO ROJAS",
+      "documentNumber": "1020304050",
+      "status": "VIGENTE"
+    },
+    "emptySample": {}
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-not-found" label="200 (Não encontrado)">
+
+```json
+{
+  "data": {
+    "code": "unknown_code",
+    "found": false,
+    "outline": {},
+    "sample": {},
+    "note": "No simulated response found in sandbox endpoint inventory for the requested code."
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"availability\" must be one of [data, empty, missing]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Se `{code}` não estiver presente no inventário do sandbox, o endpoint retorna HTTP `200` com `found: false`, objetos `outline` e `sample` vazios e um campo explicativo `note`.
+- `listSize` aceita inteiros de `2` a `30` e é útil para testar paginação de PDFs multipágina via [Baixar amostra do template](/verifik-pt/smart-reports/download-template-sample).
+- Este endpoint não executa verificações ao vivo e não consome créditos.
+
+### Relacionados
+
+- [Visão geral do SmartReports](/verifik-pt/smart-reports)
+- [Guia da API Headless](/verifik-pt/smart-reports/headless-api-guide)
+- [MCP e Agentes de IA](/verifik-pt/smart-reports/mcp-and-ai-agents)
+- [Webhooks do SmartReports](/verifik-pt/resources/smart-reports-webhooks)
+- [Listar respostas simuladas](/verifik-pt/smart-reports/list-simulated-responses)
+- [Inspecionar dados de exemplo](/verifik-pt/smart-reports/introspect-sample-data)
+- [Gerar layout do template](/verifik-pt/smart-reports/generate-template-layout)
+- [Pré-visualizar HTML do template](/verifik-pt/smart-reports/preview-template-html)

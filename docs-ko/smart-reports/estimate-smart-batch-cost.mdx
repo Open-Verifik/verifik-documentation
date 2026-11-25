@@ -1,0 +1,261 @@
+---
+id: estimate-smart-batch-cost
+title: Smart Batch 비용 추정
+description: 배치를 실행하기 전에 단계별 크레딧 비용, 대기 중인 행 수, 사용 가능한 잔액 및 부족분을 미리 확인합니다.
+slug: /smart-reports/estimate-smart-batch-cost
+keywords:
+  - 'v2/smart-batches/{id}/estimate'
+  - '/v2/smart-batches/{id}/estimate'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches estimate
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/estimate'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/estimate'
+  - 'GET v2/smart-batches/{id}/estimate'
+  - 'GET /v2/smart-batches/{id}/estimate'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/estimate
+  - /v2/smart-batches/estimate
+  - 'v2 smart-batches {id} estimate'
+  - smart-batches/estimate
+  - /smart-batches/estimate
+  - api/smart-batches/estimate
+  - /api/smart-batches/estimate
+  - api smart-batches estimate
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+`SmartBatch`에 남아 있는 종료되지 않은 모든 행에 대한 사전 크레딧 추정치를 계산합니다. 응답은 배치의 `BatchConfiguration`에서 활성화된 단계별로 가격을 세분화하고, 예상 비용을 클라이언트 계정의 사용 가능한 크레딧 잔액과 비교합니다.
+
+이 엔드포인트를 호출해도 카탈로그 조회가 실행되지 않으며 크레딧이 전혀 소비되지 않습니다.
+
+### 엔드포인트
+
+```text
+GET https://api.verifik.co/v2/smart-batches/{id}/estimate
+```
+
+클라이언트별 `Authorization: Bearer <VERIFIK_JWT>`를 사용하여 Smart-Agent 프록시(`https://ai.verifik.co/v2/smart-batches/{id}/estimate`)를 통해서도 호출할 수 있습니다. 공유 x402 실행은 `403 Forbidden`으로 차단됩니다.
+
+### 헤더
+
+| 이름 | 값 | 설명 |
+| ---- | -- | ---- |
+| `Content-Type` | `application/json` | 요청 페이로드 형식. |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 클라이언트 범위 JWT (`authUser.clientId`). |
+
+### 매개변수
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `id` | string | 예 | 비용을 추정할 `SmartBatch` ObjectId. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-batches/${batchId}/estimate`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/estimate");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/estimate"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches/"+batchID+"/estimate", nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/estimate" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "itemCount": 25,
+    "creditsPerItem": 0.12,
+    "totalCredits": 3,
+    "breakdown": [
+      {
+        "sequence": 1,
+        "featureCode": "co-cedula",
+        "price": 0.04,
+        "total": 1
+      },
+      {
+        "sequence": 2,
+        "featureCode": "co-procuraduria",
+        "price": 0.08,
+        "total": 2
+      }
+    ],
+    "pendingRows": 25,
+    "totalRows": 25,
+    "availableCredits": 10.5,
+    "sufficientCredits": true,
+    "shortfall": 0
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "batch_configuration_has_no_steps",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- `itemCount`와 `pendingRows`는 아직 종료 행 상태(`completed`, `failed` 또는 `partial`)가 아닌 행만 반영합니다.
+- `availableCredits`는 클라이언트 계정의 `credits`와 `extraCredits`를 합산합니다. `sufficientCredits`가 `false`일 때 `shortfall`은 추가로 필요한 크레딧을 나타냅니다.
+- 단계별 가격 책정은 해당되는 경우 클라이언트 계정의 `ClientFeature` 스냅샷 가격을 사용합니다.
+
+### 관련
+
+- [Smart Reports 개요](/verifik-ko/smart-reports)
+- [Headless API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [Smart Reports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)
+- [Smart Batch 시작](/verifik-ko/smart-reports/start-a-smart-batch)
+- [Smart Batch 진행률 조회](/verifik-ko/smart-reports/get-smart-batch-progress)

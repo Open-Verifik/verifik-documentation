@@ -1,0 +1,288 @@
+---
+id: list-report-presets
+title: 列出报告预设
+description: 列出精选的系统 Smart Report 预设及其账户可用性、工作流步骤和已解析的输入模式
+slug: /smart-reports/list-report-presets
+keywords:
+  - v2/smart-batch-presets
+  - /v2/smart-batch-presets
+  - v2 smart-batch-presets
+  - smart-batch-presets
+  - /smart-batch-presets
+  - api/smart-batch-presets
+  - /api/smart-batch-presets
+  - api smart-batch-presets
+  - api.verifik.co/v2/smart-batch-presets
+  - 'https://api.verifik.co/v2/smart-batch-presets'
+  - GET v2/smart-batch-presets
+  - GET /v2/smart-batch-presets
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+列出你当前账户可用的精选系统 Smart Report 预设。每个预设都包含 `systemKey`、元数据（`country`、`category`、`tier`）、账户可用性（`available`）、有序的 `presetSteps`，以及包含 `exampleInput`、可直接用于无头执行或 AI 智能体的已解析 `inputSchema`。
+
+已解析的 `inputSchema` 会自动排除内部执行参数以及已通过 `visitaFlow` 链式依赖关系传入的步骤输入，仅保留调用方需要提供的字段。列出预设属于只读发现调用，不消耗积分。该接口同时作为 `smart_report_list_presets` MCP 工具暴露。
+
+### 接口
+
+```
+GET https://api.verifik.co/v2/smart-batch-presets
+```
+
+也可以通过 Smart-Agent 代理 `https://ai.verifik.co/v2/smart-batch-presets` 访问，并使用你自己的客户专属 `Authorization: Bearer <VERIFIK_JWT>` 请求头。共享 x402 执行在此路由上会被拒绝并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称 | 值 |
+| ---- | -- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+令牌必须是**客户 JWT**。缺少凭证或凭证无效将返回 `401 Unauthorized`。
+
+### 参数
+
+所有查询参数均为可选。你可以组合使用它们，按国家/地区、实体类别、级别或关键词筛选预设。
+
+| 名称 | 类型 | 必填 | 描述 |
+| ---- | ---- | ---- | ---- |
+| `country` | string | 否 | 国家代码筛选。服务器会自动去除首尾空格并转为大写（例如 `CO`）。 |
+| `category` | string | 否 | 预设类别筛选。允许的值：`citizen`、`company` 或 `vehicle`。 |
+| `tier` | string | 否 | 预设深度级别筛选。允许的值：`essential` 或 `comprehensive`。 |
+| `search` | string | 否 | 对 `name`、`description` 和 `systemKey` 执行不区分大小写的正则匹配。 |
+| `text` | string | 否 | `search` 的别名。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const params = new URLSearchParams({
+        country: "CO",
+        category: "citizen",
+        tier: "essential",
+    });
+
+    const res = await fetch(`https://api.verifik.co/v2/smart-batch-presets?${params.toString()}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "country" => "CO",
+    "category" => "citizen",
+    "tier" => "essential"
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batch-presets?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-batch-presets"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "country": "CO",
+    "category": "citizen",
+    "tier": "essential",
+}
+
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "net/url"
+    "os"
+)
+
+func main() {
+    u, _ := url.Parse("https://api.verifik.co/v2/smart-batch-presets")
+    q := u.Query()
+    q.Set("country", "CO")
+    q.Set("category", "citizen")
+    q.Set("tier", "essential")
+    u.RawQuery = q.Encode()
+
+    req, _ := http.NewRequest("GET", u.String(), nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/smart-batch-presets?country=CO&category=citizen&tier=essential" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": [
+        {
+            "templateId": "67d1b2c3e4f5a60718293a01",
+            "systemKey": "co.citizen.essential",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "category": "citizen",
+            "tier": "essential",
+            "stepCount": 2,
+            "available": true,
+            "presetSteps": [
+                {
+                    "sequence": 1,
+                    "appFeatureCode": "co-cedula",
+                    "queryMode": "byDocument",
+                    "featureName": "Colombian Cédula Validation"
+                },
+                {
+                    "sequence": 2,
+                    "appFeatureCode": "co-procuraduria",
+                    "queryMode": "byDocument",
+                    "featureName": "Colombian Procuraduría Check"
+                }
+            ],
+            "inputSchema": {
+                "stepCount": 2,
+                "estimatedCreditsPerRow": 0.15,
+                "requiredFields": [
+                    {
+                        "field": "documentType",
+                        "apiField": "documentType",
+                        "type": "string",
+                        "required": true,
+                        "enum": ["CC", "CE"]
+                    },
+                    {
+                        "field": "documentNumber",
+                        "apiField": "documentNumber",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "optionalFields": [],
+                "jsonSchema": {
+                    "type": "object",
+                    "properties": {
+                        "documentType": {
+                            "type": "string",
+                            "enum": ["CC", "CE"]
+                        },
+                        "documentNumber": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["documentType", "documentNumber"]
+                },
+                "exampleInput": {
+                    "documentType": "CC",
+                    "documentNumber": "123456789"
+                }
+            }
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 在筛选之前，`country` 会被去除首尾空格并转为大写（例如 `co` 会匹配 `CO`）。
+- `search` 和 `text` 对 `name`、`description` 和 `systemKey` 执行相同的不区分大小写正则表达式匹配。
+- `inputSchema.estimatedCreditsPerRow` 用于估算该预设所有已启用步骤合计的每行积分消耗。
+- 当 `available` 为 `true` 时，表示 `presetSteps` 中的所有功能在当前环境下均已启用，可以直接通过[克隆报告预设](/verifik-zh/smart-reports/clone-a-report-preset)进行克隆。
+- 对于 AI 智能体集成，该接口对应于 `smart_report_list_presets` MCP 工具。
+
+### 相关文档
+
+- [克隆报告预设](/verifik-zh/smart-reports/clone-a-report-preset)
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)

@@ -1,0 +1,629 @@
+---
+id: headless-api-guide
+title: ヘッドレス API ガイド
+description: ワンショットのプリセット実行、非同期 Webhook とポーリング、カスタムレシピ、完全なエラーハンドリングを使用して、UI なしで SmartReports を 100% 自動実行します。
+slug: /smart-reports/headless-api-guide
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# ヘッドレス API ガイド
+
+Smart-Agent の Web UI を一切開くことなく、バックエンド、ワーカーキュー、または CI パイプラインから **SmartReports** を 100% 自動化できます。すべての操作は、`https://api.verifik.co` と `https://ai.verifik.co` の両方で同一の `/v2/...` パスを使用して HTTPS 経由で公開されています。
+
+:::warning クライアント別 Bearer JWT が必須
+このガイドのすべてのリクエストには、お客様自身の Verifik アカウントトークンが必要です。
+
+```text
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+`VERIFIK_JWT` をブラウザやクライアントサイドのコードに決して公開しないでください。`https://ai.verifik.co` 経由でクライアント別 Bearer JWT なしに送信されたリクエストは、`smartReportAuthGuard` によって `403 Forbidden` で拒否されます。
+:::
+
+---
+
+## ワークフローの選択
+
+| ワークフロー | エントリーエンドポイント | 行数上限 | 最適な用途 |
+| --- | --- | --- | --- |
+| **1. ワンショット・プリセット実行（同期）** | `POST /v2/smart-reports/run` (`mode: "sync"`) | `1–5` 行 | 単一の HTTP リクエストで即座に検証 + PDF + 検証スコアを取得したい場合（`90s` のタイムアウト後は自動的に非同期へフォールバック）。 |
+| **2. 非同期実行 + Webhook / ポーリング** | `POST /v2/smart-reports/run` (`mode: "async"`) | `1–500` 行 | 複数対象のバッチ（`> 5` 行）や、処理に時間のかかる公的機関ソースを `smart_batch_*` Webhook またはポーリングで駆動する場合。 |
+| **3. カスタム再利用可能レシピ** | `POST /v2/smart-batch-presets/{systemKey}/clone` または `POST /v2/batch-configurations` + `/v2/smart-batches` | 最大 `20,000` 行 (`SMART_BATCH_MAX_ROWS`) | カスタムブランディング/レイアウト、AI 生成セクション、CSV/XLSX/JSONL ファイルアップロード、および行単位のレポート生成。 |
+
+---
+
+## ワークフロー 1: ワンショット・プリセット実行（最短パス）
+
+SmartReports を統合する最も速い方法は、Verifik の組み込みプリセットを `systemKey` 指定で実行することです。`POST /v2/smart-reports/run` は、クライアントのプリセット設定を自動的にクローンまたは再利用し、必須入力を検証して、サーバー側で連鎖された検証ステップを実行し、`verificationScore` を算出し、PDF をレンダリングして、任意で受信者へメール送信し、Webhook を発火させます。
+
+### ステップ 1: プリセットと必須入力の確認
+
+`GET /v2/smart-batch-presets`（クレジット消費なし）に照会して、利用可能なプリセット、ステップ数、利用可否、および導出された `inputSchema` を確認します。
+
+```http
+GET https://api.verifik.co/v2/smart-batch-presets?country=CO&category=citizen
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+プリセットごとに返される主なフィールド：
+
+- `systemKey`: `POST /v2/smart-reports/run` に渡す安定した識別子（例: `"co.citizen.comprehensive"`）。
+- `available` および `unavailableFeatureCodes`: プリセット内のすべてのエンドポイントがその環境で利用可能かどうかを示します。
+- `inputSchema`:
+  - `stepCount` & `estimatedCreditsPerRow`: 合計検証ステップ数と入力 1 行あたりの推定クレジット消費量。
+  - `requiredFields` & `optionalFields`: 正確なフィールド名、型、enum 値、デフォルト値、および `requiredWhen` 条件。
+  - `jsonSchema` & `exampleInput`: すぐに使える JSON Schema とサンプル入力オブジェクト。
+
+### ステップ 2: 同期実行（`mode: "sync"`）
+
+`systemKey`、`inputs`、および `mode: "sync"`（`1–5` 行を送信する場合のデフォルト）を指定して `POST /v2/smart-reports/run` を送信します。
+
+```json
+{
+  "systemKey": "co.citizen.comprehensive",
+  "inputs": {
+    "documentType": "CC",
+    "documentNumber": "123456789"
+  },
+  "mode": "sync",
+  "generatePdf": true,
+  "includePdfBase64": false,
+  "score": true,
+  "emailTo": ["compliance@yourcompany.com"],
+  "emailLanguage": "en",
+  "externalRefId": "applicant-9841"
+}
+```
+
+#### 同期実行と自動 `202` フォールバック
+
+- **行数上限**: 同期実行では最大 **`5` 行**（`MAX_SYNC_ROWS = 5`）まで受け付けます。`mode: "sync"` で `5` 行を超えて送信すると `409 Conflict`（`sync_row_limit_exceeded`）が返ります。
+- **`90s` の実行期限**: 同期実行は、上流レジストリの応答が確定するまで最大 **`90` 秒**（`SYNC_DEADLINE_MS = 90000`）待機します。`90s` 経過時点で実行中の上流ソースがある場合、Verifik はレポートにバックグラウンド完了フラグ（`asyncFinalize: true`）を設定し、シームレスに `pollUrl`、`downloadUrl`、`htmlUrl` を含む **HTTP `202 Accepted`**（`mode: "async"`）を返します。実行中の処理や消費済み進捗が失われることはありません。
+- **PDF バイトのインライン埋め込み**: `200 OK` の JSON レスポンス内に `data.pdf.buffer`（base64 PDF バイト列）を直接含めるには `"includePdfBase64": true` を指定します。ペイロードを軽量に保ち `downloadUrl` からバイナリ PDF を取得する場合は `false`（デフォルト）のままにします。
+
+### ステップ 3: `200 OK` レスポンスの確認
+
+```json
+{
+  "data": {
+    "mode": "sync",
+    "report": {
+      "_id": "6740a1b2c3d4e5f678901234",
+      "name": "Colombia Citizen Comprehensive — 2026-11-24",
+      "status": "sent",
+      "smartBatch": "6740a1b2c3d4e5f678901111",
+      "template": "6740a1b2c3d4e5f678902222",
+      "pdfSize": 184320,
+      "pdfEngine": "puppeteer",
+      "externalRefId": "applicant-9841",
+      "createdByChannel": "api",
+      "verificationScoreSummary": {
+        "score": 0.9625,
+        "verdict": "approve",
+        "coverage": 1,
+        "profile": "cabify_driver"
+      }
+    },
+    "batch": {
+      "_id": "6740a1b2c3d4e5f678901111",
+      "status": "completed",
+      "totalRows": 1,
+      "completedRows": 1,
+      "failedRows": 0,
+      "partialRows": 0,
+      "creditsSpent": 6,
+      "rows": [
+        {
+          "rowIndex": 0,
+          "status": "completed",
+          "inputData": {
+            "documentType": "CC",
+            "documentNumber": "123456789"
+          },
+          "results": {},
+          "errors": []
+        }
+      ]
+    },
+    "verificationScore": {
+      "version": "1.1.0",
+      "profile": "cabify_driver",
+      "score": 0.9625,
+      "score100": 96,
+      "decision": "approve",
+      "coverage": 1
+    },
+    "pdf": {
+      "size": 184320,
+      "engine": "puppeteer",
+      "generationDurationMs": 1420,
+      "downloadUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/download",
+      "htmlUrl": "/v2/smart-reports/6740a1b2c3d4e5f678901234/html"
+    },
+    "email": {
+      "success": true,
+      "recipients": ["compliance@yourcompany.com"],
+      "subject": "SmartReport: Colombia Citizen Comprehensive — 2026-11-24",
+      "messageId": "<msg-123@mailgun>"
+    }
+  }
+}
+```
+
+---
+
+## ワークフロー 2: 非同期ヘッドレス実行 + Webhook + ポーリング
+
+**`5` 行を超える**バッチ（`POST /v2/smart-reports/run` 1 回あたり最大 **`500` 行**）を送信する場合や、`1–5` 行であっても即座に `202 Accepted` でキューイングしたい場合は `mode: "async"` を使用します。
+
+### ステップ 1: `mode: "async"` でキューに登録
+
+`mode: "async"`、任意の実行単位 `webhookUrl` オーバーライド、相関付け用の `externalRefId`、および任意の `emailTo` を渡します。
+
+```json
+{
+  "systemKey": "co.citizen.comprehensive",
+  "inputs": [
+    { "documentType": "CC", "documentNumber": "123456789" },
+    { "documentType": "CC", "documentNumber": "987654321" }
+  ],
+  "mode": "async",
+  "webhookUrl": "https://api.yourcompany.com/webhooks/verifik-reports",
+  "externalRefId": "onboarding-batch-42",
+  "emailTo": ["ops@yourcompany.com"],
+  "emailLanguage": "en"
+}
+```
+
+Verifik は即座に **HTTP `202 Accepted`** を返します。
+
+```json
+{
+  "data": {
+    "mode": "async",
+    "report": {
+      "_id": "6740a1b2c3d4e5f678909999",
+      "status": "generating",
+      "smartBatch": "6740a1b2c3d4e5f678908888",
+      "externalRefId": "onboarding-batch-42",
+      "webhookUrl": "https://api.yourcompany.com/webhooks/verifik-reports"
+    },
+    "batch": {
+      "_id": "6740a1b2c3d4e5f678908888",
+      "status": "processing",
+      "totalRows": 2,
+      "completedRows": 0,
+      "failedRows": 0,
+      "partialRows": 0
+    },
+    "pollUrl": "/v2/smart-reports/6740a1b2c3d4e5f678909999",
+    "downloadUrl": "/v2/smart-reports/6740a1b2c3d4e5f678909999/download",
+    "htmlUrl": "/v2/smart-reports/6740a1b2c3d4e5f678909999/html"
+  }
+}
+```
+
+### ステップ 2: Webhook の受信またはステータスのポーリング
+
+バックグラウンドで `FeatureRunner` がバッチを完了すると、Verifik は自動的に PDF をレンダリングし、`verificationScore` を算出し、（指定されていれば）`emailTo` へメール送信し、型付きの Webhook イベントを配信します。
+
+- **Webhook 駆動（推奨）**: 指定した `webhookUrl`（または `batchConfiguration.notification.webhookUrl`）で `smart_batch_report_generated`（PDF 準備完了）、`smart_batch_report_generation_failed`、`smart_batch_report_sent`、`smart_batch_report_delivery_failed` を待ち受けます。正確なペイロードやリトライ規則については [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks) を参照してください。
+- **ポーリングによるフォールバック**: `data.status` が `"generating"` から遷移（`"generated"`、`"sent"`、または `"failed"`）するまで、`GET /v2/smart-reports/{id}`（`202` で返された `pollUrl`）をポーリングします。
+
+### ステップ 3: PDF のダウンロードまたは HTML + スコアの取得
+
+- **バイナリ PDF のダウンロード**:
+
+```http
+GET https://api.verifik.co/v2/smart-reports/{id}/download
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+`Content-Disposition: attachment; filename="Consulta_1.pdf"` とともに `application/pdf` を返します。複数行のバッチから特定の 1 行をレンダリングしてダウンロードするには `?rowIndex=1` を渡します。
+
+- **構造化 HTML + 検証スコア JSON（Chromium PDF 起動なし）**:
+
+```http
+GET https://api.verifik.co/v2/smart-reports/{id}/html?rowIndex=0&preview=false&score=true
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+`{ data: { reportId, batchId, templateId, rowIndex, html, verificationScore, row } }` を返します。
+
+---
+
+## ワークフロー 3: カスタム再利用可能レシピ
+
+カスタムブランディング、カスタムセクションレイアウト、編集されたステップチェーン、または `500` 行を超えるスプレッドシート取り込みを行いたい場合は、設定・テンプレート・バッチの各リソースを明示的に管理します。
+
+### ステップ 1: プリセットのクローンまたは設定の作成
+
+- **プリセットのクローン（冪等）**:
+
+```http
+POST https://api.verifik.co/v2/smart-batch-presets/{systemKey}/clone
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+`{ data: { batchConfiguration, template, reused } }` を返します。該当 `systemKey` のアクティブなクローン（プリセット以外にクライアント側で追加したステップがないもの）がすでにクライアントに存在する場合、Verifik は設定を複製せずに再利用・整合（`reused: true`）を行います。
+
+- **またはカスタム設定を新規作成**:
+
+```http
+POST https://api.verifik.co/v2/batch-configurations
+Authorization: Bearer <VERIFIK_JWT>
+Content-Type: application/json
+```
+
+`name`、`country`、`steps[]`（順序付きの `sequence`、`appFeature`、任意の `parameterDefaults`、`queryMode`、`inputFieldMapping`）、`mergeStrategy`、`preferredReportTemplate`、および `notification`（`webhookUrl`、`emailOnCompletion`）を指定します。
+
+### ステップ 2: 正確な入力スキーマの確認
+
+CSV ヘッダーの構築や行の送信を行う前に、以下へ照会します。
+
+```http
+GET https://api.verifik.co/v2/batch-configurations/{id}/input-schema
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+これにより、有効化されたすべてのステップにわたって解決された正確な `requiredFields`、`optionalFields`、`estimatedCreditsPerRow`、`jsonSchema`、および `exampleInput`（`parameterDefaults` や `{{results.N.*}}` ステップ連携ですでに供給されているフィールドは除外）が返されます。
+
+### ステップ 3: レポートテンプレートのプレビューとカスタマイズ
+
+クライアント所有のテンプレート（`type: "client"`）は、クレジット消費なしで検査・生成・プレビューし、API 経由で更新できます。
+
+1. **利用可能なデータパスを検出**: `{ "sampleData": { ... } }` を指定して `POST /v2/smart-report-templates/introspect` を呼び出すと、テンプレートバインディング用のフラット/ネストされたフィールドパレット（`dot paths`）が返されます。
+2. **AI によるレイアウトセクションの生成・編集**: `{ "prompt": "...", "previewData": { ... }, "mode": "create" | "edit" | "append" }` を指定して `POST /v2/smart-report-templates/generate-layout` を呼び出すと、`sections[]` を生成（または単一の `selectedSection` を変更）します。
+3. **高速なライブ HTML プレビューのレンダリング**: `POST /v2/smart-report-templates/preview-html` は、Chromium を起動したり MongoDB に永続化したりすることなくメモリ上で未保存のテンプレート + `sampleData` をレンダリングし、`{ data: { html, verificationScore } }` を返します。
+4. **更新の永続化**: `PUT /v2/smart-report-templates/{id}` で、クライアントテンプレート上の `sections`、`reportTheme`、`logo`、`watermark`、`signature`、`security`（PDF パスワード）、または `pdfEngine` を保存します。
+
+:::note 組み込みのシステムテンプレートは読み取り専用です
+組み込みの `"System"` テンプレートに対して `PUT` や `DELETE`、あるいは `type: "System"` の書き込みを試みると、`403 Forbidden`（`system_template_readonly`）で失敗します。先にプリセットをクローン（`POST /v2/smart-batch-presets/{systemKey}/clone`）するか、新しいテンプレートを作成（`POST /v2/smart-report-templates`）してください。
+:::
+
+### ステップ 4: 大規模バッチの作成と実行（最大 `20,000` 行）
+
+`/v2/smart-reports/run` の `500` 行制限を超える大規模バッチの場合：
+
+- **JSON 行配列から作成**: `{ "batchConfiguration": "<CONFIG_ID>", "name": "Monthly Onboarding", "rows": [ ... ] }` で `POST /v2/smart-batches` を呼び出し、`POST /v2/smart-batches/{id}/start` で実行を開始します。
+- **CSV / XLSX / JSONL ファイルから作成**: `POST /v2/smart-batches/from-file` は生テキストまたは base64 データ URL をサーバー側で解析し、クレジットを消費する前にすべての行をステップ依存関係に対して検証します（デフォルト上限 `SMART_BATCH_MAX_ROWS = 20000` 行）。
+
+```json
+{
+  "batchConfiguration": "6740a1b2c3d4e5f678901111",
+  "name": "Q4 Driver Screening",
+  "format": "csv",
+  "autoStart": true,
+  "content": "documentType,documentNumber\nCC,123456789\nCC,987654321"
+}
+```
+
+### ステップ 5: 行レポートの生成、メール送信、ダウンロード
+
+バッチが完了したら（`GET /v2/smart-batches/{id}/progress` または `smart_batch_batch_completed` Webhook）：
+
+1. 単一行の構成済みレポートデータモデルを確認: `GET /v2/smart-batches/{id}/rows/{rowIndex}/report`。
+2. テンプレートとバッチに紐付いた SmartReport レコードを作成: `{ "template": "<TEMPLATE_ID>", "smartBatch": "<BATCH_ID>", "rowIndex": 0, "externalRefId": "row-0", "webhookUrl": "https://..." }` で `POST /v2/smart-reports`。
+3. PDF と検証スコアをレンダリング: `POST /v2/smart-reports/{id}/generate`（`rowIndex`、`engine`、`score`、`scoreProfile` をサポート）。
+4. 1 行分または最大 `50` 行分を個別の PDF 添付ファイルとしてメール送信: `POST /v2/smart-reports/{id}/send-email`（`{ "recipients": ["client@example.com"], "language": "en", "rowIndex": 0 }` または `"sendAll": true`）。
+5. PDF をダウンロード: `GET /v2/smart-reports/{id}/download`（任意で `?rowIndex=0` を指定）。
+
+---
+
+## エンドツーエンドの完全なコード例
+
+以下の例では、プリセットの一覧を取得し、`POST /v2/smart-reports/run` を実行して `200` 同期応答と `202` 非同期応答の両方を処理し（完了するまで `GET /v2/smart-reports/{id}` をポーリング）、`verificationScore` を確認して完成した PDF をダウンロードします。
+
+<Tabs>
+  <TabItem value="nodejs" label="Node.js" default>
+
+```javascript
+import fs from 'node:fs/promises';
+
+const BASE_URL = 'https://api.verifik.co';
+const JWT = process.env.VERIFIK_JWT;
+
+if (!JWT) {
+  throw new Error('Set VERIFIK_JWT in your server environment');
+}
+
+const headers = {
+  Authorization: `Bearer ${JWT}`,
+  'Content-Type': 'application/json',
+  Accept: 'application/json',
+};
+
+async function apiFetch(path, options = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    ...options,
+    headers: { ...headers, ...(options.headers || {}) },
+  });
+  const payload = await res.json();
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status} (${payload.code}): ${payload.message}`);
+  }
+  return { status: res.status, data: payload.data };
+}
+
+async function runHeadlessReport() {
+  // 1. Discover presets and required input schema
+  const { data: presets } = await apiFetch('/v2/smart-batch-presets?country=CO&category=citizen');
+  const preset = presets.find((p) => p.systemKey === 'co.citizen.comprehensive' && p.available);
+  if (!preset) throw new Error('Preset co.citizen.comprehensive is not available');
+
+  console.log('Estimated credits/row:', preset.inputSchema.estimatedCreditsPerRow);
+  console.log('Required fields:', preset.inputSchema.requiredFields.map((f) => f.field));
+
+  // 2. Run verification + score + PDF generation in one call
+  const runRes = await apiFetch('/v2/smart-reports/run', {
+    method: 'POST',
+    body: JSON.stringify({
+      systemKey: preset.systemKey,
+      inputs: {
+        documentType: 'CC',
+        documentNumber: '123456789',
+      },
+      mode: 'sync',
+      generatePdf: true,
+      score: true,
+      externalRefId: 'case-12345',
+      // Optional per-run webhook override:
+      // webhookUrl: 'https://api.yourcompany.com/webhooks/verifik-reports',
+    }),
+  });
+
+  let report = runRes.data.report;
+  const reportId = report._id;
+
+  // 3. If 202 async (or >90s fallback), poll GET /v2/smart-reports/{id}
+  if (runRes.status === 202 || runRes.data.mode === 'async') {
+    console.log('Queued async report, polling:', runRes.data.pollUrl);
+    for (let attempt = 0; attempt < 30; attempt += 1) {
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+      const polled = await apiFetch(`/v2/smart-reports/${reportId}`);
+      report = polled.data;
+      if (['generated', 'sent', 'failed'].includes(report.status)) break;
+    }
+    if (report.status === 'failed') {
+      throw new Error(`Report failed: ${report.error?.message}`);
+    }
+  }
+
+  console.log('Report ID:', reportId);
+  console.log('Verification Score:', report.verificationScoreSummary);
+
+  // 4. Download the rendered PDF binary
+  const pdfRes = await fetch(`${BASE_URL}/v2/smart-reports/${reportId}/download`, {
+    headers: { Authorization: `Bearer ${JWT}` },
+  });
+  if (!pdfRes.ok) throw new Error(`Download failed: HTTP ${pdfRes.status}`);
+
+  const pdfBuffer = Buffer.from(await pdfRes.arrayBuffer());
+  await fs.writeFile(`smart-report-${reportId}.pdf`, pdfBuffer);
+  console.log(`Saved smart-report-${reportId}.pdf (${pdfBuffer.length} bytes)`);
+}
+
+runHeadlessReport().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import time
+import requests
+
+BASE_URL = "https://api.verifik.co"
+JWT = os.environ["VERIFIK_JWT"]
+
+HEADERS = {
+    "Authorization": f"Bearer {JWT}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+
+def run_headless_report() -> None:
+    # 1. Discover presets and required fields
+    presets_resp = requests.get(
+        f"{BASE_URL}/v2/smart-batch-presets",
+        params={"country": "CO", "category": "citizen"},
+        headers=HEADERS,
+        timeout=30,
+    )
+    presets_resp.raise_for_status()
+    presets = presets_resp.json()["data"]
+    preset = next((p for p in presets if p["systemKey"] == "co.citizen.comprehensive" and p["available"]), None)
+    if not preset:
+        raise RuntimeError("Preset co.citizen.comprehensive is not available")
+
+    print("Estimated credits/row:", preset["inputSchema"]["estimatedCreditsPerRow"])
+
+    # 2. Execute report headlessly
+    run_resp = requests.post(
+        f"{BASE_URL}/v2/smart-reports/run",
+        headers=HEADERS,
+        json={
+            "systemKey": preset["systemKey"],
+            "inputs": {
+                "documentType": "CC",
+                "documentNumber": "123456789",
+            },
+            "mode": "sync",
+            "generatePdf": True,
+            "score": True,
+            "externalRefId": "case-12345",
+        },
+        timeout=120,
+    )
+    if run_resp.status_code >= 400:
+        raise RuntimeError(f"Run error {run_resp.status_code}: {run_resp.text}")
+
+    payload = run_resp.json()["data"]
+    report = payload["report"]
+    report_id = report["_id"]
+
+    # 3. Poll if 202 Accepted (async mode or >90s fallback)
+    if run_resp.status_code == 202 or payload.get("mode") == "async":
+        print("Polling async report:", payload["pollUrl"])
+        for _ in range(30):
+            time.sleep(4)
+            poll_resp = requests.get(f"{BASE_URL}/v2/smart-reports/{report_id}", headers=HEADERS, timeout=30)
+            poll_resp.raise_for_status()
+            report = poll_resp.json()["data"]
+            if report["status"] in ("generated", "sent", "failed"):
+                break
+        if report["status"] == "failed":
+            raise RuntimeError(f"Report generation failed: {report.get('error')}")
+
+    print("Report ID:", report_id)
+    print("Verification Score Summary:", report.get("verificationScoreSummary"))
+
+    # 4. Download the PDF file
+    pdf_resp = requests.get(
+        f"{BASE_URL}/v2/smart-reports/{report_id}/download",
+        headers={"Authorization": f"Bearer {JWT}"},
+        timeout=60,
+    )
+    pdf_resp.raise_for_status()
+    filename = f"smart-report-{report_id}.pdf"
+    with open(filename, "wb") as f:
+        f.write(pdf_resp.content)
+    print(f"Saved {filename} ({len(pdf_resp.content)} bytes)")
+
+
+if __name__ == "__main__":
+    run_headless_report()
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+# 1) List presets and inspect required fields
+curl -sS "https://api.verifik.co/v2/smart-batch-presets?country=CO&category=citizen" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Accept: application/json"
+
+# 2) Run SmartReport headlessly (sync for 1-5 rows)
+curl -sS -X POST "https://api.verifik.co/v2/smart-reports/run" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "systemKey": "co.citizen.comprehensive",
+    "inputs": {
+      "documentType": "CC",
+      "documentNumber": "123456789"
+    },
+    "mode": "sync",
+    "generatePdf": true,
+    "score": true,
+    "externalRefId": "case-12345"
+  }'
+
+# 3) Poll status if HTTP 202 (async) was returned
+curl -sS "https://api.verifik.co/v2/smart-reports/<REPORT_ID>" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+
+# 4) Retrieve structured HTML + Verification Score JSON
+curl -sS "https://api.verifik.co/v2/smart-reports/<REPORT_ID>/html" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+
+# 5) Download PDF binary
+curl -sS -L "https://api.verifik.co/v2/smart-reports/<REPORT_ID>/download" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  --output smart-report.pdf
+
+# 6) Email the PDF to recipients
+curl -sS -X POST "https://api.verifik.co/v2/smart-reports/<REPORT_ID>/send-email" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"recipients":["client@example.com"],"language":"en"}'
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## エラーハンドリングガイド
+
+SmartReports エンドポイントは、実行前に Joi を用いてリクエストスキーマを検証し、処理中にテナント所有権とランタイム不変条件を強制します。エラーは `{ "message": "...", "code": "..." }` 形式に従います。
+
+### エラーリファレンス表
+
+| HTTP ステータス | `code` | `message` / 原因 | 対処方法 |
+| --- | --- | --- | --- |
+| `401` | `Unauthorized` | `Authorization: Bearer <VERIFIK_JWT>` ヘッダーが欠落、期限切れ、または無効です。 | 有効なクライアント別 JWT（`POST /v2/auth/...`）を更新または発行してください。 |
+| `403` | `Forbidden` | クライアント別 Bearer JWT なしで SmartReports/Batch/Template/Preset ルートが呼び出された場合に Smart-Agent の `smartReportAuthGuard` から返されます（共有 x402 サービス実行はブロックされます）。 | お客様自身のクライアント `Authorization: Bearer <VERIFIK_JWT>` を渡してください。 |
+| `403` | `Forbidden` | `system_template_readonly` — 組み込みの System テンプレートに対して `PUT`、`DELETE`、または `type: "System"` の書き込みを試行しました。 | プリセットをクローン（`POST /v2/smart-batch-presets/{systemKey}/clone`）するか、クライアントテンプレートを作成（`POST /v2/smart-report-templates`）してください。 |
+| `404` | `NotFound` | `batch_configuration_not_found`、`preset_not_found`、`template_not_found`、`batch_not_found`、または `not_found`。 | ID または `systemKey` がお客様のクライアントアカウントに属しているか（または有効な `"System"` プリセット/テンプレートであるか）確認してください。 |
+| `409` | `MissingParameter` | Joi スキーマ検証に失敗しました（`systemKey`/`batchConfigurationId` の欠落、`inputs`/`rows` の欠落、無効な `mode`、または `POST /v2/smart-reports/run` での `> 500` 行指定）。 | エンドポイントスキーマに合わせてリクエスト構造を修正してください。 |
+| `409` | `Conflict` | `client_context_required` — トークンにテナントの `clientId` コンテキストがありません。 | Verifik クライアントアカウントの JWT で認証してください。 |
+| `409` | `Conflict` | `sync_row_limit_exceeded` — `> 5` 行に対して `mode: "sync"` が指定されました。 | `"mode": "async"` に切り替えるか、`/v2/smart-batches` を使用してください。 |
+| `409` | `Conflict` | `missing_required_inputs (<fields>)` — 1 つ以上の入力行で `inputSchema.requiredFields` の必須フィールドが省略されています。 | `GET /v2/smart-batch-presets` または `GET /v2/batch-configurations/{id}/input-schema` を確認し、すべての必須フィールドを指定してください。 |
+| `409` | `Conflict` | `endpoints_not_in_account <codes>` — 設定またはプリセット内の 1 つ以上のステップが、お客様のクライアントアカウントで有効になっていません。 | 一覧表示された機能コードを Verifik クライアントアカウントで有効にするか、カスタム設定から削除してください。 |
+| `409` | `Conflict` | `POST /v2/smart-reports/{id}/send-email` での `send_all_limit` または `no_pdf_attachments`。 | `sendAll: true` は 1 通のメールにつき最大 `50` 行までサポートします。これより大きいバッチの場合は `rowIndex` を指定してください。 |
+| `422` | `UnprocessableEntity` | テンプレート、設定、バッチ、またはレポートの永続化時に Mongoose スキーマまたは一意性検証に失敗しました。 | 返された `message` に記載されているフィールド長や enum 制約を確認してください。 |
+
+### エラーレスポンス例
+
+<Tabs>
+  <TabItem value="403-proxy" label="403 プロキシガード" default>
+
+```json
+{
+  "code": "Forbidden",
+  "message": "SmartReports, SmartReportTemplates, BatchConfigurations, and SmartBatches require your own per-client Verifik Bearer JWT. They are not available through the shared x402 account."
+}
+```
+
+  </TabItem>
+  <TabItem value="403-readonly" label="403 システムテンプレート">
+
+```json
+{
+  "message": "system_template_readonly",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 MissingParameter">
+
+```json
+{
+  "message": "\"value\" must contain at least one of [systemKey, batchConfigurationId]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-runtime" label="409 Conflict（実行時）">
+
+```json
+{
+  "message": "missing_required_inputs (documentType, documentNumber)",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+---
+
+## 関連項目
+
+- [SmartReports 概要](/verifik-ja/smart-reports)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)
+- [レポートテンプレート一覧を取得する](/verifik-ja/smart-reports/list-report-templates)
+- [SmartBatch](/verifik-ja/smart-batch)

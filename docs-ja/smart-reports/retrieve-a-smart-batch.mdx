@@ -1,0 +1,292 @@
+---
+id: retrieve-a-smart-batch
+title: Smart Batch を取得する
+description: 保存された行結果をマージし不完全な行を修復しながら、ID で Smart Batch を取得します。
+slug: /smart-reports/retrieve-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}'
+  - '/v2/smart-batches/{id}'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - 'v2 smart-batches {id}'
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}'
+  - 'https://api.verifik.co/v2/smart-batches/{id}'
+  - 'GET v2/smart-batches/{id}'
+  - 'GET /v2/smart-batches/{id}'
+  - smart-batches
+  - /smart-batches
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+認証済みクライアント向けに ID で単一の `SmartBatch` ドキュメントを取得します。ペイロードを返す前に、サーバーは外部に保存されたすべての `smartbatchrows` 出力を `rows[].results` にマージし、`healIncompleteRows()` を実行して、有効化された設定ステップが欠落している `completed` マーク済みの行を再オープンします。
+
+バッチが存在しないか別のクライアントアカウントに属している場合、エンドポイントは `200` と `{ "data": null }` を返します。バッチの読み取りはチェックを実行せず、クレジットも消費しません。
+
+### エンドポイント
+
+```text
+GET https://api.verifik.co/v2/smart-batches/{id}
+```
+
+このエンドポイントは、クライアント単位の `Authorization: Bearer <VERIFIK_JWT>` を使用することで Smart-Agent プロキシ（`https://ai.verifik.co/v2/smart-batches/{id}`）経由でもアクセスできます。共有 x402 実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type` | `application/json` | リクエストペイロード形式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアントスコープの JWT（`authUser.clientId`）。 |
+
+### パスパラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| ---- | ------ | ---- | ----------- |
+| `id` | string | はい | `SmartBatch` の ObjectId。 |
+
+### クエリパラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| ------------- | -------- | ---- | ----------- |
+| `select` | string | いいえ | フィールド射影式（例: 行ペイロードを除外する `"-rows"`）。 |
+| `columns` | string | いいえ | 返されるドキュメントに含めるフィールドのサブセット。 |
+| `populates[]` | string[] | いいえ | 展開する関連ドキュメント: `"batchConfiguration"` および／または `"client"`。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-batches/${batchId}`, {
+    params: {
+      "populates[]": ["batchConfiguration", "client"],
+    },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$query = "populates%5B%5D=batchConfiguration&populates%5B%5D=client";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = [
+    ("populates[]", "batchConfiguration"),
+    ("populates[]", "client"),
+]
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	params := url.Values{}
+	params.Add("populates[]", "batchConfiguration")
+	params.Add("populates[]", "client")
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches/"+batchID+"?"+params.Encode(), nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3?populates%5B%5D=batchConfiguration&populates%5B%5D=client" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d4",
+      "name": "Colombia Identity Check"
+    },
+    "client": {
+      "_id": "507f1f77bcf86cd799439013"
+    },
+    "name": "Colombia Onboarding — November",
+    "status": "completed",
+    "executor": "browser",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0.04,
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "completed",
+        "results": {
+          "1": {
+            "fullName": "JANE DOE",
+            "documentNumber": "1032386359"
+          }
+        },
+        "errors": [],
+        "creditsSpent": 0.04,
+        "attemptCount": 1,
+        "processedAt": "2026-11-24T20:01:00.000Z"
+      }
+    ],
+    "totalRows": 1,
+    "completedRows": 1,
+    "failedRows": 0,
+    "partialRows": 0,
+    "startedAt": "2026-11-24T20:00:00.000Z",
+    "completedAt": "2026-11-24T20:01:00.000Z",
+    "createdAt": "2026-11-24T19:58:00.000Z",
+    "updatedAt": "2026-11-24T20:01:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-null" label="200 OK (見つからない場合)">
+
+```json
+{
+  "data": null
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"id\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 補足
+
+- 外部の `smartbatchrows` ステップ結果は、バッチの読み取り時に `rows[].results` へ自動的にマージされます。
+- `healIncompleteRows()` は、有効化された `batchConfiguration` ステップに対して各 `completed` 行を検査し、ステップ出力またはエラーが欠落している行を `pending` へ再オープンします。
+- 頻繁なステータスポーリングを行う場合は、完全な行ペイロードを繰り返し取得するのを避けるため、[Smart Batch の進捗を取得する](/verifik-ja/smart-reports/get-smart-batch-progress)を優先して使用してください。
+
+### 関連
+
+- [Smart Reports 概要](/verifik-ja/smart-reports)
+- [Headless API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [Smart Reports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)
+- [Smart Batch の進捗を取得する](/verifik-ja/smart-reports/get-smart-batch-progress)
+- [Smart Batch を更新する](/verifik-ja/smart-reports/update-a-smart-batch)

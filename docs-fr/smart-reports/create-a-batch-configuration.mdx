@@ -1,0 +1,398 @@
+---
+id: create-a-batch-configuration
+title: Créer une configuration de lot
+description: Créer une configuration de lot personnalisée avec des étapes de vérification ordonnées, des politiques de réessai et des notifications facultatives
+slug: /smart-reports/create-a-batch-configuration
+keywords:
+  - v2/batch-configurations
+  - /v2/batch-configurations
+  - v2 batch-configurations
+  - batch-configurations
+  - /batch-configurations
+  - api/batch-configurations
+  - /api/batch-configurations
+  - api batch-configurations
+  - api.verifik.co/v2/batch-configurations
+  - 'https://api.verifik.co/v2/batch-configurations'
+  - POST v2/batch-configurations
+  - POST /v2/batch-configurations
+  - GET v2/batch-configurations
+  - GET /v2/batch-configurations
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Créez une `BatchConfiguration` personnalisée sur votre compte client authentifié. Définissez le `country` cible, les `steps` de vérification ordonnées référençant des identifiants `AppFeature` du catalogue, les formats d'entrée/sortie facultatifs, les paramètres de réessai, un graphe visuel `visitaFlow` ainsi que les notifications de fin d'exécution.
+
+La création d'une configuration n'exécute aucune vérification et ne consomme pas de crédits. Notez que ce point de terminaison renvoie HTTP `200` (et non `201`) avec la configuration enregistrée dans `data`. La validation du schéma est gérée directement par Mongoose : des champs invalides ou manquants renvoient donc `422 UnprocessableEntity`.
+
+### Point de terminaison
+
+```
+POST https://api.verifik.co/v2/batch-configurations
+```
+
+Également accessible via le proxy Smart-Agent à l'adresse `https://ai.verifik.co/v2/batch-configurations` avec votre propre en-tête par client `Authorization: Bearer <VERIFIK_JWT>`. L'exécution partagée x402 est bloquée avec `403 Forbidden`.
+
+### En-têtes
+
+| Nom | Valeur |
+| ---- | ----- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+Le jeton doit être un **JWT client**. Des identifiants manquants ou invalides renvoient `401 Unauthorized`.
+
+### Corps de la requête
+
+| Nom | Type | Requis | Description |
+| ---- | ---- | -------- | ----------- |
+| `name` | string | Oui | Nom affiché de la configuration. Nettoyé des espaces, `150` caractères maximum. |
+| `country` | string | Oui | Portée géographique (pays) de la configuration. Nettoyé des espaces et converti en majuscules par le serveur (par exemple, `CO`). |
+| `steps` | object[] | Oui | Tableau ordonné d'objets d'étapes de vérification (voir les champs de `steps[]` ci-dessous). |
+| `description` | string | Non | Résumé facultatif du workflow. `800` caractères maximum. |
+| `executor` | string | Non | Cible d'exécution : `queue`, `featureRunner` ou `browser`. Par défaut `featureRunner` (enregistré comme `browser`, tandis que le runner headless s'exécute via `FeatureRunner`). |
+| `inputFormat` | string | Non | Format d'entrée par défaut : `csv`, `jsonl` ou `xlsx`. Par défaut `csv`. |
+| `outputFormat` | string | Non | Format de sortie par défaut : `csv`, `jsonl` ou `xlsx`. Par défaut `csv`. |
+| `mergeStrategy` | string | Non | Stratégie d'exécution des étapes : `sequential`, `parallel-independent` ou `parallel-with-fallback`. Par défaut `sequential`. |
+| `notification` | object | Non | Paramètres de notification de fin (`webhookUrl` et `emailOnCompletion`). Voir les champs de `notification` ci-dessous. |
+| `scheduleExpression` | string | Non | Expression de planification facultative pour les exécutions automatisées. |
+| `preferredReportTemplate` | string | Non | ObjectId `SmartReportTemplate` lié comme modèle de rapport par défaut pour les lots de cette configuration. |
+| `visitaFlow` | object | Non | Graphe visuel de nœuds définissant le chaînage des étapes. Tous les espaces réservés `{{results.N.field}}` sont exclus des entrées manuelles dans le schéma d'entrée dérivé. |
+| `isActive` | boolean | Non | Indique si la configuration est active. Par défaut `true`. |
+
+#### Champs de l'objet `steps[]`
+
+| Nom | Type | Requis | Description |
+| ---- | ---- | -------- | ----------- |
+| `appFeature` | string | Oui | ObjectId `AppFeature` à exécuter pour cette étape. |
+| `sequence` | number | Oui | Ordre d'exécution de l'étape indexé à partir de 1 (`>= 1`). |
+| `enabled` | boolean | Non | Indique si cette étape s'exécute pendant le traitement du lot. Par défaut `true`. |
+| `parameterDefaults` | object | Non | Valeurs de paramètres statiques ou expressions `{{results.N.field}}` rattachées à cette étape. Par défaut `{}`. |
+| `queryMode` | string | Non | Sélecteur facultatif de groupe de dépendances lorsque la fonctionnalité prend en charge plusieurs modes de consultation. |
+| `inputFieldMapping` | object | Non | Mappe les noms de colonnes d'entrée vers les noms de paramètres de l'API (`inputColumn -> apiParam`). Par défaut `{}`. |
+| `outputFieldsToKeep` | string[] | Non | Sous-ensemble de champs de sortie à conserver dans les résultats tabulaires. Par défaut `[]`. |
+| `maxRetries` | number | Non | Nombre maximal de tentatives de réessai en cas d'échec transitoire de l'étape (`>= 0`). Par défaut `3`. |
+| `retryDelayBaseSeconds` | number | Non | Délai de backoff de base en secondes (`>= 1`). Par défaut `4`. |
+| `timeoutSeconds` | number | Non | Délai d'expiration d'exécution de l'étape en secondes (`>= 5`). Par défaut `30`. |
+
+#### Champs de l'objet `notification`
+
+| Nom | Type | Requis | Description |
+| ---- | ---- | -------- | ----------- |
+| `webhookUrl` | string | Non | Point de terminaison HTTPS à notifier à la fin du lot. Fournir `webhookUrl` synchronise automatiquement un webhook Verifik actif pour votre client. |
+| `emailOnCompletion` | string[] | Non | Liste des adresses e-mail destinataires à notifier lorsqu'un lot se termine. |
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const res = await fetch("https://api.verifik.co/v2/batch-configurations", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+        body: JSON.stringify({
+            name: "Colombia KYC Workflow",
+            description: "Validate citizen ID and run background checks",
+            country: "CO",
+            inputFormat: "csv",
+            outputFormat: "csv",
+            mergeStrategy: "sequential",
+            steps: [
+                {
+                    appFeature: "65f0a1b2c3d4e5f607182901",
+                    sequence: 1,
+                    enabled: true,
+                    parameterDefaults: {
+                        documentType: "CC"
+                    },
+                    maxRetries: 3,
+                    retryDelayBaseSeconds: 4,
+                    timeoutSeconds: 30
+                }
+            ],
+            notification: {
+                webhookUrl: "https://example.com/webhooks/smart-reports",
+                emailOnCompletion: ["ops@example.com"]
+            }
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/batch-configurations");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "Colombia KYC Workflow",
+    "description" => "Validate citizen ID and run background checks",
+    "country" => "CO",
+    "inputFormat" => "csv",
+    "outputFormat" => "csv",
+    "mergeStrategy" => "sequential",
+    "steps" => [
+        [
+            "appFeature" => "65f0a1b2c3d4e5f607182901",
+            "sequence" => 1,
+            "enabled" => true,
+            "parameterDefaults" => [
+                "documentType" => "CC"
+            ],
+            "maxRetries" => 3,
+            "retryDelayBaseSeconds" => 4,
+            "timeoutSeconds" => 30
+        ]
+    ],
+    "notification" => [
+        "webhookUrl" => "https://example.com/webhooks/smart-reports",
+        "emailOnCompletion" => ["ops@example.com"]
+    ]
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/batch-configurations"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia KYC Workflow",
+    "description": "Validate citizen ID and run background checks",
+    "country": "CO",
+    "inputFormat": "csv",
+    "outputFormat": "csv",
+    "mergeStrategy": "sequential",
+    "steps": [
+        {
+            "appFeature": "65f0a1b2c3d4e5f607182901",
+            "sequence": 1,
+            "enabled": True,
+            "parameterDefaults": {"documentType": "CC"},
+            "maxRetries": 3,
+            "retryDelayBaseSeconds": 4,
+            "timeoutSeconds": 30,
+        }
+    ],
+    "notification": {
+        "webhookUrl": "https://example.com/webhooks/smart-reports",
+        "emailOnCompletion": ["ops@example.com"],
+    },
+}
+
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    payload := map[string]interface{}{
+        "name":          "Colombia KYC Workflow",
+        "description":   "Validate citizen ID and run background checks",
+        "country":       "CO",
+        "inputFormat":   "csv",
+        "outputFormat":  "csv",
+        "mergeStrategy": "sequential",
+        "steps": []map[string]interface{}{
+            {
+                "appFeature":            "65f0a1b2c3d4e5f607182901",
+                "sequence":              1,
+                "enabled":               true,
+                "parameterDefaults":     map[string]string{"documentType": "CC"},
+                "maxRetries":            3,
+                "retryDelayBaseSeconds": 4,
+                "timeoutSeconds":        30,
+            },
+        },
+        "notification": map[string]interface{}{
+            "webhookUrl":        "https://example.com/webhooks/smart-reports",
+            "emailOnCompletion": []string{"ops@example.com"},
+        },
+    }
+
+    body, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/batch-configurations", bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS -X POST "https://api.verifik.co/v2/batch-configurations" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia KYC Workflow",
+    "description": "Validate citizen ID and run background checks",
+    "country": "CO",
+    "inputFormat": "csv",
+    "outputFormat": "csv",
+    "mergeStrategy": "sequential",
+    "steps": [
+      {
+        "appFeature": "65f0a1b2c3d4e5f607182901",
+        "sequence": 1,
+        "enabled": true,
+        "parameterDefaults": {
+          "documentType": "CC"
+        },
+        "maxRetries": 3,
+        "retryDelayBaseSeconds": 4,
+        "timeoutSeconds": 30
+      }
+    ],
+    "notification": {
+      "webhookUrl": "https://example.com/webhooks/smart-reports",
+      "emailOnCompletion": ["ops@example.com"]
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "67d1c100e4f5a60718293c01",
+        "name": "Colombia KYC Workflow",
+        "description": "Validate citizen ID and run background checks",
+        "country": "CO",
+        "executor": "browser",
+        "inputFormat": "csv",
+        "outputFormat": "csv",
+        "mergeStrategy": "sequential",
+        "steps": [
+            {
+                "_id": "67d1c100e4f5a60718293c02",
+                "appFeature": "65f0a1b2c3d4e5f607182901",
+                "sequence": 1,
+                "enabled": true,
+                "parameterDefaults": {
+                    "documentType": "CC"
+                },
+                "inputFieldMapping": {},
+                "outputFieldsToKeep": [],
+                "maxRetries": 3,
+                "retryDelayBaseSeconds": 4,
+                "timeoutSeconds": 30
+            }
+        ],
+        "notification": {
+            "webhookUrl": "https://example.com/webhooks/smart-reports",
+            "emailOnCompletion": ["ops@example.com"]
+        },
+        "isActive": true,
+        "createdAt": "2026-10-15T15:00:00.000Z",
+        "updatedAt": "2026-10-15T15:00:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+    "message": "BatchConfiguration validation failed: name: Path `name` is required.",
+    "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- En cas de succès, la réponse renvoie HTTP **`200`** (et non `201`) avec le document créé dans `data`.
+- Ce point de terminaison ne dispose pas de middleware Joi ; la validation de schéma Mongoose vérifie les champs obligatoires et les contraintes numériques, et renvoie `422 UnprocessableEntity` en cas d'échec.
+- Lorsque `executor` vaut `"featureRunner"` (la valeur par défaut), le serveur enregistre `"browser"` sur le document de configuration tandis que le runner headless continue de s'exécuter via `FeatureRunner`.
+- La définition de `notification.webhookUrl` crée ou synchronise automatiquement un webhook Verifik actif pour votre client.
+- Appelez ensuite [Récupérer le schéma d'entrée d'une configuration](/verifik-fr/smart-reports/retrieve-configuration-input-schema) pour inspecter les champs dérivés et `exampleInput` avant d'exécuter un rapport.
+
+### Voir aussi
+
+- [Lister les configurations de lot](/verifik-fr/smart-reports/list-batch-configurations)
+- [Récupérer le schéma d'entrée d'une configuration](/verifik-fr/smart-reports/retrieve-configuration-input-schema)
+- [Présentation de SmartReports](/verifik-fr/smart-reports)
+- [Guide de l'API Headless](/verifik-fr/smart-reports/headless-api-guide)
+- [MCP et agents IA](/verifik-fr/smart-reports/mcp-and-ai-agents)
+- [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks)
+- [Exécuter un Smart Report](/verifik-fr/smart-reports/run-a-smart-report)

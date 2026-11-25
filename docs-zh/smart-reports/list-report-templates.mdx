@@ -1,0 +1,262 @@
+---
+id: list-report-templates
+title: 列出报告模板
+description: 列出客户账户可用的 Smart Report 模板，包括自定义模板与内置系统起步模板
+slug: /smart-reports/list-report-templates
+keywords:
+  - v2/smart-report-templates
+  - /v2/smart-report-templates
+  - v2 smart-report-templates
+  - api/smart-report-templates
+  - /api/smart-report-templates
+  - api smart-report-templates
+  - api.verifik.co/v2/smart-report-templates
+  - 'https://api.verifik.co/v2/smart-report-templates'
+  - GET v2/smart-report-templates
+  - GET /v2/smart-report-templates
+  - smart-report-templates
+  - /smart-report-templates
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+列出已认证客户可用的 Smart Report 模板。默认情况下，此端点会同时返回你的客户自有自定义模板与 Verifik 内置的 `"System"` 模板，方便你发现可复用的模板 ID（`_id`）、查看布局与主题配置，并在触发 `SmartBatch` 运行或示例渲染前选定模板。
+
+在无头核验流水线与 AI 智能体工作流中，可以先调用此端点查找绑定到 `batchConfiguration` 的现有模板、按 `country`、`category` 或 `tier` 筛选内置 `"System"` 模板，或在克隆或更新前检查自定义模板是否处于启用状态。列出模板不会渲染 PDF，也不会消耗积分。
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/smart-report-templates
+```
+
+Smart-Agent 代理（`https://ai.verifik.co`）暴露了完全相同的 `/v2/...` 路径，并同样要求携带你自己的 `Authorization: Bearer <VERIFIK_JWT>` 请求头。
+
+响应会填充 `batchConfiguration` 与 `client` 字段并选中 `+thumbnail.image`，以便仪表盘与无头预览无需额外请求即可查看模板缩略图。
+
+### 请求头
+
+| 名称 | 值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### 参数
+
+所有查询参数均为可选。
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `batchConfiguration` | string | 否 | 按关联的特定 `SmartBatch` 配置 ObjectId 筛选模板。 |
+| `type` | string | 否 | 按来源筛选：`"client"` 或 `"System"`。省略时同时返回你自己的客户模板与内置 `"System"` 模板。 |
+| `country` | string | 否 | 国家筛选条件。服务端会自动转为大写（例如 `CO`、`MX` 或 `COLOMBIA`）。 |
+| `category` | string | 否 | 业务域分类筛选：`"citizen"`、`"company"` 或 `"vehicle"`。 |
+| `tier` | string | 否 | 模板等级筛选：`"essential"` 或 `"comprehensive"`。 |
+| `isActive` | boolean | 否 | 按启用状态筛选（`true` 或 `false`）。 |
+| `search` | string | 否 | 对 `name` 和 `systemKey` 执行不区分大小写的正则搜索。当发送 `search` 但未指定 `type` 时，会同时匹配你的模板与 `"System"` 模板。 |
+| `page` | integer | 否 | 页码（从 1 开始）。在此模块中必须同时提供 `page` 和 `limit` 才会启用分页。 |
+| `limit` | integer | 否 | 每页数量。必须与 `page` 一起提供才能对结果分页。 |
+| `sort` | string | 否 | 排序规则。默认为 `type: 1, createdAt: -1`（按模板类型排序并优先显示最新创建）。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const params = new URLSearchParams({
+    category: "citizen",
+    isActive: "true",
+    page: "1",
+    limit: "20",
+  });
+
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "category" => "citizen",
+    "isActive" => "true",
+    "page" => 1,
+    "limit" => 20,
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "category": "citizen",
+    "isActive": "true",
+    "page": 1,
+    "limit": 20,
+}
+
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	url := "https://api.verifik.co/v2/smart-report-templates?category=citizen&isActive=true&page=1&limit=20"
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-report-templates?category=citizen&isActive=true&page=1&limit=20" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": [
+    {
+      "_id": "67c1f94b2d8a1c0012a4b301",
+      "name": "Driver Background Report",
+      "description": "Standard onboarding report for Colombia driver checks",
+      "client": {
+        "_id": "507f1f77bcf86cd799439013",
+        "name": "Acme Mobility"
+      },
+      "batchConfiguration": {
+        "_id": "67c1f8102d8a1c0012a4b210",
+        "name": "Colombia Driver Onboarding"
+      },
+      "country": "CO",
+      "category": "citizen",
+      "isActive": true,
+      "pageSize": "A4",
+      "orientation": "portrait",
+      "pdfEngine": "puppeteer",
+      "primaryColor": "#4F46E5",
+      "identityColor": "#000000",
+      "pageBackgroundColor": "#ffffff",
+      "reportTheme": "light_cards",
+      "thumbnail": {
+        "image": "data:image/png;base64,iVBORw0KGgo..."
+      },
+      "createdAt": "2026-09-10T03:32:00.000Z",
+      "updatedAt": "2026-09-10T03:35:12.000Z"
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"category\" must be one of [citizen, company, vehicle]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 必须同时提供 `page` 和 `limit` 才能对结果进行分页。仅发送其中一个参数不会触发分页。
+- 列表中返回的内置 `"System"` 模板为只读。尝试修改或删除它们会返回 `403`（`system_template_readonly`）。如需自定义起步模板，请将其布局传入 [创建报告模板](/verifik-zh/smart-reports/create-a-report-template)。
+- 当你希望按 `reportTheme` 分组获取干净的起步蓝图时，请使用 [列出主题起步模板](/verifik-zh/smart-reports/list-theme-starters)。
+
+### 相关页面
+
+- [SmartReports 概览](/verifik-zh/smart-reports)
+- [无头 API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)
+- [创建报告模板](/verifik-zh/smart-reports/create-a-report-template)
+- [获取报告模板](/verifik-zh/smart-reports/retrieve-a-report-template)
+- [列出主题起步模板](/verifik-zh/smart-reports/list-theme-starters)

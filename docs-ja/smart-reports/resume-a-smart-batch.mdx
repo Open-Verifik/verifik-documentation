@@ -1,0 +1,285 @@
+---
+id: resume-a-smart-batch
+title: Smart Batch を再開する
+description: アカウントの機能権限を再確認したうえで、一時停止中の Smart Batch を再開します。
+slug: /smart-reports/resume-a-smart-batch
+keywords:
+  - 'v2/smart-batches/{id}/resume'
+  - '/v2/smart-batches/{id}/resume'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches resume
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/resume'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/resume'
+  - 'POST v2/smart-batches/{id}/resume'
+  - 'POST /v2/smart-batches/{id}/resume'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/resume
+  - /v2/smart-batches/resume
+  - 'v2 smart-batches {id} resume'
+  - smart-batches/resume
+  - /smart-batches/resume
+  - api/smart-batches/resume
+  - /api/smart-batches/resume
+  - api smart-batches resume
+  - 'GET v2/smart-batches/{id}/resume'
+  - 'GET /v2/smart-batches/{id}/resume'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+一時停止中の `SmartBatch`（およびその配下にあるすべての `FeatureRunner` 実行）を再開します。サーバーは、クライアントアカウントが設定済みすべてのステップに対する機能権限を引き続き保持しているかを検証し（いずれかのエンドポイント権限が取り消されている場合は `409 endpoints_not_in_account`）、バッチが `"paused"` ステータスであることを確認した上で、`"processing"` へ遷移させます。
+
+バッチが現在 `"paused"` でない場合、リクエストは `400 BadRequest`（`batch_not_paused`、または配下の `FeatureRunner` 実行が一時停止中でない場合は `run_not_paused`）で失敗します。
+
+### エンドポイント
+
+```text
+POST https://api.verifik.co/v2/smart-batches/{id}/resume
+```
+
+このエンドポイントは、クライアント単位の `Authorization: Bearer <VERIFIK_JWT>` を使用することで Smart-Agent プロキシ（`https://ai.verifik.co/v2/smart-batches/{id}/resume`）経由でもアクセスできます。共有 x402 実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type` | `application/json` | リクエストペイロード形式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアントスコープの JWT（`authUser.clientId`）。 |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| ---- | ------ | ---- | ----------- |
+| `id` | string | はい | 再開する `SmartBatch` の ObjectId。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/resume`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/resume");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/resume"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.post(url, json={}, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/"+batchID+"/resume", bytes.NewReader([]byte("{}")))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/resume" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — November",
+    "status": "processing",
+    "executor": "queue",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0.4,
+    "rows": [],
+    "totalRows": 25,
+    "completedRows": 10,
+    "failedRows": 0,
+    "partialRows": 0,
+    "startedAt": "2026-11-24T20:10:00.000Z",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:16:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "batch_not_paused",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-grants" label="409 (権限不足)">
+
+```json
+{
+  "message": "endpoints_not_in_account co-cedula",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 (MissingParameter)">
+
+```json
+{
+  "message": "\"id\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 補足
+
+- 再開時にはクライアントの機能権限が再検証され、アカウントでいずれかのステップエンドポイントが有効でなくなっている場合は `409 endpoints_not_in_account` でリクエストが拒否されます。
+- 完了済みの行は保存された結果を保持し、再開時に再実行されたり二重課金されたりすることはありません。
+- バッチが `"draft"`、`"pending"`、または `"cancelled"` だった場合は、代わりに[Smart Batch を開始する](/verifik-ja/smart-reports/start-a-smart-batch)を使用してください。
+
+### 関連
+
+- [Smart Reports 概要](/verifik-ja/smart-reports)
+- [Headless API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [Smart Reports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)
+- [Smart Batch を一時停止する](/verifik-ja/smart-reports/pause-a-smart-batch)
+- [Smart Batch の進捗を取得する](/verifik-ja/smart-reports/get-smart-batch-progress)

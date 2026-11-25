@@ -1,0 +1,286 @@
+---
+id: get-smart-batch-progress
+title: Smart Batch 진행률 조회
+description: Smart Batch의 경량 행 카운터, 실행 모드, FeatureRunner 실행 및 크레딧 사용 지표를 폴링합니다.
+slug: /smart-reports/get-smart-batch-progress
+keywords:
+  - 'v2/smart-batches/{id}/progress'
+  - '/v2/smart-batches/{id}/progress'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches progress
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/progress'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/progress'
+  - 'GET v2/smart-batches/{id}/progress'
+  - 'GET /v2/smart-batches/{id}/progress'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/progress
+  - /v2/smart-batches/progress
+  - 'v2 smart-batches {id} progress'
+  - smart-batches/progress
+  - /smart-batches/progress
+  - api/smart-batches/progress
+  - /api/smart-batches/progress
+  - api smart-batches progress
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+전체 `rows` 배열을 전송하지 않고 `SmartBatch`의 경량 진행률 요약을 가져옵니다. 응답에는 행 카운터(`totalRows`, `completedRows`, `failedRows`, `partialRows`, `pendingRows`), 실행 타임스탬프, `creditsSpent`, 그리고 `FeatureRunner` 실행이 뒷받침되는 경우 중첩된 `run` 및 원장 `spend` 세부 정보가 포함됩니다.
+
+서버 측 `FeatureRunner` 실행은 `batchConfiguration.notification.webhookUrl`이 구성된 경우 완료 시 `smart_batch_batch_completed` 웹훅 이벤트(`runId` 및 `creditsSpent` 포함)도 발생시킵니다. 이 엔드포인트를 폴링해도 크레딧이 소비되지 않습니다.
+
+### 엔드포인트
+
+```text
+GET https://api.verifik.co/v2/smart-batches/{id}/progress
+```
+
+클라이언트별 `Authorization: Bearer <VERIFIK_JWT>`를 사용하여 Smart-Agent 프록시(`https://ai.verifik.co/v2/smart-batches/{id}/progress`)를 통해서도 호출할 수 있습니다. 공유 x402 실행은 `403 Forbidden`으로 차단됩니다.
+
+### 헤더
+
+| 이름 | 값 | 설명 |
+| ---- | -- | ---- |
+| `Content-Type` | `application/json` | 요청 페이로드 형식. |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 클라이언트 범위 JWT (`authUser.clientId`). |
+
+### 매개변수
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `id` | string | 예 | 진행률을 폴링할 `SmartBatch` ObjectId. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-batches/${batchId}/progress`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/progress");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/progress"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches/"+batchID+"/progress", nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/progress" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200-run" label="200 OK (FeatureRunner 포함)">
+
+```json
+{
+  "data": {
+    "batchId": "6801a2b3c4d5e6f7a8b9c0d3",
+    "status": "processing",
+    "serverSide": true,
+    "totalRows": 25,
+    "completedRows": 12,
+    "failedRows": 1,
+    "partialRows": 2,
+    "pendingRows": 10,
+    "startedAt": "2026-11-24T20:10:00.000Z",
+    "creditsSpent": 1.6,
+    "run": {
+      "id": "6801a2b3c4d5e6f7a8b9c0e1",
+      "status": "processing",
+      "mergeStrategy": "sequential",
+      "totalItems": 25,
+      "completedItems": 12,
+      "failedItems": 1,
+      "partialItems": 2,
+      "startedAt": "2026-11-24T20:10:00.500Z",
+      "completedAt": null
+    },
+    "spend": {
+      "credits": 1.6,
+      "calls": 28,
+      "billableCalls": 24
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-no-run" label="200 OK (run 미포함)">
+
+```json
+{
+  "data": {
+    "batchId": "6801a2b3c4d5e6f7a8b9c0d3",
+    "status": "completed",
+    "serverSide": true,
+    "totalRows": 10,
+    "completedRows": 10,
+    "failedRows": 0,
+    "partialRows": 0,
+    "pendingRows": 0,
+    "startedAt": "2026-11-24T20:10:00.000Z",
+    "completedAt": "2026-11-24T20:12:30.000Z",
+    "creditsSpent": 0.4
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"id\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- `run`과 `spend`는 배치에 연결된 `FeatureRunner` 실행이 있을 때 포함됩니다(참조된 실행 레코드가 반환되지 않으면 `run`은 `null`입니다).
+- 서버 측 `FeatureRunner` 실행은 `batchConfiguration.notification.webhookUrl`이 설정된 경우 완료 시 `smart_batch_batch_completed` 웹훅 이벤트(`runId` 및 `creditsSpent` 포함)를 발생시킵니다. [Smart Reports 웹훅](/verifik-ko/resources/smart-reports-webhooks)을 참조하세요.
+- 배치가 종료 상태에 도달하면 [Smart Batch 조회](/verifik-ko/smart-reports/retrieve-a-smart-batch)를 사용하여 행 수준의 `results`와 `errors`를 확인하세요.
+
+### 관련
+
+- [Smart Reports 개요](/verifik-ko/smart-reports)
+- [Headless API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [Smart Reports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)
+- [Smart Batch 조회](/verifik-ko/smart-reports/retrieve-a-smart-batch)
+- [Smart Batch 일시 중지](/verifik-ko/smart-reports/pause-a-smart-batch)

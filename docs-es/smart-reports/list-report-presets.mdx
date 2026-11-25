@@ -1,0 +1,288 @@
+---
+id: list-report-presets
+title: Listar presets de reportes
+description: Lista los presets del sistema de Smart Report disponibles para tu cuenta, con disponibilidad, pasos del flujo y esquemas de entrada resueltos
+slug: /smart-reports/list-report-presets
+keywords:
+  - v2/smart-batch-presets
+  - /v2/smart-batch-presets
+  - v2 smart-batch-presets
+  - smart-batch-presets
+  - /smart-batch-presets
+  - api/smart-batch-presets
+  - /api/smart-batch-presets
+  - api smart-batch-presets
+  - api.verifik.co/v2/smart-batch-presets
+  - 'https://api.verifik.co/v2/smart-batch-presets'
+  - GET v2/smart-batch-presets
+  - GET /v2/smart-batch-presets
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Lista los presets del sistema seleccionados de Smart Report disponibles para tu cuenta. Cada preset incluye su `systemKey`, metadatos (`country`, `category`, `tier`), disponibilidad en la cuenta (`available`), `presetSteps` ordenados y un `inputSchema` resuelto con `exampleInput` listo para ejecución headless o agentes de IA.
+
+El `inputSchema` resuelto excluye automáticamente los parámetros internos de ejecución y las entradas de pasos ya suministradas mediante dependencias encadenadas de `visitaFlow`, dejando únicamente los campos que tu cliente llamante debe proporcionar. Listar presets es una llamada de descubrimiento de solo lectura y no consume créditos. Este endpoint también está expuesto como la herramienta MCP `smart_report_list_presets`.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/smart-batch-presets
+```
+
+También es accesible a través del proxy de Smart-Agent en `https://ai.verifik.co/v2/smart-batch-presets` usando tu propio encabezado `Authorization: Bearer <VERIFIK_JWT>` por cliente. La ejecución compartida x402 está bloqueada en esta ruta con `403 Forbidden`.
+
+### Encabezados
+
+| Nombre        | Valor                  |
+| ------------- | ---------------------- |
+| Content-Type  | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+El token debe ser un **JWT de cliente**. Las credenciales faltantes o inválidas devuelven `401 Unauthorized`.
+
+### Parámetros
+
+Todos los parámetros de consulta son opcionales. Combínalos para filtrar presets por jurisdicción, categoría de entidad, nivel o palabra clave.
+
+| Nombre     | Tipo   | Requerido | Descripción                                                                                           |
+| ---------- | ------ | --------- | ----------------------------------------------------------------------------------------------------- |
+| `country`  | string | No        | Filtro de código de país. El servidor recorta espacios y convierte a mayúsculas (por ejemplo, `CO`).   |
+| `category` | string | No        | Filtro de categoría del preset. Valores permitidos: `citizen`, `company` o `vehicle`.                 |
+| `tier`     | string | No        | Filtro de profundidad del preset. Valores permitidos: `essential` o `comprehensive`.                  |
+| `search`   | string | No        | Coincidencia por expresión regular sin distinción de mayúsculas en `name`, `description` y `systemKey`. |
+| `text`     | string | No        | Alias para `search`.                                                                                  |
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const params = new URLSearchParams({
+        country: "CO",
+        category: "citizen",
+        tier: "essential",
+    });
+
+    const res = await fetch(`https://api.verifik.co/v2/smart-batch-presets?${params.toString()}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "country" => "CO",
+    "category" => "citizen",
+    "tier" => "essential"
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batch-presets?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-batch-presets"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "country": "CO",
+    "category": "citizen",
+    "tier": "essential",
+}
+
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "net/url"
+    "os"
+)
+
+func main() {
+    u, _ := url.Parse("https://api.verifik.co/v2/smart-batch-presets")
+    q := u.Query()
+    q.Set("country", "CO")
+    q.Set("category", "citizen")
+    q.Set("tier", "essential")
+    u.RawQuery = q.Encode()
+
+    req, _ := http.NewRequest("GET", u.String(), nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/smart-batch-presets?country=CO&category=citizen&tier=essential" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": [
+        {
+            "templateId": "67d1b2c3e4f5a60718293a01",
+            "systemKey": "co.citizen.essential",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "category": "citizen",
+            "tier": "essential",
+            "stepCount": 2,
+            "available": true,
+            "presetSteps": [
+                {
+                    "sequence": 1,
+                    "appFeatureCode": "co-cedula",
+                    "queryMode": "byDocument",
+                    "featureName": "Colombian Cédula Validation"
+                },
+                {
+                    "sequence": 2,
+                    "appFeatureCode": "co-procuraduria",
+                    "queryMode": "byDocument",
+                    "featureName": "Colombian Procuraduría Check"
+                }
+            ],
+            "inputSchema": {
+                "stepCount": 2,
+                "estimatedCreditsPerRow": 0.15,
+                "requiredFields": [
+                    {
+                        "field": "documentType",
+                        "apiField": "documentType",
+                        "type": "string",
+                        "required": true,
+                        "enum": ["CC", "CE"]
+                    },
+                    {
+                        "field": "documentNumber",
+                        "apiField": "documentNumber",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "optionalFields": [],
+                "jsonSchema": {
+                    "type": "object",
+                    "properties": {
+                        "documentType": {
+                            "type": "string",
+                            "enum": ["CC", "CE"]
+                        },
+                        "documentNumber": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["documentType", "documentNumber"]
+                },
+                "exampleInput": {
+                    "documentType": "CC",
+                    "documentNumber": "123456789"
+                }
+            }
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- `country` se recorta y convierte a mayúsculas antes de filtrar (por ejemplo, `co` coincide con `CO`).
+- `search` y `text` ejecutan la misma coincidencia por expresión regular sin distinción de mayúsculas sobre `name`, `description` y `systemKey`.
+- `inputSchema.estimatedCreditsPerRow` estima el costo en créditos por fila entre los pasos habilitados del preset.
+- Cuando `available` es `true`, todas las funcionalidades en `presetSteps` están activas en el entorno y listas para clonar con [Clonar un preset de reporte](/verifik-es/smart-reports/clone-a-report-preset).
+- Para integraciones con agentes de IA, este endpoint corresponde a la herramienta MCP `smart_report_list_presets`.
+
+### Relacionado
+
+- [Clonar un preset de reporte](/verifik-es/smart-reports/clone-a-report-preset)
+- [Descripción general de Smart Reports](/verifik-es/smart-reports)
+- [Guía de la API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [MCP y agentes de IA](/verifik-es/smart-reports/mcp-and-ai-agents)
+- [Webhooks de Smart Reports](/verifik-es/resources/smart-reports-webhooks)
+- [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report)

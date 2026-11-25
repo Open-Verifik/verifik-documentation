@@ -1,0 +1,388 @@
+---
+id: append-smart-batch-rows
+title: Smart Batch に行を追加する
+description: 既存の Smart Batch に、サーバー側で連番の rowIndex 値を割り当てながら新しい入力行を追加します。
+slug: /smart-reports/append-smart-batch-rows
+keywords:
+  - 'v2/smart-batches/{id}/rows/append'
+  - '/v2/smart-batches/{id}/rows/append'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches rows append
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/rows/append'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/rows/append'
+  - 'POST v2/smart-batches/{id}/rows/append'
+  - 'POST /v2/smart-batches/{id}/rows/append'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/rows/append
+  - /v2/smart-batches/rows/append
+  - 'v2 smart-batches {id} rows append'
+  - smart-batches/rows/append
+  - /smart-batches/rows/append
+  - api/smart-batches/rows/append
+  - /api/smart-batches/rows/append
+  - api smart-batches rows append
+  - rows/append
+  - /rows/append
+  - 'GET v2/smart-batches/{id}/rows/append'
+  - 'GET /v2/smart-batches/{id}/rows/append'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+既存の行や保存済み結果を上書きすることなく、既存の `SmartBatch` に新しい入力行を追加します。ラップされた行（`{ rowIndex?, inputData }`）とフラットな行（`{ rowIndex?, ...inputFields }`）のどちらも受け付けられ、サーバーは `maxExisting + 1` から始まる連続した行インデックスを割り当てます。
+
+バッチが `"processing"` の間は行の追加は禁止されています（`400 batch_append_not_allowed_while_processing`）。バッチが以前に `"completed"` または `"failed"` になっていた場合、行を追加すると `status` が `"pending"` にリセットされ、`completedAt` がクリアされるため、新しい行を実行できるようになります。
+
+### エンドポイント
+
+```text
+POST https://api.verifik.co/v2/smart-batches/{id}/rows/append
+```
+
+このエンドポイントは、クライアント単位の `Authorization: Bearer <VERIFIK_JWT>` を使用することで Smart-Agent プロキシ（`https://ai.verifik.co/v2/smart-batches/{id}/rows/append`）経由でもアクセスできます。共有 x402 実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type` | `application/json` | リクエストペイロード形式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアントスコープの JWT（`authUser.clientId`）。 |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| ---- | ------ | ---- | ----------- |
+| `id` | string | はい | 行を追加する `SmartBatch` の ObjectId。 |
+
+### リクエストボディ
+
+| 名前 | 型 | 必須 | 説明 |
+| ------ | -------- | ---- | ----------- |
+| `rows` | object[] | はい | ラップ形式（`{ rowIndex?, inputData }`）またはフラット形式（`{ rowIndex?, ...inputFields }`）の入力行からなる空でない配列（`min 1`）。サーバーが連番の `rowIndex = maxExisting + 1` を割り当てます。 |
+
+不明なボディキーや空の `rows` 配列は Joi バリデーションにより `409 MissingParameter` で拒否されます。
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/rows/append`,
+    {
+      rows: [
+        {
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1020304050",
+          },
+        },
+        {
+          documentType: "CC",
+          documentNumber: "1098765432",
+        },
+      ],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$payload = [
+    "rows" => [
+        [
+            "inputData" => [
+                "documentType" => "CC",
+                "documentNumber" => "1020304050",
+            ],
+        ],
+        [
+            "documentType" => "CC",
+            "documentNumber" => "1098765432",
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/rows/append");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/rows/append"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "rows": [
+        {
+            "inputData": {
+                "documentType": "CC",
+                "documentNumber": "1020304050",
+            }
+        },
+        {
+            "documentType": "CC",
+            "documentNumber": "1098765432",
+        },
+    ]
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	body, _ := json.Marshal(map[string]interface{}{
+		"rows": []map[string]interface{}{
+			{
+				"inputData": map[string]string{
+					"documentType":   "CC",
+					"documentNumber": "1020304050",
+				},
+			},
+			{
+				"documentType":   "CC",
+				"documentNumber": "1098765432",
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/"+batchID+"/rows/append", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/rows/append" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "rows": [
+      {
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1020304050"
+        }
+      },
+      {
+        "documentType": "CC",
+        "documentNumber": "1098765432"
+      }
+    ]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — November",
+    "status": "pending",
+    "executor": "browser",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0.04,
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "completed",
+        "results": {
+          "1": {
+            "fullName": "JANE DOE"
+          }
+        },
+        "errors": []
+      },
+      {
+        "rowIndex": 1,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1020304050"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": []
+      },
+      {
+        "rowIndex": 2,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1098765432"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": []
+      }
+    ],
+    "totalRows": 3,
+    "completedRows": 1,
+    "failedRows": 0,
+    "partialRows": 0,
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:28:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "batch_append_not_allowed_while_processing",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"rows\" must contain at least 1 items",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 補足
+
+- 行を追加してもチェックは実行されず、クレジットも消費されません。その後[Smart Batch を開始する](/verifik-ja/smart-reports/start-a-smart-batch)でバッチを開始してください。
+- クライアントが指定した `rowIndex` はすべて無視され、`maxExisting + 1` から始まるサーバー割り当ての連番が優先されます。
+- バッチが `"completed"` または `"failed"` だった場合、その `status` は `"pending"` にリセットされ、`completedAt` はクリアされます。
+
+### 関連
+
+- [Smart Reports 概要](/verifik-ja/smart-reports)
+- [Headless API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [Smart Reports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)
+- [Smart Batch を開始する](/verifik-ja/smart-reports/start-a-smart-batch)
+- [Smart Batch を更新する](/verifik-ja/smart-reports/update-a-smart-batch)

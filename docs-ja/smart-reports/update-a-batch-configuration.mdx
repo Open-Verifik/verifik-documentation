@@ -1,0 +1,334 @@
+---
+id: update-a-batch-configuration
+title: バッチ設定を更新する
+description: 'バッチ設定のワークフローステップ、形式、通知、テンプレートリンク、または有効ステータスを更新します'
+slug: /smart-reports/update-a-batch-configuration
+keywords:
+  - 'v2/batch-configurations/{id}'
+  - '/v2/batch-configurations/{id}'
+  - v2/batch-configurations
+  - /v2/batch-configurations
+  - v2 batch-configurations
+  - 'v2 batch-configurations {id}'
+  - batch-configurations
+  - /batch-configurations
+  - api/batch-configurations
+  - /api/batch-configurations
+  - 'api.verifik.co/v2/batch-configurations/{id}'
+  - 'https://api.verifik.co/v2/batch-configurations/{id}'
+  - 'PUT v2/batch-configurations/{id}'
+  - 'PUT /v2/batch-configurations/{id}'
+  - api batch-configurations
+  - 'GET v2/batch-configurations/{id}'
+  - 'GET /v2/batch-configurations/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+クライアントアカウントが所有する既存の `BatchConfiguration` を更新します。変更したいフィールドのみを送信してください。省略されたフィールドは現在の値を保持します。
+
+`steps` を指定すると、サーバーは不足している `sequence` 値を `index + 1` に正規化し、`retryDelayBaseSeconds`（`>= 1`）および `timeoutSeconds`（`>= 5`）をクランプします。`notification` を更新すると関連付けられた Verifik Webhook が自動的に同期され、`executor` を変更すると終了状態でない子バッチにも新しい executor が伝播されます。設定を更新しても照会は実行されず、クレジットも消費されません。
+
+### エンドポイント
+
+```
+PUT https://api.verifik.co/v2/batch-configurations/{id}
+```
+
+クライアント単位の `Authorization: Bearer <VERIFIK_JWT>` ヘッダーを使用することで、Smart-Agent プロキシ（`https://ai.verifik.co/v2/batch-configurations/{id}`）経由でもアクセスできます。共有 x402 実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 |
+| ---- | ----- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+トークンは **クライアント JWT** である必要があります。認証情報がないか無効な場合は `401 Unauthorized` を返します。
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| ---- | ---- | ---- | ----------- |
+| `id` | string | はい | 更新する `BatchConfiguration` の ObjectId。 |
+
+### リクエストボディ
+
+すべてのボディフィールドは任意です。更新したいプロパティのみを含めてください。
+
+| 名前 | 型 | 必須 | 説明 |
+| ---- | ---- | ---- | ----------- |
+| `name` | string | いいえ | 設定の表示名。トリム済み、最大 `150` 文字。 |
+| `description` | string | いいえ | ワークフローの任意の概要。最大 `800` 文字。 |
+| `country` | string | いいえ | 対象国スコープ。サーバー側でトリムおよび大文字化されます。 |
+| `steps` | object[] | いいえ | 順序付きステップ配列を置き換えます。不足している `sequence` は既定で `index + 1` となり、`retryDelayBaseSeconds` は `>= 1` に、`timeoutSeconds` は `>= 5` にクランプされます。 |
+| `inputFormat` | string | いいえ | 既定の入力形式: `csv`、`jsonl`、または `xlsx`。 |
+| `outputFormat` | string | いいえ | 既定の出力形式: `csv`、`jsonl`、または `xlsx`。 |
+| `mergeStrategy` | string | いいえ | ステップ実行戦略: `sequential`、`parallel-independent`、または `parallel-with-fallback`。 |
+| `notification` | object | いいえ | 完了通知設定（`webhookUrl` および `emailOnCompletion`）。`webhookUrl` を設定すると、有効な Verifik Webhook が自動的に同期されます。 |
+| `scheduleExpression` | string | いいえ | 自動実行用のスケジュール式。 |
+| `preferredReportTemplate` | string | いいえ | この設定にリンクする `SmartReportTemplate` の ObjectId。 |
+| `visitaFlow` | object | いいえ | ステップ連鎖を定義するビジュアルノードグラフ（`{{results.N.field}}` 式は導出された入力スキーマの手動入力から除外されます）。 |
+| `isActive` | boolean | いいえ | 設定が有効かどうか。 |
+| `executor` | string | いいえ | 実行ターゲット: `queue`、`featureRunner`、または `browser`（`featureRunner` は `browser` として永続化されます）。変更されると終了状態でない子バッチも同期されます。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const id = "67d1b4a0e4f5a60718293b12";
+    const res = await fetch(`https://api.verifik.co/v2/batch-configurations/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+        body: JSON.stringify({
+            name: "Colombia KYC Workflow (Updated)",
+            mergeStrategy: "parallel-independent",
+            notification: {
+                webhookUrl: "https://example.com/webhooks/smart-reports",
+                emailOnCompletion: ["compliance@example.com"]
+            },
+            isActive: true
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67d1b4a0e4f5a60718293b12";
+$ch = curl_init("https://api.verifik.co/v2/batch-configurations/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "Colombia KYC Workflow (Updated)",
+    "mergeStrategy" => "parallel-independent",
+    "notification" => [
+        "webhookUrl" => "https://example.com/webhooks/smart-reports",
+        "emailOnCompletion" => ["compliance@example.com"]
+    ],
+    "isActive" => true
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+config_id = "67d1b4a0e4f5a60718293b12"
+url = f"https://api.verifik.co/v2/batch-configurations/{config_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia KYC Workflow (Updated)",
+    "mergeStrategy": "parallel-independent",
+    "notification": {
+        "webhookUrl": "https://example.com/webhooks/smart-reports",
+        "emailOnCompletion": ["compliance@example.com"],
+    },
+    "isActive": True,
+}
+
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "67d1b4a0e4f5a60718293b12"
+    payload := map[string]interface{}{
+        "name":          "Colombia KYC Workflow (Updated)",
+        "mergeStrategy": "parallel-independent",
+        "notification": map[string]interface{}{
+            "webhookUrl":        "https://example.com/webhooks/smart-reports",
+            "emailOnCompletion": []string{"compliance@example.com"},
+        },
+        "isActive": true,
+    }
+
+    body, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/batch-configurations/"+id, bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS -X PUT "https://api.verifik.co/v2/batch-configurations/67d1b4a0e4f5a60718293b12" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia KYC Workflow (Updated)",
+    "mergeStrategy": "parallel-independent",
+    "notification": {
+      "webhookUrl": "https://example.com/webhooks/smart-reports",
+      "emailOnCompletion": ["compliance@example.com"]
+    },
+    "isActive": true
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "67d1b4a0e4f5a60718293b12",
+        "name": "Colombia KYC Workflow (Updated)",
+        "description": "Core Colombian identity and registry verification for citizens.",
+        "country": "CO",
+        "executor": "browser",
+        "inputFormat": "csv",
+        "outputFormat": "csv",
+        "mergeStrategy": "parallel-independent",
+        "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+        "notification": {
+            "webhookUrl": "https://example.com/webhooks/smart-reports",
+            "emailOnCompletion": ["compliance@example.com"]
+        },
+        "isActive": true,
+        "steps": [
+            {
+                "_id": "67d1b4a0e4f5a60718293b13",
+                "appFeature": {
+                    "_id": "65f0a1b2c3d4e5f607182901",
+                    "name": "Colombian Cédula Validation",
+                    "code": "co-cedula",
+                    "url": "/v2/co/cedula",
+                    "method": "GET",
+                    "price": 0.05,
+                    "smartCheckPrice": 0.05,
+                    "country": "Colombia"
+                },
+                "sequence": 1,
+                "enabled": true,
+                "parameterDefaults": {},
+                "queryMode": "byDocument",
+                "inputFieldMapping": {},
+                "outputFieldsToKeep": [],
+                "maxRetries": 3,
+                "retryDelayBaseSeconds": 4,
+                "timeoutSeconds": 30
+            }
+        ],
+        "createdAt": "2026-10-15T14:20:00.000Z",
+        "updatedAt": "2026-10-15T15:45:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "not_found",
+    "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+    "message": "BatchConfiguration validation failed: mergeStrategy: `invalid` is not a valid enum value for path `mergeStrategy`.",
+    "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 補足
+
+- `steps` を送信すると、設定上の `steps` 配列全体が置き換えられます（個別のステップだけを部分更新するわけではありません）。
+- `steps` 内で不足している `sequence` 値は `index + 1` に正規化され、`retryDelayBaseSeconds` は `>= 1`、`timeoutSeconds` は `>= 5` にクランプされます。
+- `executor` を変更すると、この設定に属する終了状態でない子バッチが同期されます。
+- ID が存在しないか他クライアントに属している場合は `404`（`not_found`）が返され、Mongoose のスキーマ検証エラーは `422`（`UnprocessableEntity`）が返されます。
+
+### 関連
+
+- [バッチ設定を取得する](/verifik-ja/smart-reports/retrieve-a-batch-configuration)
+- [バッチ設定の入力スキーマを取得する](/verifik-ja/smart-reports/retrieve-configuration-input-schema)
+- [バッチ設定を削除する](/verifik-ja/smart-reports/delete-a-batch-configuration)
+- [Smart Reports 概要](/verifik-ja/smart-reports)
+- [Headless API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [Smart Reports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)

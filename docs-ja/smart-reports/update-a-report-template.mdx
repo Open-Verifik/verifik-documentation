@@ -1,0 +1,389 @@
+---
+id: update-a-report-template
+title: レポートテンプレートを更新する
+description: カスタム Smart Report テンプレートのメタデータ、セクション、テーマ設定、または PDF 設定を更新します
+slug: /smart-reports/update-a-report-template
+keywords:
+  - 'v2/smart-report-templates/{id}'
+  - '/v2/smart-report-templates/{id}'
+  - v2/smart-report-templates
+  - /v2/smart-report-templates
+  - v2 smart-report-templates
+  - 'v2 smart-report-templates {id}'
+  - api/smart-report-templates
+  - /api/smart-report-templates
+  - api smart-report-templates
+  - 'api.verifik.co/v2/smart-report-templates/{id}'
+  - 'https://api.verifik.co/v2/smart-report-templates/{id}'
+  - 'PUT v2/smart-report-templates/{id}'
+  - 'PUT /v2/smart-report-templates/{id}'
+  - smart-report-templates
+  - /smart-report-templates
+  - 'GET v2/smart-report-templates/{id}'
+  - 'GET /v2/smart-report-templates/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+クライアントアカウントが所有するカスタム Smart Report テンプレートを更新します。更新可能なメタデータ、レイアウト `sections`、`reportTheme`、`sampleData`、または PDF レンダリングオプションの任意のサブセットを送信してください。ペイロードから省略されたフィールドは既存の値が維持されます。
+
+ヘッドレスおよび AI パイプラインでは、[テンプレートレイアウトを生成する](/verifik-ja/smart-reports/generate-template-layout) で生成したレイアウトの反復調整、ブランドアセット（`logo`、`primaryColor`、`customFonts`）の更新、`SmartBatch` バインディングの更新、または `isActive` の切り替えにこのエンドポイントを使用します。組み込みの `"System"` テンプレートは読み取り専用であり、対象として指定すると `403`（`system_template_readonly`）が返されます。
+
+### エンドポイント
+
+```
+PUT https://api.verifik.co/v2/smart-report-templates/{id}
+```
+
+Smart-Agent プロキシ（`https://ai.verifik.co`）も同じ `/v2/...` パスを公開しており、お客様自身の `Authorization: Bearer <VERIFIK_JWT>` ヘッダーが必要です。
+
+### ヘッダー
+
+| 名前 | 値 |
+| --- | --- |
+| Content-Type | `application/json` |
+| Accept | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `id` | string | **はい** | Smart Report テンプレートの ObjectId。 |
+
+### ボディ
+
+更新時、すべてのボディフィールドは任意です。
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `name` | string | いいえ | 更新後のテンプレート表示名。最大 `150` 文字。 |
+| `description` | string | いいえ | 更新後のテンプレート説明。最大 `500` 文字。 |
+| `batchConfiguration` | string | いいえ | 関連付ける `SmartBatch` 設定の ObjectId。 |
+| `country` | string | いいえ | 国の識別子またはラベル。最大 `60` 文字。 |
+| `category` | string | いいえ | 検証ドメイン: `"citizen"`、`"company"`、または `"vehicle"`。 |
+| `isActive` | boolean | いいえ | テンプレートを有効または無効にします。 |
+| `logo` | string | いいえ | ブランドロゴの URL または base64 データ URI。 |
+| `primaryColor` | string | いいえ | メインブランドアクセントの 16 進カラーコード。 |
+| `identityColor` | string | いいえ | セカンダリ/アイデンティティアクセントの 16 進カラーコード。 |
+| `pageBackgroundColor` | string | いいえ | ページ背景の 16 進カラーコード。 |
+| `header` | object | いいえ | カスタムヘッダーのレイアウトおよびコンテンツ設定。 |
+| `footer` | object | いいえ | カスタムフッターのレイアウトおよびコンテンツ設定。 |
+| `legend` | string | いいえ | フッターの凡例またはコンプライアンス注記テキスト。最大 `2000` 文字。 |
+| `legendPosition` | string | いいえ | 凡例の配置: `"left"`、`"center"`、または `"right"`。 |
+| `termsAndConditions` | string | いいえ | 法的利用規約テキスト。最大 `4000` 文字。 |
+| `termsPosition` | string | いいえ | 利用規約の配置: `"left"`、`"center"`、または `"right"`。 |
+| `sections` | object[] | いいえ | `ReportSection` オブジェクトの配列（`id`、`type`、`order`、`dataPath`、`label`、`staticContent`、`columns`、`columnsPerRow`、`keyOverrides`、`valueRules`、`chartKind`、`style`、`condition`、`frame` など）。 |
+| `pageSize` | string | いいえ | PDF 用紙サイズ: `"A4"`、`"Letter"`、または `"Legal"`。 |
+| `layoutVersion` | integer | いいえ | レイアウトレンダラーバージョン: `1` または `2`。 |
+| `orientation` | string | いいえ | ページの向き: `"portrait"` または `"landscape"`。 |
+| `margins` | object | いいえ | 余白オブジェクト `` `{ "top": 40, "right": 40, "bottom": 40, "left": 40 }` ``。 |
+| `pdfEngine` | string | いいえ | PDF レンダリングエンジン: `"puppeteer"` または `"pdfkit"`。 |
+| `showPageNumbers` | boolean | いいえ | レンダリングされた PDF にページ番号を表示します。 |
+| `pageNumberPosition` | string | いいえ | ページ番号の位置: `"top-left"`、`"top-center"`、`"top-right"`、`"bottom-left"`、`"bottom-center"`、または `"bottom-right"`。 |
+| `pageNumberDivider` | boolean / string | いいえ | ページ番号の区切り線設定。 |
+| `watermark` | object | いいえ | 透かしオーバーレイの設定。 |
+| `security` | object | いいえ | PDF 保護設定 `` `{ "enabled": true, "password": "..." }` ``。`"******"` を渡すか `password` を省略すると、既存の暗号化済みパスワードが保持されます。 |
+| `signature` | object | いいえ | 署名ブロックの設定。 |
+| `logoSettings` | object | いいえ | ロゴのサイズおよび配置設定。 |
+| `sheetImages` | object[] | いいえ | 埋め込みテンプレート画像アセット。最大 `12` 件。 |
+| `customFonts` | object[] | いいえ | カスタムフォント定義（Google Fonts、外部 URL、またはアップロード済みファイル）。最大 `6` 件。 |
+| `headerLogos` | object[] | いいえ | ヘッダーに表示する追加ロゴ。最大 `16` 件。 |
+| `bodyTopPadding` | number | いいえ | ドキュメント本文の上部パディング（`0`〜`600`）。 |
+| `sampleData` | object | いいえ | プレビューやサンプルダウンロード用にテンプレートと一緒に保存されるサンプル検証ペイロード。 |
+| `endpointDesign` | object | いいえ | エンドポイント固有のプレゼンテーションメタデータ。 |
+| `reportTheme` | string / object | いいえ | テーマプリセット ID（`"premium_dark"`、`"light_cards"`、`"editorial"`、`"dashboard"`）または設定オブジェクト（`id`、`scoreScale`、`scoreEnabled`、`scoreProfile`、`locale`、`density`、`eyebrow`、`coverTitle`、`headlines`、`legalNote`、`showVerifiedBadge`、`showWeights`、`showDeductions`、`showFields`、`showHowItWorks`、`blocks`、`tokens`）。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const id = "67c1f94b2d8a1c0012a4b301";
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        name: "Colombia Driver Onboarding Report v2",
+        primaryColor: "#0F766E",
+        isActive: true,
+        security: {
+          enabled: true,
+          password: "******",
+        },
+        reportTheme: {
+          id: "light_cards",
+          scoreEnabled: true,
+          scoreProfile: "cabify_driver",
+          scoreScale: "percent",
+          density: "compact",
+        },
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67c1f94b2d8a1c0012a4b301";
+$payload = [
+    "name" => "Colombia Driver Onboarding Report v2",
+    "primaryColor" => "#0F766E",
+    "isActive" => true,
+    "security" => [
+        "enabled" => true,
+        "password" => "******",
+    ],
+    "reportTheme" => [
+        "id" => "light_cards",
+        "scoreEnabled" => true,
+        "scoreProfile" => "cabify_driver",
+        "scoreScale" => "percent",
+        "density" => "compact",
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+template_id = "67c1f94b2d8a1c0012a4b301"
+url = f"https://api.verifik.co/v2/smart-report-templates/{template_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": True,
+    "security": {
+        "enabled": True,
+        "password": "******",
+    },
+    "reportTheme": {
+        "id": "light_cards",
+        "scoreEnabled": True,
+        "scoreProfile": "cabify_driver",
+        "scoreScale": "percent",
+        "density": "compact",
+    },
+}
+
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "67c1f94b2d8a1c0012a4b301"
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":         "Colombia Driver Onboarding Report v2",
+		"primaryColor": "#0F766E",
+		"isActive":     true,
+		"security": map[string]interface{}{
+			"enabled":  true,
+			"password": "******",
+		},
+		"reportTheme": map[string]interface{}{
+			"id":           "light_cards",
+			"scoreEnabled": true,
+			"scoreProfile": "cabify_driver",
+			"scoreScale":   "percent",
+			"density":      "compact",
+		},
+	})
+
+	req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/smart-report-templates/"+id, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/smart-report-templates/67c1f94b2d8a1c0012a4b301" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": true,
+    "security": {
+      "enabled": true,
+      "password": "******"
+    },
+    "reportTheme": {
+      "id": "light_cards",
+      "scoreEnabled": true,
+      "scoreProfile": "cabify_driver",
+      "scoreScale": "percent",
+      "density": "compact"
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": {
+    "_id": "67c1f94b2d8a1c0012a4b301",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Driver Onboarding Report v2",
+    "primaryColor": "#0F766E",
+    "isActive": true,
+    "security": {
+      "enabled": true
+    },
+    "reportTheme": {
+      "id": "light_cards",
+      "scoreEnabled": true,
+      "scoreProfile": "cabify_driver",
+      "scoreScale": "percent",
+      "density": "compact"
+    },
+    "updatedAt": "2026-09-10T04:10:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "system_template_readonly",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"pageSize\" must be one of [A4, Letter, Legal]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "Validation failed",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注記
+
+- `security.password: "******"` を渡すか `password` を省略すると、上書きする代わりにテンプレートの既存の暗号化済みパスワードが保持されます。
+- 組み込みの `"System"` テンプレートは更新できません（`403` `system_template_readonly`）。システムスターターをカスタマイズする場合は、[レポートテンプレートを作成する](/verifik-ja/smart-reports/create-a-report-template) を使用してカスタムコピーを作成してください。
+- 変更を保存する際は、プレビュー用ヘルパー（`scoreScale`、`themeTokens`、`scoreSettings`）を `reportTheme` 配下（`scoreScale`、`tokens`、`scoreEnabled`/`scoreProfile`）に格納してください。
+
+### 関連項目
+
+- [SmartReports 概要](/verifik-ja/smart-reports)
+- [ヘッドレス API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [レポートテンプレートを取得する](/verifik-ja/smart-reports/retrieve-a-report-template)
+- [テンプレートレイアウトを生成する](/verifik-ja/smart-reports/generate-template-layout)
+- [テンプレート HTML をプレビューする](/verifik-ja/smart-reports/preview-template-html)
+- [レポートテンプレートを削除する](/verifik-ja/smart-reports/delete-a-report-template)

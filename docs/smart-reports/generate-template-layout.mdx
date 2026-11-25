@@ -1,0 +1,348 @@
+---
+id: generate-template-layout
+title: Generate template layout
+description: 'Generate, append, or edit structured Smart Report sections from natural language using AI'
+slug: /smart-reports/generate-template-layout
+keywords:
+  - v2/smart-report-templates/generate-layout
+  - /v2/smart-report-templates/generate-layout
+  - v2 smart-report-templates generate-layout
+  - api/smart-report-templates/generate-layout
+  - /api/smart-report-templates/generate-layout
+  - api smart-report-templates generate-layout
+  - api.verifik.co/v2/smart-report-templates/generate-layout
+  - 'https://api.verifik.co/v2/smart-report-templates/generate-layout'
+  - POST v2/smart-report-templates/generate-layout
+  - POST /v2/smart-report-templates/generate-layout
+  - smart-report-templates/generate-layout
+  - /smart-report-templates/generate-layout
+  - GET v2/smart-report-templates/generate-layout
+  - GET /v2/smart-report-templates/generate-layout
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Generate, append, or edit structured `ReportSection` definitions from a natural-language `prompt` using Gemini (temperature `0.2`). Pass sample verification data in `previewData` so the model aligns section `dataPath` bindings and column layouts with your actual payload structure.
+
+In headless report builders and AI agent pipelines, use this endpoint to scaffold complete layouts (`"create"`), add follow-up sections onto an existing template (`"append"`), or refine a single section (`"edit"`) without writing section JSON by hand. Pair this call with [Preview template HTML](/smart-reports/preview-template-html) to inspect the rendered output before persisting with [Create a report template](/smart-reports/create-a-report-template) or [Update a report template](/smart-reports/update-a-report-template).
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/smart-report-templates/generate-layout
+```
+
+The Smart-Agent proxy (`https://ai.verifik.co`) exposes the same `/v2/...` paths and requires your own `Authorization: Bearer <VERIFIK_JWT>` header.
+
+### Headers
+
+| Name          | Value                    |
+| ------------- | ------------------------ |
+| Content-Type  | `application/json`       |
+| Accept        | `application/json`       |
+| Authorization | `Bearer <VERIFIK_JWT>`   |
+
+### Body
+
+| Name              | Type          | Required | Description                                                                                                                               |
+| ----------------- | ------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `prompt`          | string        | Yes      | Natural-language instructions describing the layout to create, the sections to append, or the changes to apply in edit mode.              |
+| `mode`            | string        | Yes      | Generation mode: `"create"`, `"edit"`, or `"append"`.                                                                                     |
+| `previewData`     | object        | No       | Sample verification JSON (for example `inputData`, `results`, `batchName`) used to ground generated `dataPath` expressions and columns.   |
+| `currentSections` | object[]      | No       | Existing `ReportSection` array. Recommended in `"append"` mode so newly generated sections continue the existing `order` sequence.         |
+| `selectedSection` | object / null | No       | Target `ReportSection` object to modify when `mode` is `"edit"`. If `null` or omitted in `"edit"` mode, behavior falls back to `"create"`. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const res = await fetch(
+    "https://api.verifik.co/v2/smart-report-templates/generate-layout",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+      body: JSON.stringify({
+        prompt:
+          "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+        mode: "create",
+        previewData: {
+          batchName: "Driver Onboarding",
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1020304050",
+          },
+          results: {
+            identity: { fullName: "Mateo Rojas", status: "active" },
+            fines: [{ code: "C02", amount: 580000, status: "pending" }],
+          },
+        },
+      }),
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "prompt" => "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+    "mode" => "create",
+    "previewData" => [
+        "batchName" => "Driver Onboarding",
+        "rowIndex" => 0,
+        "inputData" => [
+            "documentType" => "CC",
+            "documentNumber" => "1020304050",
+        ],
+        "results" => [
+            "identity" => ["fullName" => "Mateo Rojas", "status" => "active"],
+            "fines" => [
+                ["code" => "C02", "amount" => 580000, "status" => "pending"],
+            ],
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/generate-layout");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+echo curl_exec($ch);
+curl_close($ch);
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates/generate-layout"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "prompt": "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+    "mode": "create",
+    "previewData": {
+        "batchName": "Driver Onboarding",
+        "rowIndex": 0,
+        "inputData": {
+            "documentType": "CC",
+            "documentNumber": "1020304050",
+        },
+        "results": {
+            "identity": {"fullName": "Mateo Rojas", "status": "active"},
+            "fines": [{"code": "C02", "amount": 580000, "status": "pending"}],
+        },
+    },
+}
+
+r = requests.post(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"prompt": "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+		"mode":   "create",
+		"previewData": map[string]interface{}{
+			"batchName": "Driver Onboarding",
+			"rowIndex":  0,
+			"inputData": map[string]interface{}{
+				"documentType":   "CC",
+				"documentNumber": "1020304050",
+			},
+			"results": map[string]interface{}{
+				"identity": map[string]interface{}{"fullName": "Mateo Rojas", "status": "active"},
+				"fines": []map[string]interface{}{
+					{"code": "C02", "amount": 580000, "status": "pending"},
+				},
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-report-templates/generate-layout", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-report-templates/generate-layout" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "prompt": "Create a clean 2-column driver summary section followed by a table of traffic citations.",
+    "mode": "create",
+    "previewData": {
+      "batchName": "Driver Onboarding",
+      "rowIndex": 0,
+      "inputData": {
+        "documentType": "CC",
+        "documentNumber": "1020304050"
+      },
+      "results": {
+        "identity": { "fullName": "Mateo Rojas", "status": "active" },
+        "fines": [{ "code": "C02", "amount": 580000, "status": "pending" }]
+      }
+    }
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200-create" label="200 (create / append)">
+
+```json
+{
+  "data": [
+    {
+      "id": "sec-driver-summary",
+      "type": "keyValueGrid",
+      "order": 0,
+      "label": "Driver Summary",
+      "dataPath": "results.identity",
+      "columnsPerRow": 2
+    },
+    {
+      "id": "sec-traffic-fines",
+      "type": "dataTable",
+      "order": 1,
+      "label": "Traffic Citations",
+      "dataPath": "results.fines",
+      "columns": [
+        { "key": "code", "label": "Code" },
+        { "key": "amount", "label": "Amount" },
+        { "key": "status", "label": "Status" }
+      ]
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="200-edit" label="200 (edit)">
+
+```json
+{
+  "data": {
+    "id": "sec-driver-summary",
+    "type": "keyValueGrid",
+    "order": 0,
+    "label": "Driver Identity Summary",
+    "dataPath": "results.identity",
+    "columnsPerRow": 3
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"prompt\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "Failed to generate valid report layout from AI response",
+  "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- `"create"` and `"append"` modes return `{ "data": [ ...ReportSection ] }` (an array), while `"edit"` mode with a non-null `selectedSection` returns `{ "data": { ...ReportSection } }` (a single object).
+- Calling `"edit"` with `selectedSection: null` or omitting `selectedSection` falls back to `"create"` mode and returns an array.
+- This endpoint does not write to the database. Pass the returned `sections` into [Preview template HTML](/smart-reports/preview-template-html) to inspect the HTML or into [Create a report template](/smart-reports/create-a-report-template) to save it.
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [MCP & AI Agents](/smart-reports/mcp-and-ai-agents)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Introspect sample data](/smart-reports/introspect-sample-data)
+- [Preview template HTML](/smart-reports/preview-template-html)
+- [Create a report template](/smart-reports/create-a-report-template)
+- [Update a report template](/smart-reports/update-a-report-template)

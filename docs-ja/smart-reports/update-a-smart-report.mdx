@@ -1,0 +1,298 @@
+---
+id: update-a-smart-report
+title: Smart Report を更新する
+description: 既存の SmartReport レコードの name、status、スナップショット、メタデータ、スコアリングサマリー、または Webhook 設定などのフィールドを更新します。
+slug: /smart-reports/update-a-smart-report
+keywords:
+  - 'v2/smart-reports/{id}'
+  - '/v2/smart-reports/{id}'
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - 'v2 smart-reports {id}'
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - 'api.verifik.co/v2/smart-reports/{id}'
+  - 'https://api.verifik.co/v2/smart-reports/{id}'
+  - 'PUT v2/smart-reports/{id}'
+  - 'PUT /v2/smart-reports/{id}'
+  - smart-reports
+  - /smart-reports
+  - 'GET v2/smart-reports/{id}'
+  - 'GET /v2/smart-reports/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+認証済みクライアントに属する既存の `SmartReport` を更新します。変更したいフィールドのみを送信してください。リクエストから省略されたフィールドは変更されずに保持されます。
+
+レポート ID が存在しない、または別のクライアントに属している場合、このエンドポイントは `404 Not Found`（`{ "message": "not_found", "code": "NotFound" }`）を返します。
+
+### エンドポイント
+
+```
+PUT https://api.verifik.co/v2/smart-reports/{id}
+```
+
+このエンドポイントは、お客様自身のクライアント別 `Authorization: Bearer <VERIFIK_JWT>` を使用して Smart-Agent プロキシ経由の `https://ai.verifik.co/v2/smart-reports/{id}` からも利用できます。共有 x402 による実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --- | --- | --- |
+| `Content-Type` | `application/json` | リクエストペイロードの形式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアント単位の JWT（`authUser.clientId`）。 |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `id` | string | **はい** | 更新対象の `SmartReport` ObjectId。 |
+
+### ボディ
+
+ボディのフィールドはすべて任意です。更新したい属性のみを指定してください。
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `name` | string | いいえ | レポートの表示名。 |
+| `status` | string | いいえ | レポートのステータス: `"draft"`、`"generating"`、`"generated"`、`"sent"`、または `"failed"`。 |
+| `pdfUrl` | string | いいえ | 生成された PDF アーティファクトの保存先 URL。 |
+| `pdfSize` | number | いいえ | 生成された PDF のサイズ（バイト）。 |
+| `htmlSnapshot` | string | いいえ | レンダリングされたレポートの保存済み HTML スナップショット。 |
+| `pageCount` | number | いいえ | 生成された PDF のページ数。 |
+| `pdfEngine` | string | いいえ | レンダリングエンジン: `"pdfkit"` または `"puppeteer"`。 |
+| `generatedAt` | string | いいえ | レポートが生成された日時の ISO 8601 タイムスタンプ。 |
+| `generationDurationMs` | number | いいえ | PDF 生成にかかった時間（ミリ秒）。 |
+| `dataSnapshot` | object | いいえ | レポートに使用された行データまたは入力データのスナップショット。 |
+| `externalRefId` | string | いいえ | 呼び出し元の相関識別子。 |
+| `webhookUrl` | string | いいえ | レポート単位の `http` または `https` Webhook 上書き URL。 |
+| `rowIndex` | number | いいえ | このレポートに関連付けられた 0 始まりの行インデックス。 |
+| `createdByChannel` | string | いいえ | 発生元チャネル: `"portal"`、`"api"`、`"mcp"`、`"x402"`、または `"webhook"`。 |
+| `verificationScoreSummary` | object | いいえ | 検証スコアリングのサマリーメタデータ。 |
+| `error` | object or string | いいえ | 失敗状態に対して記録されたエラーペイロードまたはメッセージ。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.put(
+    `https://api.verifik.co/v2/smart-reports/${id}`,
+    {
+      name: "Background Check - Applicant 42 (Reviewed)",
+      externalRefId: "applicant-42-v2",
+      webhookUrl: "https://webhooks.example.com/verifik",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "Background Check - Applicant 42 (Reviewed)",
+    "externalRefId" => "applicant-42-v2",
+    "webhookUrl" => "https://webhooks.example.com/verifik",
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Background Check - Applicant 42 (Reviewed)",
+    "externalRefId": "applicant-42-v2",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+}
+
+response = requests.put(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	body, _ := json.Marshal(map[string]interface{}{
+		"name":          "Background Check - Applicant 42 (Reviewed)",
+		"externalRefId": "applicant-42-v2",
+		"webhookUrl":    "https://webhooks.example.com/verifik",
+	})
+
+	req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/smart-reports/"+id, bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X PUT "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Background Check - Applicant 42 (Reviewed)",
+    "externalRefId": "applicant-42-v2",
+    "webhookUrl": "https://webhooks.example.com/verifik"
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Background Check - Applicant 42 (Reviewed)",
+    "status": "generated",
+    "externalRefId": "applicant-42-v2",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:05:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"status\" must be one of [draft, generating, generated, sent, failed]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Webhook と MCP 統合
+
+- `webhookUrl` または `externalRefId` を更新すると、後続の [Smart Report PDF を生成する](/verifik-ja/smart-reports/generate-smart-report-pdf) および [Smart Report をメールで送信する](/verifik-ja/smart-reports/send-smart-report-email) の呼び出しで使用されるターゲットコールバック URL と相関 ID が更新されます。詳細は [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks) を参照してください。
+- AI エージェント経由で更新後のレコードを確認したりヘッドレスのレポート操作を実行したりするには、[MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents) を参照してください。
+
+### 注記
+
+- `SmartReport` を更新しても保存済みのレポートフィールドが変更されるだけで、PDF の再生成やメールの送信は自動的には行われません。再レンダリングや配信を行いたい場合は、[Smart Report PDF を生成する](/verifik-ja/smart-reports/generate-smart-report-pdf) または [Smart Report をメールで送信する](/verifik-ja/smart-reports/send-smart-report-email) を呼び出してください。
+
+### 関連項目
+
+- [SmartReports 概要](/verifik-ja/smart-reports)
+- [ヘッドレス API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を取得する](/verifik-ja/smart-reports/retrieve-a-smart-report)
+- [Smart Report を削除する](/verifik-ja/smart-reports/delete-a-smart-report)

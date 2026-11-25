@@ -1,0 +1,361 @@
+---
+id: create-a-smart-batch
+title: Smart Batch 생성
+description: 기존 BatchConfiguration에 연결된 입력 행으로 Smart Batch를 생성합니다.
+slug: /smart-reports/create-a-smart-batch
+keywords:
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - api.verifik.co/v2/smart-batches
+  - 'https://api.verifik.co/v2/smart-batches'
+  - POST v2/smart-batches
+  - POST /v2/smart-batches
+  - smart-batches
+  - /smart-batches
+  - GET v2/smart-batches
+  - GET /v2/smart-batches
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+기존 `BatchConfiguration`에 연결된 `SmartBatch`를 생성합니다. 표시용 `name`과 `rows`에 최소 하나의 입력 행을 제공하세요. 배치를 생성하면 입력 행이 `status: "draft"` 상태로 저장되며, 실행이 시작될 때까지 카탈로그 단계를 실행하거나 크레딧을 소비하지 않습니다.
+
+`rows`의 각 항목은 래핑된 객체(`{ rowIndex?, inputData }`) 또는 평면 객체(`{ rowIndex?, ...inputFields }`) 중 하나를 허용하며, 검증 계층이 이를 `{ rowIndex, inputData }`로 정규화합니다. 생성 시 `status`, `results` 또는 `errors`를 포함하지 **마세요**.
+
+### 엔드포인트
+
+```text
+POST https://api.verifik.co/v2/smart-batches
+```
+
+클라이언트별 `Authorization: Bearer <VERIFIK_JWT>`를 사용하여 Smart-Agent 프록시(`https://ai.verifik.co/v2/smart-batches`)를 통해서도 호출할 수 있습니다. 공유 x402 실행은 `403 Forbidden`으로 차단됩니다.
+
+### 헤더
+
+| 이름 | 값 | 설명 |
+| ---- | -- | ---- |
+| `Content-Type` | `application/json` | 요청 페이로드 형식. |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 클라이언트 범위 JWT (`authUser.clientId`). |
+
+### 본문
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `batchConfiguration` | string | 예 | 워크플로우 단계를 정의하는 `BatchConfiguration` ObjectId. |
+| `name` | string | 예 | 배치 표시 이름. 최대 `150`자. |
+| `executor` | string | 아니요 | 실행 모드: `"queue"`, `"featureRunner"` 또는 `"browser"`. `batchConfiguration`에서 파생될 때는 `"queue"` 또는 `"browser"`로 정규화됩니다. |
+| `source` | string | 아니요 | 원본 제품 식별자: `"smart_batch"`(기본값) 또는 `"smart_fleet"`. |
+| `rows` | object[] | 예 | 최소 `1`개의 행 배열(`min 1`). 래핑된 `{ rowIndex?, inputData }` 또는 평면 `{ rowIndex?, ...inputFields }` 형식을 허용합니다. 생성 시 `status`, `results` 또는 `errors`를 전송하지 **마세요**. |
+
+알 수 없는 키와 허용되지 않는 행 속성(`status`, `results`, `errors`)은 Joi 검증에 의해 `409 MissingParameter`로 거부됩니다.
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.post(
+    "https://api.verifik.co/v2/smart-batches",
+    {
+      batchConfiguration: "6801a2b3c4d5e6f7a8b9c0d4",
+      name: "Colombia Onboarding — November",
+      source: "smart_batch",
+      rows: [
+        {
+          rowIndex: 0,
+          inputData: {
+            documentType: "CC",
+            documentNumber: "1032386359",
+          },
+        },
+        {
+          documentType: "CC",
+          documentNumber: "1007463534",
+        },
+      ],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "batchConfiguration" => "6801a2b3c4d5e6f7a8b9c0d4",
+    "name" => "Colombia Onboarding — November",
+    "source" => "smart_batch",
+    "rows" => [
+        [
+            "rowIndex" => 0,
+            "inputData" => [
+                "documentType" => "CC",
+                "documentNumber" => "1032386359",
+            ],
+        ],
+        [
+            "documentType" => "CC",
+            "documentNumber" => "1007463534",
+        ],
+    ],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-batches"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "name": "Colombia Onboarding — November",
+    "source": "smart_batch",
+    "rows": [
+        {
+            "rowIndex": 0,
+            "inputData": {
+                "documentType": "CC",
+                "documentNumber": "1032386359",
+            },
+        },
+        {
+            "documentType": "CC",
+            "documentNumber": "1007463534",
+        },
+    ],
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+		"name":               "Colombia Onboarding — November",
+		"source":             "smart_batch",
+		"rows": []map[string]interface{}{
+			{
+				"rowIndex": 0,
+				"inputData": map[string]string{
+					"documentType":   "CC",
+					"documentNumber": "1032386359",
+				},
+			},
+			{
+				"documentType":   "CC",
+				"documentNumber": "1007463534",
+			},
+		},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "name": "Colombia Onboarding — November",
+    "source": "smart_batch",
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        }
+      },
+      {
+        "documentType": "CC",
+        "documentNumber": "1007463534"
+      }
+    ]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "client": "507f1f77bcf86cd799439013",
+    "name": "Colombia Onboarding — November",
+    "status": "draft",
+    "executor": "browser",
+    "source": "smart_batch",
+    "headlessRun": false,
+    "creditsSpent": 0,
+    "rows": [
+      {
+        "rowIndex": 0,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1032386359"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": [],
+        "creditsSpent": 0,
+        "attemptCount": 0,
+        "attempts": []
+      },
+      {
+        "rowIndex": 1,
+        "inputData": {
+          "documentType": "CC",
+          "documentNumber": "1007463534"
+        },
+        "status": "pending",
+        "results": {},
+        "errors": [],
+        "creditsSpent": 0,
+        "attemptCount": 0,
+        "attempts": []
+      }
+    ],
+    "totalRows": 2,
+    "completedRows": 0,
+    "failedRows": 0,
+    "partialRows": 0,
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:00:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"rows[0].status\" is not allowed",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- 배치를 생성할 때 `rows` 내부에 `status`, `results` 또는 `errors`를 절대 전달하지 마세요. 새로 생성된 행은 항상 `pending` 상태로 시작합니다.
+- `executor`가 생략되면 `batchConfiguration.executor`에서 확인되어 `"queue"` 또는 `"browser"`로 정규화됩니다.
+- 생성 후에는 [Smart Batch 비용 추정](/verifik-ko/smart-reports/estimate-smart-batch-cost)을 호출하여 예상 크레딧 요금을 미리 확인하고 [Smart Batch 시작](/verifik-ko/smart-reports/start-a-smart-batch)으로 처리를 시작하세요.
+- 종속성 검증 및 선택적 즉시 실행을 지원하는 대량 CSV, XLSX 또는 JSONL 가져오기의 경우 [파일에서 Smart Batch 생성](/verifik-ko/smart-reports/create-smart-batch-from-file)을 사용하세요.
+
+### 관련
+
+- [Smart Reports 개요](/verifik-ko/smart-reports)
+- [Headless API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [Smart Reports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)
+- [파일에서 Smart Batch 생성](/verifik-ko/smart-reports/create-smart-batch-from-file)
+- [Smart Batch 시작](/verifik-ko/smart-reports/start-a-smart-batch)

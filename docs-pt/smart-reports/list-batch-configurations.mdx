@@ -1,0 +1,316 @@
+---
+id: list-batch-configurations
+title: Listar configurações de lote
+description: Liste as Configurações de Lote salvas na sua conta de cliente, com busca e paginação opcionais
+slug: /smart-reports/list-batch-configurations
+keywords:
+  - v2/batch-configurations
+  - /v2/batch-configurations
+  - v2 batch-configurations
+  - batch-configurations
+  - /batch-configurations
+  - api/batch-configurations
+  - /api/batch-configurations
+  - api batch-configurations
+  - api.verifik.co/v2/batch-configurations
+  - 'https://api.verifik.co/v2/batch-configurations'
+  - GET v2/batch-configurations
+  - GET /v2/batch-configurations
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Liste as Configurações de Lote pertencentes à sua conta de cliente autenticada. Os resultados são restritos ao cliente do seu JWT, ordenados do mais recente para o mais antigo (`createdAt` decrescente) e retornados com metadados `steps.appFeature` preenchidos e preços `ClientFeature` específicos do cliente.
+
+Envie `page` quando precisar de resultados paginados com metadados `total`, `limit`, `page` e `pages`. Omita `page` para receber o array correspondente diretamente em `data`. Listar configurações não executa consultas e não consome créditos.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/batch-configurations
+```
+
+Também acessível pelo proxy do Smart-Agent em `https://ai.verifik.co/v2/batch-configurations` usando seu próprio cabeçalho `Authorization: Bearer <VERIFIK_JWT>` por cliente. A execução compartilhada via x402 é bloqueada com `403 Forbidden`.
+
+### Cabeçalhos
+
+| Nome | Valor |
+| ---- | ----- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+O token deve ser um **JWT de cliente**. Credenciais ausentes ou inválidas retornam `401 Unauthorized`.
+
+### Parâmetros
+
+Todos os parâmetros de consulta são opcionais.
+
+| Nome | Tipo | Obrigatório | Descrição |
+| ---- | ---- | ----------- | --------- |
+| `search` | string | Não | Filtro de nome sem distinção entre maiúsculas e minúsculas aplicado às configurações salvas. |
+| `text` | string | Não | Alias para `search`. |
+| `page` | integer | Não | Número da página (baseado em `1`). Quando fornecido, habilita os metadados de paginação (`total`, `limit`, `page`, `pages`) na resposta. |
+| `limit` | integer | Não | Número máximo de configurações a retornar por página. |
+| `perPage` | integer | Não | Alias para `limit`. |
+
+### Requisição
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const params = new URLSearchParams({
+        search: "Colombia",
+        page: "1",
+        limit: "20",
+    });
+
+    const res = await fetch(`https://api.verifik.co/v2/batch-configurations?${params.toString()}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "search" => "Colombia",
+    "page" => 1,
+    "limit" => 20
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/batch-configurations?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type": "application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/batch-configurations"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "search": "Colombia",
+    "page": 1,
+    "limit": 20,
+}
+
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "net/url"
+    "os"
+)
+
+func main() {
+    u, _ := url.Parse("https://api.verifik.co/v2/batch-configurations")
+    q := u.Query()
+    q.Set("search", "Colombia")
+    q.Set("page", "1")
+    q.Set("limit", "20")
+    u.RawQuery = q.Encode()
+
+    req, _ := http.NewRequest("GET", u.String(), nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/batch-configurations?search=Colombia&page=1&limit=20" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Resposta
+
+<Tabs>
+  <TabItem value="200-page" label="200 com page">
+
+```json
+{
+    "data": [
+        {
+            "_id": "67d1b4a0e4f5a60718293b12",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "executor": "browser",
+            "inputFormat": "csv",
+            "outputFormat": "csv",
+            "mergeStrategy": "sequential",
+            "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+            "isActive": true,
+            "steps": [
+                {
+                    "_id": "67d1b4a0e4f5a60718293b13",
+                    "appFeature": {
+                        "_id": "65f0a1b2c3d4e5f607182901",
+                        "name": "Colombian Cédula Validation",
+                        "code": "co-cedula",
+                        "url": "/v2/co/cedula",
+                        "method": "GET",
+                        "price": 0.05,
+                        "smartCheckPrice": 0.05,
+                        "country": "Colombia"
+                    },
+                    "sequence": 1,
+                    "enabled": true,
+                    "parameterDefaults": {},
+                    "queryMode": "byDocument",
+                    "inputFieldMapping": {},
+                    "outputFieldsToKeep": [],
+                    "maxRetries": 3,
+                    "retryDelayBaseSeconds": 4,
+                    "timeoutSeconds": 30
+                }
+            ],
+            "createdAt": "2026-10-15T14:20:00.000Z",
+            "updatedAt": "2026-10-15T14:20:00.000Z"
+        }
+    ],
+    "total": 1,
+    "limit": 20,
+    "page": 1,
+    "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200-no-page" label="200 sem page">
+
+```json
+{
+    "data": [
+        {
+            "_id": "67d1b4a0e4f5a60718293b12",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "executor": "browser",
+            "inputFormat": "csv",
+            "outputFormat": "csv",
+            "mergeStrategy": "sequential",
+            "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+            "isActive": true,
+            "steps": [
+                {
+                    "_id": "67d1b4a0e4f5a60718293b13",
+                    "appFeature": {
+                        "_id": "65f0a1b2c3d4e5f607182901",
+                        "name": "Colombian Cédula Validation",
+                        "code": "co-cedula",
+                        "url": "/v2/co/cedula",
+                        "method": "GET",
+                        "price": 0.05,
+                        "smartCheckPrice": 0.05,
+                        "country": "Colombia"
+                    },
+                    "sequence": 1,
+                    "enabled": true,
+                    "parameterDefaults": {},
+                    "queryMode": "byDocument",
+                    "inputFieldMapping": {},
+                    "outputFieldsToKeep": [],
+                    "maxRetries": 3,
+                    "retryDelayBaseSeconds": 4,
+                    "timeoutSeconds": 30
+                }
+            ],
+            "createdAt": "2026-10-15T14:20:00.000Z",
+            "updatedAt": "2026-10-15T14:20:00.000Z"
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- Os resultados são automaticamente restritos ao JWT de cliente autenticado e ordenados do mais recente para o mais antigo (`-createdAt`).
+- O campo `steps.appFeature` de cada etapa é preenchido e enriquecido com os preços `ClientFeature` da sua conta quando configurados.
+- `perPage` é um alias para `limit`, e `text` é um alias para `search`.
+- Os metadados de paginação (`total`, `limit`, `page`, `pages`) só são incluídos quando `page` é fornecido na query string.
+
+### Relacionado
+
+- [Criar uma configuração de lote](/verifik-pt/smart-reports/create-a-batch-configuration)
+- [Obter uma configuração de lote](/verifik-pt/smart-reports/retrieve-a-batch-configuration)
+- [Visão geral do Smart Reports](/verifik-pt/smart-reports)
+- [Guia da API Headless](/verifik-pt/smart-reports/headless-api-guide)
+- [MCP e agentes de IA](/verifik-pt/smart-reports/mcp-and-ai-agents)
+- [Webhooks do Smart Reports](/verifik-pt/resources/smart-reports-webhooks)
+- [Executar um Smart Report](/verifik-pt/smart-reports/run-a-smart-report)

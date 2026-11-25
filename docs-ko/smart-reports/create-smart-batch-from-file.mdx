@@ -1,0 +1,360 @@
+---
+id: create-smart-batch-from-file
+title: 파일에서 Smart Batch 생성
+description: CSV, XLSX 또는 JSONL 입력 파일을 파싱하고 검증하여 비용 추정 및 선택적 자동 시작과 함께 Smart Batch를 생성합니다.
+slug: /smart-reports/create-smart-batch-from-file
+keywords:
+  - v2/smart-batches/from-file
+  - /v2/smart-batches/from-file
+  - v2 smart-batches from-file
+  - api/smart-batches/from-file
+  - /api/smart-batches/from-file
+  - api smart-batches from-file
+  - api.verifik.co/v2/smart-batches/from-file
+  - 'https://api.verifik.co/v2/smart-batches/from-file'
+  - POST v2/smart-batches/from-file
+  - POST /v2/smart-batches/from-file
+  - smart-batches
+  - /smart-batches
+  - smart-batches/from-file
+  - /smart-batches/from-file
+  - GET v2/smart-batches/from-file
+  - GET /v2/smart-batches/from-file
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+CSV, XLSX 또는 JSONL 페이로드를 새 `SmartBatch`로 수집(ingest)합니다. 서버는 원시 텍스트 또는 base64 데이터 URL을 디코딩하고, `MAX_ROWS`(기본값 `20000`)를 적용하며, `BatchConfiguration` 단계 종속성을 기준으로 열 헤더와 camelCase 별칭을 해석하고, 크레딧 비용 추정치를 계산합니다.
+
+수락된 행은 `pending` 상태로 배치에 저장되며, 형식이 잘못된 행은 `rejectedRows`에 반환됩니다. 계정 엔드포인트 권한을 확인하고 즉시 처리를 시작하려면 `autoStart: true`를 전달하세요. 그렇지 않으면 검사가 실행되지 않으며 크레딧이 소비되지 않습니다.
+
+### 엔드포인트
+
+```text
+POST https://api.verifik.co/v2/smart-batches/from-file
+```
+
+클라이언트별 `Authorization: Bearer <VERIFIK_JWT>`를 사용하여 Smart-Agent 프록시(`https://ai.verifik.co/v2/smart-batches/from-file`)를 통해서도 호출할 수 있습니다. 공유 x402 실행은 `403 Forbidden`으로 차단됩니다.
+
+### 헤더
+
+| 이름 | 값 | 설명 |
+| ---- | -- | ---- |
+| `Content-Type` | `application/json` | 요청 페이로드 형식. |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 클라이언트 범위 JWT (`authUser.clientId`). |
+
+### 본문
+
+| 이름 | 타입 | 필수 | 설명 |
+| ---- | ---- | ---- | ---- |
+| `batchConfiguration` | string | 예 | 인증된 클라이언트가 소유한 `BatchConfiguration` ObjectId. |
+| `name` | string | 예 | 배치 표시 이름. 최대 `150`자. |
+| `content` | string | 예 | 원시 CSV/JSONL 텍스트 또는 base64 데이터 URL (`data:<mime>;base64,<payload>`). |
+| `format` | string | 아니요 | 입력 형식: `"csv"`, `"xlsx"` 또는 `"jsonl"`. 기본값은 `batchConfiguration.inputFormat` 또는 `"csv"`입니다. |
+| `autoStart` | boolean | 아니요 | 수집 직후 생성된 배치를 즉시 시작하려면 `true`로 설정합니다. |
+
+알 수 없는 본문 키는 Joi 검증에 의해 `409 MissingParameter`로 거부됩니다.
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.post(
+    "https://api.verifik.co/v2/smart-batches/from-file",
+    {
+      batchConfiguration: "6801a2b3c4d5e6f7a8b9c0d4",
+      name: "November CSV Import",
+      format: "csv",
+      content: "Document Type,Document Number\nCC,1032386359\nCC,1007463534\n",
+      autoStart: false,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "batchConfiguration" => "6801a2b3c4d5e6f7a8b9c0d4",
+    "name" => "November CSV Import",
+    "format" => "csv",
+    "content" => "Document Type,Document Number\nCC,1032386359\nCC,1007463534\n",
+    "autoStart" => false,
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/from-file");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-batches/from-file"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "name": "November CSV Import",
+    "format": "csv",
+    "content": "Document Type,Document Number\nCC,1032386359\nCC,1007463534\n",
+    "autoStart": False,
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+		"name":               "November CSV Import",
+		"format":             "csv",
+		"content":            "Document Type,Document Number\nCC,1032386359\nCC,1007463534\n",
+		"autoStart":          false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/from-file", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/from-file" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "name": "November CSV Import",
+    "format": "csv",
+    "content": "Document Type,Document Number\nCC,1032386359\nCC,1007463534\n",
+    "autoStart": false
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "batch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+      "client": "507f1f77bcf86cd799439013",
+      "name": "November CSV Import",
+      "status": "pending",
+      "executor": "browser",
+      "source": "smart_batch",
+      "headlessRun": false,
+      "creditsSpent": 0,
+      "rows": [
+        {
+          "rowIndex": 0,
+          "inputData": {
+            "Document Type": "CC",
+            "documentType": "CC",
+            "Document Number": "1032386359",
+            "documentNumber": "1032386359"
+          },
+          "status": "pending",
+          "results": {},
+          "errors": []
+        },
+        {
+          "rowIndex": 1,
+          "inputData": {
+            "Document Type": "CC",
+            "documentType": "CC",
+            "Document Number": "1007463534",
+            "documentNumber": "1007463534"
+          },
+          "status": "pending",
+          "results": {},
+          "errors": []
+        }
+      ],
+      "totalRows": 2,
+      "completedRows": 0,
+      "failedRows": 0,
+      "partialRows": 0,
+      "createdAt": "2026-11-24T20:05:00.000Z",
+      "updatedAt": "2026-11-24T20:05:00.000Z"
+    },
+    "columns": [
+      "Document Type",
+      "documentType",
+      "Document Number",
+      "documentNumber"
+    ],
+    "accepted": 2,
+    "rejected": 0,
+    "rejectedRows": [],
+    "estimate": {
+      "itemCount": 2,
+      "creditsPerItem": 0.04,
+      "totalCredits": 0.08,
+      "breakdown": [
+        {
+          "sequence": 1,
+          "featureCode": "co-cedula",
+          "price": 0.04,
+          "total": 0.08
+        }
+      ]
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_configuration_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-conflict" label="409 (수집 / 구성)">
+
+```json
+{
+  "message": "batch_file_is_empty",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 (MissingParameter)">
+
+```json
+{
+  "message": "\"content\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500 (임계값 / 형식)">
+
+```json
+{
+  "message": "409:batch_file_exceeds_max_rows:20000",
+  "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고
+
+- 파일 파싱은 `MAX_ROWS`(기본값 `20000`)를 적용하며, `Document Number` 같은 열이 `documentNumber`로 해석되도록 camelCase 헤더 별칭을 자동으로 생성합니다.
+- `.xlsx` 통합 문서의 경우 `format: "xlsx"`와 함께 base64 데이터 URL(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,<payload>`)을 전달하세요.
+- `409 Conflict` 오류에는 `batch_file_has_no_sheets`, `batch_file_is_empty`, `batch_file_has_no_rows`, `batch_file_has_no_usable_rows`, `batch_jsonl_parse_failed_on_line_<N>`, `batch_configuration_has_no_steps` 및 `endpoints_not_in_account`가 포함됩니다.
+- 유효하지 않은 행 검증(`0`개의 유효한 행), 지원되지 않는 형식 오류 및 `MAX_ROWS` 임계값 오류는 HTTP `500`을 반환합니다.
+
+### 관련
+
+- [Smart Reports 개요](/verifik-ko/smart-reports)
+- [Headless API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [Smart Reports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [Smart Report 실행](/verifik-ko/smart-reports/run-a-smart-report)
+- [Smart Batch 생성](/verifik-ko/smart-reports/create-a-smart-batch)
+- [Smart Batch 시작](/verifik-ko/smart-reports/start-a-smart-batch)

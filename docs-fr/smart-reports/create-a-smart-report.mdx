@@ -1,0 +1,290 @@
+---
+id: create-a-smart-report
+title: Créer un Smart Report
+description: Créez un brouillon de SmartReport lié à un modèle et à un SmartBatch existants avant la génération PDF ou l'envoi par e-mail.
+slug: /smart-reports/create-a-smart-report
+keywords:
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - api.verifik.co/v2/smart-reports
+  - 'https://api.verifik.co/v2/smart-reports'
+  - POST v2/smart-reports
+  - POST /v2/smart-reports
+  - smart-reports
+  - /smart-reports
+  - GET v2/smart-reports
+  - GET /v2/smart-reports
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Créez un enregistrement brouillon `SmartReport` (`status: "draft"`) lié à un `template` et à un `smartBatch` existants. Utilisez ce point de terminaison lorsque vous disposez déjà d'un `SmartBatch` terminé ou en cours et que vous souhaitez gérer la création du rapport, la génération PDF, la récupération HTML et l'envoi par e-mail en étapes distinctes.
+
+La création d'un enregistrement brouillon renvoie HTTP **`200 OK`** avec le nouveau `SmartReport` dans `{ data }`. Elle n'exécute pas d'étapes de vérification et ne génère pas de PDF par elle-même — enchaînez avec [Générer le PDF d'un Smart Report](/verifik-fr/smart-reports/generate-smart-report-pdf) ou [Envoyer un Smart Report par e-mail](/verifik-fr/smart-reports/send-smart-report-email). Si vous souhaitez exécuter les étapes de vérification et produire un rapport en une seule requête, utilisez [Exécuter un Smart Report](/verifik-fr/smart-reports/run-a-smart-report).
+
+### Point de terminaison
+
+```
+POST https://api.verifik.co/v2/smart-reports
+```
+
+Ce point de terminaison est également accessible via le proxy Smart-Agent à l'adresse `https://ai.verifik.co/v2/smart-reports` en utilisant votre propre en-tête par client `Authorization: Bearer <VERIFIK_JWT>`. L'exécution partagée x402 est bloquée avec `403 Forbidden`.
+
+### En-têtes
+
+| Nom             | Valeur                 | Description                                 |
+| --------------- | ---------------------- | ------------------------------------------- |
+| `Content-Type`  | `application/json`     | Format du payload de la requête.            |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT limité au client (`authUser.clientId`). |
+
+### Corps de la requête
+
+| Nom                | Type    | Requis  | Description |
+| ------------------ | ------- | ------- | ----------- |
+| `template`         | string  | **Oui** | ObjectId du modèle selon lequel effectuer le rendu de ce rapport. |
+| `smartBatch`       | string  | **Oui** | ObjectId du `SmartBatch` fournissant les résultats des lignes de vérification. |
+| `name`             | string  | Non     | Nom d'affichage du rapport. Max `150` caractères. |
+| `externalRefId`    | string  | Non     | Identifiant de corrélation de l'appelant. Max `200` caractères. |
+| `webhookUrl`       | string  | Non     | URL de surcharge webhook `http` ou `https` spécifique au rapport. Max `2048` caractères. |
+| `rowIndex`         | integer | Non     | Index de ligne basé sur zéro (`>= 0`) provenant du `SmartBatch` lié. |
+| `createdByChannel` | string  | Non     | Canal d'origine : `"portal"`, `"api"`, `"mcp"`, `"x402"` ou `"webhook"`. Défaut `"portal"`. |
+
+#### Workflow étape par étape vs exécution headless
+
+- Utilisez `POST /v2/smart-reports` lorsque votre workflow a déjà exécuté un `SmartBatch` (par exemple via l'interface SmartBatch ou l'API file) et que vous souhaitez d'abord créer un brouillon `SmartReport` (`status: "draft"`), prévisualiser le HTML avec [Récupérer le HTML d'un Smart Report](/verifik-fr/smart-reports/retrieve-smart-report-html), générer le PDF avec [Générer le PDF d'un Smart Report](/verifik-fr/smart-reports/generate-smart-report-pdf) et l'envoyer avec [Envoyer un Smart Report par e-mail](/verifik-fr/smart-reports/send-smart-report-email).
+- Notez que `createdByChannel` vaut `"portal"` par défaut sur cette route ; les intégrations API doivent donc définir `createdByChannel: "api"` pour suivre l'attribution du canal.
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.post(
+    "https://api.verifik.co/v2/smart-reports",
+    {
+      template: "6801a2b3c4d5e6f7a8b9c0d2",
+      smartBatch: "6801a2b3c4d5e6f7a8b9c0d3",
+      name: "Applicant 42 Draft Report",
+      externalRefId: "applicant-42",
+      webhookUrl: "https://webhooks.example.com/verifik",
+      rowIndex: 0,
+      createdByChannel: "api",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/smart-reports");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "template" => "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch" => "6801a2b3c4d5e6f7a8b9c0d3",
+    "name" => "Applicant 42 Draft Report",
+    "externalRefId" => "applicant-42",
+    "webhookUrl" => "https://webhooks.example.com/verifik",
+    "rowIndex" => 0,
+    "createdByChannel" => "api",
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-reports"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Applicant 42 Draft Report",
+    "externalRefId": "applicant-42",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"template":         "6801a2b3c4d5e6f7a8b9c0d2",
+		"smartBatch":       "6801a2b3c4d5e6f7a8b9c0d3",
+		"name":             "Applicant 42 Draft Report",
+		"externalRefId":    "applicant-42",
+		"webhookUrl":       "https://webhooks.example.com/verifik",
+		"rowIndex":         0,
+		"createdByChannel": "api",
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-reports", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-reports" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Applicant 42 Draft Report",
+    "externalRefId": "applicant-42",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api"
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Applicant 42 Draft Report",
+    "status": "draft",
+    "externalRefId": "applicant-42",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:00:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"template\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Intégration Webhooks et MCP
+
+- **Webhooks** : Enregistrer `webhookUrl` et `externalRefId` sur le brouillon `SmartReport` garantit que les appels ultérieurs de génération (`smart_batch_report_generated`, `smart_batch_report_generation_failed`) et d'envoi par e-mail (`smart_batch_report_sent`, `smart_batch_report_delivery_failed`) héritent de votre destination de callback et de votre identifiant de corrélation propres au rapport. Consultez [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks).
+- **Intégration MCP** : Pour une exécution headless de rapport en un seul appel dans des agents IA, utilisez `smart_report_run`. Consultez [MCP et Agents IA](/verifik-fr/smart-reports/mcp-and-ai-agents).
+
+### Notes
+
+- Une création réussie renvoie HTTP `200` (et non `201`) avec `status: "draft"`.
+- Conservez `data._id` pour les appels ultérieurs vers [Récupérer un Smart Report](/verifik-fr/smart-reports/retrieve-a-smart-report), [Générer le PDF d'un Smart Report](/verifik-fr/smart-reports/generate-smart-report-pdf), [Télécharger le PDF d'un Smart Report](/verifik-fr/smart-reports/download-smart-report-pdf), [Récupérer le HTML d'un Smart Report](/verifik-fr/smart-reports/retrieve-smart-report-html) et [Envoyer un Smart Report par e-mail](/verifik-fr/smart-reports/send-smart-report-email).
+
+### Voir aussi
+
+- [Vue d'ensemble de SmartReports](/verifik-fr/smart-reports)
+- [Guide de l'API Headless](/verifik-fr/smart-reports/headless-api-guide)
+- [MCP et Agents IA](/verifik-fr/smart-reports/mcp-and-ai-agents)
+- [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks)
+- [Exécuter un Smart Report](/verifik-fr/smart-reports/run-a-smart-report)
+- [Générer le PDF d'un Smart Report](/verifik-fr/smart-reports/generate-smart-report-pdf)

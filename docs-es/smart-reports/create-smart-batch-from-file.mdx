@@ -1,0 +1,360 @@
+---
+id: create-smart-batch-from-file
+title: Crear un Smart Batch desde un archivo
+description: 'Procesa y valida archivos de entrada CSV, XLSX o JSONL en un Smart Batch con estimación de costos e inicio automático opcional.'
+slug: /smart-reports/create-smart-batch-from-file
+keywords:
+  - v2/smart-batches/from-file
+  - /v2/smart-batches/from-file
+  - v2 smart-batches from-file
+  - api/smart-batches/from-file
+  - /api/smart-batches/from-file
+  - api smart-batches from-file
+  - api.verifik.co/v2/smart-batches/from-file
+  - 'https://api.verifik.co/v2/smart-batches/from-file'
+  - POST v2/smart-batches/from-file
+  - POST /v2/smart-batches/from-file
+  - smart-batches
+  - /smart-batches
+  - smart-batches/from-file
+  - /smart-batches/from-file
+  - GET v2/smart-batches/from-file
+  - GET /v2/smart-batches/from-file
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Ingesta una carga útil CSV, XLSX o JSONL en un nuevo `SmartBatch`. El servidor decodifica texto sin formato o URLs de datos base64, aplica `MAX_ROWS` (`20000` por defecto), resuelve encabezados de columnas y alias en camelCase contra las dependencias de pasos de tu `BatchConfiguration`, y calcula una estimación de costo en créditos.
+
+Las filas aceptadas se guardan en el lote en estado `pending`, mientras que las filas malformadas se devuelven en `rejectedRows`. Pasa `autoStart: true` para verificar los permisos de endpoints de la cuenta y comenzar el procesamiento de inmediato; de lo contrario, no se ejecuta ninguna comprobación ni se consumen créditos.
+
+### Endpoint
+
+```text
+POST https://api.verifik.co/v2/smart-batches/from-file
+```
+
+Este endpoint también es accesible a través del proxy de Smart-Agent en `https://ai.verifik.co/v2/smart-batches/from-file` usando tu propio encabezado `Authorization: Bearer <VERIFIK_JWT>` por cliente. La ejecución compartida x402 está bloqueada con `403 Forbidden`.
+
+### Encabezados
+
+| Nombre          | Valor                  | Descripción                                         |
+| --------------- | ---------------------- | --------------------------------------------------- |
+| `Content-Type`  | `application/json`     | Formato de carga útil de la solicitud.              |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT delimitado al cliente (`authUser.clientId`).    |
+
+### Cuerpo
+
+| Nombre               | Tipo    | Requerido | Descripción |
+| -------------------- | ------- | --------- | ----------- |
+| `batchConfiguration` | string  | Sí        | ObjectId de `BatchConfiguration` propiedad del cliente autenticado. |
+| `name`               | string  | Sí        | Nombre visible del lote. Máximo `150` caracteres. |
+| `content`            | string  | Sí        | Texto CSV/JSONL sin formato o una URL de datos base64 (`data:<mime>;base64,<payload>`). |
+| `format`             | string  | No        | Formato de entrada: `"csv"`, `"xlsx"` o `"jsonl"`. Por defecto `batchConfiguration.inputFormat` o `"csv"`. |
+| `autoStart`          | boolean | No        | Establece `true` para iniciar el lote creado inmediatamente después de la ingesta. |
+
+Las claves desconocidas en el cuerpo son rechazadas por la validación Joi con `409 MissingParameter`.
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.post(
+    "https://api.verifik.co/v2/smart-batches/from-file",
+    {
+      batchConfiguration: "6801a2b3c4d5e6f7a8b9c0d4",
+      name: "November CSV Import",
+      format: "csv",
+      content: "Document Type,Document Number\nCC,1032386359\nCC,1007463534\n",
+      autoStart: false,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$payload = [
+    "batchConfiguration" => "6801a2b3c4d5e6f7a8b9c0d4",
+    "name" => "November CSV Import",
+    "format" => "csv",
+    "content" => "Document Type,Document Number\nCC,1032386359\nCC,1007463534\n",
+    "autoStart" => false,
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/from-file");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-batches/from-file"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "name": "November CSV Import",
+    "format": "csv",
+    "content": "Document Type,Document Number\nCC,1032386359\nCC,1007463534\n",
+    "autoStart": False,
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+		"name":               "November CSV Import",
+		"format":             "csv",
+		"content":            "Document Type,Document Number\nCC,1032386359\nCC,1007463534\n",
+		"autoStart":          false,
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/from-file", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/from-file" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+    "name": "November CSV Import",
+    "format": "csv",
+    "content": "Document Type,Document Number\nCC,1032386359\nCC,1007463534\n",
+    "autoStart": false
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "batch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+      "client": "507f1f77bcf86cd799439013",
+      "name": "November CSV Import",
+      "status": "pending",
+      "executor": "browser",
+      "source": "smart_batch",
+      "headlessRun": false,
+      "creditsSpent": 0,
+      "rows": [
+        {
+          "rowIndex": 0,
+          "inputData": {
+            "Document Type": "CC",
+            "documentType": "CC",
+            "Document Number": "1032386359",
+            "documentNumber": "1032386359"
+          },
+          "status": "pending",
+          "results": {},
+          "errors": []
+        },
+        {
+          "rowIndex": 1,
+          "inputData": {
+            "Document Type": "CC",
+            "documentType": "CC",
+            "Document Number": "1007463534",
+            "documentNumber": "1007463534"
+          },
+          "status": "pending",
+          "results": {},
+          "errors": []
+        }
+      ],
+      "totalRows": 2,
+      "completedRows": 0,
+      "failedRows": 0,
+      "partialRows": 0,
+      "createdAt": "2026-11-24T20:05:00.000Z",
+      "updatedAt": "2026-11-24T20:05:00.000Z"
+    },
+    "columns": [
+      "Document Type",
+      "documentType",
+      "Document Number",
+      "documentNumber"
+    ],
+    "accepted": 2,
+    "rejected": 0,
+    "rejectedRows": [],
+    "estimate": {
+      "itemCount": 2,
+      "creditsPerItem": 0.04,
+      "totalCredits": 0.08,
+      "breakdown": [
+        {
+          "sequence": 1,
+          "featureCode": "co-cedula",
+          "price": 0.04,
+          "total": 0.08
+        }
+      ]
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "batch_configuration_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-conflict" label="409 (Ingesta / Configuración)">
+
+```json
+{
+  "message": "batch_file_is_empty",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 (MissingParameter)">
+
+```json
+{
+  "message": "\"content\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500 (Límite / Formato)">
+
+```json
+{
+  "message": "409:batch_file_exceeds_max_rows:20000",
+  "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- El análisis del archivo aplica `MAX_ROWS` (`20000` por defecto) y genera alias de encabezados en camelCase automáticamente para que columnas como `Document Number` se resuelvan a `documentNumber`.
+- Para libros `.xlsx`, pasa una URL de datos base64 (`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,<payload>`) con `format: "xlsx"`.
+- Los errores `409 Conflict` incluyen `batch_file_has_no_sheets`, `batch_file_is_empty`, `batch_file_has_no_rows`, `batch_file_has_no_usable_rows`, `batch_jsonl_parse_failed_on_line_<N>`, `batch_configuration_has_no_steps` y `endpoints_not_in_account`.
+- La validación de filas inválidas (`0` filas válidas), los errores de formato no compatible y los errores de límite `MAX_ROWS` devuelven HTTP `500`.
+
+### Relacionado
+
+- [Descripción general de Smart Reports](/verifik-es/smart-reports)
+- [Guía de la API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [Webhooks de Smart Reports](/verifik-es/resources/smart-reports-webhooks)
+- [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report)
+- [Crear un Smart Batch](/verifik-es/smart-reports/create-a-smart-batch)
+- [Iniciar un Smart Batch](/verifik-es/smart-reports/start-a-smart-batch)

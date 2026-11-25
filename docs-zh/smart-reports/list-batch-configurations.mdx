@@ -1,0 +1,316 @@
+---
+id: list-batch-configurations
+title: 列出批处理配置
+description: 列出保存在客户账户中的批处理配置，支持可选搜索和分页
+slug: /smart-reports/list-batch-configurations
+keywords:
+  - v2/batch-configurations
+  - /v2/batch-configurations
+  - v2 batch-configurations
+  - batch-configurations
+  - /batch-configurations
+  - api/batch-configurations
+  - /api/batch-configurations
+  - api batch-configurations
+  - api.verifik.co/v2/batch-configurations
+  - 'https://api.verifik.co/v2/batch-configurations'
+  - GET v2/batch-configurations
+  - GET /v2/batch-configurations
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+列出你已认证的客户账户所拥有的批处理配置（Batch Configurations）。结果按 JWT 所属客户作用域过滤，按最新创建时间降序排列（`createdAt` 降序），并返回已填充的 `steps.appFeature` 元数据以及客户专属的 `ClientFeature` 定价信息。
+
+当你需要包含 `total`、`limit`、`page` 和 `pages` 元数据的分页结果时，请传入 `page`。若省略 `page`，则会直接在 `data` 中返回匹配的数组。列出配置不会执行查询，也不会消耗积分。
+
+### 接口
+
+```
+GET https://api.verifik.co/v2/batch-configurations
+```
+
+也可以通过 Smart-Agent 代理 `https://ai.verifik.co/v2/batch-configurations` 访问，并使用你自己的客户专属 `Authorization: Bearer <VERIFIK_JWT>` 请求头。共享 x402 执行会被拒绝并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称 | 值 |
+| ---- | -- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+令牌必须是**客户 JWT**。缺少凭证或凭证无效将返回 `401 Unauthorized`。
+
+### 参数
+
+所有查询参数均为可选。
+
+| 名称 | 类型 | 必填 | 描述 |
+| ---- | ---- | ---- | ---- |
+| `search` | string | 否 | 对已保存配置的名称执行不区分大小写的筛选。 |
+| `text` | string | 否 | `search` 的别名。 |
+| `page` | integer | 否 | 页码（从 `1` 开始）。传入该参数时，响应中将包含分页元数据（`total`、`limit`、`page`、`pages`）。 |
+| `limit` | integer | 否 | 每页返回的最大配置数量。 |
+| `perPage` | integer | 否 | `limit` 的别名。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const params = new URLSearchParams({
+        search: "Colombia",
+        page: "1",
+        limit: "20",
+    });
+
+    const res = await fetch(`https://api.verifik.co/v2/batch-configurations?${params.toString()}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "search" => "Colombia",
+    "page" => 1,
+    "limit" => 20
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/batch-configurations?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/batch-configurations"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "search": "Colombia",
+    "page": 1,
+    "limit": 20,
+}
+
+r = requests.get(url, params=params, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "net/url"
+    "os"
+)
+
+func main() {
+    u, _ := url.Parse("https://api.verifik.co/v2/batch-configurations")
+    q := u.Query()
+    q.Set("search", "Colombia")
+    q.Set("page", "1")
+    q.Set("limit", "20")
+    u.RawQuery = q.Encode()
+
+    req, _ := http.NewRequest("GET", u.String(), nil)
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS "https://api.verifik.co/v2/batch-configurations?search=Colombia&page=1&limit=20" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200-page" label="200（分页）">
+
+```json
+{
+    "data": [
+        {
+            "_id": "67d1b4a0e4f5a60718293b12",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "executor": "browser",
+            "inputFormat": "csv",
+            "outputFormat": "csv",
+            "mergeStrategy": "sequential",
+            "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+            "isActive": true,
+            "steps": [
+                {
+                    "_id": "67d1b4a0e4f5a60718293b13",
+                    "appFeature": {
+                        "_id": "65f0a1b2c3d4e5f607182901",
+                        "name": "Colombian Cédula Validation",
+                        "code": "co-cedula",
+                        "url": "/v2/co/cedula",
+                        "method": "GET",
+                        "price": 0.05,
+                        "smartCheckPrice": 0.05,
+                        "country": "Colombia"
+                    },
+                    "sequence": 1,
+                    "enabled": true,
+                    "parameterDefaults": {},
+                    "queryMode": "byDocument",
+                    "inputFieldMapping": {},
+                    "outputFieldsToKeep": [],
+                    "maxRetries": 3,
+                    "retryDelayBaseSeconds": 4,
+                    "timeoutSeconds": 30
+                }
+            ],
+            "createdAt": "2026-10-15T14:20:00.000Z",
+            "updatedAt": "2026-10-15T14:20:00.000Z"
+        }
+    ],
+    "total": 1,
+    "limit": 20,
+    "page": 1,
+    "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200-no-page" label="200（不分页）">
+
+```json
+{
+    "data": [
+        {
+            "_id": "67d1b4a0e4f5a60718293b12",
+            "name": "Colombia Citizen Essential",
+            "description": "Core Colombian identity and registry verification for citizens.",
+            "country": "CO",
+            "executor": "browser",
+            "inputFormat": "csv",
+            "outputFormat": "csv",
+            "mergeStrategy": "sequential",
+            "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+            "isActive": true,
+            "steps": [
+                {
+                    "_id": "67d1b4a0e4f5a60718293b13",
+                    "appFeature": {
+                        "_id": "65f0a1b2c3d4e5f607182901",
+                        "name": "Colombian Cédula Validation",
+                        "code": "co-cedula",
+                        "url": "/v2/co/cedula",
+                        "method": "GET",
+                        "price": 0.05,
+                        "smartCheckPrice": 0.05,
+                        "country": "Colombia"
+                    },
+                    "sequence": 1,
+                    "enabled": true,
+                    "parameterDefaults": {},
+                    "queryMode": "byDocument",
+                    "inputFieldMapping": {},
+                    "outputFieldsToKeep": [],
+                    "maxRetries": 3,
+                    "retryDelayBaseSeconds": 4,
+                    "timeoutSeconds": 30
+                }
+            ],
+            "createdAt": "2026-10-15T14:20:00.000Z",
+            "updatedAt": "2026-10-15T14:20:00.000Z"
+        }
+    ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 结果会自动按已认证的客户 JWT 所属作用域过滤，并按创建时间降序（`-createdAt`）排列。
+- 若已配置，每个步骤的 `steps.appFeature` 都会被填充并附加你账户的 `ClientFeature` 定价信息。
+- `perPage` 是 `limit` 的别名，`text` 是 `search` 的别名。
+- 仅当查询字符串中提供 `page` 时，响应中才会包含分页元数据（`total`、`limit`、`page`、`pages`）。
+
+### 相关文档
+
+- [创建批处理配置](/verifik-zh/smart-reports/create-a-batch-configuration)
+- [查询批处理配置](/verifik-zh/smart-reports/retrieve-a-batch-configuration)
+- [SmartReports 概述](/verifik-zh/smart-reports)
+- [Headless API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)

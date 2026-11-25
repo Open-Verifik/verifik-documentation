@@ -1,0 +1,306 @@
+---
+id: list-smart-reports
+title: Listar Smart Reports
+description: 'Lista los Smart Reports del cliente autenticado con filtros opcionales, ordenamiento y paginación.'
+slug: /smart-reports/list-smart-reports
+keywords:
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - api.verifik.co/v2/smart-reports
+  - 'https://api.verifik.co/v2/smart-reports'
+  - GET v2/smart-reports
+  - GET /v2/smart-reports
+  - smart-reports
+  - /smart-reports
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Lista los registros `SmartReport` pertenecientes al cliente autenticado. Los resultados incluyen las referencias pobladas de `template`, `smartBatch` y `client`, y pueden filtrarse por `smartBatch`, `template`, `externalRefId` y `createdByChannel`, con paginación y ordenamiento opcionales.
+
+Cuando pasas `page`, la respuesta incluye metadatos de paginación (`total`, `limit`, `page` y `pages`). Omite `page` para recibir la lista coincidente dentro de `{ data: [...] }` sin metadatos de paginación.
+
+### Endpoint
+
+```
+GET https://api.verifik.co/v2/smart-reports
+```
+
+Este endpoint también es accesible a través del proxy de Smart-Agent en `https://ai.verifik.co/v2/smart-reports` usando tu propio encabezado por cliente `Authorization: Bearer <VERIFIK_JWT>`. La ejecución compartida mediante x402 está bloqueada con `403 Forbidden`.
+
+### Encabezados
+
+| Nombre          | Valor                  | Descripción                                       |
+| --------------- | ---------------------- | ------------------------------------------------- |
+| `Content-Type`  | `application/json`     | Formato del payload de la solicitud.              |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT con alcance de cliente (`authUser.clientId`). |
+
+### Parámetros
+
+| Nombre             | Tipo   | Requerido | Descripción |
+| ------------------ | ------ | --------- | ----------- |
+| `smartBatch`       | string | No        | Filtra los reportes vinculados a un ObjectId de `SmartBatch` específico. |
+| `template`         | string | No        | Filtra los reportes vinculados a un ObjectId de plantilla específico. |
+| `status`           | string | No        | Valores permitidos: `"draft"`, `"pending"`, `"generating"`, `"generated"`, `"failed"`, `"sent"`. Aceptado por la validación Joi por compatibilidad futura; el filtrado actual de lista opera sobre `smartBatch`, `template`, `externalRefId` y `createdByChannel`. |
+| `externalRefId`    | string | No        | Filtra por tu identificador externo de correlación. Máx. `200` caracteres. |
+| `createdByChannel` | string | No        | Filtra por canal de origen: `"portal"`, `"api"`, `"mcp"`, `"x402"` o `"webhook"`. |
+| `page`             | number | No        | Número de página a recuperar. Indicar `page` habilita la salida paginada con `total`, `limit`, `page` y `pages`. |
+| `limit`            | number | No        | Cantidad máxima de elementos por página. Predeterminado `20` cuando se define `page`. |
+| `sort`             | string | No        | Campo y dirección de ordenamiento. Predeterminado `"-updatedAt"` cuando se define `page`. |
+
+#### Notas sobre filtrado y paginación
+
+- **Parámetro `status` compatible a futuro**: Joi valida `status` contra `"draft"`, `"pending"`, `"generating"`, `"generated"`, `"failed"` y `"sent"`, mientras que la consulta subyacente filtra actualmente por `smartBatch`, `template`, `externalRefId` y `createdByChannel`.
+- **Dos formas de respuesta `200`**: Envía `page` siempre que tu panel o tarea de sincronización necesite `total` y `pages`; omite `page` para obtener un payload `{ data: [...] }` más simple.
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.get("https://api.verifik.co/v2/smart-reports", {
+    params: {
+      createdByChannel: "api",
+      externalRefId: "applicant-42",
+      page: 1,
+      limit: 20,
+      sort: "-updatedAt",
+    },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "createdByChannel" => "api",
+    "externalRefId" => "applicant-42",
+    "page" => 1,
+    "limit" => 20,
+    "sort" => "-updatedAt",
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-reports?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-reports"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "createdByChannel": "api",
+    "externalRefId": "applicant-42",
+    "page": 1,
+    "limit": 20,
+    "sort": "-updatedAt",
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	params := url.Values{}
+	params.Set("createdByChannel", "api")
+	params.Set("externalRefId", "applicant-42")
+	params.Set("page", "1")
+	params.Set("limit", "20")
+	params.Set("sort", "-updatedAt")
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-reports?"+params.Encode(), nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-reports?createdByChannel=api&externalRefId=applicant-42&page=1&limit=20&sort=-updatedAt" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200-paginated" label="200 OK (Con page)">
+
+```json
+{
+  "data": [
+    {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+      "name": "Background Check - Applicant 42",
+      "status": "generated",
+      "template": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d2"
+      },
+      "smartBatch": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d3"
+      },
+      "client": {
+        "_id": "507f1f77bcf86cd799439013"
+      },
+      "externalRefId": "applicant-42",
+      "createdByChannel": "api",
+      "rowIndex": 0,
+      "createdAt": "2026-11-24T20:00:00.000Z",
+      "updatedAt": "2026-11-24T20:00:04.000Z"
+    }
+  ],
+  "total": 1,
+  "limit": 20,
+  "page": 1,
+  "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200-unpaginated" label="200 OK (Sin page)">
+
+```json
+{
+  "data": [
+    {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+      "name": "Background Check - Applicant 42",
+      "status": "generated",
+      "template": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d2"
+      },
+      "smartBatch": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d3"
+      },
+      "client": {
+        "_id": "507f1f77bcf86cd799439013"
+      },
+      "externalRefId": "applicant-42",
+      "createdByChannel": "api",
+      "rowIndex": 0,
+      "createdAt": "2026-11-24T20:00:00.000Z",
+      "updatedAt": "2026-11-24T20:00:04.000Z"
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"smartBatch\" must be a valid ObjectId",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notas
+
+- `GET /v2/smart-reports` incluye las referencias `template`, `smartBatch` y `client` en cada `SmartReport` devuelto.
+- Los valores de parámetros de consulta inválidos fallan la validación Joi con `409 MissingParameter`.
+- Para inspeccionar un único reporte con los campos `downloadUrl` y `htmlUrl` listos para usar, utiliza [Recuperar un Smart Report](/verifik-es/smart-reports/retrieve-a-smart-report).
+- Para ejecutar un nuevo reporte de extremo a extremo sin gestionar registros de `SmartBatch` y `SmartReport` por separado, utiliza [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report).
+
+### Relacionados
+
+- [Descripción general de SmartReports](/verifik-es/smart-reports)
+- [Guía de API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [MCP y Agentes de IA](/verifik-es/smart-reports/mcp-and-ai-agents)
+- [Webhooks de SmartReports](/verifik-es/resources/smart-reports-webhooks)
+- [Crear un Smart Report](/verifik-es/smart-reports/create-a-smart-report)
+- [Recuperar un Smart Report](/verifik-es/smart-reports/retrieve-a-smart-report)

@@ -1,0 +1,466 @@
+---
+id: run-a-smart-report
+title: Smart Report を実行する
+description: 1 回のヘッドレス API 呼び出しで、検証ステップの実行、SmartBatch と SmartReport の作成、任意のスコアリング計算、PDF/HTML のレンダリング、受信者へのメール送信、Webhook の配信を一括で行います。
+slug: /smart-reports/run-a-smart-report
+keywords:
+  - v2/smart-reports/run
+  - /v2/smart-reports/run
+  - v2 smart-reports run
+  - api/smart-reports/run
+  - /api/smart-reports/run
+  - api smart-reports run
+  - api.verifik.co/v2/smart-reports/run
+  - 'https://api.verifik.co/v2/smart-reports/run'
+  - POST v2/smart-reports/run
+  - POST /v2/smart-reports/run
+  - smart-reports
+  - smart_report_run
+  - smart-reports/run
+  - /smart-reports/run
+  - GET v2/smart-reports/run
+  - GET /v2/smart-reports/run
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+1 回のリクエストで完全な検証およびレポートパイプラインを実行します。`POST /v2/smart-reports/run` は、Reports 向けの主要な **ヘッドレス・オールインワン実行エンドポイント** です。プリセット（`systemKey`）または既存の `BatchConfiguration`（`batchConfigurationId`）を解決し、設定の入力スキーマに対して入力値を検証し、アカウントの機能利用権限を確認し、`FeatureRunner` で各検証ステップを実行し、`SmartBatch`（`headlessRun: true`）と `SmartReport` の両方を作成し、任意で `verificationScore` を算出して PDF/HTML 出力をレンダリングし、任意でメール送信と Webhook 配信を行います。
+
+小規模な実行（最大 5 行）では、実行モードのデフォルトが同期（`mode: "sync"`）となり、90 秒の同期ウィンドウ内に確定すれば `200 OK` を返します。大規模なバッチや 90 秒の同期期限を超過した実行は、自動的に非同期実行へ切り替わり、ポーリング用およびダウンロード用の URL とともに `202 Accepted` を返します。
+
+### エンドポイント
+
+```
+POST https://api.verifik.co/v2/smart-reports/run
+```
+
+このエンドポイントは、お客様自身のクライアント別 `Authorization: Bearer <VERIFIK_JWT>` ヘッダーで認証する場合、Smart-Agent プロキシ経由の `https://ai.verifik.co/v2/smart-reports/run` でも利用できます。共有 x402 による実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --- | --- | --- |
+| `Content-Type` | `application/json` | リクエストペイロードの形式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアント単位の JWT（`authUser.clientId`）。 |
+
+クライアント単位の JWT（`authUser.clientId`）が必要です。`clientId` が欠落しているトークンは `409 Conflict`（`client_context_required`）を返します。JWT が欠落または無効な場合は `401 Unauthorized` を返します。
+
+### ボディ
+
+| 名前 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| `systemKey` | string | 条件付き | プリセット識別子。前後空白トリム済み、最大 `120` 文字、パターン `/^[a-z0-9][a-z0-9._-]{1,118}$/i`。`systemKey` または `batchConfigurationId` の少なくとも一方が必須です。 |
+| `batchConfigurationId` | string | 条件付き | 既存の `BatchConfiguration` ObjectId。`systemKey` または `batchConfigurationId` の少なくとも一方が必須です。 |
+| `templateId` | string | いいえ | レポートテンプレートの ObjectId。設定またはプリセット上の優先テンプレートを上書きします。 |
+| `name` | string | いいえ | 生成されるレポートおよびバッチのカスタム表示名。最大 `150` 文字。 |
+| `inputs` | object or object[] | 条件付き | 単一の入力オブジェクトまたは入力オブジェクトの配列（最小 `1`、最大 `500`）。`inputs` または `rows` の少なくとも一方が必須です。両方送信された場合は `inputs` が優先されます。 |
+| `rows` | object[] | 条件付き | フラットなオブジェクト（`{ ... }`）または構造化された行オブジェクト（`{ rowIndex, inputData }`）として指定する `1`〜`500` 件の行配列。`inputs` または `rows` の少なくとも一方が必須です。 |
+| `mode` | string | いいえ | `"sync"` または `"async"`。行数が `<= 5` の場合は `"sync"`、`> 5` の場合は `"async"` がデフォルトです。`> 5` 行に対して `mode: "sync"` を渡すと `409 Conflict`（`sync_row_limit_exceeded`）を返します。 |
+| `generatePdf` | boolean | いいえ | 実行中に PDF をレンダリングするかどうか。デフォルトは `true`。注: `emailTo` が指定されている場合、`generatePdf` が `false` でも PDF がレンダリングされます。 |
+| `includePdfBase64` | boolean | いいえ | `data.pdf.buffer` に base64 エンコードされた PDF を含めるかどうか。デフォルトは `false`。 |
+| `pdfEngine` | string | いいえ | PDF レンダリングエンジン: `"puppeteer"` または `"pdfkit"`。テンプレート設定または `"puppeteer"` がデフォルトです。 |
+| `score` | boolean | いいえ | `verificationScore` を計算して付与するかどうか。 |
+| `scoreProfile` | string | いいえ | `score` が有効な場合に使用するスコアリングプロファイル識別子。最大 `64` 文字。 |
+| `rowIndex` | integer | いいえ | PDF/HTML/スコアリング出力に使用する 0 始まりの行インデックス（`>= 0`）。デフォルトは `0`。 |
+| `emailTo` | string[] | いいえ | レポートを配信する有効な受信者メールアドレスの配列（最大 `20` 件）。 |
+| `emailSubject` | string | いいえ | カスタムメール件名。最大 `250` 文字。 |
+| `emailLanguage` | string | いいえ | メールテンプレートの言語: `"en"` または `"es"`。デフォルトは `"es"`。 |
+| `webhookUrl` | string | いいえ | レポート単位の `http` または `https` Webhook 上書き URL。最大 `2048` 文字。 |
+| `externalRefId` | string | いいえ | 呼び出し元が指定する相関 ID（最大 `200` 文字）。レポートおよび Webhook ペイロードに出力されます。 |
+| `createdByChannel` | string | いいえ | 発生元チャネル: `"portal"`、`"api"`、`"mcp"`、`"x402"`、または `"webhook"`。デフォルトは `"api"`。 |
+
+#### 実行時の動作とパラメータルール
+
+- **ターゲット解決（`systemKey` と `batchConfigurationId`）**: プリセットの `systemKey` または既存の `batchConfigurationId` のいずれかを指定します。不明な ID やプリセットは `404 Not Found`（`batch_configuration_not_found`、`preset_not_found`、または `template_not_found`）を返します。ステップが設定されていない設定やプリセットは `409 Conflict`（`preset_has_no_steps` または `batch_configuration_has_no_steps`）を返します。
+- **アカウントの機能権限**: 解決されたプリセットまたはバッチ設定内のすべてのステップは、実行前にクライアントアカウントの有効な機能権限に対してチェックされます。権限のないステップがあると `409 Conflict`（`endpoints_not_in_account`）で失敗します。
+- **同期期限と自動フォールバック**: 同期実行は最大 `90000` ms（`SYNC_DEADLINE_MS = 90s`）待機します。90 秒以内に検証またはレンダリングが完了しない場合、API は自動的に `mode: "async"` および `pollUrl` を含む `202 Accepted` を返すため、統合システム側で [Smart Report を取得する](/verifik-ja/smart-reports/retrieve-a-smart-report) をポーリングするか Webhook を待機できます。
+- **メール指定時の PDF 生成**: `emailTo` を指定すると、明示的に `generatePdf: false` を設定した場合でも配信用の PDF 生成が保証されます。
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.post(
+    "https://api.verifik.co/v2/smart-reports/run",
+    {
+      systemKey: "example-preset",
+      name: "Background Check - Applicant 42",
+      inputs: {
+        documentType: "CC",
+        documentNumber: "1032386359",
+      },
+      mode: "sync",
+      generatePdf: true,
+      includePdfBase64: false,
+      pdfEngine: "puppeteer",
+      score: true,
+      emailTo: ["compliance@example.com"],
+      emailLanguage: "en",
+      webhookUrl: "https://webhooks.example.com/verifik",
+      externalRefId: "applicant-42",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/run");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "systemKey" => "example-preset",
+    "name" => "Background Check - Applicant 42",
+    "inputs" => [
+        "documentType" => "CC",
+        "documentNumber" => "1032386359",
+    ],
+    "mode" => "sync",
+    "generatePdf" => true,
+    "includePdfBase64" => false,
+    "pdfEngine" => "puppeteer",
+    "score" => true,
+    "emailTo" => ["compliance@example.com"],
+    "emailLanguage" => "en",
+    "webhookUrl" => "https://webhooks.example.com/verifik",
+    "externalRefId" => "applicant-42",
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-reports/run"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "systemKey": "example-preset",
+    "name": "Background Check - Applicant 42",
+    "inputs": {
+        "documentType": "CC",
+        "documentNumber": "1032386359",
+    },
+    "mode": "sync",
+    "generatePdf": True,
+    "includePdfBase64": False,
+    "pdfEngine": "puppeteer",
+    "score": True,
+    "emailTo": ["compliance@example.com"],
+    "emailLanguage": "en",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "externalRefId": "applicant-42",
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"systemKey": "example-preset",
+		"name":      "Background Check - Applicant 42",
+		"inputs": map[string]interface{}{
+			"documentType":   "CC",
+			"documentNumber": "1032386359",
+		},
+		"mode":             "sync",
+		"generatePdf":      true,
+		"includePdfBase64": false,
+		"pdfEngine":        "puppeteer",
+		"score":            true,
+		"emailTo":          []string{"compliance@example.com"},
+		"emailLanguage":    "en",
+		"webhookUrl":       "https://webhooks.example.com/verifik",
+		"externalRefId":    "applicant-42",
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-reports/run", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-reports/run" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "systemKey": "example-preset",
+    "name": "Background Check - Applicant 42",
+    "inputs": {
+      "documentType": "CC",
+      "documentNumber": "1032386359"
+    },
+    "mode": "sync",
+    "generatePdf": true,
+    "includePdfBase64": false,
+    "pdfEngine": "puppeteer",
+    "score": true,
+    "emailTo": ["compliance@example.com"],
+    "emailLanguage": "en",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "externalRefId": "applicant-42"
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200 OK（同期）">
+
+```json
+{
+  "data": {
+    "mode": "sync",
+    "report": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+      "name": "Background Check - Applicant 42",
+      "status": "sent",
+      "template": "6801a2b3c4d5e6f7a8b9c0d2",
+      "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+      "rowIndex": 0,
+      "externalRefId": "applicant-42",
+      "createdByChannel": "api",
+      "createdAt": "2026-11-24T20:00:00.000Z",
+      "updatedAt": "2026-11-24T20:00:04.000Z"
+    },
+    "batch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "name": "Background Check - Applicant 42",
+      "status": "completed",
+      "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+      "totalRows": 1,
+      "completedRows": 1,
+      "failedRows": 0,
+      "partialRows": 0,
+      "creditsSpent": 2,
+      "rows": [
+        {
+          "rowIndex": 0,
+          "status": "completed",
+          "inputData": {
+            "documentType": "CC",
+            "documentNumber": "1032386359"
+          },
+          "results": {},
+          "errors": []
+        }
+      ]
+    },
+    "verificationScore": {},
+    "pdf": {
+      "size": 148320,
+      "engine": "puppeteer",
+      "generationDurationMs": 1840,
+      "downloadUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download",
+      "htmlUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html"
+    },
+    "email": {
+      "success": true,
+      "recipients": ["compliance@example.com"],
+      "subject": "Verification Report",
+      "messageId": "<message-id@example.com>"
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="202" label="202 Accepted（非同期）">
+
+```json
+{
+  "data": {
+    "mode": "async",
+    "report": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+      "name": "Background Check - Applicant 42",
+      "status": "pending",
+      "template": "6801a2b3c4d5e6f7a8b9c0d2",
+      "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+      "externalRefId": "applicant-42",
+      "createdByChannel": "api"
+    },
+    "batch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "name": "Background Check - Applicant 42",
+      "status": "pending",
+      "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+      "totalRows": 10,
+      "completedRows": 0,
+      "failedRows": 0,
+      "partialRows": 0,
+      "creditsSpent": 0,
+      "rows": []
+    },
+    "pollUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1",
+    "downloadUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download",
+    "htmlUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "preset_not_found",
+  "code": "preset_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "sync_row_limit_exceeded",
+  "code": "sync_row_limit_exceeded"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "InternalServerError",
+  "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### エラーコード
+
+| ステータス | エラーコード / 種別 | 原因 |
+| --- | --- | --- |
+| `401` | `Unauthorized` | `Authorization` ヘッダーの JWT が欠落または無効です。 |
+| `403` | `Forbidden` | 共有 x402 による実行が試行されました。クライアント別 JWT を指定してください。 |
+| `404` | `batch_configuration_not_found` | 指定された `batchConfigurationId` がクライアントに存在しません。 |
+| `404` | `preset_not_found` | 指定された `systemKey` プリセットを解決できませんでした。 |
+| `404` | `template_not_found` | 指定された `templateId` または設定済みのレポートテンプレートが見つかりませんでした。 |
+| `409` | `MissingParameter` | 1 つ以上のリクエストフィールドで Joi スキーマ検証に失敗しました。 |
+| `409` | `client_context_required` | JWT に有効な `authUser.clientId` が含まれていません。 |
+| `409` | `missing_inputs` | `inputs` と `rows` のいずれも指定されていません。 |
+| `409` | `max_rows_exceeded` | `500` 件を超える行/入力が指定されました。 |
+| `409` | `sync_row_limit_exceeded` | `5` 件を超える行に対して `mode: "sync"` が要求されました。 |
+| `409` | `missing_required_inputs` | バッチ設定スキーマで必須とされている入力が 1 つ以上不足しています。 |
+| `409` | `preset_has_no_steps` | 解決されたプリセットに検証ステップが設定されていません。 |
+| `409` | `batch_configuration_has_no_steps` | 対象の `BatchConfiguration` に検証ステップが設定されていません。 |
+| `409` | `endpoints_not_in_account` | 設定されている 1 つ以上のステップの機能権限がクライアントアカウントにありません。 |
+| `409` | `row_not_found` | 要求された `rowIndex` がバッチ内に存在しません。 |
+| `409` | `unknown_score_profile` | 指定された `scoreProfile` が認識されません。 |
+| `422` | `UnprocessableEntity` | Mongoose 検証エラーまたは一意キーの競合です。 |
+| `500` | `InternalServerError` | 実行またはレンダリング中の予期しないサーバーエラーです。 |
+
+### Webhook と MCP 統合
+
+- **Webhook**: `webhookUrl` が指定されている（またはプリセット/`BatchConfiguration` に設定されている）場合、Verifik はレポート生成時に `smart_batch_report_generated` または `smart_batch_report_generation_failed` を発行し、`emailTo` 配信の実行時に `smart_batch_report_sent` または `smart_batch_report_delivery_failed` を発行します。`externalRefId` はレポートドキュメントと Webhook イベントの両方に出力されます。詳細は [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks) を参照してください。
+- **MCP 相当ツール**: MCP 経由で接続された AI エージェントは、同じヘッドレスパラメータで `smart_report_run` ツールを呼び出せます。詳細は [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents) を参照してください。
+
+### 注記
+
+- `data.pdf` は `generatePdf` が `true` の場合（または `emailTo` により PDF レンダリングがトリガーされた場合）のみ含まれ、`data.pdf.buffer` は `includePdfBase64` が `true` の場合のみ含まれます。
+- `data.email` は `emailTo` が指定された場合のみ含まれます。配信に失敗した場合、`data.email.error` に失敗理由が格納されます。
+- `data.verificationScore` は `score` が有効な場合に出力されます。
+
+### 関連項目
+
+- [SmartReports 概要](/verifik-ja/smart-reports)
+- [ヘッドレス API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [MCP と AI エージェント](/verifik-ja/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を取得する](/verifik-ja/smart-reports/retrieve-a-smart-report)
+- [Smart Report PDF をダウンロードする](/verifik-ja/smart-reports/download-smart-report-pdf)

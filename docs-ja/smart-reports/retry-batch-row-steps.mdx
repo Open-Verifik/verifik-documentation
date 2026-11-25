@@ -1,0 +1,325 @@
+---
+id: retry-batch-row-steps
+title: Smart Batch 行のステップを再試行する
+description: 他ステップの結果を保持したまま、単一の Smart Batch 行上の特定ステップ順序のみを再実行します。
+slug: /smart-reports/retry-batch-row-steps
+keywords:
+  - 'v2/smart-batches/{id}/retry-steps'
+  - '/v2/smart-batches/{id}/retry-steps'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches retry-steps
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/retry-steps'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/retry-steps'
+  - 'POST v2/smart-batches/{id}/retry-steps'
+  - 'POST /v2/smart-batches/{id}/retry-steps'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/retry-steps
+  - /v2/smart-batches/retry-steps
+  - 'v2 smart-batches {id} retry-steps'
+  - smart-batches/retry-steps
+  - /smart-batches/retry-steps
+  - api/smart-batches/retry-steps
+  - /api/smart-batches/retry-steps
+  - api smart-batches retry-steps
+  - 'GET v2/smart-batches/{id}/retry-steps'
+  - 'GET /v2/smart-batches/{id}/retry-steps'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+`SmartBatch` の単一行（`rowIndex`）上で指定された `sequences` のみをクリアして再キュー登録し、それ以外のすべてのステップの保存済み出力および他のすべての行はそのまま保持します。`rowIndex` と `sequences` はどちらも必須です。
+
+バッチ、対象行、配下の `FeatureRunner` 実行、または実行アイテムが現在処理中の場合、サーバーは `409 Conflict`（`batch_is_processing`、`row_is_processing`、`run_is_processing`、`item_is_processing`）でリクエストを拒否します。
+
+### エンドポイント
+
+```text
+POST https://api.verifik.co/v2/smart-batches/{id}/retry-steps
+```
+
+このエンドポイントは、クライアント単位の `Authorization: Bearer <VERIFIK_JWT>` を使用することで Smart-Agent プロキシ（`https://ai.verifik.co/v2/smart-batches/{id}/retry-steps`）経由でもアクセスできます。共有 x402 実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type` | `application/json` | リクエストペイロード形式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアントスコープの JWT（`authUser.clientId`）。 |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| ---- | ------ | ---- | ----------- |
+| `id` | string | はい | `SmartBatch` の ObjectId。 |
+
+### リクエストボディ
+
+| 名前 | 型 | 必須 | 説明 |
+| ----------- | --------- | ---- | ----------- |
+| `rowIndex` | integer | はい | 部分的に再試行する行の `0` 始まりインデックス（`>= 0`）。 |
+| `sequences` | integer[] | はい | 該当行上でクリアして再実行するステップ順序番号（`>= 0`、最小 `1` 件、最大 `200` 件）。 |
+
+不明なボディキーまたは必須フィールドの不足は Joi バリデーションにより `409 MissingParameter` で拒否されます。
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/retry-steps`,
+    {
+      rowIndex: 2,
+      sequences: [2, 3],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$payload = [
+    "rowIndex" => 2,
+    "sequences" => [2, 3],
+];
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/retry-steps");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/retry-steps"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "rowIndex": 2,
+    "sequences": [2, 3],
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	body, _ := json.Marshal(map[string]interface{}{
+		"rowIndex":  2,
+		"sequences": []int{2, 3},
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-batches/"+batchID+"/retry-steps", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/retry-steps" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "rowIndex": 2,
+    "sequences": [2, 3]
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "batch": {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "batchConfiguration": "6801a2b3c4d5e6f7a8b9c0d4",
+      "client": "507f1f77bcf86cd799439013",
+      "name": "Colombia Onboarding — November",
+      "status": "processing",
+      "executor": "featureRunner",
+      "source": "smart_batch",
+      "headlessRun": true,
+      "creditsSpent": 0.4,
+      "totalRows": 10,
+      "completedRows": 9,
+      "failedRows": 0,
+      "partialRows": 0,
+      "createdAt": "2026-11-24T20:00:00.000Z",
+      "updatedAt": "2026-11-24T20:22:00.000Z"
+    },
+    "retried": 2
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="400" label="400">
+
+```json
+{
+  "message": "retry_steps_invalid",
+  "code": "BadRequest"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-batch" label="404 (バッチ)">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-row" label="404 (行)">
+
+```json
+{
+  "message": "row_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-processing" label="409 (処理中)">
+
+```json
+{
+  "message": "batch_is_processing",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 (MissingParameter)">
+
+```json
+{
+  "message": "\"sequences\" must contain at least 1 items",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 補足
+
+- 保存済みの `results` と `errors` は `rowIndex` 上で指定された `sequences` のみがクリアされ、他のすべてのステップ順序の結果はそのまま保持されます。
+- 発生しうる `409 Conflict` の理由は `batch_is_processing`、`row_is_processing`、`run_is_processing`、および `item_is_processing` です。
+- 無効または空のステップ順序参照を渡すと `400 BadRequest`（`retry_steps_invalid`）が返されます。
+- バッチ全体の失敗行や一部成功行を丸ごと再試行するには、[失敗した Smart Batch 行を再試行する](/verifik-ja/smart-reports/retry-failed-batch-rows)を使用してください。
+
+### 関連
+
+- [Smart Reports 概要](/verifik-ja/smart-reports)
+- [Headless API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [Smart Reports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)
+- [失敗した Smart Batch 行を再試行する](/verifik-ja/smart-reports/retry-failed-batch-rows)
+- [Smart Batch の進捗を取得する](/verifik-ja/smart-reports/get-smart-batch-progress)

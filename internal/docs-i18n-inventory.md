@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-11-14T03:40:34.939Z
+Generated: 2026-11-24T21:34:08.531Z
 
-- **Files scanned:** 594
-- **Unique endpoint URLs:** 280
-- **Duplicate URL groups (SEO / aliases):** 59
-- **Docs without `### Endpoint` block:** 232
+- **Files scanned:** 647
+- **Unique endpoint URLs:** 317
+- **Duplicate URL groups (SEO / aliases):** 67
+- **Docs without `### Endpoint` block:** 236
 
 ## Summary by priority (canonical primary path only)
 
@@ -13,7 +13,7 @@ Generated: 2026-11-14T03:40:34.939Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 27 | vehicle-validation (other countries) |
-| P2 | 226 | identity, biometrics, resources, etc. |
+| P2 | 263 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -32,6 +32,13 @@ Generated: 2026-11-14T03:40:34.939Z
 - `v2/ar/cedula`
   - `identity-validation/argentina.mdx`
   - `identity/argentina.mdx`
+- `v2/batch-configurations`
+  - `smart-reports/create-a-batch-configuration.mdx`
+  - `smart-reports/list-batch-configurations.mdx`
+- `v2/batch-configurations/{id}`
+  - `smart-reports/delete-a-batch-configuration.mdx`
+  - `smart-reports/retrieve-a-batch-configuration.mdx`
+  - `smart-reports/update-a-batch-configuration.mdx`
 - `v2/biometric-validations/app-login`
   - `resources/app-logins/create-an-app-login-biometric-validation.mdx`
   - `resources/biometric-validations/create-an-app-login-biometric-validation.mdx`
@@ -176,6 +183,27 @@ Generated: 2026-11-14T03:40:34.939Z
 - `v2/projects/email-login`
   - `accounts/authentication/api-key-access-via-email.mdx`
   - `authentication/api-key-access-via-email.mdx`
+- `v2/smart-batches`
+  - `smart-reports/create-a-smart-batch.mdx`
+  - `smart-reports/list-smart-batches.mdx`
+- `v2/smart-batches/{id}`
+  - `smart-reports/delete-a-smart-batch.mdx`
+  - `smart-reports/retrieve-a-smart-batch.mdx`
+  - `smart-reports/update-a-smart-batch.mdx`
+- `v2/smart-report-templates`
+  - `smart-reports/create-a-report-template.mdx`
+  - `smart-reports/list-report-templates.mdx`
+- `v2/smart-report-templates/{id}`
+  - `smart-reports/delete-a-report-template.mdx`
+  - `smart-reports/retrieve-a-report-template.mdx`
+  - `smart-reports/update-a-report-template.mdx`
+- `v2/smart-reports`
+  - `smart-reports/create-a-smart-report.mdx`
+  - `smart-reports/list-smart-reports.mdx`
+- `v2/smart-reports/{id}`
+  - `smart-reports/delete-a-smart-report.mdx`
+  - `smart-reports/retrieve-a-smart-report.mdx`
+  - `smart-reports/update-a-smart-report.mdx`
 - `v2/usa/florida/driver-license`
   - `driver-validation/florida-driver-license.md`
   - `identity-validation/united-states/florida-driver-license-validation.mdx`
@@ -258,6 +286,9 @@ Generated: 2026-11-14T03:40:34.939Z
 | P1 | `v2/ar/rto` | `vehicle-validation/argentina/rto.mdx` |
 | P1 | `v2/ar/vehicle` | `vehicle-validation/argentina.md` |
 | P2 | `v2/auth/session` | `authentication/renew-your-token-jwt.mdx` |
+| P2 | `v2/batch-configurations` | `smart-reports/create-a-batch-configuration.mdx` |
+| P2 | `v2/batch-configurations/{id}` | `smart-reports/delete-a-batch-configuration.mdx` |
+| P2 | `v2/batch-configurations/{id}/input-schema` | `smart-reports/retrieve-configuration-input-schema.mdx` |
 | P2 | `v2/biometric-validations/app-login` | `resources/app-logins/create-an-app-login-biometric-validation.mdx` |
 | P2 | `v2/biometric-validations/app-registration` | `resources/app-registrations/create-an-app-registration-biometric-validation.mdx` |
 | P2 | `v2/biometric-validations/validate` | `resources/app-logins/validate-an-app-login-biometric-validation.mdx` |
@@ -470,6 +501,40 @@ Generated: 2026-11-14T03:40:34.939Z
 | P1 | `v2/py/vehicle` | `vehicle-validation/paraguay.mdx` |
 | P2 | `v2/sec` | `background-check/international/sec-sanctions.mdx` |
 | P2 | `v2/secret-service` | `background-check/international/secret-service.mdx` |
+| P2 | `v2/smart-batch-presets` | `smart-reports/list-report-presets.mdx` |
+| P2 | `v2/smart-batch-presets/{systemkey}/clone` | `smart-reports/clone-a-report-preset.mdx` |
+| P2 | `v2/smart-batches` | `smart-reports/create-a-smart-batch.mdx` |
+| P2 | `v2/smart-batches/{id}` | `smart-reports/delete-a-smart-batch.mdx` |
+| P2 | `v2/smart-batches/{id}/cancel` | `smart-reports/cancel-a-smart-batch.mdx` |
+| P2 | `v2/smart-batches/{id}/estimate` | `smart-reports/estimate-smart-batch-cost.mdx` |
+| P2 | `v2/smart-batches/{id}/pause` | `smart-reports/pause-a-smart-batch.mdx` |
+| P2 | `v2/smart-batches/{id}/progress` | `smart-reports/get-smart-batch-progress.mdx` |
+| P2 | `v2/smart-batches/{id}/resume` | `smart-reports/resume-a-smart-batch.mdx` |
+| P2 | `v2/smart-batches/{id}/retry-failed` | `smart-reports/retry-failed-batch-rows.mdx` |
+| P2 | `v2/smart-batches/{id}/retry-steps` | `smart-reports/retry-batch-row-steps.mdx` |
+| P2 | `v2/smart-batches/{id}/rows/{rowindex}/report` | `smart-reports/retrieve-batch-row-report.mdx` |
+| P2 | `v2/smart-batches/{id}/rows/append` | `smart-reports/append-smart-batch-rows.mdx` |
+| P2 | `v2/smart-batches/{id}/start` | `smart-reports/start-a-smart-batch.mdx` |
+| P2 | `v2/smart-batches/from-file` | `smart-reports/create-smart-batch-from-file.mdx` |
+| P2 | `v2/smart-batches/stats/{configid}` | `smart-reports/get-configuration-batch-stats.mdx` |
+| P2 | `v2/smart-report-templates` | `smart-reports/create-a-report-template.mdx` |
+| P2 | `v2/smart-report-templates/{id}` | `smart-reports/delete-a-report-template.mdx` |
+| P2 | `v2/smart-report-templates/{id}/download-sample` | `smart-reports/download-template-sample.mdx` |
+| P2 | `v2/smart-report-templates/{id}/send-sample` | `smart-reports/send-template-sample.mdx` |
+| P2 | `v2/smart-report-templates/generate-layout` | `smart-reports/generate-template-layout.mdx` |
+| P2 | `v2/smart-report-templates/introspect` | `smart-reports/introspect-sample-data.mdx` |
+| P2 | `v2/smart-report-templates/preview-html` | `smart-reports/preview-template-html.mdx` |
+| P2 | `v2/smart-report-templates/score-profiles` | `smart-reports/list-score-profiles.mdx` |
+| P2 | `v2/smart-report-templates/simulated-responses` | `smart-reports/list-simulated-responses.mdx` |
+| P2 | `v2/smart-report-templates/simulated-responses/{code}` | `smart-reports/retrieve-simulated-response.mdx` |
+| P2 | `v2/smart-report-templates/theme-starters` | `smart-reports/list-theme-starters.mdx` |
+| P2 | `v2/smart-reports` | `smart-reports/create-a-smart-report.mdx` |
+| P2 | `v2/smart-reports/{id}` | `smart-reports/delete-a-smart-report.mdx` |
+| P2 | `v2/smart-reports/{id}/download` | `smart-reports/download-smart-report-pdf.mdx` |
+| P2 | `v2/smart-reports/{id}/generate` | `smart-reports/generate-smart-report-pdf.mdx` |
+| P2 | `v2/smart-reports/{id}/html` | `smart-reports/retrieve-smart-report-html.mdx` |
+| P2 | `v2/smart-reports/{id}/send-email` | `smart-reports/send-smart-report-email.mdx` |
+| P2 | `v2/smart-reports/run` | `smart-reports/run-a-smart-report.mdx` |
 | P2 | `v2/sv/dui` | `identity/el-salvador.mdx` |
 | P2 | `v2/us-terrorists` | `background-check/international/us-state-terrorists.mdx` |
 | P2 | `v2/usa/company` | `business-validation/united-states.mdx` |
@@ -680,6 +745,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `resources/webhooks/retrieve-a-webhook.mdx`
 - `resources/webhooks/smart-enroll-kyc-webhooks.mdx`
 - `resources/webhooks/smart-fleet-webhooks.mdx`
+- `resources/webhooks/smart-reports-webhooks.mdx`
 - `resources/webhooks/supported-events.mdx`
 - `resources/webhooks/the-webhook-object.mdx`
 - `resources/webhooks/update-a-webhook.mdx`
@@ -699,6 +765,9 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `smart-batch/async-queue.mdx`
 - `smart-batch/smart-batch.md`
 - `smart-enroll-self-hosted/smart-enroll-self-hosted.md`
+- `smart-reports/headless-api-guide.mdx`
+- `smart-reports/mcp-and-ai-agents.mdx`
+- `smart-reports/smart-reports.mdx`
 - `smart-scan/smart-scan.md`
 - `smartaccess/smartaccess.md`
 - `smartcheck/smart-batch-queue.md`

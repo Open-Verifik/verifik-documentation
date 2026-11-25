@@ -1,0 +1,290 @@
+---
+id: create-a-smart-report
+title: 创建 Smart Report
+description: 创建关联至现有模板与 SmartBatch 的草稿态 SmartReport，以便后续生成 PDF 或发送邮件。
+slug: /smart-reports/create-a-smart-report
+keywords:
+  - v2/smart-reports
+  - /v2/smart-reports
+  - v2 smart-reports
+  - api/smart-reports
+  - /api/smart-reports
+  - api smart-reports
+  - api.verifik.co/v2/smart-reports
+  - 'https://api.verifik.co/v2/smart-reports'
+  - POST v2/smart-reports
+  - POST /v2/smart-reports
+  - smart-reports
+  - /smart-reports
+  - GET v2/smart-reports
+  - GET /v2/smart-reports
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+创建一个关联至现有 `template` 与 `smartBatch` 的草稿态 `SmartReport` 记录（`status: "draft"`）。当你已经拥有一个已完成或进行中的 `SmartBatch`，并希望分步管理报告创建、PDF 生成、HTML 获取与邮件投递时，请使用此端点。
+
+创建草稿记录会返回 HTTP **`200 OK`** 并在 `{ data }` 中包含新建的 `SmartReport`。该调用本身不会执行核验步骤或渲染 PDF——后续请调用 [生成 Smart Report PDF](/verifik-zh/smart-reports/generate-smart-report-pdf) 或 [通过邮件发送 Smart Report](/verifik-zh/smart-reports/send-smart-report-email)。如果希望在单次请求中完成核验执行并产出报告，请使用 [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)。
+
+### 端点
+
+```
+POST https://api.verifik.co/v2/smart-reports
+```
+
+使用你自己的每客户 `Authorization: Bearer <VERIFIK_JWT>`，也可通过 Smart-Agent 代理地址 `https://ai.verifik.co/v2/smart-reports` 访问此端点。共享 x402 执行会被拦截并返回 `403 Forbidden`。
+
+### 请求头
+
+| 名称 | 值 | 说明 |
+| --- | --- | --- |
+| `Content-Type` | `application/json` | 请求体负载格式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | 客户作用域 JWT（`authUser.clientId`）。 |
+
+### 请求体参数
+
+| 名称 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `template` | string | **是** | 用于渲染该报告的模板 ObjectId。 |
+| `smartBatch` | string | **是** | 提供核验行结果的 `SmartBatch` ObjectId。 |
+| `name` | string | 否 | 报告显示名称。最长 `150` 个字符。 |
+| `externalRefId` | string | 否 | 调用方关联标识符。最长 `200` 个字符。 |
+| `webhookUrl` | string | 否 | 单份报告级别的 `http` 或 `https` Webhook 覆盖地址。最长 `2048` 个字符。 |
+| `rowIndex` | integer | 否 | 关联 `SmartBatch` 中从零开始的行索引（`>= 0`）。 |
+| `createdByChannel` | string | 否 | 来源渠道：`"portal"`、`"api"`、`"mcp"`、`"x402"` 或 `"webhook"`。默认为 `"portal"`。 |
+
+#### 分步工作流与无头单次执行对比
+
+- 当你的流程已经执行过 `SmartBatch`（例如通过 SmartBatch UI 或队列 API），并希望先创建草稿态 `SmartReport`（`status: "draft"`），随后通过 [获取 Smart Report HTML](/verifik-zh/smart-reports/retrieve-smart-report-html) 预览 HTML、通过 [生成 Smart Report PDF](/verifik-zh/smart-reports/generate-smart-report-pdf) 渲染 PDF 并通过 [通过邮件发送 Smart Report](/verifik-zh/smart-reports/send-smart-report-email) 投递时，请使用 `POST /v2/smart-reports`。
+- 请注意，此路由上的 `createdByChannel` 默认值为 `"portal"`，因此 API 集成在追踪渠道来源时应显式设置 `createdByChannel: "api"`。
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.post(
+    "https://api.verifik.co/v2/smart-reports",
+    {
+      template: "6801a2b3c4d5e6f7a8b9c0d2",
+      smartBatch: "6801a2b3c4d5e6f7a8b9c0d3",
+      name: "Applicant 42 Draft Report",
+      externalRefId: "applicant-42",
+      webhookUrl: "https://webhooks.example.com/verifik",
+      rowIndex: 0,
+      createdByChannel: "api",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$ch = curl_init("https://api.verifik.co/v2/smart-reports");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "template" => "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch" => "6801a2b3c4d5e6f7a8b9c0d3",
+    "name" => "Applicant 42 Draft Report",
+    "externalRefId" => "applicant-42",
+    "webhookUrl" => "https://webhooks.example.com/verifik",
+    "rowIndex" => 0,
+    "createdByChannel" => "api",
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-reports"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Applicant 42 Draft Report",
+    "externalRefId": "applicant-42",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]interface{}{
+		"template":         "6801a2b3c4d5e6f7a8b9c0d2",
+		"smartBatch":       "6801a2b3c4d5e6f7a8b9c0d3",
+		"name":             "Applicant 42 Draft Report",
+		"externalRefId":    "applicant-42",
+		"webhookUrl":       "https://webhooks.example.com/verifik",
+		"rowIndex":         0,
+		"createdByChannel": "api",
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-reports", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-reports" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Applicant 42 Draft Report",
+    "externalRefId": "applicant-42",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api"
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Applicant 42 Draft Report",
+    "status": "draft",
+    "externalRefId": "applicant-42",
+    "webhookUrl": "https://webhooks.example.com/verifik",
+    "rowIndex": 0,
+    "createdByChannel": "api",
+    "createdAt": "2026-11-24T20:00:00.000Z",
+    "updatedAt": "2026-11-24T20:00:00.000Z"
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"template\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Webhooks 与 MCP 集成
+
+- **Webhooks**：将 `webhookUrl` 和 `externalRefId` 保存在草稿态 `SmartReport` 上后，后续的生成调用（`smart_batch_report_generated`、`smart_batch_report_generation_failed`）和邮件投递调用（`smart_batch_report_sent`、`smart_batch_report_delivery_failed`）都会继承你的单报告回调目标与关联标识符。详见 [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)。
+- **MCP 集成**：在 AI 智能体中进行单次无头报告执行时，请使用 `smart_report_run`。详见 [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)。
+
+### 注意事项
+
+- 创建成功返回 HTTP `200`（而非 `201`），且 `status: "draft"`。
+- 请保存 `data._id`，用于后续调用 [获取 Smart Report](/verifik-zh/smart-reports/retrieve-a-smart-report)、[生成 Smart Report PDF](/verifik-zh/smart-reports/generate-smart-report-pdf)、[下载 Smart Report PDF](/verifik-zh/smart-reports/download-smart-report-pdf)、[获取 Smart Report HTML](/verifik-zh/smart-reports/retrieve-smart-report-html) 和 [通过邮件发送 Smart Report](/verifik-zh/smart-reports/send-smart-report-email)。
+
+### 相关页面
+
+- [SmartReports 概览](/verifik-zh/smart-reports)
+- [无头 API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)
+- [运行 Smart Report](/verifik-zh/smart-reports/run-a-smart-report)
+- [生成 Smart Report PDF](/verifik-zh/smart-reports/generate-smart-report-pdf)

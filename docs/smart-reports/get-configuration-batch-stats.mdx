@@ -1,0 +1,243 @@
+---
+id: get-configuration-batch-stats
+title: Get configuration batch stats
+description: 'Retrieve aggregate batch counts, row completion totals, and status breakdown for a BatchConfiguration.'
+slug: /smart-reports/get-configuration-batch-stats
+keywords:
+  - 'v2/smart-batches/stats/{configId}'
+  - '/v2/smart-batches/stats/{configId}'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches stats
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/stats/{configId}'
+  - 'https://api.verifik.co/v2/smart-batches/stats/{configId}'
+  - 'GET v2/smart-batches/stats/{configId}'
+  - 'GET /v2/smart-batches/stats/{configId}'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/stats
+  - /v2/smart-batches/stats
+  - 'v2 smart-batches stats {configid}'
+  - smart-batches/stats
+  - /smart-batches/stats
+  - api/smart-batches/stats
+  - /api/smart-batches/stats
+  - api smart-batches stats
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Retrieve aggregate execution statistics across all `SmartBatch` records belonging to a specific `BatchConfiguration` on the authenticated client account. The response returns batch counts, row completion totals, and a per-status breakdown across `"draft"`, `"pending"`, `"processing"`, `"completed"`, `"failed"`, and `"cancelled"`.
+
+Reading configuration stats does not run checks and does not spend credits.
+
+### Endpoint
+
+```text
+GET https://api.verifik.co/v2/smart-batches/stats/{configId}
+```
+
+This endpoint is also reachable through the Smart-Agent proxy at `https://ai.verifik.co/v2/smart-batches/stats/{configId}` using your own per-client `Authorization: Bearer <VERIFIK_JWT>`. Shared x402 execution is blocked with `403 Forbidden`.
+
+### Headers
+
+| Name            | Value                  | Description                              |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | Request payload format.                  |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | Client-scoped JWT (`authUser.clientId`). |
+
+### Parameters
+
+| Name       | Type   | Required | Description |
+| ---------- | ------ | -------- | ----------- |
+| `configId` | string | Yes      | `BatchConfiguration` ObjectId to aggregate batch statistics for. |
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const configId = "6801a2b3c4d5e6f7a8b9c0d4";
+
+  const { data } = await axios.get(`https://api.verifik.co/v2/smart-batches/stats/${configId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$configId = "6801a2b3c4d5e6f7a8b9c0d4";
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/stats/" . $configId);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+config_id = "6801a2b3c4d5e6f7a8b9c0d4"
+url = f"https://api.verifik.co/v2/smart-batches/stats/{config_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	configID := "6801a2b3c4d5e6f7a8b9c0d4"
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches/stats/"+configID, nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/stats/6801a2b3c4d5e6f7a8b9c0d4" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "totalBatches": 4,
+    "totalRows": 120,
+    "completedRows": 95,
+    "failedRows": 5,
+    "partialRows": 4,
+    "pendingRows": 16,
+    "statusBreakdown": {
+      "draft": 0,
+      "pending": 1,
+      "processing": 1,
+      "completed": 2,
+      "failed": 0,
+      "cancelled": 0
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"configId\" is required",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- Statistics are scoped to the authenticated client (`clientId` on your JWT).
+- `pendingRows` is calculated as `totalRows - completedRows - failedRows - partialRows`.
+- To inspect individual batches belonging to this configuration, pass `batchConfiguration` to [List Smart Batches](/smart-reports/list-smart-batches).
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Run a Smart Report](/smart-reports/run-a-smart-report)
+- [List Smart Batches](/smart-reports/list-smart-batches)
+- [Get Smart Batch progress](/smart-reports/get-smart-batch-progress)

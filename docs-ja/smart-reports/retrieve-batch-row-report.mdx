@@ -1,0 +1,345 @@
+---
+id: retrieve-batch-row-report
+title: Smart Batch 行レポートを取得する
+description: バッチ行に対して、任意の Verification Score 付きの組み込み構成行レポートモデル（colombia_vehicle）を取得します。
+slug: /smart-reports/retrieve-batch-row-report
+keywords:
+  - 'v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - '/v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - v2 smart-batches rows report
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - 'api.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - 'https://api.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - 'GET v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - 'GET /v2/smart-batches/{id}/rows/{rowIndex}/report'
+  - smart-batches
+  - /smart-batches
+  - v2/smart-batches/rows/report
+  - /v2/smart-batches/rows/report
+  - 'v2 smart-batches {id} rows {rowindex} report'
+  - smart-batches/rows/report
+  - /smart-batches/rows/report
+  - api/smart-batches/rows/report
+  - /api/smart-batches/rows/report
+  - api smart-batches rows report
+  - rows/report
+  - /rows/report
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+`SmartBatch` の単一行（`rowIndex`）に対する構造化された行レポートモデルを構成します。このエンドポイントは、該当行に保存されたステップ出力に対して Verifik の組み込みレポートコンポーザー（`colombia_vehicle`）を実行し、`score` または `scoreProfile` が渡された場合には任意で `verificationScore` を付与します。
+
+バッチの `BatchConfiguration` が組み込みコンポーザーに一致しない場合、このエンドポイントは `409 Conflict`（`no_report_composer_for_configuration`）を返します。任意のカスタムレポートテンプレートについては、代わりに `POST /v2/smart-reports/run`、`GET /v2/smart-reports/{id}/html`、または `/generate` を使用してください。このエンドポイントを読み取ってもクレジットは消費されません。
+
+### エンドポイント
+
+```text
+GET https://api.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report
+```
+
+このエンドポイントは、クライアント単位の `Authorization: Bearer <VERIFIK_JWT>` を使用することで Smart-Agent プロキシ（`https://ai.verifik.co/v2/smart-batches/{id}/rows/{rowIndex}/report`）経由でもアクセスできます。共有 x402 実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type` | `application/json` | リクエストペイロード形式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアントスコープの JWT（`authUser.clientId`）。 |
+
+### パスパラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| ---------- | ------ | ---- | ----------- |
+| `id` | string | はい | `SmartBatch` の ObjectId。 |
+| `rowIndex` | number | はい | バッチ内の行の `0` 始まりインデックス。 |
+
+### クエリパラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| -------------- | ----------------- | ---- | ----------- |
+| `score` | boolean または string | いいえ | `true` または `"1"` を渡すと、`verificationScore` を算出してレスポンスに含めます。 |
+| `scoreProfile` | string | いいえ | スコアリングプロファイル識別子。`scoreProfile` を指定すると `score` も有効になります。 |
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+  const rowIndex = 0;
+
+  const { data } = await axios.get(
+    `https://api.verifik.co/v2/smart-batches/${batchId}/rows/${rowIndex}/report`,
+    {
+      params: {
+        score: true,
+        scoreProfile: "fleet_standard",
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$batchId = "6801a2b3c4d5e6f7a8b9c0d3";
+$rowIndex = 0;
+$query = http_build_query([
+    "score" => "true",
+    "scoreProfile" => "fleet_standard",
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches/" . $batchId . "/rows/" . $rowIndex . "/report?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+batch_id = "6801a2b3c4d5e6f7a8b9c0d3"
+row_index = 0
+url = f"https://api.verifik.co/v2/smart-batches/{batch_id}/rows/{row_index}/report"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "score": "true",
+    "scoreProfile": "fleet_standard",
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	batchID := "6801a2b3c4d5e6f7a8b9c0d3"
+	rowIndex := "0"
+	params := url.Values{}
+	params.Set("score", "true")
+	params.Set("scoreProfile", "fleet_standard")
+
+	endpoint := fmt.Sprintf("https://api.verifik.co/v2/smart-batches/%s/rows/%s/report?%s", batchID, rowIndex, params.Encode())
+	req, _ := http.NewRequest("GET", endpoint, nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches/6801a2b3c4d5e6f7a8b9c0d3/rows/0/report?score=true&scoreProfile=fleet_standard" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "reportType": "colombia_vehicle",
+    "meta": {
+      "plate": "ABC123",
+      "documentType": "CC",
+      "documentNumber": "1032386359",
+      "vin": "9FB4SRAC2NM123456",
+      "batchName": "Colombia Fleet Inspection",
+      "rowIndex": 0,
+      "generatedAt": "2026-11-24T20:30:00.000Z"
+    },
+    "summary": {
+      "soatVigente": "VIGENTE",
+      "soatVencimiento": "2027-03-15",
+      "rtmVigente": "SI",
+      "rtmVencimiento": "2027-04-01",
+      "tieneGravamenes": "NO",
+      "blindado": "NO",
+      "pazSalvo": "SI",
+      "comparendoCount": 0,
+      "sinisterCount": 0
+    },
+    "blocks": {
+      "runt_vehicle_by_plate": {
+        "featureCode": "colombia_api_vehicle_complete_by_plate",
+        "title": "RUNT — Vehículo",
+        "status": "ok",
+        "sequence": 1,
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identificación",
+            "priority": "high"
+          }
+        ],
+        "displayRows": [],
+        "tables": []
+      }
+    },
+    "blockOrder": [
+      "runt_vehicle_by_plate"
+    ],
+    "verificationScore": {
+      "version": 1,
+      "profile": "fleet_standard",
+      "profileLabel": "Fleet Standard",
+      "score": 0.96,
+      "score100": 96,
+      "decision": "approve",
+      "band": "low_risk",
+      "coverage": 1,
+      "coveragePercent": 100
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-batch" label="404 (バッチ)">
+
+```json
+{
+  "message": "batch_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="404-row" label="404 (行)">
+
+```json
+{
+  "message": "batch_row_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-composer" label="409 (コンポーザーなし)">
+
+```json
+{
+  "message": "no_report_composer_for_configuration",
+  "code": "Conflict"
+}
+```
+
+  </TabItem>
+  <TabItem value="409-validation" label="409 (MissingParameter)">
+
+```json
+{
+  "message": "\"rowIndex\" must be a number",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 補足
+
+- このエンドポイントは組み込みの構成行レポート（`colombia_vehicle`）のみを提供します。その他の設定では `409 Conflict`（`no_report_composer_for_configuration`）が返されます。
+- 任意の設定でカスタムテンプレート、テーマ付き HTML レンダリング、または PDF ドシエを利用する場合は、`POST /v2/smart-reports/run`、`GET /v2/smart-reports/{id}/html`、または `/generate` を使用してください（[Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)を参照）。
+- `score=true`、`score=1`、または `scoreProfile` を指定しない限り、`verificationScore` は省略されます。
+
+### 関連
+
+- [Smart Reports 概要](/verifik-ja/smart-reports)
+- [Headless API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [Smart Reports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)
+- [Smart Batch を取得する](/verifik-ja/smart-reports/retrieve-a-smart-batch)
+- [Smart Report の PDF を生成する](/verifik-ja/smart-reports/generate-smart-report-pdf)

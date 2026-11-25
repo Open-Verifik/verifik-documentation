@@ -1,0 +1,313 @@
+---
+id: list-smart-batches
+title: Smart Batch 一覧
+description: 認証済みクライアントの Smart Batch を、フィルタリング、検索、ソート、任意のページネーション付きで一覧表示します。
+slug: /smart-reports/list-smart-batches
+keywords:
+  - v2/smart-batches
+  - /v2/smart-batches
+  - v2 smart-batches
+  - api/smart-batches
+  - /api/smart-batches
+  - api smart-batches
+  - api.verifik.co/v2/smart-batches
+  - 'https://api.verifik.co/v2/smart-batches'
+  - GET v2/smart-batches
+  - GET /v2/smart-batches
+  - smart-batches
+  - /smart-batches
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+認証済みクライアントアカウントに属する `SmartBatch` レコードを一覧表示します。結果は既定で新しい順（`-createdAt`）となり、明示的に `includeRows=true` を渡さない限り `rows` 配列は除外されるため、一覧レスポンスを軽量に保てます。
+
+`total`、`limit`、`page`、`pages` メタデータを含むページネーション出力を有効にするには `page` を送信してください。ページネーションフィールドなしで一致するバッチ配列を `{ data }` として受け取る場合は `page` を省略します。バッチの一覧取得はチェックを実行せず、クレジットも消費しません。
+
+### エンドポイント
+
+```text
+GET https://api.verifik.co/v2/smart-batches
+```
+
+このエンドポイントは、クライアント単位の `Authorization: Bearer <VERIFIK_JWT>` を使用することで Smart-Agent プロキシ（`https://ai.verifik.co/v2/smart-batches`）経由でもアクセスできます。共有 x402 実行は `403 Forbidden` でブロックされます。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type` | `application/json` | リクエストペイロード形式。 |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | クライアントスコープの JWT（`authUser.clientId`）。 |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| -------------------- | ------- | ---- | ----------- |
+| `batchConfiguration` | string | いいえ | `BatchConfiguration` の ObjectId でバッチを絞り込みます。 |
+| `status` | string | いいえ | バッチステータスで絞り込みます: `"draft"`、`"pending"`、`"processing"`、`"paused"`、`"completed"`、`"failed"`、または `"cancelled"`。 |
+| `page` | number | いいえ | ページ番号（`>= 1`）。ページネーションを有効にし、レスポンスに `total`、`limit`、`page`、`pages` を追加します。 |
+| `limit` | number | いいえ | 1 レスポンスあたりの最大件数（`1`〜`200`）。 |
+| `perPage` | number | いいえ | `page` 指定時のページサイズ（`1`〜`200`）。既定値は `20`。 |
+| `includeRows` | boolean | いいえ | 返される各バッチに `rows` を含める場合は `true` を指定します。省略または `false` の場合、`rows` は除外されます。 |
+| `search` | string | いいえ | バッチ `name` に対する大文字・小文字を区別しない正規表現検索。 |
+| `sort` | string | いいえ | ソート対象フィールドおよび方向。既定値は `"-createdAt"`。 |
+| `sortBy` | string | いいえ | `sortOrder` と組み合わせて使うソート対象フィールド名。 |
+| `sortOrder` | string | いいえ | `sortBy` のソート方向: `"asc"` または `"desc"`。 |
+
+不明なクエリパラメータは Joi バリデーションにより `409 MissingParameter` で拒否されます。
+
+### リクエスト
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const { data } = await axios.get("https://api.verifik.co/v2/smart-batches", {
+    params: {
+      status: "processing",
+      page: 1,
+      perPage: 20,
+      search: "Colombia",
+      sort: "-createdAt",
+    },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+    },
+  });
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "status" => "processing",
+    "page" => 1,
+    "perPage" => 20,
+    "search" => "Colombia",
+    "sort" => "-createdAt",
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-batches?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-batches"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "status": "processing",
+    "page": 1,
+    "perPage": 20,
+    "search": "Colombia",
+    "sort": "-createdAt",
+}
+
+response = requests.get(url, params=params, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+)
+
+func main() {
+	params := url.Values{}
+	params.Set("status", "processing")
+	params.Set("page", "1")
+	params.Set("perPage", "20")
+	params.Set("search", "Colombia")
+	params.Set("sort", "-createdAt")
+
+	req, _ := http.NewRequest("GET", "https://api.verifik.co/v2/smart-batches?"+params.Encode(), nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-batches?status=processing&page=1&perPage=20&search=Colombia&sort=-createdAt" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### レスポンス
+
+<Tabs>
+  <TabItem value="200-paginated" label="200 OK (ページネーションあり)">
+
+```json
+{
+  "data": [
+    {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "batchConfiguration": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d4",
+        "name": "Colombia Identity Check"
+      },
+      "client": {
+        "_id": "507f1f77bcf86cd799439013"
+      },
+      "name": "Colombia Onboarding — November",
+      "status": "processing",
+      "executor": "browser",
+      "source": "smart_batch",
+      "headlessRun": false,
+      "creditsSpent": 0.4,
+      "totalRows": 25,
+      "completedRows": 10,
+      "failedRows": 0,
+      "partialRows": 0,
+      "startedAt": "2026-11-24T19:50:00.000Z",
+      "createdAt": "2026-11-24T19:48:00.000Z",
+      "updatedAt": "2026-11-24T19:52:00.000Z"
+    }
+  ],
+  "total": 1,
+  "limit": 20,
+  "page": 1,
+  "pages": 1
+}
+```
+
+  </TabItem>
+  <TabItem value="200-unpaginated" label="200 OK (ページネーションなし)">
+
+```json
+{
+  "data": [
+    {
+      "_id": "6801a2b3c4d5e6f7a8b9c0d3",
+      "batchConfiguration": {
+        "_id": "6801a2b3c4d5e6f7a8b9c0d4",
+        "name": "Colombia Identity Check"
+      },
+      "client": {
+        "_id": "507f1f77bcf86cd799439013"
+      },
+      "name": "Colombia Onboarding — November",
+      "status": "processing",
+      "executor": "browser",
+      "source": "smart_batch",
+      "headlessRun": false,
+      "creditsSpent": 0.4,
+      "totalRows": 25,
+      "completedRows": 10,
+      "failedRows": 0,
+      "partialRows": 0,
+      "startedAt": "2026-11-24T19:50:00.000Z",
+      "createdAt": "2026-11-24T19:48:00.000Z",
+      "updatedAt": "2026-11-24T19:52:00.000Z"
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"status\" must be one of [draft, pending, processing, paused, completed, failed, cancelled]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 補足
+
+- 結果は認証済みクライアント（JWT 上の `clientId`）にスコープされます。
+- `includeRows` を省略するか `false` のままにすることで一覧レスポンスを小さく保てます。1 つのバッチの完全な `rows` を取得するには[Smart Batch を取得する](/verifik-ja/smart-reports/retrieve-a-smart-batch)を使用してください。
+- 無効なクエリ値や不明なクエリキーは Joi バリデーションにより `409 MissingParameter` で失敗します。
+- `page` が指定された場合（`>= 1`）、`perPage` の既定値は `20` となり、`1`〜`200` をサポートします。
+
+### 関連
+
+- [Smart Reports 概要](/verifik-ja/smart-reports)
+- [Headless API ガイド](/verifik-ja/smart-reports/headless-api-guide)
+- [Smart Reports Webhook](/verifik-ja/resources/smart-reports-webhooks)
+- [Smart Report を実行する](/verifik-ja/smart-reports/run-a-smart-report)
+- [Smart Batch を作成する](/verifik-ja/smart-reports/create-a-smart-batch)
+- [Smart Batch を取得する](/verifik-ja/smart-reports/retrieve-a-smart-batch)

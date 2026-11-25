@@ -1,0 +1,264 @@
+---
+id: retrieve-simulated-response
+title: 获取模拟响应
+description: 获取特定目录端点代码的沙盒模拟负载、字段大纲以及空值/缺失变体
+slug: /smart-reports/retrieve-simulated-response
+keywords:
+  - 'v2/smart-report-templates/simulated-responses/{code}'
+  - '/v2/smart-report-templates/simulated-responses/{code}'
+  - v2/smart-report-templates/simulated-responses
+  - /v2/smart-report-templates/simulated-responses
+  - v2 smart-report-templates simulated-responses
+  - 'v2 smart-report-templates simulated-responses {code}'
+  - api/smart-report-templates/simulated-responses
+  - /api/smart-report-templates/simulated-responses
+  - api smart-report-templates simulated-responses
+  - 'api.verifik.co/v2/smart-report-templates/simulated-responses/{code}'
+  - 'https://api.verifik.co/v2/smart-report-templates/simulated-responses/{code}'
+  - 'GET v2/smart-report-templates/simulated-responses/{code}'
+  - 'GET /v2/smart-report-templates/simulated-responses/{code}'
+  - smart-report-templates/simulated-responses
+  - /smart-report-templates/simulated-responses
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+获取通过 [列出模拟响应](/verifik-zh/smart-reports/list-simulated-responses) 发现的目录端点 `code` 对应的沙盒模拟响应、字段 `outline`、`dataSample` 及 `emptySample`。你可以将返回的 `sample` 状态在已填充记录（`"data"`）、空匹配（`"empty"`）或缺失数据（`"missing"`）之间切换，并通过 `listSize` 控制数组行数。
+
+在无头模板设计与自动化 QA 工作流中，此端点可让你在将模板保存或发布到生产环境 `SmartBatch` 流水线之前，验证模板在边界情况下的渲染表现——例如空表格、缺失可选字段或多页数组（`listSize` 范围为 `2` 到 `30`）。
+
+### 端点
+
+```
+GET https://api.verifik.co/v2/smart-report-templates/simulated-responses/{code}
+```
+
+Smart-Agent 代理（`https://ai.verifik.co`）暴露了完全相同的 `/v2/...` 路径，并同样要求携带你自己的 `Authorization: Bearer <VERIFIK_JWT>` 请求头。
+
+### 请求头
+
+| 名称 | 值 |
+| --- | --- |
+| Accept | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### 参数
+
+| 名称 | 类型 | 位置 | 必填 | 说明 |
+| --- | --- | --- | --- | --- |
+| `code` | string | 路径 | 是 | 来自 [列出模拟响应](/verifik-zh/smart-reports/list-simulated-responses) 的目录端点代码。 |
+| `availability` | string | 查询 | 否 | 放入 `sample` 中的模拟状态：`"data"`、`"empty"` 或 `"missing"`。默认为 `"data"`。 |
+| `listSize` | integer | 查询 | 否 | 为数组/列表字段生成的合成条目数量。有效范围：`2` 到 `30`。 |
+
+### 请求示例
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const code = "co_cedula";
+  const params = new URLSearchParams({
+    availability: "data",
+    listSize: "5",
+  });
+
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates/simulated-responses/${code}?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$code = "co_cedula";
+$query = http_build_query([
+    "availability" => "data",
+    "listSize" => 5,
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates/simulated-responses/" . $code . "?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+code = "co_cedula"
+url = f"https://api.verifik.co/v2/smart-report-templates/simulated-responses/{code}"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "availability": "data",
+    "listSize": 5,
+}
+
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	url := "https://api.verifik.co/v2/smart-report-templates/simulated-responses/co_cedula?availability=data&listSize=5"
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-report-templates/simulated-responses/co_cedula?availability=data&listSize=5" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 响应示例
+
+<Tabs>
+  <TabItem value="200-found" label="200（已找到）">
+
+```json
+{
+  "data": {
+    "code": "co_cedula",
+    "found": true,
+    "name": "Colombia National ID Verification",
+    "country": "Colombia",
+    "category": "citizen",
+    "method": "GET",
+    "url": "https://api.verifik.co/v2/co/cedula",
+    "inputs": ["documentType", "documentNumber"],
+    "availability": "data",
+    "outline": {
+      "fullName": "string",
+      "documentNumber": "string",
+      "status": "string"
+    },
+    "sample": {
+      "fullName": "MATEO ROJAS",
+      "documentNumber": "1020304050",
+      "status": "VIGENTE"
+    },
+    "dataSample": {
+      "fullName": "MATEO ROJAS",
+      "documentNumber": "1020304050",
+      "status": "VIGENTE"
+    },
+    "emptySample": {}
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="200-not-found" label="200（未找到）">
+
+```json
+{
+  "data": {
+    "code": "unknown_code",
+    "found": false,
+    "outline": {},
+    "sample": {},
+    "note": "No simulated response found in sandbox endpoint inventory for the requested code."
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"availability\" must be one of [data, empty, missing]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 注意事项
+
+- 如果 `{code}` 不在沙盒清单中，端点会返回 HTTP `200`，其中包含 `found: false`、空的 `outline` 与 `sample` 对象，以及说明性的 `note`。
+- `listSize` 接受 `2` 到 `30` 之间的整数，适合通过 [下载模板示例](/verifik-zh/smart-reports/download-template-sample) 测试多页 PDF 分页效果。
+- 此端点不会执行实时核验，也不会消耗积分。
+
+### 相关页面
+
+- [SmartReports 概览](/verifik-zh/smart-reports)
+- [无头 API 指南](/verifik-zh/smart-reports/headless-api-guide)
+- [MCP 与 AI 智能体](/verifik-zh/smart-reports/mcp-and-ai-agents)
+- [SmartReports Webhooks](/verifik-zh/resources/smart-reports-webhooks)
+- [列出模拟响应](/verifik-zh/smart-reports/list-simulated-responses)
+- [探测示例数据](/verifik-zh/smart-reports/introspect-sample-data)
+- [生成模板布局](/verifik-zh/smart-reports/generate-template-layout)
+- [预览模板 HTML](/verifik-zh/smart-reports/preview-template-html)

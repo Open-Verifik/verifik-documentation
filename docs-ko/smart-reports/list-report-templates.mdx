@@ -1,0 +1,261 @@
+---
+id: list-report-templates
+title: 리포트 템플릿 목록 조회
+description: 사용자 지정 템플릿과 기본 제공 시스템 스타터를 포함하여 클라이언트 계정에서 사용 가능한 Smart Report 템플릿 목록을 조회합니다
+slug: /smart-reports/list-report-templates
+keywords:
+  - v2/smart-report-templates
+  - /v2/smart-report-templates
+  - v2 smart-report-templates
+  - api/smart-report-templates
+  - /api/smart-report-templates
+  - api smart-report-templates
+  - api.verifik.co/v2/smart-report-templates
+  - 'https://api.verifik.co/v2/smart-report-templates'
+  - GET v2/smart-report-templates
+  - GET /v2/smart-report-templates
+  - smart-report-templates
+  - /smart-report-templates
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+인증된 클라이언트에서 사용 가능한 Smart Report 템플릿 목록을 조회합니다. 기본적으로 이 엔드포인트는 클라이언트 소유의 사용자 지정 템플릿과 Verifik의 기본 제공 `"System"` 템플릿을 모두 반환하므로, `SmartBatch` 실행이나 샘플 렌더링을 트리거하기 전에 재사용 가능한 템플릿 ID(`_id`)를 찾고 레이아웃 및 테마 구성을 검사해 템플릿을 선택할 수 있습니다.
+
+헤드리스 검증 파이프라인 및 AI 에이전트 워크플로에서는 먼저 이 엔드포인트를 호출하여 `batchConfiguration`에 연결된 기존 템플릿을 찾거나, `country`, `category`, `tier`별로 기본 제공 `"System"` 템플릿을 필터링하거나, 사용자 지정 템플릿을 복제·수정하기 전에 활성 상태인지 확인하세요. 템플릿 목록 조회는 PDF를 렌더링하거나 크레딧을 소모하지 않습니다.
+
+### 엔드포인트
+
+```
+GET https://api.verifik.co/v2/smart-report-templates
+```
+
+Smart-Agent 프록시(`https://ai.verifik.co`)도 동일한 `/v2/...` 경로를 제공하며 본인의 `Authorization: Bearer <VERIFIK_JWT>` 헤더가 필요합니다.
+
+### 헤더
+
+| 이름          | 값                     |
+| ------------- | ---------------------- |
+| Accept        | `application/json`     |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+### 매개변수
+
+모든 쿼리 매개변수는 선택 사항입니다.
+
+| 이름                 | 타입    | 필수   | 설명 |
+| -------------------- | ------- | ------ | ---- |
+| `batchConfiguration` | string  | 아니요 | 특정 `SmartBatch` 구성 ObjectId에 연결된 템플릿으로 필터링합니다. |
+| `type`               | string  | 아니요 | 출처별 필터링: `"client"` 또는 `"System"`. 생략 시 클라이언트 자체 템플릿과 기본 제공 `"System"` 템플릿을 함께 반환합니다. |
+| `country`            | string  | 아니요 | 국가 필터. 서버에서 자동으로 대문자 변환됩니다(예: `CO`, `MX`, `COLOMBIA`). |
+| `category`           | string  | 아니요 | 도메인 카테고리 필터: `"citizen"`, `"company"` 또는 `"vehicle"`. |
+| `tier`               | string  | 아니요 | 템플릿 등급 필터: `"essential"` 또는 `"comprehensive"`. |
+| `isActive`           | boolean | 아니요 | 활성 상태로 필터링(`true` 또는 `false`). |
+| `search`             | string  | 아니요 | `name` 및 `systemKey`에 대한 대소문자 구분 없는 정규식 검색. `type` 없이 `search`를 전송하면 클라이언트 템플릿과 `"System"` 템플릿 모두에서 검색합니다. |
+| `page`               | integer | 아니요 | 페이지 번호(1부터 시작). 이 모듈에서 페이지네이션을 활성화하려면 `page`와 `limit`을 모두 함께 제공해야 합니다. |
+| `limit`              | integer | 아니요 | 페이지 크기. 결과를 페이지네이션하려면 `page`와 함께 제공해야 합니다. |
+| `sort`               | string  | 아니요 | 정렬 사양. 기본값은 `type: 1, createdAt: -1`(템플릿 유형 및 최신순 정렬)입니다. |
+
+### 요청
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+  const params = new URLSearchParams({
+    category: "citizen",
+    isActive: "true",
+    page: "1",
+    limit: "20",
+  });
+
+  const res = await fetch(
+    `https://api.verifik.co/v2/smart-report-templates?${params.toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$query = http_build_query([
+    "category" => "citizen",
+    "isActive" => "true",
+    "page" => 1,
+    "limit" => 20,
+]);
+
+$ch = curl_init("https://api.verifik.co/v2/smart-report-templates?" . $query);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Accept: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+url = "https://api.verifik.co/v2/smart-report-templates"
+headers = {
+    "Accept": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+params = {
+    "category": "citizen",
+    "isActive": "true",
+    "page": 1,
+    "limit": 20,
+}
+
+r = requests.get(url, headers=headers, params=params)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	url := "https://api.verifik.co/v2/smart-report-templates?category=citizen&isActive=true&page=1&limit=20"
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/smart-report-templates?category=citizen&isActive=true&page=1&limit=20" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT"
+```
+
+  </TabItem>
+</Tabs>
+
+### 응답
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+  "data": [
+    {
+      "_id": "67c1f94b2d8a1c0012a4b301",
+      "name": "Driver Background Report",
+      "description": "Standard onboarding report for Colombia driver checks",
+      "client": {
+        "_id": "507f1f77bcf86cd799439013",
+        "name": "Acme Mobility"
+      },
+      "batchConfiguration": {
+        "_id": "67c1f8102d8a1c0012a4b210",
+        "name": "Colombia Driver Onboarding"
+      },
+      "country": "CO",
+      "category": "citizen",
+      "isActive": true,
+      "pageSize": "A4",
+      "orientation": "portrait",
+      "pdfEngine": "puppeteer",
+      "primaryColor": "#4F46E5",
+      "identityColor": "#000000",
+      "pageBackgroundColor": "#ffffff",
+      "reportTheme": "light_cards",
+      "thumbnail": {
+        "image": "data:image/png;base64,iVBORw0KGgo..."
+      },
+      "createdAt": "2026-09-10T03:32:00.000Z",
+      "updatedAt": "2026-09-10T03:35:12.000Z"
+    }
+  ]
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "\"category\" must be one of [citizen, company, vehicle]",
+  "code": "MissingParameter"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### 참고 사항
+
+- 응답에는 `batchConfiguration` 및 `client`가 채워지고(populate) `+thumbnail.image`가 선택되므로, 대시보드와 헤드리스 미리보기에서 추가 요청 없이 템플릿 썸네일을 확인할 수 있습니다.
+- 결과를 페이지네이션하려면 `page`와 `limit`을 모두 함께 전달해야 합니다. 둘 중 하나만 전달하면 페이지네이션이 적용되지 않습니다.
+- 목록에서 반환된 기본 제공 `"System"` 템플릿은 읽기 전용입니다. 수정 또는 삭제를 시도하면 `403` (`system_template_readonly`)이 반환됩니다. 스타터를 사용자 지정하려면 해당 레이아웃을 [리포트 템플릿 생성](/verifik-ko/smart-reports/create-a-report-template)에 전달하세요.
+- `reportTheme`별로 그룹화된 깔끔한 스타터 청사진이 필요하면 [테마 스타터 목록 조회](/verifik-ko/smart-reports/list-theme-starters)를 사용하세요.
+
+### 관련 문서
+
+- [SmartReports 개요](/verifik-ko/smart-reports)
+- [헤드리스 API 가이드](/verifik-ko/smart-reports/headless-api-guide)
+- [MCP 및 AI 에이전트](/verifik-ko/smart-reports/mcp-and-ai-agents)
+- [SmartReports 웹훅](/verifik-ko/resources/smart-reports-webhooks)
+- [리포트 템플릿 생성](/verifik-ko/smart-reports/create-a-report-template)
+- [리포트 템플릿 조회](/verifik-ko/smart-reports/retrieve-a-report-template)
+- [테마 스타터 목록 조회](/verifik-ko/smart-reports/list-theme-starters)

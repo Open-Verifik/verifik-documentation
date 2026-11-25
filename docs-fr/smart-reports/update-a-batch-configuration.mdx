@@ -1,0 +1,334 @@
+---
+id: update-a-batch-configuration
+title: Mettre à jour une configuration de lot
+description: Mettre à jour les étapes de workflow, les formats, les notifications, le lien de modèle ou le statut actif d'une configuration de lot
+slug: /smart-reports/update-a-batch-configuration
+keywords:
+  - 'v2/batch-configurations/{id}'
+  - '/v2/batch-configurations/{id}'
+  - v2/batch-configurations
+  - /v2/batch-configurations
+  - v2 batch-configurations
+  - 'v2 batch-configurations {id}'
+  - batch-configurations
+  - /batch-configurations
+  - api/batch-configurations
+  - /api/batch-configurations
+  - 'api.verifik.co/v2/batch-configurations/{id}'
+  - 'https://api.verifik.co/v2/batch-configurations/{id}'
+  - 'PUT v2/batch-configurations/{id}'
+  - 'PUT /v2/batch-configurations/{id}'
+  - api batch-configurations
+  - 'GET v2/batch-configurations/{id}'
+  - 'GET /v2/batch-configurations/{id}'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Mettez à jour une `BatchConfiguration` existante détenue par votre compte client. Envoyez uniquement les champs que vous souhaitez modifier ; les champs omis conservent leurs valeurs actuelles.
+
+Lorsque `steps` est fourni, le serveur normalise les valeurs `sequence` manquantes à `index + 1` et borne `retryDelayBaseSeconds` (`>= 1`) ainsi que `timeoutSeconds` (`>= 5`). La mise à jour de `notification` synchronise automatiquement le webhook Verifik associé, et la modification de `executor` propage le nouvel exécuteur aux lots enfants non terminaux. La mise à jour d'une configuration n'exécute aucune consultation et ne consomme pas de crédits.
+
+### Point de terminaison
+
+```
+PUT https://api.verifik.co/v2/batch-configurations/{id}
+```
+
+Également accessible via le proxy Smart-Agent à l'adresse `https://ai.verifik.co/v2/batch-configurations/{id}` avec votre propre en-tête par client `Authorization: Bearer <VERIFIK_JWT>`. L'exécution partagée x402 est bloquée avec `403 Forbidden`.
+
+### En-têtes
+
+| Nom | Valeur |
+| ---- | ----- |
+| Content-Type | `application/json` |
+| Authorization | `Bearer <VERIFIK_JWT>` |
+
+Le jeton doit être un **JWT client**. Des identifiants manquants ou invalides renvoient `401 Unauthorized`.
+
+### Paramètres
+
+| Nom | Type | Requis | Description |
+| ---- | ---- | -------- | ----------- |
+| `id` | string | Oui | ObjectId `BatchConfiguration` à mettre à jour. |
+
+### Corps de la requête
+
+Tous les champs du corps sont facultatifs. N'incluez que les propriétés à mettre à jour.
+
+| Nom | Type | Requis | Description |
+| ---- | ---- | -------- | ----------- |
+| `name` | string | Non | Nom affiché de la configuration. Nettoyé des espaces, `150` caractères maximum. |
+| `description` | string | Non | Résumé facultatif du workflow. `800` caractères maximum. |
+| `country` | string | Non | Portée géographique (pays). Nettoyé des espaces et converti en majuscules par le serveur. |
+| `steps` | object[] | Non | Remplace le tableau ordonné d'étapes. Une valeur `sequence` manquante prend par défaut `index + 1` ; `retryDelayBaseSeconds` est borné à `>= 1` et `timeoutSeconds` à `>= 5`. |
+| `inputFormat` | string | Non | Format d'entrée par défaut : `csv`, `jsonl` ou `xlsx`. |
+| `outputFormat` | string | Non | Format de sortie par défaut : `csv`, `jsonl` ou `xlsx`. |
+| `mergeStrategy` | string | Non | Stratégie d'exécution des étapes : `sequential`, `parallel-independent` ou `parallel-with-fallback`. |
+| `notification` | object | Non | Paramètres de notification de fin (`webhookUrl` et `emailOnCompletion`). Synchronise automatiquement un webhook Verifik actif lorsque `webhookUrl` est défini. |
+| `scheduleExpression` | string | Non | Expression de planification pour les exécutions automatisées. |
+| `preferredReportTemplate` | string | Non | ObjectId `SmartReportTemplate` lié à cette configuration. |
+| `visitaFlow` | object | Non | Graphe visuel de nœuds définissant le chaînage des étapes (les expressions `{{results.N.field}}` sont exclues des entrées manuelles dans le schéma d'entrée dérivé). |
+| `isActive` | boolean | Non | Indique si la configuration est active. |
+| `executor` | string | Non | Cible d'exécution : `queue`, `featureRunner` ou `browser` (`featureRunner` est enregistré comme `browser`). Synchronise les lots enfants non terminaux en cas de modification. |
+
+### Requête
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+const fetch = require("node-fetch");
+
+async function run() {
+    const id = "67d1b4a0e4f5a60718293b12";
+    const res = await fetch(`https://api.verifik.co/v2/batch-configurations/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+        },
+        body: JSON.stringify({
+            name: "Colombia KYC Workflow (Updated)",
+            mergeStrategy: "parallel-independent",
+            notification: {
+                webhookUrl: "https://example.com/webhooks/smart-reports",
+                emailOnCompletion: ["compliance@example.com"]
+            },
+            isActive: true
+        }),
+    });
+    console.log(await res.json());
+}
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "67d1b4a0e4f5a60718293b12";
+$ch = curl_init("https://api.verifik.co/v2/batch-configurations/" . $id);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT")
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "name" => "Colombia KYC Workflow (Updated)",
+    "mergeStrategy" => "parallel-independent",
+    "notification" => [
+        "webhookUrl" => "https://example.com/webhooks/smart-reports",
+        "emailOnCompletion" => ["compliance@example.com"]
+    ],
+    "isActive" => true
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+config_id = "67d1b4a0e4f5a60718293b12"
+url = f"https://api.verifik.co/v2/batch-configurations/{config_id}"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "name": "Colombia KYC Workflow (Updated)",
+    "mergeStrategy": "parallel-independent",
+    "notification": {
+        "webhookUrl": "https://example.com/webhooks/smart-reports",
+        "emailOnCompletion": ["compliance@example.com"],
+    },
+    "isActive": True,
+}
+
+r = requests.put(url, json=payload, headers=headers)
+print(r.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
+    "os"
+)
+
+func main() {
+    id := "67d1b4a0e4f5a60718293b12"
+    payload := map[string]interface{}{
+        "name":          "Colombia KYC Workflow (Updated)",
+        "mergeStrategy": "parallel-independent",
+        "notification": map[string]interface{}{
+            "webhookUrl":        "https://example.com/webhooks/smart-reports",
+            "emailOnCompletion": []string{"compliance@example.com"},
+        },
+        "isActive": true,
+    }
+
+    body, _ := json.Marshal(payload)
+    req, _ := http.NewRequest("PUT", "https://api.verifik.co/v2/batch-configurations/"+id, bytes.NewReader(body))
+    req.Header.Set("Content-Type", "application/json")
+    req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+    resp, _ := http.DefaultClient.Do(req)
+    defer resp.Body.Close()
+
+    var out map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&out)
+    fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -sS -X PUT "https://api.verifik.co/v2/batch-configurations/67d1b4a0e4f5a60718293b12" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "name": "Colombia KYC Workflow (Updated)",
+    "mergeStrategy": "parallel-independent",
+    "notification": {
+      "webhookUrl": "https://example.com/webhooks/smart-reports",
+      "emailOnCompletion": ["compliance@example.com"]
+    },
+    "isActive": true
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Réponse
+
+<Tabs>
+  <TabItem value="200" label="200">
+
+```json
+{
+    "data": {
+        "_id": "67d1b4a0e4f5a60718293b12",
+        "name": "Colombia KYC Workflow (Updated)",
+        "description": "Core Colombian identity and registry verification for citizens.",
+        "country": "CO",
+        "executor": "browser",
+        "inputFormat": "csv",
+        "outputFormat": "csv",
+        "mergeStrategy": "parallel-independent",
+        "preferredReportTemplate": "67d1b4a1e4f5a60718293b15",
+        "notification": {
+            "webhookUrl": "https://example.com/webhooks/smart-reports",
+            "emailOnCompletion": ["compliance@example.com"]
+        },
+        "isActive": true,
+        "steps": [
+            {
+                "_id": "67d1b4a0e4f5a60718293b13",
+                "appFeature": {
+                    "_id": "65f0a1b2c3d4e5f607182901",
+                    "name": "Colombian Cédula Validation",
+                    "code": "co-cedula",
+                    "url": "/v2/co/cedula",
+                    "method": "GET",
+                    "price": 0.05,
+                    "smartCheckPrice": 0.05,
+                    "country": "Colombia"
+                },
+                "sequence": 1,
+                "enabled": true,
+                "parameterDefaults": {},
+                "queryMode": "byDocument",
+                "inputFieldMapping": {},
+                "outputFieldsToKeep": [],
+                "maxRetries": 3,
+                "retryDelayBaseSeconds": 4,
+                "timeoutSeconds": 30
+            }
+        ],
+        "createdAt": "2026-10-15T14:20:00.000Z",
+        "updatedAt": "2026-10-15T15:45:00.000Z"
+    }
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+    "message": "Unauthorized",
+    "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+    "message": "Access forbidden",
+    "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+    "message": "not_found",
+    "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+    "message": "BatchConfiguration validation failed: mergeStrategy: `invalid` is not a valid enum value for path `mergeStrategy`.",
+    "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Notes
+
+- L'envoi de `steps` remplace l'intégralité du tableau `steps` de la configuration ; il ne modifie pas les étapes individuellement sur place.
+- Les valeurs `sequence` manquantes dans `steps` sont normalisées à `index + 1`, `retryDelayBaseSeconds` est borné à `>= 1` et `timeoutSeconds` à `>= 5`.
+- La modification de `executor` synchronise tous les lots enfants non terminaux appartenant à cette configuration.
+- Les identifiants manquants ou appartenant à un autre client renvoient `404` (`not_found`), tandis que les erreurs de validation de schéma Mongoose renvoient `422` (`UnprocessableEntity`).
+
+### Voir aussi
+
+- [Récupérer une configuration de lot](/verifik-fr/smart-reports/retrieve-a-batch-configuration)
+- [Récupérer le schéma d'entrée d'une configuration](/verifik-fr/smart-reports/retrieve-configuration-input-schema)
+- [Supprimer une configuration de lot](/verifik-fr/smart-reports/delete-a-batch-configuration)
+- [Présentation de SmartReports](/verifik-fr/smart-reports)
+- [Guide de l'API Headless](/verifik-fr/smart-reports/headless-api-guide)
+- [MCP et agents IA](/verifik-fr/smart-reports/mcp-and-ai-agents)
+- [Webhooks SmartReports](/verifik-fr/resources/smart-reports-webhooks)
+- [Exécuter un Smart Report](/verifik-fr/smart-reports/run-a-smart-report)

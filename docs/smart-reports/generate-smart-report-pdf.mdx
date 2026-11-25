@@ -1,0 +1,333 @@
+---
+id: generate-smart-report-pdf
+title: Generate Smart Report PDF
+description: 'Render a PDF from a SmartReport, optionally compute a verification score, emit generation webhooks, and receive base64 output and download URLs.'
+slug: /smart-reports/generate-smart-report-pdf
+keywords:
+  - 'v2/smart-reports/{id}/generate'
+  - '/v2/smart-reports/{id}/generate'
+  - v2/smart-reports/generate
+  - /v2/smart-reports/generate
+  - v2 smart-reports generate
+  - 'v2 smart-reports {id} generate'
+  - api/smart-reports/generate
+  - /api/smart-reports/generate
+  - 'api.verifik.co/v2/smart-reports/{id}/generate'
+  - 'https://api.verifik.co/v2/smart-reports/{id}/generate'
+  - 'POST v2/smart-reports/{id}/generate'
+  - 'POST /v2/smart-reports/{id}/generate'
+  - smart-reports
+  - smart_report_generate_pdf
+  - smart-reports/generate
+  - /smart-reports/generate
+  - api smart-reports generate
+  - 'GET v2/smart-reports/{id}/generate'
+  - 'GET /v2/smart-reports/{id}/generate'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Render a PDF for an existing `SmartReport` using either `"puppeteer"` or `"pdfkit"`, optionally compute `verificationScore`, and receive the base64-encoded PDF buffer alongside `downloadUrl` and `htmlUrl`.
+
+On success, this endpoint marks the report `status: "generated"`, persists `verificationScoreSummary` when scoring is enabled, and emits the `smart_batch_report_generated` webhook. If PDF generation fails, the report is marked `status: "failed"` and the `smart_batch_report_generation_failed` webhook is emitted.
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/smart-reports/{id}/generate
+```
+
+This endpoint accepts JSON payloads up to **64 MB** (to accommodate custom `printHtml` documents). It is also reachable through the Smart-Agent proxy at `https://ai.verifik.co/v2/smart-reports/{id}/generate` using your own per-client `Authorization: Bearer <VERIFIK_JWT>`. Shared x402 execution is blocked with `403 Forbidden`.
+
+### Headers
+
+| Name            | Value                  | Description                              |
+| --------------- | ---------------------- | ---------------------------------------- |
+| `Content-Type`  | `application/json`     | Request payload format (64 MB limit).    |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | Client-scoped JWT (`authUser.clientId`). |
+
+### Parameters
+
+| Name | Type   | Required | Description |
+| ---- | ------ | -------- | ----------- |
+| `id` | string | **Yes**  | `SmartReport` ObjectId. |
+
+### Body
+
+| Name           | Type    | Required | Description |
+| -------------- | ------- | -------- | ----------- |
+| `engine`       | string  | No       | PDF rendering engine: `"pdfkit"` or `"puppeteer"`. |
+| `rowIndex`     | number  | No       | Zero-based row index from the linked `SmartBatch`. Defaults to row `0`. |
+| `printHtml`    | string  | No       | Full HTML string (max `64000000` characters) used for non-themed templates containing `<html`. |
+| `score`        | boolean | No       | Whether to calculate `verificationScore` and store `verificationScoreSummary` on the report. |
+| `scoreProfile` | string  | No       | Scoring profile identifier used when `score` is enabled. Max `64` characters. |
+
+#### Rendering and scoring behavior
+
+- **Default row selection**: When `rowIndex` is omitted, generation defaults to row `0`. Requesting an out-of-range row returns `409 Conflict` (`row_not_found`).
+- **Custom HTML (`printHtml`)**: When working with non-themed templates that provide full `<html` markup, pass `printHtml` (up to `64000000` characters).
+- **Verification scoring**: Set `score: true` (and optionally `scoreProfile`) to compute `verificationScore`, return it at the top level of the response, and save `verificationScoreSummary` on the `SmartReport`. Unknown profiles fail with `409 Conflict` (`unknown_score_profile`).
+
+### Request
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-reports/${id}/generate`,
+    {
+      engine: "puppeteer",
+      rowIndex: 0,
+      score: true,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log({
+    status: data.data.status,
+    pdfSize: data.pdf.size,
+    downloadUrl: data.pdf.downloadUrl,
+  });
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id . "/generate");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "engine" => "puppeteer",
+    "rowIndex" => 0,
+    "score" => true,
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}/generate"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "engine": "puppeteer",
+    "rowIndex": 0,
+    "score": True,
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	body, _ := json.Marshal(map[string]interface{}{
+		"engine":   "puppeteer",
+		"rowIndex": 0,
+		"score":    true,
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-reports/"+id+"/generate", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/generate" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "engine": "puppeteer",
+    "rowIndex": 0,
+    "score": true
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+  <TabItem value="200" label="200 OK">
+
+```json
+{
+  "data": {
+    "_id": "6801a2b3c4d5e6f7a8b9c0d1",
+    "template": "6801a2b3c4d5e6f7a8b9c0d2",
+    "smartBatch": "6801a2b3c4d5e6f7a8b9c0d3",
+    "name": "Background Check - Applicant 42",
+    "status": "generated",
+    "pdfEngine": "puppeteer",
+    "pdfSize": 148320,
+    "generationDurationMs": 1840,
+    "generatedAt": "2026-11-24T20:00:04.000Z",
+    "verificationScoreSummary": {},
+    "rowIndex": 0,
+    "externalRefId": "applicant-42"
+  },
+  "pdf": {
+    "buffer": "JVBERi0xLjQK...",
+    "size": 148320,
+    "engine": "puppeteer",
+    "generationDurationMs": 1840,
+    "downloadUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/download",
+    "htmlUrl": "/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/html"
+  },
+  "verificationScore": {}
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "template_not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "row_not_found",
+  "code": "row_not_found"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "InternalServerError",
+  "code": "InternalServerError"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### Error codes
+
+| Status | Error Code / Type | Cause |
+| ------ | ----------------- | ----- |
+| `401` | `Unauthorized` | Missing or invalid JWT. |
+| `403` | `Forbidden` | Shared x402 execution was attempted; use your own per-client JWT. |
+| `404` | `not_found` | Report ID does not exist or belongs to another client. |
+| `404` | `template_not_found` | Linked template could not be found. |
+| `404` | `batch_not_found` | Linked `SmartBatch` could not be found. |
+| `409` | `MissingParameter` | Joi validation failed on one or more fields. |
+| `409` | `row_not_found` | The requested `rowIndex` does not exist in the batch. |
+| `409` | `unknown_score_profile` | The requested `scoreProfile` is not recognized. |
+| `422` | `UnprocessableEntity` | Mongoose validation error. |
+| `500` | `InternalServerError` | PDF rendering or internal processing failure (marks report `"failed"` and emits `smart_batch_report_generation_failed`). |
+
+### Webhooks & MCP Integration
+
+- **Webhooks**: Emits `smart_batch_report_generated` on successful PDF creation, or `smart_batch_report_generation_failed` if rendering errors occur (and updates `status` to `"failed"`). See [Smart Reports Webhooks](/resources/smart-reports-webhooks).
+- **MCP Equivalent**: AI agents can render a report PDF directly via the `smart_report_generate_pdf` MCP tool. See [MCP and AI Agents](/smart-reports/mcp-and-ai-agents).
+
+### Notes
+
+- `pdf.buffer` contains the base64-encoded PDF bytes directly in the JSON response; if you prefer a binary PDF stream, call [Download Smart Report PDF](/smart-reports/download-smart-report-pdf).
+- `verificationScore` is included in the response when `score` is enabled.
+
+### Related
+
+- [Smart Reports Overview](/smart-reports)
+- [Headless API Guide](/smart-reports/headless-api-guide)
+- [MCP and AI Agents](/smart-reports/mcp-and-ai-agents)
+- [Smart Reports Webhooks](/resources/smart-reports-webhooks)
+- [Download Smart Report PDF](/smart-reports/download-smart-report-pdf)
+- [Send Smart Report by Email](/smart-reports/send-smart-report-email)

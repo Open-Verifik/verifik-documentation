@@ -1,0 +1,337 @@
+---
+id: send-smart-report-email
+title: Enviar Smart Report por correo electrónico
+description: 'Envía por correo electrónico PDFs renderizados de SmartReport a uno o más destinatarios, adjuntando opcionalmente PDFs para todas las filas o archivos prerrenderizados, y despacha webhooks de entrega.'
+slug: /smart-reports/send-smart-report-email
+keywords:
+  - 'v2/smart-reports/{id}/send-email'
+  - '/v2/smart-reports/{id}/send-email'
+  - v2/smart-reports/send-email
+  - /v2/smart-reports/send-email
+  - v2 smart-reports send-email
+  - 'v2 smart-reports {id} send-email'
+  - api/smart-reports/send-email
+  - /api/smart-reports/send-email
+  - 'api.verifik.co/v2/smart-reports/{id}/send-email'
+  - 'https://api.verifik.co/v2/smart-reports/{id}/send-email'
+  - 'POST v2/smart-reports/{id}/send-email'
+  - 'POST /v2/smart-reports/{id}/send-email'
+  - smart-reports
+  - smart_report_send_email
+  - smart-reports/send-email
+  - /smart-reports/send-email
+  - api smart-reports send-email
+  - 'GET v2/smart-reports/{id}/send-email'
+  - 'GET /v2/smart-reports/{id}/send-email'
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Entrega un `SmartReport` por correo electrónico con reportes PDF adjuntos. Puedes dejar que Verifik renderice el PDF de una sola fila (`rowIndex`) o de todas las filas (`sendAll: true`, hasta `50` filas), o bien suministrar payloads prerrenderizados `printHtml`, `pdfBase64` o `pdfFiles`.
+
+Enviar un correo electrónico registra `emailDelivery` en el documento `SmartReport` y emite `smart_batch_report_sent` si tiene éxito o `smart_batch_report_delivery_failed` si falla la entrega.
+
+### Endpoint
+
+```
+POST https://api.verifik.co/v2/smart-reports/{id}/send-email
+```
+
+Este endpoint acepta payloads JSON de hasta **64 MB**. También es accesible a través del proxy de Smart-Agent en `https://ai.verifik.co/v2/smart-reports/{id}/send-email` usando tu propio encabezado por cliente `Authorization: Bearer <VERIFIK_JWT>`. La ejecución compartida mediante x402 está bloqueada con `403 Forbidden`.
+
+### Encabezados
+
+| Nombre          | Valor                  | Descripción                                         |
+| --------------- | ---------------------- | --------------------------------------------------- |
+| `Content-Type`  | `application/json`     | Formato del payload de solicitud (límite de 64 MB). |
+| `Authorization` | `Bearer <VERIFIK_JWT>` | JWT con alcance de cliente (`authUser.clientId`).   |
+
+### Parámetros
+
+| Nombre | Tipo   | Requerido | Descripción |
+| ------ | ------ | --------- | ----------- |
+| `id`   | string | **Sí**    | ObjectId de `SmartReport`. |
+
+### Cuerpo
+
+| Nombre       | Tipo     | Requerido | Descripción |
+| ------------ | -------- | --------- | ----------- |
+| `recipients` | string[] | **Sí**    | Arreglo de direcciones de correo válidas de destinatarios (mínimo `1`). |
+| `subject`    | string   | No        | Línea de asunto personalizada del correo. |
+| `language`   | string   | No        | Idioma del texto del correo: `"en"` o `"es"`. Predeterminado `"es"`. |
+| `rowIndex`   | number   | No        | Índice de fila base cero a renderizar y adjuntar cuando `sendAll` no está habilitado. |
+| `sendAll`    | boolean  | No        | Cuando es `true`, envía hasta `50` filas (`MAX_SEND_ALL_ROWS`), adjuntando 1 PDF por fila cuando el lote tiene más de 1 fila. |
+| `engine`     | string   | No        | Motor de renderizado PDF: `"pdfkit"` o `"puppeteer"`. |
+| `printHtml`  | string   | No        | Cadena HTML prerrenderizada (máx. `64000000` caracteres) para convertir y adjuntar. |
+| `pdfBase64`  | string   | No        | Cadena PDF codificada en base64 prerrenderizada (máx. `64000000` caracteres) para adjuntar directamente. |
+| `pdfFiles`   | object[] | No        | Arreglo de hasta `200` objetos adjuntos (`{ filename, pdfBase64 }`), donde tanto `filename` (máx. `80` caracteres) como `pdfBase64` (máx. `64000000` caracteres) son obligatorios. |
+
+#### Reglas de adjuntos y entrega por lotes
+
+- **Tope de `sendAll`**: Enviar todas las filas de un lote admite hasta `50` filas (`MAX_SEND_ALL_ROWS`). Superar las 50 filas falla con `409 Conflict` (`send_all_limit`). Cuando un lote contiene más de 1 fila, cada fila se adjunta como su propio archivo PDF.
+- **Payloads prerrenderizados**: Suministra `pdfFiles` (hasta `200` elementos), `pdfBase64` o `printHtml` cuando tu integración ya haya renderizado adjuntos personalizados. Los datos de PDF corruptos devuelven `500` (`invalid_pdf`), y las solicitudes que resuelven a cero adjuntos devuelven `409 Conflict` (`no_pdf_attachments`).
+- **Respuesta del resultado de entrega**: Si el transporte de correo falla después de que la validación y la preparación del PDF hayan tenido éxito, el endpoint devuelve HTTP `200 OK` con `"success": false`, `"messageId": null` y un campo `"error"` mientras registra `emailDelivery` y emite `smart_batch_report_delivery_failed`.
+
+### Solicitud
+
+<Tabs>
+  <TabItem value="node" label="Node.js">
+
+```javascript
+import axios from "axios";
+
+const run = async () => {
+  const id = "6801a2b3c4d5e6f7a8b9c0d1";
+  const { data } = await axios.post(
+    `https://api.verifik.co/v2/smart-reports/${id}/send-email`,
+    {
+      recipients: ["compliance@example.com"],
+      subject: "Background Verification Report - Applicant 42",
+      language: "es",
+      rowIndex: 0,
+      engine: "puppeteer",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+      },
+    }
+  );
+
+  console.log(data);
+};
+
+run();
+```
+
+  </TabItem>
+  <TabItem value="php" label="PHP">
+
+```php
+<?php
+$id = "6801a2b3c4d5e6f7a8b9c0d1";
+$ch = curl_init("https://api.verifik.co/v2/smart-reports/" . $id . "/send-email");
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . getenv("VERIFIK_JWT"),
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "recipients" => ["compliance@example.com"],
+    "subject" => "Background Verification Report - Applicant 42",
+    "language" => "es",
+    "rowIndex" => 0,
+    "engine" => "puppeteer",
+]));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+```
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+
+```python
+import os
+import requests
+
+report_id = "6801a2b3c4d5e6f7a8b9c0d1"
+url = f"https://api.verifik.co/v2/smart-reports/{report_id}/send-email"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {os.getenv('VERIFIK_JWT')}",
+}
+payload = {
+    "recipients": ["compliance@example.com"],
+    "subject": "Background Verification Report - Applicant 42",
+    "language": "es",
+    "rowIndex": 0,
+    "engine": "puppeteer",
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+  </TabItem>
+  <TabItem value="go" label="Go">
+
+```go
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+)
+
+func main() {
+	id := "6801a2b3c4d5e6f7a8b9c0d1"
+	body, _ := json.Marshal(map[string]interface{}{
+		"recipients": []string{"compliance@example.com"},
+		"subject":    "Background Verification Report - Applicant 42",
+		"language":   "es",
+		"rowIndex":   0,
+		"engine":     "puppeteer",
+	})
+
+	req, _ := http.NewRequest("POST", "https://api.verifik.co/v2/smart-reports/"+id+"/send-email", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("VERIFIK_JWT"))
+
+	resp, _ := http.DefaultClient.Do(req)
+	defer resp.Body.Close()
+
+	var out map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&out)
+	fmt.Println(out)
+}
+```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/smart-reports/6801a2b3c4d5e6f7a8b9c0d1/send-email" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -d '{
+    "recipients": ["compliance@example.com"],
+    "subject": "Background Verification Report - Applicant 42",
+    "language": "es",
+    "rowIndex": 0,
+    "engine": "puppeteer"
+  }'
+```
+
+  </TabItem>
+</Tabs>
+
+### Respuesta
+
+<Tabs>
+  <TabItem value="200-success" label="200 OK (Enviado)">
+
+```json
+{
+  "success": true,
+  "message": "Email sent successfully",
+  "recipients": ["compliance@example.com"],
+  "messageId": "<message-id@example.com>"
+}
+```
+
+  </TabItem>
+  <TabItem value="200-failed" label="200 OK (Error de entrega)">
+
+```json
+{
+  "success": false,
+  "message": "Failed to send email",
+  "recipients": ["compliance@example.com"],
+  "messageId": null,
+  "error": "SMTP transport rejected recipient"
+}
+```
+
+  </TabItem>
+  <TabItem value="401" label="401">
+
+```json
+{
+  "message": "Unauthorized",
+  "code": "Unauthorized"
+}
+```
+
+  </TabItem>
+  <TabItem value="403" label="403">
+
+```json
+{
+  "message": "Shared x402 execution is forbidden on this endpoint",
+  "code": "Forbidden"
+}
+```
+
+  </TabItem>
+  <TabItem value="404" label="404">
+
+```json
+{
+  "message": "not_found",
+  "code": "NotFound"
+}
+```
+
+  </TabItem>
+  <TabItem value="409" label="409">
+
+```json
+{
+  "message": "send_all_limit",
+  "code": "send_all_limit"
+}
+```
+
+  </TabItem>
+  <TabItem value="422" label="422">
+
+```json
+{
+  "message": "UnprocessableEntity",
+  "code": "UnprocessableEntity"
+}
+```
+
+  </TabItem>
+  <TabItem value="500" label="500">
+
+```json
+{
+  "message": "invalid_pdf",
+  "code": "invalid_pdf"
+}
+```
+
+  </TabItem>
+</Tabs>
+
+#### Códigos de error
+
+| Estado | Código / Tipo de error | Causa |
+| ------ | ---------------------- | ----- |
+| `401` | `Unauthorized` | JWT ausente o inválido. |
+| `403` | `Forbidden` | Se intentó ejecución compartida x402; utiliza tu propio JWT por cliente. |
+| `404` | `not_found` | El ID del reporte no existe o pertenece a otro cliente. |
+| `404` | `template_not_found` | No se encontró la plantilla vinculada. |
+| `409` | `MissingParameter` | Falló la validación Joi (por ejemplo, `recipients` faltante o inválido). |
+| `409` | `send_all_limit` | Se solicitó `sendAll: true` en un lote con más de `50` filas (`MAX_SEND_ALL_ROWS`). |
+| `409` | `no_pdf_attachments` | No se pudieron resolver o renderizar adjuntos PDF para la solicitud. |
+| `409` | `row_not_found` | El `rowIndex` solicitado no existe en el lote. |
+| `422` | `UnprocessableEntity` | Error de validación de Mongoose. |
+| `500` | `invalid_pdf` | El payload `pdfBase64` o `pdfFiles` suministrado no es un PDF válido. |
+
+### Integración con Webhooks y MCP
+
+- **Webhooks**: Emite automáticamente `smart_batch_report_sent` cuando la entrega tiene éxito o `smart_batch_report_delivery_failed` cuando la entrega falla, y registra `emailDelivery` en el `SmartReport`. Consulta [Webhooks de SmartReports](/verifik-es/resources/smart-reports-webhooks).
+- **Equivalente MCP**: Los agentes de IA pueden enviar correos de reportes mediante la herramienta MCP `smart_report_send_email`. Consulta [MCP y Agentes de IA](/verifik-es/smart-reports/mcp-and-ai-agents).
+
+### Notas
+
+- Inspecciona siempre `success` en el cuerpo de `200 OK`, ya que los errores de transporte de correo devuelven `success: false` con `messageId: null` y `error` en lugar de un código de estado distinto de 200.
+- Si deseas ejecutar pasos de verificación, generar PDFs y enviar correos en una sola llamada, utiliza [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report).
+
+### Relacionados
+
+- [Descripción general de SmartReports](/verifik-es/smart-reports)
+- [Guía de API Headless](/verifik-es/smart-reports/headless-api-guide)
+- [MCP y Agentes de IA](/verifik-es/smart-reports/mcp-and-ai-agents)
+- [Webhooks de SmartReports](/verifik-es/resources/smart-reports-webhooks)
+- [Generar PDF de Smart Report](/verifik-es/smart-reports/generate-smart-report-pdf)
+- [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report)
