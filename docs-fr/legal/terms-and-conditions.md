@@ -7,7 +7,7 @@ slug: /legal/terms-and-conditions
 
 # Termes et conditions
 
-**Dernière mise à jour : 22 juin 2026**
+**Dernière mise à jour : 25 novembre 2026**
 
 **En vigueur : 9 mars 2023**
 
@@ -229,7 +229,17 @@ L'Application, les solutions et conceptions, les graphiques, les textes, les ima
 
 Vous ne pouvez pas reproduire, adapter, distribuer, louer, vendre, concéder sous licence ou autrement transférer l'application, y compris les codes de programmation. De plus, vous devez respecter les conditions minimales de sécurité informatique requises pour l'utilisation de l'Application, c'est-à-dire que vous devez disposer d'un système de gestion des accès et d'un système antivirus.
 
-Vos signes distinctifs sont votre propriété exclusive, mais vous autorisez Verifik à utiliser vos marques uniquement dans le but de publier votre logo sur notre Application et notre site Internet. Si nous devons utiliser vos marques à d'autres fins, Verifik vous demandera votre autorisation avant de les utiliser.
+Vos signes distinctifs sont votre propriété exclusive. L'utilisation que Verifik peut en faire pour vous identifier comme client est régie par la section « Verifik peut-elle vous identifier comme client ? » des présentes Conditions générales.
+
+### **Verifik peut-elle vous identifier comme client ?**
+
+Oui. Verifik se réserve le droit d'utiliser le nom, le nom commercial, le logo et les marques de l'Utilisateur (les « Signes distinctifs ») afin d'identifier l'Utilisateur comme client de Verifik sur son site Internet, dans l'Application, dans ses supports marketing et commerciaux, ses présentations, ses études de cas, sur les réseaux sociaux et dans tout élément de l'image de marque de Verifik, dans le but de promouvoir qui sont ses clients.
+
+En acceptant les présentes Conditions générales, l'Utilisateur concède à Verifik une licence non exclusive, mondiale, libre de redevances et non cessible d'utiliser ses Signes distinctifs aux fins décrites dans la présente section, tant que le compte de l'Utilisateur reste actif. Verifik utilisera les Signes distinctifs conformément à toute charte graphique raisonnable fournie par l'Utilisateur et ne les modifiera pas, ni ne laissera entendre que l'Utilisateur approuve un produit ou une déclaration spécifique sans l'autorisation préalable de l'Utilisateur.
+
+Les Utilisateurs disposant d'un plan Enterprise actif peuvent demander par écrit, par e-mail à legal@verifik.co, à être exclus des listes publiques de clients. Verifik traitera la demande dans un délai de trente (30) jours calendaires à compter de sa réception. Cette option d'exclusion n'est pas disponible pour les autres plans.
+
+À la résiliation de l'Accord, Verifik cessera d'inclure les Signes distinctifs de l'Utilisateur dans de nouveaux supports dans un délai raisonnable, mais ne sera pas tenue de retirer les supports déjà imprimés, distribués ou publiés avant la résiliation.
 
 ### **Quelles sont les restrictions et interdictions dont vous disposez en tant qu'utilisateur des services ?**
 

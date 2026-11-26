@@ -6,7 +6,7 @@ description: Verifik's terms and conditions of service
 
 # Terms and Conditions
 
-**Last Updated: June 22, 2026**
+**Last Updated: November 25, 2026**
 
 **Effective: March 9, 2023**
 
@@ -228,7 +228,17 @@ The App, solutions and designs, graphics, text, images, logos, source code and o
 
 You may not reproduce, adapt, distribute, rent, rent, sell, license or otherwise transfer the App, including the programming codes. In addition, you must comply with the minimum conditions of computer security required for the use of the App, ie, you must have an access management system and an antivirus system.
 
-Your distinctive signs are your exclusive property, but you authorize Verifik to use your trademarks only for the purpose of publishing your logo on our App and our website. If we need to use your trademarks for any other purpose, Verifik will ask for your authorization before using them.
+Your distinctive signs are your exclusive property. The use that Verifik may make of them to identify you as a customer is governed by the section "Can Verifik identify you as a customer?" of these Terms and Conditions.
+
+### **Can Verifik identify you as a customer?**
+
+Yes. Verifik reserves the right to use the User's name, trade name, logo, and trademarks (the "Distinctive Signs") to identify the User as a Verifik customer on its website, in the App, in marketing and commercial materials, presentations, case studies, social media, and in any part of Verifik's branding, for the purpose of promoting who its customers are.
+
+By accepting these Terms and Conditions, the User grants Verifik a non-exclusive, worldwide, royalty-free, non-transferable license to use its Distinctive Signs for the purpose described in this section, for as long as the User's account remains active. Verifik will use the Distinctive Signs in accordance with any reasonable brand guidelines the User provides and will not alter them or suggest that the User endorses any specific product or statement without the User's prior authorization.
+
+Users with an active Enterprise plan may request in writing, by email to legal@verifik.co, to be excluded from public customer listings. Verifik will process the request within thirty (30) calendar days of receipt. This exclusion option is not available for other plans.
+
+Upon termination of the Agreement, Verifik will stop including the User's Distinctive Signs in new materials within a reasonable period, but will not be required to withdraw materials already printed, distributed, or published before the termination.
 
 ### **What are the restrictions and prohibitions that you have as a User of the Services?**
 
