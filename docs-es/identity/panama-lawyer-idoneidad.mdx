@@ -1,0 +1,208 @@
+---
+id: panama-lawyer-idoneidad
+title: "Panamá — Idoneidad de abogado"
+description: "Verifica el número de idoneidad de un abogado en Panamá."
+sidebar_label: "🇵🇦 Panamá — Idoneidad de abogado"
+slug: "/identity/panama-lawyer-idoneidad"
+keywords:
+  - "v2/pa/lawyer/idoneidad"
+  - "/v2/pa/lawyer/idoneidad"
+  - "api.verifik.co/v2/pa/lawyer/idoneidad"
+  - "GET /v2/pa/lawyer/idoneidad"
+  - "GET https://api.verifik.co/v2/pa/lawyer/idoneidad"
+  - "panama_api_lawyer_idoneidad"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Panamá — Idoneidad de abogado
+
+La consulta de **idoneidad de abogado** lee el certificado del foro panameño por número. Envíe `idoneidad` o el alias `licenseNumber` con 1 a 10 dígitos. `issueDate` opcional usa `DD-MM-YYYY`. Sin número es 409 `MissingParameter`.
+
+## Qué devuelve la llamada
+
+- Número de idoneidad y nombre
+- `status`
+
+## Casos de uso
+
+- Confirme un abogado antes de un escrito.
+- Cruce la fecha de expedición si la tiene.
+- Rechace una idoneidad no numérica.
+
+---
+
+## Referencia de la API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/pa/lawyer/idoneidad
+```
+
+Un acierto incluye el nombre, el número de idoneidad y el estado. Un número desconocido es 404 `NotFound`.
+
+### Headers
+
+| Nombre | Valor | Descripción |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato de la solicitud |
+| Accept | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <tu_token>` | JWT del cliente |
+
+### Parameters
+
+| Nombre | Tipo | Requerido | Ejemplo | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| `idoneidad` | string | **Condicional** | `12345` | Número de idoneidad del abogado, de 1 a 10 dígitos. Alias: `licenseNumber`. Uno de los dos es obligatorio. |
+| `issueDate` | string | No | `01-02-2010` | Fecha de expedición opcional en `DD-MM-YYYY`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/pa/lawyer/idoneidad",
+  params: {
+    idoneidad: "12345",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/pa/lawyer/idoneidad"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "idoneidad": "12345",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/pa/lawyer/idoneidad?idoneidad=12345" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "idoneidad": "12345",
+    "fullName": "JUAN PEREZ",
+    "status": "IDONEO",
+    "issueDate": "01-02-2010"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "idoneidad or licenseNumber is required."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (No encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (No autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fuente no disponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Envíe `idoneidad` o `licenseNumber`.
+- Solo dígitos, de 1 a 10.
+- Los números desconocidos son 404 `NotFound`.
+- Envíe un JWT Bearer en el encabezado `Authorization`.
+- El JSON de ejemplo ilustra los campos. Una llamada real devuelve el registro de los valores que envíe.
+- No envíe un indicador de omisión de caché. Esta página documenta solo los parámetros de cliente.
+
+---
+
+## Sandbox
+
+| Escenario | Parámetros | Resultado |
+| :--- | :--- | :--- |
+| Registro en la fuente | `idoneidad: "12345"` | 200 con el registro del abogado. |
+| Falta un valor obligatorio | Omit `idoneidad` and `licenseNumber` | 409 MissingParameter. |
+| Valor desconocido | `idoneidad: "999999"` | 404 NotFound si el número es desconocido. |
+
+401 when the bearer token is missing or rejected.

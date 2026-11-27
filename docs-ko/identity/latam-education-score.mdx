@@ -1,0 +1,216 @@
+---
+id: latam-education-score
+title: "LATAM — 통합 교육·면허 점수"
+description: "콜롬비아, 페루, 파나마, 멕시코, 칠레의 학위와 전문 면허를 점수화합니다. country와 신원 하나가 필수입니다."
+sidebar_label: "LATAM — 교육 점수"
+slug: "/identity/latam-education-score"
+keywords:
+  - "v2/score/education"
+  - "/v2/score/education"
+  - "api.verifik.co/v2/score/education"
+  - "GET /v2/score/education"
+  - "GET https://api.verifik.co/v2/score/education"
+  - "world_api_education_score"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# LATAM — 통합 교육·면허 점수
+
+**교육 점수**는 `CO`, `PE`, `PA`, `MX`, `CL`(영어 국가명도 가능)의 대학 학위와 전문 면허를 하나의 점수로 모읍니다. `country`는 필수입니다. 신원도 하나 보내야 합니다. `documentNumber`, `licenseNumber`, `fullName`, 또는 `firstName`과 `lastName`. 409 본문은 `MissingParameter`가 아니라 `{ "validationError": "..." }`입니다. 지원하지 않는 국가도 409입니다.
+
+## 응답에 포함되는 값
+
+- `educationScore`와 `educationTier`
+- `highestLevel`과 `hasActiveLicense`
+- `credentials`와 `checkedSources`
+
+## 사용 사례
+
+- 학위와 면허 출처로 채용을 순위화합니다.
+- 점수 전에 국가를 요구합니다.
+- 제재를 점수 감소로 읽습니다.
+
+---
+
+## API 레퍼런스
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/score/education
+```
+
+응답에는 0–100의 `educationScore`, `educationTier`, `highestLevel`, `hasActiveLicense`, `hasSanctions`, `credentials`가 있습니다.
+
+### Headers
+
+| 이름 | 값 | 설명 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 요청 형식 |
+| Accept | `application/json` | 응답 형식 |
+| Authorization | `Bearer <token>` | 클라이언트 JWT |
+
+### Parameters
+
+| 이름 | 유형 | 필수 | 예시 | 설명 |
+| :--- | :--- | :--- | :--- | :--- |
+| `country` | string | **예** | `CO` | 필수. `CO`, `PE`, `PA`, `MX`, `CL` 또는 영어 이름 `COLOMBIA`, `PERU`, `PANAMA`, `MEXICO`, `CHILE`. |
+| `documentNumber` | string | **조건부** | `80123456` | 신원 하나가 필요합니다. 이 번호, `licenseNumber`, `fullName`, 또는 `firstName`과 `lastName`. |
+| `licenseNumber` | string | **조건부** | `AN205-27910` | 전문 면허. 필수 신원으로 칩니다. |
+| `fullName` | string | **조건부** | `ANA PEREZ` | 전체 이름. 필수 신원으로 칩니다. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/score/education",
+  params: {
+    country: "CO",
+    documentNumber: "80123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/score/education"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "country": "CO",
+    "documentNumber": "80123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/score/education?country=CO&documentNumber=80123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (레코드 있음)">
+
+```json
+{
+  "data": {
+    "country": "CO",
+    "documentNumber": "80123456",
+    "educationScore": 70,
+    "educationTier": "LICENSED_PROFESSIONAL",
+    "highestLevel": "UNIVERSITY",
+    "hasActiveLicense": true,
+    "totalCredentials": 1,
+    "credentials": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (파라미터 누락)">
+
+```json
+{
+  "validationError": "At least one of documentNumber, licenseNumber, fullName, or (firstName + lastName) is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (없음)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (인증 실패)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (원천 사용 불가)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 참고
+
+- `country`는 필수입니다.
+- 409는 `MissingParameter`가 아니라 `validationError`를 씁니다.
+- 지원 국가는 CO, PE, PA, MX, CL입니다.
+- `Authorization` 헤더에 Bearer JWT를 보냅니다.
+- JSON 예시는 필드 모양입니다. 실제 호출은 보낸 값의 레코드를 반환합니다.
+- 캐시 우회 플래그는 보내지 않습니다. 이 페이지는 클라이언트 파라미터만 설명합니다.
+
+---
+
+## 샌드박스
+
+| 시나리오 | 파라미터 | 결과 |
+| :--- | :--- | :--- |
+| 원천에 기록 있음 | `country: "CO"`, `documentNumber: "80123456"` | educationScore와 등급이 있는 200. |
+| 필수 값 누락 | Omit `country` | country 또는 신원이 없으면 409 `{ validationError }`. |
+| 알 수 없는 값 | `country: "US"`, `documentNumber: "1"` | 국가 코드가 지원되지 않으면 409. |
+
+401 when the bearer token is missing or rejected.

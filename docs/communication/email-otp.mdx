@@ -1,0 +1,220 @@
+---
+id: email-otp
+title: "Email OTP"
+description: "POST an email one-time code. The live route is POST /v2/communication/email."
+sidebar_label: "Email OTP"
+slug: "/communication/email-otp"
+keywords:
+  - "v2/communication/email"
+  - "/v2/communication/email"
+  - "api.verifik.co/v2/communication/email"
+  - "POST /v2/communication/email"
+  - "POST https://api.verifik.co/v2/communication/email"
+  - "communication_global_email_otp"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Email OTP
+
+**Email OTP** sends a one-time code. The live method is **POST** `https://api.verifik.co/v2/communication/email`, not GET. The body requires `project`, `validationMethod` (`manual` or `verificationCode`), `email`, and `type` (`validation`, `login`, `onboarding`, or `oneTimeLink`). Optional fields include `expiresAt`, `redirectUrl`, `webhookUrl`, `identityUrl`, `requires2FA`, `ipAddress`, and `language`.
+
+## What the call returns
+
+- `email` and `status`
+- `type` and `validationMethod`
+
+## Use cases
+
+- Send a login code to a mailbox.
+- Start onboarding that continues by email.
+- Attach a webhook for delivery status.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/communication/email
+```
+
+A successful send returns the email validation with status `sent`. Confirm the code with the email validation endpoint your project already uses.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <your_token>` | Client JWT |
+
+### Parameters
+
+| Name | Type | Required | Example | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `project` | string | **Yes** | `project_id` | Project id that owns the email OTP. |
+| `validationMethod` | string | **Yes** | `verificationCode` | `manual` or `verificationCode`. |
+| `email` | string | **Yes** | `person@example.com` | Mailbox that receives the code. An invalid address is 409. |
+| `type` | string | **Yes** | `validation` | `validation`, `login`, `onboarding`, or `oneTimeLink`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/communication/email",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+  data: {
+    "project": "project_id",
+    "validationMethod": "verificationCode",
+    "email": "person@example.com",
+    "type": "validation"
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/communication/email"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+payload = {
+    "project": "project_id",
+    "validationMethod": "verificationCode",
+    "email": "person@example.com",
+    "type": "validation",
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/communication/email" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{"project":"project_id","validationMethod":"verificationCode","email":"person@example.com","type":"validation"}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Record found)">
+
+```json
+{
+  "data": {
+    "email": "person@example.com",
+    "status": "sent",
+    "type": "validation",
+    "validationMethod": "verificationCode"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"project\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Unauthorized)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Source unavailable)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- This route is POST, not GET.
+- `project`, `validationMethod`, `email`, and `type` are required.
+- An address that is not an email is 409.
+- Send a Bearer JWT in the `Authorization` header.
+- The JSON sample illustrates the fields. A live call returns the record for the values you send.
+- Do not send a cache-bypass flag. This page documents only the client parameters.
+
+---
+
+## Sandbox
+
+| Scenario | Parameters | Result |
+| :--- | :--- | :--- |
+| Record on file | the example body | 200 when the code is sent. |
+| Missing required value | Omit `project` | 409 MissingParameter. |
+| Unknown value | `email: "not-an-email"` | 409 when the email format is invalid. |
+
+401 when the bearer token is missing or rejected.

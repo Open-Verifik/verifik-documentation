@@ -1,0 +1,220 @@
+---
+id: colombia-siis
+title: "コロンビア — 統合会社情報（SIIS）"
+description: "NIT または社名で Supersociedades の SIIS 届出を読みます。SIIS に無い会社は found が false の HTTP 200 です。"
+sidebar_label: "🇨🇴 コロンビア — SIIS"
+slug: "/business-validation/colombia-siis"
+keywords:
+  - "v2/co/supersociedades/siis"
+  - "/v2/co/supersociedades/siis"
+  - "api.verifik.co/v2/co/supersociedades/siis"
+  - "GET /v2/co/supersociedades/siis"
+  - "GET https://api.verifik.co/v2/co/supersociedades/siis"
+  - "colombia_api_supersociedades_siis"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# コロンビア — 統合会社情報（SIIS）
+
+**SIIS** 照会は Supersociedades が監督する会社届出を読みます。NIT または社名を送ります。届出があれば `found` は true、SIIS に無ければ false です。その単なる未検出は HTTP 200 で、状態は `NO REGISTRADA EN SIIS SUPERSOCIEDADES` です。倒産警報は `inLiquidationOrReorganization` を見ます。
+
+## 応答に含まれる項目
+
+- `found` と `inLiquidationOrReorganization`
+- `ciiu`、部門、都市
+- 届出があれば `financialSummary`
+- 単なる未検出では空の `filings`
+
+## 用途
+
+- 与信の前に最新の SIIS 届出を取ります。
+- すでに更生中の会社に印を付けます。
+- SIIS に無い結果を 404 ではなく 200 として記録します。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/supersociedades/siis
+```
+
+届出には `status`、`ciiu`、住所、`financialSummary`、`filings` があります。`found` が false なら SIIS にありません。どちらも HTTP 200 です。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **条件付き** | `900123456` | NIT または番号。別名 `nit`。名前が無いと必須。 |
+| `businessName` | string | **条件付き** | `INDUSTRIAS EJEMPLO SAS` | 名称。2–200文字。別名 `companyName` と `fullName`。番号が無いと必須。 |
+| `documentType` | string | いいえ | `NIT` | 任意: `NIT`、`CC`、`CE`、`PAS`、`TI`。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/supersociedades/siis",
+  params: {
+    documentNumber: "900673447",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/supersociedades/siis"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "900673447",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/supersociedades/siis?documentNumber=900673447" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "documentNumber": "900673447",
+    "businessName": "EJEMPLO SAS",
+    "found": true,
+    "status": "ACTIVA",
+    "inLiquidationOrReorganization": false
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing parameter"
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (一致なし)">
+
+```json
+{
+  "data": {
+    "documentNumber": "800000111",
+    "found": false,
+    "status": "NO REGISTRADA EN SIIS SUPERSOCIEDADES",
+    "filings": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- NIT または名前を送ります。
+- `found` が false は成功した単なる未検出です。
+- その本文を HTTP 404 に割り当てないでください。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `documentNumber: "900673447"` | 一致すると 200 で found は true。 |
+| 必須値が無い | Omit number and name | 検索値が無いと 409。 |
+| 不明な値 | `documentNumber: "800000111"` | 単に無ければ 200 で found は false。404 ではありません。 |
+
+401 when the bearer token is missing or rejected.

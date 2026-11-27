@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-11-27T17:41:33.352Z
+Generated: 2026-11-27T19:34:53.836Z
 
-- **Files scanned:** 809
-- **Unique endpoint URLs:** 479
+- **Files scanned:** 839
+- **Unique endpoint URLs:** 509
 - **Duplicate URL groups (SEO / aliases):** 67
 - **Docs without `### Endpoint` block:** 236
 
@@ -12,8 +12,8 @@ Generated: 2026-11-27T17:41:33.352Z
 | Priority | Count | Scope |
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
-| P1 | 27 | vehicle-validation (other countries) |
-| P2 | 425 | identity, biometrics, resources, etc. |
+| P1 | 29 | vehicle-validation (other countries) |
+| P2 | 453 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -311,10 +311,12 @@ Generated: 2026-11-27T17:41:33.352Z
 | P2 | `v2/bo/vehicle-soat` | `transit/bolivia/vehicle-soat.mdx` |
 | P2 | `v2/bo/votacion` | `identity/bolivia/votacion.mdx` |
 | P2 | `v2/br/background-check` | `background-check/brazil.mdx` |
+| P2 | `v2/br/bcb-disqualified` | `background-check/international/brazil-bcb-disqualified.mdx` |
 | P2 | `v2/br/cedula` | `identity/brazil.mdx` |
 | P2 | `v2/br/company` | `business-validation/brazil.mdx` |
 | P2 | `v2/br/medical-professional` | `identity/brazil-medical-professional.mdx` |
 | P2 | `v2/br/politically-exposed-persons` | `background-check/brazil-politically-exposed-persons.mdx` |
+| P2 | `v2/br/tcu-disqualified` | `background-check/international/brazil-tcu-disqualified.mdx` |
 | P1 | `v2/br/vehicle` | `vehicle-validation/brazil.mdx` |
 | P2 | `v2/bulgaria-sanctions` | `background-check/international/bulgaria-sanctions.mdx` |
 | P2 | `v2/by/politically-exposed-persons` | `background-check/belarus-politically-exposed-persons.mdx` |
@@ -362,13 +364,18 @@ Generated: 2026-11-27T17:41:33.352Z
 | P2 | `v2/co/cedula/premium` | `identity-validation/colombia/colombian-cedula-premium.mdx` |
 | P2 | `v2/co/cedula/registraduria` | `identity/colombia-cedula-registraduria.mdx` |
 | P2 | `v2/co/cedula/rethus` | `legal/colombia-rethus.mdx` |
+| P2 | `v2/co/cedula/vigencia` | `identity/colombia-cedula-vigencia.mdx` |
 | P2 | `v2/co/company/dian` | `business-validation/colombia-dian-verification.mdx` |
 | P2 | `v2/co/company/dian/invoicer` | `business-validation/colombia-legal-invoicer-verification.mdx` |
+| P2 | `v2/co/consejo-profesional` | `identity/colombia-electrical-mechanical-license.mdx` |
 | P2 | `v2/co/contracts` | `background-check/colombia-public-contracts.mdx` |
 | P2 | `v2/co/contraloria/certificado` | `background-check/colombia-comptroller-certificate.mdx` |
 | P2 | `v2/co/copnia` | `legal/colombia-copnia.mdx` |
 | P2 | `v2/co/copnia/matricula` | `legal/colombia-copnia-license.mdx` |
+| P2 | `v2/co/cpae` | `identity/colombia-cpae-license.mdx` |
+| P2 | `v2/co/cpiq` | `identity/colombia-chemical-engineering-license.mdx` |
 | P2 | `v2/co/deudoresmorosos` | `finance/delinquent-debtors.mdx` |
+| P2 | `v2/co/dian/proveedores-ficticios` | `business-validation/colombia-fictitious-suppliers.mdx` |
 | P0 | `v2/co/fasecolda/sinister` | `vehicle-validation/colombia/fasecolda-sinister-verification.mdx` |
 | P0 | `v2/co/fasecolda/values-by-code` | `vehicle-validation/colombia/fasecolda-vehicle-by-code.mdx` |
 | P0 | `v2/co/fasecolda/values-by-plate` | `vehicle-validation/colombia/fasecolda-values-by-plate.mdx` |
@@ -380,6 +387,11 @@ Generated: 2026-11-27T17:41:33.352Z
 | P0 | `v2/co/medellin/vehicle/fines` | `vehicle-validation/colombia/medellin-vehicle-fines.mdx` |
 | P2 | `v2/co/media/adverse` | `background-check/adverse-media-google-rss.mdx` |
 | P2 | `v2/co/paco` | `background-check/colombia-paco-anticorruption.mdx` |
+| P2 | `v2/co/pep/candidatos` | `background-check/colombia-pep-electoral-candidates.mdx` |
+| P2 | `v2/co/pep/cuerpo-diplomatico` | `background-check/colombia-pep-diplomatic-corps.mdx` |
+| P2 | `v2/co/pep/estructura-gobierno` | `background-check/colombia-pep-government-structure.mdx` |
+| P2 | `v2/co/pep/misiones-exterior` | `background-check/colombia-pep-foreign-missions.mdx` |
+| P2 | `v2/co/pep/partidos-politicos` | `background-check/colombia-pep-political-parties.mdx` |
 | P2 | `v2/co/policia/consultar` | `background-check/colombia-police-record-check.mdx` |
 | P2 | `v2/co/policia/rnmc` | `background-check/colombia-police-compliance-corrective-measures.mdx` |
 | P2 | `v2/co/policia/rnmc/premium` | `background-check/colombia-police-compliance-corrective-measures-premium.mdx` |
@@ -420,12 +432,22 @@ Generated: 2026-11-27T17:41:33.352Z
 | P0 | `v2/co/simit/suspensiones` | `vehicle-validation/colombia/simit-suspensiones.mdx` |
 | P0 | `v2/co/sisconmp/trainings` | `vehicle-validation/colombia/sisconmp-trainings.mdx` |
 | P2 | `v2/co/situacion-militar` | `identity/colombia-situacion-militar.mdx` |
+| P2 | `v2/co/sst/licencia` | `identity/colombia-sst-license.mdx` |
+| P2 | `v2/co/superfinanciera/concordatos` | `business-validation/colombia-financial-insolvency.mdx` |
+| P2 | `v2/co/supersociedades/siis` | `business-validation/colombia-siis.mdx` |
+| P2 | `v2/co/supersolidaria/sanciones` | `business-validation/colombia-solidarity-sanctions.mdx` |
 | P0 | `v2/co/vehiculo/pico-y-placa` | `vehicle-validation/colombia/bogota-pico-y-placa.mdx` |
+| P2 | `v2/communication/email` | `communication/email-otp.mdx` |
+| P2 | `v2/communication/sms` | `communication/sms.mdx` |
+| P2 | `v2/communication/whatsapp` | `communication/whatsapp.mdx` |
 | P2 | `v2/cr/cedula` | `identity/costa-rica.mdx` |
 | P2 | `v2/cr/company` | `business-validation/costa-rica.mdx` |
 | P2 | `v2/cr/politically-exposed-persons` | `background-check/costa-rica-politically-exposed-persons.mdx` |
+| P1 | `v2/cr/traffic-infractions` | `vehicle-validation/costa-rica/traffic-infractions.mdx` |
 | P1 | `v2/cr/vehicle` | `vehicle-validation/costa-rica.mdx` |
 | P2 | `v2/cr/votacion` | `identity/costa-rica/votacion.mdx` |
+| P2 | `v2/crypto/fbi-lazarus` | `background-check/international/fbi-lazarus-crypto-wallets.mdx` |
+| P2 | `v2/crypto/ransomwhere` | `background-check/international/ransomwhere-crypto-addresses.mdx` |
 | P2 | `v2/csl` | `background-check/international/us-consolidated-screening-list.mdx` |
 | P2 | `v2/cu/politically-exposed-persons` | `background-check/cuba-politically-exposed-persons.mdx` |
 | P2 | `v2/cuba-restricted` | `background-check/international/cuba-restricted.mdx` |
@@ -450,6 +472,7 @@ Generated: 2026-11-27T17:41:33.352Z
 | P2 | `v2/ec/politically-exposed-persons` | `background-check/ecuador-politically-exposed-persons.mdx` |
 | P1 | `v2/ec/vehiculo/placa` | `vehicle-validation/ecuador/vehicle-by-plate.mdx` |
 | P1 | `v2/ec/vehiculo/placa/multas` | `vehicle-validation/ecuador.mdx` |
+| P2 | `v2/ec/votacion` | `identity/ecuador/votacion.mdx` |
 | P2 | `v2/ee/citizen` | `identity/estonia-citizen.mdx` |
 | P2 | `v2/ee/company` | `business-validation/estonia-company-lookup.mdx` |
 | P2 | `v2/ee/politically-exposed-persons` | `background-check/estonia-politically-exposed-persons.mdx` |
@@ -479,6 +502,7 @@ Generated: 2026-11-27T17:41:33.352Z
 | P2 | `v2/face-recognition/compare-live` | `biometrics/compare-live.mdx` |
 | P2 | `v2/face-recognition/compare-with-liveness` | `biometrics/compare-with-liveness.mdx` |
 | P2 | `v2/face-recognition/detect` | `verifik-biometrics-apis/liveness/face-detection.mdx` |
+| P2 | `v2/face-recognition/face-validation` | `biometrics/face-validation.mdx` |
 | P2 | `v2/face-recognition/liveness` | `biometrics/liveness.mdx` |
 | P2 | `v2/face-recognition/liveness-score` | `biometrics/liveness-score.mdx` |
 | P2 | `v2/face-recognition/persons` | `resources/persons/create-a-person.mdx` |
@@ -582,6 +606,7 @@ Generated: 2026-11-27T17:41:33.352Z
 | P2 | `v2/nz/company` | `business-validation/new-zealand-company-lookup.mdx` |
 | P2 | `v2/occ-actions` | `background-check/international/occ-actions.mdx` |
 | P2 | `v2/ocr/scan-agent` | `ocr-engines/scan-agent.mdx` |
+| P2 | `v2/ocr/scan-gpt` | `ocr-engines/scan-gpt.mdx` |
 | P2 | `v2/ocr/scan-prompt` | `ocr-engines/scan-prompt.mdx` |
 | P2 | `v2/ocr/scan-prompt/template/:id` | `ocr-engines/scan-prompt/delete-a-scan-prompt-template.mdx` |
 | P2 | `v2/ocr/scan-prompt/templates` | `ocr-engines/scan-prompt/list-of-scan-prompt-templates.mdx` |
@@ -594,11 +619,14 @@ Generated: 2026-11-27T17:41:33.352Z
 | P2 | `v2/pa/cedula` | `identity/panama.mdx` |
 | P2 | `v2/pa/company` | `business-validation/panama.mdx` |
 | P2 | `v2/pa/health-worker` | `identity/panama-health-worker.mdx` |
+| P2 | `v2/pa/lawyer/idoneidad` | `identity/panama-lawyer-idoneidad.mdx` |
 | P2 | `v2/pa/politically-exposed-persons` | `background-check/panama-politically-exposed-persons.mdx` |
+| P2 | `v2/pa/professional/jtia` | `identity/panama-jtia-license.mdx` |
 | P2 | `v2/pakistan-nacta-proscribed` | `background-check/international/pakistan-nacta-proscribed.mdx` |
 | P2 | `v2/palestine-pma-freezing` | `background-check/international/palestine-pma-freezing.mdx` |
 | P2 | `v2/passport/us/entries` | `background-check/united-states-passport-entries.mdx` |
 | P2 | `v2/pe/driver-license` | `driver-validation/peru-driver-license.mdx` |
+| P2 | `v2/pe/education/renacyt` | `identity/peru-renacyt.mdx` |
 | P2 | `v2/pe/foreigner-id/ce` | `identity-validation/peru/peruvian-foreigner-resident.mdx` |
 | P2 | `v2/pe/politically-exposed-persons` | `background-check/peru-politically-exposed-persons.mdx` |
 | P1 | `v2/pe/vehiculo/placa` | `vehicle-validation/peru/peruvian-vehicle.mdx` |
@@ -632,6 +660,7 @@ Generated: 2026-11-27T17:41:33.352Z
 | P2 | `v2/romania-terrorists` | `background-check/international/romania-terrorists.mdx` |
 | P2 | `v2/sam-exclusions` | `background-check/international/sam-exclusions.mdx` |
 | P2 | `v2/sam-special-exclusions` | `background-check/international/sam-special-exclusions.mdx` |
+| P2 | `v2/score/education` | `identity/latam-education-score.mdx` |
 | P2 | `v2/se/politically-exposed-persons` | `background-check/sweden-politically-exposed-persons.mdx` |
 | P2 | `v2/sec` | `background-check/international/sec-sanctions.mdx` |
 | P2 | `v2/secret-service` | `background-check/international/secret-service.mdx` |
@@ -721,6 +750,7 @@ Generated: 2026-11-27T17:41:33.352Z
 | P2 | `v3/co/rues-complete` | `business-validation/colombia-rues-business-information.mdx` |
 | P0 | `v3/co/runt/conductor` | `vehicle-validation/colombia/runt-drivers-license-basic.mdx` |
 | P2 | `v3/ec/company` | `business-validation/ecuador.mdx` |
+| P1 | `v3/ec/vehiculo/placa` | `vehicle-validation/ecuador/vehicle-by-plate-v3.mdx` |
 | P2 | `v3/ocr/scan-studio` | `ocr-engines/scan-studio.mdx` |
 | P2 | `v3/pe/cedula` | `identity-validation/peru/peru-citizen.mdx` |
 | P2 | `v3/pe/cedula/extra` | `identity-validation/peru/v3-peruvian-citizen.mdx` |

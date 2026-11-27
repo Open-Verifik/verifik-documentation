@@ -1,0 +1,227 @@
+---
+id: face-validation
+title: "Détection de visage"
+description: "Détectez des visages avec POST /v2/face-recognition/face-validation. image est obligatoire. Les valeurs par défaut sont min_score 0.5 et search_mode FAST."
+sidebar_label: "Détection de visage"
+slug: "/biometrics/face-validation"
+keywords:
+  - "v2/face-recognition/face-validation"
+  - "/v2/face-recognition/face-validation"
+  - "api.verifik.co/v2/face-recognition/face-validation"
+  - "POST /v2/face-recognition/face-validation"
+  - "POST https://api.verifik.co/v2/face-recognition/face-validation"
+  - "face_recognition_detect_face"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Détection de visage
+
+**Détection de visage** est `POST /v2/face-recognition/face-validation`, un alias du moteur de détection. `image` est obligatoire. Si vous les omettez, cette route met `min_score` à `0.5` et `search_mode` à `FAST`. La charge réelle est `face_count`, `faces` (chacun avec `score` et `bbox`), `imageDimensions` et `engine`.
+
+## Ce que l'appel renvoie
+
+- `face_count`
+- `faces[].score` et `faces[].bbox`
+- `imageDimensions` et `engine`
+
+## Cas d'usage
+
+- Comptez les visages avant la preuve de vie.
+- Lisez la boîte du visage principal.
+- Utilisez le score et le mode par défaut si vous n'avez que l'image.
+
+---
+
+## Référence de l'API
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/face-recognition/face-validation
+```
+
+Lisez d'abord `face_count`. Chaque élément de `faces` a `score` et `bbox`. `imageDimensions` est la largeur et la hauteur décodées. `engine` nomme le détecteur.
+
+### Headers
+
+| Nom | Valeur | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Format de la requête |
+| Accept | `application/json` | Format de la réponse |
+| Authorization | `Bearer <votre_token>` | JWT client |
+
+### Parameters
+
+| Nom | Type | Requis | Exemple | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `image` | string | **Oui** | `data:image/jpeg;base64,AAAA` | Image du visage en base64 ou data URI. Obligatoire. |
+| `min_score` | number | Non | `0.5` | Facultatif. Cette route le met à `0.5` par défaut. |
+| `search_mode` | string | Non | `FAST` | Facultatif. Cette route le met à `FAST` par défaut. L'autre valeur est `ACCURATE`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/face-recognition/face-validation",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+  data: {
+    "image": "data:image/jpeg;base64,AAAA"
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/face-recognition/face-validation"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+payload = {
+    "image": "data:image/jpeg;base64,AAAA",
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/face-recognition/face-validation" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{"image":"data:image/jpeg;base64,AAAA"}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Enregistrement trouvé)">
+
+```json
+{
+  "data": {
+    "face_count": 1,
+    "faces": [
+      {
+        "score": 0.97,
+        "bbox": [
+          80,
+          60,
+          280,
+          320
+        ]
+      }
+    ],
+    "imageDimensions": {
+      "width": 640,
+      "height": 480
+    },
+    "engine": "insightface"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Paramètre manquant)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"image\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Introuvable)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Non autorisé)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Source indisponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- `image` est le seul champ obligatoire.
+- Un `min_score` omis devient `0.5` et un `search_mode` omis devient `FAST`.
+- La réponse utilise `bbox`, pas un objet de repères séparé.
+- Envoyez un JWT Bearer dans l'en-tête `Authorization`.
+- Le JSON d'exemple illustre les champs. Un appel réel renvoie l'enregistrement des valeurs envoyées.
+- N'envoyez pas d'indicateur de contournement du cache. Cette page ne documente que les paramètres client.
+
+---
+
+## Bac à sable
+
+| Scénario | Paramètres | Résultat |
+| :--- | :--- | :--- |
+| Enregistrement à la source | `image` only | 200 avec face_count, faces, imageDimensions et engine. |
+| Valeur obligatoire absente | Omit `image` | 409 MissingParameter. |
+| Valeur inconnue | `min_score: 0.8`, `search_mode: "ACCURATE"` | 200 avec le score et le mode envoyés. |
+
+401 when the bearer token is missing or rejected.

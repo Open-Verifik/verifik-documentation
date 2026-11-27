@@ -1,0 +1,215 @@
+---
+id: colombia-electrical-mechanical-license
+title: "Colombia — Electrical and mechanical engineering license"
+description: "Verify a professional license for electrical, mechanical, and related engineers in Colombia by cédula, license number, or name."
+sidebar_label: "🇨🇴 Colombia — Electrical & mechanical license"
+slug: "/identity/colombia-electrical-mechanical-license"
+keywords:
+  - "v2/co/consejo-profesional"
+  - "/v2/co/consejo-profesional"
+  - "api.verifik.co/v2/co/consejo-profesional"
+  - "GET /v2/co/consejo-profesional"
+  - "GET https://api.verifik.co/v2/co/consejo-profesional"
+  - "colombia_api_electrical_mechanical_engineering"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Electrical and mechanical engineering license
+
+The **electrical and mechanical engineering license** lookup reads the Consejo Profesional Nacional de Ingenierías Eléctrica, Mecánica y Profesiones Afines. Send one of `documentNumber`, `licenseNumber`, or `fullName`. The payload includes the license, specialty, registration status, and whether the council reports sanctions.
+
+## What the call returns
+
+- `licenseNumber` and `specialty`
+- `status` such as VIGENTE
+- `isRegistered` and `hasSanctions`
+- `registrations` when the person has more than one row
+
+## Use cases
+
+- Confirm an electrical or mechanical engineer before site work.
+- Read disciplinary sanctions next to the license.
+- Match a contract name to the council row.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/consejo-profesional
+```
+
+A match includes `fullName`, `licenseNumber`, `specialty`, `status`, `isRegistered`, and `hasSanctions`. If the council has no row, the API returns 404 `NotFound`.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <your_token>` | Client JWT |
+
+### Parameters
+
+| Name | Type | Required | Example | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Conditional** | `80123456` | Colombian identity number, 5 to 15 characters. `documentType` may be `CC`, `CE`, `TI`, `PEP`, or `PPT`. |
+| `licenseNumber` | string | **Conditional** | `AN205-27910` | Professional license, such as AN205-27910. Enough on its own. |
+| `fullName` | string | **Conditional** | `ANA PEREZ` | Engineer name or surnames, 3 to 160 characters. Enough on its own. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/consejo-profesional",
+  params: {
+    documentNumber: "80123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/consejo-profesional"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "80123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/consejo-profesional?documentNumber=80123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Record found)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "80123456",
+    "fullName": "ANA MARIA PEREZ",
+    "licenseNumber": "AN205-27910",
+    "specialty": "INGENIERIA ELECTRICA",
+    "status": "VIGENTE",
+    "isRegistered": true,
+    "hasSanctions": false
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one of documentNumber, licenseNumber, or fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Unauthorized)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Source unavailable)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- Send at least one of `documentNumber`, `licenseNumber`, or `fullName`.
+- A missing council row is HTTP 404, not an empty 200.
+- `documentType` is optional and defaults to CC in the sample.
+- Send a Bearer JWT in the `Authorization` header.
+- The JSON sample illustrates the fields. A live call returns the record for the values you send.
+- Do not send a cache-bypass flag. This page documents only the client parameters.
+
+---
+
+## Sandbox
+
+| Scenario | Parameters | Result |
+| :--- | :--- | :--- |
+| Record on file | `documentNumber: "80123456"` | 200 with license, specialty, and sanction flag. |
+| Missing required value | Omit every search value | 409 MissingParameter. |
+| Unknown value | `documentNumber: "000000000"` | 404 NotFound when the council has no row. |
+
+401 when the bearer token is missing or rejected.

@@ -1,0 +1,210 @@
+---
+id: panama-jtia-license
+title: "Panamá — Idoneidad de ingenieros y arquitectos (JTIA)"
+description: "Verifica una idoneidad de ingeniería, arquitectura o técnico en la JTIA por cédula, matrícula o nombre."
+sidebar_label: "🇵🇦 Panamá — Licencia JTIA"
+slug: "/identity/panama-jtia-license"
+keywords:
+  - "v2/pa/professional/jtia"
+  - "/v2/pa/professional/jtia"
+  - "api.verifik.co/v2/pa/professional/jtia"
+  - "GET /v2/pa/professional/jtia"
+  - "GET https://api.verifik.co/v2/pa/professional/jtia"
+  - "panama_api_jtia_license"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Panamá — Idoneidad de ingenieros y arquitectos (JTIA)
+
+La consulta de **licencia JTIA** lee la idoneidad de ingenieros, arquitectos y técnicos. Envíe `documentNumber` (o `cedula`), `licenseNumber` (o `idoneidad`) o `fullName`. Una cédula que no se puede normalizar responde 409. Sin fila en la junta es 404 `NotFound`.
+
+## Qué devuelve la llamada
+
+- Cédula normalizada
+- `licenseNumber` y `fullName`
+- `status`
+
+## Casos de uso
+
+- Verifique un ingeniero antes de un permiso de construcción.
+- Busque por cédula si no tiene la matrícula.
+- Busque por nombre si solo tiene el contrato.
+
+---
+
+## Referencia de la API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/pa/professional/jtia
+```
+
+Un acierto incluye la cédula normalizada, el nombre, la matrícula y el estado.
+
+### Headers
+
+| Nombre | Valor | Descripción |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato de la solicitud |
+| Accept | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <tu_token>` | JWT del cliente |
+
+### Parameters
+
+| Nombre | Tipo | Requerido | Ejemplo | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Condicional** | `8-224-2444` | Cédula panameña, también como `cedula`. La API la normaliza (por ejemplo `8-224-2444`). |
+| `licenseNumber` | string | **Condicional** | `JTIA-100` | Idoneidad o matrícula. Alias: `idoneidad`. |
+| `fullName` | string | **Condicional** | `ANA RUIZ` | Nombre, de 3 a 160 caracteres. Basta por sí solo. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/pa/professional/jtia",
+  params: {
+    documentNumber: "8-224-2444",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/pa/professional/jtia"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "8-224-2444",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/pa/professional/jtia?documentNumber=8-224-2444" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentNumber": "8-0224-02444",
+    "fullName": "ANA RUIZ",
+    "licenseNumber": "JTIA-100",
+    "status": "IDONEO"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "One of cedula/documentNumber, idoneidad/licenseNumber, or fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (No encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (No autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fuente no disponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Envíe una cédula, una matrícula o un nombre.
+- Una cédula con forma inválida es 409.
+- Sin fila JTIA es 404 `NotFound`.
+- Envíe un JWT Bearer en el encabezado `Authorization`.
+- El JSON de ejemplo ilustra los campos. Una llamada real devuelve el registro de los valores que envíe.
+- No envíe un indicador de omisión de caché. Esta página documenta solo los parámetros de cliente.
+
+---
+
+## Sandbox
+
+| Escenario | Parámetros | Resultado |
+| :--- | :--- | :--- |
+| Registro en la fuente | `documentNumber: "8-224-2444"` | 200 con la cédula normalizada y la matrícula. |
+| Falta un valor obligatorio | Omit cédula, license, and name | 409 MissingParameter. |
+| Valor desconocido | `documentNumber: "1-1-1"` | 409 si la cédula no se normaliza, o 404 si la JTIA no tiene fila. |
+
+401 when the bearer token is missing or rejected.

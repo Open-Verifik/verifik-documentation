@@ -1,0 +1,214 @@
+---
+id: votacion
+title: "厄瓜多尔 — 投票地点"
+description: "用 documentType CCEC 和 10 位厄瓜多尔身份证读取 CNE 投票地点。"
+sidebar_label: "🇪🇨 厄瓜多尔 — 投票地点"
+slug: "/identity/ecuador/votacion"
+keywords:
+  - "v2/ec/votacion"
+  - "/v2/ec/votacion"
+  - "api.verifik.co/v2/ec/votacion"
+  - "GET /v2/ec/votacion"
+  - "GET https://api.verifik.co/v2/ec/votacion"
+  - "ecuador_api_voting_location"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 厄瓜多尔 — 投票地点
+
+**厄瓜多尔投票地点**查询读取 CNE 名册。`documentType` 必须是 `CCEC`，`documentNumber` 必须是省份码为 01–24 或 30 且校验位正确的 10 位身份证。响应包含姓名以及省、县、堂区和投票组（`pollingTable`）。
+
+## 调用返回的内容
+
+- `province`、`canton` 与 `parish`
+- `pollingTable` — 投票组
+- `fullName`
+
+## 使用场景
+
+- 向选民展示投票地点。
+- 拒绝校验位失败的身份证。
+- 把投票组和身份档案一起保存。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/ec/votacion
+```
+
+字段包括 `fullName`、`province`、`canton`、`parish` 和 `pollingTable`。未知身份证为 404 `NotFound`。校验位错误为 409 `InvalidDocumentNumber`。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentType` | string | **是** | `CCEC` | 必须是 `CCEC`。 |
+| `documentNumber` | string | **是** | `1700000019` | 含校验位的 10 位厄瓜多尔身份证。省份码必须是 01–24 或 30。错误号码返回 409 `InvalidDocumentNumber`。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/ec/votacion",
+  params: {
+    documentType: "CCEC",
+    documentNumber: "1700000019",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ec/votacion"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "CCEC",
+    "documentNumber": "1700000019",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/ec/votacion?documentType=CCEC&documentNumber=1700000019" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "documentType": "CCEC",
+    "documentNumber": "1700000019",
+    "fullName": "MARIA ELENA LOPEZ",
+    "province": "PICHINCHA",
+    "canton": "QUITO",
+    "parish": "INAQUITO",
+    "pollingTable": "1"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"documentType\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- `documentType` 必须是 `CCEC`。
+- 身份证为 10 位，省份码和校验位必须有效。
+- 未知号码为 404 `NotFound`。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `documentType: "CCEC"`, `documentNumber: "1700000019"` | 含省、县、堂区和投票组的 200。 |
+| 缺少必填值 | Omit `documentType` | 409 MissingParameter。 |
+| 未知的值 | `documentNumber: "1700000092"` | 名册没有记录时为 404 NotFound。 |
+
+401 when the bearer token is missing or rejected.

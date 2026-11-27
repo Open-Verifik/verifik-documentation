@@ -1,0 +1,219 @@
+---
+id: brazil-bcb-disqualified
+title: "观察名单 — 巴西央行取消资格人员"
+description: "筛查巴西央行取消高级职务资格的人员名册。"
+sidebar_label: "观察名单 — 巴西央行取消资格人员"
+slug: "/background-check/international/brazil-bcb-disqualified"
+keywords:
+  - "v2/br/bcb-disqualified"
+  - "/v2/br/bcb-disqualified"
+  - "api.verifik.co/v2/br/bcb-disqualified"
+  - "GET /v2/br/bcb-disqualified"
+  - "GET https://api.verifik.co/v2/br/bcb-disqualified"
+  - "world_api_br_bcb_disqualified"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 观察名单 — 巴西央行取消资格人员
+
+筛查巴西央行取消高级职务资格的人员名册。
+
+## 调用返回的内容
+
+- `foundInBrBcbDisqualified`
+- 命中时的 `details`
+- `fullName`
+
+## 使用场景
+
+- 付款或准入前筛查。
+- 把 false 标志当作干净的 200。
+- 发送名称，或证件类型加号码。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/br/bcb-disqualified
+```
+
+命中时 `foundInBrBcbDisqualified` 为 true 并填写 `details`。不在名单上是 HTTP 200，`foundInBrBcbDisqualified` 为 false，`details` 为空。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `fullName` | string | **条件必填** | `SAMPLE NAME` | 名称。钱包名单则放地址。只发它即可。 |
+| `documentType` | string | **条件必填** | `CPF` | 省略 `fullName` 时必须与 `documentNumber` 一起发送。无姓名的 CPF 还需要 `dateOfBirth`。 |
+| `documentNumber` | string | **条件必填** | `12345678901` | 省略 `fullName` 时与 `documentType` 一起发送的至少 5 个字符的标识。 |
+| `dateOfBirth` | string | **条件必填** | `1990-01-15` | 省略 `fullName` 且为 CPF、CI、CCPA、DUI 或 CCUY 时必填。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/br/bcb-disqualified",
+  params: {
+    fullName: "SAMPLE NAME",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/br/bcb-disqualified"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "fullName": "SAMPLE NAME",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/br/bcb-disqualified?fullName=SAMPLE%20NAME" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "fullName": "SAMPLE NAME",
+    "foundInBrBcbDisqualified": true,
+    "details": {
+      "listName": "Watchlist — Brazil BCB disqualified persons"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing fullName or documentType|documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200（未命中）">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN SAMPLE",
+    "foundInBrBcbDisqualified": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- 发送 `fullName`，或同时发送 `documentType` 与 `documentNumber`。
+- 未列入是 HTTP 200，且 `foundInBrBcbDisqualified` 为 false。
+- 无姓名的 CPF 还需要 `dateOfBirth`。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `fullName: "SAMPLE NAME"` | 名单命中时 foundInBrBcbDisqualified 为 true 的 200。 |
+| 缺少必填值 | Omit fullName and the document pair | 缺少 fullName 和证件组合时为 409。 |
+| 未知的值 | `fullName: "CLEAN SAMPLE"` | 只是不在名单上时 foundInBrBcbDisqualified 为 false 的 200。 |
+
+401 when the bearer token is missing or rejected.

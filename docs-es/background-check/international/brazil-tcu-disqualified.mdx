@@ -1,0 +1,219 @@
+---
+id: brazil-tcu-disqualified
+title: "Lista restrictiva — Inhabilitados del TCU de Brasil"
+description: "Criba la lista del TCU de Brasil de personas inhabilitadas para el servicio público."
+sidebar_label: "Lista restrictiva — Inhabilitados del TCU de Brasil"
+slug: "/background-check/international/brazil-tcu-disqualified"
+keywords:
+  - "v2/br/tcu-disqualified"
+  - "/v2/br/tcu-disqualified"
+  - "api.verifik.co/v2/br/tcu-disqualified"
+  - "GET /v2/br/tcu-disqualified"
+  - "GET https://api.verifik.co/v2/br/tcu-disqualified"
+  - "world_api_br_tcu_disqualified"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Lista restrictiva — Inhabilitados del TCU de Brasil
+
+Criba la lista del TCU de Brasil de personas inhabilitadas para el servicio público.
+
+## Qué devuelve la llamada
+
+- `foundInBrTcuDisqualified`
+- `details` en una coincidencia
+- `fullName`
+
+## Casos de uso
+
+- Criba antes de pagar o dar de alta.
+- Trate una bandera false como un 200 limpio.
+- Envíe un nombre, o tipo y número de documento.
+
+---
+
+## Referencia de la API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/br/tcu-disqualified
+```
+
+Una coincidencia pone `foundInBrTcuDisqualified` en true y llena `details`. Quien no está en la lista es HTTP 200 con `foundInBrTcuDisqualified` en false y `details` vacío.
+
+### Headers
+
+| Nombre | Valor | Descripción |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato de la solicitud |
+| Accept | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <tu_token>` | JWT del cliente |
+
+### Parameters
+
+| Nombre | Tipo | Requerido | Ejemplo | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| `fullName` | string | **Condicional** | `SAMPLE NAME` | Nombre o, en una lista de billeteras, la dirección. Basta por sí solo. |
+| `documentType` | string | **Condicional** | `CPF` | Obligatorio con `documentNumber` si omite `fullName`. Un CPF sin nombre también exige `dateOfBirth`. |
+| `documentNumber` | string | **Condicional** | `12345678901` | Identificador de al menos 5 caracteres, con `documentType`, si omite `fullName`. |
+| `dateOfBirth` | string | **Condicional** | `1990-01-15` | Obligatoria para CPF, CI, CCPA, DUI o CCUY si omite `fullName`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/br/tcu-disqualified",
+  params: {
+    fullName: "SAMPLE NAME",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/br/tcu-disqualified"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "fullName": "SAMPLE NAME",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/br/tcu-disqualified?fullName=SAMPLE%20NAME" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "fullName": "SAMPLE NAME",
+    "foundInBrTcuDisqualified": true,
+    "details": {
+      "listName": "Watchlist — Brazil TCU public-service disqualification"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing fullName or documentType|documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (Sin coincidencia)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN SAMPLE",
+    "foundInBrTcuDisqualified": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (No autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fuente no disponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Envíe `fullName`, o `documentType` y `documentNumber`.
+- Quien no está listado es HTTP 200 con `foundInBrTcuDisqualified` en false.
+- Un CPF sin nombre también exige `dateOfBirth`.
+- Envíe un JWT Bearer en el encabezado `Authorization`.
+- El JSON de ejemplo ilustra los campos. Una llamada real devuelve el registro de los valores que envíe.
+- No envíe un indicador de omisión de caché. Esta página documenta solo los parámetros de cliente.
+
+---
+
+## Sandbox
+
+| Escenario | Parámetros | Resultado |
+| :--- | :--- | :--- |
+| Registro en la fuente | `fullName: "SAMPLE NAME"` | 200 con foundInBrTcuDisqualified en true si la lista coincide. |
+| Falta un valor obligatorio | Omit fullName and the document pair | 409 si faltan fullName y el par de documento. |
+| Valor desconocido | `fullName: "CLEAN SAMPLE"` | 200 con foundInBrTcuDisqualified en false si el sujeto simplemente no está. |
+
+401 when the bearer token is missing or rejected.

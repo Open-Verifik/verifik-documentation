@@ -1,0 +1,216 @@
+---
+id: latam-education-score
+title: "LATAM — Score unifié d'éducation et de licence"
+description: "Note les diplômes et licences professionnelles de Colombie, Pérou, Panama, Mexique ou Chili. country est obligatoire plus une identité."
+sidebar_label: "LATAM — Score d'éducation"
+slug: "/identity/latam-education-score"
+keywords:
+  - "v2/score/education"
+  - "/v2/score/education"
+  - "api.verifik.co/v2/score/education"
+  - "GET /v2/score/education"
+  - "GET https://api.verifik.co/v2/score/education"
+  - "world_api_education_score"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# LATAM — Score unifié d'éducation et de licence
+
+Le **score d'éducation** réunit diplômes et licences professionnelles en un score pour `CO`, `PE`, `PA`, `MX` ou `CL` (les noms de pays en anglais sont acceptés). `country` est obligatoire. Vous devez aussi envoyer une identité : `documentNumber`, `licenseNumber`, `fullName`, ou `firstName` et `lastName`. Un 409 porte `{ "validationError": "..." }`, pas `MissingParameter`. Un pays non pris en charge est aussi un 409.
+
+## Ce que l'appel renvoie
+
+- `educationScore` et `educationTier`
+- `highestLevel` et `hasActiveLicense`
+- `credentials` et `checkedSources`
+
+## Cas d'usage
+
+- Classez une embauche entre sources de diplôme et de licence.
+- Exigez un pays avant de noter.
+- Lisez les sanctions comme une baisse du score.
+
+---
+
+## Référence de l'API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/score/education
+```
+
+La réponse contient `educationScore` de 0 à 100, `educationTier`, `highestLevel`, `hasActiveLicense`, `hasSanctions` et `credentials`.
+
+### Headers
+
+| Nom | Valeur | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Format de la requête |
+| Accept | `application/json` | Format de la réponse |
+| Authorization | `Bearer <votre_token>` | JWT client |
+
+### Parameters
+
+| Nom | Type | Requis | Exemple | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `country` | string | **Oui** | `CO` | Obligatoire. `CO`, `PE`, `PA`, `MX`, `CL`, ou le nom anglais `COLOMBIA`, `PERU`, `PANAMA`, `MEXICO`, `CHILE`. |
+| `documentNumber` | string | **Conditionnel** | `80123456` | Une identité est requise : ce numéro, `licenseNumber`, `fullName`, ou `firstName` et `lastName` ensemble. |
+| `licenseNumber` | string | **Conditionnel** | `AN205-27910` | Licence professionnelle. Compte comme l'identité obligatoire. |
+| `fullName` | string | **Conditionnel** | `ANA PEREZ` | Nom complet. Compte comme l'identité obligatoire. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/score/education",
+  params: {
+    country: "CO",
+    documentNumber: "80123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/score/education"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "country": "CO",
+    "documentNumber": "80123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/score/education?country=CO&documentNumber=80123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Enregistrement trouvé)">
+
+```json
+{
+  "data": {
+    "country": "CO",
+    "documentNumber": "80123456",
+    "educationScore": 70,
+    "educationTier": "LICENSED_PROFESSIONAL",
+    "highestLevel": "UNIVERSITY",
+    "hasActiveLicense": true,
+    "totalCredentials": 1,
+    "credentials": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Paramètre manquant)">
+
+```json
+{
+  "validationError": "At least one of documentNumber, licenseNumber, fullName, or (firstName + lastName) is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Introuvable)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Non autorisé)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Source indisponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- `country` est obligatoire.
+- Le 409 utilise `validationError`, pas `MissingParameter`.
+- Les pays pris en charge sont CO, PE, PA, MX et CL.
+- Envoyez un JWT Bearer dans l'en-tête `Authorization`.
+- Le JSON d'exemple illustre les champs. Un appel réel renvoie l'enregistrement des valeurs envoyées.
+- N'envoyez pas d'indicateur de contournement du cache. Cette page ne documente que les paramètres client.
+
+---
+
+## Bac à sable
+
+| Scénario | Paramètres | Résultat |
+| :--- | :--- | :--- |
+| Enregistrement à la source | `country: "CO"`, `documentNumber: "80123456"` | 200 avec educationScore et niveau. |
+| Valeur obligatoire absente | Omit `country` | 409 `{ validationError }` si country ou l'identité manque. |
+| Valeur inconnue | `country: "US"`, `documentNumber: "1"` | 409 si le code pays n'est pas pris en charge. |
+
+401 when the bearer token is missing or rejected.

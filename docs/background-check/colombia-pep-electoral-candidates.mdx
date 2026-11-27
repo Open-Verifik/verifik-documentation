@@ -1,0 +1,224 @@
+---
+id: colombia-pep-electoral-candidates
+title: "Colombia — PEP electoral candidates"
+description: "Screen electoral candidates who are politically exposed persons in Colombia."
+sidebar_label: "Colombia — PEP electoral candidates"
+slug: "/background-check/colombia-pep-electoral-candidates"
+keywords:
+  - "v2/co/pep/candidatos"
+  - "/v2/co/pep/candidatos"
+  - "api.verifik.co/v2/co/pep/candidatos"
+  - "GET /v2/co/pep/candidatos"
+  - "GET https://api.verifik.co/v2/co/pep/candidatos"
+  - "colombia_api_pep_candidatos"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — PEP electoral candidates
+
+Screen electoral candidates who are politically exposed persons in Colombia.
+
+## What the call returns
+
+- `isPEP`
+- `isCandidate`
+- `fullName` and `documentNumber`
+- `matches` — empty on a clean miss
+
+## Use cases
+
+- Screen a Colombian PEP directory before you onboard.
+- Keep a not-listed person as HTTP 200.
+- Search by name or by document number.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/pep/candidatos
+```
+
+A hit sets `isPEP` true and `isCandidate` true. A person who is simply not in this directory is HTTP 200 with `isPEP` false and an empty `matches` array. That clean miss is not 404.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <your_token>` | Client JWT |
+
+### Parameters
+
+| Name | Type | Required | Example | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `fullName` | string | **Conditional** | `MARIA LOPEZ` | Person name. Enough on its own. Alias searches also accept `partyName`, `entityName`, or `country` where that directory has them. |
+| `documentNumber` | string | **Conditional** | `80123456` | Identifier, 4 to 30 characters. Enough on its own. |
+| `documentType` | string | No | `CC` | Optional: `CC`, `NIT`, `CE`, `PAS`, `TI`, `CD`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/pep/candidatos",
+  params: {
+    fullName: "MARIA LOPEZ",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/pep/candidatos"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "fullName": "MARIA LOPEZ",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/pep/candidatos?fullName=MARIA%20LOPEZ" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Record found)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA LOPEZ",
+    "documentNumber": "80123456",
+    "isPEP": true,
+    "isCandidate": true,
+    "matches": [
+      {
+        "fullName": "MARIA LOPEZ"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one search parameter (documentNumber, fullName, partyName, entityName, or country) must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (No match)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN NAME",
+    "isPEP": false,
+    "isCandidate": false,
+    "matches": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Unauthorized)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Source unavailable)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- A clean miss is HTTP 200 with `isPEP` false.
+- Send at least one search value.
+- Do not map that 200 to 404.
+- Send a Bearer JWT in the `Authorization` header.
+- The JSON sample illustrates the fields. A live call returns the record for the values you send.
+- Do not send a cache-bypass flag. This page documents only the client parameters.
+
+---
+
+## Sandbox
+
+| Scenario | Parameters | Result |
+| :--- | :--- | :--- |
+| Record on file | `fullName: "MARIA LOPEZ"` | 200 with isPEP true on a hit. |
+| Missing required value | Omit every search value | 409 when no search value is sent. |
+| Unknown value | `fullName: "CLEAN NAME"` | 200 with isPEP false. A clean miss is not 404. |
+
+401 when the bearer token is missing or rejected.

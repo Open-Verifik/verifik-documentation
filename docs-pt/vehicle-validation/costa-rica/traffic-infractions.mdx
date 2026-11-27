@@ -1,0 +1,214 @@
+---
+id: traffic-infractions
+title: "Costa Rica — Infrações de trânsito"
+description: "Lê multas COSEVI por uma placa da Costa Rica de 3 a 6 caracteres."
+sidebar_label: "🇨🇷 Costa Rica — Infrações de trânsito"
+slug: "/vehicle-validation/costa-rica/traffic-infractions"
+keywords:
+  - "v2/cr/traffic-infractions"
+  - "/v2/cr/traffic-infractions"
+  - "api.verifik.co/v2/cr/traffic-infractions"
+  - "GET /v2/cr/traffic-infractions"
+  - "GET https://api.verifik.co/v2/cr/traffic-infractions"
+  - "costa_rica_api_traffic_infractions"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Costa Rica — Infrações de trânsito
+
+A consulta de **infrações de trânsito da Costa Rica** lê multas COSEVI de uma placa. `plate` é obrigatória e deve ter de 3 a 6 caracteres. Uma falha de validação responde HTTP 409 com o código `409:invalid_params`, não `MissingParameter`. Uma placa sem multas é 404 `NotFound`.
+
+## O que a chamada devolve
+
+- `plate` e `totalRecords`
+- `infractions[]` com estado e valores
+
+## Casos de uso
+
+- Revise multas antes de registrar um veículo.
+- Rejeite uma placa que não tenha de 3 a 6 caracteres.
+- Leia o valor total de cada multa.
+
+---
+
+## Referência da API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/cr/traffic-infractions
+```
+
+Um acerto inclui `plate`, `totalRecords` e `infractions` com série, número, data, estado, autoridade e valores.
+
+### Headers
+
+| Nome | Valor | Descrição |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato da solicitação |
+| Accept | `application/json` | Formato da resposta |
+| Authorization | `Bearer <seu_token>` | JWT do cliente |
+
+### Parameters
+
+| Nome | Tipo | Obrigatório | Exemplo | Descrição |
+| :--- | :--- | :--- | :--- | :--- |
+| `plate` | string | **Sim** | `123456` | Placa, de 3 a 6 caracteres, sem espaços. Uma placa ausente ou com tamanho errado responde com o código `409:invalid_params`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/cr/traffic-infractions",
+  params: {
+    plate: "123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/cr/traffic-infractions"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "plate": "123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/cr/traffic-infractions?plate=123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "plate": "123456",
+    "totalRecords": "1",
+    "infractions": [
+      {
+        "series": "1996",
+        "number": "12052",
+        "plate": "123456",
+        "status": "CANCELADA",
+        "totalAmount": "2000.00"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parâmetro ausente)">
+
+```json
+{
+  "code": "409:invalid_params",
+  "message": "\"plate\" length must be at least 3 characters long"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Não encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Não autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fonte indisponível)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- `plate` deve ter de 3 a 6 caracteres.
+- Placas inválidas respondem com o código `409:invalid_params`.
+- Sem multas para essa placa é 404 `NotFound`.
+- Envie um JWT Bearer no cabeçalho `Authorization`.
+- O JSON de exemplo ilustra os campos. Uma chamada real devolve o registro dos valores enviados.
+- Não envie um indicador de bypass de cache. Esta página documenta apenas os parâmetros de cliente.
+
+---
+
+## Sandbox
+
+| Cenário | Parâmetros | Resultado |
+| :--- | :--- | :--- |
+| Registro na fonte | `plate: "123456"` | 200 com infrações. |
+| Valor obrigatório ausente | Omit `plate` | 409 com o código `409:invalid_params`. |
+| Valor desconhecido | `plate: "ABC"` | 404 NotFound se o COSEVI não tiver multa. |
+
+401 when the bearer token is missing or rejected.

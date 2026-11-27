@@ -1,0 +1,217 @@
+---
+id: sms
+title: "短信"
+description: "用 POST 发送短信一次性验证码。路由把 phoneGateway 设为 sms。"
+sidebar_label: "短信"
+slug: "/communication/sms"
+keywords:
+  - "v2/communication/sms"
+  - "/v2/communication/sms"
+  - "api.verifik.co/v2/communication/sms"
+  - "POST /v2/communication/sms"
+  - "POST https://api.verifik.co/v2/communication/sms"
+  - "communication_messaging_sms"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 短信
+
+**短信**是 **POST** `https://api.verifik.co/v2/communication/sms`，不是 GET。正文需要 `phone` 和以 `+` 开头的 `countryCode`。路由把 `phoneGateway` 设为 `sms`，因此不要发送该字段。可选 `title` 为 1 到 15 个字符，`language` 选择文案。账户所有者的令牌可以调用。员工需要 Smart Tools 的执行权限。
+
+## 调用返回的内容
+
+- `phone` 与 `countryCode`
+- 设为 `sms` 的 `phoneGateway`
+- `status`
+
+## 使用场景
+
+- 用短信发送登录验证码。
+- 使用国内号码加区号。
+- 让路由选择短信网关。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/communication/sms
+```
+
+发送成功返回 `phoneGateway` 为 `sms`、状态为 `sent`。OTP 送达时计费。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `phone` | string | **是** | `3001234567` | 仅国内号码。不要包含区号。 |
+| `countryCode` | string | **是** | `+57` | 以 `+` 开头的区号。 |
+| `title` | string | 否 | `ACME` | 可选发送方名称，1 到 15 个字符。 |
+| `language` | string | 否 | `es` | 可选模板语言。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/communication/sms",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+  data: {
+    "phone": "3001234567",
+    "countryCode": "+57"
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/communication/sms"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+payload = {
+    "phone": "3001234567",
+    "countryCode": "+57",
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/communication/sms" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{"phone":"3001234567","countryCode":"+57"}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "phone": "3001234567",
+    "countryCode": "+57",
+    "phoneGateway": "sms",
+    "status": "sent"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"phone\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- 本路由是 POST，不是 GET。
+- `phone` 和 `countryCode` 必填。`countryCode` 必须以 `+` 开头。
+- 不要发送 `phoneGateway`；路由会把它设为 `sms`。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `phone: "3001234567"`, `countryCode: "+57"` | 短信 OTP 发出时为 200。 |
+| 缺少必填值 | Omit `phone` | 409 MissingParameter。 |
+| 未知的值 | `countryCode: "57"` | countryCode 不以 + 开头时为 409。 |
+
+401 when the bearer token is missing or rejected.

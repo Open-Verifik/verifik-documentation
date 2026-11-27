@@ -1,0 +1,214 @@
+---
+id: peru-renacyt
+title: "ペルー — SUNEDU の学位と CONCYTEC RENACYT"
+description: "ペルーの大学学位と CONCYTEC RENACYT の研究者登録を確認します。"
+sidebar_label: "🇵🇪 ペルー — RENACYT と学位"
+slug: "/identity/peru-renacyt"
+keywords:
+  - "v2/pe/education/renacyt"
+  - "/v2/pe/education/renacyt"
+  - "api.verifik.co/v2/pe/education/renacyt"
+  - "GET /v2/pe/education/renacyt"
+  - "GET https://api.verifik.co/v2/pe/education/renacyt"
+  - "peru_api_renacyt_education"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# ペルー — SUNEDU の学位と CONCYTEC RENACYT
+
+**RENACYT** 照会は SUNEDU の学位と CONCYTEC の研究者登録を読みます。`documentNumber`（別名 `dni`）、`codigoRegistro`、`orcid`、`fullName` の少なくとも一つを送ります。文書番号を送ると `documentType` の既定は `DNI` です。
+
+## 応答に含まれる項目
+
+- 学位と研究者の項目
+- あれば `codigoRegistro` と `orcid`
+- `fullName` と `documentNumber`
+
+## 用途
+
+- 助成の前に研究者を確認します。
+- ORCID を DNI と突き合わせます。
+- 採用ファイル用の RENACYT コードを読みます。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/pe/education/renacyt
+```
+
+一致には学位、RENACYT コード、ORCID があり得ます。行が無いと 404 `NotFound` です。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **条件付き** | `12345678` | DNI または他の番号。別名 `dni`。既定の `documentType` は `DNI`。`CE`、`PASAPORTE`、`PTP` も可。 |
+| `codigoRegistro` | string | **条件付き** | `REN-100` | RENACYT 登録コード。これだけで足ります。 |
+| `orcid` | string | **条件付き** | `0000-0002-1825-0097` | ORCID 10–30文字。これだけで足ります。 |
+| `fullName` | string | **条件付き** | `LUCIA QUISPE` | 研究者の氏名。これだけで足ります。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/pe/education/renacyt",
+  params: {
+    documentType: "DNI",
+    documentNumber: "12345678",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/pe/education/renacyt"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "DNI",
+    "documentNumber": "12345678",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/pe/education/renacyt?documentType=DNI&documentNumber=12345678" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "documentType": "DNI",
+    "documentNumber": "12345678",
+    "fullName": "LUCIA QUISPE",
+    "codigoRegistro": "REN-100",
+    "orcid": "0000-0002-1825-0097"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one of documentNumber (or dni), codigoRegistro, orcid, or fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (該当なし)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- 文書、RENACYT コード、ORCID、または氏名を送ります。
+- 文書番号の既定種別は `DNI` です。
+- 登録の行が無いと 404 `NotFound` です。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `documentType: "DNI"`, `documentNumber: "12345678"` | 学位または研究者項目のある 200。 |
+| 必須値が無い | Omit every search value | 409 MissingParameter。 |
+| 不明な値 | `documentNumber: "00000000"` | SUNEDU も RENACYT も行が無いと 404 NotFound。 |
+
+401 when the bearer token is missing or rejected.
