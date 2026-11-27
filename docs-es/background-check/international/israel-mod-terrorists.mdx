@@ -1,0 +1,197 @@
+---
+id: israel-mod-terrorists
+title: "Organizaciones terroristas y asociaciones no autorizadas de Israel"
+description: "Consulte si una persona u organización figura en Organizaciones terroristas y asociaciones no autorizadas de Israel, lista publicada por el Ministerio de Defensa de Israel."
+sidebar_label: "🇮🇱 Organizaciones terroristas y asociaciones no autorizadas de Israel"
+slug: /background-check/international/israel-mod-terrorists
+keywords:
+  - "v2/israel-mod-terrorists"
+  - "/v2/israel-mod-terrorists"
+  - "v2 israel-mod-terrorists"
+  - "israel-mod-terrorists"
+  - "/israel-mod-terrorists"
+  - "api/israel-mod-terrorists"
+  - "/api/israel-mod-terrorists"
+  - "api israel-mod-terrorists"
+  - "api.verifik.co/v2/israel-mod-terrorists"
+  - "https://api.verifik.co/v2/israel-mod-terrorists"
+  - "GET v2/israel-mod-terrorists"
+  - "GET /v2/israel-mod-terrorists"
+  - "Israel Terrorist Organizations and Unauthorized Associations"
+  - "israel mod terrorists"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Organizaciones terroristas y asociaciones no autorizadas de Israel
+
+Consulte si una persona u organización figura en **Organizaciones terroristas y asociaciones no autorizadas de Israel**. El Ministerio de Defensa de Israel publica esta lista para Israel.
+
+El Ministerio de Defensa de Israel publica organizaciones terroristas y asociaciones no autorizadas. Una coincidencia significa que el nombre consultado aparece en esa lista de designación.
+
+Envíe `fullName`, `documentNumber` o ambos. Al menos uno de los dos es obligatorio. La respuesta establece `foundInIsraelModTerrorists` en `true` cuando la consulta coincide con un registro publicado y en `false` cuando no coincide. Si hay coincidencia, `details` incluye el nombre designado, la autoridad, la fecha de designación, los alias cuando la fuente los aporta y las observaciones. Use el resultado en KYC, ALA/CFT, alta de proveedores y filtrado de pagos. Revise cada coincidencia antes de depender de ella. Esta llamada no sustituye la lista oficial y no es una determinación legal.
+
+## Referencia de la API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/israel-mod-terrorists
+```
+
+Una respuesta correcta devuelve `data.fullName`, `data.firstName` y `data.lastName` cuando el registro de origen separa el nombre, `data.documentNumber` si usted lo envió, `data.foundInIsraelModTerrorists` y `data.details`. Si hay coincidencia, `details` incluye el nombre designado, la autoridad, la fecha de designación, los alias cuando la fuente los aporta y las observaciones. El objeto `signature` incluye `dateTime` y el mensaje `Certified by Verifik.co`. Cuando `foundInIsraelModTerrorists` es `false`, `details` es un objeto vacío.
+
+### Headers
+
+| Nombre        | Valor              | Descripción             |
+| ------------- | ------------------ | ----------------------- |
+| Content-Type  | `application/json` | Formato de la solicitud |
+| Accept        | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <token>`   | JWT de Verifik          |
+
+### Parameters
+
+| Parámetro        | Tipo   | Requerido   | Ejemplo                  | Descripción                                                                                                      |
+| ---------------- | ------ | ----------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `fullName`       | string | Condicional | `SAMPLE DESIGNATED NAME` | Nombre legal completo de la persona o razón social de la organización. Obligatorio si no envía `documentNumber`. |
+| `documentNumber` | string | Condicional | `A1234567`               | Número de identificación o de registro societario, sin espacios. Obligatorio si no envía `fullName`.             |
+
+### Casos de uso
+
+- **Cribado de designaciones terroristas:** Consulte partes frente a esta lista publicada de designaciones.
+- **Controles CFT:** Use el resultado en el filtrado de pagos y en revisiones de financiación del terrorismo.
+- **Escalamiento:** Envíe una coincidencia a revisión de cumplimiento antes de continuar.
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/israel-mod-terrorists",
+  params: {
+    fullName: "SAMPLE DESIGNATED NAME",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/israel-mod-terrorists"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>",
+}
+params = {
+    "fullName": "SAMPLE DESIGNATED NAME",
+}
+
+response = requests.get(url, headers=headers, params=params)
+response.raise_for_status()
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/israel-mod-terrorists?fullName=SAMPLE%20DESIGNATED%20NAME" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200-found" label="200 (Coincidencia)">
+
+```json
+{
+  "data": {
+    "fullName": "SAMPLE DESIGNATED NAME",
+    "firstName": "SAMPLE",
+    "lastName": "DESIGNATED NAME",
+    "foundInIsraelModTerrorists": true,
+    "details": {
+      "name": "SAMPLE DESIGNATED NAME",
+      "entityType": "Individual",
+      "listName": "Israel Terrorist Organizations and Unauthorized Associations",
+      "sourceList": "israel-mod-terrorists",
+      "authority": "the Ministry of Defense of Israel",
+      "designationDate": "2024-01-01",
+      "aliases": [
+        "SAMPLE ALIAS"
+      ],
+      "remarks": "Sample designation payload."
+    }
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Sin coincidencia)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN SAMPLE NAME",
+    "firstName": "CLEAN",
+    "lastName": "SAMPLE NAME",
+    "foundInIsraelModTerrorists": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetros faltantes)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- Envíe `fullName` o `documentNumber`. Al menos uno es obligatorio. Si faltan ambos, la API responde HTTP 409 con código `MissingParameter` y el mensaje `Either fullName or documentNumber must be provided`.
+- `foundInIsraelModTerrorists` es `true` cuando la consulta coincide con un registro de esta lista y `false` cuando no coincide. `details` es un objeto vacío si no hay coincidencia.
+- El ejemplo de coincidencia muestra la forma de la respuesta. Una coincidencia real devuelve los atributos publicados para ese registro en esta lista.
+- Una coincidencia es un resultado de cribado para revisión de cumplimiento. No es una determinación legal y no sustituye la fuente oficial.
+- Autentique con un JWT Bearer en el encabezado `Authorization`. Cree o renueve el JWT con la [API de autenticación](/verifik-es/autenticacion/renovar-tu-token-jwt).
+- El resultado refleja la lista en el momento de la llamada. Haga una nueva solicitud cuando necesite un resultado posterior.

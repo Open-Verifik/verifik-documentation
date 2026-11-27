@@ -1,0 +1,200 @@
+---
+id: canada-autonomous-sanctions
+title: "Canadian Consolidated Autonomous Sanctions List"
+description: "Screen a person or organization against the Canadian Consolidated Autonomous Sanctions List published by Global Affairs Canada."
+sidebar_label: "🇨🇦 Canadian Consolidated Autonomous Sanctions List"
+slug: /background-check/international/canada-autonomous-sanctions
+keywords:
+  - "v2/canada-autonomous-sanctions"
+  - "/v2/canada-autonomous-sanctions"
+  - "v2 canada-autonomous-sanctions"
+  - "canada-autonomous-sanctions"
+  - "/canada-autonomous-sanctions"
+  - "api/canada-autonomous-sanctions"
+  - "/api/canada-autonomous-sanctions"
+  - "api canada-autonomous-sanctions"
+  - "api.verifik.co/v2/canada-autonomous-sanctions"
+  - "https://api.verifik.co/v2/canada-autonomous-sanctions"
+  - "GET v2/canada-autonomous-sanctions"
+  - "GET /v2/canada-autonomous-sanctions"
+  - "Canadian Consolidated Autonomous Sanctions List"
+  - "canada autonomous sanctions"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Canadian Consolidated Autonomous Sanctions List
+
+Screen a person or organization against the **Canadian Consolidated Autonomous Sanctions List**. Global Affairs Canada publishes this list for Canada.
+
+Global Affairs Canada publishes the consolidated list of persons and entities designated under Canada's autonomous sanctions regulations.
+
+Send `fullName`, `documentNumber`, or both. At least one of the two is required. The response sets `foundInCanadaAutonomousSanctions` to `true` when the query matches a published record and to `false` when it does not. On a match, `details` includes the listed name, entity type, regime or program, measures, country, identifiers, and remarks. Use the result in KYC, AML/CFT, vendor onboarding, and payment screening. Review every match before you rely on it. This call does not replace the official list and it is not a legal determination.
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/canada-autonomous-sanctions
+```
+
+A successful response returns `data.fullName`, `data.firstName` and `data.lastName` when the source record splits the name, `data.documentNumber` when you sent one, `data.foundInCanadaAutonomousSanctions`, and `data.details`. On a match, `details` includes the listed name, entity type, regime or program, measures, country, identifiers, and remarks. The `signature` object includes `dateTime` and the message `Certified by Verifik.co`. When `foundInCanadaAutonomousSanctions` is `false`, `details` is an empty object.
+
+### Headers
+
+| Name          | Value              | Description     |
+| ------------- | ------------------ | --------------- |
+| Content-Type  | `application/json` | Request format  |
+| Accept        | `application/json` | Response format |
+| Authorization | `Bearer <token>`   | Verifik JWT     |
+
+### Parameters
+
+| Parameter        | Type   | Required    | Example                  | Description                                                                                                            |
+| ---------------- | ------ | ----------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| `fullName`       | string | Conditional | `SAMPLE DESIGNATED NAME` | Full legal name of the person, or the registered name of the organization. Required when `documentNumber` is not sent. |
+| `documentNumber` | string | Conditional | `A1234567`               | Identification number or corporate registration number, without spaces. Required when `fullName` is not sent.          |
+
+### Use Cases
+
+- **Sanctions screening:** Check customers, counterparties, and beneficiaries before onboarding or releasing a payment.
+- **AML/CFT reviews:** Record a screen against this jurisdiction's published measures.
+- **Audit trail:** Keep the certified response with the case file.
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/canada-autonomous-sanctions",
+  params: {
+    fullName: "SAMPLE DESIGNATED NAME",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/canada-autonomous-sanctions"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "fullName": "SAMPLE DESIGNATED NAME",
+}
+
+response = requests.get(url, headers=headers, params=params)
+response.raise_for_status()
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/canada-autonomous-sanctions?fullName=SAMPLE%20DESIGNATED%20NAME" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200-found" label="200 (Match)">
+
+```json
+{
+  "data": {
+    "fullName": "SAMPLE DESIGNATED NAME",
+    "firstName": "SAMPLE",
+    "lastName": "DESIGNATED NAME",
+    "foundInCanadaAutonomousSanctions": true,
+    "details": {
+      "name": "SAMPLE DESIGNATED NAME",
+      "entityType": "Individual",
+      "listName": "Canadian Consolidated Autonomous Sanctions List",
+      "sourceList": "canada-autonomous-sanctions",
+      "regime": "Canadian Consolidated Autonomous Sanctions List",
+      "measures": [
+        "Asset freeze"
+      ],
+      "country": "Canada",
+      "identifiers": [
+        "SAMPLE-ID-001"
+      ],
+      "remarks": "Sample match payload for this sanctions list."
+    }
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (No match)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN SAMPLE NAME",
+    "firstName": "CLEAN",
+    "lastName": "SAMPLE NAME",
+    "foundInCanadaAutonomousSanctions": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameters)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- Send `fullName` or `documentNumber`. At least one is required. If both are missing, the API returns HTTP 409 with code `MissingParameter` and the message `Either fullName or documentNumber must be provided`.
+- `foundInCanadaAutonomousSanctions` is `true` when the query matches a record on this list and `false` when it does not. `details` is an empty object when there is no match.
+- The match example shows the response shape. A live match returns the attributes published for that record on this list.
+- A match is a screening result for compliance review. It is not a legal determination and it does not replace the official source.
+- Authenticate with a Bearer JWT in the `Authorization` header. Create or renew the JWT with the [authentication API](/authentication/renew-your-token-jwt).
+- The result reflects the list at the time of the call. Run a new request when you need a later result.

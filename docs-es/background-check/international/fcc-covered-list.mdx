@@ -1,0 +1,195 @@
+---
+id: fcc-covered-list
+title: "Lista cubierta de la FCC de EE. UU."
+description: "Consulte si una persona u organización figura en Lista cubierta de la FCC de EE. UU., lista publicada por la Comisión Federal de Comunicaciones (FCC)."
+sidebar_label: "🇺🇸 Lista cubierta de la FCC de EE. UU."
+slug: /background-check/international/fcc-covered-list
+keywords:
+  - "v2/fcc-covered-list"
+  - "/v2/fcc-covered-list"
+  - "v2 fcc-covered-list"
+  - "fcc-covered-list"
+  - "/fcc-covered-list"
+  - "api/fcc-covered-list"
+  - "/api/fcc-covered-list"
+  - "api fcc-covered-list"
+  - "api.verifik.co/v2/fcc-covered-list"
+  - "https://api.verifik.co/v2/fcc-covered-list"
+  - "GET v2/fcc-covered-list"
+  - "GET /v2/fcc-covered-list"
+  - "US FCC Covered List"
+  - "fcc covered list"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Lista cubierta de la FCC de EE. UU.
+
+Consulte si una persona u organización figura en **Lista cubierta de la FCC de EE. UU.**. La Comisión Federal de Comunicaciones (FCC) publica esta lista para Estados Unidos.
+
+La Covered List nombra equipos y servicios de comunicaciones que la FCC determinó que suponen un riesgo inaceptable para la seguridad nacional de EE. UU. o para la seguridad de las personas estadounidenses.
+
+Envíe `fullName`, `documentNumber` o ambos. Al menos uno de los dos es obligatorio. La respuesta establece `foundInFccCoveredList` en `true` cuando la consulta coincide con un registro publicado y en `false` cuando no coincide. Si hay coincidencia, `details` incluye el nombre de la empresa, la autoridad, el motivo de exclusión, el estado y las fechas pertinentes. Use el resultado en KYC, ALA/CFT, alta de proveedores y filtrado de pagos. Revise cada coincidencia antes de depender de ella. Esta llamada no sustituye la lista oficial y no es una determinación legal.
+
+## Referencia de la API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/fcc-covered-list
+```
+
+Una respuesta correcta devuelve `data.fullName`, `data.firstName` y `data.lastName` cuando el registro de origen separa el nombre, `data.documentNumber` si usted lo envió, `data.foundInFccCoveredList` y `data.details`. Si hay coincidencia, `details` incluye el nombre de la empresa, la autoridad, el motivo de exclusión, el estado y las fechas pertinentes. El objeto `signature` incluye `dateTime` y el mensaje `Certified by Verifik.co`. Cuando `foundInFccCoveredList` es `false`, `details` es un objeto vacío.
+
+### Headers
+
+| Nombre        | Valor              | Descripción             |
+| ------------- | ------------------ | ----------------------- |
+| Content-Type  | `application/json` | Formato de la solicitud |
+| Accept        | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <token>`   | JWT de Verifik          |
+
+### Parameters
+
+| Parámetro        | Tipo   | Requerido   | Ejemplo                  | Descripción                                                                                                      |
+| ---------------- | ------ | ----------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `fullName`       | string | Condicional | `SAMPLE DESIGNATED NAME` | Nombre legal completo de la persona o razón social de la organización. Obligatorio si no envía `documentNumber`. |
+| `documentNumber` | string | Condicional | `A1234567`               | Número de identificación o de registro societario, sin espacios. Obligatorio si no envía `fullName`.             |
+
+### Casos de uso
+
+- **Cribado de exclusiones:** Compruebe si una empresa está excluida, en observación o restringida en esta lista.
+- **Inversión y cadena de suministro:** Use el resultado antes de una tenencia, un mandato o un contrato.
+- **Registro:** Conserve la respuesta certificada en el expediente de inversión o de proveedor.
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/fcc-covered-list",
+  params: {
+    fullName: "SAMPLE DESIGNATED NAME",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/fcc-covered-list"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>",
+}
+params = {
+    "fullName": "SAMPLE DESIGNATED NAME",
+}
+
+response = requests.get(url, headers=headers, params=params)
+response.raise_for_status()
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/fcc-covered-list?fullName=SAMPLE%20DESIGNATED%20NAME" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200-found" label="200 (Coincidencia)">
+
+```json
+{
+  "data": {
+    "fullName": "SAMPLE DESIGNATED NAME",
+    "firstName": "SAMPLE",
+    "lastName": "DESIGNATED NAME",
+    "foundInFccCoveredList": true,
+    "details": {
+      "name": "SAMPLE DESIGNATED NAME",
+      "entityType": "Individual",
+      "listName": "US FCC Covered List",
+      "sourceList": "fcc-covered-list",
+      "authority": "the Federal Communications Commission",
+      "ground": "Exclusion",
+      "status": "Excluded",
+      "fromDate": "2024-01-01"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Sin coincidencia)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN SAMPLE NAME",
+    "firstName": "CLEAN",
+    "lastName": "SAMPLE NAME",
+    "foundInFccCoveredList": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetros faltantes)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- Envíe `fullName` o `documentNumber`. Al menos uno es obligatorio. Si faltan ambos, la API responde HTTP 409 con código `MissingParameter` y el mensaje `Either fullName or documentNumber must be provided`.
+- `foundInFccCoveredList` es `true` cuando la consulta coincide con un registro de esta lista y `false` cuando no coincide. `details` es un objeto vacío si no hay coincidencia.
+- El ejemplo de coincidencia muestra la forma de la respuesta. Una coincidencia real devuelve los atributos publicados para ese registro en esta lista.
+- Una coincidencia es un resultado de cribado para revisión de cumplimiento. No es una determinación legal y no sustituye la fuente oficial.
+- Autentique con un JWT Bearer en el encabezado `Authorization`. Cree o renueve el JWT con la [API de autenticación](/verifik-es/autenticacion/renovar-tu-token-jwt).
+- El resultado refleja la lista en el momento de la llamada. Haga una nueva solicitud cuando necesite un resultado posterior.

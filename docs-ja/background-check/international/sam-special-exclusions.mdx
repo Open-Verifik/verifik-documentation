@@ -1,0 +1,195 @@
+---
+id: sam-special-exclusions
+title: "米国の特別法定排除"
+description: "連邦調達管理システム（SAM）が公開する米国の特別法定排除に対して、人物または組織を照会します。"
+sidebar_label: "🇺🇸 米国の特別法定排除"
+slug: /background-check/international/sam-special-exclusions
+keywords:
+  - "v2/sam-special-exclusions"
+  - "/v2/sam-special-exclusions"
+  - "v2 sam-special-exclusions"
+  - "sam-special-exclusions"
+  - "/sam-special-exclusions"
+  - "api/sam-special-exclusions"
+  - "/api/sam-special-exclusions"
+  - "api sam-special-exclusions"
+  - "api.verifik.co/v2/sam-special-exclusions"
+  - "https://api.verifik.co/v2/sam-special-exclusions"
+  - "GET v2/sam-special-exclusions"
+  - "GET /v2/sam-special-exclusions"
+  - "US Special Legislative Exclusions"
+  - "sam special exclusions"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 米国の特別法定排除
+
+人物または組織が**米国の特別法定排除**に掲載されているかを照会します。連邦調達管理システム（SAM）が米国向けにこのリストを公開しています。
+
+特別法定排除は、通常の調達上の停止やデバーではなく、特定の法律により連邦交付から排除された当事者を識別します。
+
+`fullName`、`documentNumber`、またはその両方を送信します。少なくとも一方は必須です。照会が公開記録と一致すると `foundInSamSpecialExclusions` は `true`、一致しないと `false` です。一致時の `details` には排除された当事者、排除の種類、機関、有効日が含まれます。KYC、AML/CFT、取引先登録、支払い審査に使います。結果を用いる前に一致を確認してください。この呼び出しは公式リストの代わりではなく、法的判断でもありません。
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/sam-special-exclusions
+```
+
+成功レスポンスには `data.fullName`、原資料が氏名を分ける場合の `data.firstName` と `data.lastName`、送信した場合の `data.documentNumber`、`data.foundInSamSpecialExclusions`、`data.details` が含まれます。一致時の `details` には排除された当事者、排除の種類、機関、有効日が含まれます。`signature` には `dateTime` とメッセージ `Certified by Verifik.co` が含まれます。`foundInSamSpecialExclusions` が `false` のとき `details` は空のオブジェクトです。
+
+### Headers
+
+| 名前            | 値                  | 説明            |
+| ------------- | ------------------ | ------------- |
+| Content-Type  | `application/json` | リクエスト形式       |
+| Accept        | `application/json` | レスポンス形式       |
+| Authorization | `Bearer <token>`   | Verifik の JWT |
+
+### Parameters
+
+| パラメータ            | 型      | 必須   | 例                        | 説明                                                 |
+| ---------------- | ------ | ---- | ------------------------ | -------------------------------------------------- |
+| `fullName`       | string | 条件付き | `SAMPLE DESIGNATED NAME` | 個人の法的氏名、または組織の登録名です。`documentNumber` を送らない場合は必須です。 |
+| `documentNumber` | string | 条件付き | `A1234567`               | 空白を含まない識別番号または法人登録番号です。`fullName` を送らない場合は必須です。    |
+
+### 用途
+
+- **交付前の照会:** 連邦の交付や支払いの前に、入札者または受領者を照会します。
+- **排除の状態:** 照会先について返る排除の種類と日付を確認します。
+- **記録:** 認証済みレスポンスを交付ファイルに残します。
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/sam-special-exclusions",
+  params: {
+    fullName: "SAMPLE DESIGNATED NAME",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/sam-special-exclusions"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <token>",
+}
+params = {
+    "fullName": "SAMPLE DESIGNATED NAME",
+}
+
+response = requests.get(url, headers=headers, params=params)
+response.raise_for_status()
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/sam-special-exclusions?fullName=SAMPLE%20DESIGNATED%20NAME" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <token>"
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200-found" label="200（一致）">
+
+```json
+{
+  "data": {
+    "fullName": "SAMPLE DESIGNATED NAME",
+    "firstName": "SAMPLE",
+    "lastName": "DESIGNATED NAME",
+    "foundInSamSpecialExclusions": true,
+    "details": {
+      "name": "SAMPLE DESIGNATED NAME",
+      "entityType": "Individual",
+      "listName": "US Special Legislative Exclusions",
+      "sourceList": "sam-special-exclusions",
+      "exclusionType": "Ineligible",
+      "agency": "the System for Award Management",
+      "activeDate": "2024-01-01",
+      "terminationDate": "2027-01-01"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200（不一致）">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN SAMPLE NAME",
+    "firstName": "CLEAN",
+    "lastName": "SAMPLE NAME",
+    "foundInSamSpecialExclusions": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（パラメータ不足）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- `fullName` または `documentNumber` を送ってください。少なくとも一方は必須です。両方がない場合、API は HTTP 409、コード `MissingParameter`、メッセージ `Either fullName or documentNumber must be provided` を返します。
+- `foundInSamSpecialExclusions` は、このリストの記録と一致すると `true`、一致しないと `false` です。不一致のとき `details` は空のオブジェクトです。
+- 一致例はレスポンスの形を示します。実際の一致では、このリストに公開されているその記録の属性が返ります。
+- 一致はコンプライアンス審査のためのスクリーニング結果です。法的判断ではなく、公式の情報源に代わるものでもありません。
+- `Authorization` ヘッダーの Bearer JWT で認証してください。
+- 結果は呼び出し時点のリストを反映します。後の結果が必要なときは、改めてリクエストしてください。

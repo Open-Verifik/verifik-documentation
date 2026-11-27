@@ -1,0 +1,195 @@
+---
+id: sam-exclusions
+title: "Exclusions d'achats SAM des États-Unis"
+description: "Vérifiez si une personne ou une organisation figure sur Exclusions d'achats SAM des États-Unis, liste publiée par le System for Award Management (SAM)."
+sidebar_label: "🇺🇸 Exclusions d'achats SAM des États-Unis"
+slug: /background-check/international/sam-exclusions
+keywords:
+  - "v2/sam-exclusions"
+  - "/v2/sam-exclusions"
+  - "v2 sam-exclusions"
+  - "sam-exclusions"
+  - "/sam-exclusions"
+  - "api/sam-exclusions"
+  - "/api/sam-exclusions"
+  - "api sam-exclusions"
+  - "api.verifik.co/v2/sam-exclusions"
+  - "https://api.verifik.co/v2/sam-exclusions"
+  - "GET v2/sam-exclusions"
+  - "GET /v2/sam-exclusions"
+  - "US SAM Procurement Exclusions"
+  - "sam exclusions"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Exclusions d'achats SAM des États-Unis
+
+Vérifiez si une personne ou une organisation figure sur **Exclusions d'achats SAM des États-Unis**. Le System for Award Management (SAM) publie cette liste pour les États-Unis.
+
+Les exclusions SAM identifient les parties suspendues, déchues ou autrement inéligibles aux contrats, subventions et autres attributions fédérales.
+
+Envoyez `fullName`, `documentNumber`, ou les deux. Au moins l'un des deux est obligatoire. La réponse met `foundInSamExclusions` à `true` lorsque la requête correspond à un enregistrement publié et à `false` dans le cas contraire. En cas de correspondance, `details` contient la partie exclue, le type d'exclusion, l'agence et les dates d'effet. Utilisez le résultat pour le KYC, la LCB-FT, l'intégration des fournisseurs et le filtrage des paiements. Examinez chaque correspondance avant de vous y fier. Cet appel ne remplace pas la liste officielle et ne constitue pas une décision juridique.
+
+## Référence de l'API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/sam-exclusions
+```
+
+Une réponse réussie renvoie `data.fullName`, `data.firstName` et `data.lastName` lorsque la source sépare le nom, `data.documentNumber` si vous l'avez envoyé, `data.foundInSamExclusions` et `data.details`. En cas de correspondance, `details` contient la partie exclue, le type d'exclusion, l'agence et les dates d'effet. L'objet `signature` contient `dateTime` et le message `Certified by Verifik.co`. Lorsque `foundInSamExclusions` vaut `false`, `details` est un objet vide.
+
+### Headers
+
+| Nom           | Valeur             | Description          |
+| ------------- | ------------------ | -------------------- |
+| Content-Type  | `application/json` | Format de la requête |
+| Accept        | `application/json` | Format de la réponse |
+| Authorization | `Bearer <token>`   | JWT Verifik          |
+
+### Parameters
+
+| Paramètre        | Type   | Requis       | Exemple                  | Description                                                                                                           |
+| ---------------- | ------ | ------------ | ------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| `fullName`       | string | Conditionnel | `SAMPLE DESIGNATED NAME` | Nom légal complet de la personne ou dénomination de l'organisation. Obligatoire si `documentNumber` n'est pas envoyé. |
+| `documentNumber` | string | Conditionnel | `A1234567`               | Numéro d'identification ou d'immatriculation, sans espaces. Obligatoire si `fullName` n'est pas envoyé.               |
+
+### Cas d'usage
+
+- **Criblage d'attribution :** Contrôlez un soumissionnaire ou un bénéficiaire avant une attribution ou un paiement fédéral.
+- **Statut d'exclusion :** Lisez le type d'exclusion et les dates renvoyés pour la partie interrogée.
+- **Dossier :** Conservez la réponse certifiée avec le dossier d'attribution.
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/sam-exclusions",
+  params: {
+    fullName: "SAMPLE DESIGNATED NAME",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <votre_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/sam-exclusions"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <votre_token>",
+}
+params = {
+    "fullName": "SAMPLE DESIGNATED NAME",
+}
+
+response = requests.get(url, headers=headers, params=params)
+response.raise_for_status()
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/sam-exclusions?fullName=SAMPLE%20DESIGNATED%20NAME" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <votre_token>"
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200-found" label="200 (Correspondance)">
+
+```json
+{
+  "data": {
+    "fullName": "SAMPLE DESIGNATED NAME",
+    "firstName": "SAMPLE",
+    "lastName": "DESIGNATED NAME",
+    "foundInSamExclusions": true,
+    "details": {
+      "name": "SAMPLE DESIGNATED NAME",
+      "entityType": "Individual",
+      "listName": "US SAM Procurement Exclusions",
+      "sourceList": "sam-exclusions",
+      "exclusionType": "Ineligible",
+      "agency": "the System for Award Management",
+      "activeDate": "2024-01-01",
+      "terminationDate": "2027-01-01"
+    }
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Aucune correspondance)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN SAMPLE NAME",
+    "firstName": "CLEAN",
+    "lastName": "SAMPLE NAME",
+    "foundInSamExclusions": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Paramètres manquants)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- Envoyez `fullName` ou `documentNumber`. Au moins l'un des deux est obligatoire. S'ils manquent tous les deux, l'API renvoie HTTP 409 avec le code `MissingParameter` et le message `Either fullName or documentNumber must be provided`.
+- `foundInSamExclusions` vaut `true` lorsque la requête correspond à un enregistrement de cette liste et `false` dans le cas contraire. `details` est un objet vide s'il n'y a pas de correspondance.
+- L'exemple de correspondance montre la forme de la réponse. Une correspondance réelle renvoie les attributs publiés pour cet enregistrement sur cette liste.
+- Une correspondance est un résultat de criblage destiné à un examen de conformité. Ce n'est pas une décision juridique et cela ne remplace pas la source officielle.
+- Authentifiez-vous avec un JWT Bearer dans l'en-tête `Authorization`.
+- Le résultat reflète la liste au moment de l'appel. Relancez une requête lorsque vous avez besoin d'un résultat ultérieur.
