@@ -1,0 +1,300 @@
+---
+id: world-politically-exposed-persons
+title: "글로벌 — 정치적 노출자 (PEP) 조회"
+description: "FATF 권고 12에 따라 통합 글로벌 정치적 노출자 명부에서 성명 또는 문서 번호를 조회합니다. 공직 종료 후 5년 조회 기간을 포함합니다."
+slug: /background-check/world-politically-exposed-persons
+keywords:
+  - "v2/world/pep"
+  - "/v2/world/pep"
+  - "pep global"
+  - "global pep"
+  - "fatf recommendation 12"
+  - "v2/world/politically-exposed-persons"
+  - "/v2/world/politically-exposed-persons"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 글로벌 — 정치적 노출자 (PEP) 조회
+
+**여권 또는 기타 문서 번호**(`documentNumber`) 또는 **법적 성명**(`fullName`)으로 `GET /v2/world/pep`에서 여러 관할을 조회합니다. 같은 처리는 `GET /v2/world/politically-exposed-persons`에서도 응답합니다. **FATF 권고 12**의 국내·해외 정치적 노출자 기준을 따르고, 공직 종료 후 **5년 조회 기간**을 유지합니다.
+
+- **근거:** FATF / GAFI Recommendation 12 (Politically Exposed Persons — Foreign & Domestic PEPs)
+- **당국:** Financial Action Task Force (FATF / GAFI) / OpenSanctions Global PEP Registry
+- **기본 출처:** OpenSanctions Global Politically Exposed Persons (PEPs) Consolidated Dataset & Wikidata Officeholders (`https://data.opensanctions.org/datasets/latest/peps/targets.simple.csv`)
+
+- 대상 국가에 단일 국가 PEP 엔드포인트가 없을 때의 국경 간 온보딩.
+- 선택 매개변수 `country`(ISO 3166-1 alpha-2)로 글로벌 명부를 한 국가로 제한.
+- 해외 PEP의 강화된 고객 확인과 정기 재조회.
+
+---
+
+## API 레퍼런스
+
+### 엔드포인트
+
+```http
+GET https://api.verifik.co/v2/world/pep
+```
+
+성공 응답에는 `country`, `jurisdiction`, `documentType`, `documentNumber`, `fullName`, `isPEP`, `isActivePep`, `isFormerPep`, `totalMatches`, `matchCount`, `categories`, `includeFormer`, `lookbackYears`(5), `matches`, `checkedSources`, `regulation`, `dateTime`이 있습니다. 각 일치는 `position`, `entity`, `category`, `categoryDescription`, `status`(`ACTIVE` 또는 `FORMER_PEP`), `source`, `sourceUrl`을 포함합니다. 루트의 판정 필드는 `isPEP`이고, 각 일치는 `isPep`를 사용합니다. PEP가 아닌 경우에도 HTTP 200이며 `isPEP`는 false, `totalMatches`는 0입니다.
+
+### 헤더
+
+| 이름 | 값 |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <your_token>` |
+
+### 매개변수
+
+| 이름 | 유형 | 필수 | 설명 |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | 조건부 | 여권 번호. 3자에서 40자. `fullName`을 생략하면 필수입니다. 별칭: `id`, `dni`, `cedula`. 예: `WORLD-PEP-Q22686`. |
+| `fullName` | string | 조건부 | 법적 성명, 3자에서 160자. `documentNumber`를 생략하면 필수입니다. 별칭: `name`. 예: `URSULA GERTRUD VON DER LEYEN`. |
+| `documentType` | string | 아니오 | 문서 유형, 2자에서 20자. 기본값은 `PASSPORT`이며 응답에 그대로 돌아옵니다. |
+| `includeFormer` | boolean | 아니오 | 5년 조회 기간 안에 임기가 끝난 공직자를 포함합니다. 기본값은 `true`입니다. `false`를 보내면 `ACTIVE` 역할만 남습니다. 이전 공직만 있으면 `isPEP`는 false이고 `matches`는 빈 배열입니다. |
+| `country` | string | 아니오 | 선택 ISO 3166-1 alpha-2 국가 코드, 2자에서 10자(예: `PL`). 생략하면 통합 글로벌 명부를 검색합니다. |
+
+---
+
+## PEP 분류
+
+각 일치는 직함에서 다음 분류 중 하나로 나뉩니다.
+
+| 분류 | 설명 |
+| :--- | :--- |
+| `HEAD_OF_STATE_OR_GOVERNMENT` | 국가 원수, 정부 수반 또는 내각 고위 당국 |
+| `SENIOR_EXECUTIVE` | 행정부 고위 공직자 또는 각료 |
+| `LEGISLATIVE` | 국회 또는 입법부 구성원 |
+| `JUDICIAL_OR_OVERSIGHT` | 고위 사법, 헌법 또는 최고 감사 기관 |
+| `DIPLOMATIC_MILITARY_OR_CENTRAL_BANK` | 고위 외교, 군 또는 중앙은행 공직자 |
+| `PUBLIC_OFFICIAL_PEP` | FATF 권고 12에 따른 정치적 노출자 |
+
+---
+
+### 요청
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/world/pep",
+  params: {
+    documentType: "PASSPORT",
+    documentNumber: "WORLD-PEP-Q22686",
+    includeFormer: true,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/world/pep"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "PASSPORT",
+    "documentNumber": "WORLD-PEP-Q22686",
+    "includeFormer": "true",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/world/pep?documentType=PASSPORT&documentNumber=WORLD-PEP-Q22686&includeFormer=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 응답
+
+<Tabs>
+<TabItem value="200-hit" label="200 (PEP 일치)">
+
+```json
+{
+  "data": {
+    "country": "WORLD",
+    "jurisdiction": "Otros países (Global PEP)",
+    "documentType": "PASSPORT",
+    "documentNumber": "WORLD-PEP-Q22686",
+    "fullName": "URSULA GERTRUD VON DER LEYEN",
+    "isPEP": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "matchCount": 1,
+    "categories": [
+      "HEAD_OF_STATE_OR_GOVERNMENT"
+    ],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [
+      {
+        "id": "sandbox-pep-world-active",
+        "fullName": "URSULA GERTRUD VON DER LEYEN",
+        "aliases": [],
+        "country": "WORLD",
+        "countries": [
+          "WORLD"
+        ],
+        "documentNumber": "WORLD-PEP-Q22686",
+        "birthDate": null,
+        "position": "PRESIDENT OF THE EUROPEAN COMMISSION",
+        "entity": "EUROPEAN COMMISSION / INTERNATIONAL PEP REGISTRY",
+        "category": "HEAD_OF_STATE_OR_GOVERNMENT",
+        "categoryDescription": "Head of State, Head of Government, or Cabinet Executive Authority",
+        "startDate": "2019-12-01",
+        "endDate": null,
+        "lastSeen": "2026-11-27",
+        "status": "ACTIVE",
+        "isPep": true,
+        "isActivePep": true,
+        "isFormerPep": false,
+        "withinLookbackWindow": true,
+        "score": 100,
+        "matchType": "identifier",
+        "dataset": "peps",
+        "source": "OpenSanctions Global Politically Exposed Persons (PEPs) Consolidated Dataset & Wikidata Officeholders",
+        "sourceUrl": "https://data.opensanctions.org/datasets/latest/peps/targets.simple.csv"
+      }
+    ],
+    "checkedSources": [
+      "OPENSANCTIONS_GLOBAL_PEPS",
+      "WIKIDATA_PUBLIC_OFFICEHOLDERS",
+      "EVERY_POLITICIAN_ARCHIVE"
+    ],
+    "regulation": {
+      "framework": "FATF / GAFI Recommendation 12 (Politically Exposed Persons — Foreign & Domestic PEPs)",
+      "lookbackYears": 5,
+      "authority": "Financial Action Task Force (FATF / GAFI) / OpenSanctions Global PEP Registry"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (비일치)">
+
+```json
+{
+  "data": {
+    "country": "WORLD",
+    "jurisdiction": "Otros países (Global PEP)",
+    "documentType": "PASSPORT",
+    "documentNumber": "55555555",
+    "fullName": "JUAN CARLOS CIUDADANO NO PEP",
+    "isPEP": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "matchCount": 0,
+    "categories": [],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [],
+    "checkedSources": [
+      "OPENSANCTIONS_GLOBAL_PEPS",
+      "WIKIDATA_PUBLIC_OFFICEHOLDERS",
+      "EVERY_POLITICIAN_ARCHIVE"
+    ],
+    "regulation": {
+      "framework": "FATF / GAFI Recommendation 12 (Politically Exposed Persons — Foreign & Domestic PEPs)",
+      "lookbackYears": 5,
+      "authority": "Financial Action Task Force (FATF / GAFI) / OpenSanctions Global PEP Registry"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (샌드박스 미발견)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "404:NotFound"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (매개변수 누락)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or fullName must be provided."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## 샌드박스 조회
+
+계정이 샌드박스 모드이면 아래 값은 결정적입니다.
+
+| 문서 번호 | 성명 | includeFormer | 결과 |
+| :--- | :--- | :--- | :--- |
+| `WORLD-PEP-Q22686` | `URSULA GERTRUD VON DER LEYEN` | `true` | 현직 PEP (`isPEP` true, 분류 `HEAD_OF_STATE_OR_GOVERNMENT`) |
+| `10000001` | `URSULA GERTRUD VON DER LEYEN` | `true` | 현직 PEP (문서 `10000001`과 같은 픽스처) |
+| `10000002` | `PEP FORMER MINISTER` | `true` | `includeFormer`가 true일 때 이전 PEP (`isFormerPep` true) |
+| `10000002` | `PEP FORMER MINISTER` | `false` | `includeFormer`가 false일 때 비일치 |
+| `55555555` | `JUAN CARLOS CIUDADANO NO PEP` | `true` | 비PEP (`isPEP` false, `totalMatches` 0) |
+| `99999404` | `—` | `true` | 404 `NotFound` (샌드박스 프로브 전용) |
+
+---
+
+### 참고
+
+- `documentNumber` 또는 `fullName`을 보냅니다. 문서 별칭은 `id`, `dni`, `cedula`이고 이름 별칭은 `name`입니다. 하나도 없으면 API는 409 `MissingParameter`와 메시지 `Either documentNumber or fullName must be provided.`를 반환합니다.
+- `includeFormer`의 기본값은 true입니다. 5년 기간 안의 이전 공직은 `status` `FORMER_PEP`, `isFormerPep` true, `isPEP` true로 돌아옵니다. `false`는 그 행을 빼고 현직만 남깁니다.
+- `documentType`의 기본값은 `PASSPORT`입니다. 응답의 `jurisdiction`은 레지스트리 라벨 `Otros países (Global PEP)`입니다. `regulation.lookbackYears`는 5입니다.
+- 샌드박스 현직 일치: 문서 `WORLD-PEP-Q22686` 또는 이름 `URSULA GERTRUD VON DER LEYEN`, 그리고 문서 `10000001`. 이전 공직: 문서 `10000002` 또는 `PEP FORMER`, `EX MINISTRO`, `FORMER MINISTER`가 들어간 이름. 비일치: 문서 `55555555`와 이름 `JUAN CARLOS CIUDADANO NO PEP`. `99999404`가 들어간 문서 번호 또는 `NOTFOUND`가 들어간 이름은 샌드박스에서 404입니다. 운영 환경의 미일치는 404가 아니라 `isPEP` false인 HTTP 200입니다.
+- 국가별 엔드포인트는 `/v2/`와 ISO 코드와 `/politically-exposed-persons`를 사용합니다. 이 글로벌 경로는 그 페이지를 대체하지 않습니다. 이 글로벌 검색을 좁힐 때만 `country`를 보냅니다.
+- `checkedSources`는 이 관할에서 조회한 레지스트리 키입니다. `regulation.framework`와 `regulation.authority`는 결과와 함께 반환되는 AML 근거입니다.

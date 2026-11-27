@@ -1,0 +1,297 @@
+---
+id: france-politically-exposed-persons
+title: "France — Personnes politiquement exposées (PPE)"
+description: "Contrôlez un numéro d'identité national ou un nom complet dans les registres officiels de personnes politiquement exposées en France, selon la Recommandation 12 du GAFI et la réglementation LCB-FT nationale, avec un recul de 5 ans."
+slug: /background-check/france-politically-exposed-persons
+keywords:
+  - "v2/fr/politically-exposed-persons"
+  - "/v2/fr/politically-exposed-persons"
+  - "pep france"
+  - "france pep"
+  - "fatf recommendation 12"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# France — Personnes politiquement exposées (PPE)
+
+Contrôlez une personne en **France** par **numéro d'identité national** (`documentNumber`) ou par **nom légal complet** (`fullName`) dans les registres officiels de personnes politiquement exposées (PPE). Le contrôle suit la **Recommandation 12 du GAFI** et le cadre LCB-FT national ci-dessous, avec un **recul de 5 ans** pour les mandats publics terminés.
+
+- **Cadre :** Code monétaire et financier (Art. L. 561-10 et R. 561-18) & Loi du 11 octobre 2013 relative à la transparence de la vie publique
+- **Autorité :** Haute Autorité pour la transparence de la vie publique (HATVP) / TRACFIN
+- **Source principale :** Haute Autorité pour la transparence de la vie publique (HATVP) / Assemblée Nationale Open Data (`https://www.hatvp.fr/open-data/`)
+
+- Entrée en relation et vigilance renforcée sur les PPE nationales.
+- Revérification périodique lorsqu'un mandat commence, change ou prend fin.
+- Recherche par nom lorsque le numéro de document national n'est pas encore au dossier.
+
+---
+
+## Référence de l'API
+
+### Point d'accès
+
+```http
+GET https://api.verifik.co/v2/fr/politically-exposed-persons
+```
+
+Un appel réussi renvoie `country`, `jurisdiction`, `documentType`, `documentNumber`, `fullName`, `isPEP`, `isActivePep`, `isFormerPep`, `totalMatches`, `matchCount`, `categories`, `includeFormer`, `lookbackYears` (5), `matches`, `checkedSources`, `regulation` et `dateTime`. Chaque correspondance contient `position`, `entity`, `category`, `categoryDescription`, `status` (`ACTIVE` ou `FORMER_PEP`), `source` et `sourceUrl`. L'indicateur de décision à la racine est `isPEP`. Chaque correspondance utilise `isPep`. Une personne qui n'est pas PPE reste en HTTP 200, avec `isPEP` à false et `totalMatches` à 0.
+
+### En-têtes
+
+| Nom | Valeur |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <votre_token>` |
+
+### Paramètres
+
+| Nom | Type | Requis | Description |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | Conditionnel | Numéro d'identité national. 3 à 40 caractères. Obligatoire si `fullName` est omis. Alias : `id`, `dni`, `cedula`. Exemple : `FR-HATVP-77121`. |
+| `fullName` | string | Conditionnel | Nom légal complet, 3 à 160 caractères. Obligatoire si `documentNumber` est omis. Alias : `name`. Exemple : `EMMANUEL JEAN MICHEL FREDERIC MACRON`. |
+| `documentType` | string | Non | Type de document, 2 à 20 caractères. La valeur par défaut est `ID` et elle est renvoyée dans la réponse. |
+| `includeFormer` | boolean | Non | Inclut les mandats terminés dans la fenêtre de 5 ans. Valeur par défaut : `true`. Passez `false` pour ne garder que les rôles `ACTIVE`. Un seul ancien mandat donne alors `isPEP` à false et un tableau `matches` vide. |
+
+---
+
+## Catégories PPE
+
+Chaque correspondance est classée à partir de l'intitulé de fonction dans l'une de ces catégories :
+
+| Catégorie | Description |
+| :--- | :--- |
+| `HEAD_OF_STATE_OR_GOVERNMENT` | Chef de l'État, chef du gouvernement ou autorité exécutive du cabinet |
+| `SENIOR_EXECUTIVE` | Haut responsable du pouvoir exécutif ou ministre du cabinet |
+| `LEGISLATIVE` | Membre du parlement national ou de l'assemblée législative |
+| `JUDICIAL_OR_OVERSIGHT` | Haute autorité judiciaire, constitutionnelle ou de contrôle suprême |
+| `DIPLOMATIC_MILITARY_OR_CENTRAL_BANK` | Haut responsable diplomatique, militaire ou de la banque centrale |
+| `PUBLIC_OFFICIAL_PEP` | Personne politiquement exposée au sens de la Recommandation 12 du GAFI |
+
+---
+
+### Requête
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/fr/politically-exposed-persons",
+  params: {
+    documentType: "ID",
+    documentNumber: "FR-HATVP-77121",
+    includeFormer: true,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <votre_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/fr/politically-exposed-persons"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <votre_token>",
+}
+params = {
+    "documentType": "ID",
+    "documentNumber": "FR-HATVP-77121",
+    "includeFormer": "true",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/fr/politically-exposed-persons?documentType=ID&documentNumber=FR-HATVP-77121&includeFormer=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <votre_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Réponse
+
+<Tabs>
+<TabItem value="200-hit" label="200 (correspondance PPE)">
+
+```json
+{
+  "data": {
+    "country": "FR",
+    "jurisdiction": "Francia",
+    "documentType": "ID",
+    "documentNumber": "FR-HATVP-77121",
+    "fullName": "EMMANUEL JEAN MICHEL FREDERIC MACRON",
+    "isPEP": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "matchCount": 1,
+    "categories": [
+      "HEAD_OF_STATE_OR_GOVERNMENT"
+    ],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [
+      {
+        "id": "sandbox-pep-fr-active",
+        "fullName": "EMMANUEL JEAN MICHEL FREDERIC MACRON",
+        "aliases": [],
+        "country": "FR",
+        "countries": [
+          "FR"
+        ],
+        "documentNumber": "FR-HATVP-77121",
+        "birthDate": null,
+        "position": "PRÉSIDENT DE LA RÉPUBLIQUE FRANÇAISE",
+        "entity": "PRÉSIDENCE DE LA RÉPUBLIQUE FRANÇAISE",
+        "category": "HEAD_OF_STATE_OR_GOVERNMENT",
+        "categoryDescription": "Head of State, Head of Government, or Cabinet Executive Authority",
+        "startDate": "2017-05-14",
+        "endDate": null,
+        "lastSeen": "2026-11-27",
+        "status": "ACTIVE",
+        "isPep": true,
+        "isActivePep": true,
+        "isFormerPep": false,
+        "withinLookbackWindow": true,
+        "score": 100,
+        "matchType": "identifier",
+        "dataset": "peps",
+        "source": "Haute Autorité pour la transparence de la vie publique (HATVP) / Assemblée Nationale Open Data",
+        "sourceUrl": "https://www.hatvp.fr/open-data/"
+      }
+    ],
+    "checkedSources": [
+      "HATVP_OPENDATA_FR",
+      "ASSEMBLEE_NATIONALE_OPENDATA_FR",
+      "OPENSANCTIONS_PEP_FR"
+    ],
+    "regulation": {
+      "framework": "Code monétaire et financier (Art. L. 561-10 et R. 561-18) & Loi du 11 octobre 2013 relative à la transparence de la vie publique",
+      "lookbackYears": 5,
+      "authority": "Haute Autorité pour la transparence de la vie publique (HATVP) / TRACFIN"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (aucune correspondance)">
+
+```json
+{
+  "data": {
+    "country": "FR",
+    "jurisdiction": "Francia",
+    "documentType": "ID",
+    "documentNumber": "55555555",
+    "fullName": "JUAN CARLOS CIUDADANO NO PEP",
+    "isPEP": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "matchCount": 0,
+    "categories": [],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [],
+    "checkedSources": [
+      "HATVP_OPENDATA_FR",
+      "ASSEMBLEE_NATIONALE_OPENDATA_FR",
+      "OPENSANCTIONS_PEP_FR"
+    ],
+    "regulation": {
+      "framework": "Code monétaire et financier (Art. L. 561-10 et R. 561-18) & Loi du 11 octobre 2013 relative à la transparence de la vie publique",
+      "lookbackYears": 5,
+      "authority": "Haute Autorité pour la transparence de la vie publique (HATVP) / TRACFIN"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (introuvable en sandbox)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "404:NotFound"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (paramètre manquant)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or fullName must be provided."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Jeux d'essai sandbox
+
+Avec le compte en mode sandbox, ces valeurs sont déterministes :
+
+| Numéro de document | Nom complet | includeFormer | Résultat |
+| :--- | :--- | :--- | :--- |
+| `FR-HATVP-77121` | `EMMANUEL JEAN MICHEL FREDERIC MACRON` | `true` | PPE active (`isPEP` true, catégorie `HEAD_OF_STATE_OR_GOVERNMENT`) |
+| `10000001` | `EMMANUEL JEAN MICHEL FREDERIC MACRON` | `true` | PPE active (même jeu que le document `10000001`) |
+| `10000002` | `PEP FORMER MINISTER` | `true` | Ancienne PPE (`isFormerPep` true) lorsque `includeFormer` vaut true |
+| `10000002` | `PEP FORMER MINISTER` | `false` | Résultat vierge lorsque `includeFormer` vaut false |
+| `55555555` | `JUAN CARLOS CIUDADANO NO PEP` | `true` | Non-PPE (`isPEP` false, `totalMatches` 0) |
+| `99999404` | `—` | `true` | 404 `NotFound` (sonde sandbox uniquement) |
+
+---
+
+### Remarques
+
+- Envoyez `documentNumber` ou `fullName`. Les alias du document sont `id`, `dni` et `cedula`. L'alias du nom est `name`. Si aucun n'est présent, l'API renvoie 409 `MissingParameter` avec le message `Either documentNumber or fullName must be provided.`
+- `includeFormer` vaut true par défaut. Les anciens mandats dans la fenêtre de 5 ans reviennent avec `status` `FORMER_PEP`, `isFormerPep` à true et `isPEP` à true. `false` retire ces lignes et ne garde que les rôles actifs.
+- `documentType` vaut `ID` par défaut. `jurisdiction` dans la charge est le libellé de registre `Francia`. `regulation.lookbackYears` vaut 5.
+- Correspondance active en sandbox : document `FR-HATVP-77121` ou nom `EMMANUEL JEAN MICHEL FREDERIC MACRON`, ainsi que le document `10000001`. Ancien mandat : document `10000002` ou un nom contenant `PEP FORMER`, `EX MINISTRO` ou `FORMER MINISTER`. Vierge : document `55555555` avec le nom `JUAN CARLOS CIUDADANO NO PEP`. Un numéro contenant `99999404`, ou un nom contenant `NOTFOUND`, renvoie 404 en sandbox. Une absence en production est HTTP 200 avec `isPEP` à false, pas 404.
+- Cette route ne couvre que France (`FR`). Pour une recherche transfrontalière, utilisez [PPE mondiale](/verifik-fr/background-check/world-politically-exposed-persons).
+- `checkedSources` liste les clés de registre consultées pour cette juridiction. `regulation.framework` et `regulation.authority` identifient le fondement LCB-FT renvoyé avec le résultat.

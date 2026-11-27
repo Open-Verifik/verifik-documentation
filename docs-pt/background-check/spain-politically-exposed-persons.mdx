@@ -1,0 +1,297 @@
+---
+id: spain-politically-exposed-persons
+title: "Espanha — Pessoas Politicamente Expostas (PEP)"
+description: "Consulte um Documento Nacional de Identidad (DNI) ou um nome completo nos registros oficiais de pessoas politicamente expostas de Espanha, conforme a Recomendação 12 do GAFI e a norma nacional de PLD/FT, com janela de 5 anos."
+slug: /background-check/spain-politically-exposed-persons
+keywords:
+  - "v2/es/politically-exposed-persons"
+  - "/v2/es/politically-exposed-persons"
+  - "pep spain"
+  - "spain pep"
+  - "fatf recommendation 12"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Espanha — Pessoas Politicamente Expostas (PEP)
+
+Consulte se uma pessoa em **Espanha** consta como pessoa politicamente exposta (PEP) pelo **Documento Nacional de Identidad (DNI)** (`documentNumber`) ou pelo **nome legal completo** (`fullName`). A consulta segue a **Recomendação 12 do GAFI** e o marco nacional de PLD/FT abaixo, com uma **janela de 5 anos** para mandatos públicos encerrados.
+
+- **Marco:** Ley 10/2010 de prevención del blanqueo de capitales (Art. 14 Personas con responsabilidad pública) y Ley 3/2015
+- **Autoridade:** SEPBLAC / Oficina de Conflictos de Intereses (OCI)
+- **Fonte principal:** Portal de la Transparencia del Gobierno de España / Boletín Oficial del Estado (BOE Altos Cargos) (`https://transparencia.gob.es`)
+
+- Onboarding e diligência reforçada de PEP nacionais.
+- Reconsulta periódica quando um mandato começa, muda ou termina.
+- Busca por nome quando o documento nacional ainda não está no cadastro.
+
+---
+
+## Referência da API
+
+### Ponto de acesso
+
+```http
+GET https://api.verifik.co/v2/es/politically-exposed-persons
+```
+
+Uma chamada bem-sucedida devolve `country`, `jurisdiction`, `documentType`, `documentNumber`, `fullName`, `isPEP`, `isActivePep`, `isFormerPep`, `totalMatches`, `matchCount`, `categories`, `includeFormer`, `lookbackYears` (5), `matches`, `checkedSources`, `regulation` e `dateTime`. Cada correspondência inclui `position`, `entity`, `category`, `categoryDescription`, `status` (`ACTIVE` ou `FORMER_PEP`), `source` e `sourceUrl`. O indicador de decisão na raiz é `isPEP`. Cada correspondência usa `isPep`. Quem não é PEP também responde HTTP 200, com `isPEP` false e `totalMatches` 0.
+
+### Cabeçalhos
+
+| Nome | Valor |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <seu_token>` |
+
+### Parâmetros
+
+| Nome | Tipo | Obrigatório | Descrição |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | Condicional | Documento Nacional de Identidad (DNI). De 3 a 40 caracteres. Obrigatório se `fullName` for omitido. Aliases: `id`, `dni`, `cedula`. Exemplo: `ES-BOE-02891452A`. |
+| `fullName` | string | Condicional | Nome legal completo, de 3 a 160 caracteres. Obrigatório se `documentNumber` for omitido. Alias: `name`. Exemplo: `PEDRO SANCHEZ PEREZ CASTEJON`. |
+| `documentType` | string | Não | Tipo de documento, de 2 a 20 caracteres. O padrão é `DNI` e ele volta na resposta. |
+| `includeFormer` | boolean | Não | Inclui mandatos encerrados dentro da janela de 5 anos. Padrão: `true`. Envie `false` para manter só papéis `ACTIVE`. Se o único achado for um ex-PEP, `isPEP` fica false e `matches` fica vazio. |
+
+---
+
+## Categorias PEP
+
+Cada correspondência é classificada a partir do cargo em uma destas categorias:
+
+| Categoria | Descrição |
+| :--- | :--- |
+| `HEAD_OF_STATE_OR_GOVERNMENT` | Chefe de Estado, chefe de Governo ou autoridade do gabinete executivo |
+| `SENIOR_EXECUTIVE` | Alto funcionário do poder executivo ou ministro de gabinete |
+| `LEGISLATIVE` | Membro do parlamento nacional ou da assembleia legislativa |
+| `JUDICIAL_OR_OVERSIGHT` | Alta autoridade judicial, constitucional ou de controle superior |
+| `DIPLOMATIC_MILITARY_OR_CENTRAL_BANK` | Alto funcionário diplomático, militar ou do banco central |
+| `PUBLIC_OFFICIAL_PEP` | Pessoa politicamente exposta nos termos da Recomendação 12 do GAFI |
+
+---
+
+### Requisição
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/es/politically-exposed-persons",
+  params: {
+    documentType: "DNI",
+    documentNumber: "ES-BOE-02891452A",
+    includeFormer: true,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <seu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/es/politically-exposed-persons"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <seu_token>",
+}
+params = {
+    "documentType": "DNI",
+    "documentNumber": "ES-BOE-02891452A",
+    "includeFormer": "true",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/es/politically-exposed-persons?documentType=DNI&documentNumber=ES-BOE-02891452A&includeFormer=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <seu_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Resposta
+
+<Tabs>
+<TabItem value="200-hit" label="200 (correspondência PEP)">
+
+```json
+{
+  "data": {
+    "country": "ES",
+    "jurisdiction": "España",
+    "documentType": "DNI",
+    "documentNumber": "ES-BOE-02891452A",
+    "fullName": "PEDRO SANCHEZ PEREZ CASTEJON",
+    "isPEP": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "matchCount": 1,
+    "categories": [
+      "HEAD_OF_STATE_OR_GOVERNMENT"
+    ],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [
+      {
+        "id": "sandbox-pep-es-active",
+        "fullName": "PEDRO SANCHEZ PEREZ CASTEJON",
+        "aliases": [],
+        "country": "ES",
+        "countries": [
+          "ES"
+        ],
+        "documentNumber": "ES-BOE-02891452A",
+        "birthDate": null,
+        "position": "PRESIDENTE DEL GOBIERNO DE ESPAÑA",
+        "entity": "PRESIDENCIA DEL GOBIERNO / CONGRESO DE LOS DIPUTADOS",
+        "category": "HEAD_OF_STATE_OR_GOVERNMENT",
+        "categoryDescription": "Head of State, Head of Government, or Cabinet Executive Authority",
+        "startDate": "2018-06-02",
+        "endDate": null,
+        "lastSeen": "2026-11-27",
+        "status": "ACTIVE",
+        "isPep": true,
+        "isActivePep": true,
+        "isFormerPep": false,
+        "withinLookbackWindow": true,
+        "score": 100,
+        "matchType": "identifier",
+        "dataset": "peps",
+        "source": "Portal de la Transparencia del Gobierno de España / Boletín Oficial del Estado (BOE Altos Cargos)",
+        "sourceUrl": "https://transparencia.gob.es"
+      }
+    ],
+    "checkedSources": [
+      "PORTAL_TRANSPARENCIA_GOB_ES",
+      "BOE_ALTOS_CARGOS_ES",
+      "OPENSANCTIONS_PEP_ES"
+    ],
+    "regulation": {
+      "framework": "Ley 10/2010 de prevención del blanqueo de capitales (Art. 14 Personas con responsabilidad pública) y Ley 3/2015",
+      "lookbackYears": 5,
+      "authority": "SEPBLAC / Oficina de Conflictos de Intereses (OCI)"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (sem correspondência)">
+
+```json
+{
+  "data": {
+    "country": "ES",
+    "jurisdiction": "España",
+    "documentType": "DNI",
+    "documentNumber": "55555555",
+    "fullName": "JUAN CARLOS CIUDADANO NO PEP",
+    "isPEP": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "matchCount": 0,
+    "categories": [],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [],
+    "checkedSources": [
+      "PORTAL_TRANSPARENCIA_GOB_ES",
+      "BOE_ALTOS_CARGOS_ES",
+      "OPENSANCTIONS_PEP_ES"
+    ],
+    "regulation": {
+      "framework": "Ley 10/2010 de prevención del blanqueo de capitales (Art. 14 Personas con responsabilidad pública) y Ley 3/2015",
+      "lookbackYears": 5,
+      "authority": "SEPBLAC / Oficina de Conflictos de Intereses (OCI)"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (não encontrado no sandbox)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "404:NotFound"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (parâmetro ausente)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or fullName must be provided."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Sondas de sandbox
+
+Com a conta em modo sandbox, estes valores são determinísticos:
+
+| Número do documento | Nome completo | includeFormer | Resultado |
+| :--- | :--- | :--- | :--- |
+| `ES-BOE-02891452A` | `PEDRO SANCHEZ PEREZ CASTEJON` | `true` | PEP ativa (`isPEP` true, categoria `HEAD_OF_STATE_OR_GOVERNMENT`) |
+| `10000001` | `PEDRO SANCHEZ PEREZ CASTEJON` | `true` | PEP ativa (o mesmo fixture do documento `10000001`) |
+| `10000002` | `PEP FORMER MINISTER` | `true` | Ex-PEP (`isFormerPep` true) quando `includeFormer` é true |
+| `10000002` | `PEP FORMER MINISTER` | `false` | Resultado limpo quando `includeFormer` é false |
+| `55555555` | `JUAN CARLOS CIUDADANO NO PEP` | `true` | Não PEP (`isPEP` false, `totalMatches` 0) |
+| `99999404` | `—` | `true` | 404 `NotFound` (somente sonda de sandbox) |
+
+---
+
+### Observações
+
+- Envie `documentNumber` ou `fullName`. Os aliases do documento são `id`, `dni` e `cedula`. O alias do nome é `name`. Se nenhum estiver presente, a API responde 409 `MissingParameter` com a mensagem `Either documentNumber or fullName must be provided.`
+- `includeFormer` é true por padrão. Ex-mandatários dentro da janela de 5 anos voltam com `status` `FORMER_PEP`, `isFormerPep` true e `isPEP` true. `false` descarta essas linhas e deixa só papéis ativos.
+- `documentType` assume `DNI` por padrão. `jurisdiction` na carga é o rótulo do registro `España`. `regulation.lookbackYears` é 5.
+- Acerto ativo no sandbox: documento `ES-BOE-02891452A` ou nome `PEDRO SANCHEZ PEREZ CASTEJON`, e também o documento `10000001`. Ex-PEP: documento `10000002` ou um nome que contenha `PEP FORMER`, `EX MINISTRO` ou `FORMER MINISTER`. Limpo: documento `55555555` com o nome `JUAN CARLOS CIUDADANO NO PEP`. Um documento que contenha `99999404`, ou um nome que contenha `NOTFOUND`, responde 404 no sandbox. Uma ausência em produção é HTTP 200 com `isPEP` false, não 404.
+- Esta rota consulta apenas Espanha (`ES`). Para uma busca transfronteiriça use [PEP global](/verifik-pt/background-check/world-politically-exposed-persons).
+- `checkedSources` lista as chaves de registro consultadas para esta jurisdição. `regulation.framework` e `regulation.authority` identificam a base de PLD/FT devolvida com o resultado.
