@@ -1,0 +1,224 @@
+---
+id: business-validation-romania-company-lookup
+title: "루마니아 — 법인·사업자 등기 조회 (KYB)"
+description: "루마니아 법인 등기 조회는 공식 사업자 등록부에서 법인을 확인합니다. 법인 등록번호 또는 납세 식별자(CUI / CIF / ONRC)를 `documentNumber`로 보내세요. KYB 온보딩, 공급업체 실사, 거래 상대 심사에 사용합니다."
+sidebar_label: "🇷🇴 루마니아 — 법인 등기"
+slug: "/business-validation/romania-company-lookup"
+keywords:
+  - "v2/ro/company"
+  - "/v2/ro/company"
+  - "api.verifik.co/v2/ro/company"
+  - "GET /v2/ro/company"
+  - "company Romania"
+  - "romania_api_company_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 루마니아 — 법인·사업자 등기 조회 (KYB)
+
+**루마니아 법인 등기 조회**는 공식 사업자 등록부에서 법인을 확인합니다. 법인 등록번호 또는 납세 식별자(CUI / CIF / ONRC)를 `documentNumber`로 보내세요. KYB 온보딩, 공급업체 실사, 거래 상대 심사에 사용합니다.
+
+`documentNumber`는 필수입니다. `documentType`은 선택입니다. 보낼 때는 식별자 종류(예: `CUI`)를 지정해 번호가 여러 개인 국가를 구분합니다.
+
+## 등록부가 반환하는 항목
+
+- 법적 상호
+- 등록 상태
+- 설립일
+- 납세 또는 등록 식별자
+- 등록 주소
+
+## 사용 사례
+
+- 첫 지급 전에 루마니아의 공급업체 또는 거래 상대를 온보딩합니다.
+- 계약서나 청구서에 적힌 법적 상호와 등록 상태를 확인합니다.
+- KYB 파일에 설립일, 납세 식별자, 등록 주소를 수집합니다.
+
+---
+
+## API 레퍼런스
+
+### 엔드포인트
+
+```http
+GET https://api.verifik.co/v2/ro/company
+```
+
+`documentNumber`와 선택적 `documentType`으로 루마니아 공식 사업자 등록부를 조회합니다. 성공 응답에는 법적 상호, 등록 상태, 설립일, 납세 식별자(CUI / CIF / ONRC), 등록 주소가 포함됩니다. KYB 온보딩 또는 공급업체 실사에서 사용하세요. 아래 예시는 그 필드를 보여 줍니다. `status` 문구를 포함한 실제 값은 등록부에서 옵니다.
+
+### 헤더
+
+| 이름 | 값 | 설명 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 요청 형식 |
+| Accept | `application/json` | 응답 형식 |
+| Authorization | `Bearer <your_token>` | 고객 JWT 인증 토큰 |
+
+### 매개변수
+
+| 이름 | 유형 | 필수 | 예시 | 설명 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **예** | `12345678` | 공식 법인 등록번호 또는 납세 식별자(CUI / CIF / ONRC). |
+| `documentType` | string | 아니요 | `CUI` | 법인 문서 유형 또는 등록부 접두사. 예: `CUI`, `CIF`, `ONRC`. 공식 번호만 보내려면 생략하세요. |
+
+---
+
+### 요청
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/ro/company",
+  params: {
+    documentType: "CUI",
+    documentNumber: "12345678",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ro/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "CUI",
+    "documentNumber": "12345678",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/ro/company?documentType=CUI&documentNumber=12345678" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 응답
+
+<Tabs>
+<TabItem value="200" label="200 (기록 있음)">
+
+```json
+{
+  "data": {
+    "documentType": "CUI",
+    "documentNumber": "12345678",
+    "businessName": "Example S.R.L.",
+    "status": "ACTIVE",
+    "incorporationDate": "2014-03-18",
+    "taxIdentifier": "12345678",
+    "address": {
+      "line1": "1 Example Street",
+      "locality": "Bucharest",
+      "postalCode": "010011",
+      "country": "Romania"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (매개변수 누락)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (없음)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (인증 필요)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (등록부 일시 중단)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 참고
+
+- **식별자 형식.** CUI/CIF는 숫자 세무 코드입니다. VAT 식별자에는 RO 접두사가 붙을 수 있습니다. ONRC 상업등기 번호는 별도 체계입니다. 보내는 종류를 documentType에 지정하고 공백은 빼세요.
+- 법인 문서 유형 또는 등록부 접두사. 예: `CUI`, `CIF`, `ONRC`. 공식 번호만 보내려면 생략하세요.
+- 예시의 상태 표기는 필드를 보여 주기 위한 값입니다. 실제 등록부는 자체 표기를 반환하며 현지 언어일 수 있습니다.
+- 이 경로의 고객 매개변수는 `documentNumber`와, 식별자 종류를 밝혀야 할 때의 `documentType`입니다.
+- JSON 예시는 위 필드의 형태입니다. 실제 호출은 보낸 식별자에 대한 등록부 기록을 반환합니다.
+
+---
+
+## 샌드박스
+
+계정이 샌드박스 모드이면 같은 매개변수로 이 경로를 호출합니다. 표는 각 경우에 문서화된 응답을 설명합니다.
+
+| 시나리오 | 매개변수 | 결과 |
+| :--- | :--- | :--- |
+| **등록된 식별자** | `documentType: "CUI"`, `documentNumber: "12345678"` | 출처에 번호가 있으면 200과 함께 법적 이름, 상태, 식별자, 주소 또는 신원 속성을 반환합니다. |
+| **documentNumber 없음** | 생략 `documentNumber` | `documentNumber`를 빼면 409 `MissingParameter`. |
+| **알 수 없는 번호** | `documentNumber: "000000000"` | 등록부에 해당 번호가 없으면 404 `NotFound`. |
+
+bearer 토큰이 없거나 거부되면 401.

@@ -1,0 +1,224 @@
+---
+id: business-validation-australia-company-lookup
+title: "Australia — Business & Corporate Registry Lookup (KYB)"
+description: "The Australia Business & Corporate Registry Lookup verifies a legal entity against the official business registry. Send the corporate registration or tax identifier (ABN / ACN) as `documentNumber`. Use it for KYB onboarding, vendor due diligence, and supplier screening."
+sidebar_label: "🇦🇺 Australia — Company Registry"
+slug: "/business-validation/australia-company-lookup"
+keywords:
+  - "v2/au/company"
+  - "/v2/au/company"
+  - "api.verifik.co/v2/au/company"
+  - "GET /v2/au/company"
+  - "company Australia"
+  - "australia_api_company_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Australia — Business & Corporate Registry Lookup (KYB)
+
+The **Australia Business & Corporate Registry Lookup** verifies a legal entity against the official business registry. Send the corporate registration or tax identifier (ABN / ACN) as `documentNumber`. Use it for KYB onboarding, vendor due diligence, and supplier screening.
+
+`documentNumber` is required. `documentType` is optional. When you send it, use the identifier family (for example `ABN`) so the registry can tell multi-number countries apart.
+
+## What the registry returns
+
+- Legal business name
+- Registration status
+- Incorporation date
+- Tax or registration identifier
+- Registered address
+
+## Use cases
+
+- Onboard a vendor or counterparty in Australia before the first payment.
+- Confirm the legal name and registration status printed on a contract or invoice.
+- Collect the incorporation date, tax identifier, and registered address for a KYB file.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/au/company
+```
+
+Query the official business registry of Australia with `documentNumber` and an optional `documentType`. A successful payload includes the legal business name, registration status, incorporation date, the tax identifier (ABN / ACN), and the registered address. Run it in a KYB onboarding or vendor due-diligence workflow. The sample below shows those fields. Live values, including the wording of `status`, come from the registry.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <your_token>` | Client JWT authentication token |
+
+### Parameters
+
+| Name | Type | Required | Example | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Yes** | `51824753556` | Official corporate registration number or tax ID (ABN / ACN). |
+| `documentType` | string | No | `ABN` | Corporate document type or registry prefix. Accepted examples: `ABN`, `ACN`. Omit it to send only the official number. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/au/company",
+  params: {
+    documentType: "ABN",
+    documentNumber: "51824753556",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/au/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "ABN",
+    "documentNumber": "51824753556",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/au/company?documentType=ABN&documentNumber=51824753556" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Record found)">
+
+```json
+{
+  "data": {
+    "documentType": "ABN",
+    "documentNumber": "51824753556",
+    "businessName": "Example Pty Ltd",
+    "status": "ACTIVE",
+    "incorporationDate": "2014-03-18",
+    "taxIdentifier": "51824753556",
+    "address": {
+      "line1": "1 Example Street",
+      "locality": "Sydney",
+      "postalCode": "2000",
+      "country": "Australia"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Unauthorized)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Registry unavailable)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- **Identifier format.** An ABN is 11 digits. An ACN is 9 digits. Send digits only, without spaces.
+- Corporate document type or registry prefix. Accepted examples: `ABN`, `ACN`. Omit it to send only the official number.
+- The status label in the sample illustrates the field. The live registry returns its own label, which may be a local-language status.
+- Send `documentNumber` and, when you need to name the identifier family, `documentType`. Those are the client parameters for this route.
+- The JSON sample is an illustration of the fields above. A live call returns the registry record for the identifier you send.
+
+---
+
+## Sandbox
+
+With the account in sandbox mode, the same parameters exercise this route. The table describes the response documented for each case.
+
+| Scenario | Parameters | Result |
+| :--- | :--- | :--- |
+| **Identifier on file** | `documentType: "ABN"`, `documentNumber: "51824753556"` | 200 with legal name, status, identifier, and address or identity attributes when the source holds the number. |
+| **Missing documentNumber** | Omit `documentNumber` | 409 `MissingParameter` when `documentNumber` is omitted. |
+| **Unknown number** | `documentNumber: "000000000"` | 404 `NotFound` when the registry has no record for that number. |
+
+401 when the bearer token is missing or rejected.

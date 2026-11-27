@@ -429,6 +429,30 @@ keywords:
   - "https://api.verifik.co/v2/argentina-repet"
   - "GET v2/argentina-repet"
   - "GET /v2/argentina-repet"
+  - "v2/au/citizen"
+  - "/v2/au/citizen"
+  - "v2 au citizen"
+  - "au/citizen"
+  - "/au/citizen"
+  - "api/au/citizen"
+  - "/api/au/citizen"
+  - "api au citizen"
+  - "api.verifik.co/v2/au/citizen"
+  - "https://api.verifik.co/v2/au/citizen"
+  - "GET v2/au/citizen"
+  - "GET /v2/au/citizen"
+  - "v2/au/company"
+  - "/v2/au/company"
+  - "v2 au company"
+  - "au/company"
+  - "/au/company"
+  - "api/au/company"
+  - "/api/au/company"
+  - "api au company"
+  - "api.verifik.co/v2/au/company"
+  - "https://api.verifik.co/v2/au/company"
+  - "GET v2/au/company"
+  - "GET /v2/au/company"
   - "v2/australia-sanctions"
   - "/v2/australia-sanctions"
   - "v2 australia-sanctions"
@@ -511,6 +535,18 @@ keywords:
   - "https://api.verifik.co/v2/batch-configurations/{id}/input-schema"
   - "GET v2/batch-configurations/{id}/input-schema"
   - "GET /v2/batch-configurations/{id}/input-schema"
+  - "v2/be/company"
+  - "/v2/be/company"
+  - "v2 be company"
+  - "be/company"
+  - "/be/company"
+  - "api/be/company"
+  - "/api/be/company"
+  - "api be company"
+  - "api.verifik.co/v2/be/company"
+  - "https://api.verifik.co/v2/be/company"
+  - "GET v2/be/company"
+  - "GET /v2/be/company"
   - "v2/be/politically-exposed-persons"
   - "/v2/be/politically-exposed-persons"
   - "v2 be politically-exposed-persons"
@@ -875,6 +911,18 @@ keywords:
   - "https://api.verifik.co/v2/cbp-wro"
   - "GET v2/cbp-wro"
   - "GET /v2/cbp-wro"
+  - "v2/ch/company"
+  - "/v2/ch/company"
+  - "v2 ch company"
+  - "ch/company"
+  - "/ch/company"
+  - "api/ch/company"
+  - "/api/ch/company"
+  - "api ch company"
+  - "api.verifik.co/v2/ch/company"
+  - "https://api.verifik.co/v2/ch/company"
+  - "GET v2/ch/company"
+  - "GET /v2/ch/company"
   - "v2/check-lists"
   - "/v2/check-lists"
   - "v2 check-lists"
@@ -2227,6 +2275,30 @@ keywords:
   - "https://api.verifik.co/v2/cuba-restricted"
   - "GET v2/cuba-restricted"
   - "GET /v2/cuba-restricted"
+  - "v2/cz/citizen"
+  - "/v2/cz/citizen"
+  - "v2 cz citizen"
+  - "cz/citizen"
+  - "/cz/citizen"
+  - "api/cz/citizen"
+  - "/api/cz/citizen"
+  - "api cz citizen"
+  - "api.verifik.co/v2/cz/citizen"
+  - "https://api.verifik.co/v2/cz/citizen"
+  - "GET v2/cz/citizen"
+  - "GET /v2/cz/citizen"
+  - "v2/cz/company"
+  - "/v2/cz/company"
+  - "v2 cz company"
+  - "cz/company"
+  - "/cz/company"
+  - "api/cz/company"
+  - "/api/cz/company"
+  - "api cz company"
+  - "api.verifik.co/v2/cz/company"
+  - "https://api.verifik.co/v2/cz/company"
+  - "GET v2/cz/company"
+  - "GET /v2/cz/company"
   - "v2/czech-sanctions"
   - "/v2/czech-sanctions"
   - "v2 czech-sanctions"
@@ -2311,6 +2383,30 @@ keywords:
   - "https://api.verifik.co/v2/dea"
   - "GET v2/dea"
   - "GET /v2/dea"
+  - "v2/dk/citizen"
+  - "/v2/dk/citizen"
+  - "v2 dk citizen"
+  - "dk/citizen"
+  - "/dk/citizen"
+  - "api/dk/citizen"
+  - "/api/dk/citizen"
+  - "api dk citizen"
+  - "api.verifik.co/v2/dk/citizen"
+  - "https://api.verifik.co/v2/dk/citizen"
+  - "GET v2/dk/citizen"
+  - "GET /v2/dk/citizen"
+  - "v2/dk/company"
+  - "/v2/dk/company"
+  - "v2 dk company"
+  - "dk/company"
+  - "/dk/company"
+  - "api/dk/company"
+  - "/api/dk/company"
+  - "api dk company"
+  - "api.verifik.co/v2/dk/company"
+  - "https://api.verifik.co/v2/dk/company"
+  - "GET v2/dk/company"
+  - "GET /v2/dk/company"
   - "v2/do/cedula"
   - "/v2/do/cedula"
   - "v2 do cedula"
@@ -2323,6 +2419,18 @@ keywords:
   - "https://api.verifik.co/v2/do/cedula"
   - "GET v2/do/cedula"
   - "GET /v2/do/cedula"
+  - "v2/do/company"
+  - "/v2/do/company"
+  - "v2 do company"
+  - "do/company"
+  - "/do/company"
+  - "api/do/company"
+  - "/api/do/company"
+  - "api do company"
+  - "api.verifik.co/v2/do/company"
+  - "https://api.verifik.co/v2/do/company"
+  - "GET v2/do/company"
+  - "GET /v2/do/company"
   - "v2/document-validations/{id}/files"
   - "/v2/document-validations/{id}/files"
   - "v2/document-validations/files"
@@ -2428,6 +2536,30 @@ keywords:
   - "https://api.verifik.co/v2/ec/vehiculo/placa/multas"
   - "GET v2/ec/vehiculo/placa/multas"
   - "GET /v2/ec/vehiculo/placa/multas"
+  - "v2/ee/citizen"
+  - "/v2/ee/citizen"
+  - "v2 ee citizen"
+  - "ee/citizen"
+  - "/ee/citizen"
+  - "api/ee/citizen"
+  - "/api/ee/citizen"
+  - "api ee citizen"
+  - "api.verifik.co/v2/ee/citizen"
+  - "https://api.verifik.co/v2/ee/citizen"
+  - "GET v2/ee/citizen"
+  - "GET /v2/ee/citizen"
+  - "v2/ee/company"
+  - "/v2/ee/company"
+  - "v2 ee company"
+  - "ee/company"
+  - "/ee/company"
+  - "api/ee/company"
+  - "/api/ee/company"
+  - "api ee company"
+  - "api.verifik.co/v2/ee/company"
+  - "https://api.verifik.co/v2/ee/company"
+  - "GET v2/ee/company"
+  - "GET /v2/ee/company"
   - "v2/ee/politically-exposed-persons"
   - "/v2/ee/politically-exposed-persons"
   - "v2 ee politically-exposed-persons"
@@ -2928,6 +3060,18 @@ keywords:
   - "https://api.verifik.co/v2/fed-reserve-actions"
   - "GET v2/fed-reserve-actions"
   - "GET /v2/fed-reserve-actions"
+  - "v2/fi/company"
+  - "/v2/fi/company"
+  - "v2 fi company"
+  - "fi/company"
+  - "/fi/company"
+  - "api/fi/company"
+  - "/api/fi/company"
+  - "api fi company"
+  - "api.verifik.co/v2/fi/company"
+  - "https://api.verifik.co/v2/fi/company"
+  - "GET v2/fi/company"
+  - "GET /v2/fi/company"
   - "v2/fi/politically-exposed-persons"
   - "/v2/fi/politically-exposed-persons"
   - "v2 fi politically-exposed-persons"
@@ -2964,6 +3108,18 @@ keywords:
   - "https://api.verifik.co/v2/finra-actions"
   - "GET v2/finra-actions"
   - "GET /v2/finra-actions"
+  - "v2/fr/citizen"
+  - "/v2/fr/citizen"
+  - "v2 fr citizen"
+  - "fr/citizen"
+  - "/fr/citizen"
+  - "api/fr/citizen"
+  - "/api/fr/citizen"
+  - "api fr citizen"
+  - "api.verifik.co/v2/fr/citizen"
+  - "https://api.verifik.co/v2/fr/citizen"
+  - "GET v2/fr/citizen"
+  - "GET /v2/fr/citizen"
   - "v2/fr/company"
   - "/v2/fr/company"
   - "v2 fr company"
@@ -3216,6 +3372,18 @@ keywords:
   - "https://api.verifik.co/v2/ice-most-wanted"
   - "GET v2/ice-most-wanted"
   - "GET /v2/ice-most-wanted"
+  - "v2/il/company"
+  - "/v2/il/company"
+  - "v2 il company"
+  - "il/company"
+  - "/il/company"
+  - "api/il/company"
+  - "/api/il/company"
+  - "api il company"
+  - "api.verifik.co/v2/il/company"
+  - "https://api.verifik.co/v2/il/company"
+  - "GET v2/il/company"
+  - "GET /v2/il/company"
   - "v2/in/epic"
   - "/v2/in/epic"
   - "v2 in epic"
@@ -3410,6 +3578,18 @@ keywords:
   - "https://api.verifik.co/v2/japan-mof-sanctions"
   - "GET v2/japan-mof-sanctions"
   - "GET /v2/japan-mof-sanctions"
+  - "v2/jp/company"
+  - "/v2/jp/company"
+  - "v2 jp company"
+  - "jp/company"
+  - "/jp/company"
+  - "api/jp/company"
+  - "/api/jp/company"
+  - "api jp company"
+  - "api.verifik.co/v2/jp/company"
+  - "https://api.verifik.co/v2/jp/company"
+  - "GET v2/jp/company"
+  - "GET /v2/jp/company"
   - "v2/kazakhstan-afm-sanctions"
   - "/v2/kazakhstan-afm-sanctions"
   - "v2 kazakhstan-afm-sanctions"
@@ -3542,6 +3722,18 @@ keywords:
   - "https://api.verifik.co/v2/luxembourg-cssf-sanctions"
   - "GET v2/luxembourg-cssf-sanctions"
   - "GET /v2/luxembourg-cssf-sanctions"
+  - "v2/lv/company"
+  - "/v2/lv/company"
+  - "v2 lv company"
+  - "lv/company"
+  - "/lv/company"
+  - "api/lv/company"
+  - "/api/lv/company"
+  - "api lv company"
+  - "api.verifik.co/v2/lv/company"
+  - "https://api.verifik.co/v2/lv/company"
+  - "GET v2/lv/company"
+  - "GET /v2/lv/company"
   - "v2/lv/politically-exposed-persons"
   - "/v2/lv/politically-exposed-persons"
   - "v2 lv politically-exposed-persons"
@@ -3848,6 +4040,30 @@ keywords:
   - "https://api.verifik.co/v2/nl/politically-exposed-persons"
   - "GET v2/nl/politically-exposed-persons"
   - "GET /v2/nl/politically-exposed-persons"
+  - "v2/no/citizen"
+  - "/v2/no/citizen"
+  - "v2 no citizen"
+  - "no/citizen"
+  - "/no/citizen"
+  - "api/no/citizen"
+  - "/api/no/citizen"
+  - "api no citizen"
+  - "api.verifik.co/v2/no/citizen"
+  - "https://api.verifik.co/v2/no/citizen"
+  - "GET v2/no/citizen"
+  - "GET /v2/no/citizen"
+  - "v2/no/company"
+  - "/v2/no/company"
+  - "v2 no company"
+  - "no/company"
+  - "/no/company"
+  - "api/no/company"
+  - "/api/no/company"
+  - "api no company"
+  - "api.verifik.co/v2/no/company"
+  - "https://api.verifik.co/v2/no/company"
+  - "GET v2/no/company"
+  - "GET /v2/no/company"
   - "v2/no/politically-exposed-persons"
   - "/v2/no/politically-exposed-persons"
   - "v2 no politically-exposed-persons"
@@ -3872,6 +4088,18 @@ keywords:
   - "https://api.verifik.co/v2/norges-bank-exclusions"
   - "GET v2/norges-bank-exclusions"
   - "GET /v2/norges-bank-exclusions"
+  - "v2/nz/company"
+  - "/v2/nz/company"
+  - "v2 nz company"
+  - "nz/company"
+  - "/nz/company"
+  - "api/nz/company"
+  - "/api/nz/company"
+  - "api nz company"
+  - "api.verifik.co/v2/nz/company"
+  - "https://api.verifik.co/v2/nz/company"
+  - "GET v2/nz/company"
+  - "GET /v2/nz/company"
   - "v2/occ-actions"
   - "/v2/occ-actions"
   - "v2 occ-actions"
@@ -4239,6 +4467,30 @@ keywords:
   - "https://api.verifik.co/v2/phone-validations/manual"
   - "GET v2/phone-validations/manual"
   - "GET /v2/phone-validations/manual"
+  - "v2/pl/citizen"
+  - "/v2/pl/citizen"
+  - "v2 pl citizen"
+  - "pl/citizen"
+  - "/pl/citizen"
+  - "api/pl/citizen"
+  - "/api/pl/citizen"
+  - "api pl citizen"
+  - "api.verifik.co/v2/pl/citizen"
+  - "https://api.verifik.co/v2/pl/citizen"
+  - "GET v2/pl/citizen"
+  - "GET /v2/pl/citizen"
+  - "v2/pl/company"
+  - "/v2/pl/company"
+  - "v2 pl company"
+  - "pl/company"
+  - "/pl/company"
+  - "api/pl/company"
+  - "/api/pl/company"
+  - "api pl company"
+  - "api.verifik.co/v2/pl/company"
+  - "https://api.verifik.co/v2/pl/company"
+  - "GET v2/pl/company"
+  - "GET /v2/pl/company"
   - "v2/pl/politically-exposed-persons"
   - "/v2/pl/politically-exposed-persons"
   - "v2 pl politically-exposed-persons"
@@ -4287,6 +4539,18 @@ keywords:
   - "https://api.verifik.co/v2/politie-opsporingslijst"
   - "GET v2/politie-opsporingslijst"
   - "GET /v2/politie-opsporingslijst"
+  - "v2/pr/company"
+  - "/v2/pr/company"
+  - "v2 pr company"
+  - "pr/company"
+  - "/pr/company"
+  - "api/pr/company"
+  - "/api/pr/company"
+  - "api pr company"
+  - "api.verifik.co/v2/pr/company"
+  - "https://api.verifik.co/v2/pr/company"
+  - "GET v2/pr/company"
+  - "GET /v2/pr/company"
   - "v2/project-flows"
   - "/v2/project-flows"
   - "v2 project-flows"
@@ -4338,6 +4602,18 @@ keywords:
   - "https://api.verifik.co/v2/projects/phone-login"
   - "GET v2/projects/phone-login"
   - "GET /v2/projects/phone-login"
+  - "v2/pt/company"
+  - "/v2/pt/company"
+  - "v2 pt company"
+  - "pt/company"
+  - "/pt/company"
+  - "api/pt/company"
+  - "/api/pt/company"
+  - "api pt company"
+  - "api.verifik.co/v2/pt/company"
+  - "https://api.verifik.co/v2/pt/company"
+  - "GET v2/pt/company"
+  - "GET /v2/pt/company"
   - "v2/py/cic"
   - "/v2/py/cic"
   - "v2 py cic"
@@ -4398,6 +4674,30 @@ keywords:
   - "https://api.verifik.co/v2/qatar-natc-sanctions"
   - "GET v2/qatar-natc-sanctions"
   - "GET /v2/qatar-natc-sanctions"
+  - "v2/ro/citizen"
+  - "/v2/ro/citizen"
+  - "v2 ro citizen"
+  - "ro/citizen"
+  - "/ro/citizen"
+  - "api/ro/citizen"
+  - "/api/ro/citizen"
+  - "api ro citizen"
+  - "api.verifik.co/v2/ro/citizen"
+  - "https://api.verifik.co/v2/ro/citizen"
+  - "GET v2/ro/citizen"
+  - "GET /v2/ro/citizen"
+  - "v2/ro/company"
+  - "/v2/ro/company"
+  - "v2 ro company"
+  - "ro/company"
+  - "/ro/company"
+  - "api/ro/company"
+  - "/api/ro/company"
+  - "api ro company"
+  - "api.verifik.co/v2/ro/company"
+  - "https://api.verifik.co/v2/ro/company"
+  - "GET v2/ro/company"
+  - "GET /v2/ro/company"
   - "v2/romania-terrorists"
   - "/v2/romania-terrorists"
   - "v2 romania-terrorists"
@@ -4482,6 +4782,18 @@ keywords:
   - "https://api.verifik.co/v2/serbia-apml-sanctions"
   - "GET v2/serbia-apml-sanctions"
   - "GET /v2/serbia-apml-sanctions"
+  - "v2/sg/company"
+  - "/v2/sg/company"
+  - "v2 sg company"
+  - "sg/company"
+  - "/sg/company"
+  - "api/sg/company"
+  - "/api/sg/company"
+  - "api sg company"
+  - "api.verifik.co/v2/sg/company"
+  - "https://api.verifik.co/v2/sg/company"
+  - "GET v2/sg/company"
+  - "GET /v2/sg/company"
   - "v2/singapore-mas-sanctions"
   - "/v2/singapore-mas-sanctions"
   - "v2 singapore-mas-sanctions"
@@ -4494,6 +4806,30 @@ keywords:
   - "https://api.verifik.co/v2/singapore-mas-sanctions"
   - "GET v2/singapore-mas-sanctions"
   - "GET /v2/singapore-mas-sanctions"
+  - "v2/sk/citizen"
+  - "/v2/sk/citizen"
+  - "v2 sk citizen"
+  - "sk/citizen"
+  - "/sk/citizen"
+  - "api/sk/citizen"
+  - "/api/sk/citizen"
+  - "api sk citizen"
+  - "api.verifik.co/v2/sk/citizen"
+  - "https://api.verifik.co/v2/sk/citizen"
+  - "GET v2/sk/citizen"
+  - "GET /v2/sk/citizen"
+  - "v2/sk/company"
+  - "/v2/sk/company"
+  - "v2 sk company"
+  - "sk/company"
+  - "/sk/company"
+  - "api/sk/company"
+  - "/api/sk/company"
+  - "api sk company"
+  - "api.verifik.co/v2/sk/company"
+  - "https://api.verifik.co/v2/sk/company"
+  - "GET v2/sk/company"
+  - "GET /v2/sk/company"
   - "v2/smart-batch-presets"
   - "/v2/smart-batch-presets"
   - "v2 smart-batch-presets"
@@ -5048,6 +5384,18 @@ keywords:
   - "https://api.verifik.co/v2/thailand-amlo-sanctions"
   - "GET v2/thailand-amlo-sanctions"
   - "GET /v2/thailand-amlo-sanctions"
+  - "v2/tt/company"
+  - "/v2/tt/company"
+  - "v2 tt company"
+  - "tt/company"
+  - "/tt/company"
+  - "api/tt/company"
+  - "/api/tt/company"
+  - "api tt company"
+  - "api.verifik.co/v2/tt/company"
+  - "https://api.verifik.co/v2/tt/company"
+  - "GET v2/tt/company"
+  - "GET /v2/tt/company"
   - "v2/turkey-masak-sanctions"
   - "/v2/turkey-masak-sanctions"
   - "v2 turkey-masak-sanctions"
@@ -5072,6 +5420,18 @@ keywords:
   - "https://api.verifik.co/v2/turkey-terror-wanted"
   - "GET v2/turkey-terror-wanted"
   - "GET /v2/turkey-terror-wanted"
+  - "v2/tw/company"
+  - "/v2/tw/company"
+  - "v2 tw company"
+  - "tw/company"
+  - "/tw/company"
+  - "api/tw/company"
+  - "/api/tw/company"
+  - "api tw company"
+  - "api.verifik.co/v2/tw/company"
+  - "https://api.verifik.co/v2/tw/company"
+  - "GET v2/tw/company"
+  - "GET /v2/tw/company"
   - "v2/uae-local-terrorists"
   - "/v2/uae-local-terrorists"
   - "v2 uae-local-terrorists"
@@ -5144,6 +5504,18 @@ keywords:
   - "https://api.verifik.co/v2/us-terrorists"
   - "GET v2/us-terrorists"
   - "GET /v2/us-terrorists"
+  - "v2/us/citizen"
+  - "/v2/us/citizen"
+  - "v2 us citizen"
+  - "us/citizen"
+  - "/us/citizen"
+  - "api/us/citizen"
+  - "/api/us/citizen"
+  - "api us citizen"
+  - "api.verifik.co/v2/us/citizen"
+  - "https://api.verifik.co/v2/us/citizen"
+  - "GET v2/us/citizen"
+  - "GET /v2/us/citizen"
   - "v2/usa/company"
   - "/v2/usa/company"
   - "v2 usa company"
@@ -5286,6 +5658,18 @@ keywords:
   - "https://api.verifik.co/v2/uy/cedula"
   - "GET v2/uy/cedula"
   - "GET /v2/uy/cedula"
+  - "v2/uy/company"
+  - "/v2/uy/company"
+  - "v2 uy company"
+  - "uy/company"
+  - "/uy/company"
+  - "api/uy/company"
+  - "/api/uy/company"
+  - "api uy company"
+  - "api.verifik.co/v2/uy/company"
+  - "https://api.verifik.co/v2/uy/company"
+  - "GET v2/uy/company"
+  - "GET /v2/uy/company"
   - "v2/uy/politically-exposed-persons"
   - "/v2/uy/politically-exposed-persons"
   - "v2 uy politically-exposed-persons"
@@ -5310,6 +5694,18 @@ keywords:
   - "https://api.verifik.co/v2/ve/cedula"
   - "GET v2/ve/cedula"
   - "GET /v2/ve/cedula"
+  - "v2/ve/company"
+  - "/v2/ve/company"
+  - "v2 ve company"
+  - "ve/company"
+  - "/ve/company"
+  - "api/ve/company"
+  - "/api/ve/company"
+  - "api ve company"
+  - "api.verifik.co/v2/ve/company"
+  - "https://api.verifik.co/v2/ve/company"
+  - "GET v2/ve/company"
+  - "GET /v2/ve/company"
   - "v2/ve/foreigner-id"
   - "/v2/ve/foreigner-id"
   - "v2 ve foreigner-id"
@@ -5526,12 +5922,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (446 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (479 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-11-27T17:12:11.745Z_
+_Last regenerated: 2026-11-27T17:41:33.410Z_
 
 ## Argentina
 
@@ -5547,6 +5943,20 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/ar/politically-exposed-persons` | v2 ar politically-exposed-persons ar/politically-exposed-persons /ar/politically-exposed-persons api/ar/politically-exposed-persons /api/ar/politically-exposed-persons api ar politically-exposed-persons api.verifik.co/v2/ar/politically-exposed-persons https://api.verifik.co/v2/ar/politically-exposed-persons GET v2/ar/politically-exposed-persons GET /v2/ar/politically-exposed-persons | [Argentina — Politically Exposed Persons (PEP / UIF Res. 35/2023)](/background-check/argentina-politically-exposed-persons) |
 | `v2/ar/rto` | v2 ar rto ar/rto /ar/rto api/ar/rto /api/ar/rto api ar rto api.verifik.co/v2/ar/rto https://api.verifik.co/v2/ar/rto GET v2/ar/rto GET /v2/ar/rto | [Argentina RTO](/vehicle-validation/argentina/rto) |
 | `v2/ar/vehicle` | v2 ar vehicle ar/vehicle /ar/vehicle api/ar/vehicle /api/ar/vehicle api ar vehicle api.verifik.co/v2/ar/vehicle https://api.verifik.co/v2/ar/vehicle GET v2/ar/vehicle GET /v2/ar/vehicle | [Argentina - Vehicle Information](/vehicle-validation/argentina) |
+
+## Australia
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/au/citizen` | v2 au citizen au/citizen /au/citizen api/au/citizen /api/au/citizen api au citizen api.verifik.co/v2/au/citizen https://api.verifik.co/v2/au/citizen GET v2/au/citizen GET /v2/au/citizen | [Australia — Citizen Identity & Sole Proprietor Verification (KYC)](/identity/australia-citizen) |
+| `v2/au/company` | v2 au company au/company /au/company api/au/company /api/au/company api au company api.verifik.co/v2/au/company https://api.verifik.co/v2/au/company GET v2/au/company GET /v2/au/company | [Australia — Business & Corporate Registry Lookup (KYB)](/business-validation/australia-company-lookup) |
+
+## Belgium
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/be/company` | v2 be company be/company /be/company api/be/company /api/be/company api be company api.verifik.co/v2/be/company https://api.verifik.co/v2/be/company GET v2/be/company GET /v2/be/company | [Belgium — Business & Corporate Registry Lookup (KYB)](/business-validation/belgium-company-lookup) |
+| `v2/be/politically-exposed-persons` | v2 be politically-exposed-persons be/politically-exposed-persons /be/politically-exposed-persons api/be/politically-exposed-persons /api/be/politically-exposed-persons api be politically-exposed-persons api.verifik.co/v2/be/politically-exposed-persons https://api.verifik.co/v2/be/politically-exposed-persons GET v2/be/politically-exposed-persons GET /v2/be/politically-exposed-persons | [Belgium — Politically Exposed Persons (PEP)](/background-check/belgium-politically-exposed-persons) |
 
 ## Bolivia
 
@@ -5569,6 +5979,12 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/br/medical-professional` | v2 br medical-professional br/medical-professional /br/medical-professional api/br/medical-professional /api/br/medical-professional api br medical-professional api.verifik.co/v2/br/medical-professional https://api.verifik.co/v2/br/medical-professional GET v2/br/medical-professional GET /v2/br/medical-professional | [Brazil — Medical Professional (CRM)](/identity/brazil-medical-professional) |
 | `v2/br/politically-exposed-persons` | v2 br politically-exposed-persons br/politically-exposed-persons /br/politically-exposed-persons api/br/politically-exposed-persons /api/br/politically-exposed-persons api br politically-exposed-persons api.verifik.co/v2/br/politically-exposed-persons https://api.verifik.co/v2/br/politically-exposed-persons GET v2/br/politically-exposed-persons GET /v2/br/politically-exposed-persons | [Brazil — Politically Exposed Persons (PEP / COAF Resolução 40/2021)](/background-check/brazil-politically-exposed-persons) |
 | `v2/br/vehicle` | v2 br vehicle br/vehicle /br/vehicle api/br/vehicle /api/br/vehicle api br vehicle api.verifik.co/v2/br/vehicle https://api.verifik.co/v2/br/vehicle GET v2/br/vehicle GET /v2/br/vehicle | [Vehicle Information](/vehicle-validation/brazil) |
+
+## Switzerland
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/ch/company` | v2 ch company ch/company /ch/company api/ch/company /api/ch/company api ch company api.verifik.co/v2/ch/company https://api.verifik.co/v2/ch/company GET v2/ch/company GET /v2/ch/company | [Switzerland — Business & Corporate Registry Lookup (KYB)](/business-validation/switzerland-company-lookup) |
 
 ## Chile
 
@@ -5677,11 +6093,26 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/cr/vehicle` | v2 cr vehicle cr/vehicle /cr/vehicle api/cr/vehicle /api/cr/vehicle api cr vehicle api.verifik.co/v2/cr/vehicle https://api.verifik.co/v2/cr/vehicle GET v2/cr/vehicle GET /v2/cr/vehicle | [\U0001F1E8\U0001F1F7 Costa Rica - Vehicle Information](/vehicle-validation/costa-rica) |
 | `v2/cr/votacion` | v2 cr votacion cr/votacion /cr/votacion api/cr/votacion /api/cr/votacion api cr votacion api.verifik.co/v2/cr/votacion https://api.verifik.co/v2/cr/votacion GET v2/cr/votacion GET /v2/cr/votacion | [Costa Rica - Voting Location](/identity/costa-rica/votacion) |
 
+## Czechia
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/cz/citizen` | v2 cz citizen cz/citizen /cz/citizen api/cz/citizen /api/cz/citizen api cz citizen api.verifik.co/v2/cz/citizen https://api.verifik.co/v2/cz/citizen GET v2/cz/citizen GET /v2/cz/citizen | [Czechia — Citizen Identity & Sole Proprietor Verification (KYC)](/identity/czechia-citizen) |
+| `v2/cz/company` | v2 cz company cz/company /cz/company api/cz/company /api/cz/company api cz company api.verifik.co/v2/cz/company https://api.verifik.co/v2/cz/company GET v2/cz/company GET /v2/cz/company | [Czechia — Business & Corporate Registry Lookup (KYB)](/business-validation/czechia-company-lookup) |
+
+## Denmark
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/dk/citizen` | v2 dk citizen dk/citizen /dk/citizen api/dk/citizen /api/dk/citizen api dk citizen api.verifik.co/v2/dk/citizen https://api.verifik.co/v2/dk/citizen GET v2/dk/citizen GET /v2/dk/citizen | [Denmark — Citizen Identity & Sole Proprietor Verification (KYC)](/identity/denmark-citizen) |
+| `v2/dk/company` | v2 dk company dk/company /dk/company api/dk/company /api/dk/company api dk company api.verifik.co/v2/dk/company https://api.verifik.co/v2/dk/company GET v2/dk/company GET /v2/dk/company | [Denmark — Business & Corporate Registry Lookup (KYB)](/business-validation/denmark-company-lookup) |
+
 ## Dominican Republic
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/do/cedula` | v2 do cedula do/cedula /do/cedula api/do/cedula /api/do/cedula api do cedula api.verifik.co/v2/do/cedula https://api.verifik.co/v2/do/cedula GET v2/do/cedula GET /v2/do/cedula | [Dominican Citizen](/identity/dominican-republic) |
+| `v2/do/company` | v2 do company do/company /do/company api/do/company /api/do/company api do company api.verifik.co/v2/do/company https://api.verifik.co/v2/do/company GET v2/do/company GET /v2/do/company | [Dominican Republic — Business & Corporate Registry Lookup (KYB)](/business-validation/dominican-republic-company-lookup) |
 
 ## Ecuador
 
@@ -5692,6 +6123,14 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/ec/vehiculo/placa` | v2 ec vehiculo placa ec/vehiculo/placa /ec/vehiculo/placa api/ec/vehiculo/placa /api/ec/vehiculo/placa api ec vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/ec/vehiculo/placa https://api.verifik.co/v2/ec/vehiculo/placa GET v2/ec/vehiculo/placa GET /v2/ec/vehiculo/placa | [\U0001F1EA\U0001F1E8 Ecuador - Vehicle Verification](/vehicle-validation/ecuador/vehicle-by-plate) |
 | `v2/ec/vehiculo/placa/multas` | v2 ec vehiculo placa multas ec/vehiculo/placa/multas /ec/vehiculo/placa/multas api/ec/vehiculo/placa/multas /api/ec/vehiculo/placa/multas api ec vehiculo placa multas vehiculo/placa/multas /vehiculo/placa/multas placa/multas /placa/multas api.verifik.co/v2/ec/vehiculo/placa/multas https://api.verifik.co/v2/ec/vehiculo/placa/multas GET v2/ec/vehiculo/placa/multas GET /v2/ec/vehiculo/placa/multas | [\U0001F1EA\U0001F1E8 Ecuador - Vehicle Fines](/vehicle-validation/ecuador) |
 
+## Estonia
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/ee/citizen` | v2 ee citizen ee/citizen /ee/citizen api/ee/citizen /api/ee/citizen api ee citizen api.verifik.co/v2/ee/citizen https://api.verifik.co/v2/ee/citizen GET v2/ee/citizen GET /v2/ee/citizen | [Estonia — Citizen Identity & Sole Proprietor Verification (KYC)](/identity/estonia-citizen) |
+| `v2/ee/company` | v2 ee company ee/company /ee/company api/ee/company /api/ee/company api ee company api.verifik.co/v2/ee/company https://api.verifik.co/v2/ee/company GET v2/ee/company GET /v2/ee/company | [Estonia — Business & Corporate Registry Lookup (KYB)](/business-validation/estonia-company-lookup) |
+| `v2/ee/politically-exposed-persons` | v2 ee politically-exposed-persons ee/politically-exposed-persons /ee/politically-exposed-persons api/ee/politically-exposed-persons /api/ee/politically-exposed-persons api ee politically-exposed-persons api.verifik.co/v2/ee/politically-exposed-persons https://api.verifik.co/v2/ee/politically-exposed-persons GET v2/ee/politically-exposed-persons GET /v2/ee/politically-exposed-persons | [Estonia — Politically Exposed Persons (PEP)](/background-check/estonia-politically-exposed-persons) |
+
 ## Spain
 
 | Endpoint | Aliases | Page |
@@ -5701,6 +6140,27 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/es/politically-exposed-persons` | v2 es politically-exposed-persons es/politically-exposed-persons /es/politically-exposed-persons api/es/politically-exposed-persons /api/es/politically-exposed-persons api es politically-exposed-persons api.verifik.co/v2/es/politically-exposed-persons https://api.verifik.co/v2/es/politically-exposed-persons GET v2/es/politically-exposed-persons GET /v2/es/politically-exposed-persons | [Spain — Politically Exposed Persons (PEP)](/background-check/spain-politically-exposed-persons) |
 | `v2/es/tax-id/validate` | v2 es tax-id validate es/tax-id/validate /es/tax-id/validate api/es/tax-id/validate /api/es/tax-id/validate api es tax-id validate tax-id/validate /tax-id/validate api.verifik.co/v2/es/tax-id/validate https://api.verifik.co/v2/es/tax-id/validate GET v2/es/tax-id/validate GET /v2/es/tax-id/validate | [Spain — Tax ID Validation (NIF / NIE / CIF)](/business-validation/spain-tax-id-validation) |
 | `v2/es/vehicle` | v2 es vehicle es/vehicle /es/vehicle api/es/vehicle /api/es/vehicle api es vehicle api.verifik.co/v2/es/vehicle https://api.verifik.co/v2/es/vehicle GET v2/es/vehicle GET /v2/es/vehicle | [Spain](/vehicle-validation/spain) |
+
+## Finland
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/fi/company` | v2 fi company fi/company /fi/company api/fi/company /api/fi/company api fi company api.verifik.co/v2/fi/company https://api.verifik.co/v2/fi/company GET v2/fi/company GET /v2/fi/company | [Finland — Business & Corporate Registry Lookup (KYB)](/business-validation/finland-company-lookup) |
+| `v2/fi/politically-exposed-persons` | v2 fi politically-exposed-persons fi/politically-exposed-persons /fi/politically-exposed-persons api/fi/politically-exposed-persons /api/fi/politically-exposed-persons api fi politically-exposed-persons api.verifik.co/v2/fi/politically-exposed-persons https://api.verifik.co/v2/fi/politically-exposed-persons GET v2/fi/politically-exposed-persons GET /v2/fi/politically-exposed-persons | [Finland — Politically Exposed Persons (PEP)](/background-check/finland-politically-exposed-persons) |
+
+## France
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/fr/citizen` | v2 fr citizen fr/citizen /fr/citizen api/fr/citizen /api/fr/citizen api fr citizen api.verifik.co/v2/fr/citizen https://api.verifik.co/v2/fr/citizen GET v2/fr/citizen GET /v2/fr/citizen | [France — Citizen Identity & Sole Proprietor Verification (KYC)](/identity/france-citizen) |
+| `v2/fr/company` | v2 fr company fr/company /fr/company api/fr/company /api/fr/company api fr company api.verifik.co/v2/fr/company https://api.verifik.co/v2/fr/company GET v2/fr/company GET /v2/fr/company | [France — SIRENE Company Registry](/business-validation/france-company-sirene) |
+| `v2/fr/politically-exposed-persons` | v2 fr politically-exposed-persons fr/politically-exposed-persons /fr/politically-exposed-persons api/fr/politically-exposed-persons /api/fr/politically-exposed-persons api fr politically-exposed-persons api.verifik.co/v2/fr/politically-exposed-persons https://api.verifik.co/v2/fr/politically-exposed-persons GET v2/fr/politically-exposed-persons GET /v2/fr/politically-exposed-persons | [France — Politically Exposed Persons (PEP)](/background-check/france-politically-exposed-persons) |
+
+## United Kingdom
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/gb/company` | v2 gb company gb/company /gb/company api/gb/company /api/gb/company api gb company api.verifik.co/v2/gb/company https://api.verifik.co/v2/gb/company GET v2/gb/company GET /v2/gb/company | [United Kingdom — Company Lookup](/business-validation/uk-company-lookup) |
 
 ## Guatemala
 
@@ -5718,12 +6178,31 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/hn/politically-exposed-persons` | v2 hn politically-exposed-persons hn/politically-exposed-persons /hn/politically-exposed-persons api/hn/politically-exposed-persons /api/hn/politically-exposed-persons api hn politically-exposed-persons api.verifik.co/v2/hn/politically-exposed-persons https://api.verifik.co/v2/hn/politically-exposed-persons GET v2/hn/politically-exposed-persons GET /v2/hn/politically-exposed-persons | [Honduras — Politically Exposed Persons (PEP)](/background-check/honduras-politically-exposed-persons) |
 | `v2/hn/votacion` | v2 hn votacion hn/votacion /hn/votacion api/hn/votacion /api/hn/votacion api hn votacion api.verifik.co/v2/hn/votacion https://api.verifik.co/v2/hn/votacion GET v2/hn/votacion GET /v2/hn/votacion | [Honduras - Voting Location](/identity/honduras/votacion) |
 
+## Israel
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/il/company` | v2 il company il/company /il/company api/il/company /api/il/company api il company api.verifik.co/v2/il/company https://api.verifik.co/v2/il/company GET v2/il/company GET /v2/il/company | [Israel — Business & Corporate Registry Lookup (KYB)](/business-validation/israel-company-lookup) |
+
 ## India
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/in/epic` | v2 in epic in/epic /in/epic api/in/epic /api/in/epic api in epic api.verifik.co/v2/in/epic https://api.verifik.co/v2/in/epic GET v2/in/epic GET /v2/in/epic | [India EPIC (Voter ID) — Person & Name Lookup \| Verifik](/legal/epic-eci) |
 | `v2/in/epic/votacion` | v2 in epic votacion in/epic/votacion /in/epic/votacion api/in/epic/votacion /api/in/epic/votacion api in epic votacion epic/votacion /epic/votacion api.verifik.co/v2/in/epic/votacion https://api.verifik.co/v2/in/epic/votacion GET v2/in/epic/votacion GET /v2/in/epic/votacion | [India EPIC (Voter ID) — Polling & voting location \| Verifik](/legal/voting-eci-epic) |
+
+## Japan
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/jp/company` | v2 jp company jp/company /jp/company api/jp/company /api/jp/company api jp company api.verifik.co/v2/jp/company https://api.verifik.co/v2/jp/company GET v2/jp/company GET /v2/jp/company | [Japan — Business & Corporate Registry Lookup (KYB)](/business-validation/japan-company-lookup) |
+
+## Latvia
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/lv/company` | v2 lv company lv/company /lv/company api/lv/company /api/lv/company api lv company api.verifik.co/v2/lv/company https://api.verifik.co/v2/lv/company GET v2/lv/company GET /v2/lv/company | [Latvia — Business & Corporate Registry Lookup (KYB)](/business-validation/latvia-company-lookup) |
+| `v2/lv/politically-exposed-persons` | v2 lv politically-exposed-persons lv/politically-exposed-persons /lv/politically-exposed-persons api/lv/politically-exposed-persons /api/lv/politically-exposed-persons api lv politically-exposed-persons api.verifik.co/v2/lv/politically-exposed-persons https://api.verifik.co/v2/lv/politically-exposed-persons GET v2/lv/politically-exposed-persons GET /v2/lv/politically-exposed-persons | [Latvia — Politically Exposed Persons (PEP)](/background-check/latvia-politically-exposed-persons) |
 
 ## Mexico
 
@@ -5746,6 +6225,20 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | --- | --- | --- |
 | `v2/ni/politically-exposed-persons` | v2 ni politically-exposed-persons ni/politically-exposed-persons /ni/politically-exposed-persons api/ni/politically-exposed-persons /api/ni/politically-exposed-persons api ni politically-exposed-persons api.verifik.co/v2/ni/politically-exposed-persons https://api.verifik.co/v2/ni/politically-exposed-persons GET v2/ni/politically-exposed-persons GET /v2/ni/politically-exposed-persons | [Nicaragua — Politically Exposed Persons (PEP)](/background-check/nicaragua-politically-exposed-persons) |
 
+## Norway
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/no/citizen` | v2 no citizen no/citizen /no/citizen api/no/citizen /api/no/citizen api no citizen api.verifik.co/v2/no/citizen https://api.verifik.co/v2/no/citizen GET v2/no/citizen GET /v2/no/citizen | [Norway — Citizen Identity & Sole Proprietor Verification (KYC)](/identity/norway-citizen) |
+| `v2/no/company` | v2 no company no/company /no/company api/no/company /api/no/company api no company api.verifik.co/v2/no/company https://api.verifik.co/v2/no/company GET v2/no/company GET /v2/no/company | [Norway — Business & Corporate Registry Lookup (KYB)](/business-validation/norway-company-lookup) |
+| `v2/no/politically-exposed-persons` | v2 no politically-exposed-persons no/politically-exposed-persons /no/politically-exposed-persons api/no/politically-exposed-persons /api/no/politically-exposed-persons api no politically-exposed-persons api.verifik.co/v2/no/politically-exposed-persons https://api.verifik.co/v2/no/politically-exposed-persons GET v2/no/politically-exposed-persons GET /v2/no/politically-exposed-persons | [Norway — Politically Exposed Persons (PEP)](/background-check/norway-politically-exposed-persons) |
+
+## New Zealand
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/nz/company` | v2 nz company nz/company /nz/company api/nz/company /api/nz/company api nz company api.verifik.co/v2/nz/company https://api.verifik.co/v2/nz/company GET v2/nz/company GET /v2/nz/company | [New Zealand — Business & Corporate Registry Lookup (KYB)](/business-validation/new-zealand-company-lookup) |
+
 ## Panama
 
 | Endpoint | Aliases | Page |
@@ -5766,6 +6259,26 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/pe/vehiculo/setare-arequipa` | v2 pe vehiculo setare-arequipa pe/vehiculo/setare-arequipa /pe/vehiculo/setare-arequipa api/pe/vehiculo/setare-arequipa /api/pe/vehiculo/setare-arequipa api pe vehiculo setare-arequipa vehiculo/setare-arequipa /vehiculo/setare-arequipa api.verifik.co/v2/pe/vehiculo/setare-arequipa https://api.verifik.co/v2/pe/vehiculo/setare-arequipa GET v2/pe/vehiculo/setare-arequipa GET /v2/pe/vehiculo/setare-arequipa | [Peru - SETARE Arequipa Taxi Permit](/vehicle-validation/peru/setare-arequipa) |
 | `v2/pe/vehiculo/soat` | v2 pe vehiculo soat pe/vehiculo/soat /pe/vehiculo/soat api/pe/vehiculo/soat /api/pe/vehiculo/soat api pe vehiculo soat vehiculo/soat /vehiculo/soat api.verifik.co/v2/pe/vehiculo/soat https://api.verifik.co/v2/pe/vehiculo/soat GET v2/pe/vehiculo/soat GET /v2/pe/vehiculo/soat | [Peru - Vehicle Insurance](/vehicle-validation/peru/peruvian-vehicle-insurance) |
 
+## Poland
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/pl/citizen` | v2 pl citizen pl/citizen /pl/citizen api/pl/citizen /api/pl/citizen api pl citizen api.verifik.co/v2/pl/citizen https://api.verifik.co/v2/pl/citizen GET v2/pl/citizen GET /v2/pl/citizen | [Poland — Citizen Identity & Sole Proprietor Verification (KYC)](/identity/poland-citizen) |
+| `v2/pl/company` | v2 pl company pl/company /pl/company api/pl/company /api/pl/company api pl company api.verifik.co/v2/pl/company https://api.verifik.co/v2/pl/company GET v2/pl/company GET /v2/pl/company | [Poland — Business & Corporate Registry Lookup (KYB)](/business-validation/poland-company-lookup) |
+| `v2/pl/politically-exposed-persons` | v2 pl politically-exposed-persons pl/politically-exposed-persons /pl/politically-exposed-persons api/pl/politically-exposed-persons /api/pl/politically-exposed-persons api pl politically-exposed-persons api.verifik.co/v2/pl/politically-exposed-persons https://api.verifik.co/v2/pl/politically-exposed-persons GET v2/pl/politically-exposed-persons GET /v2/pl/politically-exposed-persons | [Poland — Politically Exposed Persons (PEP)](/background-check/poland-politically-exposed-persons) |
+
+## Puerto Rico
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/pr/company` | v2 pr company pr/company /pr/company api/pr/company /api/pr/company api pr company api.verifik.co/v2/pr/company https://api.verifik.co/v2/pr/company GET v2/pr/company GET /v2/pr/company | [Puerto Rico — Business & Corporate Registry Lookup (KYB)](/business-validation/puerto-rico-company-lookup) |
+
+## Portugal
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/pt/company` | v2 pt company pt/company /pt/company api/pt/company /api/pt/company api pt company api.verifik.co/v2/pt/company https://api.verifik.co/v2/pt/company GET v2/pt/company GET /v2/pt/company | [Portugal — Business & Corporate Registry Lookup (KYB)](/business-validation/portugal-company-lookup) |
+
 ## Paraguay
 
 | Endpoint | Aliases | Page |
@@ -5775,6 +6288,26 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/py/politically-exposed-persons` | v2 py politically-exposed-persons py/politically-exposed-persons /py/politically-exposed-persons api/py/politically-exposed-persons /api/py/politically-exposed-persons api py politically-exposed-persons api.verifik.co/v2/py/politically-exposed-persons https://api.verifik.co/v2/py/politically-exposed-persons GET v2/py/politically-exposed-persons GET /v2/py/politically-exposed-persons | [Paraguay — Politically Exposed Persons (PEP)](/background-check/paraguay-politically-exposed-persons) |
 | `v2/py/vehicle` | v2 py vehicle py/vehicle /py/vehicle api/py/vehicle /api/py/vehicle api py vehicle api.verifik.co/v2/py/vehicle https://api.verifik.co/v2/py/vehicle GET v2/py/vehicle GET /v2/py/vehicle | [\U0001F1F5\U0001F1FE Paraguay - Vehicle Information](/vehicle-validation/paraguay) |
 
+## Romania
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/ro/citizen` | v2 ro citizen ro/citizen /ro/citizen api/ro/citizen /api/ro/citizen api ro citizen api.verifik.co/v2/ro/citizen https://api.verifik.co/v2/ro/citizen GET v2/ro/citizen GET /v2/ro/citizen | [Romania — Citizen Identity & Sole Proprietor Verification (KYC)](/identity/romania-citizen) |
+| `v2/ro/company` | v2 ro company ro/company /ro/company api/ro/company /api/ro/company api ro company api.verifik.co/v2/ro/company https://api.verifik.co/v2/ro/company GET v2/ro/company GET /v2/ro/company | [Romania — Business & Corporate Registry Lookup (KYB)](/business-validation/romania-company-lookup) |
+
+## Singapore
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/sg/company` | v2 sg company sg/company /sg/company api/sg/company /api/sg/company api sg company api.verifik.co/v2/sg/company https://api.verifik.co/v2/sg/company GET v2/sg/company GET /v2/sg/company | [Singapore — Business & Corporate Registry Lookup (KYB)](/business-validation/singapore-company-lookup) |
+
+## Slovakia
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/sk/citizen` | v2 sk citizen sk/citizen /sk/citizen api/sk/citizen /api/sk/citizen api sk citizen api.verifik.co/v2/sk/citizen https://api.verifik.co/v2/sk/citizen GET v2/sk/citizen GET /v2/sk/citizen | [Slovakia — Citizen Identity & Sole Proprietor Verification (KYC)](/identity/slovakia-citizen) |
+| `v2/sk/company` | v2 sk company sk/company /sk/company api/sk/company /api/sk/company api sk company api.verifik.co/v2/sk/company https://api.verifik.co/v2/sk/company GET v2/sk/company GET /v2/sk/company | [Slovakia — Business & Corporate Registry Lookup (KYB)](/business-validation/slovakia-company-lookup) |
+
 ## El Salvador
 
 | Endpoint | Aliases | Page |
@@ -5782,11 +6315,30 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/sv/dui` | v2 sv dui sv/dui /sv/dui api/sv/dui /api/sv/dui api sv dui api.verifik.co/v2/sv/dui https://api.verifik.co/v2/sv/dui GET v2/sv/dui GET /v2/sv/dui | [Salvadoran Citizen](/identity/el-salvador) |
 | `v2/sv/politically-exposed-persons` | v2 sv politically-exposed-persons sv/politically-exposed-persons /sv/politically-exposed-persons api/sv/politically-exposed-persons /api/sv/politically-exposed-persons api sv politically-exposed-persons api.verifik.co/v2/sv/politically-exposed-persons https://api.verifik.co/v2/sv/politically-exposed-persons GET v2/sv/politically-exposed-persons GET /v2/sv/politically-exposed-persons | [El Salvador — Politically Exposed Persons (PEP)](/background-check/el-salvador-politically-exposed-persons) |
 
+## Trinidad and Tobago
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/tt/company` | v2 tt company tt/company /tt/company api/tt/company /api/tt/company api tt company api.verifik.co/v2/tt/company https://api.verifik.co/v2/tt/company GET v2/tt/company GET /v2/tt/company | [Trinidad and Tobago — Business & Corporate Registry Lookup (KYB)](/business-validation/trinidad-and-tobago-company-lookup) |
+
+## Taiwan
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/tw/company` | v2 tw company tw/company /tw/company api/tw/company /api/tw/company api tw company api.verifik.co/v2/tw/company https://api.verifik.co/v2/tw/company GET v2/tw/company GET /v2/tw/company | [Taiwan — Business & Corporate Registry Lookup (KYB)](/business-validation/taiwan-company-lookup) |
+
+## United States
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/us/citizen` | v2 us citizen us/citizen /us/citizen api/us/citizen /api/us/citizen api us citizen api.verifik.co/v2/us/citizen https://api.verifik.co/v2/us/citizen GET v2/us/citizen GET /v2/us/citizen | [United States — Citizen Identity & Sole Proprietor Verification (KYC)](/identity/united-states-citizen) |
+
 ## Uruguay
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/uy/cedula` | v2 uy cedula uy/cedula /uy/cedula api/uy/cedula /api/uy/cedula api uy cedula api.verifik.co/v2/uy/cedula https://api.verifik.co/v2/uy/cedula GET v2/uy/cedula GET /v2/uy/cedula | [Uruguayan Citizen](/identity-validation/uruguay-citizen) |
+| `v2/uy/company` | v2 uy company uy/company /uy/company api/uy/company /api/uy/company api uy company api.verifik.co/v2/uy/company https://api.verifik.co/v2/uy/company GET v2/uy/company GET /v2/uy/company | [Uruguay — Business & Corporate Registry Lookup (KYB)](/business-validation/uruguay-company-lookup) |
 | `v2/uy/politically-exposed-persons` | v2 uy politically-exposed-persons uy/politically-exposed-persons /uy/politically-exposed-persons api/uy/politically-exposed-persons /api/uy/politically-exposed-persons api uy politically-exposed-persons api.verifik.co/v2/uy/politically-exposed-persons https://api.verifik.co/v2/uy/politically-exposed-persons GET v2/uy/politically-exposed-persons GET /v2/uy/politically-exposed-persons | [Uruguay — Politically Exposed Persons (PEP)](/background-check/uruguay-politically-exposed-persons) |
 
 ## Venezuela
@@ -5794,6 +6346,7 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/ve/cedula` | v2 ve cedula ve/cedula /ve/cedula api/ve/cedula /api/ve/cedula api ve cedula api.verifik.co/v2/ve/cedula https://api.verifik.co/v2/ve/cedula GET v2/ve/cedula GET /v2/ve/cedula | [Venezuelan Citizen Information](/identity-validation/venezuela) |
+| `v2/ve/company` | v2 ve company ve/company /ve/company api/ve/company /api/ve/company api ve company api.verifik.co/v2/ve/company https://api.verifik.co/v2/ve/company GET v2/ve/company GET /v2/ve/company | [Venezuela — Business & Corporate Registry Lookup (KYB)](/business-validation/venezuela-company-lookup) |
 | `v2/ve/foreigner-id` | v2 ve foreigner-id ve/foreigner-id /ve/foreigner-id api/ve/foreigner-id /api/ve/foreigner-id api ve foreigner-id api.verifik.co/v2/ve/foreigner-id https://api.verifik.co/v2/ve/foreigner-id GET v2/ve/foreigner-id GET /v2/ve/foreigner-id | [\U0001F1FB\U0001F1EA Venezuela - Foreigner ID (CEVE)](/identity/venezuela-foreigner-id) |
 | `v2/ve/politically-exposed-persons` | v2 ve politically-exposed-persons ve/politically-exposed-persons /ve/politically-exposed-persons api/ve/politically-exposed-persons /api/ve/politically-exposed-persons api ve politically-exposed-persons api.verifik.co/v2/ve/politically-exposed-persons https://api.verifik.co/v2/ve/politically-exposed-persons GET v2/ve/politically-exposed-persons GET /v2/ve/politically-exposed-persons | [Venezuela — Politically Exposed Persons (PEP)](/background-check/venezuela-politically-exposed-persons) |
 
@@ -5857,12 +6410,6 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/batch-configurations` | v2 batch-configurations batch-configurations /batch-configurations api/batch-configurations /api/batch-configurations api batch-configurations api.verifik.co/v2/batch-configurations https://api.verifik.co/v2/batch-configurations GET v2/batch-configurations GET /v2/batch-configurations | [Create a batch configuration](/smart-reports/create-a-batch-configuration) |
 | `v2/batch-configurations/{id}` | v2/batch-configurations /v2/batch-configurations v2 batch-configurations batch-configurations /batch-configurations api/batch-configurations /api/batch-configurations api batch-configurations | [Delete a batch configuration](/smart-reports/delete-a-batch-configuration) |
 | `v2/batch-configurations/{id}/input-schema` | v2/batch-configurations/input-schema /v2/batch-configurations/input-schema v2 batch-configurations input-schema batch-configurations/input-schema /batch-configurations/input-schema api/batch-configurations/input-schema /api/batch-configurations/input-schema api batch-configurations input-schema | [Retrieve configuration input schema](/smart-reports/retrieve-configuration-input-schema) |
-
-## Be
-
-| Endpoint | Aliases | Page |
-| --- | --- | --- |
-| `v2/be/politically-exposed-persons` | v2 be politically-exposed-persons be/politically-exposed-persons /be/politically-exposed-persons api/be/politically-exposed-persons /api/be/politically-exposed-persons api be politically-exposed-persons api.verifik.co/v2/be/politically-exposed-persons https://api.verifik.co/v2/be/politically-exposed-persons GET v2/be/politically-exposed-persons GET /v2/be/politically-exposed-persons | [Belgium — Politically Exposed Persons (PEP)](/background-check/belgium-politically-exposed-persons) |
 
 ## Belgium Sanctions
 
@@ -6046,12 +6593,6 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | --- | --- | --- |
 | `v2/dss-most-wanted` | v2 dss-most-wanted dss-most-wanted /dss-most-wanted api/dss-most-wanted /api/dss-most-wanted api dss-most-wanted api.verifik.co/v2/dss-most-wanted https://api.verifik.co/v2/dss-most-wanted GET v2/dss-most-wanted GET /v2/dss-most-wanted | [Diplomatic Security Service (DSS) Most Wanted](/background-check/international/dss-most-wanted) |
 
-## Ee
-
-| Endpoint | Aliases | Page |
-| --- | --- | --- |
-| `v2/ee/politically-exposed-persons` | v2 ee politically-exposed-persons ee/politically-exposed-persons /ee/politically-exposed-persons api/ee/politically-exposed-persons /api/ee/politically-exposed-persons api ee politically-exposed-persons api.verifik.co/v2/ee/politically-exposed-persons https://api.verifik.co/v2/ee/politically-exposed-persons GET v2/ee/politically-exposed-persons GET /v2/ee/politically-exposed-persons | [Estonia — Politically Exposed Persons (PEP)](/background-check/estonia-politically-exposed-persons) |
-
 ## Egypt Terrorists
 
 | Endpoint | Aliases | Page |
@@ -6173,12 +6714,6 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | --- | --- | --- |
 | `v2/fed-reserve-actions` | v2 fed-reserve-actions fed-reserve-actions /fed-reserve-actions api/fed-reserve-actions /api/fed-reserve-actions api fed-reserve-actions api.verifik.co/v2/fed-reserve-actions https://api.verifik.co/v2/fed-reserve-actions GET v2/fed-reserve-actions GET /v2/fed-reserve-actions | [US Federal Reserve Enforcement Actions](/background-check/international/fed-reserve-actions) |
 
-## Fi
-
-| Endpoint | Aliases | Page |
-| --- | --- | --- |
-| `v2/fi/politically-exposed-persons` | v2 fi politically-exposed-persons fi/politically-exposed-persons /fi/politically-exposed-persons api/fi/politically-exposed-persons /api/fi/politically-exposed-persons api fi politically-exposed-persons api.verifik.co/v2/fi/politically-exposed-persons https://api.verifik.co/v2/fi/politically-exposed-persons GET v2/fi/politically-exposed-persons GET /v2/fi/politically-exposed-persons | [Finland — Politically Exposed Persons (PEP)](/background-check/finland-politically-exposed-persons) |
-
 ## Fincen Special Measures
 
 | Endpoint | Aliases | Page |
@@ -6190,13 +6725,6 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/finra-actions` | v2 finra-actions finra-actions /finra-actions api/finra-actions /api/finra-actions api finra-actions api.verifik.co/v2/finra-actions https://api.verifik.co/v2/finra-actions GET v2/finra-actions GET /v2/finra-actions | [US FINRA Enforcement Actions](/background-check/international/finra-actions) |
-
-## Fr
-
-| Endpoint | Aliases | Page |
-| --- | --- | --- |
-| `v2/fr/company` | v2 fr company fr/company /fr/company api/fr/company /api/fr/company api fr company api.verifik.co/v2/fr/company https://api.verifik.co/v2/fr/company GET v2/fr/company GET /v2/fr/company | [France — SIRENE Company Registry](/business-validation/france-company-sirene) |
-| `v2/fr/politically-exposed-persons` | v2 fr politically-exposed-persons fr/politically-exposed-persons /fr/politically-exposed-persons api/fr/politically-exposed-persons /api/fr/politically-exposed-persons api fr politically-exposed-persons api.verifik.co/v2/fr/politically-exposed-persons https://api.verifik.co/v2/fr/politically-exposed-persons GET v2/fr/politically-exposed-persons GET /v2/fr/politically-exposed-persons | [France — Politically Exposed Persons (PEP)](/background-check/france-politically-exposed-persons) |
 
 ## France Amf Blacklist
 
@@ -6215,12 +6743,6 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/france-gels-avoirs` | v2 france-gels-avoirs france-gels-avoirs /france-gels-avoirs api/france-gels-avoirs /api/france-gels-avoirs api france-gels-avoirs api.verifik.co/v2/france-gels-avoirs https://api.verifik.co/v2/france-gels-avoirs GET v2/france-gels-avoirs GET /v2/france-gels-avoirs | [French National Asset Freezing System](/background-check/international/france-gels-avoirs) |
-
-## Gb
-
-| Endpoint | Aliases | Page |
-| --- | --- | --- |
-| `v2/gb/company` | v2 gb company gb/company /gb/company api/gb/company /api/gb/company api gb company api.verifik.co/v2/gb/company https://api.verifik.co/v2/gb/company GET v2/gb/company GET /v2/gb/company | [United Kingdom — Company Lookup](/business-validation/uk-company-lookup) |
 
 ## Georgia Otkhozoria Tatunashvili
 
@@ -6411,12 +6933,6 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | --- | --- | --- |
 | `v2/luxembourg-cssf-sanctions` | v2 luxembourg-cssf-sanctions luxembourg-cssf-sanctions /luxembourg-cssf-sanctions api/luxembourg-cssf-sanctions /api/luxembourg-cssf-sanctions api luxembourg-cssf-sanctions api.verifik.co/v2/luxembourg-cssf-sanctions https://api.verifik.co/v2/luxembourg-cssf-sanctions GET v2/luxembourg-cssf-sanctions GET /v2/luxembourg-cssf-sanctions | [Luxembourg Administrative Sanctions](/background-check/international/luxembourg-cssf-sanctions) |
 
-## Lv
-
-| Endpoint | Aliases | Page |
-| --- | --- | --- |
-| `v2/lv/politically-exposed-persons` | v2 lv politically-exposed-persons lv/politically-exposed-persons /lv/politically-exposed-persons api/lv/politically-exposed-persons /api/lv/politically-exposed-persons api lv politically-exposed-persons api.verifik.co/v2/lv/politically-exposed-persons https://api.verifik.co/v2/lv/politically-exposed-persons GET v2/lv/politically-exposed-persons GET /v2/lv/politically-exposed-persons | [Latvia — Politically Exposed Persons (PEP)](/background-check/latvia-politically-exposed-persons) |
-
 ## Malaysia Bnm Fca
 
 | Endpoint | Aliases | Page |
@@ -6494,12 +7010,6 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/nl/politically-exposed-persons` | v2 nl politically-exposed-persons nl/politically-exposed-persons /nl/politically-exposed-persons api/nl/politically-exposed-persons /api/nl/politically-exposed-persons api nl politically-exposed-persons api.verifik.co/v2/nl/politically-exposed-persons https://api.verifik.co/v2/nl/politically-exposed-persons GET v2/nl/politically-exposed-persons GET /v2/nl/politically-exposed-persons | [Netherlands — Politically Exposed Persons (PEP)](/background-check/netherlands-politically-exposed-persons) |
-
-## No
-
-| Endpoint | Aliases | Page |
-| --- | --- | --- |
-| `v2/no/politically-exposed-persons` | v2 no politically-exposed-persons no/politically-exposed-persons /no/politically-exposed-persons api/no/politically-exposed-persons /api/no/politically-exposed-persons api no politically-exposed-persons api.verifik.co/v2/no/politically-exposed-persons https://api.verifik.co/v2/no/politically-exposed-persons GET v2/no/politically-exposed-persons GET /v2/no/politically-exposed-persons | [Norway — Politically Exposed Persons (PEP)](/background-check/norway-politically-exposed-persons) |
 
 ## Norges Bank Exclusions
 
@@ -6596,12 +7106,6 @@ _Last regenerated: 2026-11-27T17:12:11.745Z_
 | `v2/phone-validations/{id}` | v2/phone-validations /v2/phone-validations v2 phone-validations phone-validations /phone-validations api/phone-validations /api/phone-validations api phone-validations | [Retrieve a Phone Validation](/resources/retrieve-a-phone-validation) |
 | `v2/phone-validations/app-registration` | v2 phone-validations app-registration phone-validations/app-registration /phone-validations/app-registration api/phone-validations/app-registration /api/phone-validations/app-registration api phone-validations app-registration api.verifik.co/v2/phone-validations/app-registration https://api.verifik.co/v2/phone-validations/app-registration GET v2/phone-validations/app-registration GET /v2/phone-validations/app-registration | [Create an App Registration Phone Validation](/resources/app-registrations/create-an-app-registration-phone-validation) |
 | `v2/phone-validations/manual` | v2 phone-validations manual phone-validations/manual /phone-validations/manual api/phone-validations/manual /api/phone-validations/manual api phone-validations manual api.verifik.co/v2/phone-validations/manual https://api.verifik.co/v2/phone-validations/manual GET v2/phone-validations/manual GET /v2/phone-validations/manual | [Create a Manual Phone Validation](/resources/create-a-manual-phone-validation) |
-
-## Pl
-
-| Endpoint | Aliases | Page |
-| --- | --- | --- |
-| `v2/pl/politically-exposed-persons` | v2 pl politically-exposed-persons pl/politically-exposed-persons /pl/politically-exposed-persons api/pl/politically-exposed-persons /api/pl/politically-exposed-persons api pl politically-exposed-persons api.verifik.co/v2/pl/politically-exposed-persons https://api.verifik.co/v2/pl/politically-exposed-persons GET v2/pl/politically-exposed-persons GET /v2/pl/politically-exposed-persons | [Poland — Politically Exposed Persons (PEP)](/background-check/poland-politically-exposed-persons) |
 
 ## Poland Giif Sanctions
 

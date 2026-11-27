@@ -1,0 +1,224 @@
+---
+id: business-validation-czechia-company-lookup
+title: "チェコ — 法人登記照会 (KYB)"
+description: "チェコの法人登記照会は、公式の事業者登記で法人を確認します。法人登録番号または納税識別子（IČO）を `documentNumber` として送ってください。KYB の受付、仕入先の調査、取引先の審査に使います。"
+sidebar_label: "🇨🇿 チェコ — 法人登記"
+slug: "/business-validation/czechia-company-lookup"
+keywords:
+  - "v2/cz/company"
+  - "/v2/cz/company"
+  - "api.verifik.co/v2/cz/company"
+  - "GET /v2/cz/company"
+  - "company Czechia"
+  - "czechia_api_company_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# チェコ — 法人登記照会 (KYB)
+
+**チェコの法人登記照会**は、公式の事業者登記で法人を確認します。法人登録番号または納税識別子（IČO）を `documentNumber` として送ってください。KYB の受付、仕入先の調査、取引先の審査に使います。
+
+`documentNumber` は必須です。`documentType` は任意です。送るときは識別子の種類（例: `ICO`）を指定し、番号が複数ある国を区別します。
+
+## レジストリが返す項目
+
+- 法的商号
+- 登記状態
+- 設立日
+- 納税または登記の識別子
+- 登記上の住所
+
+## 用途
+
+- 最初の支払の前に、チェコの仕入先または取引先を受け付けます。
+- 契約書や請求書に記載された法的商号と登記状態を確認します。
+- KYB ファイルに設立日、納税識別子、登記住所を集めます。
+
+---
+
+## API リファレンス
+
+### エンドポイント
+
+```http
+GET https://api.verifik.co/v2/cz/company
+```
+
+`documentNumber` と任意の `documentType` で チェコ の公式事業者登記を照会します。成功時のペイロードには法的商号、登記状態、設立日、納税識別子（IČO）、登記上の住所が含まれます。KYB の受付または仕入先調査で使ってください。下の例はこれらの項目です。`status` の文言を含む実際の値は登記から返ります。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <your_token>` | クライアント JWT 認証トークン |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **はい** | `27082440` | 公式の法人登録番号または納税識別子（IČO）。 |
+| `documentType` | string | いいえ | `ICO` | 法人書類の種類または登記の接頭辞。例: `ICO`。公式番号だけを送る場合は省略します。 |
+
+---
+
+### リクエスト
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/cz/company",
+  params: {
+    documentType: "ICO",
+    documentNumber: "27082440",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/cz/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "ICO",
+    "documentNumber": "27082440",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/cz/company?documentType=ICO&documentNumber=27082440" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### レスポンス
+
+<Tabs>
+<TabItem value="200" label="200 (記録あり)">
+
+```json
+{
+  "data": {
+    "documentType": "ICO",
+    "documentNumber": "27082440",
+    "businessName": "Example s.r.o.",
+    "status": "ACTIVE",
+    "incorporationDate": "2014-03-18",
+    "taxIdentifier": "27082440",
+    "address": {
+      "line1": "1 Example Street",
+      "locality": "Prague",
+      "postalCode": "110 00",
+      "country": "Czechia"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (該当なし)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (レジストリ一時停止)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 備考
+
+- **識別子の形式.** IČO は 8 桁です。空白を入れず数字だけを送ってください。
+- 法人書類の種類または登記の接頭辞。例: `ICO`。公式番号だけを送る場合は省略します。
+- 例の状態ラベルは項目を示す値です。実際の登記は独自の表記を返し、現地語の場合があります。
+- このルートのクライアントパラメータは `documentNumber` と、識別子の種類を示す必要があるときの `documentType` です。
+- JSON の例は上記の項目の形です。実際の呼び出しは、送った識別子に対する登記記録を返します。
+
+---
+
+## サンドボックス
+
+アカウントがサンドボックスモードのとき、同じパラメータでこのルートを呼び出します。表は各ケースで文書化されている応答です。
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| **登録済みの識別子** | `documentType: "ICO"`, `documentNumber: "27082440"` | 情報源に番号がある場合は 200 とともに法的氏名、状態、識別子、住所または本人属性を返します。 |
+| **documentNumber なし** | 省略 `documentNumber` | `documentNumber` を省くと 409 `MissingParameter`。 |
+| **不明な番号** | `documentNumber: "000000000"` | 登記にその番号の記録がない場合は 404 `NotFound`。 |
+
+bearer トークンがない、または拒否された場合は 401。
