@@ -116,3 +116,20 @@ The provisions of this section apply only to the endpoints identified here and d
 See [Colombian Citizen](/identity-validation/colombia/colombian-citizen) (basic national ID) for the API details.
 
 **Term and particular conditions.** In the event of a discrepancy, the economic terms expressly accepted in the commercial contract prevail, except for the dynamic-pricing exceptions that contract specifically incorporates.
+
+## 4. smartCHECK plans and per-call prices
+
+Live subscription plans for smartCHECK (database screening), from the production catalog:
+
+| Plan | Monthly | Yearly |
+| --- | ---: | ---: |
+| Starter | $49 | $490 |
+| Basic | $129 | $1,290 |
+| Plus | $299 | $2,990 |
+| Business | $649 | $6,490 |
+
+These plans lower the per-call price on **most** APIs. They do not apply one flat discount to every API. Some APIs keep the same per-call price on every tier.
+
+Official-registry data checks in the public catalog (identity, business, background, vehicle, and related registry lookups) start at **$0.05** per call. The median list price is **$0.30**.
+
+Current prices are published at [verifik.co/en/pricing](https://verifik.co/en/pricing/) and [verifik.co/precios](https://verifik.co/precios/). The public catalog in this sync is **409** APIs across **51** countries.
