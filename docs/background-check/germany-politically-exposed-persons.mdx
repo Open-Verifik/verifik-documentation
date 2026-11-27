@@ -1,0 +1,297 @@
+---
+id: germany-politically-exposed-persons
+title: "Germany — Politically Exposed Persons (PEP)"
+description: "Screen a national identity number or full name against official politically exposed person registers in Germany under FATF Recommendation 12 and national AML rules, with a 5-year lookback."
+slug: /background-check/germany-politically-exposed-persons
+keywords:
+  - "v2/de/politically-exposed-persons"
+  - "/v2/de/politically-exposed-persons"
+  - "pep germany"
+  - "germany pep"
+  - "fatf recommendation 12"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Germany — Politically Exposed Persons (PEP)
+
+Screen a person in **Germany** by **national identity number** (`documentNumber`) or by **full legal name** (`fullName`) against official politically exposed person (PEP) registers. The check follows **FATF Recommendation 12** and the national AML framework below, and keeps a **5-year lookback** for people whose public mandate has ended.
+
+- **Framework:** Geldwäschegesetz (GwG § 1 Abs. 12) & EU AMLD Politically Exposed Persons
+- **Authority:** Deutscher Bundestag / BaFin / FIU Germany
+- **Primary source:** Deutscher Bundestag Open Data / OpenSanctions PEP (DE) (`https://www.bundestag.de/services/opendata`)
+
+- Customer onboarding and enhanced due diligence for domestic PEPs.
+- Periodic rescreening when a mandate starts, changes, or ends.
+- Name search when the national document number is not yet on file.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/de/politically-exposed-persons
+```
+
+A successful call returns `country`, `jurisdiction`, `documentType`, `documentNumber`, `fullName`, `isPEP`, `isActivePep`, `isFormerPep`, `totalMatches`, `matchCount`, `categories`, `includeFormer`, `lookbackYears` (5), `matches`, `checkedSources`, `regulation`, and `dateTime`. Each match includes `position`, `entity`, `category`, `categoryDescription`, `status` (`ACTIVE` or `FORMER_PEP`), `source`, and `sourceUrl`. The decision flag on the root object is `isPEP`. Each match uses `isPep`. A person who is not a PEP is still HTTP 200, with `isPEP` false and `totalMatches` 0.
+
+### Headers
+
+| Name | Value |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <your_token>` |
+
+### Parameters
+
+| Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | Conditional | National identity number. 3 to 40 characters. Required when `fullName` is omitted. Aliases: `id`, `dni`, `cedula`. Example: `DE-BT-11004097`. |
+| `fullName` | string | Conditional | Full legal name, 3 to 160 characters. Required when `documentNumber` is omitted. Alias: `name`. Example: `OLAF SCHOLZ`. |
+| `documentType` | string | No | Document type, 2 to 20 characters. Defaults to `ID` and is echoed in the response. |
+| `includeFormer` | boolean | No | Include officeholders whose mandate ended inside the 5-year lookback. Defaults to `true`. Pass `false` to keep only `ACTIVE` roles. A former-only hit then returns `isPEP` false and an empty `matches` array. |
+
+---
+
+## PEP categories
+
+Each match is classified from the office title into one of these categories:
+
+| Category | Description |
+| :--- | :--- |
+| `HEAD_OF_STATE_OR_GOVERNMENT` | Head of state, head of government, or cabinet executive authority |
+| `SENIOR_EXECUTIVE` | Senior executive-branch official or cabinet minister |
+| `LEGISLATIVE` | Member of the national parliament or legislative assembly |
+| `JUDICIAL_OR_OVERSIGHT` | Senior judicial, constitutional, or supreme audit authority |
+| `DIPLOMATIC_MILITARY_OR_CENTRAL_BANK` | Senior diplomatic, military, or central-bank official |
+| `PUBLIC_OFFICIAL_PEP` | Politically exposed person under FATF Recommendation 12 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/de/politically-exposed-persons",
+  params: {
+    documentType: "ID",
+    documentNumber: "DE-BT-11004097",
+    includeFormer: true,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/de/politically-exposed-persons"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "ID",
+    "documentNumber": "DE-BT-11004097",
+    "includeFormer": "true",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/de/politically-exposed-persons?documentType=ID&documentNumber=DE-BT-11004097&includeFormer=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200-hit" label="200 (PEP match)">
+
+```json
+{
+  "data": {
+    "country": "DE",
+    "jurisdiction": "Alemania",
+    "documentType": "ID",
+    "documentNumber": "DE-BT-11004097",
+    "fullName": "OLAF SCHOLZ",
+    "isPEP": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "matchCount": 1,
+    "categories": [
+      "HEAD_OF_STATE_OR_GOVERNMENT"
+    ],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [
+      {
+        "id": "sandbox-pep-de-active",
+        "fullName": "OLAF SCHOLZ",
+        "aliases": [],
+        "country": "DE",
+        "countries": [
+          "DE"
+        ],
+        "documentNumber": "DE-BT-11004097",
+        "birthDate": null,
+        "position": "BUNDESKANZLER DER BUNDESREPUBLIK DEUTSCHLAND",
+        "entity": "DEUTSCHER BUNDESTAG / BUNDESKANZLERAMT",
+        "category": "HEAD_OF_STATE_OR_GOVERNMENT",
+        "categoryDescription": "Head of State, Head of Government, or Cabinet Executive Authority",
+        "startDate": "2021-12-08",
+        "endDate": null,
+        "lastSeen": "2026-11-27",
+        "status": "ACTIVE",
+        "isPep": true,
+        "isActivePep": true,
+        "isFormerPep": false,
+        "withinLookbackWindow": true,
+        "score": 100,
+        "matchType": "identifier",
+        "dataset": "peps",
+        "source": "Deutscher Bundestag Open Data / OpenSanctions PEP (DE)",
+        "sourceUrl": "https://www.bundestag.de/services/opendata"
+      }
+    ],
+    "checkedSources": [
+      "BUNDESTAG_OPENDATA_DE",
+      "OPENSANCTIONS_PEP_DE",
+      "GWG_FATF_PEP_GERMANY"
+    ],
+    "regulation": {
+      "framework": "Geldwäschegesetz (GwG § 1 Abs. 12) & EU AMLD Politically Exposed Persons",
+      "lookbackYears": 5,
+      "authority": "Deutscher Bundestag / BaFin / FIU Germany"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (clean / non-PEP)">
+
+```json
+{
+  "data": {
+    "country": "DE",
+    "jurisdiction": "Alemania",
+    "documentType": "ID",
+    "documentNumber": "55555555",
+    "fullName": "JUAN CARLOS CIUDADANO NO PEP",
+    "isPEP": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "matchCount": 0,
+    "categories": [],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [],
+    "checkedSources": [
+      "BUNDESTAG_OPENDATA_DE",
+      "OPENSANCTIONS_PEP_DE",
+      "GWG_FATF_PEP_GERMANY"
+    ],
+    "regulation": {
+      "framework": "Geldwäschegesetz (GwG § 1 Abs. 12) & EU AMLD Politically Exposed Persons",
+      "lookbackYears": 5,
+      "authority": "Deutscher Bundestag / BaFin / FIU Germany"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (sandbox not found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "404:NotFound"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or fullName must be provided."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Sandbox probes
+
+With the account in sandbox mode, these values are deterministic:
+
+| Document number | Full name | includeFormer | Result |
+| :--- | :--- | :--- | :--- |
+| `DE-BT-11004097` | `OLAF SCHOLZ` | `true` | Active PEP (`isPEP` true, category `HEAD_OF_STATE_OR_GOVERNMENT`) |
+| `10000001` | `OLAF SCHOLZ` | `true` | Active PEP (same fixture as document number `10000001`) |
+| `10000002` | `PEP FORMER MINISTER` | `true` | Former PEP (`isFormerPep` true) while `includeFormer` is true |
+| `10000002` | `PEP FORMER MINISTER` | `false` | Clean result when `includeFormer` is false |
+| `55555555` | `JUAN CARLOS CIUDADANO NO PEP` | `true` | Clean non-PEP (`isPEP` false, `totalMatches` 0) |
+| `99999404` | `—` | `true` | 404 `NotFound` (sandbox probe only) |
+
+---
+
+### Notes
+
+- Send `documentNumber` or `fullName`. The document aliases are `id`, `dni`, and `cedula`. The name alias is `name`. If none of them is present, the API returns 409 `MissingParameter` with message `Either documentNumber or fullName must be provided.`
+- `includeFormer` defaults to true. Former officeholders inside the 5-year window come back with `status` `FORMER_PEP`, `isFormerPep` true, and `isPEP` true. `false` drops those rows and leaves only active roles.
+- `documentType` defaults to `ID`. `jurisdiction` in the payload is the registry label `Alemania`. `regulation.lookbackYears` is 5.
+- Sandbox active hit: document `DE-BT-11004097` or name `OLAF SCHOLZ`, and also document `10000001`. Former hit: document `10000002` or a name containing `PEP FORMER`, `EX MINISTRO`, or `FORMER MINISTER`. Clean hit: document `55555555` with name `JUAN CARLOS CIUDADANO NO PEP`. A document number containing `99999404`, or a name containing `NOTFOUND`, returns 404 in sandbox. A live miss is HTTP 200 with `isPEP` false, not 404.
+- This route screens Germany only (`DE`). For a cross-border search use [Global PEP](/background-check/world-politically-exposed-persons).
+- `checkedSources` lists the registry keys consulted for this jurisdiction. `regulation.framework` and `regulation.authority` identify the AML basis returned with the result.

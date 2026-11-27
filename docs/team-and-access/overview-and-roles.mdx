@@ -1,0 +1,83 @@
+---
+id: overview-and-roles
+title: Overview & System Roles
+description: Understand Verifik's 8 built-in RBAC system roles, custom client roles, endpoint allowlists/blocklists, self-service temporary access requests, and the immutable audit trail.
+slug: /team-and-access/overview-and-roles
+keywords:
+  - team roles
+  - rbac
+  - team_manager
+  - report_builder
+  - permissions
+  - staff-audit-logs
+---
+
+# Team & Access Overview and System Roles
+
+Verifik workspaces separate billing ownership (**Workspace Owner**) from delegated staff members and API keys. Access control combines **module & action permissions**, **Sub-Team scope & monthly budgets**, **API endpoint policies**, **Just-in-Time (JIT) temporary grants**, and an **immutable audit log**.
+
+---
+
+## Built-In System Roles
+
+Every invited staff member is assigned one of **8 built-in system presets** (or a custom workspace role via `POST /v2/client-roles`). Legacy Spanish aliases (`administrador`, `desarrollador`, `contabilidad`, `empleado`) remain accepted and normalize automatically.
+
+| Role Slug | Intended Persona | Core Permissions | Key Boundaries |
+| --- | --- | --- | --- |
+| `admin` | Workspace Administrator | Full CRUD/execute/export across modules, team & budget admin (`team.readAll`), API keys | Cannot delete workspace settings (`workspaceSettings.delete` is Owner-only) or delete Workspace Owner |
+| `team_manager` | Country / Department Lead | Manages members, child sub-teams, budgets, access requests (`team.manageOwnTeam`), and CECO usage exports (`billingUsage.export`) | Scoped strictly to own `team`, `additionalTeams`, and child sub-teams (`parentTeam`); cannot access billing credits/cards, API keys management, or cross-team resources |
+| `compliance_officer` | KYC / KYB & Fleet Reviewer | Approves/rejects KYC & KYB dossiers, acknowledges fleet rules/alerts, exports compliance reports | No API key management or workspace billing edits |
+| `developer` | Integration Engineer | Manages API keys, webhooks, SmartCheck Playground, projects/flows, templates, and batches | No KYC manual approval (`smartEnrollRecords.approve`) and no billing edits |
+| `finance` | Billing & Accounting | Manages credits, cards, subscriptions, invoices, Cost Centers, and Usage/CECO statements | No PII records, playground runs, or API keys |
+| `operator` | Day-to-Day Verification Ops | Executes lookups, SmartScan, biometrics, SmartBatches, SmartLinks, and fleet updates | Cannot manage teams, billing, or delete configs |
+| `report_builder` | Template & Batch Designer | Designs SmartReport templates and Batch Configurations | Zero access to executed report results, applicant PII, billing, or API keys (`allowAccessRequests: false` by default) |
+| `viewer` | Read-Only Auditor | Read-only access to dashboards, records, monitoring, and usage analytics | Zero mutations or live executions |
+
+---
+
+## Granular Action Model & Custom Roles
+
+Permissions are evaluated per `(resource, action)` tuple across 27 modules using 10 actions:
+
+- `read`, `create`, `update`, `delete`, `execute`, `approve`, `export`, `manageKeys`, `readAll`, `manageOwnTeam`.
+
+To tailor a role without losing least-privilege guarantees:
+
+1. Call `GET /v2/client-roles/catalog` (or open **Team & Access → Roles & Permissions**).
+2. Duplicate any built-in preset with `POST /v2/client-roles/:id/duplicate` or create a role via `POST /v2/client-roles`.
+3. Attach optional `endpointPolicy` rules (`mode: "all" | "blocklist" | "allowlist"`) and control whether staff on the role can submit self-service requests (`allowAccessRequests`, `requestableResources`).
+4. Anti-escalation checks guarantee no staff member can grant permissions or endpoints above their own effective ceiling.
+
+---
+
+## Just-in-Time Access Requests & Revocation
+
+When a staff member encounters a restricted module or reaches a sub-team budget cap, Verifik returns `403` with `canRequestAccess: true`:
+
+- **Request flow**: Staff submit `POST /v2/staff-access-requests` (`resource_access`, `role_upgrade`, or `budget_increase`) with duration `24h`, `7d`, `30d`, or `permanent`.
+- **Scoped review**: Global admins review all requests; a `team_manager` can approve, reject, or revoke requests only for members of their own/child sub-teams (`403:team_out_of_scope` otherwise).
+- **Immediate revocation**: Calling `POST /v2/staff-access-requests/:id/revoke` immediately invalidates any active temporary grant.
+
+---
+
+## Immutable RBAC & Team Audit Trail
+
+Every security-sensitive mutation writes an immutable entry to `StaffAuditLog`:
+
+```http
+GET https://api.verifik.co/v2/staff-audit-logs?action=staff.update&limit=50&format=json
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+Supported query parameters:
+
+- `team`, `action`, `resourceType` (`staff`, `team`, `clientRole`, `staffAccessRequest`, `clientSettings`, `smartReport`, `smartReportTemplate`, `batchConfiguration`)
+- `startDate`, `endDate` (ISO timestamps)
+- `page`, `limit` (`<= 200`), and `format=json|csv` (CSV export neutralizes spreadsheet formula prefixes).
+
+Global admins view the entire tenant log; `team_manager` and scoped staff see only events linked to their managed sub-teams or performed by themselves.
+
+## Next Steps
+
+- [Sub-Teams, Hierarchy & Scoped Visibility](/team-and-access/sub-teams-and-visibility)
+- [Multi-Country Setup Guide](/team-and-access/multi-country-setup-guide)

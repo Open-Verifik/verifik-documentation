@@ -1,0 +1,93 @@
+---
+id: multi-country-setup-guide
+title: Guía de Configuración Multi-País y Multi-Unidad
+description: Guía paso a paso para estructurar Centros de Costo (CECO), Sub-Equipos, Gerentes regionales, llaves API por equipo y estados mensuales CECO.
+slug: /team-and-access/multi-country-setup-guide
+keywords:
+  - configuracion multi-pais
+  - estado ceco
+  - cost-center-statement
+  - team_manager
+  - mcp
+---
+
+# Guía de Configuración Multi-País y Multi-Unidad
+
+Esta guía describe cómo configurar una cuenta empresarial con operaciones en varios países o áreas (p. ej. Colombia, México, Perú y Chile) compartiendo un solo saldo en Verifik con aislamiento total, límites presupuestales y conciliación mensual por CECO.
+
+---
+
+## Paso 1: Crear un Centro de Costo (CECO) por País o Unidad
+
+```bash
+curl -X POST https://api.verifik.co/v2/cost-centers \
+  -H "Authorization: Bearer $OWNER_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"code":"CO-OPS","name":"Colombia Operations","country":"CO"}'
+```
+
+Repite el paso para `MX-OPS`, `PE-OPS`, `CL-OPS`, etc.
+
+---
+
+## Paso 2: Crear la Jerarquía de Sub-Equipos
+
+Crea un equipo regional opcional (`LATAM Regional`) y sub-equipos por país con `parentTeam`, `defaultCostCenter`, `allowedCostCenters`, `enforceCostCenter: true` y `monthlyBudget`:
+
+```bash
+curl -X POST https://api.verifik.co/v2/teams \
+  -H "Authorization: Bearer $OWNER_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Colombia Ops",
+    "color": "emerald",
+    "parentTeam": "<LATAM_TEAM_ID>",
+    "defaultCostCenter": "<CO_OPS_CECO_ID>",
+    "allowedCostCenters": ["<CO_OPS_CECO_ID>"],
+    "enforceCostCenter": true,
+    "monthlyBudget": 1500,
+    "budgetEnforcement": "hard"
+  }'
+```
+
+---
+
+## Paso 3: Activar Aislamiento y Llaves API por Equipo
+
+En **Equipo y Acceso → Política de Acceso** (o `PUT /v2/client-settings`):
+
+- Activa **`teamScopedVisibility: true`** para aislar reportes, lotes, validaciones y logs por país.
+- Activa **`requireTeamApiKeys: true`** opcionalmente para exigir llaves API vinculadas a sub-equipos en integraciones productivas.
+- Marca las plantillas maestras de reportes con `visibility: "workspace"` usando `POST /v2/teams/:id/assign`.
+
+---
+
+## Paso 4: Emitir Team API Keys y Asignar Gerentes de Equipo
+
+- Genera una llave dedicada por integración con `POST /v2/teams/{coTeamId}/api-keys`.
+- Asigna un líder de país o región con el rol **`team_manager`** y usa **`additionalTeams`** en `POST /v2/staff` o `PUT /v2/staff/:id` cuando un responsable supervise varios países sin tener permisos globales de administrador.
+
+---
+
+## Paso 5: Exportar Estados Mensuales por CECO
+
+Concilia llamadas API y créditos medidos de SmartReports agrupados por **CECO y Sub-Equipo** (incluyendo los 5 endpoints principales por CECO) sin consumir créditos:
+
+```http
+GET https://api.verifik.co/v2/usage/cost-center-statement?period=2026-11&format=xlsx
+Authorization: Bearer <OWNER_OR_MANAGER_JWT>
+```
+
+Parámetros admitidos:
+
+- `period`: Mes de facturación `YYYY-MM` en UTC.
+- `format`: `json`, `csv` (UTF-8 con protección contra inyección de fórmulas) o `xlsx` (libro con dos hojas: `CECO Statement` y `Top Endpoints`).
+- `team`, `costCenter`: Filtros opcionales.
+
+También puedes consultar y descargar el Estado Mensual CECO desde **Configuración → Reporte de Uso**.
+
+---
+
+## Automatización mediante MCP (Claude, Cursor, Gemini)
+
+El servidor MCP en `https://ai.verifik.co/mcp` expone herramientas autenticadas por Bearer JWT incluyendo `teams_create` (`parentTeam`), `teams_update` (`parentTeam`), `staff_invite` (`team_manager`, `additionalTeams`), `staff_update`, `usage_cost_center_statement`, `staff_audit_logs_list` y `smart_report_create_signed_link`.

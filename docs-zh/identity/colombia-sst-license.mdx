@@ -1,0 +1,211 @@
+---
+id: colombia-sst-license
+title: "哥伦比亚 — 职业安全卫生执照（SST）"
+description: "按身份号码读取哥伦比亚职业安全卫生执照和技术证。"
+sidebar_label: "🇨🇴 哥伦比亚 — SST 执照"
+slug: "/identity/colombia-sst-license"
+keywords:
+  - "v2/co/sst/licencia"
+  - "/v2/co/sst/licencia"
+  - "api.verifik.co/v2/co/sst/licencia"
+  - "GET /v2/co/sst/licencia"
+  - "GET https://api.verifik.co/v2/co/sst/licencia"
+  - "colombia_api_sst_license"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 哥伦比亚 — 职业安全卫生执照（SST）
+
+**SST 执照**查询读取哥伦比亚身份号码对应的职业安全执照和技术施用证。`documentNumber` 必填。命中时列出每张证的类型、决议或证件号以及签发日期。
+
+## 调用返回的内容
+
+- 带 `licenseType`、决议或证件号和 `issueDate` 的 `licenses[]`
+- `totalLicenses`
+- `status` 与 `isRegistered`
+
+## 使用场景
+
+- 承包商进场前核验 SST 执照。
+- 同时查看自然人执照和技术证。
+- 把决议号留在供应商档案里。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/sst/licencia
+```
+
+响应包含 `fullName`、`profession`、`totalLicenses` 和 `licenses`。既无执照也无技术证时为 404 `NotFound`。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **是** | `52111222` | 用于读取 SST 执照和技术证的哥伦比亚身份号码，5 到 15 个字符。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/sst/licencia",
+  params: {
+    documentNumber: "52111222",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/sst/licencia"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "52111222",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/sst/licencia?documentNumber=52111222" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "52111222",
+    "fullName": "PEDRO DIAZ",
+    "profession": "SEGURIDAD Y SALUD EN EL TRABAJO (SST)",
+    "status": "VIGENTE",
+    "isRegistered": true,
+    "totalLicenses": 1
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"documentNumber\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- `documentNumber` 必填。
+- 既没有 SST 执照也没有技术证时为 HTTP 404。
+- 可选 `documentType` 接受 `CC`、`CE`、`TI`、`PEP` 或 `PPT`。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `documentNumber: "52111222"` | 含一张或多张执照的 200。 |
+| 缺少必填值 | Omit `documentNumber` | 409 MissingParameter。 |
+| 未知的值 | `documentNumber: "000000000"` | 两个数据源都没有记录时为 404 NotFound。 |
+
+401 when the bearer token is missing or rejected.

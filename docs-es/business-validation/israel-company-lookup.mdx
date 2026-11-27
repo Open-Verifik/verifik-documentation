@@ -1,0 +1,224 @@
+---
+id: business-validation-israel-company-lookup
+title: "Israel — Consulta y Verificación de Empresas (KYB)"
+description: "La consulta de registro mercantil de Israel verifica una persona jurídica contra el registro oficial de empresas. Envíe el número de registro o el identificador fiscal (Company Number / HP) en `documentNumber`. Sirve para el alta KYB, la debida diligencia de proveedores y el cribado de contrapartes."
+sidebar_label: "🇮🇱 Israel — Registro de empresas"
+slug: "/business-validation/israel-company-lookup"
+keywords:
+  - "v2/il/company"
+  - "/v2/il/company"
+  - "api.verifik.co/v2/il/company"
+  - "GET /v2/il/company"
+  - "company Israel"
+  - "israel_api_company_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Israel — Consulta y Verificación de Empresas (KYB)
+
+La **consulta de registro mercantil de Israel** verifica una persona jurídica contra el registro oficial de empresas. Envíe el número de registro o el identificador fiscal (Company Number / HP) en `documentNumber`. Sirve para el alta KYB, la debida diligencia de proveedores y el cribado de contrapartes.
+
+`documentNumber` es obligatorio. `documentType` es opcional. Si lo envía, use la familia del identificador (por ejemplo `HP`) para distinguir países con varios números.
+
+## Qué devuelve el registro
+
+- Razón social
+- Estado de registro
+- Fecha de constitución
+- Identificador fiscal o de registro
+- Domicilio registrado
+
+## Casos de uso
+
+- Dar de alta un proveedor o una contraparte en Israel antes del primer pago.
+- Confirmar la razón social y el estado de registro que figuran en un contrato o una factura.
+- Reunir la fecha de constitución, el identificador fiscal y el domicilio para un expediente KYB.
+
+---
+
+## Referencia de la API
+
+### Punto de acceso
+
+```http
+GET https://api.verifik.co/v2/il/company
+```
+
+Consulte el registro oficial de empresas de Israel con `documentNumber` y un `documentType` opcional. Una respuesta correcta incluye la razón social, el estado de registro, la fecha de constitución, el identificador fiscal (Company Number / HP) y el domicilio registrado. Úsela en un alta KYB o en la debida diligencia de un proveedor. El ejemplo muestra esos campos. Los valores en vivo, incluido el texto de `status`, salen del registro.
+
+### Encabezados
+
+| Nombre | Valor | Descripción |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato de la solicitud |
+| Accept | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <tu_token>` | Token JWT de autenticación del cliente |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Ejemplo | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Sí** | `520000472` | Número oficial de registro mercantil o identificador fiscal (Company Number / HP). |
+| `documentType` | string | No | `HP` | Tipo de documento societario o prefijo de registro. Ejemplos aceptados: `HP`. Omítalo para enviar solo el número oficial. |
+
+---
+
+### Solicitud
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/il/company",
+  params: {
+    documentType: "HP",
+    documentNumber: "520000472",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/il/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>",
+}
+params = {
+    "documentType": "HP",
+    "documentNumber": "520000472",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/il/company?documentType=HP&documentNumber=520000472" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentType": "HP",
+    "documentNumber": "520000472",
+    "businessName": "Example Ltd",
+    "status": "ACTIVE",
+    "incorporationDate": "2014-03-18",
+    "taxIdentifier": "520000472",
+    "address": {
+      "line1": "1 Example Street",
+      "locality": "Tel Aviv",
+      "postalCode": "6100001",
+      "country": "Israel"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (No encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (No autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Registro no disponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- **Formato del identificador.** El número de compañía israelí (ח.פ. / HP) tiene 9 dígitos. Envíe solo dígitos, sin espacios.
+- Tipo de documento societario o prefijo de registro. Ejemplos aceptados: `HP`. Omítalo para enviar solo el número oficial.
+- La etiqueta de estado del ejemplo ilustra el campo. El registro en vivo devuelve su propia etiqueta, que puede estar en el idioma local.
+- Envíe `documentNumber` y, cuando deba nombrar la familia del identificador, `documentType`. Esos son los parámetros de cliente de esta ruta.
+- El JSON de ejemplo ilustra los campos anteriores. Una llamada en vivo devuelve la ficha del registro para el identificador enviado.
+
+---
+
+## Pruebas en sandbox
+
+Con la cuenta en modo sandbox, los mismos parámetros ejercitan esta ruta. La tabla describe la respuesta documentada para cada caso.
+
+| Escenario | Parámetros | Resultado |
+| :--- | :--- | :--- |
+| **Identificador existente** | `documentType: "HP"`, `documentNumber: "520000472"` | 200 con nombre legal, estado, identificador y domicilio o atributos de identidad cuando la fuente tiene el número. |
+| **Sin documentNumber** | Omitir `documentNumber` | 409 `MissingParameter` si se omite `documentNumber`. |
+| **Número desconocido** | `documentNumber: "000000000"` | 404 `NotFound` cuando el registro no tiene ficha para ese número. |
+
+401 cuando falta el token bearer o es rechazado.

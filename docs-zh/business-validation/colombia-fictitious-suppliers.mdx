@@ -1,0 +1,223 @@
+---
+id: colombia-fictitious-suppliers
+title: "哥伦比亚 — 虚假或无清偿能力供应商（DIAN）"
+description: "按税法典第 671 条，用 NIT 或名称对照 DIAN 虚假或无清偿能力供应商名单。"
+sidebar_label: "🇨🇴 哥伦比亚 — 虚假供应商"
+slug: "/business-validation/colombia-fictitious-suppliers"
+keywords:
+  - "v2/co/dian/proveedores-ficticios"
+  - "/v2/co/dian/proveedores-ficticios"
+  - "api.verifik.co/v2/co/dian/proveedores-ficticios"
+  - "GET /v2/co/dian/proveedores-ficticios"
+  - "GET https://api.verifik.co/v2/co/dian/proveedores-ficticios"
+  - "colombia_api_dian_proveedores_ficticios"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 哥伦比亚 — 虚假或无清偿能力供应商（DIAN）
+
+**虚假或无清偿能力供应商**查询对照 DIAN 第 671 条。发送 `documentNumber`（别名 `nit`）或 `businessName`（别名 `companyName` 与 `fullName`）。被列入时 `isFictitiousSupplier` 为 true 并包含决议。单纯未命中仍是 HTTP 200，且 `isFictitiousSupplier` 为 false。本接口不对单纯未命中返回 404。
+
+## 调用返回的内容
+
+- `isFictitiousSupplier` — 仅当 DIAN 列入时为 true
+- 命中时的 `resolutionNumber`、`resolutionDate` 与 `publicationDate`
+- 未列入时 `matches` 为空
+- `status` — 名单文字或未列入说明
+
+## 使用场景
+
+- 拦截被 DIAN 标为虚假或无清偿能力的供应商。
+- 把单纯未命中记为标志 false 的 200。
+- 按 NIT 或法定名称检索。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/dian/proveedores-ficticios
+```
+
+命中时 `isFictitiousSupplier` 为 true，`matches` 含决议号、日期和税务分局。单纯未命中时 `isFictitiousSupplier` 为 false。两种结果都是 HTTP 200。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **条件必填** | `900123456` | NIT 或个人号码，4 到 25 个字符。别名 `nit`。不发送名称时必填。 |
+| `businessName` | string | **条件必填** | `INDUSTRIAS EJEMPLO SAS` | 法定名称或商号，2 到 200 个字符。别名 `companyName` 与 `fullName`。不发送号码时必填。 |
+| `documentType` | string | 否 | `NIT` | 可选。取值：`NIT`、`CC`、`CE`、`PAS`、`TI`。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/dian/proveedores-ficticios",
+  params: {
+    documentNumber: "900123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/dian/proveedores-ficticios"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "900123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/dian/proveedores-ficticios?documentNumber=900123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "documentType": "NIT",
+    "documentNumber": "900123456",
+    "businessName": "PROVEEDORA EJEMPLO SAS",
+    "isFictitiousSupplier": true,
+    "status": "PROVEEDOR FICTICIO",
+    "resolutionNumber": "RES-001",
+    "article": "Art. 671 Estatuto Tributario"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one search parameter must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200（未命中）">
+
+```json
+{
+  "data": {
+    "documentType": "NIT",
+    "documentNumber": "800000111",
+    "isFictitiousSupplier": false,
+    "status": "SIN REGISTRO EN LISTA DE PROVEEDORES FICTICIOS O INSOLVENTES",
+    "matches": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- 发送号码或名称，至少一项。
+- 不在名单上是 HTTP 200，且 `isFictitiousSupplier` 为 false。
+- 不要把这个 200 当成 404。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `documentNumber: "900123456"` | 数据源列入该对象时 isFictitiousSupplier 为 true 的 200。 |
+| 缺少必填值 | Omit every search value | 没有检索值时为 409 MissingParameter。 |
+| 未知的值 | `documentNumber: "00000000"` | isFictitiousSupplier 为 false 的 200。单纯未命中仍是 HTTP 200，不是 404。 |
+
+401 when the bearer token is missing or rejected.

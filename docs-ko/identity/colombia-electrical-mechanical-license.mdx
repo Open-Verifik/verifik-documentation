@@ -1,0 +1,215 @@
+---
+id: colombia-electrical-mechanical-license
+title: "콜롬비아 — 전기·기계 공학 면허"
+description: "콜롬비아 전기·기계 및 관련 공학 면허를 시민증, 면허 번호 또는 이름으로 확인합니다."
+sidebar_label: "🇨🇴 콜롬비아 — 전기·기계 면허"
+slug: "/identity/colombia-electrical-mechanical-license"
+keywords:
+  - "v2/co/consejo-profesional"
+  - "/v2/co/consejo-profesional"
+  - "api.verifik.co/v2/co/consejo-profesional"
+  - "GET /v2/co/consejo-profesional"
+  - "GET https://api.verifik.co/v2/co/consejo-profesional"
+  - "colombia_api_electrical_mechanical_engineering"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 콜롬비아 — 전기·기계 공학 면허
+
+**전기·기계 공학 면허** 조회는 Consejo Profesional Nacional de Ingenierías Eléctrica, Mecánica y Profesiones Afines를 읽습니다. `documentNumber`, `licenseNumber`, `fullName` 중 하나를 보냅니다. 응답에는 면허, 전문 분야, 상태, 제재 여부가 있습니다.
+
+## 응답에 포함되는 값
+
+- `licenseNumber`와 `specialty`
+- VIGENTE 같은 `status`
+- `isRegistered`와 `hasSanctions`
+- 행이 둘 이상이면 `registrations`
+
+## 사용 사례
+
+- 현장 작업 전에 전기 또는 기계 엔지니어를 확인합니다.
+- 면허 옆의 징계를 읽습니다.
+- 계약서 이름을 위원회 행과 맞춥니다.
+
+---
+
+## API 레퍼런스
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/consejo-profesional
+```
+
+일치에는 `fullName`, `licenseNumber`, `specialty`, `status`, `isRegistered`, `hasSanctions`가 있습니다. 위원회에 행이 없으면 404 `NotFound`입니다.
+
+### Headers
+
+| 이름 | 값 | 설명 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 요청 형식 |
+| Accept | `application/json` | 응답 형식 |
+| Authorization | `Bearer <token>` | 클라이언트 JWT |
+
+### Parameters
+
+| 이름 | 유형 | 필수 | 예시 | 설명 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **조건부** | `80123456` | 콜롬비아 신원 번호. 5자에서 15자. `documentType`은 `CC`, `CE`, `TI`, `PEP`, `PPT`일 수 있습니다. |
+| `licenseNumber` | string | **조건부** | `AN205-27910` | 전문 면허 번호. 예: AN205-27910. 이것만으로 충분합니다. |
+| `fullName` | string | **조건부** | `ANA PEREZ` | 엔지니어 이름 또는 성. 3자에서 160자. 이것만으로 충분합니다. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/consejo-profesional",
+  params: {
+    documentNumber: "80123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/consejo-profesional"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "80123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/consejo-profesional?documentNumber=80123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (레코드 있음)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "80123456",
+    "fullName": "ANA MARIA PEREZ",
+    "licenseNumber": "AN205-27910",
+    "specialty": "INGENIERIA ELECTRICA",
+    "status": "VIGENTE",
+    "isRegistered": true,
+    "hasSanctions": false
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (파라미터 누락)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one of documentNumber, licenseNumber, or fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (없음)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (인증 실패)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (원천 사용 불가)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 참고
+
+- `documentNumber`, `licenseNumber`, `fullName` 중 하나 이상을 보냅니다.
+- 위원회에 행이 없으면 빈 200이 아니라 HTTP 404입니다.
+- `documentType`은 선택입니다.
+- `Authorization` 헤더에 Bearer JWT를 보냅니다.
+- JSON 예시는 필드 모양입니다. 실제 호출은 보낸 값의 레코드를 반환합니다.
+- 캐시 우회 플래그는 보내지 않습니다. 이 페이지는 클라이언트 파라미터만 설명합니다.
+
+---
+
+## 샌드박스
+
+| 시나리오 | 파라미터 | 결과 |
+| :--- | :--- | :--- |
+| 원천에 기록 있음 | `documentNumber: "80123456"` | 면허, 전문 분야, 제재 플래그가 있는 200. |
+| 필수 값 누락 | Omit every search value | 409 MissingParameter. |
+| 알 수 없는 값 | `documentNumber: "000000000"` | 위원회에 행이 없으면 404 NotFound. |
+
+401 when the bearer token is missing or rejected.

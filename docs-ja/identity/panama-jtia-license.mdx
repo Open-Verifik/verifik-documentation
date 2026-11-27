@@ -1,0 +1,210 @@
+---
+id: panama-jtia-license
+title: "パナマ — 工学・建築の免許（JTIA）"
+description: "市民証、免許、または氏名で JTIA の工学・建築・技術免許を確認します。"
+sidebar_label: "🇵🇦 パナマ — JTIA 免許"
+slug: "/identity/panama-jtia-license"
+keywords:
+  - "v2/pa/professional/jtia"
+  - "/v2/pa/professional/jtia"
+  - "api.verifik.co/v2/pa/professional/jtia"
+  - "GET /v2/pa/professional/jtia"
+  - "GET https://api.verifik.co/v2/pa/professional/jtia"
+  - "panama_api_jtia_license"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# パナマ — 工学・建築の免許（JTIA）
+
+**JTIA 免許**照会は技術者、建築家、技能者の適格を読みます。`documentNumber`（または `cedula`）、`licenseNumber`（または `idoneidad`）、`fullName` のいずれかを送ります。正規化できない市民証は 409 です。評議会に行が無いと 404 `NotFound` です。
+
+## 応答に含まれる項目
+
+- 正規化された市民証
+- `licenseNumber` と `fullName`
+- `status`
+
+## 用途
+
+- 建築許可の前に技術者を確認します。
+- 免許番号が無ければ市民証で検索します。
+- 契約しか無ければ氏名で検索します。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/pa/professional/jtia
+```
+
+一致には正規化された市民証、氏名、免許、状態があります。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **条件付き** | `8-224-2444` | パナマの市民証。`cedula` でも受けます。API が正規化します（例: `8-224-2444`）。 |
+| `licenseNumber` | string | **条件付き** | `JTIA-100` | 適格または免許。別名 `idoneidad`。 |
+| `fullName` | string | **条件付き** | `ANA RUIZ` | 氏名 3–160文字。これだけで足ります。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/pa/professional/jtia",
+  params: {
+    documentNumber: "8-224-2444",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/pa/professional/jtia"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "8-224-2444",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/pa/professional/jtia?documentNumber=8-224-2444" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "documentNumber": "8-0224-02444",
+    "fullName": "ANA RUIZ",
+    "licenseNumber": "JTIA-100",
+    "status": "IDONEO"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "One of cedula/documentNumber, idoneidad/licenseNumber, or fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (該当なし)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- 市民証、免許、または氏名を送ります。
+- 形が不正な市民証は 409 です。
+- JTIA の行が無いと 404 `NotFound` です。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `documentNumber: "8-224-2444"` | 正規化された市民証と免許のある 200。 |
+| 必須値が無い | Omit cédula, license, and name | 409 MissingParameter。 |
+| 不明な値 | `documentNumber: "1-1-1"` | 市民証を正規化できなければ 409、JTIA に行が無ければ 404。 |
+
+401 when the bearer token is missing or rejected.

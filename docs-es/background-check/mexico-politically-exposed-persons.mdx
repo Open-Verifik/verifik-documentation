@@ -1,0 +1,297 @@
+---
+id: mexico-politically-exposed-persons
+title: "México — Consulta de Personas Expuestas Políticamente (PEP)"
+description: "Consulta un CURP mexicana o un nombre completo en los registros oficiales de personas expuestas políticamente de México, conforme a la Recomendación 12 del GAFI y la normativa ALA nacional, con ventana de 5 años."
+slug: /background-check/mexico-politically-exposed-persons
+keywords:
+  - "v2/mx/politically-exposed-persons"
+  - "/v2/mx/politically-exposed-persons"
+  - "pep mexico"
+  - "mexico pep"
+  - "fatf recommendation 12"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# México — Consulta de Personas Expuestas Políticamente (PEP)
+
+Consulta si una persona en **México** figura como persona expuesta políticamente (PEP) a partir del **CURP mexicana** (`documentNumber`) o del **nombre legal completo** (`fullName`). La consulta aplica la **Recomendación 12 del GAFI** y el marco antilavado nacional, con una **ventana de 5 años** para quienes cesaron en el cargo público.
+
+- **Marco normativo:** Disposiciones de Carácter General LFPIORPI / Lista de Personas Políticamente Expuestas Nacionales (SHCP / UIF)
+- **Autoridad:** Unidad de Inteligencia Financiera (UIF - SHCP) / Secretaría Ejecutiva del Sistema Nacional Anticorrupción (SESNA)
+- **Fuente principal:** Plataforma Digital Nacional (PDN) Sistema 1 / DeclaraNet / OpenSanctions PEP (MX) (`https://www.plataformadigitalnacional.org/`)
+
+- Alta de clientes y debida diligencia reforzada de PEP nacionales.
+- Recribado periódico cuando un mandato empieza, cambia o termina.
+- Búsqueda por nombre cuando el documento nacional aún no está en el expediente.
+
+---
+
+## Referencia de API
+
+### Punto de acceso
+
+```http
+GET https://api.verifik.co/v2/mx/politically-exposed-persons
+```
+
+Una respuesta correcta devuelve `country`, `jurisdiction`, `documentType`, `documentNumber`, `fullName`, `isPEP`, `isActivePep`, `isFormerPep`, `totalMatches`, `matchCount`, `categories`, `includeFormer`, `lookbackYears` (5), `matches`, `checkedSources`, `regulation` y `dateTime`. Cada coincidencia incluye `position`, `entity`, `category`, `categoryDescription`, `status` (`ACTIVE` o `FORMER_PEP`), `source` y `sourceUrl`. La bandera de decisión en la raíz es `isPEP`. Cada coincidencia usa `isPep`. Quien no es PEP también responde HTTP 200, con `isPEP` en false y `totalMatches` en 0.
+
+### Encabezados
+
+| Nombre | Valor |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <su_token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Obligatorio | Descripción |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | Condicional | CURP mexicana. De 3 a 40 caracteres. Obligatorio si se omite `fullName`. Alias: `id`, `dni`, `cedula`. Ejemplo: `MX-PDN-PARC620624`. |
+| `fullName` | string | Condicional | Nombre legal completo, de 3 a 160 caracteres. Obligatorio si se omite `documentNumber`. Alias: `name`. Ejemplo: `CLAUDIA SHEINBAUM PARDO`. |
+| `documentType` | string | No | Tipo de documento, de 2 a 20 caracteres. El valor predeterminado es `CURP` y se devuelve en la respuesta. |
+| `includeFormer` | boolean | No | Incluye a quienes cesaron en el cargo dentro de la ventana de 5 años. Predeterminado: `true`. Envíe `false` para conservar solo cargos `ACTIVE`. Si el único hallazgo es un ex-PEP, `isPEP` pasa a false y `matches` queda vacío. |
+
+---
+
+## Categorías PEP
+
+Cada coincidencia se clasifica según el cargo en una de estas categorías:
+
+| Categoría | Descripción |
+| :--- | :--- |
+| `HEAD_OF_STATE_OR_GOVERNMENT` | Jefe de Estado, jefe de Gobierno o autoridad del gabinete ejecutivo |
+| `SENIOR_EXECUTIVE` | Alto funcionario del poder ejecutivo o ministro del gabinete |
+| `LEGISLATIVE` | Integrante del parlamento nacional o de la asamblea legislativa |
+| `JUDICIAL_OR_OVERSIGHT` | Alta autoridad judicial, constitucional o de fiscalización superior |
+| `DIPLOMATIC_MILITARY_OR_CENTRAL_BANK` | Alto funcionario diplomático, militar o del banco central |
+| `PUBLIC_OFFICIAL_PEP` | Persona expuesta políticamente según la Recomendación 12 del GAFI |
+
+---
+
+### Solicitud
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/mx/politically-exposed-persons",
+  params: {
+    documentType: "CURP",
+    documentNumber: "MX-PDN-PARC620624",
+    includeFormer: true,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <su_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/mx/politically-exposed-persons"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <su_token>",
+}
+params = {
+    "documentType": "CURP",
+    "documentNumber": "MX-PDN-PARC620624",
+    "includeFormer": "true",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/mx/politically-exposed-persons?documentType=CURP&documentNumber=MX-PDN-PARC620624&includeFormer=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <su_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200-hit" label="200 (coincidencia PEP)">
+
+```json
+{
+  "data": {
+    "country": "MX",
+    "jurisdiction": "México",
+    "documentType": "CURP",
+    "documentNumber": "MX-PDN-PARC620624",
+    "fullName": "CLAUDIA SHEINBAUM PARDO",
+    "isPEP": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "matchCount": 1,
+    "categories": [
+      "HEAD_OF_STATE_OR_GOVERNMENT"
+    ],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [
+      {
+        "id": "sandbox-pep-mx-active",
+        "fullName": "CLAUDIA SHEINBAUM PARDO",
+        "aliases": [],
+        "country": "MX",
+        "countries": [
+          "MX"
+        ],
+        "documentNumber": "MX-PDN-PARC620624",
+        "birthDate": null,
+        "position": "PRESIDENTA CONSTITUCIONAL DE LOS ESTADOS UNIDOS MEXICANOS",
+        "entity": "PRESIDENCIA DE LA REPÚBLICA DE MÉXICO",
+        "category": "HEAD_OF_STATE_OR_GOVERNMENT",
+        "categoryDescription": "Head of State, Head of Government, or Cabinet Executive Authority",
+        "startDate": "2024-10-01",
+        "endDate": null,
+        "lastSeen": "2026-11-27",
+        "status": "ACTIVE",
+        "isPep": true,
+        "isActivePep": true,
+        "isFormerPep": false,
+        "withinLookbackWindow": true,
+        "score": 100,
+        "matchType": "identifier",
+        "dataset": "peps",
+        "source": "Plataforma Digital Nacional (PDN) Sistema 1 / DeclaraNet / OpenSanctions PEP (MX)",
+        "sourceUrl": "https://www.plataformadigitalnacional.org/"
+      }
+    ],
+    "checkedSources": [
+      "PDN_SISTEMA1_DECLARACIONES_MX",
+      "DECLARANET_SABG_MX",
+      "OPENSANCTIONS_PEP_MX"
+    ],
+    "regulation": {
+      "framework": "Disposiciones de Carácter General LFPIORPI / Lista de Personas Políticamente Expuestas Nacionales (SHCP / UIF)",
+      "lookbackYears": 5,
+      "authority": "Unidad de Inteligencia Financiera (UIF - SHCP) / Secretaría Ejecutiva del Sistema Nacional Anticorrupción (SESNA)"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (sin coincidencia)">
+
+```json
+{
+  "data": {
+    "country": "MX",
+    "jurisdiction": "México",
+    "documentType": "CURP",
+    "documentNumber": "55555555",
+    "fullName": "JUAN CARLOS CIUDADANO NO PEP",
+    "isPEP": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "matchCount": 0,
+    "categories": [],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [],
+    "checkedSources": [
+      "PDN_SISTEMA1_DECLARACIONES_MX",
+      "DECLARANET_SABG_MX",
+      "OPENSANCTIONS_PEP_MX"
+    ],
+    "regulation": {
+      "framework": "Disposiciones de Carácter General LFPIORPI / Lista de Personas Políticamente Expuestas Nacionales (SHCP / UIF)",
+      "lookbackYears": 5,
+      "authority": "Unidad de Inteligencia Financiera (UIF - SHCP) / Secretaría Ejecutiva del Sistema Nacional Anticorrupción (SESNA)"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (no encontrado en sandbox)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "404:NotFound"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or fullName must be provided."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Pruebas de sandbox
+
+Con la cuenta en modo sandbox, estos valores son deterministas:
+
+| Número de documento | Nombre completo | includeFormer | Resultado |
+| :--- | :--- | :--- | :--- |
+| `MX-PDN-PARC620624` | `CLAUDIA SHEINBAUM PARDO` | `true` | PEP activa (`isPEP` true, categoría `HEAD_OF_STATE_OR_GOVERNMENT`) |
+| `10000001` | `CLAUDIA SHEINBAUM PARDO` | `true` | PEP activa (el mismo fixture que el documento `10000001`) |
+| `10000002` | `PEP FORMER MINISTER` | `true` | Ex-PEP (`isFormerPep` true) cuando `includeFormer` es true |
+| `10000002` | `PEP FORMER MINISTER` | `false` | Resultado limpio cuando `includeFormer` es false |
+| `55555555` | `JUAN CARLOS CIUDADANO NO PEP` | `true` | No PEP (`isPEP` false, `totalMatches` 0) |
+| `99999404` | `—` | `true` | 404 `NotFound` (solo sonda de sandbox) |
+
+---
+
+### Notas
+
+- Envíe `documentNumber` o `fullName`. Los alias del documento son `id`, `dni` y `cedula`. El alias del nombre es `name`. Si no hay ninguno, la API responde 409 `MissingParameter` con el mensaje `Either documentNumber or fullName must be provided.`
+- `includeFormer` es true de forma predeterminada. Los exfuncionarios dentro de la ventana de 5 años vuelven con `status` `FORMER_PEP`, `isFormerPep` true e `isPEP` true. `false` descarta esas filas y deja solo cargos activos.
+- `documentType` toma el valor predeterminado `CURP`. `jurisdiction` en la carga es la etiqueta del registro `México`. `regulation.lookbackYears` es 5.
+- Acierto activo en sandbox: documento `MX-PDN-PARC620624` o nombre `CLAUDIA SHEINBAUM PARDO`, y también el documento `10000001`. Acierto de ex-PEP: documento `10000002` o un nombre que contenga `PEP FORMER`, `EX MINISTRO` o `FORMER MINISTER`. Limpio: documento `55555555` con nombre `JUAN CARLOS CIUDADANO NO PEP`. Un documento que contenga `99999404`, o un nombre que contenga `NOTFOUND`, responde 404 en sandbox. Una ausencia en vivo es HTTP 200 con `isPEP` false, no 404.
+- Esta ruta consulta solo México (`MX`). Para una búsqueda transfronteriza use [PEP global](/verifik-es/background-check/world-politically-exposed-persons).
+- `checkedSources` enumera las claves de registro consultadas para esta jurisdicción. `regulation.framework` y `regulation.authority` identifican la base ALA que acompaña el resultado.

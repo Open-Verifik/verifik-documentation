@@ -1,0 +1,213 @@
+---
+id: colombia-chemical-engineering-license
+title: "Colômbia — Matrícula de engenharia química (CPIQ)"
+description: "Consulte a matrícula de engenharia química no CPIQ por número de documento ou de licença. Um nome sozinho é rejeitado."
+sidebar_label: "🇨🇴 Colômbia — Licença CPIQ"
+slug: "/identity/colombia-chemical-engineering-license"
+keywords:
+  - "v2/co/cpiq"
+  - "/v2/co/cpiq"
+  - "api.verifik.co/v2/co/cpiq"
+  - "GET /v2/co/cpiq"
+  - "GET https://api.verifik.co/v2/co/cpiq"
+  - "colombia_api_cpiq"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colômbia — Matrícula de engenharia química (CPIQ)
+
+A consulta de **licença CPIQ** lê o Consejo Profesional de Ingeniería Química. Envie `documentNumber` ou `licenseNumber`. O módulo não busca por nome: só `fullName` responde HTTP 409 com `MissingParameter` e a mensagem `Either documentNumber or licenseNumber must be provided`. Um acerto inclui licença, resolução, estado e sanções.
+
+## O que a chamada devolve
+
+- `licenseNumber` e `resolutionNumber`
+- `status` e `isActive`
+- `sanctionType` e `hasSanctions`
+
+## Casos de uso
+
+- Verifique um engenheiro químico por cédula ou licença CPIQ.
+- Rejeite buscas só por nome antes do conselho.
+- Leia datas de sanção quando o conselho as publica.
+
+---
+
+## Referência da API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/cpiq
+```
+
+Uma correspondência inclui `fullName`, `licenseNumber`, `resolutionNumber`, `status`, `sanctionType`, `isRegistered` e `hasSanctions`. Sem linha no CPIQ é 404 `NotFound`.
+
+### Headers
+
+| Nome | Valor | Descrição |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato da solicitação |
+| Accept | `application/json` | Formato da resposta |
+| Authorization | `Bearer <seu_token>` | JWT do cliente |
+
+### Parameters
+
+| Nome | Tipo | Obrigatório | Exemplo | Descrição |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Condicional** | `79876543` | Número de identidade. Obrigatório se omitir `licenseNumber`. Um pedido só com `fullName` responde 409. |
+| `licenseNumber` | string | **Condicional** | `PQ-10293` | Número da matrícula profissional do CPIQ. Obrigatório se omitir `documentNumber`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/cpiq",
+  params: {
+    documentNumber: "79876543",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/cpiq"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "79876543",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/cpiq?documentNumber=79876543" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "79876543",
+    "fullName": "LUIS GOMEZ",
+    "licenseNumber": "PQ-10293",
+    "profession": "INGENIERIA QUIMICA",
+    "status": "VIGENTE",
+    "isRegistered": true,
+    "hasSanctions": false
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parâmetro ausente)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or licenseNumber must be provided"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Não encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Não autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fonte indisponível)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- `fullName` não é chave de busca nesta rota. Só o nome responde 409.
+- Envie `documentNumber` ou `licenseNumber`.
+- Uma linha ausente no CPIQ é HTTP 404.
+- Envie um JWT Bearer no cabeçalho `Authorization`.
+- O JSON de exemplo ilustra os campos. Uma chamada real devolve o registro dos valores enviados.
+- Não envie um indicador de bypass de cache. Esta página documenta apenas os parâmetros de cliente.
+
+---
+
+## Sandbox
+
+| Cenário | Parâmetros | Resultado |
+| :--- | :--- | :--- |
+| Registro na fonte | `documentNumber: "79876543"` | 200 com licença e campos de sanção. |
+| Valor obrigatório ausente | `fullName: "LUIS GOMEZ"` only | 409 porque um nome sozinho não é aceito. |
+| Valor desconhecido | `documentNumber: "000000000"` | 404 NotFound se o CPIQ não tiver linha. |
+
+401 when the bearer token is missing or rejected.

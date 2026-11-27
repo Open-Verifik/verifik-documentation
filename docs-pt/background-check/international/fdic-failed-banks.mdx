@@ -1,0 +1,195 @@
+---
+id: fdic-failed-banks
+title: "Bancos em falência da FDIC dos EUA"
+description: "Consulte se uma pessoa ou organização consta em Bancos em falência da FDIC dos EUA, lista publicada por a Federal Deposit Insurance Corporation (FDIC)."
+sidebar_label: "🇺🇸 Bancos em falência da FDIC dos EUA"
+slug: /background-check/international/fdic-failed-banks
+keywords:
+  - "v2/fdic-failed-banks"
+  - "/v2/fdic-failed-banks"
+  - "v2 fdic-failed-banks"
+  - "fdic-failed-banks"
+  - "/fdic-failed-banks"
+  - "api/fdic-failed-banks"
+  - "/api/fdic-failed-banks"
+  - "api fdic-failed-banks"
+  - "api.verifik.co/v2/fdic-failed-banks"
+  - "https://api.verifik.co/v2/fdic-failed-banks"
+  - "GET v2/fdic-failed-banks"
+  - "GET /v2/fdic-failed-banks"
+  - "US FDIC Failed Banks"
+  - "fdic failed banks"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Bancos em falência da FDIC dos EUA
+
+Consulte se uma pessoa ou organização consta em **Bancos em falência da FDIC dos EUA**. A Federal Deposit Insurance Corporation (FDIC) publica esta lista para os Estados Unidos.
+
+A lista de bancos em falência da FDIC registra instituições que faliram e para as quais a FDIC foi nomeada liquidante.
+
+Envie `fullName`, `documentNumber` ou ambos. Pelo menos um dos dois é obrigatório. A resposta define `foundInFdicFailedBanks` como `true` quando a consulta corresponde a um registro publicado e como `false` quando não corresponde. Em uma correspondência, `details` inclui o nome da parte, o regulador, o tipo de ação, a data e um resumo breve. Use o resultado em KYC, PLD/CFT, cadastro de fornecedores e triagem de pagamentos. Revise cada correspondência antes de depender dela. Esta chamada não substitui a lista oficial e não é uma determinação legal.
+
+## Referência da API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/fdic-failed-banks
+```
+
+Uma resposta bem-sucedida devolve `data.fullName`, `data.firstName` e `data.lastName` quando a fonte separa o nome, `data.documentNumber` se você o enviou, `data.foundInFdicFailedBanks` e `data.details`. Em uma correspondência, `details` inclui o nome da parte, o regulador, o tipo de ação, a data e um resumo breve. O objeto `signature` inclui `dateTime` e a mensagem `Certified by Verifik.co`. Quando `foundInFdicFailedBanks` é `false`, `details` é um objeto vazio.
+
+### Headers
+
+| Nome          | Valor              | Descrição              |
+| ------------- | ------------------ | ---------------------- |
+| Content-Type  | `application/json` | Formato da solicitação |
+| Accept        | `application/json` | Formato da resposta    |
+| Authorization | `Bearer <token>`   | JWT da Verifik         |
+
+### Parameters
+
+| Parâmetro        | Tipo   | Obrigatório | Exemplo                  | Descrição                                                                                                       |
+| ---------------- | ------ | ----------- | ------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `fullName`       | string | Condicional | `SAMPLE DESIGNATED NAME` | Nome legal completo da pessoa ou denominação da organização. Obrigatório quando `documentNumber` não é enviado. |
+| `documentNumber` | string | Condicional | `A1234567`               | Número de identificação ou de registro societário, sem espaços. Obrigatório quando `fullName` não é enviado.    |
+
+### Casos de uso
+
+- **Triagem supervisora:** Consulte empresas, diretores e contrapartes nas ações publicadas por este regulador.
+- **Diligência no setor financeiro:** Use o resultado ao cadastrar um correspondente, intermediário ou fornecedor.
+- **Evidência de política:** Guarde a resposta certificada quando o procedimento exigir esta fonte.
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/fdic-failed-banks",
+  params: {
+    fullName: "SAMPLE DESIGNATED NAME",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <seu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/fdic-failed-banks"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <seu_token>",
+}
+params = {
+    "fullName": "SAMPLE DESIGNATED NAME",
+}
+
+response = requests.get(url, headers=headers, params=params)
+response.raise_for_status()
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/fdic-failed-banks?fullName=SAMPLE%20DESIGNATED%20NAME" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <seu_token>"
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200-found" label="200 (Correspondência)">
+
+```json
+{
+  "data": {
+    "fullName": "SAMPLE DESIGNATED NAME",
+    "firstName": "SAMPLE",
+    "lastName": "DESIGNATED NAME",
+    "foundInFdicFailedBanks": true,
+    "details": {
+      "name": "SAMPLE DESIGNATED NAME",
+      "entityType": "Individual",
+      "listName": "US FDIC Failed Banks",
+      "sourceList": "fdic-failed-banks",
+      "regulator": "the Federal Deposit Insurance Corporation",
+      "actionType": "Enforcement action",
+      "actionDate": "2024-06-15",
+      "summary": "Sample match payload for this regulatory list."
+    }
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (Sem correspondência)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN SAMPLE NAME",
+    "firstName": "CLEAN",
+    "lastName": "SAMPLE NAME",
+    "foundInFdicFailedBanks": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parâmetros ausentes)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- Envie `fullName` ou `documentNumber`. Pelo menos um é obrigatório. Se ambos faltarem, a API retorna HTTP 409 com o código `MissingParameter` e a mensagem `Either fullName or documentNumber must be provided`.
+- `foundInFdicFailedBanks` é `true` quando a consulta corresponde a um registro desta lista e `false` quando não corresponde. `details` é um objeto vazio quando não há correspondência.
+- O exemplo de correspondência mostra a forma da resposta. Uma correspondência real devolve os atributos publicados para esse registro nesta lista.
+- Uma correspondência é um resultado de triagem para revisão de conformidade. Não é uma determinação legal e não substitui a fonte oficial.
+- Autentique com um JWT Bearer no cabeçalho `Authorization`.
+- O resultado reflete a lista no momento da chamada. Faça uma nova solicitação quando precisar de um resultado posterior.

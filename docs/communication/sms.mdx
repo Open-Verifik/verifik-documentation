@@ -1,0 +1,217 @@
+---
+id: sms
+title: "SMS messaging"
+description: "POST an SMS one-time code. The route sets phoneGateway to sms."
+sidebar_label: "SMS"
+slug: "/communication/sms"
+keywords:
+  - "v2/communication/sms"
+  - "/v2/communication/sms"
+  - "api.verifik.co/v2/communication/sms"
+  - "POST /v2/communication/sms"
+  - "POST https://api.verifik.co/v2/communication/sms"
+  - "communication_messaging_sms"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# SMS messaging
+
+**SMS messaging** is **POST** `https://api.verifik.co/v2/communication/sms`, not GET. The body requires `phone` and `countryCode` (a dial code that starts with `+`). The route sets `phoneGateway` to `sms`, so you do not send that field. Optional `title` is 1 to 15 characters and `language` selects the copy. Account-owner tokens can call it. A staff user needs Smart Tools execute permission.
+
+## What the call returns
+
+- `phone` and `countryCode`
+- `phoneGateway` set to `sms`
+- `status`
+
+## Use cases
+
+- Send a login code by SMS.
+- Use a national number plus a dial code.
+- Let the route choose the SMS gateway.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/communication/sms
+```
+
+A successful send returns `phoneGateway` `sms` and status `sent`. You are charged when the OTP is delivered.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <your_token>` | Client JWT |
+
+### Parameters
+
+| Name | Type | Required | Example | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `phone` | string | **Yes** | `3001234567` | National number only. Do not include the dial code. |
+| `countryCode` | string | **Yes** | `+57` | Dial code starting with `+`. |
+| `title` | string | No | `ACME` | Optional sender name, 1 to 15 characters. |
+| `language` | string | No | `es` | Optional template language. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/communication/sms",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+  data: {
+    "phone": "3001234567",
+    "countryCode": "+57"
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/communication/sms"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+payload = {
+    "phone": "3001234567",
+    "countryCode": "+57",
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/communication/sms" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{"phone":"3001234567","countryCode":"+57"}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Record found)">
+
+```json
+{
+  "data": {
+    "phone": "3001234567",
+    "countryCode": "+57",
+    "phoneGateway": "sms",
+    "status": "sent"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"phone\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Unauthorized)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Source unavailable)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- This route is POST, not GET.
+- `phone` and `countryCode` are required. `countryCode` must start with `+`.
+- Do not send `phoneGateway`; the route sets it to `sms`.
+- Send a Bearer JWT in the `Authorization` header.
+- The JSON sample illustrates the fields. A live call returns the record for the values you send.
+- Do not send a cache-bypass flag. This page documents only the client parameters.
+
+---
+
+## Sandbox
+
+| Scenario | Parameters | Result |
+| :--- | :--- | :--- |
+| Record on file | `phone: "3001234567"`, `countryCode: "+57"` | 200 when the SMS OTP is sent. |
+| Missing required value | Omit `phone` | 409 MissingParameter. |
+| Unknown value | `countryCode: "57"` | 409 when countryCode does not start with +. |
+
+401 when the bearer token is missing or rejected.

@@ -1,0 +1,300 @@
+---
+id: world-politically-exposed-persons
+title: "Global — Consulta de Personas Expuestas Políticamente (PEP)"
+description: "Consulta un nombre completo o un número de documento en el registro global consolidado de personas expuestas políticamente conforme a la Recomendación 12 del GAFI, con ventana de 5 años para exfuncionarios."
+slug: /background-check/world-politically-exposed-persons
+keywords:
+  - "v2/world/pep"
+  - "/v2/world/pep"
+  - "pep global"
+  - "global pep"
+  - "fatf recommendation 12"
+  - "v2/world/politically-exposed-persons"
+  - "/v2/world/politically-exposed-persons"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Global — Consulta de Personas Expuestas Políticamente (PEP)
+
+Consulta una persona en varias jurisdicciones por **número de pasaporte u otro documento** (`documentNumber`) o por **nombre legal completo** (`fullName`) en `GET /v2/world/pep`. El mismo manejador también responde en `GET /v2/world/politically-exposed-persons`. La consulta aplica la **Recomendación 12 del GAFI** para PEP nacionales y extranjeras y conserva una **ventana de 5 años** después del cese del cargo público.
+
+- **Marco normativo:** FATF / GAFI Recommendation 12 (Politically Exposed Persons — Foreign & Domestic PEPs)
+- **Autoridad:** Financial Action Task Force (FATF / GAFI) / OpenSanctions Global PEP Registry
+- **Fuente principal:** OpenSanctions Global Politically Exposed Persons (PEPs) Consolidated Dataset & Wikidata Officeholders (`https://data.opensanctions.org/datasets/latest/peps/targets.simple.csv`)
+
+- Alta transfronteriza cuando el país de la persona no tiene un endpoint PEP de un solo país.
+- Filtro opcional `country` (ISO 3166-1 alfa-2) para limitar el registro global a una jurisdicción.
+- Debida diligencia reforzada y recribado periódico de PEP extranjeras.
+
+---
+
+## Referencia de API
+
+### Punto de acceso
+
+```http
+GET https://api.verifik.co/v2/world/pep
+```
+
+Una respuesta correcta devuelve `country`, `jurisdiction`, `documentType`, `documentNumber`, `fullName`, `isPEP`, `isActivePep`, `isFormerPep`, `totalMatches`, `matchCount`, `categories`, `includeFormer`, `lookbackYears` (5), `matches`, `checkedSources`, `regulation` y `dateTime`. Cada coincidencia incluye `position`, `entity`, `category`, `categoryDescription`, `status` (`ACTIVE` o `FORMER_PEP`), `source` y `sourceUrl`. La bandera de decisión en la raíz es `isPEP`. Cada coincidencia usa `isPep`. Quien no es PEP también responde HTTP 200, con `isPEP` en false y `totalMatches` en 0.
+
+### Encabezados
+
+| Nombre | Valor |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <su_token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Obligatorio | Descripción |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | Condicional | Número de pasaporte. De 3 a 40 caracteres. Obligatorio si se omite `fullName`. Alias: `id`, `dni`, `cedula`. Ejemplo: `WORLD-PEP-Q22686`. |
+| `fullName` | string | Condicional | Nombre legal completo, de 3 a 160 caracteres. Obligatorio si se omite `documentNumber`. Alias: `name`. Ejemplo: `URSULA GERTRUD VON DER LEYEN`. |
+| `documentType` | string | No | Tipo de documento, de 2 a 20 caracteres. El valor predeterminado es `PASSPORT` y se devuelve en la respuesta. |
+| `includeFormer` | boolean | No | Incluye a quienes cesaron en el cargo dentro de la ventana de 5 años. Predeterminado: `true`. Envíe `false` para conservar solo cargos `ACTIVE`. Si el único hallazgo es un ex-PEP, `isPEP` pasa a false y `matches` queda vacío. |
+| `country` | string | No | Código de país ISO 3166-1 alfa-2 opcional, de 2 a 10 caracteres (por ejemplo `PL`). Omítalo para buscar en el registro global consolidado. |
+
+---
+
+## Categorías PEP
+
+Cada coincidencia se clasifica según el cargo en una de estas categorías:
+
+| Categoría | Descripción |
+| :--- | :--- |
+| `HEAD_OF_STATE_OR_GOVERNMENT` | Jefe de Estado, jefe de Gobierno o autoridad del gabinete ejecutivo |
+| `SENIOR_EXECUTIVE` | Alto funcionario del poder ejecutivo o ministro del gabinete |
+| `LEGISLATIVE` | Integrante del parlamento nacional o de la asamblea legislativa |
+| `JUDICIAL_OR_OVERSIGHT` | Alta autoridad judicial, constitucional o de fiscalización superior |
+| `DIPLOMATIC_MILITARY_OR_CENTRAL_BANK` | Alto funcionario diplomático, militar o del banco central |
+| `PUBLIC_OFFICIAL_PEP` | Persona expuesta políticamente según la Recomendación 12 del GAFI |
+
+---
+
+### Solicitud
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/world/pep",
+  params: {
+    documentType: "PASSPORT",
+    documentNumber: "WORLD-PEP-Q22686",
+    includeFormer: true,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <su_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/world/pep"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <su_token>",
+}
+params = {
+    "documentType": "PASSPORT",
+    "documentNumber": "WORLD-PEP-Q22686",
+    "includeFormer": "true",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/world/pep?documentType=PASSPORT&documentNumber=WORLD-PEP-Q22686&includeFormer=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <su_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200-hit" label="200 (coincidencia PEP)">
+
+```json
+{
+  "data": {
+    "country": "WORLD",
+    "jurisdiction": "Otros países (Global PEP)",
+    "documentType": "PASSPORT",
+    "documentNumber": "WORLD-PEP-Q22686",
+    "fullName": "URSULA GERTRUD VON DER LEYEN",
+    "isPEP": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "matchCount": 1,
+    "categories": [
+      "HEAD_OF_STATE_OR_GOVERNMENT"
+    ],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [
+      {
+        "id": "sandbox-pep-world-active",
+        "fullName": "URSULA GERTRUD VON DER LEYEN",
+        "aliases": [],
+        "country": "WORLD",
+        "countries": [
+          "WORLD"
+        ],
+        "documentNumber": "WORLD-PEP-Q22686",
+        "birthDate": null,
+        "position": "PRESIDENT OF THE EUROPEAN COMMISSION",
+        "entity": "EUROPEAN COMMISSION / INTERNATIONAL PEP REGISTRY",
+        "category": "HEAD_OF_STATE_OR_GOVERNMENT",
+        "categoryDescription": "Head of State, Head of Government, or Cabinet Executive Authority",
+        "startDate": "2019-12-01",
+        "endDate": null,
+        "lastSeen": "2026-11-27",
+        "status": "ACTIVE",
+        "isPep": true,
+        "isActivePep": true,
+        "isFormerPep": false,
+        "withinLookbackWindow": true,
+        "score": 100,
+        "matchType": "identifier",
+        "dataset": "peps",
+        "source": "OpenSanctions Global Politically Exposed Persons (PEPs) Consolidated Dataset & Wikidata Officeholders",
+        "sourceUrl": "https://data.opensanctions.org/datasets/latest/peps/targets.simple.csv"
+      }
+    ],
+    "checkedSources": [
+      "OPENSANCTIONS_GLOBAL_PEPS",
+      "WIKIDATA_PUBLIC_OFFICEHOLDERS",
+      "EVERY_POLITICIAN_ARCHIVE"
+    ],
+    "regulation": {
+      "framework": "FATF / GAFI Recommendation 12 (Politically Exposed Persons — Foreign & Domestic PEPs)",
+      "lookbackYears": 5,
+      "authority": "Financial Action Task Force (FATF / GAFI) / OpenSanctions Global PEP Registry"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (sin coincidencia)">
+
+```json
+{
+  "data": {
+    "country": "WORLD",
+    "jurisdiction": "Otros países (Global PEP)",
+    "documentType": "PASSPORT",
+    "documentNumber": "55555555",
+    "fullName": "JUAN CARLOS CIUDADANO NO PEP",
+    "isPEP": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "matchCount": 0,
+    "categories": [],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [],
+    "checkedSources": [
+      "OPENSANCTIONS_GLOBAL_PEPS",
+      "WIKIDATA_PUBLIC_OFFICEHOLDERS",
+      "EVERY_POLITICIAN_ARCHIVE"
+    ],
+    "regulation": {
+      "framework": "FATF / GAFI Recommendation 12 (Politically Exposed Persons — Foreign & Domestic PEPs)",
+      "lookbackYears": 5,
+      "authority": "Financial Action Task Force (FATF / GAFI) / OpenSanctions Global PEP Registry"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (no encontrado en sandbox)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "404:NotFound"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or fullName must be provided."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Pruebas de sandbox
+
+Con la cuenta en modo sandbox, estos valores son deterministas:
+
+| Número de documento | Nombre completo | includeFormer | Resultado |
+| :--- | :--- | :--- | :--- |
+| `WORLD-PEP-Q22686` | `URSULA GERTRUD VON DER LEYEN` | `true` | PEP activa (`isPEP` true, categoría `HEAD_OF_STATE_OR_GOVERNMENT`) |
+| `10000001` | `URSULA GERTRUD VON DER LEYEN` | `true` | PEP activa (el mismo fixture que el documento `10000001`) |
+| `10000002` | `PEP FORMER MINISTER` | `true` | Ex-PEP (`isFormerPep` true) cuando `includeFormer` es true |
+| `10000002` | `PEP FORMER MINISTER` | `false` | Resultado limpio cuando `includeFormer` es false |
+| `55555555` | `JUAN CARLOS CIUDADANO NO PEP` | `true` | No PEP (`isPEP` false, `totalMatches` 0) |
+| `99999404` | `—` | `true` | 404 `NotFound` (solo sonda de sandbox) |
+
+---
+
+### Notas
+
+- Envíe `documentNumber` o `fullName`. Los alias del documento son `id`, `dni` y `cedula`. El alias del nombre es `name`. Si no hay ninguno, la API responde 409 `MissingParameter` con el mensaje `Either documentNumber or fullName must be provided.`
+- `includeFormer` es true de forma predeterminada. Los exfuncionarios dentro de la ventana de 5 años vuelven con `status` `FORMER_PEP`, `isFormerPep` true e `isPEP` true. `false` descarta esas filas y deja solo cargos activos.
+- `documentType` toma el valor predeterminado `PASSPORT`. `jurisdiction` en la carga es la etiqueta del registro `Otros países (Global PEP)`. `regulation.lookbackYears` es 5.
+- Acierto activo en sandbox: documento `WORLD-PEP-Q22686` o nombre `URSULA GERTRUD VON DER LEYEN`, y también el documento `10000001`. Acierto de ex-PEP: documento `10000002` o un nombre que contenga `PEP FORMER`, `EX MINISTRO` o `FORMER MINISTER`. Limpio: documento `55555555` con nombre `JUAN CARLOS CIUDADANO NO PEP`. Un documento que contenga `99999404`, o un nombre que contenga `NOTFOUND`, responde 404 en sandbox. Una ausencia en vivo es HTTP 200 con `isPEP` false, no 404.
+- Los endpoints por país usan `/v2/` más el código ISO más `/politically-exposed-persons`. Esta ruta global no los reemplaza. Envíe `country` solo cuando quiera acotar esta búsqueda global.
+- `checkedSources` enumera las claves de registro consultadas para esta jurisdicción. `regulation.framework` y `regulation.authority` identifican la base ALA que acompaña el resultado.

@@ -1,0 +1,216 @@
+---
+id: latam-education-score
+title: "LATAM — 教育と免許の統合スコア"
+description: "コロンビア、ペルー、パナマ、メキシコ、チリの学位と専門免許を採点します。country と身元一つが必須です。"
+sidebar_label: "LATAM — 教育スコア"
+slug: "/identity/latam-education-score"
+keywords:
+  - "v2/score/education"
+  - "/v2/score/education"
+  - "api.verifik.co/v2/score/education"
+  - "GET /v2/score/education"
+  - "GET https://api.verifik.co/v2/score/education"
+  - "world_api_education_score"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# LATAM — 教育と免許の統合スコア
+
+**教育スコア**は `CO`、`PE`、`PA`、`MX`、`CL`（英語の国名も可）の大学学位と専門免許を一つの点数にまとめます。`country` は必須です。身元も一つ送ります。`documentNumber`、`licenseNumber`、`fullName`、または `firstName` と `lastName`。409 の本文は `MissingParameter` ではなく `{ "validationError": "..." }` です。未対応の国も 409 です。
+
+## 応答に含まれる項目
+
+- `educationScore` と `educationTier`
+- `highestLevel` と `hasActiveLicense`
+- `credentials` と `checkedSources`
+
+## 用途
+
+- 学位と免許の情報源で採用を順位付けします。
+- 採点の前に国を要求します。
+- 制裁を点数の低下として読みます。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/score/education
+```
+
+応答には 0–100 の `educationScore`、`educationTier`、`highestLevel`、`hasActiveLicense`、`hasSanctions`、`credentials` があります。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `country` | string | **はい** | `CO` | 必須。`CO`、`PE`、`PA`、`MX`、`CL`、または英語名 `COLOMBIA`、`PERU`、`PANAMA`、`MEXICO`、`CHILE`。 |
+| `documentNumber` | string | **条件付き** | `80123456` | 身元が一つ必要です。この番号、`licenseNumber`、`fullName`、または `firstName` と `lastName`。 |
+| `licenseNumber` | string | **条件付き** | `AN205-27910` | 専門免許。必須の身元として数えます。 |
+| `fullName` | string | **条件付き** | `ANA PEREZ` | 氏名。必須の身元として数えます。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/score/education",
+  params: {
+    country: "CO",
+    documentNumber: "80123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/score/education"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "country": "CO",
+    "documentNumber": "80123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/score/education?country=CO&documentNumber=80123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "country": "CO",
+    "documentNumber": "80123456",
+    "educationScore": 70,
+    "educationTier": "LICENSED_PROFESSIONAL",
+    "highestLevel": "UNIVERSITY",
+    "hasActiveLicense": true,
+    "totalCredentials": 1,
+    "credentials": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "validationError": "At least one of documentNumber, licenseNumber, fullName, or (firstName + lastName) is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (該当なし)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- `country` は必須です。
+- 409 は `MissingParameter` ではなく `validationError` を使います。
+- 対応国は CO、PE、PA、MX、CL です。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `country: "CO"`, `documentNumber: "80123456"` | educationScore と等級のある 200。 |
+| 必須値が無い | Omit `country` | country または身元が無いと 409 `{ validationError }`。 |
+| 不明な値 | `country: "US"`, `documentNumber: "1"` | 国コードが未対応だと 409。 |
+
+401 when the bearer token is missing or rejected.

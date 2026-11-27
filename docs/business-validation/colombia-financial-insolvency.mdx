@@ -1,0 +1,219 @@
+---
+id: colombia-financial-insolvency
+title: "Colombia — Financial insolvency and liquidation"
+description: "Screen Superintendencia Financiera concordato and liquidation records. A clean miss is HTTP 200 with inConcordatoOrLiquidation false."
+sidebar_label: "🇨🇴 Colombia — Financial insolvency"
+slug: "/business-validation/colombia-financial-insolvency"
+keywords:
+  - "v2/co/superfinanciera/concordatos"
+  - "/v2/co/superfinanciera/concordatos"
+  - "api.verifik.co/v2/co/superfinanciera/concordatos"
+  - "GET /v2/co/superfinanciera/concordatos"
+  - "GET https://api.verifik.co/v2/co/superfinanciera/concordatos"
+  - "colombia_api_superfinanciera_concordatos"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Financial insolvency and liquidation
+
+The **financial insolvency** lookup reads Superintendencia Financiera concordato and liquidation rows. Send a NIT or a name. `inConcordatoOrLiquidation` is true only when a proceeding is on file. A company with no proceeding is still HTTP 200, with the flag false and a status that says there is no concordato or liquidation. This route does not use 404 for that clean miss.
+
+## What the call returns
+
+- `inConcordatoOrLiquidation`
+- `status` and `entityType`
+- `matches` — empty on a clean miss
+
+## Use cases
+
+- Stop onboarding a financial entity already in liquidation.
+- Keep a clean financial screen as 200.
+- Search by NIT or legal name.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/superfinanciera/concordatos
+```
+
+A hit includes `status`, `entityType`, and `inConcordatoOrLiquidation` true. A clean miss keeps HTTP 200 and sets the flag false.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <your_token>` | Client JWT |
+
+### Parameters
+
+| Name | Type | Required | Example | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Conditional** | `900123456` | NIT or person number. Alias `nit`. Required if no name is sent. |
+| `businessName` | string | **Conditional** | `EJEMPLO SAS` | Name. Aliases `companyName` and `fullName`. Required if no number is sent. |
+| `documentType` | string | No | `NIT` | Optional: `NIT`, `CC`, `CE`, `PAS`, `TI`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/superfinanciera/concordatos",
+  params: {
+    documentNumber: "860000001",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/superfinanciera/concordatos"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "860000001",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/superfinanciera/concordatos?documentNumber=860000001" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Record found)">
+
+```json
+{
+  "data": {
+    "documentNumber": "860000001",
+    "businessName": "FINANCIERA EJEMPLO SA",
+    "inConcordatoOrLiquidation": true,
+    "status": "EN LIQUIDACION FORZOSA ADMINISTRATIVA",
+    "entityType": "Sociedad comisionista"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing parameter"
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (No match)">
+
+```json
+{
+  "data": {
+    "documentNumber": "800000111",
+    "matches": [],
+    "inConcordatoOrLiquidation": false,
+    "status": "ACTIVA / SIN PROCESO DE CONCORDATO O LIQUIDACION"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Unauthorized)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Source unavailable)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- A clean miss is HTTP 200 with `inConcordatoOrLiquidation` false.
+- Send a number or a name.
+- Do not map that 200 to 404.
+- Send a Bearer JWT in the `Authorization` header.
+- The JSON sample illustrates the fields. A live call returns the record for the values you send.
+- Do not send a cache-bypass flag. This page documents only the client parameters.
+
+---
+
+## Sandbox
+
+| Scenario | Parameters | Result |
+| :--- | :--- | :--- |
+| Record on file | `documentNumber: "860000001"` | 200 with inConcordatoOrLiquidation true on a hit. |
+| Missing required value | Omit number and name | 409 when no search value is sent. |
+| Unknown value | `documentNumber: "800000111"` | 200 with inConcordatoOrLiquidation false. A clean miss is not 404. |
+
+401 when the bearer token is missing or rejected.

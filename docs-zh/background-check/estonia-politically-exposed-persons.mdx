@@ -1,0 +1,297 @@
+---
+id: estonia-politically-exposed-persons
+title: "爱沙尼亚 — 政治公众人物（PEP）筛查"
+description: "在爱沙尼亚官方政治公众人物名册中用国民身份号码或全名筛查。遵循 FATF 建议 12 与本国反洗钱规则，并包含 5 年回溯窗口。"
+slug: /background-check/estonia-politically-exposed-persons
+keywords:
+  - "v2/ee/politically-exposed-persons"
+  - "/v2/ee/politically-exposed-persons"
+  - "pep estonia"
+  - "estonia pep"
+  - "fatf recommendation 12"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 爱沙尼亚 — 政治公众人物（PEP）筛查
+
+在 **爱沙尼亚** 用 **国民身份号码**（`documentNumber`）或 **法定全名**（`fullName`）对照官方政治公众人物（PEP）名册筛查。筛查遵循 **FATF 建议 12** 以及下列本国反洗钱框架，并对已结束的公职保留 **5 年回溯窗口**。
+
+- **依据：** Money Laundering and Terrorist Financing Prevention Act (RahaPTS § 91)
+- **主管机关：** Riigikogu / Rahapesu Andmebüroo (FIU Estonia)
+- **主要来源：** Riigikogu (Parliament of Estonia) OpenAPI / Avaandmed Eesti Open Data（`https://api.riigikogu.ee`）
+
+- 本国 PEP 的客户开户与强化尽职调查。
+- 任期开始、变更或结束时的定期复筛。
+- 尚未取得本国证件号码时按姓名检索。
+
+---
+
+## API 参考
+
+### 端点
+
+```http
+GET https://api.verifik.co/v2/ee/politically-exposed-persons
+```
+
+成功调用返回 `country`、`jurisdiction`、`documentType`、`documentNumber`、`fullName`、`isPEP`、`isActivePep`、`isFormerPep`、`totalMatches`、`matchCount`、`categories`、`includeFormer`、`lookbackYears`（5）、`matches`、`checkedSources`、`regulation` 和 `dateTime`。每条匹配包含 `position`、`entity`、`category`、`categoryDescription`、`status`（`ACTIVE` 或 `FORMER_PEP`）、`source` 和 `sourceUrl`。根对象上的判定字段是 `isPEP`。每条匹配使用 `isPep`。不是 PEP 时同样返回 HTTP 200，`isPEP` 为 false，`totalMatches` 为 0。
+
+### 请求头
+
+| 名称 | 值 |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <your_token>` |
+
+### 参数
+
+| 名称 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | 条件 | 国民身份号码。3 到 40 个字符。省略 `fullName` 时必填。别名：`id`、`dni`、`cedula`。示例：`EE-RK-3770511`。 |
+| `fullName` | string | 条件 | 法定全名，3 到 160 个字符。省略 `documentNumber` 时必填。别名：`name`。示例：`KRISTEN MICHAL`。 |
+| `documentType` | string | 否 | 证件类型，2 到 20 个字符。默认值为 `ID`，并在响应中原样返回。 |
+| `includeFormer` | boolean | 否 | 包含在 5 年回溯窗口内结束任期的公职人员。默认值为 `true`。传入 `false` 时只保留 `ACTIVE` 职务。若只命中前公职人员，则 `isPEP` 为 false，`matches` 为空数组。 |
+
+---
+
+## PEP 分类
+
+每条匹配会根据职务名称归入下列分类之一：
+
+| 分类 | 说明 |
+| :--- | :--- |
+| `HEAD_OF_STATE_OR_GOVERNMENT` | 国家元首、政府首脑或内阁行政当局 |
+| `SENIOR_EXECUTIVE` | 行政部门高级官员或内阁部长 |
+| `LEGISLATIVE` | 国家议会或立法机关成员 |
+| `JUDICIAL_OR_OVERSIGHT` | 高级司法、宪法或最高审计监督机构 |
+| `DIPLOMATIC_MILITARY_OR_CENTRAL_BANK` | 高级外交、军事或中央银行官员 |
+| `PUBLIC_OFFICIAL_PEP` | 符合 FATF 建议 12 的政治公众人物 |
+
+---
+
+### 请求
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/ee/politically-exposed-persons",
+  params: {
+    documentType: "ID",
+    documentNumber: "EE-RK-3770511",
+    includeFormer: true,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ee/politically-exposed-persons"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "ID",
+    "documentNumber": "EE-RK-3770511",
+    "includeFormer": "true",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/ee/politically-exposed-persons?documentType=ID&documentNumber=EE-RK-3770511&includeFormer=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 响应
+
+<Tabs>
+<TabItem value="200-hit" label="200（PEP 命中）">
+
+```json
+{
+  "data": {
+    "country": "EE",
+    "jurisdiction": "Estonia",
+    "documentType": "ID",
+    "documentNumber": "EE-RK-3770511",
+    "fullName": "KRISTEN MICHAL",
+    "isPEP": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "matchCount": 1,
+    "categories": [
+      "HEAD_OF_STATE_OR_GOVERNMENT"
+    ],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [
+      {
+        "id": "sandbox-pep-ee-active",
+        "fullName": "KRISTEN MICHAL",
+        "aliases": [],
+        "country": "EE",
+        "countries": [
+          "EE"
+        ],
+        "documentNumber": "EE-RK-3770511",
+        "birthDate": null,
+        "position": "PRIME MINISTER OF ESTONIA (PEAMINISTER)",
+        "entity": "VABARIIGI VALITSUS / RIIGIKOGU",
+        "category": "HEAD_OF_STATE_OR_GOVERNMENT",
+        "categoryDescription": "Head of State, Head of Government, or Cabinet Executive Authority",
+        "startDate": "2024-07-23",
+        "endDate": null,
+        "lastSeen": "2026-11-27",
+        "status": "ACTIVE",
+        "isPep": true,
+        "isActivePep": true,
+        "isFormerPep": false,
+        "withinLookbackWindow": true,
+        "score": 100,
+        "matchType": "identifier",
+        "dataset": "peps",
+        "source": "Riigikogu (Parliament of Estonia) OpenAPI / Avaandmed Eesti Open Data",
+        "sourceUrl": "https://api.riigikogu.ee"
+      }
+    ],
+    "checkedSources": [
+      "RIIGIKOGU_OPENAPI_EE",
+      "AVAANDMED_EESTI_EE",
+      "OPENSANCTIONS_PEP_EE"
+    ],
+    "regulation": {
+      "framework": "Money Laundering and Terrorist Financing Prevention Act (RahaPTS § 91)",
+      "lookbackYears": 5,
+      "authority": "Riigikogu / Rahapesu Andmebüroo (FIU Estonia)"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200（未命中）">
+
+```json
+{
+  "data": {
+    "country": "EE",
+    "jurisdiction": "Estonia",
+    "documentType": "ID",
+    "documentNumber": "55555555",
+    "fullName": "JUAN CARLOS CIUDADANO NO PEP",
+    "isPEP": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "matchCount": 0,
+    "categories": [],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [],
+    "checkedSources": [
+      "RIIGIKOGU_OPENAPI_EE",
+      "AVAANDMED_EESTI_EE",
+      "OPENSANCTIONS_PEP_EE"
+    ],
+    "regulation": {
+      "framework": "Money Laundering and Terrorist Financing Prevention Act (RahaPTS § 91)",
+      "lookbackYears": 5,
+      "authority": "Riigikogu / Rahapesu Andmebüroo (FIU Estonia)"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（沙盒未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "404:NotFound"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or fullName must be provided."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## 沙盒探测
+
+账户处于沙盒模式时，下列取值是确定的：
+
+| 证件号码 | 全名 | includeFormer | 结果 |
+| :--- | :--- | :--- | :--- |
+| `EE-RK-3770511` | `KRISTEN MICHAL` | `true` | 在任 PEP（`isPEP` 为 true，分类 `HEAD_OF_STATE_OR_GOVERNMENT`） |
+| `10000001` | `KRISTEN MICHAL` | `true` | 在任 PEP（与证件 `10000001` 相同的夹具） |
+| `10000002` | `PEP FORMER MINISTER` | `true` | `includeFormer` 为 true 时的前 PEP（`isFormerPep` 为 true） |
+| `10000002` | `PEP FORMER MINISTER` | `false` | `includeFormer` 为 false 时的未命中 |
+| `55555555` | `JUAN CARLOS CIUDADANO NO PEP` | `true` | 非 PEP（`isPEP` 为 false，`totalMatches` 为 0） |
+| `99999404` | `—` | `true` | 404 `NotFound`（仅沙盒探测） |
+
+---
+
+### 备注
+
+- 发送 `documentNumber` 或 `fullName`。证件别名是 `id`、`dni` 和 `cedula`。姓名别名是 `name`。若都没有，API 返回 409 `MissingParameter`，消息为 `Either documentNumber or fullName must be provided.`
+- `includeFormer` 默认为 true。5 年窗口内的前公职人员返回 `status` `FORMER_PEP`、`isFormerPep` true 和 `isPEP` true。`false` 会去掉这些记录，只保留在任职务。
+- `documentType` 默认为 `ID`。响应中的 `jurisdiction` 是名册标签 `Estonia`。`regulation.lookbackYears` 为 5。
+- 沙盒在任命中：证件 `EE-RK-3770511` 或姓名 `KRISTEN MICHAL`，以及证件 `10000001`。前公职：证件 `10000002`，或姓名包含 `PEP FORMER`、`EX MINISTRO` 或 `FORMER MINISTER`。未命中：证件 `55555555` 与姓名 `JUAN CARLOS CIUDADANO NO PEP`。证件号码包含 `99999404`，或姓名包含 `NOTFOUND`，在沙盒中返回 404。生产环境未命中是 HTTP 200 且 `isPEP` 为 false，不是 404。
+- 此路径只筛查爱沙尼亚（`EE`）。跨境搜索请使用[全球 PEP](/verifik-zh/background-check/world-politically-exposed-persons)。
+- `checkedSources` 列出本次法域查阅的名册键。`regulation.framework` 和 `regulation.authority` 标明随结果返回的反洗钱依据。

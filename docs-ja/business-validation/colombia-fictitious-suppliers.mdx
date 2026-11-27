@@ -1,0 +1,223 @@
+---
+id: colombia-fictitious-suppliers
+title: "コロンビア — 架空または支払不能の供給者（DIAN）"
+description: "税法 671 条の DIAN 架空または支払不能供給者一覧に NIT または名称を照合します。"
+sidebar_label: "🇨🇴 コロンビア — 架空供給者"
+slug: "/business-validation/colombia-fictitious-suppliers"
+keywords:
+  - "v2/co/dian/proveedores-ficticios"
+  - "/v2/co/dian/proveedores-ficticios"
+  - "api.verifik.co/v2/co/dian/proveedores-ficticios"
+  - "GET /v2/co/dian/proveedores-ficticios"
+  - "GET https://api.verifik.co/v2/co/dian/proveedores-ficticios"
+  - "colombia_api_dian_proveedores_ficticios"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# コロンビア — 架空または支払不能の供給者（DIAN）
+
+**架空または支払不能の供給者**照会は DIAN 671 条を照合します。`documentNumber`（別名 `nit`）または `businessName`（別名 `companyName` と `fullName`）を送ります。掲載されると `isFictitiousSupplier` は true で決議を含みます。単に無ければ HTTP 200 で `isFictitiousSupplier` は false です。この経路は単なる未検出に 404 を使いません。
+
+## 応答に含まれる項目
+
+- `isFictitiousSupplier` — DIAN が掲載するときだけ true
+- 一致時の `resolutionNumber`、`resolutionDate`、`publicationDate`
+- 掲載が無いと空の `matches`
+- `status` — 一覧の文言または未掲載の文
+
+## 用途
+
+- DIAN が架空または支払不能と印した供給者を止めます。
+- 単なる未検出をフラグ false の 200 として記録します。
+- NIT または法人名で検索します。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/dian/proveedores-ficticios
+```
+
+一致すると `isFictitiousSupplier` は true で、`matches` に決議番号、日付、税務署があります。単に無ければ `isFictitiousSupplier` は false です。どちらも HTTP 200 です。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **条件付き** | `900123456` | NIT または個人番号。4–25文字。別名 `nit`。名前を送らないときは必須です。 |
+| `businessName` | string | **条件付き** | `INDUSTRIAS EJEMPLO SAS` | 商号または法人名。2–200文字。別名 `companyName` と `fullName`。番号を送らないときは必須です。 |
+| `documentType` | string | いいえ | `NIT` | 任意。値: `NIT`、`CC`、`CE`、`PAS`、`TI`。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/dian/proveedores-ficticios",
+  params: {
+    documentNumber: "900123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/dian/proveedores-ficticios"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "900123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/dian/proveedores-ficticios?documentNumber=900123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "documentType": "NIT",
+    "documentNumber": "900123456",
+    "businessName": "PROVEEDORA EJEMPLO SAS",
+    "isFictitiousSupplier": true,
+    "status": "PROVEEDOR FICTICIO",
+    "resolutionNumber": "RES-001",
+    "article": "Art. 671 Estatuto Tributario"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one search parameter must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (一致なし)">
+
+```json
+{
+  "data": {
+    "documentType": "NIT",
+    "documentNumber": "800000111",
+    "isFictitiousSupplier": false,
+    "status": "SIN REGISTRO EN LISTA DE PROVEEDORES FICTICIOS O INSOLVENTES",
+    "matches": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- 番号または名前を送ります。少なくとも一つは必須です。
+- 一覧に無い対象は `isFictitiousSupplier` が false の HTTP 200 です。
+- その 200 を 404 として扱わないでください。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `documentNumber: "900123456"` | 情報源が対象を載せると isFictitiousSupplier が true の 200。 |
+| 必須値が無い | Omit every search value | 検索値が無いと 409 MissingParameter。 |
+| 不明な値 | `documentNumber: "00000000"` | isFictitiousSupplier が false の 200。単に該当なしは HTTP 200 であり 404 ではありません。 |
+
+401 when the bearer token is missing or rejected.

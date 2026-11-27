@@ -47,8 +47,8 @@ Verifik queries **RUES** (*Registro Único Empresarial y Social*) for a Colombia
 | --- | --- | --- |
 | **Purpose** | Quick **summary** per registry category | **Complete** business dossier |
 | **Typical fields** | Category-specific core fields (name, NIT, status, chamber, etc.) | Full registry blocks including representatives and activities |
-| **Parameters** | `documentType` (**`NIT`**), `documentNumber`, optional `category` | **Same** |
-| **Catalog pricing** | Lower (e.g. **0.2** credits / **0.3** SmartCheck) | Higher (e.g. **0.3** credits / **0.4** SmartCheck) |
+| **Parameters** | `documentType` (**`NIT`**), `documentNumber`, required `category` | **Same** |
+| **Catalog pricing** | List price **$0.30** per call (SmartCheck price **$0.30**). Subscribed plans can be lower. | List price **$0.40** per call (SmartCheck price **$0.40**). Subscribed plans can be lower. |
 
 See [RUES Complete Business Validation (v3)](/business-validation/rues-complete-v3) for the full extract.
 
@@ -69,7 +69,7 @@ GET https://api.verifik.co/v3/co/rues
 
 **GET** with **query parameters** only on this route. For the **full** extract, use **`GET /v3/co/rues-complete`** (same parameters).
 
-Query: **`documentType`** (**`NIT`** only), **`documentNumber`**, optional **`category`**.
+Query: **`documentType`** (**`NIT`** only), **`documentNumber`**, and required **`category`**.
 
 ### Headers
 
@@ -84,7 +84,7 @@ Query: **`documentType`** (**`NIT`** only), **`documentNumber`**, optional **`ca
 | --- | --- | --- | --- |
 | `documentType` | string | yes | Must be **`NIT`**. |
 | `documentNumber` | string | yes | Tax ID digits (punctuation is stripped server-side). |
-| `category` | string | no | RUES line to query. One of **`RM`**, **`PROP`**, **`RUNEOL`**, **`RNT`**, **`ESAL`**, **`ESOL`**, **`JUEGOS`**, **`EXTRANJERAS`**. Defaults to **`RM`** if omitted. |
+| `category` | string | yes | Required RUES line. One of **`RM`**, **`PROP`**, **`RUNEOL`**, **`RNT`**, **`ESAL`**, **`RESAL`**, **`JUEGOS`**, **`EXTRANJERAS`**. |
 
 ### Request
 
@@ -186,8 +186,7 @@ print(r.json())
 
 ### Notes
 
-- **`category`** is optional in the handler (**defaults to `RM`**); include it explicitly when you are not querying **Registro Mercantil**.
+- **`category`** is required. Allowed values are **`RM`**, **`PROP`**, **`RUNEOL`**, **`RNT`**, **`ESAL`**, **`RESAL`**, **`JUEGOS`**, and **`EXTRANJERAS`**.
 - This endpoint returns a **summary**, not the full RUES dossier. For representatives, activities, and establishments, use **`GET /v3/co/rues-complete`** ([RUES Complete (v3)](/business-validation/rues-complete-v3)).
-- Some category codes accepted by validation may follow a **legacy** code path inside the module; if results look unexpected, confirm the category with support or try **`RM`** / **`rues-complete`**.
-- **`/v2/co/rues`** exists for older integrations; prefer **v3** for new work.
+- **`GET /v2/co/rues`** is an alias of this public feature and uses the same required query parameters (`documentType`, `category`, `documentNumber`). Prefer **`GET /v3/co/rues`** for new work. The older `nit`-only contract is not in the public catalog.
 - RUES availability and captcha/rate behaviour can produce **404** / **409** / **5xx** errors depending on upstream state.

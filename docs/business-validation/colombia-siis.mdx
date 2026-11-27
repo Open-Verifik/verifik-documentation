@@ -1,0 +1,220 @@
+---
+id: colombia-siis
+title: "Colombia — Corporate information system (SIIS)"
+description: "Read Supersociedades SIIS filings by NIT or company name. A company that is not in SIIS is HTTP 200 with found false."
+sidebar_label: "🇨🇴 Colombia — SIIS"
+slug: "/business-validation/colombia-siis"
+keywords:
+  - "v2/co/supersociedades/siis"
+  - "/v2/co/supersociedades/siis"
+  - "api.verifik.co/v2/co/supersociedades/siis"
+  - "GET /v2/co/supersociedades/siis"
+  - "GET https://api.verifik.co/v2/co/supersociedades/siis"
+  - "colombia_api_supersociedades_siis"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Corporate information system (SIIS)
+
+The **SIIS** lookup reads the integrated corporate filings supervised by Supersociedades. Send a NIT or a company name. `found` is true when a filing exists and false when the company is simply not in SIIS. That clean miss is HTTP 200, with status `NO REGISTRADA EN SIIS SUPERSOCIEDADES`. Use `inLiquidationOrReorganization` to see a concurso alert.
+
+## What the call returns
+
+- `found` and `inLiquidationOrReorganization`
+- `ciiu`, sector, and city
+- `financialSummary` when a filing exists
+- `filings` — empty on a clean miss
+
+## Use cases
+
+- Pull the latest SIIS filing before you extend credit.
+- Flag a company already in reorganization.
+- Record a not-in-SIIS result as 200, not as a missing page.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/supersociedades/siis
+```
+
+A filing includes `status`, `ciiu`, address fields, `financialSummary`, and `filings`. `found` false means the company is not in SIIS. Both are HTTP 200.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <your_token>` | Client JWT |
+
+### Parameters
+
+| Name | Type | Required | Example | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Conditional** | `900123456` | NIT or person number. Alias `nit`. Required if you send no name. |
+| `businessName` | string | **Conditional** | `INDUSTRIAS EJEMPLO SAS` | Name, 2 to 200 characters. Aliases `companyName` and `fullName`. Required if you send no number. |
+| `documentType` | string | No | `NIT` | Optional: `NIT`, `CC`, `CE`, `PAS`, or `TI`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/supersociedades/siis",
+  params: {
+    documentNumber: "900673447",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/supersociedades/siis"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "900673447",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/supersociedades/siis?documentNumber=900673447" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Record found)">
+
+```json
+{
+  "data": {
+    "documentNumber": "900673447",
+    "businessName": "EJEMPLO SAS",
+    "found": true,
+    "status": "ACTIVA",
+    "inLiquidationOrReorganization": false
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing parameter"
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (No match)">
+
+```json
+{
+  "data": {
+    "documentNumber": "800000111",
+    "found": false,
+    "status": "NO REGISTRADA EN SIIS SUPERSOCIEDADES",
+    "filings": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Unauthorized)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Source unavailable)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- Send a NIT or a name.
+- `found` false is a successful clean miss.
+- Do not map that body to HTTP 404.
+- Send a Bearer JWT in the `Authorization` header.
+- The JSON sample illustrates the fields. A live call returns the record for the values you send.
+- Do not send a cache-bypass flag. This page documents only the client parameters.
+
+---
+
+## Sandbox
+
+| Scenario | Parameters | Result |
+| :--- | :--- | :--- |
+| Record on file | `documentNumber: "900673447"` | 200 and found is true on a hit. |
+| Missing required value | Omit number and name | 409 when no search value is sent. |
+| Unknown value | `documentNumber: "800000111"` | 200 and found is false on a clean miss. That miss is not 404. |
+
+401 when the bearer token is missing or rejected.

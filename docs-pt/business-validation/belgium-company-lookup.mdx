@@ -1,0 +1,224 @@
+---
+id: business-validation-belgium-company-lookup
+title: "Bélgica — Consulta ao registro empresarial (KYB)"
+description: "A consulta ao registro empresarial de Bélgica verifica uma pessoa jurídica no registro oficial de empresas. Envie o número de registro ou o identificador fiscal (KBO / BCE / BE_VAT) em `documentNumber`. Use para onboarding KYB, diligência de fornecedores e triagem de contrapartes."
+sidebar_label: "🇧🇪 Bélgica — Registro empresarial"
+slug: "/business-validation/belgium-company-lookup"
+keywords:
+  - "v2/be/company"
+  - "/v2/be/company"
+  - "api.verifik.co/v2/be/company"
+  - "GET /v2/be/company"
+  - "company Belgium"
+  - "belgium_api_company_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Bélgica — Consulta ao registro empresarial (KYB)
+
+A **consulta ao registro empresarial de Bélgica** verifica uma pessoa jurídica no registro oficial de empresas. Envie o número de registro ou o identificador fiscal (KBO / BCE / BE_VAT) em `documentNumber`. Use para onboarding KYB, diligência de fornecedores e triagem de contrapartes.
+
+`documentNumber` é obrigatório. `documentType` é opcional. Quando o enviar, use a família do identificador (por exemplo `KBO`) para distinguir países com mais de um número.
+
+## O que o registro devolve
+
+- Razão social
+- Status de registro
+- Data de constituição
+- Identificador fiscal ou de registro
+- Endereço registrado
+
+## Casos de uso
+
+- Cadastrar um fornecedor ou uma contraparte em Bélgica antes do primeiro pagamento.
+- Confirmar a razão social e o status de registro impressos em um contrato ou fatura.
+- Reunir a data de constituição, o identificador fiscal e o endereço para um dossiê KYB.
+
+---
+
+## Referência da API
+
+### Ponto de acesso
+
+```http
+GET https://api.verifik.co/v2/be/company
+```
+
+Consulte o registro oficial de empresas de Bélgica com `documentNumber` e um `documentType` opcional. Uma resposta bem-sucedida inclui a razão social, o status de registro, a data de constituição, o identificador fiscal (KBO / BCE / BE_VAT) e o endereço registrado. Use em um onboarding KYB ou na diligência de um fornecedor. O exemplo mostra esses campos. Os valores ao vivo, inclusive o texto de `status`, vêm do registro.
+
+### Cabeçalhos
+
+| Nome | Valor | Descrição |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato da requisição |
+| Accept | `application/json` | Formato da resposta |
+| Authorization | `Bearer <seu_token>` | Token JWT de autenticação do cliente |
+
+### Parâmetros
+
+| Nome | Tipo | Obrigatório | Exemplo | Descrição |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Sim** | `0403446523` | Número oficial de registro empresarial ou identificador fiscal (KBO / BCE / BE_VAT). |
+| `documentType` | string | Não | `KBO` | Tipo de documento societário ou prefixo de registro. Exemplos aceitos: `KBO`, `BCE`, `BE_VAT`. Omita-o para enviar apenas o número oficial. |
+
+---
+
+### Requisição
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/be/company",
+  params: {
+    documentType: "KBO",
+    documentNumber: "0403446523",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <seu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/be/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <seu_token>",
+}
+params = {
+    "documentType": "KBO",
+    "documentNumber": "0403446523",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/be/company?documentType=KBO&documentNumber=0403446523" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <seu_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Resposta
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentType": "KBO",
+    "documentNumber": "0403446523",
+    "businessName": "Example BV",
+    "status": "ACTIVE",
+    "incorporationDate": "2014-03-18",
+    "taxIdentifier": "0403446523",
+    "address": {
+      "line1": "1 Example Street",
+      "locality": "Brussels",
+      "postalCode": "1000",
+      "country": "Belgium"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parâmetro ausente)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Não encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Não autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Registro indisponível)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Observações
+
+- **Formato do identificador.** O número de empresa KBO/BCE tem 10 dígitos e costuma começar com zero. O IVA belga é o prefixo BE mais esses 10 dígitos. Envie o número de empresa sem espaços nem pontos.
+- Tipo de documento societário ou prefixo de registro. Exemplos aceitos: `KBO`, `BCE`, `BE_VAT`. Omita-o para enviar apenas o número oficial.
+- O rótulo de status do exemplo ilustra o campo. O registro ao vivo devolve o próprio rótulo, que pode estar no idioma local.
+- Envie `documentNumber` e, quando precisar nomear a família do identificador, `documentType`. Esses são os parâmetros de cliente desta rota.
+- O JSON de exemplo ilustra os campos acima. Uma chamada ao vivo devolve a ficha do registro para o identificador enviado.
+
+---
+
+## Testes no sandbox
+
+Com a conta em modo sandbox, os mesmos parâmetros exercitam esta rota. A tabela descreve a resposta documentada para cada caso.
+
+| Cenário | Parâmetros | Resultado |
+| :--- | :--- | :--- |
+| **Identificador existente** | `documentType: "KBO"`, `documentNumber: "0403446523"` | 200 com nome legal, status, identificador e endereço ou atributos de identidade quando a fonte possui o número. |
+| **Sem documentNumber** | Omitir `documentNumber` | 409 `MissingParameter` quando `documentNumber` é omitido. |
+| **Número desconhecido** | `documentNumber: "000000000"` | 404 `NotFound` quando o registro não tem ficha para esse número. |
+
+401 quando o token bearer está ausente ou é recusado.

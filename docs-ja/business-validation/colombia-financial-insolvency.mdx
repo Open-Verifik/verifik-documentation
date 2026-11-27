@@ -1,0 +1,219 @@
+---
+id: colombia-financial-insolvency
+title: "コロンビア — 金融の和議と清算"
+description: "金融監督当局の和議・清算記録を照合します。単なる未検出は inConcordatoOrLiquidation が false の HTTP 200 です。"
+sidebar_label: "🇨🇴 コロンビア — 金融の和議"
+slug: "/business-validation/colombia-financial-insolvency"
+keywords:
+  - "v2/co/superfinanciera/concordatos"
+  - "/v2/co/superfinanciera/concordatos"
+  - "api.verifik.co/v2/co/superfinanciera/concordatos"
+  - "GET /v2/co/superfinanciera/concordatos"
+  - "GET https://api.verifik.co/v2/co/superfinanciera/concordatos"
+  - "colombia_api_superfinanciera_concordatos"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# コロンビア — 金融の和議と清算
+
+**金融の和議**照会は Superintendencia Financiera の和議・清算の行を読みます。NIT または名称を送ります。手続があるときだけ `inConcordatoOrLiquidation` は true です。手続が無くても HTTP 200 でフラグは false です。この経路はその単なる未検出に 404 を使いません。
+
+## 応答に含まれる項目
+
+- `inConcordatoOrLiquidation`
+- `status` と `entityType`
+- 単なる未検出では空の `matches`
+
+## 用途
+
+- すでに清算中の金融会社の受付を止めます。
+- きれいな金融照会を 200 として保存します。
+- NIT または法人名で検索します。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/superfinanciera/concordatos
+```
+
+一致には `status`、`entityType`、true の `inConcordatoOrLiquidation` があります。単なる未検出は HTTP 200 でフラグは false です。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **条件付き** | `900123456` | NIT または番号。別名 `nit`。名前が無いと必須。 |
+| `businessName` | string | **条件付き** | `EJEMPLO SAS` | 名称。別名 `companyName` と `fullName`。番号が無いと必須。 |
+| `documentType` | string | いいえ | `NIT` | 任意: `NIT`、`CC`、`CE`、`PAS`、`TI`。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/superfinanciera/concordatos",
+  params: {
+    documentNumber: "860000001",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/superfinanciera/concordatos"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "860000001",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/superfinanciera/concordatos?documentNumber=860000001" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "documentNumber": "860000001",
+    "businessName": "FINANCIERA EJEMPLO SA",
+    "inConcordatoOrLiquidation": true,
+    "status": "EN LIQUIDACION FORZOSA ADMINISTRATIVA",
+    "entityType": "Sociedad comisionista"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing parameter"
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (一致なし)">
+
+```json
+{
+  "data": {
+    "documentNumber": "800000111",
+    "matches": [],
+    "inConcordatoOrLiquidation": false,
+    "status": "ACTIVA / SIN PROCESO DE CONCORDATO O LIQUIDACION"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- 単なる未検出は `inConcordatoOrLiquidation` が false の HTTP 200 です。
+- 番号または名前を送ります。
+- その 200 を 404 に割り当てないでください。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `documentNumber: "860000001"` | 一致すると inConcordatoOrLiquidation が true の 200。 |
+| 必須値が無い | Omit number and name | 検索値が無いと 409。 |
+| 不明な値 | `documentNumber: "800000111"` | inConcordatoOrLiquidation が false の 200。単なる未検出は 404 ではありません。 |
+
+401 when the bearer token is missing or rejected.

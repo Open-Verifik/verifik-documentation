@@ -1,0 +1,219 @@
+---
+id: whatsapp
+title: "WhatsApp メッセージ"
+description: "WhatsApp のワンタイムコードを POST します。任意の whatsappTemplate は authentication または flow2 です。"
+sidebar_label: "WhatsApp"
+slug: "/communication/whatsapp"
+keywords:
+  - "v2/communication/whatsapp"
+  - "/v2/communication/whatsapp"
+  - "api.verifik.co/v2/communication/whatsapp"
+  - "POST /v2/communication/whatsapp"
+  - "POST https://api.verifik.co/v2/communication/whatsapp"
+  - "communication_global_messaging_whatsapp"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# WhatsApp メッセージ
+
+**WhatsApp メッセージ**は GET ではなく **POST** `https://api.verifik.co/v2/communication/whatsapp` です。本文には `phone` と `countryCode` が必要です。経路が `phoneGateway` を `whatsapp` に固定します。任意の `whatsappTemplate` は `authentication`（既定）または `flow2` です。`flow2` では `language` が `flow2_es` または `flow2_en` を選び、任意の `title`（1–15文字）がブランド欄です。
+
+## 応答に含まれる項目
+
+- `phone` と `countryCode`
+- `whatsapp` に固定された `phoneGateway`
+- `status`
+
+## 用途
+
+- WhatsApp でログインコードを送ります。
+- ブランドテンプレートが必要なら flow2 を選びます。
+- 既定テンプレートは authentication です。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/communication/whatsapp
+```
+
+成功した送信は `phoneGateway` `whatsapp` と状態 `sent` を返します。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `phone` | string | **はい** | `3001234567` | 国内番号だけ。 |
+| `countryCode` | string | **はい** | `+57` | `+` で始まる国番号。 |
+| `whatsappTemplate` | string | いいえ | `authentication` | 任意。`authentication`（既定）または `flow2`。 |
+| `language` | string | いいえ | `es` | 任意。`flow2` のとき `flow2_es` または `flow2_en` を選びます。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/communication/whatsapp",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+  data: {
+    "phone": "3001234567",
+    "countryCode": "+57",
+    "whatsappTemplate": "authentication"
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/communication/whatsapp"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+payload = {
+    "phone": "3001234567",
+    "countryCode": "+57",
+    "whatsappTemplate": "authentication",
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/communication/whatsapp" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{"phone":"3001234567","countryCode":"+57","whatsappTemplate":"authentication"}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "phone": "3001234567",
+    "countryCode": "+57",
+    "phoneGateway": "whatsapp",
+    "status": "sent"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"phone\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (該当なし)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- この経路は GET ではなく POST です。
+- `whatsappTemplate` は任意です。`authentication` または `flow2`。
+- 経路が `phoneGateway` を `whatsapp` に固定します。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `phone: "3001234567"`, `countryCode: "+57"` | WhatsApp OTP が送られると 200。 |
+| 必須値が無い | Omit `countryCode` | 409 MissingParameter。 |
+| 不明な値 | `whatsappTemplate: "flow2"`, `language: "es"` | language が es なら flow2 テンプレートで 200。 |
+
+401 when the bearer token is missing or rejected.

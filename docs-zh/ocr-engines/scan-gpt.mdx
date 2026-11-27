@@ -1,0 +1,216 @@
+---
+id: scan-gpt
+title: "Scan Agent"
+description: "用 POST /v2/ocr/scan-gpt 的 Scan Agent 提取证件字段。image 必填。记录上的 validationMethod 是 SCAN_AGENT。"
+sidebar_label: "Scan Agent"
+slug: "/ocr-engines/scan-gpt"
+keywords:
+  - "v2/ocr/scan-gpt"
+  - "/v2/ocr/scan-gpt"
+  - "api.verifik.co/v2/ocr/scan-gpt"
+  - "POST /v2/ocr/scan-gpt"
+  - "POST https://api.verifik.co/v2/ocr/scan-gpt"
+  - "ocr_scan_gpt"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Scan Agent
+
+**Scan Agent** 从证件图像提取结构化字段。调用 **POST** `https://api.verifik.co/v2/ocr/scan-gpt`。`image` 必填。`documentType`、`backImage` 和 `template` 可选。此正文没有 `country` 字段。保存的提取把 `validationMethod` 设为 `SCAN_AGENT`。
+
+## 调用返回的内容
+
+- 提取出的 `documentType`、`documentNumber` 和姓名
+- `validationMethod` — `SCAN_AGENT`
+
+## 使用场景
+
+- 从一张图像读取身份证件。
+- 证件有背面时附上背面图像。
+- 版式已知时固定模板。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/ocr/scan-gpt
+```
+
+命中含提取出的证件字段和 `validationMethod` `SCAN_AGENT`。URL 仍是 `/v2/ocr/scan-gpt`。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `image` | string | **是** | `data:image/jpeg;base64,AAAA` | 正面图像的 base64 或 data URI。必填。 |
+| `documentType` | string | 否 | `CC` | 可选证件类型，例如 `CC` 或 `DNI`。 |
+| `backImage` | string | 否 | `data:image/jpeg;base64,BBBB` | 可选背面图像。 |
+| `template` | string | 否 | `template_id` | 可选模板 id。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/ocr/scan-gpt",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+  data: {
+    "image": "data:image/jpeg;base64,AAAA",
+    "documentType": "CC"
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ocr/scan-gpt"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+payload = {
+    "image": "data:image/jpeg;base64,AAAA",
+    "documentType": "CC",
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/ocr/scan-gpt" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{"image":"data:image/jpeg;base64,AAAA","documentType":"CC"}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "1234567890",
+    "fullName": "MARIA LOPEZ",
+    "validationMethod": "SCAN_AGENT"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"image\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- `image` 必填。`documentType`、`backImage` 和 `template` 可选。
+- 不要发送国家字段。此正文不接受它。
+- 记录的方法是 `SCAN_AGENT`，URL 仍是 `/v2/ocr/scan-gpt`。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `image` plus `documentType: "CC"` | 含提取字段和 validationMethod SCAN_AGENT 的 200。 |
+| 缺少必填值 | Omit `image` | 409 MissingParameter。 |
+| 未知的值 | `image` and `backImage` | 同时发送背面图像时为 200。 |
+
+401 when the bearer token is missing or rejected.

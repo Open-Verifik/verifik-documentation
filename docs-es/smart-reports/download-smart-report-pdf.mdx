@@ -273,10 +273,30 @@ Content-Length: 148320
 | `409` | `row_not_found` | El `rowIndex` resuelto no existe en el lote. |
 | `422` | `UnprocessableEntity` | Error de validación de Mongoose. |
 
+### Enlaces Firmados de Corta Duración (Hasta 24h)
+
+¿Necesitas compartir una URL de descarga PDF con un portal externo o destinatario sin exponer tu JWT Bearer?
+
+1. Genera un enlace firmado llamando a `POST /v2/smart-reports/{id}/signed-link` (requiere `smartReportsResults.export`):
+
+```json
+{
+  "ttlSeconds": 3600,
+  "rowIndex": 0
+}
+```
+
+- `ttlSeconds`: Entero opcional entre `60` y `86400` segundos (máximo 24 horas; por defecto `3600`).
+- La respuesta devuelve `{ "data": { "reportId", "url", "relativeUrl", "expiresAt", "ttlSeconds" } }`.
+
+2. Cualquier consumidor con la URL puede hacer `GET /v2/smart-reports/{id}/download?exp=<epoch>&sig=<hmac>` antes de `expiresAt` sin encabezado `Authorization`. Los enlaces vencidos o alterados devuelven `403` (`link_expired` / `invalid_signature`) y cada descarga queda registrada en `StaffAuditLog` (`smart_report.signed_download`).
+
+---
+
 ### Integración con Webhooks y MCP
 
-- **Webhooks**: La ruta `downloadUrl` (`/v2/smart-reports/{id}/download`) es devuelta por [Ejecutar un Smart Report](/verifik-es/smart-reports/run-a-smart-report), [Recuperar un Smart Report](/verifik-es/smart-reports/retrieve-a-smart-report) y [Generar PDF de Smart Report](/verifik-es/smart-reports/generate-smart-report-pdf), así como en las notificaciones del ciclo de vida del reporte documentadas en [Webhooks de SmartReports](/verifik-es/resources/smart-reports-webhooks).
-- **Equivalente MCP**: Los agentes de IA pueden obtener descargas PDF de reportes mediante la herramienta MCP `smart_report_download_pdf`. Consulta [MCP y Agentes de IA](/verifik-es/smart-reports/mcp-and-ai-agents).
+- **Webhooks**: Tanto `downloadUrl` (`/v2/smart-reports/{id}/download`) como `signedDownloadUrl` (enlace pre-firmado de 24h) se incluyen en las notificaciones documentadas en [Webhooks de SmartReports](/verifik-es/resources/smart-reports-webhooks).
+- **Equivalente MCP**: Los agentes de IA pueden descargar PDFs con `smart_report_download_pdf` o generar enlaces firmados con `smart_report_create_signed_link`. Consulta [MCP y Agentes de IA](/verifik-es/smart-reports/mcp-and-ai-agents).
 
 ### Relacionados
 

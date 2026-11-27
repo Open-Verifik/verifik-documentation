@@ -1,0 +1,216 @@
+---
+id: latam-education-score
+title: "拉美 — 教育与执照统一评分"
+description: "为哥伦比亚、秘鲁、巴拿马、墨西哥或智利的学位和专业执照打分。country 必填，并再加一项身份。"
+sidebar_label: "拉美 — 教育评分"
+slug: "/identity/latam-education-score"
+keywords:
+  - "v2/score/education"
+  - "/v2/score/education"
+  - "api.verifik.co/v2/score/education"
+  - "GET /v2/score/education"
+  - "GET https://api.verifik.co/v2/score/education"
+  - "world_api_education_score"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 拉美 — 教育与执照统一评分
+
+**教育评分**把 `CO`、`PE`、`PA`、`MX` 或 `CL`（也接受英文国名）的大学学位和专业执照合成一个分数。`country` 必填。还必须发送一项身份：`documentNumber`、`licenseNumber`、`fullName`，或同时发送 `firstName` 与 `lastName`。409 正文是 `{ "validationError": "..." }`，不是 `MissingParameter`。不支持的国家也是 409。
+
+## 调用返回的内容
+
+- `educationScore` 与 `educationTier`
+- `highestLevel` 与 `hasActiveLicense`
+- `credentials` 与 `checkedSources`
+
+## 使用场景
+
+- 按学位和执照来源给候选人排序。
+- 打分前必须有国家。
+- 把处分读作分数下降。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/score/education
+```
+
+响应含 0 到 100 的 `educationScore`、`educationTier`、`highestLevel`、`hasActiveLicense`、`hasSanctions` 和 `credentials`。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `country` | string | **是** | `CO` | 必填。`CO`、`PE`、`PA`、`MX`、`CL`，或英文名 `COLOMBIA`、`PERU`、`PANAMA`、`MEXICO`、`CHILE`。 |
+| `documentNumber` | string | **条件必填** | `80123456` | 需要一项身份：此号码、`licenseNumber`、`fullName`，或同时提供 `firstName` 与 `lastName`。 |
+| `licenseNumber` | string | **条件必填** | `AN205-27910` | 专业执照。可作为必填身份。 |
+| `fullName` | string | **条件必填** | `ANA PEREZ` | 全名。可作为必填身份。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/score/education",
+  params: {
+    country: "CO",
+    documentNumber: "80123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/score/education"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "country": "CO",
+    "documentNumber": "80123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/score/education?country=CO&documentNumber=80123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "country": "CO",
+    "documentNumber": "80123456",
+    "educationScore": 70,
+    "educationTier": "LICENSED_PROFESSIONAL",
+    "highestLevel": "UNIVERSITY",
+    "hasActiveLicense": true,
+    "totalCredentials": 1,
+    "credentials": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "validationError": "At least one of documentNumber, licenseNumber, fullName, or (firstName + lastName) is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- `country` 必填。
+- 409 使用 `validationError`，不是 `MissingParameter`。
+- 支持的国家是 CO、PE、PA、MX 和 CL。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `country: "CO"`, `documentNumber: "80123456"` | 含 educationScore 和等级的 200。 |
+| 缺少必填值 | Omit `country` | 缺少 country 或身份时为 409 `{ validationError }`。 |
+| 未知的值 | `country: "US"`, `documentNumber: "1"` | 国家代码不受支持时为 409。 |
+
+401 when the bearer token is missing or rejected.

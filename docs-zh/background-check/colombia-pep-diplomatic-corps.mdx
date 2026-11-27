@@ -1,0 +1,224 @@
+---
+id: colombia-pep-diplomatic-corps
+title: "哥伦比亚 — PEP 外交使团"
+description: "筛查派驻哥伦比亚的外交使团。"
+sidebar_label: "哥伦比亚 — PEP 外交使团"
+slug: "/background-check/colombia-pep-diplomatic-corps"
+keywords:
+  - "v2/co/pep/cuerpo-diplomatico"
+  - "/v2/co/pep/cuerpo-diplomatico"
+  - "api.verifik.co/v2/co/pep/cuerpo-diplomatico"
+  - "GET /v2/co/pep/cuerpo-diplomatico"
+  - "GET https://api.verifik.co/v2/co/pep/cuerpo-diplomatico"
+  - "colombia_api_pep_cuerpo_diplomatico"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 哥伦比亚 — PEP 外交使团
+
+筛查派驻哥伦比亚的外交使团。
+
+## 调用返回的内容
+
+- `isPEP`
+- `isDiplomat`
+- `fullName` 与 `documentNumber`
+- 单纯未命中时 `matches` 为空
+
+## 使用场景
+
+- 准入前对照哥伦比亚 PEP 名录。
+- 把未列入的人存为 HTTP 200。
+- 按姓名或证件号检索。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/pep/cuerpo-diplomatico
+```
+
+命中时 `isPEP` 为 true，且 `isDiplomat` 为 true。只是不在本名录中是 HTTP 200，`isPEP` 为 false，`matches` 为空。不是 404。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `fullName` | string | **条件必填** | `MARIA LOPEZ` | 只发姓名即可。名录有这些字段时也接受 `partyName`、`entityName` 或 `country`。 |
+| `documentNumber` | string | **条件必填** | `80123456` | 标识 4 到 30 个字符。 |
+| `documentType` | string | 否 | `CC` | 可选：`CC`、`NIT`、`CE`、`PAS`、`TI`、`CD`。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/pep/cuerpo-diplomatico",
+  params: {
+    fullName: "MARIA LOPEZ",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/pep/cuerpo-diplomatico"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "fullName": "MARIA LOPEZ",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/pep/cuerpo-diplomatico?fullName=MARIA%20LOPEZ" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA LOPEZ",
+    "documentNumber": "80123456",
+    "isPEP": true,
+    "isDiplomat": true,
+    "matches": [
+      {
+        "fullName": "MARIA LOPEZ"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one search parameter (documentNumber, fullName, partyName, entityName, or country) must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200（未命中）">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN NAME",
+    "isPEP": false,
+    "isDiplomat": false,
+    "matches": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- 单纯未命中是 HTTP 200，且 `isPEP` 为 false。
+- 至少发送一个检索值。
+- 不要把这个 200 映射成 404。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `fullName: "MARIA LOPEZ"` | 命中时 isPEP 为 true 的 200。 |
+| 缺少必填值 | Omit every search value | 没有检索值时为 409。 |
+| 未知的值 | `fullName: "CLEAN NAME"` | isPEP 为 false 的 200。单纯未命中不是 404。 |
+
+401 when the bearer token is missing or rejected.

@@ -1,0 +1,224 @@
+---
+id: business-validation-israel-company-lookup
+title: "以色列 — 企业与法人登记查询 (KYB)"
+description: "以色列企业与法人登记查询对照官方商业登记核验法人。请将公司注册号或税务标识（Company Number / HP）作为 `documentNumber` 发送。用于 KYB 开户、供应商尽职调查和交易对手筛查。"
+sidebar_label: "🇮🇱 以色列 — 企业登记"
+slug: "/business-validation/israel-company-lookup"
+keywords:
+  - "v2/il/company"
+  - "/v2/il/company"
+  - "api.verifik.co/v2/il/company"
+  - "GET /v2/il/company"
+  - "company Israel"
+  - "israel_api_company_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 以色列 — 企业与法人登记查询 (KYB)
+
+**以色列企业与法人登记查询**对照官方商业登记核验法人。请将公司注册号或税务标识（Company Number / HP）作为 `documentNumber` 发送。用于 KYB 开户、供应商尽职调查和交易对手筛查。
+
+`documentNumber` 为必填。`documentType` 为可选。发送时请写明标识种类（例如 `HP`），以便区分公布多种号码的国家。
+
+## 登记机关返回的内容
+
+- 法定名称
+- 登记状态
+- 成立日期
+- 税务或注册标识
+- 注册地址
+
+## 使用场景
+
+- 在首次付款前完成以色列供应商或交易对手的开户。
+- 核对合同或发票上的法定名称和登记状态。
+- 为 KYB 档案收集成立日期、税务标识和注册地址。
+
+---
+
+## API 参考
+
+### 端点
+
+```http
+GET https://api.verifik.co/v2/il/company
+```
+
+使用 `documentNumber` 和可选的 `documentType` 查询以色列官方商业登记。成功响应包含法定名称、登记状态、成立日期、税务标识（Company Number / HP）和注册地址。用于 KYB 开户或供应商尽职调查。下方示例展示这些字段。包括 `status` 措辞在内的实际值来自登记机关。
+
+### 请求头
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <your_token>` | 客户端 JWT 认证令牌 |
+
+### 参数
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **是** | `520000472` | 官方公司注册号或税务标识（Company Number / HP）。 |
+| `documentType` | string | 否 | `HP` | 公司证件类型或登记前缀。可用示例：`HP`。只发送官方号码时可省略。 |
+
+---
+
+### 请求
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/il/company",
+  params: {
+    documentType: "HP",
+    documentNumber: "520000472",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/il/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "HP",
+    "documentNumber": "520000472",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/il/company?documentType=HP&documentNumber=520000472" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 响应
+
+<Tabs>
+<TabItem value="200" label="200 (查有记录)">
+
+```json
+{
+  "data": {
+    "documentType": "HP",
+    "documentNumber": "520000472",
+    "businessName": "Example Ltd",
+    "status": "ACTIVE",
+    "incorporationDate": "2014-03-18",
+    "taxIdentifier": "520000472",
+    "address": {
+      "line1": "1 Example Street",
+      "locality": "Tel Aviv",
+      "postalCode": "6100001",
+      "country": "Israel"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (缺少参数)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (未找到)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未认证)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (登记机关暂不可用)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 备注
+
+- **标识格式.** 以色列公司编号（ח.פ. / HP）为 9 位数字。只发送数字，不要包含空格。
+- 公司证件类型或登记前缀。可用示例：`HP`。只发送官方号码时可省略。
+- 示例中的状态标签用于说明字段。实际登记机关返回其自身标签，可能是当地语言。
+- 此接口的客户参数是 `documentNumber`，以及需要标明标识种类时的 `documentType`。
+- JSON 示例说明上述字段。实际调用返回所发送标识对应的登记记录。
+
+---
+
+## 沙盒探测
+
+账户处于沙盒模式时，用相同参数调用此接口。表中说明每种情况对应的已记录响应。
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| **已有标识** | `documentType: "HP"`, `documentNumber: "520000472"` | 来源持有该号码时返回 200，以及法定名称、状态、标识和地址或身份属性。 |
+| **缺少 documentNumber** | 省略 `documentNumber` | 省略 `documentNumber` 时返回 409 `MissingParameter`。 |
+| **未知号码** | `documentNumber: "000000000"` | 登记机关没有该号码的记录时返回 404 `NotFound`。 |
+
+缺少或拒绝 bearer 令牌时返回 401。

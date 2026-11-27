@@ -1,0 +1,214 @@
+---
+id: traffic-infractions
+title: "哥斯达黎加 — 交通违法"
+description: "用 3 到 6 个字符的哥斯达黎加车牌读取 COSEVI 交通罚单。"
+sidebar_label: "🇨🇷 哥斯达黎加 — 交通违法"
+slug: "/vehicle-validation/costa-rica/traffic-infractions"
+keywords:
+  - "v2/cr/traffic-infractions"
+  - "/v2/cr/traffic-infractions"
+  - "api.verifik.co/v2/cr/traffic-infractions"
+  - "GET /v2/cr/traffic-infractions"
+  - "GET https://api.verifik.co/v2/cr/traffic-infractions"
+  - "costa_rica_api_traffic_infractions"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 哥斯达黎加 — 交通违法
+
+**哥斯达黎加交通违法**查询读取一块车牌的 COSEVI 罚单。`plate` 必填，且为 3 到 6 个字符。校验失败返回 HTTP 409，代码是 `409:invalid_params`，不是 `MissingParameter`。没有罚单的车牌为 404 `NotFound`。
+
+## 调用返回的内容
+
+- `plate` 与 `totalRecords`
+- 含状态和金额的 `infractions[]`
+
+## 使用场景
+
+- 登记车辆前查看罚单。
+- 拒绝不是 3 到 6 个字符的车牌。
+- 读取每张罚单的总额。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/cr/traffic-infractions
+```
+
+命中含 `plate`、`totalRecords`，以及带系列、号码、日期、状态、机关和金额的 `infractions`。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `plate` | string | **是** | `123456` | 车牌，3 到 6 个字符，不要空格。缺失或长度不对时返回代码 `409:invalid_params`。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/cr/traffic-infractions",
+  params: {
+    plate: "123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/cr/traffic-infractions"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "plate": "123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/cr/traffic-infractions?plate=123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "plate": "123456",
+    "totalRecords": "1",
+    "infractions": [
+      {
+        "series": "1996",
+        "number": "12052",
+        "plate": "123456",
+        "status": "CANCELADA",
+        "totalAmount": "2000.00"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "409:invalid_params",
+  "message": "\"plate\" length must be at least 3 characters long"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- `plate` 必须是 3 到 6 个字符。
+- 无效车牌返回代码 `409:invalid_params`。
+- 该车牌没有罚单时为 404 `NotFound`。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `plate: "123456"` | 含违法记录的 200。 |
+| 缺少必填值 | Omit `plate` | 代码为 `409:invalid_params` 的 409。 |
+| 未知的值 | `plate: "ABC"` | COSEVI 没有罚单时为 404 NotFound。 |
+
+401 when the bearer token is missing or rejected.
