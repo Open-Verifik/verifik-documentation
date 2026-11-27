@@ -1,0 +1,220 @@
+---
+id: france-citizen
+title: "フランス — 本人確認と個人事業主の照会 (KYC)"
+description: "フランスの本人確認と個人事業主の照会は、この識別子（SIREN）の公式情報源で個人または個人事業主を確認します。その番号を `documentNumber` として送ってください。受付に法的氏名、登録状態、情報源が公開する本人属性が必要なときに使います。"
+sidebar_label: "🇫🇷 フランス — 個人・個人事業主"
+slug: "/identity/france-citizen"
+keywords:
+  - "v2/fr/citizen"
+  - "/v2/fr/citizen"
+  - "api.verifik.co/v2/fr/citizen"
+  - "GET /v2/fr/citizen"
+  - "citizen France"
+  - "france_api_identity_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# フランス — 本人確認と個人事業主の照会 (KYC)
+
+**フランスの本人確認と個人事業主の照会**は、この識別子（SIREN）の公式情報源で個人または個人事業主を確認します。その番号を `documentNumber` として送ってください。受付に法的氏名、登録状態、情報源が公開する本人属性が必要なときに使います。
+
+`documentNumber` は必須です。`documentType` の既定値は `SIREN` です。既定値のままにするなら省略し、明示するなら `SIREN` を送ってください。
+
+## レジストリが返す項目
+
+- 個人または個人事業主の法的氏名
+- 登録状態
+- 照会した識別子
+- 情報源が公開する公式の本人属性
+
+## 用途
+
+- 受付のときに フランスの個人事業主または登録された個人を確認します。
+- ファイル上の法的氏名を公式の識別子と突き合わせます。
+- 登録状態と、公式情報源が公開する本人属性を保管します。
+
+---
+
+## API リファレンス
+
+### エンドポイント
+
+```http
+GET https://api.verifik.co/v2/fr/citizen
+```
+
+`documentNumber` で フランス の公式な本人・個人事業主の情報源を照会します。`documentType` は識別子の種類（SIREN）を選びます。成功時のペイロードには法的氏名、登録状態、送った識別子、情報源が公開する公式の本人属性が含まれます。個人または個人事業主の KYC 受付に使ってください。下の例はこれらの項目です。実際の値は公式情報源から返ります。
+
+### ヘッダー
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <your_token>` | クライアント JWT 認証トークン |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **はい** | `552100554` | 個人または個人事業主の公式な本人番号または納税番号（SIREN）。 |
+| `documentType` | string | いいえ | `SIREN` | 書類種別の識別子。既定値は `SIREN` です。 |
+
+---
+
+### リクエスト
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/fr/citizen",
+  params: {
+    documentType: "SIREN",
+    documentNumber: "552100554",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/fr/citizen"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "SIREN",
+    "documentNumber": "552100554",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/fr/citizen?documentType=SIREN&documentNumber=552100554" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### レスポンス
+
+<Tabs>
+<TabItem value="200" label="200 (記録あり)">
+
+```json
+{
+  "data": {
+    "documentType": "SIREN",
+    "documentNumber": "552100554",
+    "fullName": "Alex Example",
+    "registrationStatus": "ACTIVE",
+    "attributes": {
+      "locality": "Paris",
+      "postalCode": "75008",
+      "country": "France"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (該当なし)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (レジストリ一時停止)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 備考
+
+- **識別子の形式.** SIREN は 9 桁で、個人または個人事業主を識別します。空白を入れず数字だけを送ってください。フランスの法人ファイル照会は GET /v2/fr/company です。
+- 書類種別の識別子。既定値は `SIREN` です。
+- 例の状態ラベルは項目を示す値です。実際の登記は独自の表記を返し、現地語の場合があります。
+- このルートのクライアントパラメータは `documentNumber` と、識別子の種類を示す必要があるときの `documentType` です。
+- JSON の例は上記の項目の形です。実際の呼び出しは、送った識別子に対する登記記録を返します。
+
+---
+
+## サンドボックス
+
+アカウントがサンドボックスモードのとき、同じパラメータでこのルートを呼び出します。表は各ケースで文書化されている応答です。
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| **登録済みの識別子** | `documentType: "SIREN"`, `documentNumber: "552100554"` | 情報源に番号がある場合は 200 とともに法的氏名、状態、識別子、住所または本人属性を返します。 |
+| **documentNumber なし** | 省略 `documentNumber` | `documentNumber` を省くと 409 `MissingParameter`。 |
+| **不明な番号** | `documentNumber: "000000000"` | 登記にその番号の記録がない場合は 404 `NotFound`。 |
+
+bearer トークンがない、または拒否された場合は 401。

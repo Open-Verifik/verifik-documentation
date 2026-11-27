@@ -1,0 +1,224 @@
+---
+id: business-validation-portugal-company-lookup
+title: "Portugal — Consultation du registre des entreprises (KYB)"
+description: "La consultation du registre des entreprises de Portugal vérifie une personne morale auprès du registre officiel. Envoyez le numéro d'immatriculation ou l'identifiant fiscal (NIF / NIPC) dans `documentNumber`. Elle sert à l'entrée en relation KYB, à la diligence fournisseurs et au criblage des contreparties."
+sidebar_label: "🇵🇹 Portugal — Registre des entreprises"
+slug: "/business-validation/portugal-company-lookup"
+keywords:
+  - "v2/pt/company"
+  - "/v2/pt/company"
+  - "api.verifik.co/v2/pt/company"
+  - "GET /v2/pt/company"
+  - "company Portugal"
+  - "portugal_api_company_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Portugal — Consultation du registre des entreprises (KYB)
+
+La **consultation du registre des entreprises de Portugal** vérifie une personne morale auprès du registre officiel. Envoyez le numéro d'immatriculation ou l'identifiant fiscal (NIF / NIPC) dans `documentNumber`. Elle sert à l'entrée en relation KYB, à la diligence fournisseurs et au criblage des contreparties.
+
+`documentNumber` est obligatoire. `documentType` est facultatif. Quand vous l'envoyez, indiquez la famille d'identifiant (par exemple `NIPC`) afin de distinguer les pays qui publient plusieurs numéros.
+
+## Ce que renvoie le registre
+
+- Dénomination sociale
+- Statut d'immatriculation
+- Date de constitution
+- Identifiant fiscal ou d'immatriculation
+- Adresse du siège
+
+## Cas d'usage
+
+- Entrer en relation avec un fournisseur ou une contrepartie en Portugal avant le premier paiement.
+- Confirmer la dénomination et le statut figurant sur un contrat ou une facture.
+- Recueillir la date de constitution, l'identifiant fiscal et l'adresse pour un dossier KYB.
+
+---
+
+## Référence de l'API
+
+### Point d'accès
+
+```http
+GET https://api.verifik.co/v2/pt/company
+```
+
+Interrogez le registre officiel des entreprises de Portugal avec `documentNumber` et un `documentType` facultatif. Une réponse réussie contient la dénomination sociale, le statut d'immatriculation, la date de constitution, l'identifiant fiscal (NIF / NIPC) et l'adresse du siège. Utilisez-la dans un parcours KYB ou une diligence fournisseur. L'exemple montre ces champs. Les valeurs réelles, y compris le libellé de `status`, viennent du registre.
+
+### En-têtes
+
+| Nom | Valeur | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Format de la requête |
+| Accept | `application/json` | Format de la réponse |
+| Authorization | `Bearer <votre_token>` | Jeton JWT d'authentification du client |
+
+### Paramètres
+
+| Nom | Type | Requis | Exemple | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Oui** | `500100144` | Numéro officiel d'immatriculation ou identifiant fiscal (NIF / NIPC). |
+| `documentType` | string | Non | `NIPC` | Type de document sociétaire ou préfixe de registre. Exemples acceptés : `NIF`, `NIPC`. Omettez-le pour n'envoyer que le numéro officiel. |
+
+---
+
+### Requête
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/pt/company",
+  params: {
+    documentType: "NIPC",
+    documentNumber: "500100144",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <votre_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/pt/company"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <votre_token>",
+}
+params = {
+    "documentType": "NIPC",
+    "documentNumber": "500100144",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/pt/company?documentType=NIPC&documentNumber=500100144" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <votre_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Réponse
+
+<Tabs>
+<TabItem value="200" label="200 (Fiche trouvée)">
+
+```json
+{
+  "data": {
+    "documentType": "NIPC",
+    "documentNumber": "500100144",
+    "businessName": "Example Lda",
+    "status": "ACTIVE",
+    "incorporationDate": "2014-03-18",
+    "taxIdentifier": "500100144",
+    "address": {
+      "line1": "1 Example Street",
+      "locality": "Lisbon",
+      "postalCode": "1100-148",
+      "country": "Portugal"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Paramètre manquant)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Introuvable)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Non autorisé)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Registre indisponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Remarques
+
+- **Format de l'identifiant.** Le NIF et le NIPC comportent 9 chiffres. Envoyez uniquement les chiffres, sans espaces.
+- Type de document sociétaire ou préfixe de registre. Exemples acceptés : `NIF`, `NIPC`. Omettez-le pour n'envoyer que le numéro officiel.
+- Le libellé d'état de l'exemple illustre le champ. Le registre réel renvoie son propre libellé, éventuellement dans la langue locale.
+- Envoyez `documentNumber` et, lorsque vous devez nommer la famille d'identifiant, `documentType`. Ce sont les paramètres client de cette route.
+- Le JSON d'exemple illustre les champs ci-dessus. Un appel réel renvoie la fiche du registre pour l'identifiant envoyé.
+
+---
+
+## Jeux d'essai sandbox
+
+Avec le compte en mode sandbox, les mêmes paramètres exercent cette route. Le tableau décrit la réponse documentée pour chaque cas.
+
+| Scénario | Paramètres | Résultat |
+| :--- | :--- | :--- |
+| **Identifiant connu** | `documentType: "NIPC"`, `documentNumber: "500100144"` | 200 avec le nom légal, le statut, l'identifiant et l'adresse ou les attributs d'identité lorsque la source détient le numéro. |
+| **documentNumber absent** | Omettre `documentNumber` | 409 `MissingParameter` si `documentNumber` est omis. |
+| **Numéro inconnu** | `documentNumber: "000000000"` | 404 `NotFound` lorsque le registre n'a pas de fiche pour ce numéro. |
+
+401 lorsque le jeton bearer est absent ou refusé.

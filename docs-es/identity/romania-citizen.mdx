@@ -1,0 +1,220 @@
+---
+id: romania-citizen
+title: "Rumania — Consulta y Validación de Identidad Ciudadana (KYC)"
+description: "La verificación de identidad y de empresario individual de Rumania consulta a una persona o autónomo en la fuente oficial de este identificador (CUIRO). Envíe ese número en `documentNumber`. Úsela cuando el alta necesita el nombre legal, el estado de registro y los atributos de identidad que publica la fuente."
+sidebar_label: "🇷🇴 Rumania — Ciudadano y autónomo"
+slug: "/identity/romania-citizen"
+keywords:
+  - "v2/ro/citizen"
+  - "/v2/ro/citizen"
+  - "api.verifik.co/v2/ro/citizen"
+  - "GET /v2/ro/citizen"
+  - "citizen Romania"
+  - "romania_api_identity_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Rumania — Consulta y Validación de Identidad Ciudadana (KYC)
+
+La **verificación de identidad y de empresario individual de Rumania** consulta a una persona o autónomo en la fuente oficial de este identificador (CUIRO). Envíe ese número en `documentNumber`. Úsela cuando el alta necesita el nombre legal, el estado de registro y los atributos de identidad que publica la fuente.
+
+`documentNumber` es obligatorio. `documentType` toma por defecto `CUIRO`. Omítalo para conservar ese valor o envíe `CUIRO` de forma explícita.
+
+## Qué devuelve el registro
+
+- Nombre legal de la persona o del autónomo
+- Estado de registro
+- Identificador consultado
+- Atributos oficiales de identidad que publica la fuente
+
+## Casos de uso
+
+- Confirmar un autónomo o una persona registrada en Rumania durante el alta.
+- Cruzar el nombre legal del expediente con el identificador oficial.
+- Guardar el estado de registro y los atributos de identidad que publica la fuente oficial.
+
+---
+
+## Referencia de la API
+
+### Punto de acceso
+
+```http
+GET https://api.verifik.co/v2/ro/citizen
+```
+
+Consulte la fuente oficial de identidad y de autónomos de Rumania con `documentNumber`. `documentType` elige la familia del identificador (CUIRO). Una respuesta correcta incluye el nombre legal, el estado de registro, el identificador enviado y los atributos oficiales de identidad que publica la fuente. Sirve para el KYC de una persona o un autónomo. El ejemplo muestra esos campos. Los valores en vivo salen de la fuente oficial.
+
+### Encabezados
+
+| Nombre | Valor | Descripción |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato de la solicitud |
+| Accept | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <tu_token>` | Token JWT de autenticación del cliente |
+
+### Parámetros
+
+| Nombre | Tipo | Requerido | Ejemplo | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Sí** | `12345678` | Número oficial de identidad o de contribuyente de la persona o del autónomo (CUIRO). |
+| `documentType` | string | No | `CUIRO` | Identificador del tipo de documento. El valor por defecto es `CUIRO`. |
+
+---
+
+### Solicitud
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/ro/citizen",
+  params: {
+    documentType: "CUIRO",
+    documentNumber: "12345678",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <tu_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ro/citizen"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <tu_token>",
+}
+params = {
+    "documentType": "CUIRO",
+    "documentNumber": "12345678",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/ro/citizen?documentType=CUIRO&documentNumber=12345678" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <tu_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentType": "CUIRO",
+    "documentNumber": "12345678",
+    "fullName": "Alex Example",
+    "registrationStatus": "ACTIVE",
+    "attributes": {
+      "locality": "Bucharest",
+      "postalCode": "010011",
+      "country": "Romania"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (No encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (No autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Registro no disponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- **Formato del identificador.** En esta ruta documentType toma por defecto CUIRO. Envíe el código fiscal numérico de la persona o del autónomo, sin espacios. La forma de IVA puede incluir el prefijo RO.
+- Identificador del tipo de documento. El valor por defecto es `CUIRO`.
+- La etiqueta de estado del ejemplo ilustra el campo. El registro en vivo devuelve su propia etiqueta, que puede estar en el idioma local.
+- Envíe `documentNumber` y, cuando deba nombrar la familia del identificador, `documentType`. Esos son los parámetros de cliente de esta ruta.
+- El JSON de ejemplo ilustra los campos anteriores. Una llamada en vivo devuelve la ficha del registro para el identificador enviado.
+
+---
+
+## Pruebas en sandbox
+
+Con la cuenta en modo sandbox, los mismos parámetros ejercitan esta ruta. La tabla describe la respuesta documentada para cada caso.
+
+| Escenario | Parámetros | Resultado |
+| :--- | :--- | :--- |
+| **Identificador existente** | `documentType: "CUIRO"`, `documentNumber: "12345678"` | 200 con nombre legal, estado, identificador y domicilio o atributos de identidad cuando la fuente tiene el número. |
+| **Sin documentNumber** | Omitir `documentNumber` | 409 `MissingParameter` si se omite `documentNumber`. |
+| **Número desconocido** | `documentNumber: "000000000"` | 404 `NotFound` cuando el registro no tiene ficha para ese número. |
+
+401 cuando falta el token bearer o es rechazado.

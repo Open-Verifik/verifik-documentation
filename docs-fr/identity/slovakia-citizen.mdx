@@ -1,0 +1,220 @@
+---
+id: slovakia-citizen
+title: "Slovaquie — Vérification d'identité et d'entreprise individuelle (KYC)"
+description: "La vérification d'identité et d'entreprise individuelle de Slovaquie interroge une personne ou un entrepreneur individuel dans la source officielle de cet identifiant (ICOSK). Envoyez ce numéro dans `documentNumber`. Utilisez-la quand l'entrée en relation a besoin du nom légal, du statut d'enregistrement et des attributs d'identité publiés par la source."
+sidebar_label: "🇸🇰 Slovaquie — Citoyen et entreprise individuelle"
+slug: "/identity/slovakia-citizen"
+keywords:
+  - "v2/sk/citizen"
+  - "/v2/sk/citizen"
+  - "api.verifik.co/v2/sk/citizen"
+  - "GET /v2/sk/citizen"
+  - "citizen Slovakia"
+  - "slovakia_api_identity_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Slovaquie — Vérification d'identité et d'entreprise individuelle (KYC)
+
+La **vérification d'identité et d'entreprise individuelle de Slovaquie** interroge une personne ou un entrepreneur individuel dans la source officielle de cet identifiant (ICOSK). Envoyez ce numéro dans `documentNumber`. Utilisez-la quand l'entrée en relation a besoin du nom légal, du statut d'enregistrement et des attributs d'identité publiés par la source.
+
+`documentNumber` est obligatoire. `documentType` vaut `ICOSK` par défaut. Omettez-le pour garder cette valeur, ou envoyez `ICOSK` explicitement.
+
+## Ce que renvoie le registre
+
+- Nom légal de la personne ou de l'entreprise individuelle
+- Statut d'enregistrement
+- Identifiant interrogé
+- Attributs d'identité officiels publiés par la source
+
+## Cas d'usage
+
+- Confirmer un entrepreneur individuel ou une personne inscrite en Slovaquie lors de l'entrée en relation.
+- Rapprocher le nom légal du dossier et l'identifiant officiel.
+- Conserver le statut d'enregistrement et les attributs d'identité publiés par la source officielle.
+
+---
+
+## Référence de l'API
+
+### Point d'accès
+
+```http
+GET https://api.verifik.co/v2/sk/citizen
+```
+
+Interrogez la source officielle d'identité et d'entreprise individuelle de Slovaquie avec `documentNumber`. `documentType` choisit la famille d'identifiant (ICOSK). Une réponse réussie contient le nom légal, le statut d'enregistrement, l'identifiant envoyé et les attributs d'identité officiels publiés par la source. Elle sert au KYC d'une personne ou d'une entreprise individuelle. L'exemple montre ces champs. Les valeurs réelles viennent de la source officielle.
+
+### En-têtes
+
+| Nom | Valeur | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Format de la requête |
+| Accept | `application/json` | Format de la réponse |
+| Authorization | `Bearer <votre_token>` | Jeton JWT d'authentification du client |
+
+### Paramètres
+
+| Nom | Type | Requis | Exemple | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Oui** | `31333532` | Numéro officiel d'identité ou de contribuable de la personne ou de l'entreprise individuelle (ICOSK). |
+| `documentType` | string | Non | `ICOSK` | Identifiant du type de document. La valeur par défaut est `ICOSK`. |
+
+---
+
+### Requête
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/sk/citizen",
+  params: {
+    documentType: "ICOSK",
+    documentNumber: "31333532",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <votre_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/sk/citizen"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <votre_token>",
+}
+params = {
+    "documentType": "ICOSK",
+    "documentNumber": "31333532",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/sk/citizen?documentType=ICOSK&documentNumber=31333532" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <votre_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Réponse
+
+<Tabs>
+<TabItem value="200" label="200 (Fiche trouvée)">
+
+```json
+{
+  "data": {
+    "documentType": "ICOSK",
+    "documentNumber": "31333532",
+    "fullName": "Alex Example",
+    "registrationStatus": "ACTIVE",
+    "attributes": {
+      "locality": "Bratislava",
+      "postalCode": "811 01",
+      "country": "Slovakia"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Paramètre manquant)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Introuvable)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Non autorisé)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Registre indisponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Remarques
+
+- **Format de l'identifiant.** L'IČO comporte 8 chiffres. Envoyez uniquement les chiffres, sans espaces.
+- Identifiant du type de document. La valeur par défaut est `ICOSK`.
+- Le libellé d'état de l'exemple illustre le champ. Le registre réel renvoie son propre libellé, éventuellement dans la langue locale.
+- Envoyez `documentNumber` et, lorsque vous devez nommer la famille d'identifiant, `documentType`. Ce sont les paramètres client de cette route.
+- Le JSON d'exemple illustre les champs ci-dessus. Un appel réel renvoie la fiche du registre pour l'identifiant envoyé.
+
+---
+
+## Jeux d'essai sandbox
+
+Avec le compte en mode sandbox, les mêmes paramètres exercent cette route. Le tableau décrit la réponse documentée pour chaque cas.
+
+| Scénario | Paramètres | Résultat |
+| :--- | :--- | :--- |
+| **Identifiant connu** | `documentType: "ICOSK"`, `documentNumber: "31333532"` | 200 avec le nom légal, le statut, l'identifiant et l'adresse ou les attributs d'identité lorsque la source détient le numéro. |
+| **documentNumber absent** | Omettre `documentNumber` | 409 `MissingParameter` si `documentNumber` est omis. |
+| **Numéro inconnu** | `documentNumber: "000000000"` | 404 `NotFound` lorsque le registre n'a pas de fiche pour ce numéro. |
+
+401 lorsque le jeton bearer est absent ou refusé.

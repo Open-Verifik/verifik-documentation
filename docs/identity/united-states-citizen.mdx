@@ -1,0 +1,220 @@
+---
+id: united-states-citizen
+title: "United States — Citizen Identity & Sole Proprietor Verification (KYC)"
+description: "The United States Citizen Identity & Sole Proprietor Verification checks a person or sole proprietor against the official source for this identifier (NPI). Send that number as `documentNumber`. Use it when onboarding needs the legal name, registration status, and the identity attributes the source publishes."
+sidebar_label: "🇺🇸 United States — Citizen & Sole Proprietor"
+slug: "/identity/united-states-citizen"
+keywords:
+  - "v2/us/citizen"
+  - "/v2/us/citizen"
+  - "api.verifik.co/v2/us/citizen"
+  - "GET /v2/us/citizen"
+  - "citizen United States"
+  - "us_api_npi_identity_lookup"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# United States — Citizen Identity & Sole Proprietor Verification (KYC)
+
+The **United States Citizen Identity & Sole Proprietor Verification** checks a person or sole proprietor against the official source for this identifier (NPI). Send that number as `documentNumber`. Use it when onboarding needs the legal name, registration status, and the identity attributes the source publishes.
+
+`documentNumber` is required. `documentType` defaults to `NPI`. Omit it to keep that default, or send `NPI` explicitly.
+
+## What the registry returns
+
+- Legal name of the person or sole proprietor
+- Registration status
+- Identifier that was queried
+- Official identity attributes published by the source
+
+## Use cases
+
+- Confirm a sole proprietor or individual registrant in United States during onboarding.
+- Match the legal name on file to the official identifier.
+- Store the registration status and the identity attributes the official source publishes.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/us/citizen
+```
+
+Query the official identity and sole-proprietor source of United States with `documentNumber`. `documentType` selects the identifier family (NPI). A successful payload includes the legal name, registration status, the identifier you sent, and the official identity attributes the source publishes. Use it for KYC onboarding of a person or sole proprietor. The sample below shows those fields. Live values come from the official source.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <your_token>` | Client JWT authentication token |
+
+### Parameters
+
+| Name | Type | Required | Example | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Yes** | `1234567893` | Official identity or taxpayer number for the person or sole proprietor (NPI). |
+| `documentType` | string | No | `NPI` | Document type identifier. Defaults to `NPI`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/us/citizen",
+  params: {
+    documentType: "NPI",
+    documentNumber: "1234567893",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/us/citizen"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "NPI",
+    "documentNumber": "1234567893",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/us/citizen?documentType=NPI&documentNumber=1234567893" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Record found)">
+
+```json
+{
+  "data": {
+    "documentType": "NPI",
+    "documentNumber": "1234567893",
+    "fullName": "Alex Example",
+    "registrationStatus": "ACTIVE",
+    "attributes": {
+      "locality": "Austin",
+      "postalCode": "78701",
+      "country": "United States"
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Unauthorized)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Registry unavailable)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official registry is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- **Identifier format.** The NPI is the 10-digit National Provider Identifier for an individual practitioner or sole proprietor. Send those digits only. This route reads the NPI registry.
+- Document type identifier. Defaults to `NPI`.
+- The status label in the sample illustrates the field. The live registry returns its own label, which may be a local-language status.
+- Send `documentNumber` and, when you need to name the identifier family, `documentType`. Those are the client parameters for this route.
+- The JSON sample is an illustration of the fields above. A live call returns the registry record for the identifier you send.
+
+---
+
+## Sandbox
+
+With the account in sandbox mode, the same parameters exercise this route. The table describes the response documented for each case.
+
+| Scenario | Parameters | Result |
+| :--- | :--- | :--- |
+| **Identifier on file** | `documentType: "NPI"`, `documentNumber: "1234567893"` | 200 with legal name, status, identifier, and address or identity attributes when the source holds the number. |
+| **Missing documentNumber** | Omit `documentNumber` | 409 `MissingParameter` when `documentNumber` is omitted. |
+| **Unknown number** | `documentNumber: "000000000"` | 404 `NotFound` when the registry has no record for that number. |
+
+401 when the bearer token is missing or rejected.
