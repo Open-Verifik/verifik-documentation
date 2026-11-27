@@ -1,9 +1,9 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-11-27T16:40:47.954Z
+Generated: 2026-11-27T17:12:11.694Z
 
-- **Files scanned:** 748
-- **Unique endpoint URLs:** 418
+- **Files scanned:** 776
+- **Unique endpoint URLs:** 446
 - **Duplicate URL groups (SEO / aliases):** 67
 - **Docs without `### Endpoint` block:** 236
 
@@ -13,7 +13,7 @@ Generated: 2026-11-27T16:40:47.954Z
 | --- | ---: | --- |
 | P0 | 27 | vehicle-validation/colombia |
 | P1 | 27 | vehicle-validation (other countries) |
-| P2 | 364 | identity, biometrics, resources, etc. |
+| P2 | 392 | identity, biometrics, resources, etc. |
 
 ## Duplicate URLs (keep one canonical; others are usually SEO)
 
@@ -294,6 +294,7 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/batch-configurations` | `smart-reports/create-a-batch-configuration.mdx` |
 | P2 | `v2/batch-configurations/{id}` | `smart-reports/delete-a-batch-configuration.mdx` |
 | P2 | `v2/batch-configurations/{id}/input-schema` | `smart-reports/retrieve-configuration-input-schema.mdx` |
+| P2 | `v2/be/politically-exposed-persons` | `background-check/belgium-politically-exposed-persons.mdx` |
 | P2 | `v2/belgium-sanctions` | `background-check/international/belgium-sanctions.mdx` |
 | P2 | `v2/biometric-validations/app-login` | `resources/app-logins/create-an-app-login-biometric-validation.mdx` |
 | P2 | `v2/biometric-validations/app-registration` | `resources/app-registrations/create-an-app-registration-biometric-validation.mdx` |
@@ -302,6 +303,7 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/bka-wanted` | `background-check/international/bka-wanted.mdx` |
 | P2 | `v2/bo/cedula` | `identity/bolivia.mdx` |
 | P2 | `v2/bo/company` | `business-validation/bolivia.mdx` |
+| P2 | `v2/bo/politically-exposed-persons` | `background-check/bolivia-politically-exposed-persons.mdx` |
 | P1 | `v2/bo/vehicle` | `vehicle-validation/bolivia.mdx` |
 | P2 | `v2/bo/vehicle-soat` | `transit/bolivia/vehicle-soat.mdx` |
 | P2 | `v2/bo/votacion` | `identity/bolivia/votacion.mdx` |
@@ -312,9 +314,11 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/br/politically-exposed-persons` | `background-check/brazil-politically-exposed-persons.mdx` |
 | P1 | `v2/br/vehicle` | `vehicle-validation/brazil.mdx` |
 | P2 | `v2/bulgaria-sanctions` | `background-check/international/bulgaria-sanctions.mdx` |
+| P2 | `v2/by/politically-exposed-persons` | `background-check/belarus-politically-exposed-persons.mdx` |
 | P2 | `v2/ca/company` | `business-validation/canada.mdx` |
 | P2 | `v2/ca/ontario/driver-license` | `driver-validation/ontario-driver-license.md` |
 | P1 | `v2/ca/ontario/plate` | `vehicle-validation/canada/ontario-plate.mdx` |
+| P2 | `v2/ca/politically-exposed-persons` | `background-check/canada-politically-exposed-persons.mdx` |
 | P2 | `v2/canada-autonomous-sanctions` | `background-check/international/canada-autonomous-sanctions.mdx` |
 | P2 | `v2/canada-facfoa` | `background-check/international/canada-facfoa.mdx` |
 | P2 | `v2/canada-nro` | `background-check/international/canada-nro.mdx` |
@@ -415,15 +419,18 @@ Generated: 2026-11-27T16:40:47.954Z
 | P0 | `v2/co/vehiculo/pico-y-placa` | `vehicle-validation/colombia/bogota-pico-y-placa.mdx` |
 | P2 | `v2/cr/cedula` | `identity/costa-rica.mdx` |
 | P2 | `v2/cr/company` | `business-validation/costa-rica.mdx` |
+| P2 | `v2/cr/politically-exposed-persons` | `background-check/costa-rica-politically-exposed-persons.mdx` |
 | P1 | `v2/cr/vehicle` | `vehicle-validation/costa-rica.mdx` |
 | P2 | `v2/cr/votacion` | `identity/costa-rica/votacion.mdx` |
 | P2 | `v2/csl` | `background-check/international/us-consolidated-screening-list.mdx` |
+| P2 | `v2/cu/politically-exposed-persons` | `background-check/cuba-politically-exposed-persons.mdx` |
 | P2 | `v2/cuba-restricted` | `background-check/international/cuba-restricted.mdx` |
 | P2 | `v2/czech-sanctions` | `background-check/international/czech-sanctions.mdx` |
 | P2 | `v2/data-retention/erase` | `resources/data-retention/erase-data-bulk.mdx` |
 | P2 | `v2/data-retention/policy` | `resources/data-retention/retrieve-data-retention-policy.mdx` |
 | P2 | `v2/ddtc-aeca-debarments` | `background-check/international/ddtc-aeca-debarments.mdx` |
 | P2 | `v2/ddtc-penalties` | `background-check/international/ddtc-penalties.mdx` |
+| P2 | `v2/de/politically-exposed-persons` | `background-check/germany-politically-exposed-persons.mdx` |
 | P2 | `v2/dea` | `background-check/dea-background-check.mdx` |
 | P2 | `v2/do/cedula` | `identity/dominican-republic.mdx` |
 | P2 | `v2/document-validations/{id}/files` | `resources/data-retention/delete-document-validation-files.mdx` |
@@ -431,8 +438,10 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/dod-chinese-military-companies` | `background-check/international/dod-chinese-military-companies.mdx` |
 | P2 | `v2/dss-most-wanted` | `background-check/international/dss-most-wanted.mdx` |
 | P2 | `v2/ec/cedula` | `identity-validation/ecuador.mdx` |
+| P2 | `v2/ec/politically-exposed-persons` | `background-check/ecuador-politically-exposed-persons.mdx` |
 | P1 | `v2/ec/vehiculo/placa` | `vehicle-validation/ecuador/vehicle-by-plate.mdx` |
 | P1 | `v2/ec/vehiculo/placa/multas` | `vehicle-validation/ecuador.mdx` |
+| P2 | `v2/ee/politically-exposed-persons` | `background-check/estonia-politically-exposed-persons.mdx` |
 | P2 | `v2/egypt-terrorists` | `background-check/international/egypt-terrorists.mdx` |
 | P2 | `v2/email-validations` | `resources/email-validations/create-an-email-validation.mdx` |
 | P2 | `v2/email-validations/{id}` | `resources/app-registrations/validate-an-app-registration-email-validation.mdx` |
@@ -440,6 +449,7 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/email-validations/app-registration` | `resources/app-registrations/create-an-app-registration-email-validation.mdx` |
 | P2 | `v2/es/cedula` | `identity-validation/spain-citizen.mdx` |
 | P2 | `v2/es/company` | `business-validation/spain.mdx` |
+| P2 | `v2/es/politically-exposed-persons` | `background-check/spain-politically-exposed-persons.mdx` |
 | P2 | `v2/es/tax-id/validate` | `business-validation/spain-tax-id-validation.mdx` |
 | P1 | `v2/es/vehicle` | `vehicle-validation/spain.mdx` |
 | P2 | `v2/esma-sanctions` | `background-check/international/esma-sanctions.mdx` |
@@ -473,9 +483,11 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/fcc-covered-list` | `background-check/international/fcc-covered-list.mdx` |
 | P2 | `v2/fdic-failed-banks` | `background-check/international/fdic-failed-banks.mdx` |
 | P2 | `v2/fed-reserve-actions` | `background-check/international/fed-reserve-actions.mdx` |
+| P2 | `v2/fi/politically-exposed-persons` | `background-check/finland-politically-exposed-persons.mdx` |
 | P2 | `v2/fincen-special-measures` | `background-check/international/fincen-special-measures.mdx` |
 | P2 | `v2/finra-actions` | `background-check/international/finra-actions.mdx` |
 | P2 | `v2/fr/company` | `business-validation/france-company-sirene.mdx` |
+| P2 | `v2/fr/politically-exposed-persons` | `background-check/france-politically-exposed-persons.mdx` |
 | P2 | `v2/france-amf-blacklist` | `background-check/international/france-amf-blacklist.mdx` |
 | P2 | `v2/france-amf-sanctions` | `background-check/international/france-amf-sanctions.mdx` |
 | P2 | `v2/france-gels-avoirs` | `background-check/international/france-gels-avoirs.mdx` |
@@ -483,9 +495,11 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/georgia-otkhozoria-tatunashvili` | `background-check/international/georgia-otkhozoria-tatunashvili.mdx` |
 | P2 | `v2/gt/cedula` | `identity-validation/guatemala.mdx` |
 | P2 | `v2/gt/cedula/extra` | `identity/guatemala-extra.mdx` |
+| P2 | `v2/gt/politically-exposed-persons` | `background-check/guatemala-politically-exposed-persons.mdx` |
 | P2 | `v2/guernsey-gfsc-prohibitions` | `background-check/international/guernsey-gfsc-prohibitions.mdx` |
 | P2 | `v2/health-exclusions` | `background-check/international/health-exclusions.mdx` |
 | P2 | `v2/hn/cedula` | `identity/honduras.mdx` |
+| P2 | `v2/hn/politically-exposed-persons` | `background-check/honduras-politically-exposed-persons.mdx` |
 | P2 | `v2/hn/votacion` | `identity/honduras/votacion.mdx` |
 | P2 | `v2/human-id/decrypt` | `biometrics/zero-knowledge-face-proofs-decrypt.mdx` |
 | P2 | `v2/human-id/encrypt` | `biometrics/zero-knowledge-face-proofs-encrypt.mdx` |
@@ -502,6 +516,7 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/ip-lookup` | `identity/ip-lookup.mdx` |
 | P2 | `v2/iran-mfa-sanctions` | `background-check/international/iran-mfa-sanctions.mdx` |
 | P2 | `v2/ireland-unlawful-organisations` | `background-check/international/ireland-unlawful-organisations.mdx` |
+| P2 | `v2/is/politically-exposed-persons` | `background-check/iceland-politically-exposed-persons.mdx` |
 | P2 | `v2/isle-of-man-disqualified` | `background-check/international/isle-of-man-disqualified.mdx` |
 | P2 | `v2/israel-crypto-seizures` | `background-check/international/israel-crypto-seizures.mdx` |
 | P2 | `v2/israel-mod-terrorists` | `background-check/international/israel-mod-terrorists.mdx` |
@@ -517,7 +532,9 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/lithuania-magnitsky` | `background-check/international/lithuania-magnitsky.mdx` |
 | P2 | `v2/lithuania-sanctions` | `background-check/international/lithuania-sanctions.mdx` |
 | P2 | `v2/look-ups/phone` | `identity/phone-lookup.mdx` |
+| P2 | `v2/lt/politically-exposed-persons` | `background-check/lithuania-politically-exposed-persons.mdx` |
 | P2 | `v2/luxembourg-cssf-sanctions` | `background-check/international/luxembourg-cssf-sanctions.mdx` |
+| P2 | `v2/lv/politically-exposed-persons` | `background-check/latvia-politically-exposed-persons.mdx` |
 | P2 | `v2/malaysia-bnm-fca` | `background-check/international/malaysia-bnm-fca.mdx` |
 | P2 | `v2/malaysia-moha-sanctions` | `background-check/international/malaysia-moha-sanctions.mdx` |
 | P2 | `v2/malaysia-sc-aob` | `background-check/international/malaysia-sc-aob.mdx` |
@@ -531,6 +548,7 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/mx/ine` | `identity/mexico-ine.mdx` |
 | P2 | `v2/mx/ine/ocr` | `identity/mexico-ine-ocr.mdx` |
 | P2 | `v2/mx/issste/affiliation` | `identity/mexico-issste.mdx` |
+| P2 | `v2/mx/politically-exposed-persons` | `background-check/mexico-politically-exposed-persons.mdx` |
 | P2 | `v2/mx/siged/certificado` | `identity/mexico-siged-certificado.mdx` |
 | P1 | `v2/mx/vehiculo/placa` | `vehicle-validation/mexico.md` |
 | P2 | `v2/nca-most-wanted` | `background-check/international/nca-most-wanted.mdx` |
@@ -538,7 +556,10 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/netherlands-terrorist-sanctions` | `background-check/international/netherlands-terrorist-sanctions.mdx` |
 | P2 | `v2/new-zealand-russia-sanctions` | `background-check/international/new-zealand-russia-sanctions.mdx` |
 | P2 | `v2/new-zealand-terrorists` | `background-check/international/new-zealand-terrorists.mdx` |
+| P2 | `v2/ni/politically-exposed-persons` | `background-check/nicaragua-politically-exposed-persons.mdx` |
 | P2 | `v2/nigeria-sanctions` | `background-check/international/nigeria-sanctions.mdx` |
+| P2 | `v2/nl/politically-exposed-persons` | `background-check/netherlands-politically-exposed-persons.mdx` |
+| P2 | `v2/no/politically-exposed-persons` | `background-check/norway-politically-exposed-persons.mdx` |
 | P2 | `v2/norges-bank-exclusions` | `background-check/international/norges-bank-exclusions.mdx` |
 | P2 | `v2/occ-actions` | `background-check/international/occ-actions.mdx` |
 | P2 | `v2/ocr/scan-agent` | `ocr-engines/scan-agent.mdx` |
@@ -570,6 +591,7 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/phone-validations/{id}` | `resources/phone-validations/retrieve-a-phone-validation.mdx` |
 | P2 | `v2/phone-validations/app-registration` | `resources/app-registrations/create-an-app-registration-phone-validation.mdx` |
 | P2 | `v2/phone-validations/manual` | `resources/phone-validations/create-a-manual-phone-validation.mdx` |
+| P2 | `v2/pl/politically-exposed-persons` | `background-check/poland-politically-exposed-persons.mdx` |
 | P2 | `v2/poland-giif-sanctions` | `background-check/international/poland-giif-sanctions.mdx` |
 | P2 | `v2/poland-mswia-sanctions` | `background-check/international/poland-mswia-sanctions.mdx` |
 | P2 | `v2/politie-opsporingslijst` | `background-check/international/politie-opsporingslijst.mdx` |
@@ -579,11 +601,13 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/projects/phone-login` | `authentication/api-key-access-via-phone.mdx` |
 | P2 | `v2/py/cic` | `identity/paraguay.mdx` |
 | P2 | `v2/py/company` | `business-validation/paraguay.mdx` |
+| P2 | `v2/py/politically-exposed-persons` | `background-check/paraguay-politically-exposed-persons.mdx` |
 | P1 | `v2/py/vehicle` | `vehicle-validation/paraguay.mdx` |
 | P2 | `v2/qatar-natc-sanctions` | `background-check/international/qatar-natc-sanctions.mdx` |
 | P2 | `v2/romania-terrorists` | `background-check/international/romania-terrorists.mdx` |
 | P2 | `v2/sam-exclusions` | `background-check/international/sam-exclusions.mdx` |
 | P2 | `v2/sam-special-exclusions` | `background-check/international/sam-special-exclusions.mdx` |
+| P2 | `v2/se/politically-exposed-persons` | `background-check/sweden-politically-exposed-persons.mdx` |
 | P2 | `v2/sec` | `background-check/international/sec-sanctions.mdx` |
 | P2 | `v2/secret-service` | `background-check/international/secret-service.mdx` |
 | P2 | `v2/serbia-apml-sanctions` | `background-check/international/serbia-apml-sanctions.mdx` |
@@ -626,6 +650,7 @@ Generated: 2026-11-27T16:40:47.954Z
 | P2 | `v2/south-africa-wanted` | `background-check/international/south-africa-wanted.mdx` |
 | P2 | `v2/spain-police-wanted` | `background-check/international/spain-police-wanted.mdx` |
 | P2 | `v2/sv/dui` | `identity/el-salvador.mdx` |
+| P2 | `v2/sv/politically-exposed-persons` | `background-check/el-salvador-politically-exposed-persons.mdx` |
 | P2 | `v2/switzerland-finma-rulings` | `background-check/international/switzerland-finma-rulings.mdx` |
 | P2 | `v2/switzerland-finma-warning` | `background-check/international/switzerland-finma-warning.mdx` |
 | P2 | `v2/switzerland-seco-sanctions` | `background-check/international/switzerland-seco-sanctions.mdx` |
@@ -649,10 +674,13 @@ Generated: 2026-11-27T16:40:47.954Z
 | P1 | `v2/usa/vehicle/recalls` | `vehicle-validation/united-states/vehicle-safety-recalls.mdx` |
 | P2 | `v2/usage` | `resources/usage/usage.mdx` |
 | P2 | `v2/uy/cedula` | `identity-validation/uruguay-citizen.mdx` |
+| P2 | `v2/uy/politically-exposed-persons` | `background-check/uruguay-politically-exposed-persons.mdx` |
 | P2 | `v2/ve/cedula` | `identity-validation/venezuela.mdx` |
 | P2 | `v2/ve/foreigner-id` | `identity/venezuela-foreigner-id.mdx` |
+| P2 | `v2/ve/politically-exposed-persons` | `background-check/venezuela-politically-exposed-persons.mdx` |
 | P2 | `v2/world-bank` | `background-check/international/world-bank.mdx` |
 | P2 | `v2/world/lei` | `business-validation/world-gleif-lei.mdx` |
+| P2 | `v2/world/pep` | `background-check/world-politically-exposed-persons.mdx` |
 | P1 | `v3/ar/vehicle` | `vehicle-validation/argentina/vehicle-v3.mdx` |
 | P1 | `v3/cl/vehicle` | `vehicle-validation/chile/vehicle-technical-review.mdx` |
 | P2 | `v3/co/ministerio-de-trabajo/certificados` | `certificates/colombia-ministerio-trabajo-certificados-v3.mdx` |

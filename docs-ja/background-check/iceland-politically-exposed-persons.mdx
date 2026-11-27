@@ -1,0 +1,295 @@
+---
+id: iceland-politically-exposed-persons
+title: "アイスランド — 政治的要人（PEP）照会"
+description: "アイスランドの公式な政治的要人名簿をアイスランドの kennitalaまたは氏名で照会します。FATF 勧告 12 と国内 AML 基準に従い、5 年の照合期間を含みます。"
+slug: /background-check/iceland-politically-exposed-persons
+keywords:
+  - "v2/is/politically-exposed-persons"
+  - "/v2/is/politically-exposed-persons"
+  - "pep iceland"
+  - "iceland pep"
+  - "fatf recommendation 12"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# アイスランド — 政治的要人（PEP）照会
+
+**アイスランド**の人物を**アイスランドの kennitala**（`documentNumber`）または**法的氏名**（`fullName`）で公式な政治的要人（PEP）名簿と照合します。**FATF 勧告 12** と下記の国内 AML 枠組みに従い、公職終了後 **5 年の照合期間**を保持します。
+
+- **根拠:** Act on Measures Against Money Laundering and Terrorist Financing No. 140/2018 (Art. 17)
+- **当局:** Alþingi / Central Bank of Iceland Financial Supervisory Authority
+- **主な情報源:** Alþingi (Parliament of Iceland) Public XML Open Data / OpenSanctions PEP (IS)（`https://www.althingi.is/altext/xml/thingmenn/`）
+
+- 国内 PEP の顧客オンボーディングと強化デューデリジェンス。
+- 任期の開始、変更、終了に合わせた定期再照会。
+- 国内文書番号がまだない場合の氏名検索。
+
+---
+
+## API リファレンス
+
+### エンドポイント
+
+```http
+GET https://api.verifik.co/v2/is/politically-exposed-persons
+```
+
+成功時の応答には `country`、`jurisdiction`、`documentType`、`documentNumber`、`fullName`、`isPEP`、`isActivePep`、`isFormerPep`、`totalMatches`、`matchCount`、`categories`、`includeFormer`、`lookbackYears`（5）、`matches`、`checkedSources`、`regulation`、`dateTime` が含まれます。各一致には `position`、`entity`、`category`、`categoryDescription`、`status`（`ACTIVE` または `FORMER_PEP`）、`source`、`sourceUrl` があります。ルートの判定フラグは `isPEP` です。各一致は `isPep` を使います。PEP でない場合も HTTP 200 で、`isPEP` は false、`totalMatches` は 0 です。
+
+### ヘッダー
+
+| 名前 | 値 |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <your_token>` |
+
+### パラメータ
+
+| 名前 | 型 | 必須 | 説明 |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | 条件付き | アイスランドの kennitala。3〜40 文字。`fullName` を省略する場合は必須。別名: `id`、`dni`、`cedula`。例: `IS-ALTH-1410`。 |
+| `fullName` | string | 条件付き | 法的氏名。3〜160 文字。`documentNumber` を省略する場合は必須。別名: `name`。例: `KRISTRUN FROSTADOTTIR`。 |
+| `documentType` | string | いいえ | 文書種別。2〜20 文字。既定値は `KENNITALA` で、応答にそのまま返ります。 |
+| `includeFormer` | boolean | いいえ | 5 年の照合期間内に任期が終わった公職者を含めます。既定値は `true` です。`false` を渡すと `ACTIVE` の役職だけが残ります。元公職だけの一致は `isPEP` が false になり、`matches` は空配列です。 |
+
+---
+
+## PEP 区分
+
+各一致は役職名から次のいずれかに分類されます。
+
+| 区分 | 説明 |
+| :--- | :--- |
+| `HEAD_OF_STATE_OR_GOVERNMENT` | 国家元首、政府の長、または内閣の執行権限 |
+| `SENIOR_EXECUTIVE` | 行政府の高官または閣僚 |
+| `LEGISLATIVE` | 国会または立法議会の議員 |
+| `JUDICIAL_OR_OVERSIGHT` | 上級の司法、憲法、または最高監査機関 |
+| `DIPLOMATIC_MILITARY_OR_CENTRAL_BANK` | 上級の外交、軍事、または中央銀行の職員 |
+| `PUBLIC_OFFICIAL_PEP` | FATF 勧告 12 に基づく政治的要人 |
+
+---
+
+### リクエスト
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/is/politically-exposed-persons",
+  params: {
+    documentType: "KENNITALA",
+    documentNumber: "IS-ALTH-1410",
+    includeFormer: true,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/is/politically-exposed-persons"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "KENNITALA",
+    "documentNumber": "IS-ALTH-1410",
+    "includeFormer": "true",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/is/politically-exposed-persons?documentType=KENNITALA&documentNumber=IS-ALTH-1410&includeFormer=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### レスポンス
+
+<Tabs>
+<TabItem value="200-hit" label="200 (PEP 一致)">
+
+```json
+{
+  "data": {
+    "country": "IS",
+    "jurisdiction": "Islandia",
+    "documentType": "KENNITALA",
+    "documentNumber": "IS-ALTH-1410",
+    "fullName": "KRISTRUN FROSTADOTTIR",
+    "isPEP": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "matchCount": 1,
+    "categories": [
+      "HEAD_OF_STATE_OR_GOVERNMENT"
+    ],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [
+      {
+        "id": "sandbox-pep-is-active",
+        "fullName": "KRISTRUN FROSTADOTTIR",
+        "aliases": [],
+        "country": "IS",
+        "countries": [
+          "IS"
+        ],
+        "documentNumber": "IS-ALTH-1410",
+        "birthDate": null,
+        "position": "PRIME MINISTER OF ICELAND (FORSÆTISRÁÐHERRA)",
+        "entity": "STJÓRNARRÁÐ ÍSLANDS / ALÞINGI",
+        "category": "HEAD_OF_STATE_OR_GOVERNMENT",
+        "categoryDescription": "Head of State, Head of Government, or Cabinet Executive Authority",
+        "startDate": "2024-12-21",
+        "endDate": null,
+        "lastSeen": "2026-11-27",
+        "status": "ACTIVE",
+        "isPep": true,
+        "isActivePep": true,
+        "isFormerPep": false,
+        "withinLookbackWindow": true,
+        "score": 100,
+        "matchType": "identifier",
+        "dataset": "peps",
+        "source": "Alþingi (Parliament of Iceland) Public XML Open Data / OpenSanctions PEP (IS)",
+        "sourceUrl": "https://www.althingi.is/altext/xml/thingmenn/"
+      }
+    ],
+    "checkedSources": [
+      "ALTHINGI_XML_OPENDATA_IS",
+      "OPENSANCTIONS_PEP_IS"
+    ],
+    "regulation": {
+      "framework": "Act on Measures Against Money Laundering and Terrorist Financing No. 140/2018 (Art. 17)",
+      "lookbackYears": 5,
+      "authority": "Alþingi / Central Bank of Iceland Financial Supervisory Authority"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (非該当)">
+
+```json
+{
+  "data": {
+    "country": "IS",
+    "jurisdiction": "Islandia",
+    "documentType": "KENNITALA",
+    "documentNumber": "55555555",
+    "fullName": "JUAN CARLOS CIUDADANO NO PEP",
+    "isPEP": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "matchCount": 0,
+    "categories": [],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [],
+    "checkedSources": [
+      "ALTHINGI_XML_OPENDATA_IS",
+      "OPENSANCTIONS_PEP_IS"
+    ],
+    "regulation": {
+      "framework": "Act on Measures Against Money Laundering and Terrorist Financing No. 140/2018 (Art. 17)",
+      "lookbackYears": 5,
+      "authority": "Alþingi / Central Bank of Iceland Financial Supervisory Authority"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (サンドボックス未検出)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "404:NotFound"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or fullName must be provided."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## サンドボックス照会
+
+アカウントがサンドボックスモードのとき、次の値は決定的です。
+
+| 文書番号 | 氏名 | includeFormer | 結果 |
+| :--- | :--- | :--- | :--- |
+| `IS-ALTH-1410` | `KRISTRUN FROSTADOTTIR` | `true` | 現職 PEP（`isPEP` true、区分 `HEAD_OF_STATE_OR_GOVERNMENT`） |
+| `10000001` | `KRISTRUN FROSTADOTTIR` | `true` | 現職 PEP（文書 `10000001` と同じフィクスチャ） |
+| `10000002` | `PEP FORMER MINISTER` | `true` | `includeFormer` が true のときの元 PEP（`isFormerPep` true） |
+| `10000002` | `PEP FORMER MINISTER` | `false` | `includeFormer` が false のときの非該当 |
+| `55555555` | `JUAN CARLOS CIUDADANO NO PEP` | `true` | 非 PEP（`isPEP` false、`totalMatches` 0） |
+| `99999404` | `—` | `true` | 404 `NotFound`（サンドボックスプローブのみ） |
+
+---
+
+### 備考
+
+- `documentNumber` または `fullName` を送ります。文書の別名は `id`、`dni`、`cedula`、氏名の別名は `name` です。いずれも無い場合、API は 409 `MissingParameter` とメッセージ `Either documentNumber or fullName must be provided.` を返します。
+- `includeFormer` の既定値は true です。5 年以内の元公職は `status` が `FORMER_PEP`、`isFormerPep` が true、`isPEP` が true で返ります。`false` はその行を除き、現職だけを残します。
+- `documentType` の既定値は `KENNITALA` です。応答の `jurisdiction` はレジストリラベル `Islandia` です。`regulation.lookbackYears` は 5 です。
+- サンドボックスの現職一致: 文書 `IS-ALTH-1410` または氏名 `KRISTRUN FROSTADOTTIR`、および文書 `10000001`。元公職: 文書 `10000002`、または `PEP FORMER`、`EX MINISTRO`、`FORMER MINISTER` を含む氏名。非該当: 文書 `55555555` と氏名 `JUAN CARLOS CIUDADANO NO PEP`。`99999404` を含む文書番号、または `NOTFOUND` を含む氏名はサンドボックスで 404 です。本番の不一致は 404 ではなく、`isPEP` が false の HTTP 200 です。
+- この経路は アイスランド（`IS`）だけを照会します。越境検索は [グローバル PEP](/verifik-ja/background-check/world-politically-exposed-persons) を使います。
+- `checkedSources` はこの管轄で照会したレジストリキーです。`regulation.framework` と `regulation.authority` は結果とともに返る AML の根拠です。

@@ -1,0 +1,297 @@
+---
+id: costa-rica-politically-exposed-persons
+title: "Costa Rica — Consulta de Personas Expuestas Políticamente (PEP)"
+description: "Consulta un número de cédula o un nombre completo en los registros oficiales de personas expuestas políticamente de Costa Rica, conforme a la Recomendación 12 del GAFI y la normativa ALA nacional, con ventana de 5 años."
+slug: /background-check/costa-rica-politically-exposed-persons
+keywords:
+  - "v2/cr/politically-exposed-persons"
+  - "/v2/cr/politically-exposed-persons"
+  - "pep costa rica"
+  - "costa rica pep"
+  - "fatf recommendation 12"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Costa Rica — Consulta de Personas Expuestas Políticamente (PEP)
+
+Consulta si una persona en **Costa Rica** figura como persona expuesta políticamente (PEP) a partir del **número de cédula** (`documentNumber`) o del **nombre legal completo** (`fullName`). La consulta aplica la **Recomendación 12 del GAFI** y el marco antilavado nacional, con una **ventana de 5 años** para quienes cesaron en el cargo público.
+
+- **Marco normativo:** Ley N° 7786 / Ley N° 8422 contra la Corrupción y el Enriquecimiento Ilícito en la Función Pública
+- **Autoridad:** Contraloría General de la República (CGR) / ICD Costa Rica
+- **Fuente principal:** Contraloría General de la República (CGR) Declaraciones Juradas / Asamblea Legislativa (CR) (`https://cgrweb.cgr.go.cr/apex/f?p=152200`)
+
+- Alta de clientes y debida diligencia reforzada de PEP nacionales.
+- Recribado periódico cuando un mandato empieza, cambia o termina.
+- Búsqueda por nombre cuando el documento nacional aún no está en el expediente.
+
+---
+
+## Referencia de API
+
+### Punto de acceso
+
+```http
+GET https://api.verifik.co/v2/cr/politically-exposed-persons
+```
+
+Una respuesta correcta devuelve `country`, `jurisdiction`, `documentType`, `documentNumber`, `fullName`, `isPEP`, `isActivePep`, `isFormerPep`, `totalMatches`, `matchCount`, `categories`, `includeFormer`, `lookbackYears` (5), `matches`, `checkedSources`, `regulation` y `dateTime`. Cada coincidencia incluye `position`, `entity`, `category`, `categoryDescription`, `status` (`ACTIVE` o `FORMER_PEP`), `source` y `sourceUrl`. La bandera de decisión en la raíz es `isPEP`. Cada coincidencia usa `isPep`. Quien no es PEP también responde HTTP 200, con `isPEP` en false y `totalMatches` en 0.
+
+### Encabezados
+
+| Nombre | Valor |
+| :--- | :--- |
+| `Accept` | `application/json` |
+| `Authorization` | `Bearer <su_token>` |
+
+### Parámetros
+
+| Nombre | Tipo | Obligatorio | Descripción |
+| :--- | :--- | :--- | :--- |
+| `documentNumber` | string | Condicional | Número de cédula. De 3 a 40 caracteres. Obligatorio si se omite `fullName`. Alias: `id`, `dni`, `cedula`. Ejemplo: `CR-105600981`. |
+| `fullName` | string | Condicional | Nombre legal completo, de 3 a 160 caracteres. Obligatorio si se omite `documentNumber`. Alias: `name`. Ejemplo: `RODRIGO ALBERTO CHAVES ROBLES`. |
+| `documentType` | string | No | Tipo de documento, de 2 a 20 caracteres. El valor predeterminado es `CEDULA` y se devuelve en la respuesta. |
+| `includeFormer` | boolean | No | Incluye a quienes cesaron en el cargo dentro de la ventana de 5 años. Predeterminado: `true`. Envíe `false` para conservar solo cargos `ACTIVE`. Si el único hallazgo es un ex-PEP, `isPEP` pasa a false y `matches` queda vacío. |
+
+---
+
+## Categorías PEP
+
+Cada coincidencia se clasifica según el cargo en una de estas categorías:
+
+| Categoría | Descripción |
+| :--- | :--- |
+| `HEAD_OF_STATE_OR_GOVERNMENT` | Jefe de Estado, jefe de Gobierno o autoridad del gabinete ejecutivo |
+| `SENIOR_EXECUTIVE` | Alto funcionario del poder ejecutivo o ministro del gabinete |
+| `LEGISLATIVE` | Integrante del parlamento nacional o de la asamblea legislativa |
+| `JUDICIAL_OR_OVERSIGHT` | Alta autoridad judicial, constitucional o de fiscalización superior |
+| `DIPLOMATIC_MILITARY_OR_CENTRAL_BANK` | Alto funcionario diplomático, militar o del banco central |
+| `PUBLIC_OFFICIAL_PEP` | Persona expuesta políticamente según la Recomendación 12 del GAFI |
+
+---
+
+### Solicitud
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/cr/politically-exposed-persons",
+  params: {
+    documentType: "CEDULA",
+    documentNumber: "CR-105600981",
+    includeFormer: true,
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <su_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/cr/politically-exposed-persons"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <su_token>",
+}
+params = {
+    "documentType": "CEDULA",
+    "documentNumber": "CR-105600981",
+    "includeFormer": "true",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/cr/politically-exposed-persons?documentType=CEDULA&documentNumber=CR-105600981&includeFormer=true" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <su_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Respuesta
+
+<Tabs>
+<TabItem value="200-hit" label="200 (coincidencia PEP)">
+
+```json
+{
+  "data": {
+    "country": "CR",
+    "jurisdiction": "Costa Rica",
+    "documentType": "CEDULA",
+    "documentNumber": "CR-105600981",
+    "fullName": "RODRIGO ALBERTO CHAVES ROBLES",
+    "isPEP": true,
+    "isActivePep": true,
+    "isFormerPep": false,
+    "totalMatches": 1,
+    "matchCount": 1,
+    "categories": [
+      "HEAD_OF_STATE_OR_GOVERNMENT"
+    ],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [
+      {
+        "id": "sandbox-pep-cr-active",
+        "fullName": "RODRIGO ALBERTO CHAVES ROBLES",
+        "aliases": [],
+        "country": "CR",
+        "countries": [
+          "CR"
+        ],
+        "documentNumber": "CR-105600981",
+        "birthDate": null,
+        "position": "PRESIDENTE DE LA REPÚBLICA DE COSTA RICA",
+        "entity": "PRESIDENCIA DE LA REPÚBLICA DE COSTA RICA",
+        "category": "HEAD_OF_STATE_OR_GOVERNMENT",
+        "categoryDescription": "Head of State, Head of Government, or Cabinet Executive Authority",
+        "startDate": "2022-05-08",
+        "endDate": null,
+        "lastSeen": "2026-11-27",
+        "status": "ACTIVE",
+        "isPep": true,
+        "isActivePep": true,
+        "isFormerPep": false,
+        "withinLookbackWindow": true,
+        "score": 100,
+        "matchType": "identifier",
+        "dataset": "peps",
+        "source": "Contraloría General de la República (CGR) Declaraciones Juradas / Asamblea Legislativa (CR)",
+        "sourceUrl": "https://cgrweb.cgr.go.cr/apex/f?p=152200"
+      }
+    ],
+    "checkedSources": [
+      "CGR_DECLARACIONES_CR",
+      "ASAMBLEA_LEGISLATIVA_CR",
+      "OPENSANCTIONS_PEP_CR"
+    ],
+    "regulation": {
+      "framework": "Ley N° 7786 / Ley N° 8422 contra la Corrupción y el Enriquecimiento Ilícito en la Función Pública",
+      "lookbackYears": 5,
+      "authority": "Contraloría General de la República (CGR) / ICD Costa Rica"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (sin coincidencia)">
+
+```json
+{
+  "data": {
+    "country": "CR",
+    "jurisdiction": "Costa Rica",
+    "documentType": "CEDULA",
+    "documentNumber": "55555555",
+    "fullName": "JUAN CARLOS CIUDADANO NO PEP",
+    "isPEP": false,
+    "isActivePep": false,
+    "isFormerPep": false,
+    "totalMatches": 0,
+    "matchCount": 0,
+    "categories": [],
+    "includeFormer": true,
+    "lookbackYears": 5,
+    "matches": [],
+    "checkedSources": [
+      "CGR_DECLARACIONES_CR",
+      "ASAMBLEA_LEGISLATIVA_CR",
+      "OPENSANCTIONS_PEP_CR"
+    ],
+    "regulation": {
+      "framework": "Ley N° 7786 / Ley N° 8422 contra la Corrupción y el Enriquecimiento Ilícito en la Función Pública",
+      "lookbackYears": 5,
+      "authority": "Contraloría General de la República (CGR) / ICD Costa Rica"
+    },
+    "dateTime": "2026-11-27T17:00:00.000Z"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 5:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (no encontrado en sandbox)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "404:NotFound"
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or fullName must be provided."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+## Pruebas de sandbox
+
+Con la cuenta en modo sandbox, estos valores son deterministas:
+
+| Número de documento | Nombre completo | includeFormer | Resultado |
+| :--- | :--- | :--- | :--- |
+| `CR-105600981` | `RODRIGO ALBERTO CHAVES ROBLES` | `true` | PEP activa (`isPEP` true, categoría `HEAD_OF_STATE_OR_GOVERNMENT`) |
+| `10000001` | `RODRIGO ALBERTO CHAVES ROBLES` | `true` | PEP activa (el mismo fixture que el documento `10000001`) |
+| `10000002` | `PEP FORMER MINISTER` | `true` | Ex-PEP (`isFormerPep` true) cuando `includeFormer` es true |
+| `10000002` | `PEP FORMER MINISTER` | `false` | Resultado limpio cuando `includeFormer` es false |
+| `55555555` | `JUAN CARLOS CIUDADANO NO PEP` | `true` | No PEP (`isPEP` false, `totalMatches` 0) |
+| `99999404` | `—` | `true` | 404 `NotFound` (solo sonda de sandbox) |
+
+---
+
+### Notas
+
+- Envíe `documentNumber` o `fullName`. Los alias del documento son `id`, `dni` y `cedula`. El alias del nombre es `name`. Si no hay ninguno, la API responde 409 `MissingParameter` con el mensaje `Either documentNumber or fullName must be provided.`
+- `includeFormer` es true de forma predeterminada. Los exfuncionarios dentro de la ventana de 5 años vuelven con `status` `FORMER_PEP`, `isFormerPep` true e `isPEP` true. `false` descarta esas filas y deja solo cargos activos.
+- `documentType` toma el valor predeterminado `CEDULA`. `jurisdiction` en la carga es la etiqueta del registro `Costa Rica`. `regulation.lookbackYears` es 5.
+- Acierto activo en sandbox: documento `CR-105600981` o nombre `RODRIGO ALBERTO CHAVES ROBLES`, y también el documento `10000001`. Acierto de ex-PEP: documento `10000002` o un nombre que contenga `PEP FORMER`, `EX MINISTRO` o `FORMER MINISTER`. Limpio: documento `55555555` con nombre `JUAN CARLOS CIUDADANO NO PEP`. Un documento que contenga `99999404`, o un nombre que contenga `NOTFOUND`, responde 404 en sandbox. Una ausencia en vivo es HTTP 200 con `isPEP` false, no 404.
+- Esta ruta consulta solo Costa Rica (`CR`). Para una búsqueda transfronteriza use [PEP global](/verifik-es/background-check/world-politically-exposed-persons).
+- `checkedSources` enumera las claves de registro consultadas para esta jurisdicción. `regulation.framework` y `regulation.authority` identifican la base ALA que acompaña el resultado.

@@ -1157,6 +1157,146 @@ const sidebars = {
 				},
 				{
 					type: "doc",
+					id: "background-check/belgium-politically-exposed-persons",
+					label: "🇧🇪 Belgium - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/bolivia-politically-exposed-persons",
+					label: "🇧🇴 Bolivia - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/belarus-politically-exposed-persons",
+					label: "🇧🇾 Belarus - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/canada-politically-exposed-persons",
+					label: "🇨🇦 Canada - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/costa-rica-politically-exposed-persons",
+					label: "🇨🇷 Costa Rica - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/cuba-politically-exposed-persons",
+					label: "🇨🇺 Cuba - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/germany-politically-exposed-persons",
+					label: "🇩🇪 Germany - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/ecuador-politically-exposed-persons",
+					label: "🇪🇨 Ecuador - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/estonia-politically-exposed-persons",
+					label: "🇪🇪 Estonia - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/spain-politically-exposed-persons",
+					label: "🇪🇸 Spain - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/finland-politically-exposed-persons",
+					label: "🇫🇮 Finland - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/france-politically-exposed-persons",
+					label: "🇫🇷 France - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/guatemala-politically-exposed-persons",
+					label: "🇬🇹 Guatemala - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/honduras-politically-exposed-persons",
+					label: "🇭🇳 Honduras - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/iceland-politically-exposed-persons",
+					label: "🇮🇸 Iceland - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/lithuania-politically-exposed-persons",
+					label: "🇱🇹 Lithuania - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/latvia-politically-exposed-persons",
+					label: "🇱🇻 Latvia - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/mexico-politically-exposed-persons",
+					label: "🇲🇽 Mexico - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/nicaragua-politically-exposed-persons",
+					label: "🇳🇮 Nicaragua - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/netherlands-politically-exposed-persons",
+					label: "🇳🇱 Netherlands - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/norway-politically-exposed-persons",
+					label: "🇳🇴 Norway - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/poland-politically-exposed-persons",
+					label: "🇵🇱 Poland - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/paraguay-politically-exposed-persons",
+					label: "🇵🇾 Paraguay - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/sweden-politically-exposed-persons",
+					label: "🇸🇪 Sweden - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/el-salvador-politically-exposed-persons",
+					label: "🇸🇻 El Salvador - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/uruguay-politically-exposed-persons",
+					label: "🇺🇾 Uruguay - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/venezuela-politically-exposed-persons",
+					label: "🇻🇪 Venezuela - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
+					id: "background-check/world-politically-exposed-persons",
+					label: "🌐 Global - Politically Exposed Persons (PEP)",
+				},
+				{
+					type: "doc",
 					id: "background-check/adverse-media-google-rss",
 					label: "🌐 Adverse Media & Google News RSS",
 				},
