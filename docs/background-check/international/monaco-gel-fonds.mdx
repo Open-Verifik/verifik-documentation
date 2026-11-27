@@ -1,0 +1,200 @@
+---
+id: monaco-gel-fonds
+title: "Monaco National Fund Freezing List"
+description: "Screen a person or organization against the Monaco National Fund Freezing List published by the Principality of Monaco."
+sidebar_label: "🇲🇨 Monaco National Fund Freezing List"
+slug: /background-check/international/monaco-gel-fonds
+keywords:
+  - "v2/monaco-gel-fonds"
+  - "/v2/monaco-gel-fonds"
+  - "v2 monaco-gel-fonds"
+  - "monaco-gel-fonds"
+  - "/monaco-gel-fonds"
+  - "api/monaco-gel-fonds"
+  - "/api/monaco-gel-fonds"
+  - "api monaco-gel-fonds"
+  - "api.verifik.co/v2/monaco-gel-fonds"
+  - "https://api.verifik.co/v2/monaco-gel-fonds"
+  - "GET v2/monaco-gel-fonds"
+  - "GET /v2/monaco-gel-fonds"
+  - "Monaco National Fund Freezing List"
+  - "monaco gel fonds"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Monaco National Fund Freezing List
+
+Screen a person or organization against the **Monaco National Fund Freezing List**. The Principality of Monaco publishes this list for Monaco.
+
+Monaco publishes the national fund-freezing list of persons and entities whose assets must be frozen in the Principality.
+
+Send `fullName`, `documentNumber`, or both. At least one of the two is required. The response sets `foundInMonacoGelFonds` to `true` when the query matches a published record and to `false` when it does not. On a match, `details` includes the listed name, entity type, regime or program, measures, country, identifiers, and remarks. Use the result in KYC, AML/CFT, vendor onboarding, and payment screening. Review every match before you rely on it. This call does not replace the official list and it is not a legal determination.
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/monaco-gel-fonds
+```
+
+A successful response returns `data.fullName`, `data.firstName` and `data.lastName` when the source record splits the name, `data.documentNumber` when you sent one, `data.foundInMonacoGelFonds`, and `data.details`. On a match, `details` includes the listed name, entity type, regime or program, measures, country, identifiers, and remarks. The `signature` object includes `dateTime` and the message `Certified by Verifik.co`. When `foundInMonacoGelFonds` is `false`, `details` is an empty object.
+
+### Headers
+
+| Name          | Value              | Description     |
+| ------------- | ------------------ | --------------- |
+| Content-Type  | `application/json` | Request format  |
+| Accept        | `application/json` | Response format |
+| Authorization | `Bearer <token>`   | Verifik JWT     |
+
+### Parameters
+
+| Parameter        | Type   | Required    | Example                  | Description                                                                                                            |
+| ---------------- | ------ | ----------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| `fullName`       | string | Conditional | `SAMPLE DESIGNATED NAME` | Full legal name of the person, or the registered name of the organization. Required when `documentNumber` is not sent. |
+| `documentNumber` | string | Conditional | `A1234567`               | Identification number or corporate registration number, without spaces. Required when `fullName` is not sent.          |
+
+### Use Cases
+
+- **Sanctions screening:** Check customers, counterparties, and beneficiaries before onboarding or releasing a payment.
+- **AML/CFT reviews:** Record a screen against this jurisdiction's published measures.
+- **Audit trail:** Keep the certified response with the case file.
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/monaco-gel-fonds",
+  params: {
+    fullName: "SAMPLE DESIGNATED NAME",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/monaco-gel-fonds"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "fullName": "SAMPLE DESIGNATED NAME",
+}
+
+response = requests.get(url, headers=headers, params=params)
+response.raise_for_status()
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/monaco-gel-fonds?fullName=SAMPLE%20DESIGNATED%20NAME" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+### Response
+
+<Tabs>
+<TabItem value="200-found" label="200 (Match)">
+
+```json
+{
+  "data": {
+    "fullName": "SAMPLE DESIGNATED NAME",
+    "firstName": "SAMPLE",
+    "lastName": "DESIGNATED NAME",
+    "foundInMonacoGelFonds": true,
+    "details": {
+      "name": "SAMPLE DESIGNATED NAME",
+      "entityType": "Individual",
+      "listName": "Monaco National Fund Freezing List",
+      "sourceList": "monaco-gel-fonds",
+      "regime": "Monaco National Fund Freezing List",
+      "measures": [
+        "Asset freeze"
+      ],
+      "country": "Monaco",
+      "identifiers": [
+        "SAMPLE-ID-001"
+      ],
+      "remarks": "Sample match payload for this sanctions list."
+    }
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="200-clean" label="200 (No match)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN SAMPLE NAME",
+    "firstName": "CLEAN",
+    "lastName": "SAMPLE NAME",
+    "foundInMonacoGelFonds": false,
+    "details": {}
+  },
+  "signature": {
+    "dateTime": "2026-11-27 16:00:00",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameters)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either fullName or documentNumber must be provided"
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Notes
+
+- Send `fullName` or `documentNumber`. At least one is required. If both are missing, the API returns HTTP 409 with code `MissingParameter` and the message `Either fullName or documentNumber must be provided`.
+- `foundInMonacoGelFonds` is `true` when the query matches a record on this list and `false` when it does not. `details` is an empty object when there is no match.
+- The match example shows the response shape. A live match returns the attributes published for that record on this list.
+- A match is a screening result for compliance review. It is not a legal determination and it does not replace the official source.
+- Authenticate with a Bearer JWT in the `Authorization` header. Create or renew the JWT with the [authentication API](/authentication/renew-your-token-jwt).
+- The result reflects the list at the time of the call. Run a new request when you need a later result.
