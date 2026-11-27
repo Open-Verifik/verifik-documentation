@@ -552,6 +552,17 @@ curl -sS -X POST "https://api.verifik.co/v2/smart-reports/<REPORT_ID>/send-email
 
 ---
 
+## Gobernanza Empresarial: Atribución CECO, Team API Keys y Enlaces Firmados
+
+Al automatizar SmartReports en organizaciones multi-país o multi-unidad:
+
+- **Atribución por Centro de Costo (CECO)**: Envía el encabezado `x-cost-center: <CÓDIGO_O_ID>` en `POST /v2/smart-reports/run`, `POST /v2/smart-batches` o `POST /v2/smart-reports/:id/send-email` (o usa `defaultCostCenter` en el Sub-Equipo). Tanto llamadas API como créditos medidos de SmartReports se concilian en `GET /v2/usage/cost-center-statement?period=YYYY-MM&format=xlsx`.
+- **Team API Keys**: Autenticarse con una llave API de sub-equipo (`POST /v2/teams/:id/api-keys`) asigna la propiedad `team` al reporte generado, aplica su tope mensual y `endpointPolicy`, y exige llaves de equipo si `requireTeamApiKeys: true` está habilitado.
+- **Enlaces PDF Firmados de Corta Duración**: Llama `POST /v2/smart-reports/:id/signed-link` (cuerpo `{ "ttlSeconds": 3600 }`, máximo `86400`s) para generar una URL firmada con HMAC-SHA256 (`/v2/smart-reports/:id/download?exp=...&sig=...`) sin exponer JWTs de cliente. Los webhooks de entrega también incluyen `signedDownloadUrl`.
+- **Automatización MCP**: Los agentes en `https://ai.verifik.co/mcp` disponen de `smart_report_create_signed_link`, `usage_cost_center_statement` y `staff_audit_logs_list`.
+
+---
+
 ## Guía de manejo de errores
 
 Los endpoints de SmartReports validan los esquemas de solicitud con Joi antes de ejecutarse y verifican la propiedad del tenant y las invariantes en tiempo de ejecución durante el procesamiento. Los errores siguen la estructura `{ "message": "...", "code": "..." }`.

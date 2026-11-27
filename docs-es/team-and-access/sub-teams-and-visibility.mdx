@@ -1,0 +1,68 @@
+---
+id: sub-teams-and-visibility
+title: Sub-Equipos, Jerarquía y Visibilidad
+description: Aísla datos por país o unidad de negocio con Sub-Equipos, jerarquías parentTeam, membresías additionalTeams, llaves API por equipo y presupuestos mensuales.
+slug: /team-and-access/sub-teams-and-visibility
+keywords:
+  - sub-equipos
+  - parentTeam
+  - additionalTeams
+  - teamScopedVisibility
+  - llave api equipo
+  - presupuesto mensual
+---
+
+# Sub-Equipos, Jerarquía y Visibilidad Aislada
+
+Los **Sub-Equipos** permiten que organizaciones multi-país o multi-área compartan una misma billetera de créditos de Verifik mientras mantienen aislamiento operativo, límites de presupuesto mensuales, bloqueo de Centros de Costo (CECO) y llaves API dedicadas.
+
+---
+
+## Modelo y Jerarquía de Sub-Equipos (`parentTeam`)
+
+Cada sub-equipo admite:
+
+- **`parentTeam`**: Referencia opcional a un Sub-Equipo padre (por ejemplo, `LATAM Regional` → `Colombia Ops`, `México Ops`).
+  - Se validan ciclos para evitar jerarquías circulares.
+  - Al eliminar un equipo padre, sus hijos directos pasan automáticamente al padre superior (`null` si era raíz) y se limpia `Staff.additionalTeams`.
+- **`monthlyBudget` y `budgetEnforcement`**: Tope mensual USD estricto (`hard`) o de alerta (`soft`) reiniciado cada mes UTC, con límites opcionales por endpoint (`featureBudgets`) y recargas adicionales (`POST /v2/teams/:id/boost`).
+- **`defaultCostCenter`, `allowedCostCenters`, `enforceCostCenter`**: Estampa automáticamente el CECO predeterminado y rechaza encabezados `x-cost-center` fuera de lista antes de consumir créditos.
+- **`endpointPolicy`**: `allowlist` o `blocklist` sobre endpoints `/v2/...` aplicada tanto a tokens de staff como a Team API keys.
+
+---
+
+## Membresía Principal y Adicional (`additionalTeams`)
+
+Cada colaborador cuenta con:
+
+- **`team`**: Sub-Equipo principal (ancla por defecto al crear reportes o lotes).
+- **`additionalTeams`**: Arreglo de IDs de sub-equipos adicionales para dar visibilidad o gestión transversal entre múltiples unidades sin duplicar usuarios.
+
+---
+
+## Visibilidad Aislada (`teamScopedVisibility`)
+
+Activa el aislamiento estricto en **Equipo y Acceso → Política de Acceso** (o `PUT /v2/client-settings` con `staffAccessPolicy.teamScopedVisibility: true`):
+
+- El personal sin `team.readAll` solo puede consultar registros (`SmartReports`, `SmartBatches`, `BatchConfigurations`, `SmartReportTemplates`, `Projects`, `AppRegistrations`, `APIRequests`, `StaffAuditLogs`) pertenecientes a su conjunto efectivo de equipos (`team` + `additionalTeams` + descendientes por `parentTeam`).
+- **Plantillas compartidas**: `SmartReportTemplates`, `BatchConfigurations`, `Projects` y `ProjectFlows` admiten `visibility: "workspace"` para compartir plantillas corporativas manteniendo privados los reportes generados por cada país.
+- **Reasignación masiva**: Utiliza `POST /v2/teams/:id/assign` para asignar recursos existentes a un sub-equipo o marcarlos con `visibility: "workspace"`.
+
+---
+
+## Llaves API por Sub-Equipo (`POST /v2/teams/:id/api-keys`)
+
+Genera credenciales servidor-a-servidor vinculadas a un Sub-Equipo específico:
+
+```http
+POST https://api.verifik.co/v2/teams/{teamId}/api-keys
+Authorization: Bearer <VERIFIK_JWT>
+Content-Type: application/json
+
+{
+  "name": "co-production-worker",
+  "expiresIn": "12m"
+}
+```
+
+Toda llamada API, ejecución de SmartReport o SmartBatch con una Team API Key hereda automáticamente el `defaultCostCenter`, el presupuesto mensual, `endpointPolicy` y la propiedad `team` del sub-equipo. Cuando `requireTeamApiKeys: true` está activo, las llaves globales sin `teamId` reciben `403 team_api_key_required`.

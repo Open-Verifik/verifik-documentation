@@ -1,0 +1,72 @@
+---
+id: overview-and-roles
+title: Descripción general y roles del sistema
+description: Conoce los 8 roles integrados RBAC de Verifik, roles personalizados, políticas de endpoints, solicitudes temporales de acceso y auditoría inmutable.
+slug: /team-and-access/overview-and-roles
+keywords:
+  - roles de equipo
+  - rbac
+  - team_manager
+  - report_builder
+  - permisos
+  - staff-audit-logs
+---
+
+# Equipo y Acceso: Descripción General y Roles del Sistema
+
+Los espacios de trabajo de Verifik separan al titular de facturación (**Workspace Owner**) de los colaboradores y llaves API delegadas. El control de acceso combina **permisos por módulo y acción**, **alcance y presupuesto por Sub-Equipo**, **políticas de endpoints**, **concesiones temporales Just-in-Time (JIT)** y un **registro de auditoría inmutable**.
+
+---
+
+## Roles Integrados del Sistema
+
+Cada miembro del equipo tiene uno de **8 roles predefinidos** (o un rol personalizado mediante `POST /v2/client-roles`). Los alias heredados en español (`administrador`, `desarrollador`, `contabilidad`, `empleado`) siguen aceptándose y se normalizan automáticamente.
+
+| Slug del Rol | Perfil | Permisos Principales | Límites Clave |
+| --- | --- | --- | --- |
+| `admin` | Administrador | CRUD/ejecución/exportación completa, gestión global de equipos (`team.readAll`), API keys | No puede eliminar ajustes globales del workspace (`workspaceSettings.delete` es exclusivo del Owner) |
+| `team_manager` | Gerente de Equipo | Administra miembros, sub-equipos hijos, presupuestos, solicitudes (`team.manageOwnTeam`) y exportaciones CECO (`billingUsage.export`) | Limitado estrictamente a su `team`, `additionalTeams` y sub-equipos hijos (`parentTeam`); sin acceso a créditos, tarjetas, API keys ni otros equipos |
+| `compliance_officer` | Oficial de Cumplimiento | Aprueba o rechaza expedientes KYC/KYB, gestiona alertas de flota y exporta reportes | Sin gestión de API keys ni facturación |
+| `developer` | Desarrollador | Configura API keys, webhooks, Playground, flujos, plantillas y lotes | Sin aprobación manual KYC ni cambios de facturación |
+| `finance` | Finanzas | Administra créditos, tarjetas, suscripciones, centros de costo y estados CECO | Sin acceso a datos personales PII ni llaves API |
+| `operator` | Operador | Ejecuta consultas, SmartScan, biometría, SmartBatches, SmartLinks y flota | No administra equipos, facturación ni elimina configuraciones |
+| `report_builder` | Diseñador de Documentos | Crea y edita plantillas de SmartReports y configuraciones de lotes | Sin acceso a resultados ejecutados, PII ni API keys (`allowAccessRequests: false` por defecto) |
+| `viewer` | Observador | Solo lectura en paneles, registros, monitoreo y uso | Sin escrituras ni ejecuciones |
+
+---
+
+## Permisos Granulares y Roles Personalizados
+
+Los permisos se evalúan por par `(recurso, acción)` sobre 27 módulos y 10 acciones (`read`, `create`, `update`, `delete`, `execute`, `approve`, `export`, `manageKeys`, `readAll`, `manageOwnTeam`).
+
+1. Consulta el catálogo con `GET /v2/client-roles/catalog` o abre **Equipo y Acceso → Roles y Permisos**.
+2. Clona un preset con `POST /v2/client-roles/:id/duplicate` o crea uno con `POST /v2/client-roles`.
+3. Configura restricciones de endpoints (`endpointPolicy`) y políticas de auto-solicitud (`allowAccessRequests`, `requestableResources`). Ningún colaborador puede otorgar permisos superiores a su propio techo efectivo.
+
+---
+
+## Solicitudes Just-in-Time y Revocación
+
+Cuando un colaborador intenta operar un módulo restringido o excede el presupuesto de su sub-equipo, la API responde `403` con `canRequestAccess: true`:
+
+- Solicita acceso vía `POST /v2/staff-access-requests` (`24h`, `7d`, `30d` o `permanent`).
+- Los administradores aprueban en todo el workspace; un `team_manager` solo puede aprobar, rechazar o revocar solicitudes de su propio sub-equipo o sub-equipos hijos (`403:team_out_of_scope` en caso contrario).
+- `POST /v2/staff-access-requests/:id/revoke` revoca de inmediato una concesión activa.
+
+---
+
+## Registro de Auditoría Inmutable (`GET /v2/staff-audit-logs`)
+
+Toda mutación administrativa registra un evento inmutable consultable en formato JSON o CSV:
+
+```http
+GET https://api.verifik.co/v2/staff-audit-logs?action=staff.update&limit=50&format=json
+Authorization: Bearer <VERIFIK_JWT>
+```
+
+Adminte filtros `team`, `action`, `resourceType`, `startDate`, `endDate`, `page`, `limit` (`<= 200`) y `format=json|csv`. Los Gerentes de Equipo y colaboradores con alcance limitado solo ven eventos de sus sub-equipos administrados o acciones propias.
+
+## Siguientes Pasos
+
+- [Sub-Equipos, Jerarquía y Visibilidad](/verifik-es/team-and-access/sub-teams-and-visibility)
+- [Guía de Configuración Multi-País](/verifik-es/team-and-access/multi-country-setup-guide)

@@ -273,10 +273,30 @@ Content-Length: 148320
 | `409` | `row_not_found` | The resolved `rowIndex` does not exist in the batch. |
 | `422` | `UnprocessableEntity` | Mongoose validation error. |
 
+### Short-Lived Signed Links (Up to 24h)
+
+Need to share a PDF download URL with an external portal, email recipient, or ticket without exposing your account Bearer JWT?
+
+1. Mint a signed link via `POST /v2/smart-reports/{id}/signed-link` (requires `smartReportsResults.export`):
+
+```json
+{
+  "ttlSeconds": 3600,
+  "rowIndex": 0
+}
+```
+
+- `ttlSeconds`: Optional integer from `60` to `86400` seconds (24 hours max; defaults to `3600`).
+- Response returns `{ "data": { "reportId", "url", "relativeUrl", "expiresAt", "ttlSeconds" } }`.
+
+2. Anyone holding that URL can `GET /v2/smart-reports/{id}/download?exp=<epoch>&sig=<hmac>` until `expiresAt` without an `Authorization` header. Expired or tampered links return `403` (`link_expired` / `invalid_signature`), and every signed download is recorded in the tenant `StaffAuditLog` (`smart_report.signed_download`).
+
+---
+
 ### Webhooks & MCP Integration
 
-- **Webhooks**: The `downloadUrl` path (`/v2/smart-reports/{id}/download`) is returned by [Run a Smart Report](/smart-reports/run-a-smart-report), [Retrieve a Smart Report](/smart-reports/retrieve-a-smart-report), and [Generate Smart Report PDF](/smart-reports/generate-smart-report-pdf), as well as report lifecycle notifications documented in [Smart Reports Webhooks](/resources/smart-reports-webhooks).
-- **MCP Equivalent**: AI agents can fetch report PDF downloads using the `smart_report_download_pdf` MCP tool. See [MCP and AI Agents](/smart-reports/mcp-and-ai-agents).
+- **Webhooks**: Both `downloadUrl` (`/v2/smart-reports/{id}/download`) and `signedDownloadUrl` (24h pre-signed link) are emitted in lifecycle webhook payloads documented in [Smart Reports Webhooks](/resources/smart-reports-webhooks).
+- **MCP Equivalent**: AI agents can fetch PDFs with `smart_report_download_pdf` or mint pre-signed links via `smart_report_create_signed_link`. See [MCP and AI Agents](/smart-reports/mcp-and-ai-agents).
 
 ### Related
 

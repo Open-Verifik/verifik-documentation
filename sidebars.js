@@ -2413,6 +2413,16 @@ const sidebars = {
 				},
 				{
 					type: "category",
+					label: "Team & Access Management",
+					collapsible: true,
+					items: [
+						"team-and-access/overview-and-roles",
+						"team-and-access/sub-teams-and-visibility",
+						"team-and-access/multi-country-setup-guide",
+					],
+				},
+				{
+					type: "category",
 					label: "Webhooks",
 					collapsible: true,
 					items: [
