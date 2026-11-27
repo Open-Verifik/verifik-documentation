@@ -1,0 +1,210 @@
+---
+id: panama-jtia-license
+title: "巴拿马 — 工程与建筑执照（JTIA）"
+description: "按身份证、执照或姓名核验 JTIA 的工程、建筑或技术执照。"
+sidebar_label: "🇵🇦 巴拿马 — JTIA 执照"
+slug: "/identity/panama-jtia-license"
+keywords:
+  - "v2/pa/professional/jtia"
+  - "/v2/pa/professional/jtia"
+  - "api.verifik.co/v2/pa/professional/jtia"
+  - "GET /v2/pa/professional/jtia"
+  - "GET https://api.verifik.co/v2/pa/professional/jtia"
+  - "panama_api_jtia_license"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 巴拿马 — 工程与建筑执照（JTIA）
+
+**JTIA 执照**查询读取工程师、建筑师和技术人员的适任。发送 `documentNumber`（或 `cedula`）、`licenseNumber`（或 `idoneidad`）或 `fullName` 之一。无法规范化的身份证返回 409。理事会没有记录时为 404 `NotFound`。
+
+## 调用返回的内容
+
+- 规范化身份证
+- `licenseNumber` 与 `fullName`
+- `status`
+
+## 使用场景
+
+- 施工许可前核验工程师。
+- 没有执照号时按身份证检索。
+- 只有合同时按姓名检索。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/pa/professional/jtia
+```
+
+命中含规范化后的身份证、姓名、执照和状态。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **条件必填** | `8-224-2444` | 巴拿马身份证，也可用 `cedula`。API 会规范化（例如 `8-224-2444`）。 |
+| `licenseNumber` | string | **条件必填** | `JTIA-100` | 适任或执照。别名 `idoneidad`。 |
+| `fullName` | string | **条件必填** | `ANA RUIZ` | 姓名，3 到 160 个字符。只发它即可。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/pa/professional/jtia",
+  params: {
+    documentNumber: "8-224-2444",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/pa/professional/jtia"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "8-224-2444",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/pa/professional/jtia?documentNumber=8-224-2444" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "documentNumber": "8-0224-02444",
+    "fullName": "ANA RUIZ",
+    "licenseNumber": "JTIA-100",
+    "status": "IDONEO"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "One of cedula/documentNumber, idoneidad/licenseNumber, or fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- 发送身份证、执照或姓名。
+- 格式无效的身份证为 409。
+- 没有 JTIA 记录时为 404 `NotFound`。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `documentNumber: "8-224-2444"` | 含规范化身份证和执照的 200。 |
+| 缺少必填值 | Omit cédula, license, and name | 409 MissingParameter。 |
+| 未知的值 | `documentNumber: "1-1-1"` | 身份证无法规范化时为 409，JTIA 没有记录时为 404。 |
+
+401 when the bearer token is missing or rejected.

@@ -1,0 +1,214 @@
+---
+id: peru-renacyt
+title: "페루 — SUNEDU 학위와 CONCYTEC RENACYT"
+description: "페루 대학 학위와 CONCYTEC RENACYT 연구자 등록을 확인합니다."
+sidebar_label: "🇵🇪 페루 — RENACYT와 학위"
+slug: "/identity/peru-renacyt"
+keywords:
+  - "v2/pe/education/renacyt"
+  - "/v2/pe/education/renacyt"
+  - "api.verifik.co/v2/pe/education/renacyt"
+  - "GET /v2/pe/education/renacyt"
+  - "GET https://api.verifik.co/v2/pe/education/renacyt"
+  - "peru_api_renacyt_education"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 페루 — SUNEDU 학위와 CONCYTEC RENACYT
+
+**RENACYT** 조회는 SUNEDU 학위와 CONCYTEC 연구자 등록을 읽습니다. `documentNumber`(별칭 `dni`), `codigoRegistro`, `orcid`, `fullName` 중 하나 이상을 보냅니다. 문서 번호를 보내면 `documentType` 기본값은 `DNI`입니다.
+
+## 응답에 포함되는 값
+
+- 학위와 연구자 필드
+- 있으면 `codigoRegistro`와 `orcid`
+- `fullName`과 `documentNumber`
+
+## 사용 사례
+
+- 지원금 전에 연구자를 확인합니다.
+- ORCID를 DNI와 맞춥니다.
+- 채용 파일용 RENACYT 코드를 읽습니다.
+
+---
+
+## API 레퍼런스
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/pe/education/renacyt
+```
+
+일치에는 학위, RENACYT 코드, ORCID가 있을 수 있습니다. 행이 없으면 404 `NotFound`입니다.
+
+### Headers
+
+| 이름 | 값 | 설명 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 요청 형식 |
+| Accept | `application/json` | 응답 형식 |
+| Authorization | `Bearer <token>` | 클라이언트 JWT |
+
+### Parameters
+
+| 이름 | 유형 | 필수 | 예시 | 설명 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **조건부** | `12345678` | DNI 또는 다른 번호. 별칭 `dni`. 기본 `documentType`은 `DNI`. `CE`, `PASAPORTE`, `PTP`도 됩니다. |
+| `codigoRegistro` | string | **조건부** | `REN-100` | RENACYT 등록 코드. 이것만으로 충분합니다. |
+| `orcid` | string | **조건부** | `0000-0002-1825-0097` | ORCID 10–30자. 이것만으로 충분합니다. |
+| `fullName` | string | **조건부** | `LUCIA QUISPE` | 연구자 이름. 이것만으로 충분합니다. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/pe/education/renacyt",
+  params: {
+    documentType: "DNI",
+    documentNumber: "12345678",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/pe/education/renacyt"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "DNI",
+    "documentNumber": "12345678",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/pe/education/renacyt?documentType=DNI&documentNumber=12345678" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (레코드 있음)">
+
+```json
+{
+  "data": {
+    "documentType": "DNI",
+    "documentNumber": "12345678",
+    "fullName": "LUCIA QUISPE",
+    "codigoRegistro": "REN-100",
+    "orcid": "0000-0002-1825-0097"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (파라미터 누락)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one of documentNumber (or dni), codigoRegistro, orcid, or fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (없음)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (인증 실패)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (원천 사용 불가)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 참고
+
+- 문서, RENACYT 코드, ORCID 또는 이름을 보냅니다.
+- 문서 번호의 기본 유형은 `DNI`입니다.
+- 등록 행이 없으면 404 `NotFound`입니다.
+- `Authorization` 헤더에 Bearer JWT를 보냅니다.
+- JSON 예시는 필드 모양입니다. 실제 호출은 보낸 값의 레코드를 반환합니다.
+- 캐시 우회 플래그는 보내지 않습니다. 이 페이지는 클라이언트 파라미터만 설명합니다.
+
+---
+
+## 샌드박스
+
+| 시나리오 | 파라미터 | 결과 |
+| :--- | :--- | :--- |
+| 원천에 기록 있음 | `documentType: "DNI"`, `documentNumber: "12345678"` | 학위 또는 연구자 필드가 있는 200. |
+| 필수 값 누락 | Omit every search value | 409 MissingParameter. |
+| 알 수 없는 값 | `documentNumber: "00000000"` | SUNEDU와 RENACYT 모두 행이 없으면 404 NotFound. |
+
+401 when the bearer token is missing or rejected.

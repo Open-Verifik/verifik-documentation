@@ -1,0 +1,214 @@
+---
+id: peru-renacyt
+title: "Perú — Grados SUNEDU y RENACYT de CONCYTEC"
+description: "Verifica grados universitarios peruanos y el registro de investigadores RENACYT de CONCYTEC."
+sidebar_label: "🇵🇪 Perú — RENACYT y grados"
+slug: "/identity/peru-renacyt"
+keywords:
+  - "v2/pe/education/renacyt"
+  - "/v2/pe/education/renacyt"
+  - "api.verifik.co/v2/pe/education/renacyt"
+  - "GET /v2/pe/education/renacyt"
+  - "GET https://api.verifik.co/v2/pe/education/renacyt"
+  - "peru_api_renacyt_education"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Perú — Grados SUNEDU y RENACYT de CONCYTEC
+
+La consulta **RENACYT** lee grados SUNEDU y el registro de investigadores de CONCYTEC. Envíe al menos uno de `documentNumber` (alias `dni`), `codigoRegistro`, `orcid` o `fullName`. Si envía un número, `documentType` por defecto es `DNI`.
+
+## Qué devuelve la llamada
+
+- Campos de grado e investigador
+- `codigoRegistro` y `orcid` si existen
+- `fullName` y `documentNumber`
+
+## Casos de uso
+
+- Confirme un investigador antes de una beca.
+- Cruce un ORCID con un DNI.
+- Lea el código RENACYT para un expediente de contratación.
+
+---
+
+## Referencia de la API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/pe/education/renacyt
+```
+
+Un acierto puede incluir el grado, el código RENACYT y el ORCID. Sin fila es 404 `NotFound`.
+
+### Headers
+
+| Nombre | Valor | Descripción |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato de la solicitud |
+| Accept | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <tu_token>` | JWT del cliente |
+
+### Parameters
+
+| Nombre | Tipo | Requerido | Ejemplo | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Condicional** | `12345678` | DNI u otro número. Alias: `dni`. `documentType` por defecto es `DNI`. También `CE`, `PASAPORTE`, `PTP`. |
+| `codigoRegistro` | string | **Condicional** | `REN-100` | Código de registro RENACYT. Basta por sí solo. |
+| `orcid` | string | **Condicional** | `0000-0002-1825-0097` | ORCID, de 10 a 30 caracteres. Basta por sí solo. |
+| `fullName` | string | **Condicional** | `LUCIA QUISPE` | Nombre del investigador. Basta por sí solo. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/pe/education/renacyt",
+  params: {
+    documentType: "DNI",
+    documentNumber: "12345678",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/pe/education/renacyt"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "DNI",
+    "documentNumber": "12345678",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/pe/education/renacyt?documentType=DNI&documentNumber=12345678" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentType": "DNI",
+    "documentNumber": "12345678",
+    "fullName": "LUCIA QUISPE",
+    "codigoRegistro": "REN-100",
+    "orcid": "0000-0002-1825-0097"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one of documentNumber (or dni), codigoRegistro, orcid, or fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (No encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (No autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fuente no disponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Envíe un documento, un código RENACYT, un ORCID o un nombre.
+- Los números de documento usan por defecto el tipo `DNI`.
+- Sin fila en el registro es 404 `NotFound`.
+- Envíe un JWT Bearer en el encabezado `Authorization`.
+- El JSON de ejemplo ilustra los campos. Una llamada real devuelve el registro de los valores que envíe.
+- No envíe un indicador de omisión de caché. Esta página documenta solo los parámetros de cliente.
+
+---
+
+## Sandbox
+
+| Escenario | Parámetros | Resultado |
+| :--- | :--- | :--- |
+| Registro en la fuente | `documentType: "DNI"`, `documentNumber: "12345678"` | 200 con campos de grado o investigador. |
+| Falta un valor obligatorio | Omit every search value | 409 MissingParameter. |
+| Valor desconocido | `documentNumber: "00000000"` | 404 NotFound si ni SUNEDU ni RENACYT tienen fila. |
+
+401 when the bearer token is missing or rejected.

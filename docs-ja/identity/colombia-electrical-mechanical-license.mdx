@@ -1,0 +1,215 @@
+---
+id: colombia-electrical-mechanical-license
+title: "コロンビア — 電気・機械工学の免許"
+description: "コロンビアの電気・機械および関連工学の免許を市民証、免許番号、または氏名で確認します。"
+sidebar_label: "🇨🇴 コロンビア — 電気・機械免許"
+slug: "/identity/colombia-electrical-mechanical-license"
+keywords:
+  - "v2/co/consejo-profesional"
+  - "/v2/co/consejo-profesional"
+  - "api.verifik.co/v2/co/consejo-profesional"
+  - "GET /v2/co/consejo-profesional"
+  - "GET https://api.verifik.co/v2/co/consejo-profesional"
+  - "colombia_api_electrical_mechanical_engineering"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# コロンビア — 電気・機械工学の免許
+
+**電気・機械工学の免許**照会は Consejo Profesional Nacional de Ingenierías Eléctrica, Mecánica y Profesiones Afines を読みます。`documentNumber`、`licenseNumber`、`fullName` のいずれかを送ります。応答には免許、専門、状態、制裁の有無があります。
+
+## 応答に含まれる項目
+
+- `licenseNumber` と `specialty`
+- VIGENTE などの `status`
+- `isRegistered` と `hasSanctions`
+- 行が複数なら `registrations`
+
+## 用途
+
+- 現場作業の前に電気または機械の技術者を確認します。
+- 免許の横の懲戒を読みます。
+- 契約の氏名を評議会の行と突き合わせます。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/consejo-profesional
+```
+
+一致には `fullName`、`licenseNumber`、`specialty`、`status`、`isRegistered`、`hasSanctions` があります。評議会に行が無いと 404 `NotFound` です。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **条件付き** | `80123456` | コロンビアの身分番号。5文字から15文字。`documentType` は `CC`、`CE`、`TI`、`PEP`、`PPT` です。 |
+| `licenseNumber` | string | **条件付き** | `AN205-27910` | 専門免許番号。例: AN205-27910。これだけで足ります。 |
+| `fullName` | string | **条件付き** | `ANA PEREZ` | 技術者の氏名または姓。3文字から160文字。これだけで足ります。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/consejo-profesional",
+  params: {
+    documentNumber: "80123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/consejo-profesional"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "80123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/consejo-profesional?documentNumber=80123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "80123456",
+    "fullName": "ANA MARIA PEREZ",
+    "licenseNumber": "AN205-27910",
+    "specialty": "INGENIERIA ELECTRICA",
+    "status": "VIGENTE",
+    "isRegistered": true,
+    "hasSanctions": false
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one of documentNumber, licenseNumber, or fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (該当なし)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- `documentNumber`、`licenseNumber`、`fullName` の少なくとも一つを送ります。
+- 評議会に行が無いときは空の 200 ではなく HTTP 404 です。
+- `documentType` は任意です。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `documentNumber: "80123456"` | 免許、専門、制裁フラグ付きの 200。 |
+| 必須値が無い | Omit every search value | 409 MissingParameter。 |
+| 不明な値 | `documentNumber: "000000000"` | 評議会に行が無いと 404 NotFound。 |
+
+401 when the bearer token is missing or rejected.

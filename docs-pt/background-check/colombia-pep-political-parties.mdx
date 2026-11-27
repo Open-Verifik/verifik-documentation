@@ -1,0 +1,222 @@
+---
+id: colombia-pep-political-parties
+title: "Colômbia — PEP dirigentes de partidos políticos"
+description: "Filtre dirigentes de partidos políticos da Colômbia."
+sidebar_label: "Colômbia — PEP dirigentes de partidos políticos"
+slug: "/background-check/colombia-pep-political-parties"
+keywords:
+  - "v2/co/pep/partidos-politicos"
+  - "/v2/co/pep/partidos-politicos"
+  - "api.verifik.co/v2/co/pep/partidos-politicos"
+  - "GET /v2/co/pep/partidos-politicos"
+  - "GET https://api.verifik.co/v2/co/pep/partidos-politicos"
+  - "colombia_api_pep_partidos_politicos"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colômbia — PEP dirigentes de partidos políticos
+
+Filtre dirigentes de partidos políticos da Colômbia.
+
+## O que a chamada devolve
+
+- `isPEP`
+- `matches`
+- `fullName` e `documentNumber`
+- `matches` vazio numa ausência limpa
+
+## Casos de uso
+
+- Filtre um diretório PEP da Colômbia antes da admissão.
+- Guarde quem não está listado como HTTP 200.
+- Busque por nome ou por número.
+
+---
+
+## Referência da API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/pep/partidos-politicos
+```
+
+Um acerto põe `isPEP` em true. Quem simplesmente não está neste diretório é HTTP 200 com `isPEP` false e `matches` vazio. Isso não é 404.
+
+### Headers
+
+| Nome | Valor | Descrição |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato da solicitação |
+| Accept | `application/json` | Formato da resposta |
+| Authorization | `Bearer <seu_token>` | JWT do cliente |
+
+### Parameters
+
+| Nome | Tipo | Obrigatório | Exemplo | Descrição |
+| :--- | :--- | :--- | :--- | :--- |
+| `fullName` | string | **Condicional** | `MARIA LOPEZ` | Nome. Basta sozinho. `partyName`, `entityName` ou `country` também são aceitos quando o diretório os tem. |
+| `documentNumber` | string | **Condicional** | `80123456` | Identificador de 4 a 30 caracteres. |
+| `documentType` | string | Não | `CC` | Opcional: `CC`, `NIT`, `CE`, `PAS`, `TI`, `CD`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/pep/partidos-politicos",
+  params: {
+    fullName: "MARIA LOPEZ",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/pep/partidos-politicos"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "fullName": "MARIA LOPEZ",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/pep/partidos-politicos?fullName=MARIA%20LOPEZ" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA LOPEZ",
+    "documentNumber": "80123456",
+    "isPEP": true,
+    "matches": [
+      {
+        "fullName": "MARIA LOPEZ"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parâmetro ausente)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one search parameter (documentNumber, fullName, partyName, entityName, or country) must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (Sem correspondência)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN NAME",
+    "isPEP": false,
+    "matches": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Não autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fonte indisponível)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Uma ausência limpa é HTTP 200 com `isPEP` false.
+- Envie pelo menos um valor de busca.
+- Não mapeie esse 200 para 404.
+- Envie um JWT Bearer no cabeçalho `Authorization`.
+- O JSON de exemplo ilustra os campos. Uma chamada real devolve o registro dos valores enviados.
+- Não envie um indicador de bypass de cache. Esta página documenta apenas os parâmetros de cliente.
+
+---
+
+## Sandbox
+
+| Cenário | Parâmetros | Resultado |
+| :--- | :--- | :--- |
+| Registro na fonte | `fullName: "MARIA LOPEZ"` | 200 com isPEP true num acerto. |
+| Valor obrigatório ausente | Omit every search value | 409 se nenhum valor for enviado. |
+| Valor desconhecido | `fullName: "CLEAN NAME"` | 200 com isPEP false. A ausência limpa não é 404. |
+
+401 when the bearer token is missing or rejected.

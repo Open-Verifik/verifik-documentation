@@ -1,0 +1,211 @@
+---
+id: colombia-cedula-vigencia
+title: "Colômbia — Estado da cédula (CC)"
+description: "Lê a vigência na Registraduría de uma cédula colombiana: se o número existe e se o titular consta como vivo."
+sidebar_label: "🇨🇴 Colômbia — Estado da cédula"
+slug: "/identity/colombia-cedula-vigencia"
+keywords:
+  - "v2/co/cedula/vigencia"
+  - "/v2/co/cedula/vigencia"
+  - "api.verifik.co/v2/co/cedula/vigencia"
+  - "GET /v2/co/cedula/vigencia"
+  - "GET https://api.verifik.co/v2/co/cedula/vigencia"
+  - "colombia_api_identity_lookup_vigencia"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colômbia — Estado da cédula (CC)
+
+A consulta de **estado da cédula na Colômbia** lê a vigência da Registraduría. Envie `documentNumber`. A resposta diz se o número existe e se o titular consta como vivo, com o texto de estado publicado pelo registro. Use-a quando a admissão precisa do estado atual da CC antes de uma consulta de identidade mais ampla.
+
+## O que a chamada devolve
+
+- `documentType` — CC
+- `documentNumber` — a cédula enviada
+- `exists` — se o registro tem o número
+- `isAlive` — true, false ou null
+- `documentStatus` — o texto de vigência do registro
+
+## Casos de uso
+
+- Confirme que a CC está no registro antes de abrir uma conta.
+- Separe um registro de pessoa falecida de uma cédula vigente no KYC.
+- Guarde o texto de estado junto do número do documento.
+
+---
+
+## Referência da API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/cedula/vigencia
+```
+
+Uma resposta bem-sucedida inclui `documentType` (CC), `documentNumber`, `exists`, `isAlive` e `documentStatus`. `exists` é false quando o registro diz que o número não consta. `isAlive` é true, false ou null se a fonte não resolver essa pergunta. Use-a num dossiê KYC que precise da vigência atual.
+
+### Headers
+
+| Nome | Valor | Descrição |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato da solicitação |
+| Accept | `application/json` | Formato da resposta |
+| Authorization | `Bearer <seu_token>` | JWT do cliente |
+
+### Parameters
+
+| Nome | Tipo | Obrigatório | Exemplo | Descrição |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Sim** | `1121329661` | Cédula de ciudadanía colombiana, de 5 a 10 dígitos, sem espaços nem pontuação. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/cedula/vigencia",
+  params: {
+    documentNumber: "1121329661",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/cedula/vigencia"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "1121329661",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/cedula/vigencia?documentNumber=1121329661" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "1121329661",
+    "exists": true,
+    "isAlive": true,
+    "documentStatus": "VIGENTE"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parâmetro ausente)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing documentNumber"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Não encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Não autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fonte indisponível)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- `documentNumber` é obrigatório e deve ter de 5 a 10 caracteres.
+- `isAlive` pode ser null se o registro devolver um estado que não define vida ou morte.
+- Esta rota é a consulta de vigência. Não substitui um perfil completo do cidadão.
+- Envie um JWT Bearer no cabeçalho `Authorization`.
+- O JSON de exemplo ilustra os campos. Uma chamada real devolve o registro dos valores enviados.
+- Não envie um indicador de bypass de cache. Esta página documenta apenas os parâmetros de cliente.
+
+---
+
+## Sandbox
+
+| Cenário | Parâmetros | Resultado |
+| :--- | :--- | :--- |
+| Registro na fonte | `documentNumber: "1121329661"` | 200 com os campos acima. |
+| Valor obrigatório ausente | Omit `documentNumber` | 409 MissingParameter. |
+| Valor desconhecido | `documentNumber: "0000000000"` | 404 NotFound quando a fonte não tem o registro. |
+
+401 when the bearer token is missing or rejected.

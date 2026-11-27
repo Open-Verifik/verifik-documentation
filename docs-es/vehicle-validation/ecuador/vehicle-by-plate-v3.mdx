@@ -1,0 +1,219 @@
+---
+id: vehicle-by-plate-v3
+title: "Ecuador — Vehículo por placa (v3)"
+description: "Lee un vehículo ecuatoriano por placa en GET /v3/ec/vehiculo/placa, con identificación, revision y technicalSheet."
+sidebar_label: "🇪🇨 Ecuador — Vehículo por placa v3"
+slug: "/vehicle-validation/ecuador/vehicle-by-plate-v3"
+keywords:
+  - "v3/ec/vehiculo/placa"
+  - "/v3/ec/vehiculo/placa"
+  - "api.verifik.co/v3/ec/vehiculo/placa"
+  - "GET /v3/ec/vehiculo/placa"
+  - "GET https://api.verifik.co/v3/ec/vehiculo/placa"
+  - "ecuador_api_vehicle_v3"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Ecuador — Vehículo por placa (v3)
+
+La consulta de **vehículo v3 de Ecuador** es `GET /v3/ec/vehiculo/placa`. `plate` es obligatoria. El cuerpo incluye campos de identificación (`vin`, `brand`, `model`, `year`, `color` y datos de placa), un objeto `revision` con fechas de inspección y un `technicalSheet` con motor, desempeño y dimensiones.
+
+## Qué devuelve la llamada
+
+- Identificación: `vin`, `brand`, `model`, `year`, `color`
+- `revision` con inspecciones
+- `technicalSheet.engine`, `performance` y `dimensions`
+
+## Casos de uso
+
+- Confirme un vehículo antes del seguro.
+- Lea el último año de inspección.
+- Guarde el VIN con la placa.
+
+---
+
+## Referencia de la API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v3/ec/vehiculo/placa
+```
+
+Espere `plate`, campos de identificación, `revision` y `technicalSheet`. Una placa desconocida es 404 `NotFound`.
+
+### Headers
+
+| Nombre | Valor | Descripción |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato de la solicitud |
+| Accept | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <tu_token>` | JWT del cliente |
+
+### Parameters
+
+| Nombre | Tipo | Requerido | Ejemplo | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| `plate` | string | **Sí** | `ABC1234` | Placa ecuatoriana. Obligatoria. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v3/ec/vehiculo/placa",
+  params: {
+    plate: "ABC1234",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v3/ec/vehiculo/placa"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "plate": "ABC1234",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v3/ec/vehiculo/placa?plate=ABC1234" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "plate": "ABC1234",
+    "vin": "9BWZZZ377VT004251",
+    "brand": "CHEVROLET",
+    "model": "SAIL",
+    "year": "2020",
+    "color": "BLANCO",
+    "revision": {
+      "lastInspectionYear": "2024",
+      "inspections": []
+    },
+    "technicalSheet": {
+      "engine": {},
+      "performance": {},
+      "dimensions": {}
+    }
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"plate\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (No encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (No autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fuente no disponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- La ruta es versión 3: `/v3/ec/vehiculo/placa`.
+- `plate` es el único parámetro obligatorio.
+- Una placa desconocida es 404 `NotFound`.
+- Envíe un JWT Bearer en el encabezado `Authorization`.
+- El JSON de ejemplo ilustra los campos. Una llamada real devuelve el registro de los valores que envíe.
+- No envíe un indicador de omisión de caché. Esta página documenta solo los parámetros de cliente.
+
+---
+
+## Sandbox
+
+| Escenario | Parámetros | Resultado |
+| :--- | :--- | :--- |
+| Registro en la fuente | `plate: "ABC1234"` | 200 con identificación, revision y technicalSheet. |
+| Falta un valor obligatorio | Omit `plate` | 409 MissingParameter. |
+| Valor desconocido | `plate: "ZZZ0000"` | 404 NotFound si la placa es desconocida. |
+
+401 when the bearer token is missing or rejected.

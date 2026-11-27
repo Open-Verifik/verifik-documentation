@@ -1,0 +1,216 @@
+---
+id: scan-gpt
+title: "Scan Agent"
+description: "Extract document fields with Scan Agent at POST /v2/ocr/scan-gpt. image is required. validationMethod on the record is SCAN_AGENT."
+sidebar_label: "Scan Agent"
+slug: "/ocr-engines/scan-gpt"
+keywords:
+  - "v2/ocr/scan-gpt"
+  - "/v2/ocr/scan-gpt"
+  - "api.verifik.co/v2/ocr/scan-gpt"
+  - "POST /v2/ocr/scan-gpt"
+  - "POST https://api.verifik.co/v2/ocr/scan-gpt"
+  - "ocr_scan_gpt"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Scan Agent
+
+**Scan Agent** extracts structured fields from a document image. Call **POST** `https://api.verifik.co/v2/ocr/scan-gpt`. `image` is required. `documentType`, `backImage`, and `template` are optional. There is no `country` field on this body. The stored extraction sets `validationMethod` to `SCAN_AGENT`.
+
+## What the call returns
+
+- Extracted `documentType`, `documentNumber`, and name
+- `validationMethod` — `SCAN_AGENT`
+
+## Use cases
+
+- Read an identity document from one image.
+- Add the back image when the card has a second side.
+- Pin a template when the layout is known.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/ocr/scan-gpt
+```
+
+A hit includes the extracted document fields and `validationMethod` `SCAN_AGENT`. The URL stays `/v2/ocr/scan-gpt`.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <your_token>` | Client JWT |
+
+### Parameters
+
+| Name | Type | Required | Example | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `image` | string | **Yes** | `data:image/jpeg;base64,AAAA` | Front image as base64 or a data URI. Required. |
+| `documentType` | string | No | `CC` | Optional document family, such as `CC` or `DNI`. |
+| `backImage` | string | No | `data:image/jpeg;base64,BBBB` | Optional back image. |
+| `template` | string | No | `template_id` | Optional template id. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/ocr/scan-gpt",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+  data: {
+    "image": "data:image/jpeg;base64,AAAA",
+    "documentType": "CC"
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ocr/scan-gpt"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+payload = {
+    "image": "data:image/jpeg;base64,AAAA",
+    "documentType": "CC",
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/ocr/scan-gpt" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{"image":"data:image/jpeg;base64,AAAA","documentType":"CC"}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Record found)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "1234567890",
+    "fullName": "MARIA LOPEZ",
+    "validationMethod": "SCAN_AGENT"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"image\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Unauthorized)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Source unavailable)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- `image` is required. `documentType`, `backImage`, and `template` are optional.
+- Do not send a country field. This body does not accept one.
+- The recorded method is `SCAN_AGENT` and the URL remains `/v2/ocr/scan-gpt`.
+- Send a Bearer JWT in the `Authorization` header.
+- The JSON sample illustrates the fields. A live call returns the record for the values you send.
+- Do not send a cache-bypass flag. This page documents only the client parameters.
+
+---
+
+## Sandbox
+
+| Scenario | Parameters | Result |
+| :--- | :--- | :--- |
+| Record on file | `image` plus `documentType: "CC"` | 200 with extracted fields and validationMethod SCAN_AGENT. |
+| Missing required value | Omit `image` | 409 MissingParameter. |
+| Unknown value | `image` and `backImage` | 200 when a back image is also sent. |
+
+401 when the bearer token is missing or rejected.

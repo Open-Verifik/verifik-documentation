@@ -1,0 +1,213 @@
+---
+id: colombia-chemical-engineering-license
+title: "コロンビア — 化学工学の免許（CPIQ）"
+description: "文書番号または免許番号でコロンビア CPIQ の化学工学免許を照会します。氏名だけでは拒否されます。"
+sidebar_label: "🇨🇴 コロンビア — CPIQ 免許"
+slug: "/identity/colombia-chemical-engineering-license"
+keywords:
+  - "v2/co/cpiq"
+  - "/v2/co/cpiq"
+  - "api.verifik.co/v2/co/cpiq"
+  - "GET /v2/co/cpiq"
+  - "GET https://api.verifik.co/v2/co/cpiq"
+  - "colombia_api_cpiq"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# コロンビア — 化学工学の免許（CPIQ）
+
+**CPIQ 免許**照会は Consejo Profesional de Ingeniería Química を読みます。`documentNumber` または `licenseNumber` を送ります。モジュールは氏名では検索しません。`fullName` だけだと HTTP 409 `MissingParameter` とメッセージ `Either documentNumber or licenseNumber must be provided` が返ります。一致には免許、決議、状態、制裁の項目があります。
+
+## 応答に含まれる項目
+
+- `licenseNumber` と `resolutionNumber`
+- `status` と `isActive`
+- `sanctionType` と `hasSanctions`
+
+## 用途
+
+- 市民証または CPIQ 免許で化学技術者を確認します。
+- 評議会の前に氏名だけの検索を拒否します。
+- 評議会が公開する制裁日を読みます。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/cpiq
+```
+
+一致には `fullName`、`licenseNumber`、`resolutionNumber`、`status`、`sanctionType`、`isRegistered`、`hasSanctions` があります。CPIQ に行が無いと 404 `NotFound` です。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **条件付き** | `79876543` | 身元番号。`licenseNumber` を省くと必須です。`fullName` だけでは 409 です。 |
+| `licenseNumber` | string | **条件付き** | `PQ-10293` | CPIQ の専門免許番号。`documentNumber` を省くと必須です。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/cpiq",
+  params: {
+    documentNumber: "79876543",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/cpiq"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "79876543",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/cpiq?documentNumber=79876543" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "79876543",
+    "fullName": "LUIS GOMEZ",
+    "licenseNumber": "PQ-10293",
+    "profession": "INGENIERIA QUIMICA",
+    "status": "VIGENTE",
+    "isRegistered": true,
+    "hasSanctions": false
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber or licenseNumber must be provided"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (該当なし)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- この経路で `fullName` は検索キーではありません。氏名だけは 409 です。
+- `documentNumber` または `licenseNumber` を送ります。
+- CPIQ に行が無いと HTTP 404 です。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `documentNumber: "79876543"` | 免許と制裁項目付きの 200。 |
+| 必須値が無い | `fullName: "LUIS GOMEZ"` only | 氏名だけでは受け付けず 409。 |
+| 不明な値 | `documentNumber: "000000000"` | CPIQ に行が無いと 404 NotFound。 |
+
+401 when the bearer token is missing or rejected.

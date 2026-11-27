@@ -1,0 +1,214 @@
+---
+id: colombia-cpae-license
+title: "Colômbia — Matrícula de administração de empresas (CPAE)"
+description: "Consulte o cartão profissional de administração de empresas no CPAE pelo número de identidade."
+sidebar_label: "🇨🇴 Colômbia — Licença CPAE"
+slug: "/identity/colombia-cpae-license"
+keywords:
+  - "v2/co/cpae"
+  - "/v2/co/cpae"
+  - "api.verifik.co/v2/co/cpae"
+  - "GET /v2/co/cpae"
+  - "GET https://api.verifik.co/v2/co/cpae"
+  - "colombia_api_cpae"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colômbia — Matrícula de administração de empresas (CPAE)
+
+A consulta de **licença CPAE** lê o Consejo Profesional de Administración de Empresas. `documentNumber` é obrigatório. `documentType` opcional aceita `CC`, `CE`, `TI`, `PEP` ou `PPT`. Um acerto devolve o nome, a profissão e se o cartão está registrado e ativo.
+
+## O que a chamada devolve
+
+- `fullName` e `profession`
+- `entity` — CPAE
+- `status`, `isRegistered` e `isActive`
+
+## Casos de uso
+
+- Revise o cartão de administração na contratação.
+- Confirme que o cartão segue ativo.
+- Guarde o texto da profissão do CPAE no dossiê KYC.
+
+---
+
+## Referência da API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/cpae
+```
+
+A resposta inclui `fullName`, `profession`, `entity`, `status`, `isRegistered` e `isActive`. Um número desconhecido é 404 `NotFound`.
+
+### Headers
+
+| Nome | Valor | Descrição |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato da solicitação |
+| Accept | `application/json` | Formato da resposta |
+| Authorization | `Bearer <seu_token>` | JWT do cliente |
+
+### Parameters
+
+| Nome | Tipo | Obrigatório | Exemplo | Descrição |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Sim** | `80123456` | Número de identidade colombiano, de 5 a 15 caracteres. `documentType` pode ser `CC`, `CE`, `TI`, `PEP` ou `PPT`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/cpae",
+  params: {
+    documentType: "CC",
+    documentNumber: "52987654",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/cpae"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "CC",
+    "documentNumber": "52987654",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/cpae?documentType=CC&documentNumber=52987654" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentType": "CC",
+    "documentNumber": "52987654",
+    "fullName": "CARLOS RUIZ",
+    "profession": "ADMINISTRACION DE EMPRESAS",
+    "entity": "CONSEJO PROFESIONAL DE ADMINISTRACION DE EMPRESAS (CPAE)",
+    "status": "VIGENTE",
+    "isRegistered": true,
+    "isActive": true
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parâmetro ausente)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"documentNumber\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Não encontrado)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Não autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fonte indisponível)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- `documentNumber` é obrigatório.
+- O CPAE responde 404 se o número não tiver cartão profissional.
+- Não envie um nome no lugar do número do documento.
+- Envie um JWT Bearer no cabeçalho `Authorization`.
+- O JSON de exemplo ilustra os campos. Uma chamada real devolve o registro dos valores enviados.
+- Não envie um indicador de bypass de cache. Esta página documenta apenas os parâmetros de cliente.
+
+---
+
+## Sandbox
+
+| Cenário | Parâmetros | Resultado |
+| :--- | :--- | :--- |
+| Registro na fonte | `documentNumber: "52987654"` | 200 com profissão e bandeira ativa. |
+| Valor obrigatório ausente | Omit `documentNumber` | 409 MissingParameter. |
+| Valor desconhecido | `documentNumber: "000000000"` | 404 NotFound se o CPAE não tiver cartão. |
+
+401 when the bearer token is missing or rejected.

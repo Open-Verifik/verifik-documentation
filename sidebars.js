@@ -201,7 +201,7 @@ const sidebars = {
 					type: "category",
 					label: "Face Search",
 					collapsible: true,
-					items: ["biometrics/search", "biometrics/search-live-face", "biometrics/search-active-user", "biometrics/search-crops"],
+					items: ["biometrics/search", "biometrics/search-live-face", "biometrics/search-active-user", "biometrics/search-crops", "biometrics/face-validation"],
 				},
 				{
 					type: "category",
@@ -222,7 +222,13 @@ const sidebars = {
 			type: "category",
 			label: "SCAN DOCS API'S",
 			collapsible: false,
-			items: ["ocr-engines/scan-studio", "ocr-engines/scan-prompt", "ocr-engines/scan-agent"],
+			items: ["ocr-engines/scan-studio", "ocr-engines/scan-prompt", "ocr-engines/scan-agent", "ocr-engines/scan-gpt"],
+		},
+		{
+			type: "category",
+			label: "COMMUNICATION",
+			collapsible: false,
+			items: [{ type: "doc", id: "communication/email-otp", label: "Email OTP" }, { type: "doc", id: "communication/sms", label: "SMS" }, { type: "doc", id: "communication/whatsapp", label: "WhatsApp" }],
 		},
 		{
 			type: "category",
@@ -360,11 +366,21 @@ const sidebars = {
 					id: "identity-validation/colombia/identity-validation-colombia-colombian-politically-exposed-persons",
 					label: "🇨🇴 Colombia — PEP lookup (AML)",
 				},
+				{ type: "doc", id: "background-check/colombia-pep-electoral-candidates", label: "Colombia — PEP electoral candidates" },
+				{ type: "doc", id: "background-check/colombia-pep-political-parties", label: "Colombia — PEP political party officials" },
+				{ type: "doc", id: "background-check/colombia-pep-government-structure", label: "Colombia — PEP government structure" },
+				{ type: "doc", id: "background-check/colombia-pep-diplomatic-corps", label: "Colombia — PEP diplomatic corps" },
+				{ type: "doc", id: "background-check/colombia-pep-foreign-missions", label: "Colombia — PEP foreign missions" },
 				{
 					type: "doc",
 					id: "identity/colombia-situacion-militar",
 					label: "🇨🇴 Colombia - Military service status",
 				},
+				{ type: "doc", id: "identity/colombia-cedula-vigencia", label: "🇨🇴 Colombia — ID status (CC)" },
+				{ type: "doc", id: "identity/colombia-electrical-mechanical-license", label: "🇨🇴 Colombia — Electrical & mechanical license" },
+				{ type: "doc", id: "identity/colombia-cpae-license", label: "🇨🇴 Colombia — CPAE license" },
+				{ type: "doc", id: "identity/colombia-chemical-engineering-license", label: "🇨🇴 Colombia — CPIQ license" },
+				{ type: "doc", id: "identity/colombia-sst-license", label: "🇨🇴 Colombia — SST license" },
 				{
 					type: "doc",
 					id: "identity/costa-rica",
@@ -388,6 +404,7 @@ const sidebars = {
 					label: "🇪🇨 Ecuador",
 					key: "identity-ecuador",
 				},
+				{ type: "doc", id: "identity/ecuador/votacion", label: "🇪🇨 Ecuador — Voting location" },
 				{
 					type: "doc",
 					id: "identity/el-salvador",
@@ -465,6 +482,8 @@ const sidebars = {
 					id: "identity/panama-health-worker",
 					label: "🇵🇦 Panama — Health Worker & Medical Professional (MINSA)",
 				},
+				{ type: "doc", id: "identity/panama-lawyer-idoneidad", label: "🇵🇦 Panama — Lawyer idoneidad" },
+				{ type: "doc", id: "identity/panama-jtia-license", label: "🇵🇦 Panama — JTIA license" },
 				{
 					type: "doc",
 					id: "identity/paraguay",
@@ -487,6 +506,7 @@ const sidebars = {
 					id: "identity/peru-full-id",
 					label: "🇵🇪 Peru - Full ID",
 				},
+				{ type: "doc", id: "identity/peru-renacyt", label: "🇵🇪 Peru — RENACYT and degrees" },
 				{
 					type: "doc",
 					id: "identity/spain-citizen",
@@ -533,6 +553,7 @@ const sidebars = {
 				{ type: "doc", id: "identity/romania-citizen", label: "🇷🇴 Romania — Citizen & Sole Proprietor" },
 				{ type: "doc", id: "identity/slovakia-citizen", label: "🇸🇰 Slovakia — Citizen & Sole Proprietor" },
 				{ type: "doc", id: "identity/united-states-citizen", label: "🇺🇸 United States — Citizen & Sole Proprietor" },
+				{ type: "doc", id: "identity/latam-education-score", label: "LATAM — Education score" },
 				{
 					type: "doc",
 					id: "identity/identity-ip-lookup",
@@ -591,6 +612,10 @@ const sidebars = {
 					id: "business-validation/colombia-dian-verification",
 					label: "🇨🇴 Colombia - DIAN Verification",
 				},
+				{ type: "doc", id: "business-validation/colombia-fictitious-suppliers", label: "🇨🇴 Colombia — Fictitious suppliers" },
+				{ type: "doc", id: "business-validation/colombia-siis", label: "🇨🇴 Colombia — SIIS" },
+				{ type: "doc", id: "business-validation/colombia-financial-insolvency", label: "🇨🇴 Colombia — Financial insolvency" },
+				{ type: "doc", id: "business-validation/colombia-solidarity-sanctions", label: "🇨🇴 Colombia — Solidarity sanctions" },
 				{
 					type: "doc",
 					id: "business-validation/colombia-legal-invoicer-verification",
@@ -953,6 +978,7 @@ const sidebars = {
 					label: "🇨🇷 Costa Rica",
 					key: "vehicle-costa-rica",
 				},
+				{ type: "doc", id: "vehicle-validation/costa-rica/traffic-infractions", label: "🇨🇷 Costa Rica — Traffic infractions" },
 				{
 					type: "doc",
 					id: "vehicle-validation/canada/ontario-plate",
@@ -965,6 +991,7 @@ const sidebars = {
 					label: "🇪🇨 Ecuador",
 					key: "vehicle-ecuador",
 				},
+				{ type: "doc", id: "vehicle-validation/ecuador/vehicle-by-plate-v3", label: "🇪🇨 Ecuador — Vehicle by plate v3" },
 				{
 					type: "doc",
 					id: "vehicle-validation/mexico",
@@ -2068,6 +2095,10 @@ const sidebars = {
 									label: "🇦🇪 United Arab Emirates Local Terrorist List",
 									key: "watchlist-en-0-uae-local-terrorists",
 								},
+				{ type: "doc", id: "background-check/international/brazil-bcb-disqualified", label: "Watchlist — Brazil BCB disqualified persons" },
+				{ type: "doc", id: "background-check/international/brazil-tcu-disqualified", label: "Watchlist — Brazil TCU public-service disqualification" },
+				{ type: "doc", id: "background-check/international/fbi-lazarus-crypto-wallets", label: "Watchlist — FBI Lazarus crypto wallets" },
+				{ type: "doc", id: "background-check/international/ransomwhere-crypto-addresses", label: "Watchlist — ransomwhe.re ransomware addresses" },
 							],
 						},
 					],

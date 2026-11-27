@@ -1,0 +1,227 @@
+---
+id: face-validation
+title: "얼굴 검출"
+description: "POST /v2/face-recognition/face-validation로 얼굴을 검출합니다. image는 필수입니다. 기본값은 min_score 0.5와 search_mode FAST입니다."
+sidebar_label: "얼굴 검출"
+slug: "/biometrics/face-validation"
+keywords:
+  - "v2/face-recognition/face-validation"
+  - "/v2/face-recognition/face-validation"
+  - "api.verifik.co/v2/face-recognition/face-validation"
+  - "POST /v2/face-recognition/face-validation"
+  - "POST https://api.verifik.co/v2/face-recognition/face-validation"
+  - "face_recognition_detect_face"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 얼굴 검출
+
+**얼굴 검출**은 검출 엔진의 별칭인 `POST /v2/face-recognition/face-validation`입니다. `image`는 필수입니다. 생략하면 이 경로가 `min_score`를 `0.5`로, `search_mode`를 `FAST`로 넣습니다. 실제 페이로드는 `face_count`, `faces`(`score`와 `bbox`), `imageDimensions`, `engine`입니다.
+
+## 응답에 포함되는 값
+
+- `face_count`
+- `faces[].score`와 `faces[].bbox`
+- `imageDimensions`와 `engine`
+
+## 사용 사례
+
+- 라이브니스 전에 얼굴 수를 셉니다.
+- 주 얼굴의 상자를 읽습니다.
+- 이미지만 있으면 기본 점수와 모드를 씁니다.
+
+---
+
+## API 레퍼런스
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/face-recognition/face-validation
+```
+
+먼저 `face_count`를 읽습니다. `faces`의 각 항목에는 `score`와 `bbox`가 있습니다. `imageDimensions`는 디코드된 너비와 높이입니다. `engine`은 검출기 이름입니다.
+
+### Headers
+
+| 이름 | 값 | 설명 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 요청 형식 |
+| Accept | `application/json` | 응답 형식 |
+| Authorization | `Bearer <token>` | 클라이언트 JWT |
+
+### Parameters
+
+| 이름 | 유형 | 필수 | 예시 | 설명 |
+| :--- | :--- | :--- | :--- | :--- |
+| `image` | string | **예** | `data:image/jpeg;base64,AAAA` | base64 또는 data URI 얼굴 이미지. 필수. |
+| `min_score` | number | 아니오 | `0.5` | 선택. 이 경로는 기본값 `0.5`를 넣습니다. |
+| `search_mode` | string | 아니오 | `FAST` | 선택. 이 경로는 기본값 `FAST`를 넣습니다. 다른 값은 `ACCURATE`입니다. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/face-recognition/face-validation",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+  data: {
+    "image": "data:image/jpeg;base64,AAAA"
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/face-recognition/face-validation"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+payload = {
+    "image": "data:image/jpeg;base64,AAAA",
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/face-recognition/face-validation" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{"image":"data:image/jpeg;base64,AAAA"}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (레코드 있음)">
+
+```json
+{
+  "data": {
+    "face_count": 1,
+    "faces": [
+      {
+        "score": 0.97,
+        "bbox": [
+          80,
+          60,
+          280,
+          320
+        ]
+      }
+    ],
+    "imageDimensions": {
+      "width": 640,
+      "height": 480
+    },
+    "engine": "insightface"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (파라미터 누락)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"image\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (없음)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (인증 실패)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (원천 사용 불가)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 참고
+
+- `image`만 필수입니다.
+- 생략한 `min_score`는 `0.5`, 생략한 `search_mode`는 `FAST`가 됩니다.
+- 응답은 별도 랜드마크가 아니라 `bbox`를 씁니다.
+- `Authorization` 헤더에 Bearer JWT를 보냅니다.
+- JSON 예시는 필드 모양입니다. 실제 호출은 보낸 값의 레코드를 반환합니다.
+- 캐시 우회 플래그는 보내지 않습니다. 이 페이지는 클라이언트 파라미터만 설명합니다.
+
+---
+
+## 샌드박스
+
+| 시나리오 | 파라미터 | 결과 |
+| :--- | :--- | :--- |
+| 원천에 기록 있음 | `image` only | face_count, faces, imageDimensions, engine이 있는 200. |
+| 필수 값 누락 | Omit `image` | 409 MissingParameter. |
+| 알 수 없는 값 | `min_score: 0.8`, `search_mode: "ACCURATE"` | 보낸 점수와 모드로 200. |
+
+401 when the bearer token is missing or rejected.

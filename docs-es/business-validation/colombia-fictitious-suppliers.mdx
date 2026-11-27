@@ -1,0 +1,223 @@
+---
+id: colombia-fictitious-suppliers
+title: "Colombia — Proveedores ficticios o insolventes (DIAN)"
+description: "Criba un NIT o un nombre contra la lista DIAN de proveedores ficticios o insolventes del artículo 671 del Estatuto Tributario."
+sidebar_label: "🇨🇴 Colombia — Proveedores ficticios"
+slug: "/business-validation/colombia-fictitious-suppliers"
+keywords:
+  - "v2/co/dian/proveedores-ficticios"
+  - "/v2/co/dian/proveedores-ficticios"
+  - "api.verifik.co/v2/co/dian/proveedores-ficticios"
+  - "GET /v2/co/dian/proveedores-ficticios"
+  - "GET https://api.verifik.co/v2/co/dian/proveedores-ficticios"
+  - "colombia_api_dian_proveedores_ficticios"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Proveedores ficticios o insolventes (DIAN)
+
+La consulta de **proveedores ficticios o insolventes** criba el artículo 671 de la DIAN. Envíe `documentNumber` (o el alias `nit`) o `businessName` (alias `companyName` y `fullName`). Un proveedor listado pone `isFictitiousSupplier` en true e incluye la resolución. Una ausencia limpia sigue siendo HTTP 200 con `isFictitiousSupplier` en false. Esta ruta no responde 404 por una ausencia limpia.
+
+## Qué devuelve la llamada
+
+- `isFictitiousSupplier` — true solo si la DIAN lista al sujeto
+- `resolutionNumber`, `resolutionDate` y `publicationDate` en un acierto
+- `matches` — vacío si no hay lista
+- `status` — etiqueta de la lista o la frase de no listado
+
+## Casos de uso
+
+- Bloquee un proveedor que la DIAN marcó como ficticio o insolvente.
+- Registre una ausencia limpia como 200 con la bandera en false.
+- Busque por NIT o por razón social.
+
+---
+
+## Referencia de la API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/dian/proveedores-ficticios
+```
+
+En un acierto, `isFictitiousSupplier` es true y `matches` trae número de resolución, fechas y dirección seccional. En una ausencia limpia, `isFictitiousSupplier` es false. Ambos resultados son HTTP 200.
+
+### Headers
+
+| Nombre | Valor | Descripción |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato de la solicitud |
+| Accept | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <tu_token>` | JWT del cliente |
+
+### Parameters
+
+| Nombre | Tipo | Requerido | Ejemplo | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Condicional** | `900123456` | NIT o número de persona, de 4 a 25 caracteres. Alias: `nit`. Obligatorio si no envía nombre. |
+| `businessName` | string | **Condicional** | `INDUSTRIAS EJEMPLO SAS` | Razón o nombre comercial, de 2 a 200 caracteres. Alias: `companyName` y `fullName`. Obligatorio si no envía número. |
+| `documentType` | string | No | `NIT` | Opcional. Valores: `NIT`, `CC`, `CE`, `PAS`, `TI`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/dian/proveedores-ficticios",
+  params: {
+    documentNumber: "900123456",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/dian/proveedores-ficticios"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "900123456",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/dian/proveedores-ficticios?documentNumber=900123456" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentType": "NIT",
+    "documentNumber": "900123456",
+    "businessName": "PROVEEDORA EJEMPLO SAS",
+    "isFictitiousSupplier": true,
+    "status": "PROVEEDOR FICTICIO",
+    "resolutionNumber": "RES-001",
+    "article": "Art. 671 Estatuto Tributario"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one search parameter must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (Sin coincidencia)">
+
+```json
+{
+  "data": {
+    "documentType": "NIT",
+    "documentNumber": "800000111",
+    "isFictitiousSupplier": false,
+    "status": "SIN REGISTRO EN LISTA DE PROVEEDORES FICTICIOS O INSOLVENTES",
+    "matches": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (No autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fuente no disponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Envíe un número o un nombre. Al menos uno es obligatorio.
+- Quien no está en la lista es HTTP 200 con `isFictitiousSupplier` en false.
+- No trate ese 200 como un 404.
+- Envíe un JWT Bearer en el encabezado `Authorization`.
+- El JSON de ejemplo ilustra los campos. Una llamada real devuelve el registro de los valores que envíe.
+- No envíe un indicador de omisión de caché. Esta página documenta solo los parámetros de cliente.
+
+---
+
+## Sandbox
+
+| Escenario | Parámetros | Resultado |
+| :--- | :--- | :--- |
+| Registro en la fuente | `documentNumber: "900123456"` | 200 con isFictitiousSupplier en true cuando la fuente lista al sujeto. |
+| Falta un valor obligatorio | Omit every search value | 409 MissingParameter si no envía ningún valor de búsqueda. |
+| Valor desconocido | `documentNumber: "00000000"` | 200 con isFictitiousSupplier en false. Una ausencia limpia sigue siendo HTTP 200 y no es 404. |
+
+401 when the bearer token is missing or rejected.

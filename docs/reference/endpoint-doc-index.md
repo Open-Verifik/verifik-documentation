@@ -715,6 +715,18 @@ keywords:
   - "https://api.verifik.co/v2/br/background-check"
   - "GET v2/br/background-check"
   - "GET /v2/br/background-check"
+  - "v2/br/bcb-disqualified"
+  - "/v2/br/bcb-disqualified"
+  - "v2 br bcb-disqualified"
+  - "br/bcb-disqualified"
+  - "/br/bcb-disqualified"
+  - "api/br/bcb-disqualified"
+  - "/api/br/bcb-disqualified"
+  - "api br bcb-disqualified"
+  - "api.verifik.co/v2/br/bcb-disqualified"
+  - "https://api.verifik.co/v2/br/bcb-disqualified"
+  - "GET v2/br/bcb-disqualified"
+  - "GET /v2/br/bcb-disqualified"
   - "v2/br/cedula"
   - "/v2/br/cedula"
   - "v2 br cedula"
@@ -763,6 +775,18 @@ keywords:
   - "https://api.verifik.co/v2/br/politically-exposed-persons"
   - "GET v2/br/politically-exposed-persons"
   - "GET /v2/br/politically-exposed-persons"
+  - "v2/br/tcu-disqualified"
+  - "/v2/br/tcu-disqualified"
+  - "v2 br tcu-disqualified"
+  - "br/tcu-disqualified"
+  - "/br/tcu-disqualified"
+  - "api/br/tcu-disqualified"
+  - "/api/br/tcu-disqualified"
+  - "api br tcu-disqualified"
+  - "api.verifik.co/v2/br/tcu-disqualified"
+  - "https://api.verifik.co/v2/br/tcu-disqualified"
+  - "GET v2/br/tcu-disqualified"
+  - "GET /v2/br/tcu-disqualified"
   - "v2/br/vehicle"
   - "/v2/br/vehicle"
   - "v2 br vehicle"
@@ -1365,6 +1389,20 @@ keywords:
   - "https://api.verifik.co/v2/co/cedula/rethus"
   - "GET v2/co/cedula/rethus"
   - "GET /v2/co/cedula/rethus"
+  - "v2/co/cedula/vigencia"
+  - "/v2/co/cedula/vigencia"
+  - "v2 co cedula vigencia"
+  - "co/cedula/vigencia"
+  - "/co/cedula/vigencia"
+  - "api/co/cedula/vigencia"
+  - "/api/co/cedula/vigencia"
+  - "api co cedula vigencia"
+  - "cedula/vigencia"
+  - "/cedula/vigencia"
+  - "api.verifik.co/v2/co/cedula/vigencia"
+  - "https://api.verifik.co/v2/co/cedula/vigencia"
+  - "GET v2/co/cedula/vigencia"
+  - "GET /v2/co/cedula/vigencia"
   - "v2/co/company/dian"
   - "/v2/co/company/dian"
   - "v2 co company dian"
@@ -1395,6 +1433,18 @@ keywords:
   - "https://api.verifik.co/v2/co/company/dian/invoicer"
   - "GET v2/co/company/dian/invoicer"
   - "GET /v2/co/company/dian/invoicer"
+  - "v2/co/consejo-profesional"
+  - "/v2/co/consejo-profesional"
+  - "v2 co consejo-profesional"
+  - "co/consejo-profesional"
+  - "/co/consejo-profesional"
+  - "api/co/consejo-profesional"
+  - "/api/co/consejo-profesional"
+  - "api co consejo-profesional"
+  - "api.verifik.co/v2/co/consejo-profesional"
+  - "https://api.verifik.co/v2/co/consejo-profesional"
+  - "GET v2/co/consejo-profesional"
+  - "GET /v2/co/consejo-profesional"
   - "v2/co/contracts"
   - "/v2/co/contracts"
   - "v2 co contracts"
@@ -1447,6 +1497,30 @@ keywords:
   - "https://api.verifik.co/v2/co/copnia/matricula"
   - "GET v2/co/copnia/matricula"
   - "GET /v2/co/copnia/matricula"
+  - "v2/co/cpae"
+  - "/v2/co/cpae"
+  - "v2 co cpae"
+  - "co/cpae"
+  - "/co/cpae"
+  - "api/co/cpae"
+  - "/api/co/cpae"
+  - "api co cpae"
+  - "api.verifik.co/v2/co/cpae"
+  - "https://api.verifik.co/v2/co/cpae"
+  - "GET v2/co/cpae"
+  - "GET /v2/co/cpae"
+  - "v2/co/cpiq"
+  - "/v2/co/cpiq"
+  - "v2 co cpiq"
+  - "co/cpiq"
+  - "/co/cpiq"
+  - "api/co/cpiq"
+  - "/api/co/cpiq"
+  - "api co cpiq"
+  - "api.verifik.co/v2/co/cpiq"
+  - "https://api.verifik.co/v2/co/cpiq"
+  - "GET v2/co/cpiq"
+  - "GET /v2/co/cpiq"
   - "v2/co/deudoresmorosos"
   - "/v2/co/deudoresmorosos"
   - "v2 co deudoresmorosos"
@@ -1459,6 +1533,20 @@ keywords:
   - "https://api.verifik.co/v2/co/deudoresmorosos"
   - "GET v2/co/deudoresmorosos"
   - "GET /v2/co/deudoresmorosos"
+  - "v2/co/dian/proveedores-ficticios"
+  - "/v2/co/dian/proveedores-ficticios"
+  - "v2 co dian proveedores-ficticios"
+  - "co/dian/proveedores-ficticios"
+  - "/co/dian/proveedores-ficticios"
+  - "api/co/dian/proveedores-ficticios"
+  - "/api/co/dian/proveedores-ficticios"
+  - "api co dian proveedores-ficticios"
+  - "dian/proveedores-ficticios"
+  - "/dian/proveedores-ficticios"
+  - "api.verifik.co/v2/co/dian/proveedores-ficticios"
+  - "https://api.verifik.co/v2/co/dian/proveedores-ficticios"
+  - "GET v2/co/dian/proveedores-ficticios"
+  - "GET /v2/co/dian/proveedores-ficticios"
   - "v2/co/fasecolda/sinister"
   - "/v2/co/fasecolda/sinister"
   - "v2 co fasecolda sinister"
@@ -1607,6 +1695,76 @@ keywords:
   - "https://api.verifik.co/v2/co/paco"
   - "GET v2/co/paco"
   - "GET /v2/co/paco"
+  - "v2/co/pep/candidatos"
+  - "/v2/co/pep/candidatos"
+  - "v2 co pep candidatos"
+  - "co/pep/candidatos"
+  - "/co/pep/candidatos"
+  - "api/co/pep/candidatos"
+  - "/api/co/pep/candidatos"
+  - "api co pep candidatos"
+  - "pep/candidatos"
+  - "/pep/candidatos"
+  - "api.verifik.co/v2/co/pep/candidatos"
+  - "https://api.verifik.co/v2/co/pep/candidatos"
+  - "GET v2/co/pep/candidatos"
+  - "GET /v2/co/pep/candidatos"
+  - "v2/co/pep/cuerpo-diplomatico"
+  - "/v2/co/pep/cuerpo-diplomatico"
+  - "v2 co pep cuerpo-diplomatico"
+  - "co/pep/cuerpo-diplomatico"
+  - "/co/pep/cuerpo-diplomatico"
+  - "api/co/pep/cuerpo-diplomatico"
+  - "/api/co/pep/cuerpo-diplomatico"
+  - "api co pep cuerpo-diplomatico"
+  - "pep/cuerpo-diplomatico"
+  - "/pep/cuerpo-diplomatico"
+  - "api.verifik.co/v2/co/pep/cuerpo-diplomatico"
+  - "https://api.verifik.co/v2/co/pep/cuerpo-diplomatico"
+  - "GET v2/co/pep/cuerpo-diplomatico"
+  - "GET /v2/co/pep/cuerpo-diplomatico"
+  - "v2/co/pep/estructura-gobierno"
+  - "/v2/co/pep/estructura-gobierno"
+  - "v2 co pep estructura-gobierno"
+  - "co/pep/estructura-gobierno"
+  - "/co/pep/estructura-gobierno"
+  - "api/co/pep/estructura-gobierno"
+  - "/api/co/pep/estructura-gobierno"
+  - "api co pep estructura-gobierno"
+  - "pep/estructura-gobierno"
+  - "/pep/estructura-gobierno"
+  - "api.verifik.co/v2/co/pep/estructura-gobierno"
+  - "https://api.verifik.co/v2/co/pep/estructura-gobierno"
+  - "GET v2/co/pep/estructura-gobierno"
+  - "GET /v2/co/pep/estructura-gobierno"
+  - "v2/co/pep/misiones-exterior"
+  - "/v2/co/pep/misiones-exterior"
+  - "v2 co pep misiones-exterior"
+  - "co/pep/misiones-exterior"
+  - "/co/pep/misiones-exterior"
+  - "api/co/pep/misiones-exterior"
+  - "/api/co/pep/misiones-exterior"
+  - "api co pep misiones-exterior"
+  - "pep/misiones-exterior"
+  - "/pep/misiones-exterior"
+  - "api.verifik.co/v2/co/pep/misiones-exterior"
+  - "https://api.verifik.co/v2/co/pep/misiones-exterior"
+  - "GET v2/co/pep/misiones-exterior"
+  - "GET /v2/co/pep/misiones-exterior"
+  - "v2/co/pep/partidos-politicos"
+  - "/v2/co/pep/partidos-politicos"
+  - "v2 co pep partidos-politicos"
+  - "co/pep/partidos-politicos"
+  - "/co/pep/partidos-politicos"
+  - "api/co/pep/partidos-politicos"
+  - "/api/co/pep/partidos-politicos"
+  - "api co pep partidos-politicos"
+  - "pep/partidos-politicos"
+  - "/pep/partidos-politicos"
+  - "api.verifik.co/v2/co/pep/partidos-politicos"
+  - "https://api.verifik.co/v2/co/pep/partidos-politicos"
+  - "GET v2/co/pep/partidos-politicos"
+  - "GET /v2/co/pep/partidos-politicos"
   - "v2/co/policia/consultar"
   - "/v2/co/policia/consultar"
   - "v2 co policia consultar"
@@ -2165,6 +2323,62 @@ keywords:
   - "https://api.verifik.co/v2/co/situacion-militar"
   - "GET v2/co/situacion-militar"
   - "GET /v2/co/situacion-militar"
+  - "v2/co/sst/licencia"
+  - "/v2/co/sst/licencia"
+  - "v2 co sst licencia"
+  - "co/sst/licencia"
+  - "/co/sst/licencia"
+  - "api/co/sst/licencia"
+  - "/api/co/sst/licencia"
+  - "api co sst licencia"
+  - "sst/licencia"
+  - "/sst/licencia"
+  - "api.verifik.co/v2/co/sst/licencia"
+  - "https://api.verifik.co/v2/co/sst/licencia"
+  - "GET v2/co/sst/licencia"
+  - "GET /v2/co/sst/licencia"
+  - "v2/co/superfinanciera/concordatos"
+  - "/v2/co/superfinanciera/concordatos"
+  - "v2 co superfinanciera concordatos"
+  - "co/superfinanciera/concordatos"
+  - "/co/superfinanciera/concordatos"
+  - "api/co/superfinanciera/concordatos"
+  - "/api/co/superfinanciera/concordatos"
+  - "api co superfinanciera concordatos"
+  - "superfinanciera/concordatos"
+  - "/superfinanciera/concordatos"
+  - "api.verifik.co/v2/co/superfinanciera/concordatos"
+  - "https://api.verifik.co/v2/co/superfinanciera/concordatos"
+  - "GET v2/co/superfinanciera/concordatos"
+  - "GET /v2/co/superfinanciera/concordatos"
+  - "v2/co/supersociedades/siis"
+  - "/v2/co/supersociedades/siis"
+  - "v2 co supersociedades siis"
+  - "co/supersociedades/siis"
+  - "/co/supersociedades/siis"
+  - "api/co/supersociedades/siis"
+  - "/api/co/supersociedades/siis"
+  - "api co supersociedades siis"
+  - "supersociedades/siis"
+  - "/supersociedades/siis"
+  - "api.verifik.co/v2/co/supersociedades/siis"
+  - "https://api.verifik.co/v2/co/supersociedades/siis"
+  - "GET v2/co/supersociedades/siis"
+  - "GET /v2/co/supersociedades/siis"
+  - "v2/co/supersolidaria/sanciones"
+  - "/v2/co/supersolidaria/sanciones"
+  - "v2 co supersolidaria sanciones"
+  - "co/supersolidaria/sanciones"
+  - "/co/supersolidaria/sanciones"
+  - "api/co/supersolidaria/sanciones"
+  - "/api/co/supersolidaria/sanciones"
+  - "api co supersolidaria sanciones"
+  - "supersolidaria/sanciones"
+  - "/supersolidaria/sanciones"
+  - "api.verifik.co/v2/co/supersolidaria/sanciones"
+  - "https://api.verifik.co/v2/co/supersolidaria/sanciones"
+  - "GET v2/co/supersolidaria/sanciones"
+  - "GET /v2/co/supersolidaria/sanciones"
   - "v2/co/vehiculo/pico-y-placa"
   - "/v2/co/vehiculo/pico-y-placa"
   - "v2 co vehiculo pico-y-placa"
@@ -2179,6 +2393,42 @@ keywords:
   - "https://api.verifik.co/v2/co/vehiculo/pico-y-placa"
   - "GET v2/co/vehiculo/pico-y-placa"
   - "GET /v2/co/vehiculo/pico-y-placa"
+  - "v2/communication/email"
+  - "/v2/communication/email"
+  - "v2 communication email"
+  - "communication/email"
+  - "/communication/email"
+  - "api/communication/email"
+  - "/api/communication/email"
+  - "api communication email"
+  - "api.verifik.co/v2/communication/email"
+  - "https://api.verifik.co/v2/communication/email"
+  - "GET v2/communication/email"
+  - "GET /v2/communication/email"
+  - "v2/communication/sms"
+  - "/v2/communication/sms"
+  - "v2 communication sms"
+  - "communication/sms"
+  - "/communication/sms"
+  - "api/communication/sms"
+  - "/api/communication/sms"
+  - "api communication sms"
+  - "api.verifik.co/v2/communication/sms"
+  - "https://api.verifik.co/v2/communication/sms"
+  - "GET v2/communication/sms"
+  - "GET /v2/communication/sms"
+  - "v2/communication/whatsapp"
+  - "/v2/communication/whatsapp"
+  - "v2 communication whatsapp"
+  - "communication/whatsapp"
+  - "/communication/whatsapp"
+  - "api/communication/whatsapp"
+  - "/api/communication/whatsapp"
+  - "api communication whatsapp"
+  - "api.verifik.co/v2/communication/whatsapp"
+  - "https://api.verifik.co/v2/communication/whatsapp"
+  - "GET v2/communication/whatsapp"
+  - "GET /v2/communication/whatsapp"
   - "v2/cr/cedula"
   - "/v2/cr/cedula"
   - "v2 cr cedula"
@@ -2215,6 +2465,18 @@ keywords:
   - "https://api.verifik.co/v2/cr/politically-exposed-persons"
   - "GET v2/cr/politically-exposed-persons"
   - "GET /v2/cr/politically-exposed-persons"
+  - "v2/cr/traffic-infractions"
+  - "/v2/cr/traffic-infractions"
+  - "v2 cr traffic-infractions"
+  - "cr/traffic-infractions"
+  - "/cr/traffic-infractions"
+  - "api/cr/traffic-infractions"
+  - "/api/cr/traffic-infractions"
+  - "api cr traffic-infractions"
+  - "api.verifik.co/v2/cr/traffic-infractions"
+  - "https://api.verifik.co/v2/cr/traffic-infractions"
+  - "GET v2/cr/traffic-infractions"
+  - "GET /v2/cr/traffic-infractions"
   - "v2/cr/vehicle"
   - "/v2/cr/vehicle"
   - "v2 cr vehicle"
@@ -2239,6 +2501,30 @@ keywords:
   - "https://api.verifik.co/v2/cr/votacion"
   - "GET v2/cr/votacion"
   - "GET /v2/cr/votacion"
+  - "v2/crypto/fbi-lazarus"
+  - "/v2/crypto/fbi-lazarus"
+  - "v2 crypto fbi-lazarus"
+  - "crypto/fbi-lazarus"
+  - "/crypto/fbi-lazarus"
+  - "api/crypto/fbi-lazarus"
+  - "/api/crypto/fbi-lazarus"
+  - "api crypto fbi-lazarus"
+  - "api.verifik.co/v2/crypto/fbi-lazarus"
+  - "https://api.verifik.co/v2/crypto/fbi-lazarus"
+  - "GET v2/crypto/fbi-lazarus"
+  - "GET /v2/crypto/fbi-lazarus"
+  - "v2/crypto/ransomwhere"
+  - "/v2/crypto/ransomwhere"
+  - "v2 crypto ransomwhere"
+  - "crypto/ransomwhere"
+  - "/crypto/ransomwhere"
+  - "api/crypto/ransomwhere"
+  - "/api/crypto/ransomwhere"
+  - "api crypto ransomwhere"
+  - "api.verifik.co/v2/crypto/ransomwhere"
+  - "https://api.verifik.co/v2/crypto/ransomwhere"
+  - "GET v2/crypto/ransomwhere"
+  - "GET /v2/crypto/ransomwhere"
   - "v2/csl"
   - "/v2/csl"
   - "v2 csl"
@@ -2536,6 +2822,18 @@ keywords:
   - "https://api.verifik.co/v2/ec/vehiculo/placa/multas"
   - "GET v2/ec/vehiculo/placa/multas"
   - "GET /v2/ec/vehiculo/placa/multas"
+  - "v2/ec/votacion"
+  - "/v2/ec/votacion"
+  - "v2 ec votacion"
+  - "ec/votacion"
+  - "/ec/votacion"
+  - "api/ec/votacion"
+  - "/api/ec/votacion"
+  - "api ec votacion"
+  - "api.verifik.co/v2/ec/votacion"
+  - "https://api.verifik.co/v2/ec/votacion"
+  - "GET v2/ec/votacion"
+  - "GET /v2/ec/votacion"
   - "v2/ee/citizen"
   - "/v2/ee/citizen"
   - "v2 ee citizen"
@@ -2879,6 +3177,18 @@ keywords:
   - "https://api.verifik.co/v2/face-recognition/detect"
   - "GET v2/face-recognition/detect"
   - "GET /v2/face-recognition/detect"
+  - "v2/face-recognition/face-validation"
+  - "/v2/face-recognition/face-validation"
+  - "v2 face-recognition face-validation"
+  - "face-recognition/face-validation"
+  - "/face-recognition/face-validation"
+  - "api/face-recognition/face-validation"
+  - "/api/face-recognition/face-validation"
+  - "api face-recognition face-validation"
+  - "api.verifik.co/v2/face-recognition/face-validation"
+  - "https://api.verifik.co/v2/face-recognition/face-validation"
+  - "GET v2/face-recognition/face-validation"
+  - "GET /v2/face-recognition/face-validation"
   - "v2/face-recognition/liveness"
   - "/v2/face-recognition/liveness"
   - "v2 face-recognition liveness"
@@ -4124,6 +4434,18 @@ keywords:
   - "https://api.verifik.co/v2/ocr/scan-agent"
   - "GET v2/ocr/scan-agent"
   - "GET /v2/ocr/scan-agent"
+  - "v2/ocr/scan-gpt"
+  - "/v2/ocr/scan-gpt"
+  - "v2 ocr scan-gpt"
+  - "ocr/scan-gpt"
+  - "/ocr/scan-gpt"
+  - "api/ocr/scan-gpt"
+  - "/api/ocr/scan-gpt"
+  - "api ocr scan-gpt"
+  - "api.verifik.co/v2/ocr/scan-gpt"
+  - "https://api.verifik.co/v2/ocr/scan-gpt"
+  - "GET v2/ocr/scan-gpt"
+  - "GET /v2/ocr/scan-gpt"
   - "v2/ocr/scan-prompt"
   - "/v2/ocr/scan-prompt"
   - "v2 ocr scan-prompt"
@@ -4274,6 +4596,20 @@ keywords:
   - "https://api.verifik.co/v2/pa/health-worker"
   - "GET v2/pa/health-worker"
   - "GET /v2/pa/health-worker"
+  - "v2/pa/lawyer/idoneidad"
+  - "/v2/pa/lawyer/idoneidad"
+  - "v2 pa lawyer idoneidad"
+  - "pa/lawyer/idoneidad"
+  - "/pa/lawyer/idoneidad"
+  - "api/pa/lawyer/idoneidad"
+  - "/api/pa/lawyer/idoneidad"
+  - "api pa lawyer idoneidad"
+  - "lawyer/idoneidad"
+  - "/lawyer/idoneidad"
+  - "api.verifik.co/v2/pa/lawyer/idoneidad"
+  - "https://api.verifik.co/v2/pa/lawyer/idoneidad"
+  - "GET v2/pa/lawyer/idoneidad"
+  - "GET /v2/pa/lawyer/idoneidad"
   - "v2/pa/politically-exposed-persons"
   - "/v2/pa/politically-exposed-persons"
   - "v2 pa politically-exposed-persons"
@@ -4286,6 +4622,20 @@ keywords:
   - "https://api.verifik.co/v2/pa/politically-exposed-persons"
   - "GET v2/pa/politically-exposed-persons"
   - "GET /v2/pa/politically-exposed-persons"
+  - "v2/pa/professional/jtia"
+  - "/v2/pa/professional/jtia"
+  - "v2 pa professional jtia"
+  - "pa/professional/jtia"
+  - "/pa/professional/jtia"
+  - "api/pa/professional/jtia"
+  - "/api/pa/professional/jtia"
+  - "api pa professional jtia"
+  - "professional/jtia"
+  - "/professional/jtia"
+  - "api.verifik.co/v2/pa/professional/jtia"
+  - "https://api.verifik.co/v2/pa/professional/jtia"
+  - "GET v2/pa/professional/jtia"
+  - "GET /v2/pa/professional/jtia"
   - "v2/pakistan-nacta-proscribed"
   - "/v2/pakistan-nacta-proscribed"
   - "v2 pakistan-nacta-proscribed"
@@ -4336,6 +4686,20 @@ keywords:
   - "https://api.verifik.co/v2/pe/driver-license"
   - "GET v2/pe/driver-license"
   - "GET /v2/pe/driver-license"
+  - "v2/pe/education/renacyt"
+  - "/v2/pe/education/renacyt"
+  - "v2 pe education renacyt"
+  - "pe/education/renacyt"
+  - "/pe/education/renacyt"
+  - "api/pe/education/renacyt"
+  - "/api/pe/education/renacyt"
+  - "api pe education renacyt"
+  - "education/renacyt"
+  - "/education/renacyt"
+  - "api.verifik.co/v2/pe/education/renacyt"
+  - "https://api.verifik.co/v2/pe/education/renacyt"
+  - "GET v2/pe/education/renacyt"
+  - "GET /v2/pe/education/renacyt"
   - "v2/pe/foreigner-id/ce"
   - "/v2/pe/foreigner-id/ce"
   - "v2 pe foreigner-id ce"
@@ -4734,6 +5098,18 @@ keywords:
   - "https://api.verifik.co/v2/sam-special-exclusions"
   - "GET v2/sam-special-exclusions"
   - "GET /v2/sam-special-exclusions"
+  - "v2/score/education"
+  - "/v2/score/education"
+  - "v2 score education"
+  - "score/education"
+  - "/score/education"
+  - "api/score/education"
+  - "/api/score/education"
+  - "api score education"
+  - "api.verifik.co/v2/score/education"
+  - "https://api.verifik.co/v2/score/education"
+  - "GET v2/score/education"
+  - "GET /v2/score/education"
   - "v2/se/politically-exposed-persons"
   - "/v2/se/politically-exposed-persons"
   - "v2 se politically-exposed-persons"
@@ -5832,6 +6208,13 @@ keywords:
   - "https://api.verifik.co/v3/ec/company"
   - "GET v3/ec/company"
   - "GET /v3/ec/company"
+  - "v3/ec/vehiculo/placa"
+  - "/v3/ec/vehiculo/placa"
+  - "v3 ec vehiculo placa"
+  - "api.verifik.co/v3/ec/vehiculo/placa"
+  - "https://api.verifik.co/v3/ec/vehiculo/placa"
+  - "GET v3/ec/vehiculo/placa"
+  - "GET /v3/ec/vehiculo/placa"
   - "v3/ocr/scan-studio"
   - "/v3/ocr/scan-studio"
   - "v3 ocr scan-studio"
@@ -5922,12 +6305,12 @@ keywords:
 
 # Endpoint URL → documentation page
 
-This page lists every Verifik API endpoint that has a canonical doc page (479 entries),
+This page lists every Verifik API endpoint that has a canonical doc page (509 entries),
 grouped by country or topic. Use it when you have a raw URL fragment (e.g. `v2/co/cedula`) and want to jump to the documentation.
 
 If the search bar didn't find your endpoint, this page lists every API path along with whitespace-tokenized aliases so it shows up regardless of how you typed the URL.
 
-_Last regenerated: 2026-11-27T17:41:33.410Z_
+_Last regenerated: 2026-11-27T19:34:53.895Z_
 
 ## Argentina
 
@@ -5974,10 +6357,12 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/br/background-check` | v2 br background-check br/background-check /br/background-check api/br/background-check /api/br/background-check api br background-check api.verifik.co/v2/br/background-check https://api.verifik.co/v2/br/background-check GET v2/br/background-check GET /v2/br/background-check | [Background Check (CPF)](/background-check/brazil) |
+| `v2/br/bcb-disqualified` | v2 br bcb-disqualified br/bcb-disqualified /br/bcb-disqualified api/br/bcb-disqualified /api/br/bcb-disqualified api br bcb-disqualified api.verifik.co/v2/br/bcb-disqualified https://api.verifik.co/v2/br/bcb-disqualified GET v2/br/bcb-disqualified GET /v2/br/bcb-disqualified | [Watchlist — Brazil BCB disqualified persons](/background-check/international/brazil-bcb-disqualified) |
 | `v2/br/cedula` | v2 br cedula br/cedula /br/cedula api/br/cedula /api/br/cedula api br cedula api.verifik.co/v2/br/cedula https://api.verifik.co/v2/br/cedula GET v2/br/cedula GET /v2/br/cedula | [Brazilian Citizen](/identity/brazil) |
 | `v2/br/company` | v2 br company br/company /br/company api/br/company /api/br/company api br company api.verifik.co/v2/br/company https://api.verifik.co/v2/br/company GET v2/br/company GET /v2/br/company | [Business Verification (CNPJ)](/business-validation/brazil) |
 | `v2/br/medical-professional` | v2 br medical-professional br/medical-professional /br/medical-professional api/br/medical-professional /api/br/medical-professional api br medical-professional api.verifik.co/v2/br/medical-professional https://api.verifik.co/v2/br/medical-professional GET v2/br/medical-professional GET /v2/br/medical-professional | [Brazil — Medical Professional (CRM)](/identity/brazil-medical-professional) |
 | `v2/br/politically-exposed-persons` | v2 br politically-exposed-persons br/politically-exposed-persons /br/politically-exposed-persons api/br/politically-exposed-persons /api/br/politically-exposed-persons api br politically-exposed-persons api.verifik.co/v2/br/politically-exposed-persons https://api.verifik.co/v2/br/politically-exposed-persons GET v2/br/politically-exposed-persons GET /v2/br/politically-exposed-persons | [Brazil — Politically Exposed Persons (PEP / COAF Resolução 40/2021)](/background-check/brazil-politically-exposed-persons) |
+| `v2/br/tcu-disqualified` | v2 br tcu-disqualified br/tcu-disqualified /br/tcu-disqualified api/br/tcu-disqualified /api/br/tcu-disqualified api br tcu-disqualified api.verifik.co/v2/br/tcu-disqualified https://api.verifik.co/v2/br/tcu-disqualified GET v2/br/tcu-disqualified GET /v2/br/tcu-disqualified | [Watchlist — Brazil TCU public-service disqualification](/background-check/international/brazil-tcu-disqualified) |
 | `v2/br/vehicle` | v2 br vehicle br/vehicle /br/vehicle api/br/vehicle /api/br/vehicle api br vehicle api.verifik.co/v2/br/vehicle https://api.verifik.co/v2/br/vehicle GET v2/br/vehicle GET /v2/br/vehicle | [Vehicle Information](/vehicle-validation/brazil) |
 
 ## Switzerland
@@ -6023,13 +6408,18 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | `v2/co/cedula/premium` | v2 co cedula premium co/cedula/premium /co/cedula/premium api/co/cedula/premium /api/co/cedula/premium api co cedula premium cedula/premium /cedula/premium api.verifik.co/v2/co/cedula/premium https://api.verifik.co/v2/co/cedula/premium GET v2/co/cedula/premium GET /v2/co/cedula/premium | [Colombia — National ID premium lookup (CC)](/identity-validation/colombia/colombian-cedula-premium) |
 | `v2/co/cedula/registraduria` | v2 co cedula registraduria co/cedula/registraduria /co/cedula/registraduria api/co/cedula/registraduria /api/co/cedula/registraduria api co cedula registraduria cedula/registraduria /cedula/registraduria api.verifik.co/v2/co/cedula/registraduria https://api.verifik.co/v2/co/cedula/registraduria GET v2/co/cedula/registraduria GET /v2/co/cedula/registraduria | [Colombia — Citizen lookup via Registraduría (SCCRC)](/identity/colombia-cedula-registraduria) |
 | `v2/co/cedula/rethus` | v2 co cedula rethus co/cedula/rethus /co/cedula/rethus api/co/cedula/rethus /api/co/cedula/rethus api co cedula rethus cedula/rethus /cedula/rethus api.verifik.co/v2/co/cedula/rethus https://api.verifik.co/v2/co/cedula/rethus GET v2/co/cedula/rethus GET /v2/co/cedula/rethus | [Colombia — RETHUS (health professionals registry)](/legal/colombia-rethus) |
+| `v2/co/cedula/vigencia` | v2 co cedula vigencia co/cedula/vigencia /co/cedula/vigencia api/co/cedula/vigencia /api/co/cedula/vigencia api co cedula vigencia cedula/vigencia /cedula/vigencia api.verifik.co/v2/co/cedula/vigencia https://api.verifik.co/v2/co/cedula/vigencia GET v2/co/cedula/vigencia GET /v2/co/cedula/vigencia | [Colombia — National ID status (CC)](/identity/colombia-cedula-vigencia) |
 | `v2/co/company/dian` | v2 co company dian co/company/dian /co/company/dian api/co/company/dian /api/co/company/dian api co company dian company/dian /company/dian api.verifik.co/v2/co/company/dian https://api.verifik.co/v2/co/company/dian GET v2/co/company/dian GET /v2/co/company/dian | [Colombia DIAN Verification](/business-validation/colombia-dian-verification) |
 | `v2/co/company/dian/invoicer` | v2 co company dian invoicer co/company/dian/invoicer /co/company/dian/invoicer api/co/company/dian/invoicer /api/co/company/dian/invoicer api co company dian invoicer company/dian/invoicer /company/dian/invoicer dian/invoicer /dian/invoicer api.verifik.co/v2/co/company/dian/invoicer https://api.verifik.co/v2/co/company/dian/invoicer GET v2/co/company/dian/invoicer GET /v2/co/company/dian/invoicer | [Colombia Legal Invoicer Verification](/business-validation/colombia-legal-invoicer-verification) |
+| `v2/co/consejo-profesional` | v2 co consejo-profesional co/consejo-profesional /co/consejo-profesional api/co/consejo-profesional /api/co/consejo-profesional api co consejo-profesional api.verifik.co/v2/co/consejo-profesional https://api.verifik.co/v2/co/consejo-profesional GET v2/co/consejo-profesional GET /v2/co/consejo-profesional | [Colombia — Electrical and mechanical engineering license](/identity/colombia-electrical-mechanical-license) |
 | `v2/co/contracts` | v2 co contracts co/contracts /co/contracts api/co/contracts /api/co/contracts api co contracts api.verifik.co/v2/co/contracts https://api.verifik.co/v2/co/contracts GET v2/co/contracts GET /v2/co/contracts | [Colombia - Public Contracts](/background-check/colombia-public-contracts) |
 | `v2/co/contraloria/certificado` | v2 co contraloria certificado co/contraloria/certificado /co/contraloria/certificado api/co/contraloria/certificado /api/co/contraloria/certificado api co contraloria certificado contraloria/certificado /contraloria/certificado api.verifik.co/v2/co/contraloria/certificado https://api.verifik.co/v2/co/contraloria/certificado GET v2/co/contraloria/certificado GET /v2/co/contraloria/certificado | [Colombia - Contraloría Certificate](/background-check/colombia-comptroller-certificate) |
 | `v2/co/copnia` | v2 co copnia co/copnia /co/copnia api/co/copnia /api/co/copnia api co copnia api.verifik.co/v2/co/copnia https://api.verifik.co/v2/co/copnia GET v2/co/copnia GET /v2/co/copnia | [Colombia — COPNIA professional licenses by document](/legal/colombia-copnia) |
 | `v2/co/copnia/matricula` | v2 co copnia matricula co/copnia/matricula /co/copnia/matricula api/co/copnia/matricula /api/co/copnia/matricula api co copnia matricula copnia/matricula /copnia/matricula api.verifik.co/v2/co/copnia/matricula https://api.verifik.co/v2/co/copnia/matricula GET v2/co/copnia/matricula GET /v2/co/copnia/matricula | [Colombia — COPNIA professional license by matrícula](/legal/colombia-copnia-license) |
+| `v2/co/cpae` | v2 co cpae co/cpae /co/cpae api/co/cpae /api/co/cpae api co cpae api.verifik.co/v2/co/cpae https://api.verifik.co/v2/co/cpae GET v2/co/cpae GET /v2/co/cpae | [Colombia — Business administration license (CPAE)](/identity/colombia-cpae-license) |
+| `v2/co/cpiq` | v2 co cpiq co/cpiq /co/cpiq api/co/cpiq /api/co/cpiq api co cpiq api.verifik.co/v2/co/cpiq https://api.verifik.co/v2/co/cpiq GET v2/co/cpiq GET /v2/co/cpiq | [Colombia — Chemical engineering license (CPIQ)](/identity/colombia-chemical-engineering-license) |
 | `v2/co/deudoresmorosos` | v2 co deudoresmorosos co/deudoresmorosos /co/deudoresmorosos api/co/deudoresmorosos /api/co/deudoresmorosos api co deudoresmorosos api.verifik.co/v2/co/deudoresmorosos https://api.verifik.co/v2/co/deudoresmorosos GET v2/co/deudoresmorosos GET /v2/co/deudoresmorosos | [Colombia — Delinquent debtors (BDME)](/finance/delinquent-debtors) |
+| `v2/co/dian/proveedores-ficticios` | v2 co dian proveedores-ficticios co/dian/proveedores-ficticios /co/dian/proveedores-ficticios api/co/dian/proveedores-ficticios /api/co/dian/proveedores-ficticios api co dian proveedores-ficticios dian/proveedores-ficticios /dian/proveedores-ficticios api.verifik.co/v2/co/dian/proveedores-ficticios https://api.verifik.co/v2/co/dian/proveedores-ficticios GET v2/co/dian/proveedores-ficticios GET /v2/co/dian/proveedores-ficticios | [Colombia — Fictitious or insolvent suppliers (DIAN)](/business-validation/colombia-fictitious-suppliers) |
 | `v2/co/fasecolda/sinister` | v2 co fasecolda sinister co/fasecolda/sinister /co/fasecolda/sinister api/co/fasecolda/sinister /api/co/fasecolda/sinister api co fasecolda sinister fasecolda/sinister /fasecolda/sinister api.verifik.co/v2/co/fasecolda/sinister https://api.verifik.co/v2/co/fasecolda/sinister GET v2/co/fasecolda/sinister GET /v2/co/fasecolda/sinister | [Claims Verification](/vehicle-validation/colombia-fasecolda-claims-verification) |
 | `v2/co/fasecolda/values-by-code` | v2 co fasecolda values-by-code co/fasecolda/values-by-code /co/fasecolda/values-by-code api/co/fasecolda/values-by-code /api/co/fasecolda/values-by-code api co fasecolda values-by-code fasecolda/values-by-code /fasecolda/values-by-code api.verifik.co/v2/co/fasecolda/values-by-code https://api.verifik.co/v2/co/fasecolda/values-by-code GET v2/co/fasecolda/values-by-code GET /v2/co/fasecolda/values-by-code | [Vehicle Values by Code](/vehicle-validation/colombia-fasecolda-vehicle-by-code) |
 | `v2/co/fasecolda/values-by-plate` | v2 co fasecolda values-by-plate co/fasecolda/values-by-plate /co/fasecolda/values-by-plate api/co/fasecolda/values-by-plate /api/co/fasecolda/values-by-plate api co fasecolda values-by-plate fasecolda/values-by-plate /fasecolda/values-by-plate api.verifik.co/v2/co/fasecolda/values-by-plate https://api.verifik.co/v2/co/fasecolda/values-by-plate GET v2/co/fasecolda/values-by-plate GET /v2/co/fasecolda/values-by-plate | [Vehicle Values by Plate](/vehicle-validation/colombia-fasecolda-values-by-plate) |
@@ -6041,6 +6431,11 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | `v2/co/medellin/vehicle/fines` | v2 co medellin vehicle fines co/medellin/vehicle/fines /co/medellin/vehicle/fines api/co/medellin/vehicle/fines /api/co/medellin/vehicle/fines api co medellin vehicle fines medellin/vehicle/fines /medellin/vehicle/fines vehicle/fines /vehicle/fines api.verifik.co/v2/co/medellin/vehicle/fines https://api.verifik.co/v2/co/medellin/vehicle/fines GET v2/co/medellin/vehicle/fines GET /v2/co/medellin/vehicle/fines | [Medellín - Transit Fines](/vehicle-validation/colombia/medellin-vehicle-fines) |
 | `v2/co/media/adverse` | v2 co media adverse co/media/adverse /co/media/adverse api/co/media/adverse /api/co/media/adverse api co media adverse media/adverse /media/adverse api.verifik.co/v2/co/media/adverse https://api.verifik.co/v2/co/media/adverse GET v2/co/media/adverse GET /v2/co/media/adverse | [Adverse Media & Google News RSS](/background-check/adverse-media-google-rss) |
 | `v2/co/paco` | v2 co paco co/paco /co/paco api/co/paco /api/co/paco api co paco api.verifik.co/v2/co/paco https://api.verifik.co/v2/co/paco GET v2/co/paco GET /v2/co/paco | [Colombia — PACO Anti-Corruption Observatory](/background-check/colombia-paco-anticorruption) |
+| `v2/co/pep/candidatos` | v2 co pep candidatos co/pep/candidatos /co/pep/candidatos api/co/pep/candidatos /api/co/pep/candidatos api co pep candidatos pep/candidatos /pep/candidatos api.verifik.co/v2/co/pep/candidatos https://api.verifik.co/v2/co/pep/candidatos GET v2/co/pep/candidatos GET /v2/co/pep/candidatos | [Colombia — PEP electoral candidates](/background-check/colombia-pep-electoral-candidates) |
+| `v2/co/pep/cuerpo-diplomatico` | v2 co pep cuerpo-diplomatico co/pep/cuerpo-diplomatico /co/pep/cuerpo-diplomatico api/co/pep/cuerpo-diplomatico /api/co/pep/cuerpo-diplomatico api co pep cuerpo-diplomatico pep/cuerpo-diplomatico /pep/cuerpo-diplomatico api.verifik.co/v2/co/pep/cuerpo-diplomatico https://api.verifik.co/v2/co/pep/cuerpo-diplomatico GET v2/co/pep/cuerpo-diplomatico GET /v2/co/pep/cuerpo-diplomatico | [Colombia — PEP diplomatic corps](/background-check/colombia-pep-diplomatic-corps) |
+| `v2/co/pep/estructura-gobierno` | v2 co pep estructura-gobierno co/pep/estructura-gobierno /co/pep/estructura-gobierno api/co/pep/estructura-gobierno /api/co/pep/estructura-gobierno api co pep estructura-gobierno pep/estructura-gobierno /pep/estructura-gobierno api.verifik.co/v2/co/pep/estructura-gobierno https://api.verifik.co/v2/co/pep/estructura-gobierno GET v2/co/pep/estructura-gobierno GET /v2/co/pep/estructura-gobierno | [Colombia — PEP government structure](/background-check/colombia-pep-government-structure) |
+| `v2/co/pep/misiones-exterior` | v2 co pep misiones-exterior co/pep/misiones-exterior /co/pep/misiones-exterior api/co/pep/misiones-exterior /api/co/pep/misiones-exterior api co pep misiones-exterior pep/misiones-exterior /pep/misiones-exterior api.verifik.co/v2/co/pep/misiones-exterior https://api.verifik.co/v2/co/pep/misiones-exterior GET v2/co/pep/misiones-exterior GET /v2/co/pep/misiones-exterior | [Colombia — PEP foreign missions](/background-check/colombia-pep-foreign-missions) |
+| `v2/co/pep/partidos-politicos` | v2 co pep partidos-politicos co/pep/partidos-politicos /co/pep/partidos-politicos api/co/pep/partidos-politicos /api/co/pep/partidos-politicos api co pep partidos-politicos pep/partidos-politicos /pep/partidos-politicos api.verifik.co/v2/co/pep/partidos-politicos https://api.verifik.co/v2/co/pep/partidos-politicos GET v2/co/pep/partidos-politicos GET /v2/co/pep/partidos-politicos | [Colombia — PEP political party officials](/background-check/colombia-pep-political-parties) |
 | `v2/co/policia/consultar` | v2 co policia consultar co/policia/consultar /co/policia/consultar api/co/policia/consultar /api/co/policia/consultar api co policia consultar policia/consultar /policia/consultar api.verifik.co/v2/co/policia/consultar https://api.verifik.co/v2/co/policia/consultar GET v2/co/policia/consultar GET /v2/co/policia/consultar | [Colombia - Colombian Police Record Check](/background-check/colombia-police-record-check) |
 | `v2/co/policia/rnmc` | v2 co policia rnmc co/policia/rnmc /co/policia/rnmc api/co/policia/rnmc /api/co/policia/rnmc api co policia rnmc policia/rnmc /policia/rnmc api.verifik.co/v2/co/policia/rnmc https://api.verifik.co/v2/co/policia/rnmc GET v2/co/policia/rnmc GET /v2/co/policia/rnmc | [Colombia - Verify Police Compliance with Corrective Measures](/background-check/colombia-police-compliance-corrective-measures) |
 | `v2/co/policia/rnmc/premium` | v2 co policia rnmc premium co/policia/rnmc/premium /co/policia/rnmc/premium api/co/policia/rnmc/premium /api/co/policia/rnmc/premium api co policia rnmc premium policia/rnmc/premium /policia/rnmc/premium rnmc/premium /rnmc/premium api.verifik.co/v2/co/policia/rnmc/premium https://api.verifik.co/v2/co/policia/rnmc/premium GET v2/co/policia/rnmc/premium GET /v2/co/policia/rnmc/premium | [Colombia - Police RNMC premium](/background-check/colombia-police-compliance-corrective-measures-premium) |
@@ -6081,6 +6476,10 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | `v2/co/simit/suspensiones` | v2 co simit suspensiones co/simit/suspensiones /co/simit/suspensiones api/co/simit/suspensiones /api/co/simit/suspensiones api co simit suspensiones simit/suspensiones /simit/suspensiones api.verifik.co/v2/co/simit/suspensiones https://api.verifik.co/v2/co/simit/suspensiones GET v2/co/simit/suspensiones GET /v2/co/simit/suspensiones | [SIMIT - License suspensions](/vehicle-validation/colombia/simit-suspensiones) |
 | `v2/co/sisconmp/trainings` | v2 co sisconmp trainings co/sisconmp/trainings /co/sisconmp/trainings api/co/sisconmp/trainings /api/co/sisconmp/trainings api co sisconmp trainings sisconmp/trainings /sisconmp/trainings api.verifik.co/v2/co/sisconmp/trainings https://api.verifik.co/v2/co/sisconmp/trainings GET v2/co/sisconmp/trainings GET /v2/co/sisconmp/trainings | [SISCONMP Training Records](/vehicle-validation/colombia/sisconmp-trainings) |
 | `v2/co/situacion-militar` | v2 co situacion-militar co/situacion-militar /co/situacion-militar api/co/situacion-militar /api/co/situacion-militar api co situacion-militar api.verifik.co/v2/co/situacion-militar https://api.verifik.co/v2/co/situacion-militar GET v2/co/situacion-militar GET /v2/co/situacion-militar | [Colombia — Military service status](/identity/colombia-situacion-militar) |
+| `v2/co/sst/licencia` | v2 co sst licencia co/sst/licencia /co/sst/licencia api/co/sst/licencia /api/co/sst/licencia api co sst licencia sst/licencia /sst/licencia api.verifik.co/v2/co/sst/licencia https://api.verifik.co/v2/co/sst/licencia GET v2/co/sst/licencia GET /v2/co/sst/licencia | [Colombia — Occupational safety license (SST)](/identity/colombia-sst-license) |
+| `v2/co/superfinanciera/concordatos` | v2 co superfinanciera concordatos co/superfinanciera/concordatos /co/superfinanciera/concordatos api/co/superfinanciera/concordatos /api/co/superfinanciera/concordatos api co superfinanciera concordatos superfinanciera/concordatos /superfinanciera/concordatos api.verifik.co/v2/co/superfinanciera/concordatos https://api.verifik.co/v2/co/superfinanciera/concordatos GET v2/co/superfinanciera/concordatos GET /v2/co/superfinanciera/concordatos | [Colombia — Financial insolvency and liquidation](/business-validation/colombia-financial-insolvency) |
+| `v2/co/supersociedades/siis` | v2 co supersociedades siis co/supersociedades/siis /co/supersociedades/siis api/co/supersociedades/siis /api/co/supersociedades/siis api co supersociedades siis supersociedades/siis /supersociedades/siis api.verifik.co/v2/co/supersociedades/siis https://api.verifik.co/v2/co/supersociedades/siis GET v2/co/supersociedades/siis GET /v2/co/supersociedades/siis | [Colombia — Corporate information system (SIIS)](/business-validation/colombia-siis) |
+| `v2/co/supersolidaria/sanciones` | v2 co supersolidaria sanciones co/supersolidaria/sanciones /co/supersolidaria/sanciones api/co/supersolidaria/sanciones /api/co/supersolidaria/sanciones api co supersolidaria sanciones supersolidaria/sanciones /supersolidaria/sanciones api.verifik.co/v2/co/supersolidaria/sanciones https://api.verifik.co/v2/co/supersolidaria/sanciones GET v2/co/supersolidaria/sanciones GET /v2/co/supersolidaria/sanciones | [Colombia — Solidarity-sector sanctions](/business-validation/colombia-solidarity-sanctions) |
 | `v2/co/vehiculo/pico-y-placa` | v2 co vehiculo pico-y-placa co/vehiculo/pico-y-placa /co/vehiculo/pico-y-placa api/co/vehiculo/pico-y-placa /api/co/vehiculo/pico-y-placa api co vehiculo pico-y-placa vehiculo/pico-y-placa /vehiculo/pico-y-placa api.verifik.co/v2/co/vehiculo/pico-y-placa https://api.verifik.co/v2/co/vehiculo/pico-y-placa GET v2/co/vehiculo/pico-y-placa GET /v2/co/vehiculo/pico-y-placa | [Pico y Placa](/vehicle-validation/colombia/vehicle-validation-colombia-bogota-pico-y-placa) |
 
 ## Costa Rica
@@ -6090,6 +6489,7 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | `v2/cr/cedula` | v2 cr cedula cr/cedula /cr/cedula api/cr/cedula /api/cr/cedula api cr cedula api.verifik.co/v2/cr/cedula https://api.verifik.co/v2/cr/cedula GET v2/cr/cedula GET /v2/cr/cedula | [Costa Rican Citizen (CCCR)](/identity/costa-rica) |
 | `v2/cr/company` | v2 cr company cr/company /cr/company api/cr/company /api/cr/company api cr company api.verifik.co/v2/cr/company https://api.verifik.co/v2/cr/company GET v2/cr/company GET /v2/cr/company | [Costa Rican Business Verification (NITE)](/business-validation/costa-rica) |
 | `v2/cr/politically-exposed-persons` | v2 cr politically-exposed-persons cr/politically-exposed-persons /cr/politically-exposed-persons api/cr/politically-exposed-persons /api/cr/politically-exposed-persons api cr politically-exposed-persons api.verifik.co/v2/cr/politically-exposed-persons https://api.verifik.co/v2/cr/politically-exposed-persons GET v2/cr/politically-exposed-persons GET /v2/cr/politically-exposed-persons | [Costa Rica — Politically Exposed Persons (PEP)](/background-check/costa-rica-politically-exposed-persons) |
+| `v2/cr/traffic-infractions` | v2 cr traffic-infractions cr/traffic-infractions /cr/traffic-infractions api/cr/traffic-infractions /api/cr/traffic-infractions api cr traffic-infractions api.verifik.co/v2/cr/traffic-infractions https://api.verifik.co/v2/cr/traffic-infractions GET v2/cr/traffic-infractions GET /v2/cr/traffic-infractions | [Costa Rica — Traffic infractions](/vehicle-validation/costa-rica/traffic-infractions) |
 | `v2/cr/vehicle` | v2 cr vehicle cr/vehicle /cr/vehicle api/cr/vehicle /api/cr/vehicle api cr vehicle api.verifik.co/v2/cr/vehicle https://api.verifik.co/v2/cr/vehicle GET v2/cr/vehicle GET /v2/cr/vehicle | [\U0001F1E8\U0001F1F7 Costa Rica - Vehicle Information](/vehicle-validation/costa-rica) |
 | `v2/cr/votacion` | v2 cr votacion cr/votacion /cr/votacion api/cr/votacion /api/cr/votacion api cr votacion api.verifik.co/v2/cr/votacion https://api.verifik.co/v2/cr/votacion GET v2/cr/votacion GET /v2/cr/votacion | [Costa Rica - Voting Location](/identity/costa-rica/votacion) |
 
@@ -6122,6 +6522,7 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | `v2/ec/politically-exposed-persons` | v2 ec politically-exposed-persons ec/politically-exposed-persons /ec/politically-exposed-persons api/ec/politically-exposed-persons /api/ec/politically-exposed-persons api ec politically-exposed-persons api.verifik.co/v2/ec/politically-exposed-persons https://api.verifik.co/v2/ec/politically-exposed-persons GET v2/ec/politically-exposed-persons GET /v2/ec/politically-exposed-persons | [Ecuador — Politically Exposed Persons (PEP)](/background-check/ecuador-politically-exposed-persons) |
 | `v2/ec/vehiculo/placa` | v2 ec vehiculo placa ec/vehiculo/placa /ec/vehiculo/placa api/ec/vehiculo/placa /api/ec/vehiculo/placa api ec vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/ec/vehiculo/placa https://api.verifik.co/v2/ec/vehiculo/placa GET v2/ec/vehiculo/placa GET /v2/ec/vehiculo/placa | [\U0001F1EA\U0001F1E8 Ecuador - Vehicle Verification](/vehicle-validation/ecuador/vehicle-by-plate) |
 | `v2/ec/vehiculo/placa/multas` | v2 ec vehiculo placa multas ec/vehiculo/placa/multas /ec/vehiculo/placa/multas api/ec/vehiculo/placa/multas /api/ec/vehiculo/placa/multas api ec vehiculo placa multas vehiculo/placa/multas /vehiculo/placa/multas placa/multas /placa/multas api.verifik.co/v2/ec/vehiculo/placa/multas https://api.verifik.co/v2/ec/vehiculo/placa/multas GET v2/ec/vehiculo/placa/multas GET /v2/ec/vehiculo/placa/multas | [\U0001F1EA\U0001F1E8 Ecuador - Vehicle Fines](/vehicle-validation/ecuador) |
+| `v2/ec/votacion` | v2 ec votacion ec/votacion /ec/votacion api/ec/votacion /api/ec/votacion api ec votacion api.verifik.co/v2/ec/votacion https://api.verifik.co/v2/ec/votacion GET v2/ec/votacion GET /v2/ec/votacion | [Ecuador — Voting location](/identity/ecuador/votacion) |
 
 ## Estonia
 
@@ -6246,13 +6647,16 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | `v2/pa/cedula` | v2 pa cedula pa/cedula /pa/cedula api/pa/cedula /api/pa/cedula api pa cedula api.verifik.co/v2/pa/cedula https://api.verifik.co/v2/pa/cedula GET v2/pa/cedula GET /v2/pa/cedula | [Panamanian Citizen](/identity/panama) |
 | `v2/pa/company` | v2 pa company pa/company /pa/company api/pa/company /api/pa/company api pa company api.verifik.co/v2/pa/company https://api.verifik.co/v2/pa/company GET v2/pa/company GET /v2/pa/company | [Panamanian Business Verification](/business-validation/panama) |
 | `v2/pa/health-worker` | v2 pa health-worker pa/health-worker /pa/health-worker api/pa/health-worker /api/pa/health-worker api pa health-worker api.verifik.co/v2/pa/health-worker https://api.verifik.co/v2/pa/health-worker GET v2/pa/health-worker GET /v2/pa/health-worker | [Panama — Health Worker & Medical Professional Verification (MINSA / Consejo Técnico de Salud)](/identity/panama-health-worker) |
+| `v2/pa/lawyer/idoneidad` | v2 pa lawyer idoneidad pa/lawyer/idoneidad /pa/lawyer/idoneidad api/pa/lawyer/idoneidad /api/pa/lawyer/idoneidad api pa lawyer idoneidad lawyer/idoneidad /lawyer/idoneidad api.verifik.co/v2/pa/lawyer/idoneidad https://api.verifik.co/v2/pa/lawyer/idoneidad GET v2/pa/lawyer/idoneidad GET /v2/pa/lawyer/idoneidad | [Panama — Lawyer idoneidad](/identity/panama-lawyer-idoneidad) |
 | `v2/pa/politically-exposed-persons` | v2 pa politically-exposed-persons pa/politically-exposed-persons /pa/politically-exposed-persons api/pa/politically-exposed-persons /api/pa/politically-exposed-persons api pa politically-exposed-persons api.verifik.co/v2/pa/politically-exposed-persons https://api.verifik.co/v2/pa/politically-exposed-persons GET v2/pa/politically-exposed-persons GET /v2/pa/politically-exposed-persons | [Panama — Politically Exposed Persons (PEP / Ley 23 de 2015 & SBP 10-2015)](/background-check/panama-politically-exposed-persons) |
+| `v2/pa/professional/jtia` | v2 pa professional jtia pa/professional/jtia /pa/professional/jtia api/pa/professional/jtia /api/pa/professional/jtia api pa professional jtia professional/jtia /professional/jtia api.verifik.co/v2/pa/professional/jtia https://api.verifik.co/v2/pa/professional/jtia GET v2/pa/professional/jtia GET /v2/pa/professional/jtia | [Panama — Engineering and architecture license (JTIA)](/identity/panama-jtia-license) |
 
 ## Peru
 
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/pe/driver-license` | v2 pe driver-license pe/driver-license /pe/driver-license api/pe/driver-license /api/pe/driver-license api pe driver-license api.verifik.co/v2/pe/driver-license https://api.verifik.co/v2/pe/driver-license GET v2/pe/driver-license GET /v2/pe/driver-license | [Peru - Driver License](/driver-validation/peru-driver-license) |
+| `v2/pe/education/renacyt` | v2 pe education renacyt pe/education/renacyt /pe/education/renacyt api/pe/education/renacyt /api/pe/education/renacyt api pe education renacyt education/renacyt /education/renacyt api.verifik.co/v2/pe/education/renacyt https://api.verifik.co/v2/pe/education/renacyt GET v2/pe/education/renacyt GET /v2/pe/education/renacyt | [Peru — SUNEDU degrees and CONCYTEC RENACYT](/identity/peru-renacyt) |
 | `v2/pe/foreigner-id/ce` | v2 pe foreigner-id ce pe/foreigner-id/ce /pe/foreigner-id/ce api/pe/foreigner-id/ce /api/pe/foreigner-id/ce api pe foreigner-id ce foreigner-id/ce /foreigner-id/ce api.verifik.co/v2/pe/foreigner-id/ce https://api.verifik.co/v2/pe/foreigner-id/ce GET v2/pe/foreigner-id/ce GET /v2/pe/foreigner-id/ce | [\U0001F1F5\U0001F1EA Peru - Foreigner Resident](/identity-validation/peru/peruvian-foreigner-resident) |
 | `v2/pe/politically-exposed-persons` | v2 pe politically-exposed-persons pe/politically-exposed-persons /pe/politically-exposed-persons api/pe/politically-exposed-persons /api/pe/politically-exposed-persons api pe politically-exposed-persons api.verifik.co/v2/pe/politically-exposed-persons https://api.verifik.co/v2/pe/politically-exposed-persons GET v2/pe/politically-exposed-persons GET /v2/pe/politically-exposed-persons | [Peru — Politically Exposed Persons (PEP / SBS 2660-2015 & 4349-2016)](/background-check/peru-politically-exposed-persons) |
 | `v2/pe/vehiculo/placa` | v2 pe vehiculo placa pe/vehiculo/placa /pe/vehiculo/placa api/pe/vehiculo/placa /api/pe/vehiculo/placa api pe vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v2/pe/vehiculo/placa https://api.verifik.co/v2/pe/vehiculo/placa GET v2/pe/vehiculo/placa GET /v2/pe/vehiculo/placa | [Peru - Vehicle Information](/vehicle-validation/peru/peruvian-vehicle) |
@@ -6519,6 +6923,21 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | --- | --- | --- |
 | `v2/clients/me` | v2 clients me clients/me /clients/me api/clients/me /api/clients/me api clients me api.verifik.co/v2/clients/me https://api.verifik.co/v2/clients/me GET v2/clients/me GET /v2/clients/me | [Account Information](/accounts/clients/account-information) |
 
+## Communication
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/communication/email` | v2 communication email communication/email /communication/email api/communication/email /api/communication/email api communication email api.verifik.co/v2/communication/email https://api.verifik.co/v2/communication/email GET v2/communication/email GET /v2/communication/email | [Email OTP](/communication/email-otp) |
+| `v2/communication/sms` | v2 communication sms communication/sms /communication/sms api/communication/sms /api/communication/sms api communication sms api.verifik.co/v2/communication/sms https://api.verifik.co/v2/communication/sms GET v2/communication/sms GET /v2/communication/sms | [SMS messaging](/communication/sms) |
+| `v2/communication/whatsapp` | v2 communication whatsapp communication/whatsapp /communication/whatsapp api/communication/whatsapp /api/communication/whatsapp api communication whatsapp api.verifik.co/v2/communication/whatsapp https://api.verifik.co/v2/communication/whatsapp GET v2/communication/whatsapp GET /v2/communication/whatsapp | [WhatsApp messaging](/communication/whatsapp) |
+
+## Crypto
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/crypto/fbi-lazarus` | v2 crypto fbi-lazarus crypto/fbi-lazarus /crypto/fbi-lazarus api/crypto/fbi-lazarus /api/crypto/fbi-lazarus api crypto fbi-lazarus api.verifik.co/v2/crypto/fbi-lazarus https://api.verifik.co/v2/crypto/fbi-lazarus GET v2/crypto/fbi-lazarus GET /v2/crypto/fbi-lazarus | [Watchlist — FBI Lazarus crypto wallets](/background-check/international/fbi-lazarus-crypto-wallets) |
+| `v2/crypto/ransomwhere` | v2 crypto ransomwhere crypto/ransomwhere /crypto/ransomwhere api/crypto/ransomwhere /api/crypto/ransomwhere api crypto ransomwhere api.verifik.co/v2/crypto/ransomwhere https://api.verifik.co/v2/crypto/ransomwhere GET v2/crypto/ransomwhere GET /v2/crypto/ransomwhere | [Watchlist — ransomwhe.re ransomware addresses](/background-check/international/ransomwhere-crypto-addresses) |
+
 ## Csl
 
 | Endpoint | Aliases | Page |
@@ -6678,6 +7097,7 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | `v2/face-recognition/compare-live` | v2 face-recognition compare-live face-recognition/compare-live /face-recognition/compare-live api/face-recognition/compare-live /api/face-recognition/compare-live api face-recognition compare-live api.verifik.co/v2/face-recognition/compare-live https://api.verifik.co/v2/face-recognition/compare-live GET v2/face-recognition/compare-live GET /v2/face-recognition/compare-live | [Face Comparison (Live)](/biometrics/compare-live) |
 | `v2/face-recognition/compare-with-liveness` | v2 face-recognition compare-with-liveness face-recognition/compare-with-liveness /face-recognition/compare-with-liveness api/face-recognition/compare-with-liveness /api/face-recognition/compare-with-liveness api face-recognition compare-with-liveness api.verifik.co/v2/face-recognition/compare-with-liveness https://api.verifik.co/v2/face-recognition/compare-with-liveness GET v2/face-recognition/compare-with-liveness GET /v2/face-recognition/compare-with-liveness | [Compare with Liveness (Sequential)](/biometrics/compare-with-liveness) |
 | `v2/face-recognition/detect` | v2 face-recognition detect face-recognition/detect /face-recognition/detect api/face-recognition/detect /api/face-recognition/detect api face-recognition detect api.verifik.co/v2/face-recognition/detect https://api.verifik.co/v2/face-recognition/detect GET v2/face-recognition/detect GET /v2/face-recognition/detect | [Face Detection](/verifik-biometrics-apis/liveness/face-detection) |
+| `v2/face-recognition/face-validation` | v2 face-recognition face-validation face-recognition/face-validation /face-recognition/face-validation api/face-recognition/face-validation /api/face-recognition/face-validation api face-recognition face-validation api.verifik.co/v2/face-recognition/face-validation https://api.verifik.co/v2/face-recognition/face-validation GET v2/face-recognition/face-validation GET /v2/face-recognition/face-validation | [Face Detection](/biometrics/face-validation) |
 | `v2/face-recognition/liveness` | v2 face-recognition liveness face-recognition/liveness /face-recognition/liveness api/face-recognition/liveness /api/face-recognition/liveness api face-recognition liveness api.verifik.co/v2/face-recognition/liveness https://api.verifik.co/v2/face-recognition/liveness GET v2/face-recognition/liveness GET /v2/face-recognition/liveness | [Liveness Detection](/biometrics/liveness) |
 | `v2/face-recognition/liveness-score` | v2 face-recognition liveness-score face-recognition/liveness-score /face-recognition/liveness-score api/face-recognition/liveness-score /api/face-recognition/liveness-score api face-recognition liveness-score api.verifik.co/v2/face-recognition/liveness-score https://api.verifik.co/v2/face-recognition/liveness-score GET v2/face-recognition/liveness-score GET /v2/face-recognition/liveness-score | [Liveness Score](/biometrics/liveness-score) |
 | `v2/face-recognition/persons` | v2 face-recognition persons face-recognition/persons /face-recognition/persons api/face-recognition/persons /api/face-recognition/persons api face-recognition persons api.verifik.co/v2/face-recognition/persons https://api.verifik.co/v2/face-recognition/persons GET v2/face-recognition/persons GET /v2/face-recognition/persons | [Create a Person](/resources/create-a-person) |
@@ -7028,6 +7448,7 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/ocr/scan-agent` | v2 ocr scan-agent ocr/scan-agent /ocr/scan-agent api/ocr/scan-agent /api/ocr/scan-agent api ocr scan-agent api.verifik.co/v2/ocr/scan-agent https://api.verifik.co/v2/ocr/scan-agent GET v2/ocr/scan-agent GET /v2/ocr/scan-agent | [Scan Agent (SmartScan)](/ocr-engines/scan-agent) |
+| `v2/ocr/scan-gpt` | v2 ocr scan-gpt ocr/scan-gpt /ocr/scan-gpt api/ocr/scan-gpt /api/ocr/scan-gpt api ocr scan-gpt api.verifik.co/v2/ocr/scan-gpt https://api.verifik.co/v2/ocr/scan-gpt GET v2/ocr/scan-gpt GET /v2/ocr/scan-gpt | [Scan Agent](/ocr-engines/scan-gpt) |
 | `v2/ocr/scan-prompt` | v2 ocr scan-prompt ocr/scan-prompt /ocr/scan-prompt api/ocr/scan-prompt /api/ocr/scan-prompt api ocr scan-prompt api.verifik.co/v2/ocr/scan-prompt https://api.verifik.co/v2/ocr/scan-prompt GET v2/ocr/scan-prompt GET /v2/ocr/scan-prompt | [Scan Prompt](/ocr-engines/scan-prompt) |
 | `v2/ocr/scan-prompt/template/:id` | v2 ocr scan-prompt template :id ocr/scan-prompt/template/:id /ocr/scan-prompt/template/:id api/ocr/scan-prompt/template/:id /api/ocr/scan-prompt/template/:id api ocr scan-prompt template :id scan-prompt/template/:id /scan-prompt/template/:id template/:id /template/:id api.verifik.co/v2/ocr/scan-prompt/template/:id https://api.verifik.co/v2/ocr/scan-prompt/template/:id GET v2/ocr/scan-prompt/template/:id GET /v2/ocr/scan-prompt/template/:id | [Delete a Scan Prompt Template](/ocr-engines/scan-prompt/delete-a-scan-prompt-template) |
 | `v2/ocr/scan-prompt/templates` | v2 ocr scan-prompt templates ocr/scan-prompt/templates /ocr/scan-prompt/templates api/ocr/scan-prompt/templates /api/ocr/scan-prompt/templates api ocr scan-prompt templates scan-prompt/templates /scan-prompt/templates api.verifik.co/v2/ocr/scan-prompt/templates https://api.verifik.co/v2/ocr/scan-prompt/templates GET v2/ocr/scan-prompt/templates GET /v2/ocr/scan-prompt/templates | [List of Scan Prompt Templates](/ocr-engines/scan-prompt/list-of-scan-prompt-templates) |
@@ -7162,6 +7583,12 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | Endpoint | Aliases | Page |
 | --- | --- | --- |
 | `v2/sam-special-exclusions` | v2 sam-special-exclusions sam-special-exclusions /sam-special-exclusions api/sam-special-exclusions /api/sam-special-exclusions api sam-special-exclusions api.verifik.co/v2/sam-special-exclusions https://api.verifik.co/v2/sam-special-exclusions GET v2/sam-special-exclusions GET /v2/sam-special-exclusions | [US Special Legislative Exclusions](/background-check/international/sam-special-exclusions) |
+
+## Score
+
+| Endpoint | Aliases | Page |
+| --- | --- | --- |
+| `v2/score/education` | v2 score education score/education /score/education api/score/education /api/score/education api score education api.verifik.co/v2/score/education https://api.verifik.co/v2/score/education GET v2/score/education GET /v2/score/education | [LATAM — Unified education and license score](/identity/latam-education-score) |
 
 ## Se
 
@@ -7404,6 +7831,7 @@ _Last regenerated: 2026-11-27T17:41:33.410Z_
 | `v3/co/rues-complete` | v3 co rues-complete co/rues-complete /co/rues-complete api/co/rues-complete /api/co/rues-complete api co rues-complete api.verifik.co/v3/co/rues-complete https://api.verifik.co/v3/co/rues-complete GET v3/co/rues-complete GET /v3/co/rues-complete | [RUES Complete Business Validation (v3)](/business-validation/colombia-rues-business-information) |
 | `v3/co/runt/conductor` | v3 co runt conductor co/runt/conductor /co/runt/conductor api/co/runt/conductor /api/co/runt/conductor api co runt conductor runt/conductor /runt/conductor api.verifik.co/v3/co/runt/conductor https://api.verifik.co/v3/co/runt/conductor GET v3/co/runt/conductor GET /v3/co/runt/conductor | [RUNT - Driver's License (Basic)](/vehicle-validation/colombia/runt-drivers-license-basic) |
 | `v3/ec/company` | v3 ec company ec/company /ec/company api/ec/company /api/ec/company api ec company api.verifik.co/v3/ec/company https://api.verifik.co/v3/ec/company GET v3/ec/company GET /v3/ec/company | [Ecuadorian Business Verification](/business-validation/ecuador) |
+| `v3/ec/vehiculo/placa` | v3 ec vehiculo placa ec/vehiculo/placa /ec/vehiculo/placa api/ec/vehiculo/placa /api/ec/vehiculo/placa api ec vehiculo placa vehiculo/placa /vehiculo/placa api.verifik.co/v3/ec/vehiculo/placa https://api.verifik.co/v3/ec/vehiculo/placa GET v3/ec/vehiculo/placa GET /v3/ec/vehiculo/placa | [Ecuador — Vehicle by plate (v3)](/vehicle-validation/ecuador/vehicle-by-plate-v3) |
 | `v3/ocr/scan-studio` | v3 ocr scan-studio ocr/scan-studio /ocr/scan-studio api/ocr/scan-studio /api/ocr/scan-studio api ocr scan-studio api.verifik.co/v3/ocr/scan-studio https://api.verifik.co/v3/ocr/scan-studio GET v3/ocr/scan-studio GET /v3/ocr/scan-studio | [Scan Studio](/ocr-engines/scan-studio) |
 | `v3/pe/cedula` | v3 pe cedula pe/cedula /pe/cedula api/pe/cedula /api/pe/cedula api pe cedula api.verifik.co/v3/pe/cedula https://api.verifik.co/v3/pe/cedula GET v3/pe/cedula GET /v3/pe/cedula | [Peruvian Citizen v3](/identity-validation/peru/peru-citizen) |
 | `v3/pe/cedula/extra` | v3 pe cedula extra pe/cedula/extra /pe/cedula/extra api/pe/cedula/extra /api/pe/cedula/extra api pe cedula extra cedula/extra /cedula/extra api.verifik.co/v3/pe/cedula/extra https://api.verifik.co/v3/pe/cedula/extra GET v3/pe/cedula/extra GET /v3/pe/cedula/extra | [\U0001F1F5\U0001F1EA Peru - V3 Peruvian Citizen](/identity-validation/peru/v3-peruvian-citizen) |

@@ -1,0 +1,214 @@
+---
+id: votacion
+title: "Ecuador — Voting location"
+description: "Read the CNE polling place for a 10-digit Ecuadorian cédula with documentType CCEC."
+sidebar_label: "🇪🇨 Ecuador — Voting location"
+slug: "/identity/ecuador/votacion"
+keywords:
+  - "v2/ec/votacion"
+  - "/v2/ec/votacion"
+  - "api.verifik.co/v2/ec/votacion"
+  - "GET /v2/ec/votacion"
+  - "GET https://api.verifik.co/v2/ec/votacion"
+  - "ecuador_api_voting_location"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Ecuador — Voting location
+
+The **Ecuador voting location** lookup reads the CNE padrón. `documentType` must be `CCEC` and `documentNumber` must be a 10-digit cédula whose province code is 01–24 or 30 and whose check digit is valid. The payload includes the name plus province, canton, parish, and junta (`pollingTable`).
+
+## What the call returns
+
+- `province`, `canton`, and `parish`
+- `pollingTable` — the junta
+- `fullName`
+
+## Use cases
+
+- Show a voter their polling place.
+- Reject a cédula whose check digit fails.
+- Store the junta with the identity file.
+
+---
+
+## API Reference
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/ec/votacion
+```
+
+Fields include `fullName`, `province`, `canton`, `parish`, and `pollingTable`. An unknown cédula is 404 `NotFound`. A bad check digit is 409 `InvalidDocumentNumber`.
+
+### Headers
+
+| Name | Value | Description |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Request payload format |
+| Accept | `application/json` | Response format |
+| Authorization | `Bearer <your_token>` | Client JWT |
+
+### Parameters
+
+| Name | Type | Required | Example | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentType` | string | **Yes** | `CCEC` | Must be `CCEC`. |
+| `documentNumber` | string | **Yes** | `1700000019` | 10-digit Ecuadorian cédula, including the check digit. Province digits must be 01–24 or 30. A bad number returns 409 `InvalidDocumentNumber`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/ec/votacion",
+  params: {
+    documentType: "CCEC",
+    documentNumber: "1700000019",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ec/votacion"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "CCEC",
+    "documentNumber": "1700000019",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/ec/votacion?documentType=CCEC&documentNumber=1700000019" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Record found)">
+
+```json
+{
+  "data": {
+    "documentType": "CCEC",
+    "documentNumber": "1700000019",
+    "fullName": "MARIA ELENA LOPEZ",
+    "province": "PICHINCHA",
+    "canton": "QUITO",
+    "parish": "INAQUITO",
+    "pollingTable": "1"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Missing parameter)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"documentType\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (Not found)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Unauthorized)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Source unavailable)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notes
+
+- `documentType` must be `CCEC`.
+- The cédula is 10 digits with a valid province and check digit.
+- Unknown numbers are 404 `NotFound`.
+- Send a Bearer JWT in the `Authorization` header.
+- The JSON sample illustrates the fields. A live call returns the record for the values you send.
+- Do not send a cache-bypass flag. This page documents only the client parameters.
+
+---
+
+## Sandbox
+
+| Scenario | Parameters | Result |
+| :--- | :--- | :--- |
+| Record on file | `documentType: "CCEC"`, `documentNumber: "1700000019"` | 200 with province, canton, parish, and junta. |
+| Missing required value | Omit `documentType` | 409 MissingParameter. |
+| Unknown value | `documentNumber: "1700000092"` | 404 NotFound when the padrón has no row. |
+
+401 when the bearer token is missing or rejected.

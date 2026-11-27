@@ -1,0 +1,214 @@
+---
+id: peru-renacyt
+title: "秘鲁 — SUNEDU 学位与 CONCYTEC RENACYT"
+description: "核验秘鲁大学学位和 CONCYTEC RENACYT 研究人员登记。"
+sidebar_label: "🇵🇪 秘鲁 — RENACYT 与学位"
+slug: "/identity/peru-renacyt"
+keywords:
+  - "v2/pe/education/renacyt"
+  - "/v2/pe/education/renacyt"
+  - "api.verifik.co/v2/pe/education/renacyt"
+  - "GET /v2/pe/education/renacyt"
+  - "GET https://api.verifik.co/v2/pe/education/renacyt"
+  - "peru_api_renacyt_education"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 秘鲁 — SUNEDU 学位与 CONCYTEC RENACYT
+
+**RENACYT** 查询读取 SUNEDU 学位和 CONCYTEC 研究人员登记。至少发送 `documentNumber`（别名 `dni`）、`codigoRegistro`、`orcid` 或 `fullName` 之一。发送证件号时 `documentType` 默认为 `DNI`。
+
+## 调用返回的内容
+
+- 学位与研究人员字段
+- 有则含 `codigoRegistro` 与 `orcid`
+- `fullName` 与 `documentNumber`
+
+## 使用场景
+
+- 拨款前确认研究人员。
+- 把 ORCID 与 DNI 对齐。
+- 读取招聘档案需要的 RENACYT 代码。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/pe/education/renacyt
+```
+
+命中可含学位、RENACYT 代码和 ORCID。没有记录时为 404 `NotFound`。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **条件必填** | `12345678` | DNI 或其他号码。别名 `dni`。默认 `documentType` 为 `DNI`。也接受 `CE`、`PASAPORTE`、`PTP`。 |
+| `codigoRegistro` | string | **条件必填** | `REN-100` | RENACYT 登记码。只发它即可。 |
+| `orcid` | string | **条件必填** | `0000-0002-1825-0097` | ORCID，10 到 30 个字符。只发它即可。 |
+| `fullName` | string | **条件必填** | `LUCIA QUISPE` | 研究者姓名。只发它即可。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/pe/education/renacyt",
+  params: {
+    documentType: "DNI",
+    documentNumber: "12345678",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/pe/education/renacyt"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "DNI",
+    "documentNumber": "12345678",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/pe/education/renacyt?documentType=DNI&documentNumber=12345678" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "documentType": "DNI",
+    "documentNumber": "12345678",
+    "fullName": "LUCIA QUISPE",
+    "codigoRegistro": "REN-100",
+    "orcid": "0000-0002-1825-0097"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one of documentNumber (or dni), codigoRegistro, orcid, or fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- 发送证件、RENACYT 代码、ORCID 或姓名。
+- 证件号默认类型为 `DNI`。
+- 登记处没有记录时为 404 `NotFound`。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `documentType: "DNI"`, `documentNumber: "12345678"` | 含学位或研究人员字段的 200。 |
+| 缺少必填值 | Omit every search value | 409 MissingParameter。 |
+| 未知的值 | `documentNumber: "00000000"` | SUNEDU 和 RENACYT 都没有记录时为 404 NotFound。 |
+
+401 when the bearer token is missing or rejected.

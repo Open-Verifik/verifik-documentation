@@ -1,0 +1,222 @@
+---
+id: colombia-pep-government-structure
+title: "Colombia — PEP estructura de gobierno"
+description: "Criba servidores públicos de la estructura de gobierno de Colombia."
+sidebar_label: "Colombia — PEP estructura de gobierno"
+slug: "/background-check/colombia-pep-government-structure"
+keywords:
+  - "v2/co/pep/estructura-gobierno"
+  - "/v2/co/pep/estructura-gobierno"
+  - "api.verifik.co/v2/co/pep/estructura-gobierno"
+  - "GET /v2/co/pep/estructura-gobierno"
+  - "GET https://api.verifik.co/v2/co/pep/estructura-gobierno"
+  - "colombia_api_pep_estructura_gobierno"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — PEP estructura de gobierno
+
+Criba servidores públicos de la estructura de gobierno de Colombia.
+
+## Qué devuelve la llamada
+
+- `isPEP`
+- `matches`
+- `fullName` y `documentNumber`
+- `matches` vacío en una ausencia limpia
+
+## Casos de uso
+
+- Criba un directorio PEP de Colombia antes del alta.
+- Guarde a quien no está listado como HTTP 200.
+- Busque por nombre o por número de documento.
+
+---
+
+## Referencia de la API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/pep/estructura-gobierno
+```
+
+Un acierto pone `isPEP` en true. Quien simplemente no está en este directorio es HTTP 200 con `isPEP` en false y `matches` vacío. Esa ausencia no es 404.
+
+### Headers
+
+| Nombre | Valor | Descripción |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato de la solicitud |
+| Accept | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <tu_token>` | JWT del cliente |
+
+### Parameters
+
+| Nombre | Tipo | Requerido | Ejemplo | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| `fullName` | string | **Condicional** | `MARIA LOPEZ` | Nombre. Basta por sí solo. También se aceptan `partyName`, `entityName` o `country` cuando el directorio los tiene. |
+| `documentNumber` | string | **Condicional** | `80123456` | Identificador de 4 a 30 caracteres. |
+| `documentType` | string | No | `CC` | Opcional: `CC`, `NIT`, `CE`, `PAS`, `TI`, `CD`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/pep/estructura-gobierno",
+  params: {
+    fullName: "MARIA LOPEZ",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/pep/estructura-gobierno"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "fullName": "MARIA LOPEZ",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/pep/estructura-gobierno?fullName=MARIA%20LOPEZ" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA LOPEZ",
+    "documentNumber": "80123456",
+    "isPEP": true,
+    "matches": [
+      {
+        "fullName": "MARIA LOPEZ"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one search parameter (documentNumber, fullName, partyName, entityName, or country) must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (Sin coincidencia)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN NAME",
+    "isPEP": false,
+    "matches": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (No autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fuente no disponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Una ausencia limpia es HTTP 200 con `isPEP` en false.
+- Envíe al menos un valor de búsqueda.
+- No mapee ese 200 a 404.
+- Envíe un JWT Bearer en el encabezado `Authorization`.
+- El JSON de ejemplo ilustra los campos. Una llamada real devuelve el registro de los valores que envíe.
+- No envíe un indicador de omisión de caché. Esta página documenta solo los parámetros de cliente.
+
+---
+
+## Sandbox
+
+| Escenario | Parámetros | Resultado |
+| :--- | :--- | :--- |
+| Registro en la fuente | `fullName: "MARIA LOPEZ"` | 200 con isPEP en true si hay acierto. |
+| Falta un valor obligatorio | Omit every search value | 409 si no hay valor de búsqueda. |
+| Valor desconocido | `fullName: "CLEAN NAME"` | 200 con isPEP en false. La ausencia limpia no es 404. |
+
+401 when the bearer token is missing or rejected.

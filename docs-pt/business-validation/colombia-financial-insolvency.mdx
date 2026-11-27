@@ -1,0 +1,219 @@
+---
+id: colombia-financial-insolvency
+title: "Colômbia — Concordatas e liquidações financeiras"
+description: "Filtre concordatas e liquidações da Superintendencia Financiera. Uma ausência limpa é HTTP 200 com inConcordatoOrLiquidation false."
+sidebar_label: "🇨🇴 Colômbia — Insolvência financeira"
+slug: "/business-validation/colombia-financial-insolvency"
+keywords:
+  - "v2/co/superfinanciera/concordatos"
+  - "/v2/co/superfinanciera/concordatos"
+  - "api.verifik.co/v2/co/superfinanciera/concordatos"
+  - "GET /v2/co/superfinanciera/concordatos"
+  - "GET https://api.verifik.co/v2/co/superfinanciera/concordatos"
+  - "colombia_api_superfinanciera_concordatos"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colômbia — Concordatas e liquidações financeiras
+
+A consulta de **insolvência financeira** lê concordatas e liquidações da Superintendencia Financiera. Envie um NIT ou um nome. `inConcordatoOrLiquidation` é true só se houver um processo. Uma sociedade sem processo continua HTTP 200, com a bandeira false. Esta rota não usa 404 nessa ausência limpa.
+
+## O que a chamada devolve
+
+- `inConcordatoOrLiquidation`
+- `status` e `entityType`
+- `matches` vazio numa ausência limpa
+
+## Casos de uso
+
+- Interrompa a admissão de uma entidade já em liquidação.
+- Guarde uma triagem limpa como 200.
+- Busque por NIT ou razão social.
+
+---
+
+## Referência da API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/superfinanciera/concordatos
+```
+
+Um acerto inclui `status`, `entityType` e `inConcordatoOrLiquidation` true. Uma ausência limpa mantém HTTP 200 e a bandeira false.
+
+### Headers
+
+| Nome | Valor | Descrição |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato da solicitação |
+| Accept | `application/json` | Formato da resposta |
+| Authorization | `Bearer <seu_token>` | JWT do cliente |
+
+### Parameters
+
+| Nome | Tipo | Obrigatório | Exemplo | Descrição |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Condicional** | `900123456` | NIT ou número. Alias `nit`. Obrigatório sem nome. |
+| `businessName` | string | **Condicional** | `EJEMPLO SAS` | Nome. Alias `companyName` e `fullName`. Obrigatório sem número. |
+| `documentType` | string | Não | `NIT` | Opcional: `NIT`, `CC`, `CE`, `PAS`, `TI`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/superfinanciera/concordatos",
+  params: {
+    documentNumber: "860000001",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/superfinanciera/concordatos"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "860000001",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/superfinanciera/concordatos?documentNumber=860000001" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentNumber": "860000001",
+    "businessName": "FINANCIERA EJEMPLO SA",
+    "inConcordatoOrLiquidation": true,
+    "status": "EN LIQUIDACION FORZOSA ADMINISTRATIVA",
+    "entityType": "Sociedad comisionista"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parâmetro ausente)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "missing parameter"
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (Sem correspondência)">
+
+```json
+{
+  "data": {
+    "documentNumber": "800000111",
+    "matches": [],
+    "inConcordatoOrLiquidation": false,
+    "status": "ACTIVA / SIN PROCESO DE CONCORDATO O LIQUIDACION"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (Não autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fonte indisponível)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Uma ausência limpa é HTTP 200 com `inConcordatoOrLiquidation` false.
+- Envie um número ou um nome.
+- Não mapeie esse 200 para 404.
+- Envie um JWT Bearer no cabeçalho `Authorization`.
+- O JSON de exemplo ilustra os campos. Uma chamada real devolve o registro dos valores enviados.
+- Não envie um indicador de bypass de cache. Esta página documenta apenas os parâmetros de cliente.
+
+---
+
+## Sandbox
+
+| Cenário | Parâmetros | Resultado |
+| :--- | :--- | :--- |
+| Registro na fonte | `documentNumber: "860000001"` | 200 com inConcordatoOrLiquidation true num acerto. |
+| Valor obrigatório ausente | Omit number and name | 409 se nenhum valor for enviado. |
+| Valor desconhecido | `documentNumber: "800000111"` | 200 com inConcordatoOrLiquidation false. Uma ausência limpa não é 404. |
+
+401 when the bearer token is missing or rejected.

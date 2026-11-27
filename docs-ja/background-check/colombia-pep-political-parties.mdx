@@ -1,0 +1,222 @@
+---
+id: colombia-pep-political-parties
+title: "コロンビア — PEP 政党役員"
+description: "コロンビアの政党役員を照合します。"
+sidebar_label: "コロンビア — PEP 政党役員"
+slug: "/background-check/colombia-pep-political-parties"
+keywords:
+  - "v2/co/pep/partidos-politicos"
+  - "/v2/co/pep/partidos-politicos"
+  - "api.verifik.co/v2/co/pep/partidos-politicos"
+  - "GET /v2/co/pep/partidos-politicos"
+  - "GET https://api.verifik.co/v2/co/pep/partidos-politicos"
+  - "colombia_api_pep_partidos_politicos"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# コロンビア — PEP 政党役員
+
+コロンビアの政党役員を照合します。
+
+## 応答に含まれる項目
+
+- `isPEP`
+- `matches`
+- `fullName` と `documentNumber`
+- 単なる未検出では空の `matches`
+
+## 用途
+
+- 受付の前にコロンビアの PEP 名簿を照合します。
+- 未掲載の人物を HTTP 200 として保存します。
+- 氏名または文書番号で検索します。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/pep/partidos-politicos
+```
+
+一致すると `isPEP` は true です。この名簿に無い人は HTTP 200 で `isPEP` は false、`matches` は空です。404 ではありません。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `fullName` | string | **条件付き** | `MARIA LOPEZ` | 氏名だけで足ります。名簿にあれば `partyName`、`entityName`、`country` も受けます。 |
+| `documentNumber` | string | **条件付き** | `80123456` | 識別子 4–30文字。 |
+| `documentType` | string | いいえ | `CC` | 任意: `CC`、`NIT`、`CE`、`PAS`、`TI`、`CD`。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/pep/partidos-politicos",
+  params: {
+    fullName: "MARIA LOPEZ",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/pep/partidos-politicos"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "fullName": "MARIA LOPEZ",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/pep/partidos-politicos?fullName=MARIA%20LOPEZ" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "fullName": "MARIA LOPEZ",
+    "documentNumber": "80123456",
+    "isPEP": true,
+    "matches": [
+      {
+        "fullName": "MARIA LOPEZ"
+      }
+    ]
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "At least one search parameter (documentNumber, fullName, partyName, entityName, or country) must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (一致なし)">
+
+```json
+{
+  "data": {
+    "fullName": "CLEAN NAME",
+    "isPEP": false,
+    "matches": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- 単なる未検出は `isPEP` が false の HTTP 200 です。
+- 検索値を一つ以上送ります。
+- その 200 を 404 に割り当てないでください。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `fullName: "MARIA LOPEZ"` | 一致すると isPEP が true の 200。 |
+| 必須値が無い | Omit every search value | 検索値が無いと 409。 |
+| 不明な値 | `fullName: "CLEAN NAME"` | isPEP が false の 200。単なる未検出は 404 ではありません。 |
+
+401 when the bearer token is missing or rejected.

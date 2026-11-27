@@ -1,0 +1,220 @@
+---
+id: email-otp
+title: "邮件 OTP"
+description: "用 POST 发送邮件一次性验证码。实际路由是 POST /v2/communication/email。"
+sidebar_label: "邮件 OTP"
+slug: "/communication/email-otp"
+keywords:
+  - "v2/communication/email"
+  - "/v2/communication/email"
+  - "api.verifik.co/v2/communication/email"
+  - "POST /v2/communication/email"
+  - "POST https://api.verifik.co/v2/communication/email"
+  - "communication_global_email_otp"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 邮件 OTP
+
+**邮件 OTP** 发送一次性验证码。实际方法是 **POST** `https://api.verifik.co/v2/communication/email`，不是 GET。正文必须有 `project`、`validationMethod`（`manual` 或 `verificationCode`）、`email` 和 `type`（`validation`、`login`、`onboarding` 或 `oneTimeLink`）。可选字段包括 `expiresAt`、`redirectUrl`、`webhookUrl`、`identityUrl`、`requires2FA`、`ipAddress` 和 `language`。
+
+## 调用返回的内容
+
+- `email` 与 `status`
+- `type` 与 `validationMethod`
+
+## 使用场景
+
+- 向邮箱发送登录验证码。
+- 开始通过邮件继续的准入。
+- 附上投递状态的 webhook。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/communication/email
+```
+
+发送成功会返回状态为 `sent` 的邮件验证。用项目已有的邮件验证接口确认验证码。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `project` | string | **是** | `project_id` | 拥有邮件 OTP 的项目 id。 |
+| `validationMethod` | string | **是** | `verificationCode` | `manual` 或 `verificationCode`。 |
+| `email` | string | **是** | `person@example.com` | 接收验证码的邮箱。地址无效时为 409。 |
+| `type` | string | **是** | `validation` | `validation`、`login`、`onboarding` 或 `oneTimeLink`。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/communication/email",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+  data: {
+    "project": "project_id",
+    "validationMethod": "verificationCode",
+    "email": "person@example.com",
+    "type": "validation"
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/communication/email"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+payload = {
+    "project": "project_id",
+    "validationMethod": "verificationCode",
+    "email": "person@example.com",
+    "type": "validation",
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/communication/email" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{"project":"project_id","validationMethod":"verificationCode","email":"person@example.com","type":"validation"}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "email": "person@example.com",
+    "status": "sent",
+    "type": "validation",
+    "validationMethod": "verificationCode"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"project\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- 本路由是 POST，不是 GET。
+- `project`、`validationMethod`、`email` 和 `type` 必填。
+- 不是邮箱的地址为 409。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | the example body | 验证码发出时为 200。 |
+| 缺少必填值 | Omit `project` | 409 MissingParameter。 |
+| 未知的值 | `email: "not-an-email"` | 邮箱格式无效时为 409。 |
+
+401 when the bearer token is missing or rejected.

@@ -1,0 +1,219 @@
+---
+id: whatsapp
+title: "WhatsApp 消息"
+description: "用 POST 发送 WhatsApp 一次性验证码。可选 whatsappTemplate 为 authentication 或 flow2。"
+sidebar_label: "WhatsApp"
+slug: "/communication/whatsapp"
+keywords:
+  - "v2/communication/whatsapp"
+  - "/v2/communication/whatsapp"
+  - "api.verifik.co/v2/communication/whatsapp"
+  - "POST /v2/communication/whatsapp"
+  - "POST https://api.verifik.co/v2/communication/whatsapp"
+  - "communication_global_messaging_whatsapp"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# WhatsApp 消息
+
+**WhatsApp 消息**是 **POST** `https://api.verifik.co/v2/communication/whatsapp`，不是 GET。正文需要 `phone` 和 `countryCode`。路由把 `phoneGateway` 设为 `whatsapp`。可选 `whatsappTemplate` 为 `authentication`（默认）或 `flow2`。使用 `flow2` 时，`language` 选择 `flow2_es` 或 `flow2_en`，可选 `title`（1 到 15 个字符）是品牌区。
+
+## 调用返回的内容
+
+- `phone` 与 `countryCode`
+- 设为 `whatsapp` 的 `phoneGateway`
+- `status`
+
+## 使用场景
+
+- 用 WhatsApp 发送登录验证码。
+- 需要品牌模板时选择 flow2。
+- 默认模板是 authentication。
+
+---
+
+## API 参考
+
+### Endpoint
+
+```http
+POST https://api.verifik.co/v2/communication/whatsapp
+```
+
+发送成功返回 `phoneGateway` 为 `whatsapp`、状态为 `sent`。
+
+### Headers
+
+| 名称 | 值 | 说明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | 请求格式 |
+| Accept | `application/json` | 响应格式 |
+| Authorization | `Bearer <token>` | 客户端 JWT |
+
+### Parameters
+
+| 名称 | 类型 | 必填 | 示例 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `phone` | string | **是** | `3001234567` | 仅国内号码。 |
+| `countryCode` | string | **是** | `+57` | 以 `+` 开头的区号。 |
+| `whatsappTemplate` | string | 否 | `authentication` | 可选。`authentication`（默认）或 `flow2`。 |
+| `language` | string | 否 | `es` | 可选。使用 `flow2` 时选择 `flow2_es` 或 `flow2_en`。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "POST",
+  url: "https://api.verifik.co/v2/communication/whatsapp",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+  data: {
+    "phone": "3001234567",
+    "countryCode": "+57",
+    "whatsappTemplate": "authentication"
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/communication/whatsapp"
+headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+payload = {
+    "phone": "3001234567",
+    "countryCode": "+57",
+    "whatsappTemplate": "authentication",
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X POST "https://api.verifik.co/v2/communication/whatsapp" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>" \
+  -d '{"phone":"3001234567","countryCode":"+57","whatsappTemplate":"authentication"}'
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200（找到记录）">
+
+```json
+{
+  "data": {
+    "phone": "3001234567",
+    "countryCode": "+57",
+    "phoneGateway": "whatsapp",
+    "status": "sent"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409（缺少参数）">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"phone\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404（未找到）">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401（未授权）">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500（数据源不可用）">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 说明
+
+- 本路由是 POST，不是 GET。
+- `whatsappTemplate` 可选：`authentication` 或 `flow2`。
+- 路由把 `phoneGateway` 设为 `whatsapp`。
+- 在 `Authorization` 头中发送 Bearer JWT。
+- JSON 示例只说明字段形状。实际调用返回你所发送数值对应的记录。
+- 不要发送绕过缓存的标志。本页只记录客户端参数。
+
+---
+
+## 沙盒
+
+| 场景 | 参数 | 结果 |
+| :--- | :--- | :--- |
+| 数据源有记录 | `phone: "3001234567"`, `countryCode: "+57"` | WhatsApp OTP 发出时为 200。 |
+| 缺少必填值 | Omit `countryCode` | 409 MissingParameter。 |
+| 未知的值 | `whatsappTemplate: "flow2"`, `language: "es"` | language 为 es 时用 flow2 模板返回 200。 |
+
+401 when the bearer token is missing or rejected.

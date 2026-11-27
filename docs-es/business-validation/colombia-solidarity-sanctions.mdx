@@ -1,0 +1,220 @@
+---
+id: colombia-solidarity-sanctions
+title: "Colombia — Sanciones del sector solidario"
+description: "Lee sanciones de Supersolidaria para una cooperativa o persona. Una ausencia limpia es HTTP 200 con isSanctioned en false."
+sidebar_label: "🇨🇴 Colombia — Sanciones solidarias"
+slug: "/business-validation/colombia-solidarity-sanctions"
+keywords:
+  - "v2/co/supersolidaria/sanciones"
+  - "/v2/co/supersolidaria/sanciones"
+  - "api.verifik.co/v2/co/supersolidaria/sanciones"
+  - "GET /v2/co/supersolidaria/sanciones"
+  - "GET https://api.verifik.co/v2/co/supersolidaria/sanciones"
+  - "colombia_api_supersolidaria_sanciones"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Colombia — Sanciones del sector solidario
+
+La consulta de **sanciones solidarias** lee el boletín de sancionados de Supersolidaria. Envíe un número o un nombre. `isSanctioned` es true solo si hay una sanción. Una ausencia limpia es HTTP 200 con `isSanctioned` en false, `sanctionsCount` 0 y estado `SIN SANCIONES REGISTRADAS`. Esta ruta no responde 404 por esa ausencia.
+
+## Qué devuelve la llamada
+
+- `isSanctioned` y `sanctionsCount`
+- `status`
+- `matches`
+
+## Casos de uso
+
+- Criba una cooperativa antes de financiarla.
+- Registre un cheque limpio como 200.
+- Busque por NIT o por el nombre sancionado.
+
+---
+
+## Referencia de la API
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/co/supersolidaria/sanciones
+```
+
+Un acierto incluye `sanctionsCount` y `matches`. Una ausencia limpia es HTTP 200 con `isSanctioned` en false.
+
+### Headers
+
+| Nombre | Valor | Descripción |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | Formato de la solicitud |
+| Accept | `application/json` | Formato de la respuesta |
+| Authorization | `Bearer <tu_token>` | JWT del cliente |
+
+### Parameters
+
+| Nombre | Tipo | Requerido | Ejemplo | Descripción |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentNumber` | string | **Condicional** | `900123456` | NIT o número. Alias `nit`. |
+| `businessName` | string | **Condicional** | `EJEMPLO SAS` | Nombre. Alias `companyName` y `fullName`. |
+| `documentType` | string | No | `NIT` | Opcional: `NIT`, `CC`, `CE`, `PAS`, `TI`. |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/co/supersolidaria/sanciones",
+  params: {
+    documentNumber: "900555111",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/co/supersolidaria/sanciones"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentNumber": "900555111",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/co/supersolidaria/sanciones?documentNumber=900555111" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (Registro encontrado)">
+
+```json
+{
+  "data": {
+    "documentNumber": "900555111",
+    "businessName": "COOPERATIVA EJEMPLO",
+    "isSanctioned": true,
+    "status": "SANCIONADO",
+    "sanctionsCount": 1
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (Parámetro faltante)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "Either documentNumber/nit or businessName/fullName must be provided."
+}
+```
+
+</TabItem>
+<TabItem value="200-miss" label="200 (Sin coincidencia)">
+
+```json
+{
+  "data": {
+    "documentNumber": "800000111",
+    "isSanctioned": false,
+    "status": "SIN SANCIONES REGISTRADAS",
+    "sanctionsCount": 0,
+    "matches": []
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (No autorizado)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (Fuente no disponible)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Notas
+
+- Una ausencia limpia es HTTP 200 con `isSanctioned` en false.
+- Envíe al menos un valor de búsqueda.
+- No mapee ese 200 a 404.
+- Envíe un JWT Bearer en el encabezado `Authorization`.
+- El JSON de ejemplo ilustra los campos. Una llamada real devuelve el registro de los valores que envíe.
+- No envíe un indicador de omisión de caché. Esta página documenta solo los parámetros de cliente.
+
+---
+
+## Sandbox
+
+| Escenario | Parámetros | Resultado |
+| :--- | :--- | :--- |
+| Registro en la fuente | `documentNumber: "900555111"` | 200 con isSanctioned en true si hay acierto. |
+| Falta un valor obligatorio | Omit number and name | 409 si no hay valor de búsqueda. |
+| Valor desconocido | `documentNumber: "800000111"` | 200 con isSanctioned en false. La ausencia limpia no es 404. |
+
+401 when the bearer token is missing or rejected.

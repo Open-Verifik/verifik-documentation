@@ -1,0 +1,214 @@
+---
+id: votacion
+title: "エクアドル — 投票所"
+description: "documentType CCEC と 10 桁のエクアドル市民証の CNE 投票所を読みます。"
+sidebar_label: "🇪🇨 エクアドル — 投票所"
+slug: "/identity/ecuador/votacion"
+keywords:
+  - "v2/ec/votacion"
+  - "/v2/ec/votacion"
+  - "api.verifik.co/v2/ec/votacion"
+  - "GET /v2/ec/votacion"
+  - "GET https://api.verifik.co/v2/ec/votacion"
+  - "ecuador_api_voting_location"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# エクアドル — 投票所
+
+**エクアドルの投票所**照会は CNE の名簿を読みます。`documentType` は `CCEC`、`documentNumber` は県コードが 01–24 または 30 で検査数字が正しい 10 桁の市民証です。応答には氏名と県、カントン、教区、フンタ（`pollingTable`）があります。
+
+## 応答に含まれる項目
+
+- `province`、`canton`、`parish`
+- `pollingTable` — フンタ
+- `fullName`
+
+## 用途
+
+- 有権者に投票所を示します。
+- 検査数字が合わない市民証を拒否します。
+- 本人ファイルと一緒にフンタを保存します。
+
+---
+
+## API リファレンス
+
+### Endpoint
+
+```http
+GET https://api.verifik.co/v2/ec/votacion
+```
+
+項目には `fullName`、`province`、`canton`、`parish`、`pollingTable` があります。不明な市民証は 404 `NotFound` です。検査数字が違うと 409 `InvalidDocumentNumber` です。
+
+### Headers
+
+| 名前 | 値 | 説明 |
+| :--- | :--- | :--- |
+| Content-Type | `application/json` | リクエスト形式 |
+| Accept | `application/json` | レスポンス形式 |
+| Authorization | `Bearer <token>` | クライアント JWT |
+
+### Parameters
+
+| 名前 | 型 | 必須 | 例 | 説明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `documentType` | string | **はい** | `CCEC` | `CCEC` でなければなりません。 |
+| `documentNumber` | string | **はい** | `1700000019` | 検査数字を含む 10 桁のエクアドル市民証。県コードは 01–24 または 30。不正な番号は 409 `InvalidDocumentNumber` です。 |
+
+---
+
+### Request
+
+<Tabs>
+<TabItem value="javascript" label="Node.js / JavaScript">
+
+```javascript
+import axios from "axios";
+
+const options = {
+  method: "GET",
+  url: "https://api.verifik.co/v2/ec/votacion",
+  params: {
+    documentType: "CCEC",
+    documentNumber: "1700000019",
+  },
+  headers: {
+    Accept: "application/json",
+    Authorization: "Bearer <your_token>",
+  },
+};
+
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error.response ? error.response.data : error.message);
+}
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import requests
+
+url = "https://api.verifik.co/v2/ec/votacion"
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer <your_token>",
+}
+params = {
+    "documentType": "CCEC",
+    "documentNumber": "1700000019",
+}
+
+response = requests.get(url, headers=headers, params=params)
+print(response.json())
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -X GET "https://api.verifik.co/v2/ec/votacion?documentType=CCEC&documentNumber=1700000019" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer <your_token>"
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### Response
+
+<Tabs>
+<TabItem value="200" label="200 (レコードあり)">
+
+```json
+{
+  "data": {
+    "documentType": "CCEC",
+    "documentNumber": "1700000019",
+    "fullName": "MARIA ELENA LOPEZ",
+    "province": "PICHINCHA",
+    "canton": "QUITO",
+    "parish": "INAQUITO",
+    "pollingTable": "1"
+  },
+  "signature": {
+    "dateTime": "November 27, 2026 12:00 PM",
+    "message": "Certified by Verifik.co"
+  }
+}
+```
+
+</TabItem>
+<TabItem value="409" label="409 (パラメータ不足)">
+
+```json
+{
+  "code": "MissingParameter",
+  "message": "\"documentType\" is required"
+}
+```
+
+</TabItem>
+<TabItem value="404" label="404 (該当なし)">
+
+```json
+{
+  "code": "NotFound",
+  "message": "Record not found."
+}
+```
+
+</TabItem>
+<TabItem value="401" label="401 (未認証)">
+
+```json
+{
+  "code": "UNAUTHORIZED",
+  "message": "Authentication required"
+}
+```
+
+</TabItem>
+<TabItem value="500" label="500 (情報源が利用不可)">
+
+```json
+{
+  "code": "InternalServerError",
+  "message": "The official source is temporarily unavailable. Please retry shortly."
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
+### 注意
+
+- `documentType` は `CCEC` です。
+- 市民証は有効な県と検査数字を持つ 10 桁です。
+- 不明な番号は 404 `NotFound` です。
+- `Authorization` ヘッダーに Bearer JWT を付けます。
+- JSON サンプルは項目の形を示します。実呼出しは送った値のレコードを返します。
+- キャッシュ迂回フラグは送りません。このページはクライアント向けパラメータだけを説明します。
+
+---
+
+## サンドボックス
+
+| シナリオ | パラメータ | 結果 |
+| :--- | :--- | :--- |
+| 情報源に記録あり | `documentType: "CCEC"`, `documentNumber: "1700000019"` | 県、カントン、教区、フンタのある 200。 |
+| 必須値が無い | Omit `documentType` | 409 MissingParameter。 |
+| 不明な値 | `documentNumber: "1700000092"` | 名簿に行が無いと 404 NotFound。 |
+
+401 when the bearer token is missing or rejected.
