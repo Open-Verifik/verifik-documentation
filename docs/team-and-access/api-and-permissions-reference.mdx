@@ -1,0 +1,235 @@
+---
+id: api-and-permissions-reference
+title: API, Permissions Matrix & MCP Reference
+description: Complete 27-module by 8-role RBAC permission matrix, REST API endpoint reference, structured error catalog, and 24 MCP tools for automated access control.
+slug: /team-and-access/api-and-permissions-reference
+keywords:
+  - permission matrix
+  - staff endpoints
+  - client-roles
+  - error codes
+  - team_out_of_scope
+  - team_api_key_required
+  - mcp tools
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# API, Permissions Matrix & MCP Reference
+
+Use this reference to inspect every resource key, compact action code, REST API endpoint, structured error response, and MCP tool powering Verifik Staff RBAC and Sub-Teams.
+
+---
+
+## Action Codes Legend
+
+Verifik evaluates permissions per `(resource, action)` tuple across **27 resources** and **10 granular actions**:
+
+| Code | Action Key | Meaning |
+| --- | --- | --- |
+| `R` | `read` | View dashboards, records, configurations, or logs |
+| `C` | `create` | Create new records, invitations, teams, presets, or runs |
+| `U` | `update` | Edit existing records, templates, roles, or team policies |
+| `D` | `delete` | Delete records, templates, teams, or revoke API keys |
+| `E` | `execute` | Trigger live paid lookups, SmartScan, biometrics, or SmartBatch runs |
+| `A` | `approve` | Approve/reject KYC dossiers, KYB companies, alerts, or JIT access requests |
+| `X` | `export` | Export CSV/XLSX reports, generate/send/download PDFs, mint signed links |
+| `K` | `manageKeys` | Mint/manage API keys, webhooks secrets, or workspace keys |
+| `L` | `readAll` | Bypass Sub-Team read isolation (`teamScopedVisibility`) across the workspace |
+| `M` | `manageOwnTeam` | Manage members, child sub-teams, budgets, and JIT requests inside owned/child teams (`team_manager`) |
+
+---
+
+## Complete 27-Resource × 8-Role Default Matrix
+
+Every column matches `DEFAULT_MATRIX_CODES` in Verifik's authorization engine:
+
+| Group | Resource Key | Admin | Team Manager | Compliance | Developer | Finance | Operator | Doc Builder | Viewer |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **Home** | `home` | `RU` | `RU` | `R` | `R` | `R` | `R` | `R` | `R` |
+| **SmartCheck** | `smartCheckPlayground` | `RCUDE` | `RCUDE` | `RE` | `RCUDE` | — | `RCE` | — | — |
+| **SmartCheck** | `smartCheckLists` | `RCUDE` | `RCUDE` | `RCE` | `RCUDE` | — | `RCUE` | — | `R` |
+| **SmartCheck** | `smartCheckHistory` | `RX` | `RX` | `RX` | `R` | `RX` | `R` | — | `R` |
+| **SmartReports** | `smartReportsTemplates` | `RCUDX` | `RCUDX` | `RX` | `RCUDX` | — | `R` | `RCUDX` | `R` |
+| **SmartReports** | `smartReportsBatch` | `RCUDEX` | `RCUDEX` | `RCEX` | `RCUDE` | — | `RCEX` | `RCUD` | `R` |
+| **SmartReports** | `smartReportsResults` | `RX` | `RX` | `RX` | `R` | — | `RX` | — | `R` |
+| **SmartFleet** | `smartFleetAssets` | `RCUDEX` | `RCUDE` | `RX` | `RCUDE` | — | `RCUE` | — | `R` |
+| **SmartFleet** | `smartFleetRules` | `RCUDAX` | `RCUDA` | `RAX` | `RCUD` | — | `RA` | — | `R` |
+| **SmartEnroll** | `smartEnrollProjects` | `RCUD` | `RCUD` | `R` | `RCUD` | — | `R` | — | `R` |
+| **SmartEnroll** | `smartEnrollRecords` | `RUDAX` | `RUAX` | `RUAX` | `RU` | — | `R` | — | `R` |
+| **SmartEnroll** | `smartEnrollScan` | `RCUDE` | `RCUDE` | `RE` | `RCUDE` | — | `RCE` | — | `R` |
+| **SmartEnroll** | `smartEnrollBiometrics` | `RCUDE` | `RCUDE` | `R` | `RCUDE` | — | `RCE` | — | `R` |
+| **SmartBusiness** | `smartBusinessProjects` | `RCUDE` | `RCUDE` | `R` | `RCUDE` | — | `R` | — | `R` |
+| **SmartBusiness** | `smartBusinessRecords` | `RUDAX` | `RUAX` | `RUAX` | `R` | — | `R` | — | `R` |
+| **HumanAuthn** | `humanAuthn` | `RCUDE` | `RCUDE` | `R` | `RCUDE` | — | `R` | — | `R` |
+| **Smart Access** | `smartAccess` | `RCUD` | `RCUD` | `R` | `RCUD` | — | `R` | — | `R` |
+| **Smart Link** | `smartLinks` | `RCUDE` | `RCUDE` | `R` | `RCUDE` | — | `RCE` | — | `R` |
+| **SmartMonitor** | `smartMonitorStatus` | `RCUD` | `RCUD` | `R` | `RCUD` | — | `R` | — | `R` |
+| **SmartMonitor** | `smartMonitorWebhooks` | `RCUDK` | `RCUD` | — | `RCUDK` | — | — | — | — |
+| **SmartTools** | `smartTools` | `RCE` | `RCE` | — | `RCE` | — | `RCE` | — | — |
+| **Billing & Plans** | `billingCredits` | `RCUDX` | — | — | — | `RCUDX` | — | — | — |
+| **Billing & Plans** | `billingSubscriptions` | `RCUD` | — | — | — | `RCUD` | — | — | — |
+| **Billing & Plans** | `billingUsage` | `RCUDX` | `RX` | `R` | `R` | `RCUDX` | — | — | `R` |
+| **Developers** | `apiKeys` | `RCDK` | — | — | `RCK` | — | — | — | — |
+| **Workspace & Team** | `team` | `RCUDALM` | `RCUDAM` | — | — | — | — | — | — |
+| **Workspace & Team** | `workspaceSettings` | `RUK` | `R` | `R` | `R` | `R` | `R` | `R` | `R` |
+
+:::info Owner-only enforcement
+`workspaceSettings.delete` is stripped on normalization and can **never** be held by any Staff role (`admin` included). Deleting a workspace setting requires a **Workspace Owner** token.
+:::
+
+---
+
+## REST API Endpoints Quick Reference
+
+Base URL: `https://api.verifik.co` (identical `/v2/...` routes on `https://ai.verifik.co` with Bearer JWT).
+
+### Staff & Sessions
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `GET` | `/v2/staff/me/permissions` | Inspect caller's effective matrix, teams, CECO policy, and request policy |
+| `GET` | `/v2/staff` | List workspace staff (scoped for `team_manager`) |
+| `POST` | `/v2/staff` | Invite staff member (`role`, `customRole`, `team`, `additionalTeams`) |
+| `POST` | `/v2/staff/reinvite` | Re-send staff invitation email |
+| `GET` | `/v2/staff/:id` | Show single staff member |
+| `PUT` | `/v2/staff/:id` | Update role, `team`, `additionalTeams`, or `customPermissions` |
+| `POST` | `/v2/staff/:id/revoke-session` | Rotate staff `JWTPhrase` to invalidate all active tokens |
+| `DELETE` | `/v2/staff/:id/grants/:grantId` | Immediately revoke a staff temporary grant |
+| `DELETE` | `/v2/staff/:id` | Remove staff member |
+
+### Custom Roles & System Catalog
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `GET` | `/v2/client-roles/resources` | List all 27 resource definitions and 10 actions |
+| `GET` | `/v2/client-roles/catalog` | Retrieve resources, built-in role presets, and custom roles |
+| `GET` | `/v2/client-roles` | List tenant custom roles |
+| `POST` | `/v2/client-roles` | Create custom role (`permissions`, `endpointPolicy`, `allowAccessRequests`) |
+| `POST` | `/v2/client-roles/:id/duplicate` | Clone any built-in preset or custom role |
+| `PUT` | `/v2/client-roles/:id` | Update custom role |
+| `DELETE` | `/v2/client-roles/:id` | Delete custom role (with optional reassignment) |
+
+### Sub-Teams, Budgets, API Keys & Assignments
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `GET` | `/v2/teams` | List Sub-Teams (`parentTeam`, spend, member counts) |
+| `GET` | `/v2/teams/:id` | Show Sub-Team details |
+| `POST` | `/v2/teams` | Create Sub-Team (`parentTeam`, `monthlyBudget`, CECO locks, `endpointPolicy`) |
+| `PUT` | `/v2/teams/:id` | Update Sub-Team settings, members, or hierarchy |
+| `POST` | `/v2/teams/:id/boost` | Add one-time or recurring monthly budget boost |
+| `POST` | `/v2/teams/:id/api-keys` | Mint a Sub-Team-scoped API key JWT (`{ clientId, teamId }`) |
+| `POST` | `/v2/teams/:id/assign` | Bulk-assign resources or set `visibility: "workspace"` (`team.readAll`) |
+| `DELETE` | `/v2/teams/:id` | Delete Sub-Team (reparents children, cleans `additionalTeams`) |
+
+### Access Requests, Audit Logs, CECOs & Signed Links
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `POST` | `/v2/staff-access-requests` | Submit JIT request (`resource_access`, `role_upgrade`, `budget_increase`) |
+| `GET` | `/v2/staff-access-requests/mine` | List caller's own submitted access requests |
+| `GET` | `/v2/staff-access-requests` | List workspace/team pending & historical requests |
+| `POST` | `/v2/staff-access-requests/:id/approve` | Approve request and activate grant or budget boost |
+| `POST` | `/v2/staff-access-requests/:id/reject` | Reject pending request |
+| `POST` | `/v2/staff-access-requests/:id/cancel` | Cancel own pending request |
+| `POST` | `/v2/staff-access-requests/:id/revoke` | Immediately revoke an approved temporary grant |
+| `GET` | `/v2/staff-audit-logs` | Query/export immutable RBAC & team audit trail (`json` or `csv`) |
+| `PUT` | `/v2/client-settings/:id` | Configure `staffAccessPolicy` (`teamScopedVisibility`, `requireTeamApiKeys`) |
+| `GET` / `POST` | `/v2/cost-centers` | List or create Cost Centers (CECOs) |
+| `GET` | `/v2/usage/cost-center-statement` | Monthly per-CECO & Sub-Team usage statement (`json`, `csv`, `xlsx`) |
+| `POST` | `/v2/smart-reports/:id/signed-link` | Mint short-lived HMAC-signed PDF download URL (max `86400`s) |
+| `GET` | `/v2/smart-reports/:id/download` | Download PDF (HMAC `sig` + `exp` query params, or Bearer JWT) |
+
+---
+
+## Structured Error Reference
+
+| HTTP | Error `message` / Reason | When It Occurs & How to Resolve |
+| --- | --- | --- |
+| `403` | `insufficient_staff_permissions` | Caller lacks `(resource, action)`. Includes `canRequestAccess` boolean so UI/agents know whether `POST /v2/staff-access-requests` is allowed (`false` for `report_builder`). |
+| `403` | `owner_only` | Operation requires Workspace Owner or SuperAdmin (for example deleting `ClientSettings`). |
+| `403` | `cannot_escalate_permissions` | Staff actor attempted to create/assign permissions above their own effective ceiling. |
+| `403` | `team_out_of_scope` | Cross-team read, write, staff invite, or request approval outside the caller's `team` + `additionalTeams` + `parentTeam` subtree. |
+| `403` | `team_api_key_required` | Workspace has `staffAccessPolicy.requireTeamApiKeys: true` and caller used a plain client token instead of a Sub-Team API key. |
+| `403` | `team_paused` | Target Sub-Team `status` is `"paused"`. Resume the Sub-Team to re-enable executions. |
+| `403` | `team_budget_exceeded` | Team monthly credit cap reached under `"hard"` enforcement. Payload includes boost metadata for requesting or applying `POST /v2/teams/:id/boost`. |
+| `403` | `team_feature_budget_exceeded` | Per-endpoint prefix cap (`featureBudgets`) reached for the target team. |
+| `400` | `cost_center_not_allowed_for_team` | Requested `x-cost-center` header is outside the Sub-Team's `allowedCostCenters` / `defaultCostCenter` when `enforceCostCenter: true`. |
+
+---
+
+## AI Agent & MCP Integration
+
+All Team, Role, Staff, Access Request, Audit Log, Cost Center, CECO Statement, and Signed Link operations are published as Bearer-authenticated MCP tools on **`https://ai.verifik.co/mcp`** so agents such as Claude, Cursor, Gemini, and Grok can automate multi-country provisioning safely.
+
+:::warning Bearer JWT required on MCP
+`TeamRBAC` MCP tools require your own Verifik Bearer JWT (`VERIFIK_JWT`) and are never exposed unauthenticated or over anonymous x402 billing routes.
+:::
+
+<Tabs groupId="mcp-config">
+<TabItem value="mcp-json" label="Claude / Cursor / Gemini MCP Config" default>
+
+```json
+{
+  "mcpServers": {
+    "verifik": {
+      "url": "https://ai.verifik.co/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_VERIFIK_JWT"
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+<TabItem value="curl" label="Direct JSON-RPC call">
+
+```bash
+curl -X POST https://ai.verifik.co/mcp \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "usage_cost_center_statement",
+      "arguments": { "period": "2026-11", "format": "json" }
+    }
+  }'
+```
+
+</TabItem>
+</Tabs>
+
+### Complete Catalog of 24 Team & RBAC MCP Tools
+
+| Category | MCP Tool Name | HTTP Mapping | Purpose |
+| --- | --- | --- | --- |
+| **Sub-Teams** | `teams_list` | `GET /v2/teams` | List Sub-Teams, monthly spend, and members |
+| **Sub-Teams** | `teams_create` | `POST /v2/teams` | Create Sub-Team (`parentTeam`, CECO lock, budget, policy) |
+| **Sub-Teams** | `teams_update` | `PUT /v2/teams/{id}` | Update Sub-Team hierarchy, budget, CECO lock, or members |
+| **Sub-Teams** | `teams_delete` | `DELETE /v2/teams/{id}` | Delete Sub-Team with optional reassignment |
+| **Sub-Teams** | `teams_assign_resources` | `POST /v2/teams/{id}/assign` | Bulk-assign assets or set `visibility: "workspace"` |
+| **Sub-Teams** | `teams_create_api_key` | `POST /v2/teams/{id}/api-keys` | Mint a `{ clientId, teamId }` Sub-Team API key JWT |
+| **Roles** | `roles_catalog` | `GET /v2/client-roles/catalog` | Fetch resources, 8 system presets, and custom roles |
+| **Roles** | `roles_create` | `POST /v2/client-roles` | Create a custom tenant role |
+| **Roles** | `roles_update` | `PUT /v2/client-roles/{id}` | Update an existing custom role |
+| **Roles** | `roles_duplicate` | `POST /v2/client-roles/{id}/duplicate` | Clone a built-in preset or custom role |
+| **Roles** | `roles_delete` | `DELETE /v2/client-roles/{id}` | Delete a custom role |
+| **Staff** | `staff_list` | `GET /v2/staff` | List workspace/team staff members |
+| **Staff** | `staff_invite` | `POST /v2/staff` | Invite staff with role, `team`, and `additionalTeams` |
+| **Staff** | `staff_update` | `PUT /v2/staff/{id}` | Update role, `team`, `additionalTeams`, or overrides |
+| **Staff** | `staff_my_permissions` | `GET /v2/staff/me/permissions` | Inspect caller's effective RBAC matrix and policy |
+| **Access Requests** | `access_requests_list` | `GET /v2/staff-access-requests` | List pending & historical JIT access requests |
+| **Access Requests** | `access_requests_approve` | `POST /v2/staff-access-requests/{id}/approve` | Approve request and activate grant or boost |
+| **Access Requests** | `access_requests_reject` | `POST /v2/staff-access-requests/{id}/reject` | Reject a pending access request |
+| **Access Requests** | `access_requests_revoke` | `POST /v2/staff-access-requests/{id}/revoke` | Immediately revoke an active temporary grant |
+| **Cost Centers** | `cost_centers_list` | `GET /v2/cost-centers` | List active CECO codes |
+| **Cost Centers** | `cost_centers_create` | `POST /v2/cost-centers` | Create a Cost Center code |
+| **Usage** | `usage_cost_center_statement` | `GET /v2/usage/cost-center-statement` | Export monthly CECO + Sub-Team statement (`json`/`csv`) |
+| **Audit** | `staff_audit_logs_list` | `GET /v2/staff-audit-logs` | Query team-scoped immutable RBAC audit events |
+| **SmartReports** | `smart_report_create_signed_link` | `POST /v2/smart-reports/{id}/signed-link` | Mint short-lived HMAC-signed PDF link (max 24h) |

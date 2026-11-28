@@ -1,7 +1,7 @@
 ---
 id: sub-teams-and-visibility
 title: Sub-Teams, Hierarchy & Visibility
-description: Isolate data by country or business unit using Sub-Teams, parentTeam hierarchies, additionalTeams memberships, Team API keys, and monthly credit budgets.
+description: Isolate data by country or business unit using hierarchical Sub-Teams (parentTeam), secondary memberships (additionalTeams), monthly & per-endpoint budgets, Cost Center locking, and Team API Keys.
 slug: /team-and-access/sub-teams-and-visibility
 keywords:
   - sub-teams
@@ -9,67 +9,182 @@ keywords:
   - additionalTeams
   - teamScopedVisibility
   - team api key
-  - monthly budget
+  - monthlyBudget
+  - featureBudgets
+  - enforceCostCenter
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Sub-Teams, Hierarchy & Scoped Visibility
 
-Sub-Teams let multi-country or multi-unit organizations share one Verifik billing account while isolating operational data, enforcing monthly credit budgets, locking Cost Centers (CECOs), and scoping API keys.
+Sub-Teams allow multi-country, multi-brand, or multi-department enterprises to operate under a single Verifik billing wallet while isolating sensitive PII records, enforcing monthly spend limits, locking Cost Centers (CECOs), and issuing scoped server-to-server API credentials.
 
 ---
 
-## Sub-Team Model & Hierarchy (`parentTeam`)
+## Sub-Team Model & `parentTeam` Hierarchy
 
-Each sub-team supports:
+Every Sub-Team can optionally link to a **`parentTeam`**, enabling clean regional or departmental inheritance without duplicating workspaces:
 
-- **`parentTeam`**: Optional reference to a parent Sub-Team (e.g., `LATAM Regional` → `Colombia Ops`, `Mexico Ops`).
-  - Cycle detection prevents circular ancestry when creating or updating teams.
-  - Deleting a parent team automatically reparents its direct children to the deleted team's parent (`null` if root), and cleans up `Staff.additionalTeams`.
-- **`monthlyBudget` & `budgetEnforcement`**: Hard (`block at 100%`) or soft caps tracked per UTC month, plus optional `featureBudgets` (e.g., capping `/v2/co/runt/vehiculo`) and one-time or recurring budget boosts via `POST /v2/teams/:id/boost`.
-- **`defaultCostCenter`, `allowedCostCenters`, `enforceCostCenter`**: Automatically stamps requests with a default CECO and rejects out-of-policy `x-cost-center` headers before upstream billing occurs.
-- **`endpointPolicy`**: Per-team `allowlist` or `blocklist` over `/v2/...` endpoints enforced across staff JWTs and Team API keys.
+```text
+Workspace (Owner / Global Admin)
+ ├── LATAM Regional (parentTeam: null, team_manager sees all children)
+ │    ├── Colombia Ops (parentTeam: LATAM Regional, CECO: CO-OPS, $1,500/mo)
+ │    └── Mexico Ops   (parentTeam: LATAM Regional, CECO: MX-OPS, $2,000/mo)
+ └── Shared Risk Templates (visibility: "workspace" blueprints, no PII results)
+```
 
----
-
-## Primary & Secondary Team Memberships (`additionalTeams`)
-
-Staff members have:
-
-- **`team`**: Primary Sub-Team (anchor team for default writes and team ownership).
-- **`additionalTeams`**: Array of secondary Sub-Team IDs granting read access (or management access for a `team_manager`) across multiple business units without duplicating accounts.
+- **Cycle detection**: Creating or updating a team validates ancestry to reject direct self-references and transitive loops (`A -> B -> A`).
+- **Safe deletion (`DELETE /v2/teams/:id`)**:
+  - Direct child teams automatically reparent to the deleted team's `parentTeam` (`null` if it was a root team).
+  - References inside `Staff.additionalTeams` are automatically pulled and cleaned up.
+  - Pass `reassignToTeamId` in the query/body to migrate primary staff members and team-owned resources atomically.
 
 ---
 
-## Scoped Read Visibility (`teamScopedVisibility`)
+## Primary (`team`) vs. Secondary (`additionalTeams`) Memberships
 
-Enable strict isolation in **Team & Access → Access Policy** (or `PUT /v2/client-settings` with `staffAccessPolicy.teamScopedVisibility: true`):
+Verifik separates a staff member's **primary team** from any **secondary memberships**:
 
-- Staff without `team.readAll` can read **only** records (`SmartReports`, `SmartBatches`, `BatchConfigurations`, `SmartReportTemplates`, `Projects`, `ProjectFlows`, `AppRegistrations`, `DocumentValidations`, `BiometricValidations`, `APIRequests`, `StaffAuditLogs`) owned by their effective team set:
-  - Own `team` + `additionalTeams` + any recursive descendant teams via `parentTeam`.
-- **Shared configuration visibility**: `SmartReportTemplates`, `BatchConfigurations`, `Projects`, and `ProjectFlows` support `visibility: "workspace"` so central template builders can publish shared blueprints across all sub-teams while keeping generated results isolated per team.
-- **Assign existing assets**: Move legacy workspace resources into teams or mark shared configs via `POST /v2/teams/:id/assign`.
+- **`team`** *(primary Sub-Team)*: Single anchor team used to attribute newly created reports, batches, projects, and lookups when a staff member runs actions in the portal.
+- **`additionalTeams`** *(secondary array, up to 20 team IDs)*: Grants cross-unit read access (and subtree management rights for a `team_manager`) without creating duplicate staff accounts.
+
+For any staff member, the effective visible Sub-Team set (`teamIds`) is the union:
+
+`primary team` ∪ `additionalTeams` ∪ `all recursive parentTeam descendants`
+
+:::warning Anti-escalation & write boundaries
+`additionalTeams` grants read and management visibility (depending on role), while `POST`/`PUT` resource creation still anchors to teams inside the actor's allowed scope. Assigning a team outside the caller's managed scope returns `403 team_out_of_scope`.
+:::
+
+---
+
+## Monthly Budgets, Per-Endpoint Caps & Boosts
+
+Each Sub-Team tracks live credit consumption across UTC billing months and enforces limits before upstream verification providers are invoked:
+
+| Field | Purpose | Behavior |
+| --- | --- | --- |
+| `status` | `"active"` or `"paused"` | Paused teams immediately return `403 team_paused` |
+| `monthlyBudget` | Workspace credit cap (USD) or `null` for unlimited | Evaluated before execution on API lookups and metered SmartReports |
+| `budgetEnforcement` | `"hard"` (default) or `"soft"` | `"hard"` blocks at `>= 100%` with `403 team_budget_exceeded`; `"soft"` allows execution while emitting warning metadata/alerts |
+| `featureBudgets` | Array of `{ endpointPrefix, monthlyLimit }` caps | Caps expensive sources individually (for example `/v2/co/runt/vehiculo`), throwing `403 team_feature_budget_exceeded` |
+
+### Temporary & Recurring Budget Boosts (`POST /v2/teams/:id/boost`)
+
+When a regional team hits its monthly cap mid-campaign, a `team_manager` (within their subtree) or global admin can top up capacity without editing the base team policy:
+
+```bash
+curl -X POST https://api.verifik.co/v2/teams/<TEAM_ID>/boost \
+  -H "Authorization: Bearer $MANAGER_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 250,
+    "mode": "current_month",
+    "reason": "Month-end driver onboarding surge"
+  }'
+```
+
+---
+
+## Cost Center (CECO) Locking & Resolution Order
+
+Sub-Teams bind directly to Verifik Cost Centers (`POST /v2/cost-centers`) so every verification call and SmartReport run carries accurate accounting attribution:
+
+- **`defaultCostCenter`**: Automatically stamped whenever a caller in that Sub-Team (Staff or Team API key) omits the `x-cost-center` header.
+- **`allowedCostCenters`**: Whitelist of Cost Center IDs permitted for the team.
+- **`enforceCostCenter`**: When `true`, any request specifying an `x-cost-center` outside `[defaultCostCenter, ...allowedCostCenters]` is rejected **before** upstream execution or billing with `400 cost_center_not_allowed_for_team`.
+
+---
+
+## Team-Scoped Visibility (`teamScopedVisibility`) & Shared Blueprints
+
+By default on legacy accounts, all workspace staff with module read permission see workspace-wide records. To enforce strict Sub-Team isolation, set `staffAccessPolicy.teamScopedVisibility: true` via `PUT /v2/client-settings` (or **Team & Access → Access Policy**).
+
+When enabled, callers lacking `team.readAll` are scoped by their effective `teamIds` across these **11 resource collections**:
+
+1. `SmartReport`
+2. `SmartBatch`
+3. `BatchConfiguration`
+4. `SmartReportTemplate`
+5. `Project`
+6. `ProjectFlow`
+7. `AppRegistration`
+8. `DocumentValidation`
+9. `BiometricValidation`
+10. `APIRequest` (lookup & usage history)
+11. `StaffAuditLog`
+
+### Shared Configuration Blueprints (`visibility: "workspace"`)
+
+For teams with centralized designers (like a `report_builder`) creating reusable templates that every country team executes independently:
+
+- `SmartReportTemplate`, `BatchConfiguration`, `Project`, and `ProjectFlow` support **`visibility: "workspace"`**.
+- Staff in any Sub-Team can **read** and execute those shared blueprints, while the resulting **runs, PDFs, and applicant PII (`SmartReport`, `SmartBatch`, `AppRegistration`) remain strictly locked** inside the executing team.
+- Bulk-assign existing legacy assets or toggle shared blueprint visibility with `POST /v2/teams/:id/assign`.
 
 ---
 
 ## Team-Scoped API Keys (`POST /v2/teams/:id/api-keys`)
 
-Generate server-to-server keys bound to a specific Sub-Team:
+Instead of distributing an unscoped workspace token across country microservices, mint a dedicated Sub-Team API Key (`{ clientId, teamId }`).
 
-```http
-POST https://api.verifik.co/v2/teams/{teamId}/api-keys
-Authorization: Bearer <VERIFIK_JWT>
-Content-Type: application/json
+<Tabs groupId="http-js">
+<TabItem value="curl" label="cURL" default>
 
-{
-  "name": "co-production-worker",
-  "expiresIn": "12m"
-}
+```bash
+# 1. Mint a Sub-Team API key
+curl -X POST https://api.verifik.co/v2/teams/<CO_TEAM_ID>/api-keys \
+  -H "Authorization: Bearer $OWNER_OR_ADMIN_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "colombia-kyc-worker",
+    "expiresIn": "1y"
+  }'
+
+# 2. Call any lookup or SmartReport endpoint using that Team API Key
+curl -X POST https://api.verifik.co/v2/smart-reports/run \
+  -H "Authorization: Bearer $CO_TEAM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "systemKey": "co.citizen.comprehensive",
+    "inputs": { "documentType": "CC", "documentNumber": "123456789" },
+    "mode": "sync",
+    "generatePdf": true
+  }'
 ```
 
-Any API lookup, SmartReport run, or SmartBatch launched with a Team API Key automatically inherits:
+</TabItem>
+<TabItem value="js" label="JavaScript">
 
-1. The sub-team's `defaultCostCenter` (and validates against `allowedCostCenters` when `enforceCostCenter: true`).
-2. The sub-team's `monthlyBudget`, `featureBudgets`, and `endpointPolicy`.
-3. Resource `team` ownership so team members immediately see their automation runs in the portal and CECO statements.
+```javascript
+// Execute a SmartReport run with a Team-Scoped API Key
+// Automatically attributes CECO, checks team monthlyBudget, enforces endpointPolicy,
+// and tags the resulting SmartBatch + SmartReport with team = <CO_TEAM_ID>.
+const res = await fetch("https://api.verifik.co/v2/smart-reports/run", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${process.env.CO_TEAM_API_KEY}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    systemKey: "co.citizen.comprehensive",
+    inputs: { documentType: "CC", documentNumber: "123456789" },
+    mode: "sync",
+    generatePdf: true,
+  }),
+});
 
-When `staffAccessPolicy.requireTeamApiKeys: true` is enabled on the workspace, plain client API keys without a `teamId` claim are rejected with `403 team_api_key_required`.
+const payload = await res.json();
+```
+
+</TabItem>
+</Tabs>
+
+When **`staffAccessPolicy.requireTeamApiKeys: true`** is enabled in workspace settings, plain client API keys lacking a `teamId` claim are rejected from API execution endpoints with `403 team_api_key_required`.
+
+:::tip Next in this section
+- Ready to roll this out across countries? Read [Multi-Country Enterprise Setup Guide](/team-and-access/multi-country-setup-guide).
+- Need exact matrix codes, error payloads, or MCP tool names? See [API, Full Matrix & MCP Reference](/team-and-access/api-and-permissions-reference).
+:::

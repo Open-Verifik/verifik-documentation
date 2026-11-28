@@ -1,43 +1,88 @@
 ---
 id: multi-country-setup-guide
 title: Multi-Country & Multi-Unit Setup Guide
-description: Step-by-step enterprise playbook for structuring Cost Centers (CECOs), Sub-Teams, regional Team Managers, Team API keys, and monthly CECO statements.
+description: Step-by-step enterprise playbook for Cost Centers (CECOs), hierarchical Sub-Teams, Country Managers, isolated Document Builders, signed PDF links, Monthly CECO Statements, and MCP automation.
 slug: /team-and-access/multi-country-setup-guide
 keywords:
   - multi-country setup
+  - cabify
   - ceco statement
   - cost-center-statement
   - team_manager
+  - report_builder
+  - signed-link
   - mcp
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Multi-Country & Multi-Unit Enterprise Setup
 
-This guide walks through configuring an organization with multiple countries or business units (for example Colombia, Mexico, Peru, and Chile) sharing one Verifik account with strict data isolation, budget guardrails, and monthly CECO financial reconciliation.
+This guide walks through configuring an organization with multiple countries or business units (for example Colombia, Mexico, Peru, and Chile) sharing one Verifik billing account with strict PII isolation, budget guardrails, signed report sharing, and monthly financial reconciliation by Cost Center (CECO).
 
 ---
 
-## Step 1: Create One Cost Center (CECO) per Country or Unit
+## Step 1: Create Cost Centers (CECOs) per Country or Unit
 
-Create a Cost Center (`POST /v2/cost-centers`) for every billing bucket:
+Create a Cost Center (`POST /v2/cost-centers`) for every accounting bucket:
+
+<Tabs groupId="http-js">
+<TabItem value="curl" label="cURL" default>
 
 ```bash
 curl -X POST https://api.verifik.co/v2/cost-centers \
   -H "Authorization: Bearer $OWNER_JWT" \
   -H "Content-Type: application/json" \
-  -d '{"code":"CO-OPS","name":"Colombia Operations","country":"CO"}'
+  -d '{
+    "code": "CO-OPS",
+    "name": "Colombia Driver Operations",
+    "country": "CO"
+  }'
 ```
 
-Repeat for `MX-OPS`, `PE-OPS`, `CL-OPS`, etc.
+</TabItem>
+<TabItem value="js" label="JavaScript">
+
+```javascript
+for (const ceco of [
+  { code: "CO-OPS", name: "Colombia Driver Operations", country: "CO" },
+  { code: "MX-OPS", name: "Mexico Driver Operations", country: "MX" },
+  { code: "PE-OPS", name: "Peru Driver Operations", country: "PE" },
+]) {
+  await fetch("https://api.verifik.co/v2/cost-centers", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.OWNER_JWT}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(ceco),
+  });
+}
+```
+
+</TabItem>
+</Tabs>
 
 ---
 
-## Step 2: Build the Sub-Team Hierarchy
+## Step 2: Build the Regional & Country Sub-Team Hierarchy
 
-1. Optional regional umbrella team (`LATAM Regional`).
-2. Country child teams with `parentTeam`, `defaultCostCenter`, `allowedCostCenters`, `enforceCostCenter: true`, and `monthlyBudget`:
+1. Create an optional regional parent team (`LATAM Regional`) so a Regional Lead using role `team_manager` can supervise all child countries at once.
+2. Create child country teams setting `parentTeam`, `defaultCostCenter`, `allowedCostCenters`, `enforceCostCenter: true`, and `monthlyBudget`.
 
 ```bash
+# 1. Parent regional team
+curl -X POST https://api.verifik.co/v2/teams \
+  -H "Authorization: Bearer $OWNER_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "LATAM Regional",
+    "color": "indigo",
+    "description": "Umbrella team for Latin America operations"
+  }'
+
+# 2. Country child team locked to CO-OPS with $1,500/mo hard budget
 curl -X POST https://api.verifik.co/v2/teams \
   -H "Authorization: Bearer $OWNER_JWT" \
   -H "Content-Type: application/json" \
@@ -55,49 +100,147 @@ curl -X POST https://api.verifik.co/v2/teams \
 
 ---
 
-## Step 3: Turn On Strict Isolation & Team API Keys
+## Step 3: Enable Strict Isolation & Publish Shared Blueprints
 
-In **Team & Access → Access Policy** (or `PUT /v2/client-settings`):
+Update your workspace access policy in **Team & Access → Access Policy** or via `PUT /v2/client-settings/:id`:
 
-- Enable **`teamScopedVisibility: true`** so country teams only see their own reports, dossiers, and request logs.
-- Optionally enable **`requireTeamApiKeys: true`** so backend services must authenticate with a Sub-Team API key rather than an unscoped master token.
-- Mark central report blueprints (`SmartReportTemplates`, `BatchConfigurations`) as `visibility: "workspace"` via `POST /v2/teams/:id/assign`.
-
----
-
-## Step 4: Issue Sub-Team API Keys & Assign Team Managers
-
-- Mint a key per integration (`POST /v2/teams/{coTeamId}/api-keys`).
-- Invite or promote a **Country Lead** using role `"team_manager"` (with `team` set to Colombia Ops, or `parentTeam` set to LATAM Regional to manage all child country teams):
-  - Team Managers can invite operators inside their managed teams, approve their access/budget requests, manage child sub-teams, and export CECO statements — without seeing sibling countries or workspace payment methods.
-- Give cross-country auditors or backup managers access to multiple specific teams via **`additionalTeams`** on `POST /v2/staff` or `PUT /v2/staff/:id`.
-
----
-
-## Step 5: Export Monthly Per-CECO Reconciliation Statements
-
-Reconcile all API request spend and metered SmartReport credits grouped by **Cost Center + Sub-Team** (including top 5 billed endpoints per CECO) without spending credits:
-
-```http
-GET https://api.verifik.co/v2/usage/cost-center-statement?period=2026-11&format=xlsx
-Authorization: Bearer <OWNER_OR_MANAGER_JWT>
+```bash
+curl -X PUT https://api.verifik.co/v2/client-settings/<CLIENT_SETTINGS_ID> \
+  -H "Authorization: Bearer $OWNER_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "staffAccessPolicy": {
+      "teamScopedVisibility": true,
+      "requireTeamApiKeys": true
+    }
+  }'
 ```
 
-Supported query parameters:
+- Mark central report blueprints (`SmartReportTemplates`, `BatchConfigurations`, `Projects`, `ProjectFlows`) as workspace-shared so every country executes the same blueprint without copying definitions:
 
-- `period`: Billing month in `YYYY-MM` UTC (defaults to the current month).
-- `format`: `json` (default summary + topEndpoints), `csv` (UTF-8 BOM, formula-safe), or `xlsx` (two-sheet workbook: `CECO Statement` and `Top Endpoints`).
-- `team`, `costCenter`: Optional filters (automatically intersected with caller's team visibility when scoped).
+```bash
+curl -X POST https://api.verifik.co/v2/teams/<TEMPLATE_TEAM_ID>/assign \
+  -H "Authorization: Bearer $OWNER_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "resourceType": "smartReportTemplates",
+    "ids": ["<TEMPLATE_ID_1>", "<TEMPLATE_ID_2>"],
+    "visibility": "workspace"
+  }'
+```
 
-You can also view and export the Monthly CECO Statement from the dashboard under **Settings → Usage Report**.
+:::caution Before enabling `requireTeamApiKeys` in production
+Mint and roll out Sub-Team API keys to every server-to-server service **before** flipping `requireTeamApiKeys: true`. Legacy client API keys without a `teamId` claim receive `403 team_api_key_required` as soon as enforcement turns on.
+:::
 
 ---
 
-## Automating via MCP (Claude, Cursor, Gemini)
+## Step 4: Onboard Managers, Auditors & Document Builders
 
-All Team & Access, Cost Center, Audit Log, Signed Link, and CECO Statement operations are exposed as Bearer-authenticated MCP tools on `https://ai.verifik.co/mcp`, including:
+- **Country / Regional Leads (`team_manager`)**: Invite with `"role": "team_manager"` and `"team": "<CO_TEAM_ID>"` (or `"<LATAM_TEAM_ID>"`). They can invite operators in their subtree, adjust child teams/budgets, approve access requests, export CECO statements, and read audit logs for their own teams.
+- **Cross-Country Reviewers (`additionalTeams`)**: Pass `"additionalTeams": ["<MX_TEAM_ID>", "<PE_TEAM_ID>"]` on `POST /v2/staff` or `PUT /v2/staff/:id` so backup leads or regional auditors inspect multiple countries without granting `team.readAll`.
+- **Template Designers (`report_builder`)**: Assign `"role": "report_builder"` so template engineers maintain PDF layouts and batch presets with zero access to executed results, applicant PII, or API keys.
 
-- `teams_list`, `teams_create` (`parentTeam`), `teams_update` (`parentTeam`), `teams_create_api_key`, `teams_assign_resources`
-- `staff_invite` (`team_manager`, `additionalTeams`), `staff_update` (`additionalTeams`)
-- `cost_centers_list`, `cost_centers_create`, `usage_cost_center_statement`
-- `staff_audit_logs_list`, `smart_report_create_signed_link`
+---
+
+## Step 5: Share Generated PDFs Safely with Signed Links
+
+When compliance or operations teams need to share an individual report PDF externally without exposing long-lived Bearer tokens, mint a short-lived HMAC-signed URL (`ttlSeconds` capped at `86400` / 24 hours):
+
+```bash
+curl -X POST https://api.verifik.co/v2/smart-reports/<REPORT_ID>/signed-link \
+  -H "Authorization: Bearer $STAFF_OR_OWNER_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ttlSeconds": 3600,
+    "rowIndex": 0
+  }'
+```
+
+Anyone holding the returned signed `url` can download the PDF cleanly until expiration; expired or tampered signatures return `401` / `403`. Normal `GET /v2/smart-reports/:id/download` requests without `sig` / `exp` continue to enforce standard Bearer JWT + RBAC authentication.
+
+---
+
+## Step 6: Export Monthly Per-CECO Financial Statements
+
+Reconcile all API request spend and metered SmartReport credits grouped by **Cost Center + Sub-Team** (including the top 5 endpoints per CECO) at zero credit cost:
+
+<Tabs groupId="http-js">
+<TabItem value="curl" label="cURL" default>
+
+```bash
+# JSON breakdown
+curl -X GET "https://api.verifik.co/v2/usage/cost-center-statement?period=2026-11&format=json" \
+  -H "Authorization: Bearer $FINANCE_OR_MANAGER_JWT"
+
+# Multi-sheet Excel workbook (CECO Statement + Top Endpoints)
+curl -L -X GET "https://api.verifik.co/v2/usage/cost-center-statement?period=2026-11&format=xlsx" \
+  -H "Authorization: Bearer $FINANCE_OR_MANAGER_JWT" \
+  -o verifik-ceco-2026-11.xlsx
+```
+
+</TabItem>
+<TabItem value="js" label="JavaScript">
+
+```javascript
+const url = new URL("https://api.verifik.co/v2/usage/cost-center-statement");
+url.searchParams.set("period", "2026-11");
+url.searchParams.set("format", "json");
+
+const res = await fetch(url, {
+  headers: { Authorization: `Bearer ${process.env.FINANCE_OR_MANAGER_JWT}` },
+});
+
+const { data } = await res.json();
+console.log("Total spend USD:", data.totals.totalSpendUsd);
+console.table(data.rows);
+```
+
+</TabItem>
+</Tabs>
+
+Sample JSON output:
+
+```json
+{
+  "data": {
+    "period": "2026-11",
+    "totals": {
+      "apiRequests": 18420,
+      "apiSpendUsd": 921.5,
+      "smartReportCreditsUsd": 142.25,
+      "totalSpendUsd": 1063.75
+    },
+    "rows": [
+      {
+        "costCenterCode": "CO-OPS",
+        "teamName": "Colombia Ops",
+        "apiRequests": 12100,
+        "apiSpendUsd": 605.0,
+        "smartReportCreditsUsd": 95.0,
+        "totalSpendUsd": 700.0,
+        "topEndpoints": [
+          { "endpoint": "/v2/co/cedula", "requests": 8400, "spendUsd": 420.0 }
+        ]
+      }
+    ]
+  }
+}
+```
+
+You can also view and export the Monthly CECO Statement visually under **Settings → Usage Report** in the Smart-Agent portal.
+
+---
+
+## Enterprise Rollout Best-Practices Checklist
+
+1. **Create CECOs & Sub-Teams first** (`teamScopedVisibility` off) while organizing resources via `POST /v2/teams/:id/assign`.
+2. **Mint Sub-Team API keys** per service and verify CECO attribution in `GET /v2/usage/cost-center-statement?format=json`.
+3. **Verify role assignments & audit trail** via `GET /v2/staff/me/permissions` and `GET /v2/staff-audit-logs`.
+4. **Enable `teamScopedVisibility: true`**, verify cross-country isolation, and finally enable **`requireTeamApiKeys: true`** once no legacy client keys remain active in automated workers.
+
+---
+
+## Automating Setup via MCP (`https://ai.verifik.co/mcp`)
+
+AI coding and ops assistants (Claude, Cursor, Gemini) can provision the full hierarchy, mint Team API keys, inspect audit logs, create signed links, and download CECO statements directly via Verifik's MCP server using **24 dedicated Team/RBAC tools**. See [API, Full Matrix & MCP Reference](/team-and-access/api-and-permissions-reference#ai-agent--mcp-integration) for client setup and the full tool catalog.
