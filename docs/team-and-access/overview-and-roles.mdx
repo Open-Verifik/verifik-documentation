@@ -1,83 +1,303 @@
 ---
 id: overview-and-roles
 title: Overview & System Roles
-description: Understand Verifik's 8 built-in RBAC system roles, custom client roles, endpoint allowlists/blocklists, self-service temporary access requests, and the immutable audit trail.
+description: Comprehensive guide to Verifik's Staff RBAC model — actors, evaluation pipeline, 8 built-in roles, custom roles, endpoint policies, JIT access requests, and the immutable audit log.
 slug: /team-and-access/overview-and-roles
 keywords:
   - team roles
   - rbac
+  - access control
   - team_manager
   - report_builder
   - permissions
+  - endpointPolicy
   - staff-audit-logs
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Team & Access Overview and System Roles
 
-Verifik workspaces separate billing ownership (**Workspace Owner**) from delegated staff members and API keys. Access control combines **module & action permissions**, **Sub-Team scope & monthly budgets**, **API endpoint policies**, **Just-in-Time (JIT) temporary grants**, and an **immutable audit log**.
+Verifik workspaces separate billing ownership (**Workspace Owner**) from delegated human operators (**Staff**) and scoped machine credentials (**Sub-Team API Keys**). Every protected `/v2/...` request passes through a deterministic multi-layer access control pipeline that combines **module & action RBAC**, **endpoint allowlists/blocklists**, **Sub-Team scope & monthly budgets**, **Cost Center (CECO) policies**, **Just-in-Time (JIT) temporary grants**, and an **immutable audit trail**.
+
+:::info Zero-impact backward compatibility
+Workspaces that have not configured Staff RBAC policies, custom roles, or Sub-Teams continue working with zero breaking changes:
+- **Workspace Owners** and **SuperAdmins** bypass all staff role caps, team scopes, and budget locks.
+- **Unconfigured accounts** (`ClientSettings` absent or `staffAccessPolicy.teamScopedVisibility` disabled) apply zero team-scope filtering on reads or writes.
+- **Legacy Spanish role slugs** (`administrador`, `desarrollador`, `contabilidad`, `empleado`) normalize transparently to their canonical system presets.
+- **Non-staff end-user session JWTs** (for example SmartEnroll or SmartAccess applicant sessions without `staffId`) pass RBAC staff middleware cleanly while remaining blocked on `owner_only` endpoints.
+:::
+
+---
+
+## Actors & Token Types
+
+| Actor / Credential | JWT Claim Signature | Role / Scope Behavior | Typical Use Case |
+| --- | --- | --- | --- |
+| **Workspace Owner** | `clientId` without `staffId` or `teamId` | Full permissions (`*`), can delete workspace settings and manage all teams/roles | Account creator, root security & billing admin |
+| **Staff Member** | `clientId` + `staffId` | Subject to effective role/override/JIT permissions, endpoint policy, and team scope | Human portal users, country managers, auditors |
+| **Team-Scoped API Key** | `clientId` + `teamId` | Bound to one Sub-Team's `monthlyBudget`, `endpointPolicy`, CECO lock, and ownership | Backend microservices, country workers, batch scripts |
+| **End-User Session JWT** | Session token without `staffId` (`appRegistrationId`, etc.) | Exempt from staff permission checks; blocked from `owner_only` administrative actions | End-user KYC, liveness, and login flows |
+
+---
+
+## Access Evaluation Pipeline
+
+Every request from an authenticated Staff member or Team API key is evaluated in strict order before touching upstream registries or billing:
+
+```text
+Incoming Request (Authorization: Bearer <JWT>)
+   │
+   ├─► 1. JWT Verification & Revocation Check
+   │      (client JWTPhrase for owner tokens; staff JWTPhrase for staff tokens)
+   │
+   ├─► 2. Effective Permission Resolution (Staff)
+   │      customPermissions || customRole.permissions || DEFAULT_MATRIX[role]
+   │      + Active non-revoked temporaryGrants
+   │      - Hard Owner-only guardrail (workspaceSettings.delete = false)
+   │
+   ├─► 3. Route Module/Action RBAC Check
+   │      Requires (resource, action) → 403 insufficient_staff_permissions
+   │
+   ├─► 4. Endpoint Policy Evaluation (Staff > Team > Role)
+   │      mode: "all" | "allowlist" | "blocklist" on /v2/... path
+   │
+   ├─► 5. Sub-Team Budget & CECO Lock Check (API lookups & SmartReports)
+   │      - Active & monthly/feature budget OK → 403 team_paused / team_budget_exceeded
+   │      - Valid x-cost-center vs allowedCostCenters → 400 cost_center_not_allowed_for_team
+   │
+   ├─► 6. Team-Scoped Visibility Filter (when teamScopedVisibility = true)
+   │      Read union: primary team + additionalTeams + parentTeam descendants
+   │      Cross-team mutation → 403 team_out_of_scope
+   │
+   └─► 7. Immutable Audit Trail (StaffAuditLog)
+          Logs actor, action, resourceType, team, IP, userAgent, metadata
+```
+
+---
+
+## Permission Resolution Precedence & Guardrails
+
+When computing a staff member's effective permissions (`GET /v2/staff/me/permissions`):
+
+1. **Custom Role (`customRole`)**: If the staff member references a `ClientRole`, that role's normalized matrix serves as the base; otherwise the built-in system preset (`DEFAULT_MATRIX_CODES[role]`) is used.
+2. **Per-Staff Override (`customPermissions`)**: When set directly on the `Staff` record, `customPermissions` replaces the role's matrix as the base.
+3. **Temporary Grants (`temporaryGrants`)**: Active, non-revoked grants whose `expiresAt` is in the future (or `null` for permanent grants) are merged additively (`true` unlocks the granted `(resource, action)` pair without widening unrelated modules).
+4. **Legacy Custom Role Compatibility**: Custom roles created before `smartReportsResults` was introduced automatically inherit `smartReportsBatch` flags unless `smartReportsResults` is explicitly configured.
+5. **Owner-Only Guardrail**: `workspaceSettings.delete` is always forced to `false` for all staff roles and overrides.
+6. **Anti-Escalation Protection**: No staff actor (including `admin` or `team_manager`) can create a role, assign a role, or grant overrides exceeding their own effective permission set — attempts throw `403 cannot_escalate_permissions`.
 
 ---
 
 ## Built-In System Roles
 
-Every invited staff member is assigned one of **8 built-in system presets** (or a custom workspace role via `POST /v2/client-roles`). Legacy Spanish aliases (`administrador`, `desarrollador`, `contabilidad`, `empleado`) remain accepted and normalize automatically.
+Every invited staff member receives one of **8 immutable built-in system presets** (or a tenant-specific custom role via `POST /v2/client-roles`):
 
-| Role Slug | Intended Persona | Core Permissions | Key Boundaries |
+| Role Slug | Persona | Core Capabilities | Key Restrictions & Boundaries |
 | --- | --- | --- | --- |
-| `admin` | Workspace Administrator | Full CRUD/execute/export across modules, team & budget admin (`team.readAll`), API keys | Cannot delete workspace settings (`workspaceSettings.delete` is Owner-only) or delete Workspace Owner |
-| `team_manager` | Country / Department Lead | Manages members, child sub-teams, budgets, access requests (`team.manageOwnTeam`), and CECO usage exports (`billingUsage.export`) | Scoped strictly to own `team`, `additionalTeams`, and child sub-teams (`parentTeam`); cannot access billing credits/cards, API keys management, or cross-team resources |
-| `compliance_officer` | KYC / KYB & Fleet Reviewer | Approves/rejects KYC & KYB dossiers, acknowledges fleet rules/alerts, exports compliance reports | No API key management or workspace billing edits |
-| `developer` | Integration Engineer | Manages API keys, webhooks, SmartCheck Playground, projects/flows, templates, and batches | No KYC manual approval (`smartEnrollRecords.approve`) and no billing edits |
-| `finance` | Billing & Accounting | Manages credits, cards, subscriptions, invoices, Cost Centers, and Usage/CECO statements | No PII records, playground runs, or API keys |
-| `operator` | Day-to-Day Verification Ops | Executes lookups, SmartScan, biometrics, SmartBatches, SmartLinks, and fleet updates | Cannot manage teams, billing, or delete configs |
-| `report_builder` | Template & Batch Designer | Designs SmartReport templates and Batch Configurations | Zero access to executed report results, applicant PII, billing, or API keys (`allowAccessRequests: false` by default) |
-| `viewer` | Read-Only Auditor | Read-only access to dashboards, records, monitoring, and usage analytics | Zero mutations or live executions |
+| `admin` | Workspace Administrator | Full CRUD, execute, approve, and export across all operational modules; `team.readAll` + `team.manageOwnTeam`; API key management | Cannot delete workspace settings (`workspaceSettings.delete`) or escalate above own ceiling |
+| `team_manager` | Country / Department Lead | Manages staff, child sub-teams, monthly budgets, access requests (`team.manageOwnTeam`), operations, and CECO statement export (`billingUsage.export`) | Scoped strictly to own `team`, `additionalTeams`, and `parentTeam` descendants; no workspace credits/cards, API key creation, or sibling team access |
+| `compliance_officer` | KYC / KYB & Fleet Reviewer | Approves/rejects KYC & KYB dossiers, acknowledges SmartFleet rules/alerts, executes checks, exports compliance reports | No API key management, billing mutations, or team admin |
+| `developer` | Integration Engineer | Full SmartCheck Playground, projects/flows, templates, webhooks (`manageKeys`), API keys (`create`/`delete`/`manageKeys`), technical lookups | No manual KYC/KYB approval and no billing or team management |
+| `finance` | Billing & Accounting | Manages credits, cards, subscriptions, invoices, Cost Centers (`CO`/`CECO`), and Usage/CECO statement exports | Zero access to PII records (`SmartEnroll`, `SmartBusiness`), API Playground, or API keys |
+| `operator` | Day-to-Day Verification Ops | Executes API checks, SmartScan, biometrics, SmartBatch presets/jobs, SmartLinks, and fleet operational updates | Cannot manage teams, billing, API keys, or delete core configurations |
+| `report_builder` | Document Template Designer | Designs SmartReport templates and Batch Configurations (`smartReportsTemplates` & `smartReportsBatch`) | Zero access to executed report results (`smartReportsResults`), applicant PII, API keys, or billing (`allowAccessRequests: false`) |
+| `viewer` | Strict Read-Only Auditor | Read-only visibility into dashboards, records, monitoring status, usage summaries, and non-PII reports | Zero mutations, executions, exports, or administrative controls |
+
+### Legacy Role Slug Normalization
+
+| Legacy Slug | Canonical Role Normalized To |
+| --- | --- |
+| `administrador` | `admin` |
+| `desarrollador` | `developer` |
+| `contabilidad` | `finance` |
+| `empleado` | `operator` |
+| *Any unrecognized string* | `viewer` (fail-safe least privilege) |
+
+:::tip Need the full 27-module matrix?
+See [API, Permissions Matrix & MCP Reference](/team-and-access/api-and-permissions-reference) for every module resource key, action code (`RCUDEAXKLM`), endpoint list, error catalog, and all 24 MCP tools.
+:::
 
 ---
 
-## Granular Action Model & Custom Roles
+## Custom Roles & Endpoint Policies
 
-Permissions are evaluated per `(resource, action)` tuple across 27 modules using 10 actions:
+Workspace admins and Owners can inspect all built-in presets, duplicate one as a starting point, or create custom roles with per-endpoint URL policies (`mode: "all" | "allowlist" | "blocklist"`).
 
-- `read`, `create`, `update`, `delete`, `execute`, `approve`, `export`, `manageKeys`, `readAll`, `manageOwnTeam`.
+<Tabs groupId="http-js">
+<TabItem value="curl" label="cURL" default>
 
-To tailor a role without losing least-privilege guarantees:
+```bash
+# 1. Inspect the live catalog (resources, actions, built-in presets, custom roles)
+curl -X GET https://api.verifik.co/v2/client-roles/catalog \
+  -H "Authorization: Bearer $VERIFIK_JWT"
 
-1. Call `GET /v2/client-roles/catalog` (or open **Team & Access → Roles & Permissions**).
-2. Duplicate any built-in preset with `POST /v2/client-roles/:id/duplicate` or create a role via `POST /v2/client-roles`.
-3. Attach optional `endpointPolicy` rules (`mode: "all" | "blocklist" | "allowlist"`) and control whether staff on the role can submit self-service requests (`allowAccessRequests`, `requestableResources`).
-4. Anti-escalation checks guarantee no staff member can grant permissions or endpoints above their own effective ceiling.
+# 2. Duplicate a built-in role preset (for example report_builder or operator)
+curl -X POST https://api.verifik.co/v2/client-roles/report_builder/duplicate \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Senior Template Designer",
+    "slug": "senior-template-designer",
+    "description": "Designs SmartReport templates with export preview access"
+  }'
+
+# 3. Create a custom role with an endpoint allowlist policy
+curl -X POST https://api.verifik.co/v2/client-roles \
+  -H "Authorization: Bearer $VERIFIK_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Colombia KYC Reviewer",
+    "basedOn": "compliance_officer",
+    "allowAccessRequests": true,
+    "requestableResources": ["smartReportsResults", "smartBusinessRecords"],
+    "endpointPolicy": {
+      "mode": "allowlist",
+      "features": ["/v2/co/cedula", "/v2/co/runt/vehiculo", "/v2/smart-reports"]
+    }
+  }'
+```
+
+</TabItem>
+<TabItem value="js" label="JavaScript">
+
+```javascript
+const headers = {
+  Authorization: `Bearer ${process.env.VERIFIK_JWT}`,
+  "Content-Type": "application/json",
+};
+
+// Create a country-restricted KYC Reviewer custom role
+const response = await fetch("https://api.verifik.co/v2/client-roles", {
+  method: "POST",
+  headers,
+  body: JSON.stringify({
+    name: "Colombia KYC Reviewer",
+    basedOn: "compliance_officer",
+    allowAccessRequests: true,
+    requestableResources: ["smartReportsResults", "smartBusinessRecords"],
+    endpointPolicy: {
+      mode: "allowlist",
+      features: ["/v2/co/cedula", "/v2/co/runt/vehiculo", "/v2/smart-reports"],
+    },
+  }),
+});
+
+const { data } = await response.json();
+console.log("Created role:", data._id);
+```
+
+</TabItem>
+</Tabs>
 
 ---
 
-## Just-in-Time Access Requests & Revocation
+## Just-in-Time (JIT) Access Requests & Revocation
 
-When a staff member encounters a restricted module or reaches a sub-team budget cap, Verifik returns `403` with `canRequestAccess: true`:
+When a staff member hits a restricted resource or an exhausted Sub-Team budget, Verifik returns `403` with `canRequestAccess: true` (unless disabled on the role, such as `report_builder` where `allowAccessRequests` defaults to `false`).
 
-- **Request flow**: Staff submit `POST /v2/staff-access-requests` (`resource_access`, `role_upgrade`, or `budget_increase`) with duration `24h`, `7d`, `30d`, or `permanent`.
-- **Scoped review**: Global admins review all requests; a `team_manager` can approve, reject, or revoke requests only for members of their own/child sub-teams (`403:team_out_of_scope` otherwise).
-- **Immediate revocation**: Calling `POST /v2/staff-access-requests/:id/revoke` immediately invalidates any active temporary grant.
+1. **Submit a request (`POST /v2/staff-access-requests`)**: Supports `type`: `"resource_access"`, `"role_upgrade"`, or `"budget_increase"`, with requested duration `"24h"`, `"7d"`, `"30d"`, or `"permanent"`.
+2. **Inspect own requests (`GET /v2/staff-access-requests/mine`)** or **cancel (`POST /v2/staff-access-requests/:id/cancel`)**.
+3. **Scoped approval/rejection**:
+   - Workspace Owners and `team.readAll` admins review all workspace requests.
+   - `team_manager` leads can approve or reject requests **only** for staff belonging to their own/additional/descendant Sub-Teams (`403 team_out_of_scope` otherwise).
+4. **Immediate revocation**:
+   - Call `POST /v2/staff-access-requests/:id/revoke` (or `DELETE /v2/staff/:id/grants/:grantId`) to immediately expire a temporary grant.
+   - Call `POST /v2/staff/:id/revoke-session` to rotate the staff member's `JWTPhrase` and invalidate all active Staff JWTs immediately.
+
+<Tabs groupId="http-js">
+<TabItem value="curl" label="cURL" default>
+
+```bash
+# Staff submits a 7-day temporary access request
+curl -X POST https://api.verifik.co/v2/staff-access-requests \
+  -H "Authorization: Bearer $STAFF_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "resource_access",
+    "requestedResource": "smartReportsResults",
+    "requestedAction": "read",
+    "requestedDuration": "7d",
+    "reason": "Temporary incident audit for Colombia November batch"
+  }'
+
+# Team Manager or Admin approves or revokes the request
+curl -X POST https://api.verifik.co/v2/staff-access-requests/<REQUEST_ID>/approve \
+  -H "Authorization: Bearer $MANAGER_JWT" \
+  -H "Content-Type: application/json" \
+  -d '{"reviewNotes": "Approved for Q4 reconciliation"}'
+
+curl -X POST https://api.verifik.co/v2/staff-access-requests/<REQUEST_ID>/revoke \
+  -H "Authorization: Bearer $MANAGER_JWT"
+```
+
+</TabItem>
+<TabItem value="js" label="JavaScript">
+
+```javascript
+// Approve a pending access request as a Team Manager or Admin
+await fetch(
+  `https://api.verifik.co/v2/staff-access-requests/${requestId}/approve`,
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.MANAGER_JWT}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ reviewNotes: "Approved for Q4 reconciliation" }),
+  }
+);
+
+// Immediately revoke a staff member's active JWT sessions
+await fetch(`https://api.verifik.co/v2/staff/${staffId}/revoke-session`, {
+  method: "POST",
+  headers: { Authorization: `Bearer ${process.env.MANAGER_JWT}` },
+});
+```
+
+</TabItem>
+</Tabs>
 
 ---
 
 ## Immutable RBAC & Team Audit Trail
 
-Every security-sensitive mutation writes an immutable entry to `StaffAuditLog`:
+Every security-sensitive mutation records an immutable `StaffAuditLog` document containing actor identity, target resource, Sub-Team context, IP address, user agent, and structured diff metadata.
 
-```http
-GET https://api.verifik.co/v2/staff-audit-logs?action=staff.update&limit=50&format=json
-Authorization: Bearer <VERIFIK_JWT>
+- **Endpoint**: `GET https://api.verifik.co/v2/staff-audit-logs`
+- **Required permission**: `team.read`
+- **Scoped visibility**: Global admins (`team.readAll`) view all workspace logs; `team_manager` callers see only events tied to their managed sub-teams (`team` + `additionalTeams` + descendants) or triggered by themselves.
+- **Query parameters**:
+  - `team`: Filter by Sub-Team ObjectId
+  - `action`: Filter by exact event action (for example `staff.update`, `staff.invite`, `team.create`, `team.api_key_create`, `access_request.approve`, `smart_report.signed_download`)
+  - `resourceType`: `staff` | `team` | `clientRole` | `staffAccessRequest` | `clientSettings` | `smartReport` | `smartReportTemplate` | `batchConfiguration`
+  - `startDate`, `endDate`: ISO-8601 date/time bounds
+  - `page`, `limit`: Pagination (`limit <= 200`)
+  - `format`: `json` (default) or `csv` (neutralizes spreadsheet formula prefixes `=`, `+`, `-`, `@`, tab, CR)
+
+```json
+{
+  "data": [
+    {
+      "_id": "6741f09a2b3c4d5e6f708111",
+      "client": "674011112222333344445555",
+      "team": "6740aaaa1111222233334444",
+      "actorType": "staff",
+      "actorEmail": "latam-lead@company.com",
+      "action": "access_request.approve",
+      "resourceType": "staffAccessRequest",
+      "resourceId": "6741ef102b3c4d5e6f708001",
+      "ipAddress": "198.51.100.12",
+      "createdAt": "2026-11-27T18:22:10.412Z"
+    }
+  ],
+  "meta": { "page": 1, "limit": 50, "total": 1 }
+}
 ```
-
-Supported query parameters:
-
-- `team`, `action`, `resourceType` (`staff`, `team`, `clientRole`, `staffAccessRequest`, `clientSettings`, `smartReport`, `smartReportTemplate`, `batchConfiguration`)
-- `startDate`, `endDate` (ISO timestamps)
-- `page`, `limit` (`<= 200`), and `format=json|csv` (CSV export neutralizes spreadsheet formula prefixes).
-
-Global admins view the entire tenant log; `team_manager` and scoped staff see only events linked to their managed sub-teams or performed by themselves.
 
 ## Next Steps
 
 - [Sub-Teams, Hierarchy & Scoped Visibility](/team-and-access/sub-teams-and-visibility)
-- [Multi-Country Setup Guide](/team-and-access/multi-country-setup-guide)
+- [Multi-Country Enterprise Setup Guide](/team-and-access/multi-country-setup-guide)
+- [API, Full Matrix & MCP Reference](/team-and-access/api-and-permissions-reference)

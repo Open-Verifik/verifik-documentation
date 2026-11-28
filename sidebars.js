@@ -2419,6 +2419,7 @@ const sidebars = {
 						"team-and-access/overview-and-roles",
 						"team-and-access/sub-teams-and-visibility",
 						"team-and-access/multi-country-setup-guide",
+						"team-and-access/api-and-permissions-reference",
 					],
 				},
 				{

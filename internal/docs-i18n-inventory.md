@@ -1,11 +1,11 @@
 # Docs i18n — canonical endpoint inventory
 
-Generated: 2026-11-27T23:50:20.407Z
+Generated: 2026-11-27T23:59:07.916Z
 
-- **Files scanned:** 842
+- **Files scanned:** 843
 - **Unique endpoint URLs:** 509
 - **Duplicate URL groups (SEO / aliases):** 67
-- **Docs without `### Endpoint` block:** 239
+- **Docs without `### Endpoint` block:** 240
 
 ## Summary by priority (canonical primary path only)
 
@@ -970,6 +970,7 @@ These files have no `### Endpoint` + fenced URL block (guides, intros, duplicate
 - `smartenroll/smartenroll-kyc-flow.md`
 - `smartenroll/smartenroll-resume.mdx`
 - `smartenroll/smartenroll.md`
+- `team-and-access/api-and-permissions-reference.mdx`
 - `team-and-access/multi-country-setup-guide.mdx`
 - `team-and-access/overview-and-roles.mdx`
 - `team-and-access/sub-teams-and-visibility.mdx`
